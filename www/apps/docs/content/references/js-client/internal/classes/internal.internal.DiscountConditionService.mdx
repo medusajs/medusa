@@ -1,0 +1,1218 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# DiscountConditionService
+
+[internal](../../modules/internal.mdx).[internal](../modules/internal.internal.mdx).DiscountConditionService
+
+Provides layer to manipulate discount conditions.
+
+#### Implements
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountConditionRepository_",
+    "type": "`Repository`<[`DiscountCondition`](internal.DiscountCondition.mdx)\\> & { `addConditionResources`: Method addConditionResources ; `canApplyForCustomer`: Method canApplyForCustomer ; `findOneWithDiscount`: Method findOneWithDiscount ; `getJoinTableResourceIdentifiers`: Method getJoinTableResourceIdentifiers ; `isValidForProduct`: Method isValidForProduct ; `queryConditionTable`: Method queryConditionTable ; `removeConditionResources`: Method removeConditionResources  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "config_",
+        "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "featureFlags",
+            "type": "Record<`string`, `boolean` \\| `string`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "modules",
+            "type": "Record<`string`, `boolean` \\| [`Partial`](../../modules/internal.mdx#partial)<[`InternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)\\>\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "plugins",
+            "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "projectConfig",
+            "type": "[`ProjectConfigOptions`](../../internal-1/modules/internal.internal-1.CommonTypes.mdx#projectconfigoptions)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "enqueue_",
+        "type": "`Promise`<`void`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "logger_",
+        "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "activity",
+            "type": "(`message`: `string`, `config?`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`message`: `string`, `config?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "debug",
+            "type": "(`message`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "error",
+            "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "failure",
+            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "info",
+            "type": "(`message`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "log",
+            "type": "(...`args`: `any`[]) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(...`args`: `any`[]) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "panic",
+            "type": "(`data`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`data`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "progress",
+            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "setLogLevel",
+            "type": "(`level`: `string`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "shouldLog",
+            "type": "(`level`: `string`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "success",
+            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "unsetLogLevel",
+            "type": "() => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "() => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "warn",
+            "type": "(`message`: `any`) => `void`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__type",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shouldEnqueuerRun",
+        "type": "`boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "stagedJobService_",
+        "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "stagedJobRepository_",
+            "type": "`Repository`<[`StagedJob`](internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountConditionId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| [`DiscountCondition`](internal.DiscountCondition.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "void \\| DiscountCondition",
+        "type": "`void` \\| [`DiscountCondition`](internal.DiscountCondition.mdx)",
+        "optional": true,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### removeResources
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`Omit`](../../modules/internal.mdx#omit)<[`DiscountConditionInput`](../../modules/internal.mdx#discountconditioninput), ``\"id\"``\\> & { `id`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "customer_groups",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "operator",
+        "type": "[`DiscountConditionOperator`](../enums/internal.DiscountConditionOperator.mdx)",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "IN",
+            "type": "``\"in\"``",
+            "description": "The discountable resources are within the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "NOT_IN",
+            "type": "``\"not_in\"``",
+            "description": "The discountable resources are everything but the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "product_collections",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_tags",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_types",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rule_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "conditionId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`DiscountCondition`](internal.DiscountCondition.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "order",
+        "type": "`object`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__type",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "relations",
+        "type": "`string`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "select",
+        "type": "keyof `Entity`[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "skip",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "take",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`DiscountCondition`](internal.DiscountCondition.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "DiscountCondition",
+        "type": "[`DiscountCondition`](internal.DiscountCondition.mdx)",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### upsertCondition
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`DiscountConditionInput`](../../modules/internal.mdx#discountconditioninput)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "customer_groups",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "operator",
+        "type": "[`DiscountConditionOperator`](../enums/internal.DiscountConditionOperator.mdx)",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "IN",
+            "type": "``\"in\"``",
+            "description": "The discountable resources are within the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "NOT_IN",
+            "type": "``\"not_in\"``",
+            "description": "The discountable resources are everything but the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "product_collections",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_tags",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_types",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rule_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "overrideExisting",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<([`DiscountConditionCustomerGroup`](internal.internal.DiscountConditionCustomerGroup.mdx) \\| [`DiscountConditionProduct`](internal.internal.DiscountConditionProduct.mdx) \\| [`DiscountConditionProductCollection`](internal.internal.DiscountConditionProductCollection.mdx) \\| [`DiscountConditionProductTag`](internal.internal.DiscountConditionProductTag.mdx) \\| [`DiscountConditionProductType`](internal.internal.DiscountConditionProductType.mdx))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "(DiscountConditionCustomerGroup \\| DiscountConditionProduct \\| DiscountConditionProductCollection \\| DiscountConditionProductTag \\| DiscountConditionProductType)[]",
+        "type": "([`DiscountConditionCustomerGroup`](internal.internal.DiscountConditionCustomerGroup.mdx) \\| [`DiscountConditionProduct`](internal.internal.DiscountConditionProduct.mdx) \\| [`DiscountConditionProductCollection`](internal.internal.DiscountConditionProductCollection.mdx) \\| [`DiscountConditionProductTag`](internal.internal.DiscountConditionProductTag.mdx) \\| [`DiscountConditionProductType`](internal.internal.DiscountConditionProductType.mdx))[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "DiscountConditionCustomerGroup \\| DiscountConditionProduct \\| DiscountConditionProductCollection \\| DiscountConditionProductTag \\| DiscountConditionProductType",
+            "type": "[`DiscountConditionCustomerGroup`](internal.internal.DiscountConditionCustomerGroup.mdx) \\| [`DiscountConditionProduct`](internal.internal.DiscountConditionProduct.mdx) \\| [`DiscountConditionProductCollection`](internal.internal.DiscountConditionProductCollection.mdx) \\| [`DiscountConditionProductTag`](internal.internal.DiscountConditionProductTag.mdx) \\| [`DiscountConditionProductType`](internal.internal.DiscountConditionProductType.mdx)",
+            "optional": true,
+            "defaultValue": "",
+            "description": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "DiscountConditionService",
+    "type": "[`DiscountConditionService`](internal.internal.DiscountConditionService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### resolveConditionType\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`DiscountConditionInput`](../../modules/internal.mdx#discountconditioninput)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "customer_groups",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "operator",
+        "type": "[`DiscountConditionOperator`](../enums/internal.DiscountConditionOperator.mdx)",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "IN",
+            "type": "``\"in\"``",
+            "description": "The discountable resources are within the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "NOT_IN",
+            "type": "``\"not_in\"``",
+            "description": "The discountable resources are everything but the specified resources.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "product_collections",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_tags",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_types",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "(`string` \\| { `id`: `string`  })[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rule_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "undefined \\| { `resource_ids`: (`string` \\| { `id`: `string`  })[] ; `type`: [`DiscountConditionType`](../enums/internal.internal.DiscountConditionType.mdx)  }",
+    "type": "`undefined` \\| { `resource_ids`: (`string` \\| { `id`: `string`  })[] ; `type`: [`DiscountConditionType`](../enums/internal.internal.DiscountConditionType.mdx)  }",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

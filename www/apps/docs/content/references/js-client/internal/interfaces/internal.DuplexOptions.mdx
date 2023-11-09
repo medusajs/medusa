@@ -1,0 +1,1847 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# DuplexOptions
+
+[internal](../../modules/internal.mdx).DuplexOptions
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "allowHalfOpen",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "autoDestroy",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "decodeStrings",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "defaultEncoding",
+    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "emitClose",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "highWaterMark",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "objectMode",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "readableHighWaterMark",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "readableObjectMode",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "signal",
+    "type": "`AbortSignal`",
+    "description": "When provided the corresponding `AbortController` can be used to cancel an asynchronous action.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "writableCorked",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "writableHighWaterMark",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "writableObjectMode",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### construct
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "this",
+    "type": "[`Duplex`](../classes/internal.Duplex.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allowHalfOpen",
+        "type": "`boolean`",
+        "description": "If `false` then the stream will automatically end the writable side when the readable side ends. Set initially by the `allowHalfOpen` constructor option, which defaults to `true`. This can be changed manually to change the half-open behavior of an existing`Duplex` stream instance, but must be changed before the `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "closed",
+        "type": "`boolean`",
+        "description": "Is `true` after `'close'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "destroyed",
+        "type": "`boolean`",
+        "description": "Is `true` after `readable.destroy()` has been called.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errored",
+        "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+        "description": "Returns error if the stream has been destroyed with an error.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableAborted",
+        "type": "`boolean`",
+        "description": "Returns whether the stream was destroyed or errored before emitting `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableDidRead",
+        "type": "`boolean`",
+        "description": "Returns whether `'data'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEncoding",
+        "type": "``null`` \\| [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+        "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEnded",
+        "type": "`boolean`",
+        "description": "Becomes `true` when `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableFlowing",
+        "type": "``null`` \\| `boolean`",
+        "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableHighWaterMark",
+        "type": "`number`",
+        "description": "Returns the value of `highWaterMark` passed when creating this `Readable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Readable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableCorked",
+        "type": "`number`",
+        "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableEnded",
+        "type": "`boolean`",
+        "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableFinished",
+        "type": "`boolean`",
+        "description": "Is set to `true` immediately before the `'finish'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableHighWaterMark",
+        "type": "`number`",
+        "description": "Return the value of `highWaterMark` passed when creating this `Writable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableNeedDrain",
+        "type": "`boolean`",
+        "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Writable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejectionSymbol",
+        "type": "typeof [`captureRejectionSymbol`](../classes/internal.Socket.mdx#capturerejectionsymbol)",
+        "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejections",
+        "type": "`boolean`",
+        "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "defaultMaxListeners",
+        "type": "`number`",
+        "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errorMonitor",
+        "type": "typeof [`errorMonitor`](../classes/internal.Socket.mdx#errormonitor)",
+        "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "callback",
+    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### destroy
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "this",
+    "type": "[`Duplex`](../classes/internal.Duplex.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allowHalfOpen",
+        "type": "`boolean`",
+        "description": "If `false` then the stream will automatically end the writable side when the readable side ends. Set initially by the `allowHalfOpen` constructor option, which defaults to `true`. This can be changed manually to change the half-open behavior of an existing`Duplex` stream instance, but must be changed before the `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "closed",
+        "type": "`boolean`",
+        "description": "Is `true` after `'close'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "destroyed",
+        "type": "`boolean`",
+        "description": "Is `true` after `readable.destroy()` has been called.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errored",
+        "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+        "description": "Returns error if the stream has been destroyed with an error.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableAborted",
+        "type": "`boolean`",
+        "description": "Returns whether the stream was destroyed or errored before emitting `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableDidRead",
+        "type": "`boolean`",
+        "description": "Returns whether `'data'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEncoding",
+        "type": "``null`` \\| [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+        "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEnded",
+        "type": "`boolean`",
+        "description": "Becomes `true` when `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableFlowing",
+        "type": "``null`` \\| `boolean`",
+        "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableHighWaterMark",
+        "type": "`number`",
+        "description": "Returns the value of `highWaterMark` passed when creating this `Readable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Readable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableCorked",
+        "type": "`number`",
+        "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableEnded",
+        "type": "`boolean`",
+        "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableFinished",
+        "type": "`boolean`",
+        "description": "Is set to `true` immediately before the `'finish'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableHighWaterMark",
+        "type": "`number`",
+        "description": "Return the value of `highWaterMark` passed when creating this `Writable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableNeedDrain",
+        "type": "`boolean`",
+        "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Writable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejectionSymbol",
+        "type": "typeof [`captureRejectionSymbol`](../classes/internal.Socket.mdx#capturerejectionsymbol)",
+        "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejections",
+        "type": "`boolean`",
+        "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "defaultMaxListeners",
+        "type": "`number`",
+        "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errorMonitor",
+        "type": "typeof [`errorMonitor`](../classes/internal.Socket.mdx#errormonitor)",
+        "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "error",
+    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "(`error`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`error`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### final
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "this",
+    "type": "[`Duplex`](../classes/internal.Duplex.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allowHalfOpen",
+        "type": "`boolean`",
+        "description": "If `false` then the stream will automatically end the writable side when the readable side ends. Set initially by the `allowHalfOpen` constructor option, which defaults to `true`. This can be changed manually to change the half-open behavior of an existing`Duplex` stream instance, but must be changed before the `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "closed",
+        "type": "`boolean`",
+        "description": "Is `true` after `'close'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "destroyed",
+        "type": "`boolean`",
+        "description": "Is `true` after `readable.destroy()` has been called.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errored",
+        "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+        "description": "Returns error if the stream has been destroyed with an error.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableAborted",
+        "type": "`boolean`",
+        "description": "Returns whether the stream was destroyed or errored before emitting `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableDidRead",
+        "type": "`boolean`",
+        "description": "Returns whether `'data'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEncoding",
+        "type": "``null`` \\| [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+        "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEnded",
+        "type": "`boolean`",
+        "description": "Becomes `true` when `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableFlowing",
+        "type": "``null`` \\| `boolean`",
+        "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableHighWaterMark",
+        "type": "`number`",
+        "description": "Returns the value of `highWaterMark` passed when creating this `Readable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Readable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableCorked",
+        "type": "`number`",
+        "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableEnded",
+        "type": "`boolean`",
+        "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableFinished",
+        "type": "`boolean`",
+        "description": "Is set to `true` immediately before the `'finish'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableHighWaterMark",
+        "type": "`number`",
+        "description": "Return the value of `highWaterMark` passed when creating this `Writable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableNeedDrain",
+        "type": "`boolean`",
+        "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Writable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejectionSymbol",
+        "type": "typeof [`captureRejectionSymbol`](../classes/internal.Socket.mdx#capturerejectionsymbol)",
+        "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejections",
+        "type": "`boolean`",
+        "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "defaultMaxListeners",
+        "type": "`number`",
+        "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errorMonitor",
+        "type": "typeof [`errorMonitor`](../classes/internal.Socket.mdx#errormonitor)",
+        "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "callback",
+    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### read
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "this",
+    "type": "[`Duplex`](../classes/internal.Duplex.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allowHalfOpen",
+        "type": "`boolean`",
+        "description": "If `false` then the stream will automatically end the writable side when the readable side ends. Set initially by the `allowHalfOpen` constructor option, which defaults to `true`. This can be changed manually to change the half-open behavior of an existing`Duplex` stream instance, but must be changed before the `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "closed",
+        "type": "`boolean`",
+        "description": "Is `true` after `'close'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "destroyed",
+        "type": "`boolean`",
+        "description": "Is `true` after `readable.destroy()` has been called.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errored",
+        "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+        "description": "Returns error if the stream has been destroyed with an error.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableAborted",
+        "type": "`boolean`",
+        "description": "Returns whether the stream was destroyed or errored before emitting `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableDidRead",
+        "type": "`boolean`",
+        "description": "Returns whether `'data'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEncoding",
+        "type": "``null`` \\| [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+        "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEnded",
+        "type": "`boolean`",
+        "description": "Becomes `true` when `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableFlowing",
+        "type": "``null`` \\| `boolean`",
+        "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableHighWaterMark",
+        "type": "`number`",
+        "description": "Returns the value of `highWaterMark` passed when creating this `Readable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Readable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableCorked",
+        "type": "`number`",
+        "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableEnded",
+        "type": "`boolean`",
+        "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableFinished",
+        "type": "`boolean`",
+        "description": "Is set to `true` immediately before the `'finish'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableHighWaterMark",
+        "type": "`number`",
+        "description": "Return the value of `highWaterMark` passed when creating this `Writable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableNeedDrain",
+        "type": "`boolean`",
+        "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Writable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejectionSymbol",
+        "type": "typeof [`captureRejectionSymbol`](../classes/internal.Socket.mdx#capturerejectionsymbol)",
+        "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejections",
+        "type": "`boolean`",
+        "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "defaultMaxListeners",
+        "type": "`number`",
+        "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errorMonitor",
+        "type": "typeof [`errorMonitor`](../classes/internal.Socket.mdx#errormonitor)",
+        "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "size",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### write
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "this",
+    "type": "[`Duplex`](../classes/internal.Duplex.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allowHalfOpen",
+        "type": "`boolean`",
+        "description": "If `false` then the stream will automatically end the writable side when the readable side ends. Set initially by the `allowHalfOpen` constructor option, which defaults to `true`. This can be changed manually to change the half-open behavior of an existing`Duplex` stream instance, but must be changed before the `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "closed",
+        "type": "`boolean`",
+        "description": "Is `true` after `'close'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "destroyed",
+        "type": "`boolean`",
+        "description": "Is `true` after `readable.destroy()` has been called.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errored",
+        "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+        "description": "Returns error if the stream has been destroyed with an error.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableAborted",
+        "type": "`boolean`",
+        "description": "Returns whether the stream was destroyed or errored before emitting `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableDidRead",
+        "type": "`boolean`",
+        "description": "Returns whether `'data'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEncoding",
+        "type": "``null`` \\| [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+        "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEnded",
+        "type": "`boolean`",
+        "description": "Becomes `true` when `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableFlowing",
+        "type": "``null`` \\| `boolean`",
+        "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableHighWaterMark",
+        "type": "`number`",
+        "description": "Returns the value of `highWaterMark` passed when creating this `Readable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Readable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableCorked",
+        "type": "`number`",
+        "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableEnded",
+        "type": "`boolean`",
+        "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableFinished",
+        "type": "`boolean`",
+        "description": "Is set to `true` immediately before the `'finish'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableHighWaterMark",
+        "type": "`number`",
+        "description": "Return the value of `highWaterMark` passed when creating this `Writable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableNeedDrain",
+        "type": "`boolean`",
+        "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Writable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejectionSymbol",
+        "type": "typeof [`captureRejectionSymbol`](../classes/internal.Socket.mdx#capturerejectionsymbol)",
+        "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejections",
+        "type": "`boolean`",
+        "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "defaultMaxListeners",
+        "type": "`number`",
+        "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errorMonitor",
+        "type": "typeof [`errorMonitor`](../classes/internal.Socket.mdx#errormonitor)",
+        "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "chunk",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "callback",
+    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### writev
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "this",
+    "type": "[`Duplex`](../classes/internal.Duplex.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allowHalfOpen",
+        "type": "`boolean`",
+        "description": "If `false` then the stream will automatically end the writable side when the readable side ends. Set initially by the `allowHalfOpen` constructor option, which defaults to `true`. This can be changed manually to change the half-open behavior of an existing`Duplex` stream instance, but must be changed before the `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "closed",
+        "type": "`boolean`",
+        "description": "Is `true` after `'close'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "destroyed",
+        "type": "`boolean`",
+        "description": "Is `true` after `readable.destroy()` has been called.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errored",
+        "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+        "description": "Returns error if the stream has been destroyed with an error.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `readable.read()`, which means the stream has not been destroyed or emitted `'error'` or `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableAborted",
+        "type": "`boolean`",
+        "description": "Returns whether the stream was destroyed or errored before emitting `'end'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableDidRead",
+        "type": "`boolean`",
+        "description": "Returns whether `'data'` has been emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEncoding",
+        "type": "``null`` \\| [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+        "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableEnded",
+        "type": "`boolean`",
+        "description": "Becomes `true` when `'end'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableFlowing",
+        "type": "``null`` \\| `boolean`",
+        "description": "This property reflects the current state of a `Readable` stream as described in the `Three states` section.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableHighWaterMark",
+        "type": "`number`",
+        "description": "Returns the value of `highWaterMark` passed when creating this `Readable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be read. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "readableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Readable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writable",
+        "type": "`boolean`",
+        "description": "Is `true` if it is safe to call `writable.write()`, which means the stream has not been destroyed, errored, or ended.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableCorked",
+        "type": "`number`",
+        "description": "Number of times `writable.uncork()` needs to be called in order to fully uncork the stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableEnded",
+        "type": "`boolean`",
+        "description": "Is `true` after `writable.end()` has been called. This property does not indicate whether the data has been flushed, for this use `writable.writableFinished` instead.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableFinished",
+        "type": "`boolean`",
+        "description": "Is set to `true` immediately before the `'finish'` event is emitted.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableHighWaterMark",
+        "type": "`number`",
+        "description": "Return the value of `highWaterMark` passed when creating this `Writable`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableLength",
+        "type": "`number`",
+        "description": "This property contains the number of bytes (or objects) in the queue ready to be written. The value provides introspection data regarding the status of the `highWaterMark`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableNeedDrain",
+        "type": "`boolean`",
+        "description": "Is `true` if the stream's buffer has been full and stream will emit `'drain'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "writableObjectMode",
+        "type": "`boolean`",
+        "description": "Getter for the property `objectMode` of a given `Writable` stream.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejectionSymbol",
+        "type": "typeof [`captureRejectionSymbol`](../classes/internal.Socket.mdx#capturerejectionsymbol)",
+        "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "captureRejections",
+        "type": "`boolean`",
+        "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "defaultMaxListeners",
+        "type": "`number`",
+        "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errorMonitor",
+        "type": "typeof [`errorMonitor`](../classes/internal.Socket.mdx#errormonitor)",
+        "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "chunks",
+    "type": "{ `chunk`: `any` ; `encoding`: [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "chunk",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "encoding",
+        "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "callback",
+    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
