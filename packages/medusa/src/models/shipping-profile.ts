@@ -12,9 +12,23 @@ import { Product } from "./product"
 import { ShippingOption } from "./shipping-option"
 import { SoftDeletableEntity } from "../interfaces"
 
+/**
+ * @enum
+ * 
+ * The shipping profile's type.
+ */
 export enum ShippingProfileType {
+  /**
+   * The default profile used to ship item.
+   */
   DEFAULT = "default",
+  /**
+   * The profile used to ship gift cards.
+   */
   GIFT_CARD = "gift_card",
+  /**
+   * The profile used to ship custom items.
+   */
   CUSTOM = "custom",
 }
 
@@ -46,6 +60,9 @@ export class ShippingProfile extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "sp")

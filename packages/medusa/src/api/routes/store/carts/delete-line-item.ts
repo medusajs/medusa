@@ -26,7 +26,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.lineItems.delete(cartId, lineId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

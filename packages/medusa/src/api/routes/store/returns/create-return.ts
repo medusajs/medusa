@@ -49,7 +49,7 @@ import { defaultRelations } from "."
  *       })
  *       .then((data) => {
  *         console.log(data.return.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

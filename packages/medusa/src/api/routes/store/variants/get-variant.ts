@@ -43,6 +43,16 @@ import { promiseAll } from "@medusajs/utils"
  *   method: retrieve
  *   queryParams: StoreGetVariantsVariantParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.product.variants.retrieve(productVariantId)
+ *       .then(({ variant }) => {
+ *         console.log(variant.id);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

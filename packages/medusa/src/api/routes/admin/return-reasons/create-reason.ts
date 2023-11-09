@@ -34,7 +34,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

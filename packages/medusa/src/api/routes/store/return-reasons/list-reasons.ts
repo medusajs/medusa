@@ -20,7 +20,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  *       medusa.returnReasons.list()
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

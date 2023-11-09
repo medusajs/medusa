@@ -24,7 +24,7 @@ import { Selector } from "../../../../types/common"
  *       medusa.admin.returnReasons.list()
  *       .then(({ return_reasons }) => {
  *         console.log(return_reasons.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

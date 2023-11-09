@@ -23,6 +23,9 @@ export class LineItemTaxLine extends TaxLine {
   @JoinColumn({ name: "item_id" })
   item: LineItem
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "litl")

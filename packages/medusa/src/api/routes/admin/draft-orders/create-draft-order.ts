@@ -63,7 +63,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -173,7 +173,8 @@ enum Status {
  *   - shipping_methods
  * properties:
  *   status:
- *     description: "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid."
+ *     description: >-
+ *       The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.
  *     type: string
  *     enum: [open, completed]
  *   email:

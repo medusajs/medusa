@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.discounts.removeRegion(discountId, regionId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

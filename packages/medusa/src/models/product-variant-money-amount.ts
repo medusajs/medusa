@@ -14,6 +14,9 @@ export class ProductVariantMoneyAmount extends SoftDeletableEntity {
   @Column()
   variant_id: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pvma_")

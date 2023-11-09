@@ -1,4 +1,5 @@
 import {
+  MedusaNextFunction,
   MedusaRequest,
   MedusaRequestHandler,
   MedusaResponse,
@@ -18,12 +19,16 @@ export const HTTP_METHODS = [
 ] as const
 
 export type RouteVerb = (typeof HTTP_METHODS)[number]
-type MiddlewareVerb = "USE" | "ALL" | RouteVerb
+export type MiddlewareVerb = "USE" | "ALL" | RouteVerb
 
-type RouteHandler = (
+type SyncRouteHandler = (req: MedusaRequest, res: MedusaResponse) => void
+
+export type AsyncRouteHandler = (
   req: MedusaRequest,
   res: MedusaResponse
-) => Promise<void> | void
+) => Promise<void>
+
+type RouteHandler = SyncRouteHandler | AsyncRouteHandler
 
 export type RouteImplementation = {
   method?: RouteVerb
@@ -34,6 +39,8 @@ export type RouteConfig = {
   shouldRequireAdminAuth?: boolean
   shouldRequireCustomerAuth?: boolean
   shouldAppendCustomer?: boolean
+  shouldAppendAdminCors?: boolean
+  shouldAppendStoreCors?: boolean
   routes?: RouteImplementation[]
 }
 
@@ -41,13 +48,28 @@ export type MiddlewareFunction =
   | MedusaRequestHandler
   | ((...args: any[]) => any)
 
+export type MedusaErrorHandlerFunction = (
+  error: any,
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: MedusaNextFunction
+) => Promise<void> | void
+
+type ParserConfig =
+  | false
+  | {
+      sizeLimit?: string | number | undefined
+    }
+
 export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]
   matcher: string | RegExp
+  bodyParser?: ParserConfig
   middlewares: MiddlewareFunction[]
 }
 
 export type MiddlewaresConfig = {
+  errorHandler?: false | MedusaErrorHandlerFunction
   routes?: MiddlewareRoute[]
 }
 

@@ -41,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -111,13 +111,15 @@ export default async (req, res) => {
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   automatic_taxes:
- *     description: "If set to `true`, the Medusa backend will automatically calculate taxes for carts in this region. If set to `false`, the taxes must be calculated manually."
+ *     description: >-
+ *       If set to `true`, the Medusa backend will automatically calculate taxes for carts in this region. If set to `false`, the taxes must be calculated manually.
  *     externalDocs:
  *       url: https://docs.medusajs.com/modules/taxes/storefront/manual-calculation
  *       description: How to calculate taxes in a storefront.
  *     type: boolean
  *   gift_cards_taxable:
- *     description: "If set to `true`, taxes will be applied on gift cards."
+ *     description: >-
+ *       If set to `true`, taxes will be applied on gift cards.
  *     type: boolean
  *   tax_provider_id:
  *     description: "The ID of the tax provider to use. If none provided, the system tax provider is used."
