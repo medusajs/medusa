@@ -225,17 +225,17 @@ You can opt out of the default body parser by setting the `bodyParser` property 
 For example:
 
 ```ts title=src/api/middlewares.ts
-import { MiddlewaresConfig } from "@medusajs/medusa";
-import { raw } from "body-parser";
+import { MiddlewaresConfig } from "@medusajs/medusa"
+import { raw } from "body-parser"
 
 export const config: MiddlewaresConfig = {
   routes: [
     {
       matcher: "/webhooks/*",
       bodyParser: false,
-      middlewares: [raw({ type: "application/json" })]
-    }
-  ]
+      middlewares: [raw({ type: "application/json" })],
+    },
+  ],
 }
 ```
 
@@ -244,8 +244,8 @@ You can also disable the default `json` body parser for specific HTTP methods us
 For example:
 
 ```ts title=src/api/middlewares.ts
-import { MiddlewaresConfig } from "@medusajs/medusa";
-import { raw } from "body-parser";
+import { MiddlewaresConfig } from "@medusajs/medusa"
+import { raw } from "body-parser"
 
 export const config: MiddlewaresConfig = {
   routes: [
@@ -253,9 +253,9 @@ export const config: MiddlewaresConfig = {
       method: ["POST", "PUT"],
       matcher: "/webhooks/*",
       bodyParser: false,
-      middlewares: [raw({ type: "application/json" })]
-    }
-  ]
+      middlewares: [raw({ type: "application/json" })],
+    },
+  ],
 }
 ```
 
@@ -270,15 +270,15 @@ If you expect the request body of an API Route to be larger than the default, yo
 For example:
 
 ```ts title=src/api/middlewares.ts
-import { MiddlewaresConfig } from "@medusajs/medusa";
+import { MiddlewaresConfig } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
   routes: [
     {
-      bodyParser: { sizeLimit: 2000 } // in bytes
+      bodyParser: { sizeLimit: 2000 }, // in bytes
       // ...
-    }
-  ]
+    },
+  ],
 }
 ```
 
@@ -565,12 +565,12 @@ To override the default error handler, pass the `errorHandler` property to the [
 For example:
 
 ```ts title=src/api/middlewares.ts
-import { MiddlewaresConfig } from "@medusajs/medusa";
+import { MiddlewaresConfig } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
   errorHandler: (err, req, res, next) => {
     // custom error handling logic...
-  }
+  },
 }
 ```
 
@@ -581,10 +581,10 @@ To disable the default error handler, set the `errorHandler` property of the [ex
 For example:
 
 ```ts title=src/api/middlewares.ts
-import { MiddlewaresConfig } from "@medusajs/medusa";
+import { MiddlewaresConfig } from "@medusajs/medusa"
 
 export const config: MiddlewaresConfig = {
-  errorHandler: false
+  errorHandler: false,
 }
 ```
 
@@ -598,8 +598,8 @@ For example:
 import { 
   MedusaRequest, 
   MedusaResponse, 
-  wrapHandler
-} from "@medusajs/medusa";
+  wrapHandler,
+} from "@medusajs/medusa"
 
 export const GET = wrapHandler(async (
   req: MedusaRequest,
