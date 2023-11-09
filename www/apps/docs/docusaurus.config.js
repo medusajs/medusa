@@ -17,6 +17,14 @@ const config = {
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
+  markdown: {
+    mdx1Compat: {
+      comments: true,
+      admonitions: false,
+      headingIds: false,
+    },
+  },
+
   plugins: [
     require.resolve("docusaurus-plugin-image-zoom"),
     async function tailwindPlugin() {
