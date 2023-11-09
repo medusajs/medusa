@@ -33,14 +33,6 @@ describe("Workflow composer", function () {
       return ret
     })
 
-    const step4 = createStep("step4", () => {
-      const ret = {
-        obj: "return from 4",
-      }
-      console.log(ret)
-      return ret
-    })
-
     const mainFlow = createWorkflow("test", function (this: any, input) {
       const returnStep1 = step1(input)
       const ret2 = step2(returnStep1)
