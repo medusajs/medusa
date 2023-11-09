@@ -1,5 +1,5 @@
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { Workflows, createProducts } from "@medusajs/workflows"
+import { createProducts, Workflows } from "@medusajs/workflows"
 import {
   IsArray,
   IsBoolean,
@@ -39,7 +39,7 @@ import {
 } from "./transaction/create-product-variant"
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
@@ -242,7 +242,7 @@ export default async (req, res) => {
           )
           allVariantTransactions.push(varTransaction)
         } catch (e) {
-          await Promise.all(
+          await promiseAll(
             allVariantTransactions.map(async (transaction) => {
               await revertVariantTransaction(
                 transactionDependencies,
