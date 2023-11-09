@@ -12,6 +12,7 @@ import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/variants
@@ -100,6 +101,16 @@ import { validator } from "../../../../utils/validator"
  *   method: list
  *   queryParams: StoreGetVariantsParams
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.product.variants.list()
+ *       .then(({ variants }) => {
+ *         console.log(variants.length);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -189,38 +200,64 @@ export default async (req, res) => {
       sales_channel_id
     )) as any
   )
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({ variants })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product variants.
+ */
 export class StoreGetVariantsParams extends PriceSelectionParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 100
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 100
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * ID to filter the product variants by.
+   */
   @IsOptional()
   @IsString()
   ids?: string
 
+  /**
+   * Filter product variants by the ID of their associated sales channel.
+   */
   @IsOptional()
   @IsString()
   sales_channel_id?: string
 
+  /**
+   * IDs to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Titles to filter product variants by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   title?: string | string[]
 
+  /**
+   * Number filters to apply on the product variants' `inventory_quantity` field.
+   */
   @IsOptional()
   @IsType([Number, NumericalComparisonOperator])
   inventory_quantity?: number | NumericalComparisonOperator

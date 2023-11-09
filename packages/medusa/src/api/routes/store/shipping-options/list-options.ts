@@ -31,7 +31,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.shippingOptions.list()
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -108,15 +108,27 @@ export default async (req, res) => {
   res.status(200).json({ shipping_options: data })
 }
 
+/**
+ * Filters to apply on the retrieved shipping options.
+ */
 export class StoreGetShippingOptionsParams {
+  /**
+   * Product ID that is used to filter shipping options by whether they can be used to ship that product.
+   */
   @IsOptional()
   @IsString()
   product_ids?: string
 
+  /**
+   * Filter the shipping options by the ID of their associated region.
+   */
   @IsOptional()
   @IsString()
   region_id?: string
 
+  /**
+   * Filter the shipping options by whether they're return shipping options.
+   */
   @IsOptional()
   @IsBooleanString()
   is_return?: string

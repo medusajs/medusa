@@ -63,6 +63,9 @@ export class PriceList extends SoftDeletableEntity {
   @FeatureFlagColumn(TaxInclusivePricingFeatureFlag.key, { default: false })
   includes_tax: boolean
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): undefined | void {
     this.id = generateEntityId(this.id, "pl")

@@ -1,9 +1,9 @@
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductCollection } from "@models"
@@ -31,8 +31,7 @@ export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository
     findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
     context: Context = {}
   ): Promise<ProductCollection[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -52,8 +51,7 @@ export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository
     findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
     context: Context = {}
   ): Promise<[ProductCollection[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}

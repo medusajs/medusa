@@ -25,12 +25,12 @@
     "typedoc": "0.25.1",
     "typedoc-config": "*",
     "typedoc-monorepo-link-types": "^0.0.2",
+    "typedoc-plugin-custom": "*",
     "typedoc-plugin-frontmatter": "*",
     "typedoc-plugin-markdown": "3.16.0",
     "typedoc-plugin-markdown-medusa": "*",
     "typedoc-plugin-merge-modules": "5.1.0",
     "typedoc-plugin-missing-exports": "^2.1.0",
-    "typedoc-plugin-modules": "*",
     "typedoc-plugin-reference-excluder": "1.1.3",
     "typedoc-plugin-rename-defaults": "^0.6.6",
     "typescript": "^5.2.2"

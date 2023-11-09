@@ -74,6 +74,7 @@ export const defaultPaymentCollectionRelations = ["region", "payment_sessions"]
 /**
  * @schema StorePaymentCollectionsRes
  * type: object
+ * description: "The payment collection's details."
  * x-expanded-relations:
  *   field: payment_collection
  *   relations:

@@ -22,16 +22,47 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { Discount } from "./discount"
 
+/**
+ * @enum
+ * 
+ * The discount condition's type.
+ */
 export enum DiscountConditionType {
+  /**
+   * The discount condition is used for products.
+   */
   PRODUCTS = "products",
+  /**
+   * The discount condition is used for product types.
+   */
   PRODUCT_TYPES = "product_types",
+  /**
+   * The discount condition is used for product collections.
+   */
   PRODUCT_COLLECTIONS = "product_collections",
+  /**
+   * The discount condition is used for product tags.
+   */
   PRODUCT_TAGS = "product_tags",
+  /**
+   * The discount condition is used for customer groups.
+   */
   CUSTOMER_GROUPS = "customer_groups",
 }
 
+/**
+ * @enum
+ * 
+ * The possible operators used for a discount condition.
+ */
 export enum DiscountConditionOperator {
+  /**
+   * The discountable resources are within the specified resources.
+   */
   IN = "in",
+  /**
+   * The discountable resources are everything but the specified resources.
+   */
   NOT_IN = "not_in",
 }
 
@@ -131,6 +162,9 @@ export class DiscountCondition extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "discon")
@@ -167,8 +201,9 @@ export class DiscountCondition extends SoftDeletableEntity {
  *       - product_tags
  *       - customer_groups
  *   operator:
- *     description: "The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *       discountable resources are everything but the specified resources."
+ *     description: >-
+ *       The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *       discountable resources are everything but the specified resources.
  *     type: string
  *     enum:
  *       - in

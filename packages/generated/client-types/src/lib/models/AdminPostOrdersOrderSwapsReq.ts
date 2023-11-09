@@ -52,6 +52,10 @@ export interface AdminPostOrdersOrderSwapsReq {
     quantity: number
   }>
   /**
+   * The ID of the sales channel associated with the swap.
+   */
+  sales_channel_id?: string
+  /**
    * An array of custom shipping options to potentially create a Shipping Method from to send the additional items.
    */
   custom_shipping_options?: Array<{
@@ -68,6 +72,10 @@ export interface AdminPostOrdersOrderSwapsReq {
    * If set to `true`, no notification will be sent to the customer related to this Swap.
    */
   no_notification?: boolean
+  /**
+   * The ID of the location used for the associated return.
+   */
+  return_location_id?: string
   /**
    * If set to `true`, swaps can be completed with items out of stock
    */

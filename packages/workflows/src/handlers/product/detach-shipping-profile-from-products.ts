@@ -1,4 +1,5 @@
 import { WorkflowArguments } from "../../helper"
+import { promiseAll } from "@medusajs/utils"
 
 type ProductHandle = string
 type ShippingProfileId = string
@@ -32,7 +33,7 @@ export async function detachShippingProfileFromProducts({
     }
   })
 
-  await Promise.all(
+  await promiseAll(
     Array.from(profileIdProductIdsMap.entries()).map(
       async ([profileId, productIds]) => {
         return await shippingProfileServiceTx.removeProducts(
