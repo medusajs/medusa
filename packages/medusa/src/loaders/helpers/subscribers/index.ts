@@ -110,7 +110,7 @@ export class SubscriberRegistrar {
 
   private async createMap(dirPath: string) {
     await Promise.all(
-      await readdir(dirPath, { withFileTypes: true }).then((entries) => {
+      await readdir(dirPath, { withFileTypes: true }).then(async (entries) => {
         return entries
           .filter((entry) => {
             if (
@@ -129,7 +129,7 @@ export class SubscriberRegistrar {
               return this.createMap(fullPath)
             }
 
-            return this.createDescriptor(fullPath, entry.name)
+            return await this.createDescriptor(fullPath, entry.name)
           })
       })
     )

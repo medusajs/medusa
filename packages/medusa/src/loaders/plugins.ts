@@ -38,6 +38,7 @@ import path from "path"
 import { EntitySchema } from "typeorm"
 import { MiddlewareService } from "../services"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
+import ScheduledJobsRegistrar from "./helpers/jobs"
 import { RoutesLoader } from "./helpers/routing"
 import { SubscriberRegistrar } from "./helpers/subscribers"
 import logger from "./logger"
@@ -100,6 +101,12 @@ export default async ({
 
   await Promise.all(
     resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
+  )
+
+  await Promise.all(
+    resolved.map(async (pluginDetails) => {
+      await registerScheduledJobs(pluginDetails, container)
+    })
   )
 
   resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
@@ -182,6 +189,17 @@ async function runLoaders(
       }
     })
   )
+}
+
+async function registerScheduledJobs(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): Promise<void> {
+  await new ScheduledJobsRegistrar(
+    path.join(pluginDetails.resolve, "jobs"),
+    container,
+    pluginDetails.options
+  ).load()
 }
 
 async function registerMedusaApi(
