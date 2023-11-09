@@ -273,6 +273,8 @@ class PricingService extends TransactionBaseService {
 
           pricingResult.original_price = calculatedPrice?.original_amount
           pricingResult.calculated_price = calculatedPrice?.calculated_amount
+          pricingResult.calculated_price_type =
+            calculatedPrice?.calculated_price?.price_list_type
         }
       }
 

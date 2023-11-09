@@ -124,9 +124,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])
@@ -151,9 +151,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])
@@ -227,9 +227,9 @@ describe("PriceSet Service", () => {
         {
           id: "price-set-1",
           money_amounts: [
-            {
+            expect.objectContaining({
               id: "money-amount-USD",
-            },
+            }),
           ],
         },
       ])

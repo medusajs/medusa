@@ -113,7 +113,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists", () => {
 
     const result = await api.post(`admin/price-lists`, data, adminHeaders)
 
-    const response = await api.get(
+    let response = await api.get(
       `/admin/price-lists/${result.data.price_list.id}`,
       adminHeaders
     )

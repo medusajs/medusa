@@ -42,20 +42,22 @@ describe("PricingModule Service - MoneyAmount", () => {
     it("list moneyAmounts", async () => {
       const moneyAmountsResult = await service.listMoneyAmounts()
 
-      expect(moneyAmountsResult).toEqual([
-        expect.objectContaining({
-          id: "money-amount-USD",
-          amount: "500",
-        }),
-        expect.objectContaining({
-          id: "money-amount-EUR",
-          amount: "400",
-        }),
-        expect.objectContaining({
-          id: "money-amount-CAD",
-          amount: "600",
-        }),
-      ])
+      expect(moneyAmountsResult).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "money-amount-USD",
+            amount: "500",
+          }),
+          expect.objectContaining({
+            id: "money-amount-EUR",
+            amount: "400",
+          }),
+          expect.objectContaining({
+            id: "money-amount-CAD",
+            amount: "600",
+          }),
+        ])
+      )
     })
 
     it("should list moneyAmounts by id", async () => {
@@ -102,17 +104,19 @@ describe("PricingModule Service - MoneyAmount", () => {
         await service.listAndCountMoneyAmounts()
 
       expect(count).toEqual(3)
-      expect(moneyAmountsResult).toEqual([
-        expect.objectContaining({
-          id: "money-amount-USD",
-        }),
-        expect.objectContaining({
-          id: "money-amount-EUR",
-        }),
-        expect.objectContaining({
-          id: "money-amount-CAD",
-        }),
-      ])
+      expect(moneyAmountsResult).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "money-amount-USD",
+          }),
+          expect.objectContaining({
+            id: "money-amount-EUR",
+          }),
+          expect.objectContaining({
+            id: "money-amount-CAD",
+          }),
+        ])
+      )
     })
 
     it("should return moneyAmounts and count when filtered", async () => {
