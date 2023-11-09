@@ -35,12 +35,17 @@ export function createWorkflow(name: string, composer: Function) {
   WorkflowManager.update(name, context.flow, handlers)
 
   const workflow = exportWorkflow(name)
-  return async (input) => {
-    // Forwards the input to the ref object
-    Object.assign(ref, input)
 
-    await workflow().run({
-      input,
-    })
+  return (...args) => {
+    const workflow_ = workflow(...args)
+    const originalRun = workflow_.run
+    workflow_.run = (input) => {
+      // Forwards the input to the ref object on composer.apply
+      Object.assign(ref, input)
+      return originalRun({
+        input,
+      })
+    }
+    return workflow_
   }
 }

@@ -47,7 +47,7 @@ describe("Workflow composer", function () {
       return step3(returnStep1, ret2)
     })
 
-    await mainFlow({ test: "payload1" })
+    await mainFlow().run({ test: "payload1" })
   })
 
   it("should compose two new workflows sequentially and execute them sequentially", async () => {
@@ -87,8 +87,8 @@ describe("Workflow composer", function () {
       return step3(ret2, returnStep1)
     })
 
-    await mainFlow({ test: "payload3" })
-    await mainFlow2({ test: "payload2" })
+    await mainFlow().run({ test: "payload3" })
+    await mainFlow2().run({ test: "payload2" })
   })
 
   it("should compose two new workflows concurrently and execute them sequentially", async () => {
@@ -130,8 +130,8 @@ describe("Workflow composer", function () {
       }),
     ])
 
-    await mainFlow({ test: "payload3" })
-    await mainFlow2({ test: "payload2" })
+    await mainFlow().run({ test: "payload3" })
+    await mainFlow2().run({ test: "payload2" })
   })
 
   it("should compose two new workflows concurrently and execute them concurrently", async () => {
@@ -174,8 +174,8 @@ describe("Workflow composer", function () {
     ])
 
     await promiseAll([
-      mainFlow({ test: "payload3" }),
-      mainFlow2({ test: "payload2" }),
+      mainFlow().run({ test: "payload3" }),
+      mainFlow2().run({ test: "payload2" }),
     ])
   })
 })
