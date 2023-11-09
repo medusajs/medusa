@@ -1,5 +1,6 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
 import { exportWorkflow } from "../../helper"
+import { WorkflowContext } from "./index"
 
 global.step = null
 
@@ -10,16 +11,20 @@ export function createWorkflow(name: string, composer: Function) {
     WorkflowManager.register(name, undefined, handlers)
   }
 
-  const context = {
+  const context: WorkflowContext = {
     workflowId: name,
     flow: WorkflowManager.getTransactionDefinition(name),
     handlers,
     step: (fn) => {
       return fn.bind(context)()
     },
+    parallelize: (fn) => {
+      return fn.bind(context)()
+    },
   }
 
   global.step = context.step.bind(context)
+  global.parallelize = context.parallelize.bind(context)
 
   let ref = new Proxy(
     {},
@@ -31,7 +36,9 @@ export function createWorkflow(name: string, composer: Function) {
   )
 
   composer.apply(context, [ref])
+
   delete global?.step
+  delete global?.parallelize
 
   WorkflowManager.update(name, context.flow, handlers)
 

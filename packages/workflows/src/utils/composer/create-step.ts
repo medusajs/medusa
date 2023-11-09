@@ -1,3 +1,5 @@
+import { WorkflowContext } from "./type"
+
 export function createStep(
   name: string,
   invokeFn: Function,
@@ -5,7 +7,7 @@ export function createStep(
 ) {
   const stepName = name ?? invokeFn.name
 
-  const returnFn = function (this: any, ...otherStepInput) {
+  const returnFn = function (this: WorkflowContext, ...otherStepInput) {
     const step = global.step
     if (!step) {
       throw new Error(
@@ -13,7 +15,7 @@ export function createStep(
       )
     }
 
-    return step(function (this: any) {
+    return step(function (this: WorkflowContext) {
       if (!this.workflowId) {
         throw new Error(
           "createStep must be used inside a createWorkflow definition"
@@ -22,11 +24,18 @@ export function createStep(
 
       const handler = {
         invoke: async (transactionContext) => {
-          const { invoke } = transactionContext
+          const { invoke: invokeRes } = transactionContext
 
-          const previousResultResults = otherStepInput.map((st) =>
-            st?.__step__ ? invoke[st.__step__]?.output : st
-          )
+          // Garb all previous invoke results by step name
+          const previousResultResults = otherStepInput
+            .map((stepInput) => {
+              stepInput = Array.isArray(stepInput) ? stepInput : [stepInput]
+              return stepInput.map((st) => {
+                console.log(st.__step__, invokeRes[st.__step__])
+                return st?.__step__ ? invokeRes[st.__step__]?.output : st
+              })
+            })
+            .flat()
 
           const args = [transactionContext, ...previousResultResults]
 

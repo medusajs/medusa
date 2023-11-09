@@ -1,4 +1,4 @@
-import { createStep, createWorkflow } from "@medusajs/workflows"
+import { createStep, createWorkflow, parallelize } from "@medusajs/workflows"
 import { promiseAll } from "@medusajs/utils"
 
 jest.setTimeout(30000)
@@ -8,7 +8,7 @@ describe("Workflow composer", function () {
 
   afterAll(async () => {})
 
-  it.only("should compose a new workflow and execute it", async () => {
+  it("should compose a new workflow and execute it", async () => {
     const step1 = createStep("step1", (input) => {
       const ret = "return from 1 + input = " + JSON.stringify(input)
       console.log(ret)
@@ -169,5 +169,48 @@ describe("Workflow composer", function () {
       mainFlow().run({ test: "payload3" }),
       mainFlow2().run({ test: "payload2" }),
     ])
+  })
+
+  it.only("should compose a new workflow with parallelize steps", async () => {
+    const step1 = createStep("step1", (input) => {
+      const ret = "return from 1 + input = " + JSON.stringify(input)
+      console.log(ret)
+      return ret
+    })
+
+    const step2 = createStep("step2", (context, ...param) => {
+      const ret = {
+        complex: "return from 2",
+        arg: param,
+      }
+      console.log(ret)
+      return ret
+    })
+
+    const step3 = createStep("step3", (context, ...input) => {
+      const ret = {
+        obj: "return from 3",
+        args: input,
+      }
+      console.log(ret)
+      return ret
+    })
+
+    const step4 = createStep("step4", (context, ...input) => {
+      const ret = {
+        obj: "return from 4",
+        args: input,
+      }
+      console.log(ret)
+      return ret
+    })
+
+    const mainFlow = createWorkflow("test", function (this: any, input) {
+      const returnStep1 = step1(input)
+      const parallelize1 = parallelize(step2(returnStep1), step3(returnStep1))
+      return step4(parallelize1)
+    })
+
+    await mainFlow().run({ test: "payload1" })
   })
 })
