@@ -1,7 +1,7 @@
-import { EntityManager } from "typeorm";
-import PriceListService from "../../../../services/price-list";
-import { FlagRouter } from "@medusajs/utils";
-import { removePriceListVariantPrices, Workflows } from "@medusajs/workflows";
+import { EntityManager } from "typeorm"
+import PriceListService from "../../../../services/price-list"
+import { FlagRouter } from "@medusajs/utils"
+import { removePriceListVariantPrices, Workflows } from "@medusajs/workflows"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/variants/{variant_id}/prices
@@ -65,7 +65,7 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
 
   const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.RemovePriceListProducts,
+    workflows: Workflows.RemovePriceListVariants,
   })
 
   let deletedPriceIds: string[] = []
