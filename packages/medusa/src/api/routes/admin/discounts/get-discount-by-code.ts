@@ -25,7 +25,7 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.retrieveByCode(code)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

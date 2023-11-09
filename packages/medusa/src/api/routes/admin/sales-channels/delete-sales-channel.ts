@@ -22,8 +22,8 @@ import { SalesChannelService } from "../../../../services/"
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.delete(salesChannelId)
  *       .then(({ id, object, deleted }) => {
- *         console.log(id);
- *       });
+ *         console.log(id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

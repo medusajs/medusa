@@ -162,6 +162,9 @@ export class LineItem extends BaseEntity {
   raw_discount_total?: number | null
   gift_card_total?: number | null
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "item")
@@ -178,6 +181,9 @@ export class LineItem extends BaseEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @FeatureFlagDecorators(IsolateProductDomain.key, [BeforeUpdate()])
   beforeUpdate(): void {
     if (
@@ -189,6 +195,9 @@ export class LineItem extends BaseEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @FeatureFlagDecorators(IsolateProductDomain.key, [AfterLoad(), AfterUpdate()])
   afterUpdateOrLoad(): void {
     if (this.variant) {

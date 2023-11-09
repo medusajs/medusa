@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.discounts.deleteDynamicCode(discountId, code)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -154,6 +154,7 @@ export const defaultProductCategoryFields = [
 /**
  * @schema AdminProductCategoriesCategoryRes
  * type: object
+ * description: "The product category's details."
  * x-expanded-relations:
  *   field: product_category
  *   relations:
@@ -195,6 +196,7 @@ export type AdminProductCategoriesCategoryDeleteRes = DeleteResponse
 /**
  * @schema AdminProductCategoriesListRes
  * type: object
+ * description: "The list of product categories with pagination fields."
  * x-expanded-relations:
  *   field: product_categories
  *   relations:

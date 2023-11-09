@@ -18,7 +18,7 @@ import UserService from "../../../../services/user"
  *       medusa.admin.users.list()
  *       .then(({ users }) => {
  *         console.log(users.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

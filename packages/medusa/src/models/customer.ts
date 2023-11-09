@@ -42,6 +42,9 @@ export class Customer extends SoftDeletableEntity {
   @OneToMany(() => Address, (address) => address.customer)
   shipping_addresses: Address[]
 
+  /**
+   * @apiIgnore
+   */
   @Column({ nullable: true, select: false })
   password_hash: string
 
@@ -73,6 +76,9 @@ export class Customer extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "cus")

@@ -29,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ hits }) => {
  *         console.log(hits.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
