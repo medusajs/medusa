@@ -8,7 +8,7 @@ import { Express, NextFunction, Request, Response } from "express"
 import databaseLoader, { dataSource } from "./database"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 
-import { ContainerRegistrationKeys } from "@medusajs/utils"
+import { ContainerRegistrationKeys, isString } from "@medusajs/utils"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
@@ -47,16 +47,20 @@ async function loadLegacyModulesEntities(configModules, container) {
       continue
     }
 
-    if (
-      (moduleConfig as InternalModuleDeclaration).resources ===
-        MODULE_RESOURCE_TYPE.SHARED ||
-      (definition.defaultModuleDeclaration as InternalModuleDeclaration)
-        .resources === MODULE_RESOURCE_TYPE.SHARED
-    ) {
-      const module = await import(
-        (moduleConfig as InternalModuleDeclaration).resolve ??
-          (definition.defaultPackage as string)
-      )
+    let modulePath = isString(moduleConfig)
+      ? moduleConfig
+      : (moduleConfig as InternalModuleDeclaration).resolve ??
+        (definition.defaultPackage as string)
+
+    const resources = isString(moduleConfig)
+      ? (definition.defaultModuleDeclaration as InternalModuleDeclaration)
+          .resources
+      : (moduleConfig as InternalModuleDeclaration).resources ??
+        (definition.defaultModuleDeclaration as InternalModuleDeclaration)
+          .resources
+
+    if (resources === MODULE_RESOURCE_TYPE.SHARED) {
+      const module = await import(modulePath)
 
       if (module.default?.models) {
         module.default.models.map((model) =>
