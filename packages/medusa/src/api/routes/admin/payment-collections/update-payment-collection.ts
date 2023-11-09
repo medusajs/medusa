@@ -28,9 +28,9 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.admin.paymentCollections.update(paymentCollectionId, {
  *         description
  *       })
- *         .then(({ payment_collection }) => {
- *           console.log(payment_collection.id)
- *         })
+ *       .then(({ payment_collection }) => {
+ *         console.log(payment_collection.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

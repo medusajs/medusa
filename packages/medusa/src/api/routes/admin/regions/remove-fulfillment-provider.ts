@@ -24,7 +24,7 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.deleteFulfillmentProvider(regionId, "manual")
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Region } from "./Region"
 
+/**
+ * The list of regions with pagination fields.
+ */
 export interface StoreRegionsListRes {
   /**
    * An array of regions details.

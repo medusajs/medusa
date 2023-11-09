@@ -27,10 +27,27 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
 import { generateEntityId } from "../utils"
 
+/**
+ * @enum
+ * 
+ * The status of a product.
+ */
 export enum ProductStatus {
+  /**
+   * The product is a draft. It's not viewable by customers.
+   */
   DRAFT = "draft",
+  /**
+   * The product is proposed, but not yet published.
+   */
   PROPOSED = "proposed",
+  /**
+   * The product is published.
+   */
   PUBLISHED = "published",
+  /**
+   * The product is rejected. It's not viewable by customers.
+   */
   REJECTED = "rejected",
 }
 
@@ -191,6 +208,9 @@ export class Product extends SoftDeletableEntity {
   ])
   sales_channels: SalesChannel[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "prod")
@@ -204,6 +224,9 @@ export class Product extends SoftDeletableEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @BeforeUpdate()
   private beforeUpdate(): void {
     if (this.profile_id) {
@@ -211,6 +234,9 @@ export class Product extends SoftDeletableEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @AfterLoad()
   private afterLoad(): void {
     if (this.profiles) {

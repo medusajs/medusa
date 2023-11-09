@@ -22,7 +22,7 @@ import PriceListService from "../../../../services/price-list"
  *       medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

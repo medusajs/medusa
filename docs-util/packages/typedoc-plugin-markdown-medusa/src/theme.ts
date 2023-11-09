@@ -56,6 +56,8 @@ export class MarkdownTheme extends Theme {
 
   static URL_PREFIX = /^(http|ftp)s?:\/\//
 
+  static MAX_LEVEL = 3
+
   constructor(renderer: Renderer) {
     super(renderer)
 
@@ -85,6 +87,7 @@ export class MarkdownTheme extends Theme {
       "formatting"
     ) as FormattingOptionsType
     this.mdxOutput = this.getOption("mdxOutput") as boolean
+    MarkdownTheme.MAX_LEVEL = this.getOption("maxLevel") as number
 
     this.listenTo(this.owner, {
       [RendererEvent.BEGIN]: this.onBeginRenderer,

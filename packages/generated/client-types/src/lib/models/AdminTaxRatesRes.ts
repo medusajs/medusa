@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { TaxRate } from "./TaxRate"
 
+/**
+ * The tax rate's details.
+ */
 export interface AdminTaxRatesRes {
   /**
    * Tax rate details.
