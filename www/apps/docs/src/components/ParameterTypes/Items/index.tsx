@@ -155,7 +155,7 @@ const ParameterTypesItems = ({
             {parameter.expandable && (
               <ExpandableNotice
                 type="method"
-                link="#"
+                link="https://docs.medusajs.com/js-client/overview#expanding-fields"
                 badgeClassName="!p-0 leading-none"
                 badgeContent={<ArrowsPointingOutMini />}
               />
