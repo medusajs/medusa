@@ -5,8 +5,8 @@ import {
 } from "../../pricing"
 
 export interface CreatePriceListDTO {
-  starts_at?: Date
-  ends_at?: Date
+  starts_at?: string
+  ends_at?: string
   status?: PriceListStatus
   number_rules?: number
   rules?: PriceListRuleDTO[]
@@ -64,8 +64,8 @@ export interface CreatePriceListWorkflowDTO {
   }[]
   type?: string
   includes_tax?: boolean
-  starts_at?: Date
-  ends_at?: Date
+  starts_at?: string
+  ends_at?: string
   status?: PriceListStatus
   number_rules?: number
   prices: InputPrice[]
