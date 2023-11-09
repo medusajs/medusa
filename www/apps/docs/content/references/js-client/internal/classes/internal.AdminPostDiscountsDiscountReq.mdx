@@ -1,0 +1,241 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostDiscountsDiscountReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "code",
+    "type": "`string`",
+    "description": "A unique code that will be used to redeem the discount",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "ends_at",
+    "type": "``null`` \\| `Date`",
+    "description": "The date and time at which the discount should no longer be available.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "is_disabled",
+    "type": "`boolean`",
+    "description": "Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An object containing metadata of the discount",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regions",
+    "type": "`string`[]",
+    "description": "A list of region IDs representing the Regions in which the Discount can be used.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rule",
+    "type": "[`AdminUpdateDiscountRule`](internal.AdminUpdateDiscountRule.mdx)",
+    "description": "The discount rule that defines how discounts are calculated",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "allocation",
+        "type": "[`AllocationType`](../enums/internal.internal.AllocationType.mdx)",
+        "description": "The discount rule's allocation.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "ITEM",
+            "type": "``\"item\"``",
+            "description": "The discount should be applied to applicable items in the cart.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "TOTAL",
+            "type": "``\"total\"``",
+            "description": "The discount should be applied to the checkout total.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "conditions",
+        "type": "[`AdminUpsertCondition`](internal.internal.AdminUpsertCondition.mdx)[]",
+        "description": "The discount rule's discount conditions.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "customer_groups",
+            "type": "`string`[]",
+            "description": "The customer groups associated with the discount condition, if the discount condition's type is `customer_groups`.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The discount condition's ID.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "operator",
+            "type": "[`DiscountConditionOperator`](../enums/internal.DiscountConditionOperator.mdx)",
+            "description": "The discount condition's operator.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "IN",
+                "type": "``\"in\"``",
+                "description": "The discountable resources are within the specified resources.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "NOT_IN",
+                "type": "``\"not_in\"``",
+                "description": "The discountable resources are everything but the specified resources.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "product_collections",
+            "type": "`string`[]",
+            "description": "The product collections associated with the discount condition, if the discount condition's type is `product_collections`.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "product_tags",
+            "type": "`string`[]",
+            "description": "The product tags associated with the discount condition, if the discount condition's type is `product_tags`.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "product_types",
+            "type": "`string`[]",
+            "description": "The product types associated with the discount condition, if the discount condition's type is `product_types`.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "products",
+            "type": "`string`[]",
+            "description": "The products associated with the discount condition, if the discount condition's type is `products`.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "type": "`string`",
+        "description": "The discount rule's description.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The discount rule's ID.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "value",
+        "type": "`number`",
+        "description": "The discount rule's value.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "starts_at",
+    "type": "`Date`",
+    "description": "The date and time at which the discount should be available.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "usage_limit",
+    "type": "``null`` \\| `number`",
+    "description": "Maximum number of times the discount can be used",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "valid_duration",
+    "type": "``null`` \\| `string`",
+    "description": "The duration the discount runs between",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
