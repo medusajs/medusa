@@ -9,10 +9,10 @@ import { promiseAll } from "@medusajs/utils"
 import { TransactionBaseService } from "@medusajs/medusa"
 
 class MyService extends TransactionBaseService {
-  async performTransactions () {
+  async performTransactions() {
     return await promiseAll([
       // your transactions....
     ])
   }
 }
-```\
+```
