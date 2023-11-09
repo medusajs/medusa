@@ -1,6 +1,6 @@
 import { OrchestratorBuilder, WorkflowHandler } from "@medusajs/orchestration"
 
-export type StepFunction = Function & { __step__: string }
+export type StepFunction = Function & { __type: Symbol; __step__: string }
 
 export type WorkflowContext = {
   workflowId: string
@@ -8,12 +8,14 @@ export type WorkflowContext = {
   handlers: WorkflowHandler
   step: (
     fn: () => {
+      __type: Symbol
       __step__: string
     }
   ) => void
   parallelize: (
     fn: () => [
       {
+        __type: Symbol
         __step__: string
       }
     ]

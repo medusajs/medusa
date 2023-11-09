@@ -1,3 +1,8 @@
+import {
+  SymbolInputReferece,
+  SymbolWorkflowStep,
+  SymbolWorkflowStepBind,
+} from "./symbol"
 import { WorkflowContext } from "./type"
 
 export function createStep(
@@ -8,13 +13,13 @@ export function createStep(
   const stepName = name ?? invokeFn.name
 
   const returnFn = function (this: WorkflowContext, ...otherStepInput) {
-    const step = global.step
-    if (!step) {
+    if (!global.MedusaWorkflowComposerContext) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
       )
     }
 
+    const step = global.MedusaWorkflowComposerContext.step
     return step(function (this: WorkflowContext) {
       if (!this.workflowId) {
         throw new Error(
@@ -29,10 +34,16 @@ export function createStep(
           // Garb all previous invoke results by step name
           const previousResultResults = otherStepInput
             .map((stepInput) => {
-              stepInput = Array.isArray(stepInput) ? stepInput : [stepInput]
+              let value = stepInput
+              if (stepInput?.__type === SymbolInputReferece) {
+                value = stepInput.value
+              }
+
+              stepInput = Array.isArray(value) ? value : [value]
               return stepInput.map((st) => {
-                console.log(st.__step__, invokeRes[st.__step__])
-                return st?.__step__ ? invokeRes[st.__step__]?.output : st
+                return st?.__type === SymbolWorkflowStep
+                  ? invokeRes[st.__step__]?.output
+                  : st
               })
             })
             .flat()
@@ -63,11 +74,13 @@ export function createStep(
       this.handlers.set(stepName, handler)
 
       return {
+        __type: SymbolWorkflowStep,
         __step__: stepName,
       }
     })
   }
 
+  returnFn.__type = SymbolWorkflowStepBind
   returnFn.__step__ = stepName
 
   return returnFn

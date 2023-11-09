@@ -1,15 +1,18 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
 import { exportWorkflow } from "../../helper"
 import { WorkflowContext } from "./index"
+import { SymbolInputReferece } from "./symbol"
 
-global.step = null
+global.MedusaWorkflowComposerContext = null
 
 export function createWorkflow(name: string, composer: Function) {
   const handlers: WorkflowHandler = new Map()
 
-  if (!WorkflowManager.getWorkflow(name)) {
-    WorkflowManager.register(name, undefined, handlers)
+  if (WorkflowManager.getWorkflow(name)) {
+    WorkflowManager.unregister(name)
   }
+
+  WorkflowManager.register(name, undefined, handlers)
 
   const context: WorkflowContext = {
     workflowId: name,
@@ -23,22 +26,16 @@ export function createWorkflow(name: string, composer: Function) {
     },
   }
 
-  global.step = context.step.bind(context)
-  global.parallelize = context.parallelize.bind(context)
+  const valueHolder = {
+    value: {},
+    __type: SymbolInputReferece,
+  }
 
-  let ref = new Proxy(
-    {},
-    {
-      get(target: {}, p: string | symbol, receiver: any): any {
-        return Reflect.get(target, p, receiver)
-      },
-    }
-  )
+  global.MedusaWorkflowComposerContext = context
 
-  composer.apply(context, [ref])
+  composer.apply(context, [valueHolder])
 
-  delete global?.step
-  delete global?.parallelize
+  delete global?.MedusaWorkflowComposerContext
 
   WorkflowManager.update(name, context.flow, handlers)
 
@@ -49,7 +46,7 @@ export function createWorkflow(name: string, composer: Function) {
     const originalRun = workflow_.run
     workflow_.run = (input) => {
       // Forwards the input to the ref object on composer.apply
-      Object.assign(ref, input)
+      valueHolder.value = input as any
       return originalRun({
         input,
       })

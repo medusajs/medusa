@@ -1,13 +1,13 @@
 import { StepFunction, WorkflowContext } from "./type"
 
 export function parallelize(...steps: StepFunction[]) {
-  const globalParallelize = global.parallelize
-
-  if (!globalParallelize) {
+  if (!global.MedusaWorkflowComposerContext) {
     throw new Error(
       "parallelize must be used inside a createWorkflow definition"
     )
   }
+
+  const globalParallelize = global.MedusaWorkflowComposerContext.parallelize
 
   const resultSteps = steps.map((step) => ({ __step__: step.__step__ }))
 

@@ -63,7 +63,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
       if (typeof dataPreparation === "function") {
         try {
-          const copyInput = JSON.parse(JSON.stringify(input))
+          const copyInput = input ? JSON.parse(JSON.stringify(input)) : input
           input = await dataPreparation(copyInput as TData)
         } catch (err) {
           if (throwOnError) {
