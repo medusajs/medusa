@@ -9,6 +9,7 @@ import { getContainer } from "../../../../environment-helpers/use-container"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { IPricingModuleService } from "@medusajs/types"
+import { simpleSalesChannelFactory } from "../../../../factories"
 
 jest.setTimeout(50000)
 
@@ -52,11 +53,40 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
       currency_code: "usd",
       tax_rate: 0,
     })
+
+    await simpleSalesChannelFactory(dbConnection, { is_default: true })
   })
 
   afterEach(async () => {
     const db = useDb()
     await db.teardown()
+  })
+
+  it("should create price set for variants", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const pricingModuleService: IPricingModuleService = appContainer.resolve(
+      "pricingModuleService"
+    )
+
+    const data = {
+      title: "test product",
+      options: [{ title: "test-option" }],
+      variants: [
+        {
+          title: "test variant",
+          prices: [],
+          options: [{ value: "test-option" }],
+        },
+      ],
+    }
+
+    let response = await api.post("/admin/products", data, adminHeaders)
+
+    expect(response.status).toEqual(200)
+
+    const [priceSets, count] = await pricingModuleService.listAndCount()
+    expect(count).toEqual(1)
   })
 
   it("should create prices with region_id and currency_code context", async () => {
@@ -112,32 +142,5 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
         ]),
       }),
     })
-  })
-
-  it("creates price set for variants", async () => {
-    const api = useApi()! as AxiosInstance
-
-    const pricingModuleService: IPricingModuleService = appContainer.resolve(
-      "pricingModuleService"
-    )
-
-    const data = {
-      title: "test product",
-      options: [{ title: "test-option" }],
-      variants: [
-        {
-          title: "test variant",
-          prices: [],
-          options: [{ value: "test-option" }],
-        },
-      ],
-    }
-
-    let response = await api.post("/admin/products", data, adminHeaders)
-
-    expect(response.status).toEqual(200)
-
-    const [priceSets, count] = await pricingModuleService.listAndCount()
-    expect(count).toEqual(1)
   })
 })
