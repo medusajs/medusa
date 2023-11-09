@@ -2,19 +2,11 @@ import { MedusaContainer } from "@medusajs/types"
 import { readdir } from "fs/promises"
 import { join } from "path"
 import JobSchedulerService from "../../../services/job-scheduler"
+import {
+  ScheduledJobConfig,
+  ScheduledJobHandler,
+} from "../../../types/scheduled-jobs"
 import logger from "../../logger"
-
-type ScheduledJobConfig = {
-  name: string
-  cron_schedule: string
-  data?: Record<string, unknown>
-  keep_existing?: boolean
-}
-
-type ScheduledJobHandler = (
-  container: MedusaContainer,
-  pluginOptions: Record<string, unknown>
-) => Promise<void>
 
 type ScheduledJobModule = {
   config: ScheduledJobConfig
@@ -66,11 +58,11 @@ export default class ScheduledJobsRegistrar {
       return false
     }
 
-    if (!config.cron_schedule) {
+    if (!config.schedule) {
       /**
        * If the job is missing a cron_schedule, we can't use it
        */
-      logger.warn(`The job is missing a cron_schedule. Skipping registration.`)
+      logger.warn(`The job is missing a schedule. Skipping registration.`)
       return false
     }
 
@@ -79,6 +71,14 @@ export default class ScheduledJobsRegistrar {
        * If the job is missing a name, we can't use it
        */
       logger.warn(`The job is missing a name. Skipping registration.`)
+      return false
+    }
+
+    if (config.data && typeof config.data !== "object") {
+      /**
+       * If the job has data but it's not an object, we can't use it
+       */
+      logger.warn(`The job data is not an object. Skipping registration.`)
       return false
     }
 
@@ -139,20 +139,22 @@ export default class ScheduledJobsRegistrar {
     )
 
     for (const job of jobs) {
-      const {
-        name,
-        data = {},
-        cron_schedule,
-        keep_existing = false,
-      } = job.config
+      try {
+        const { name, data = {}, schedule } = job.config
 
-      const handler = async () => {
-        await job.handler(this.container_, this.pluginOptions_)
+        const handler = async () => {
+          await job.handler(this.container_, this.pluginOptions_)
+        }
+
+        await jobSchedulerService.create(name, data, schedule, handler, {
+          keepExisting: false, // For now, we do not support changing this flag
+        })
+      } catch (err) {
+        logger.error(
+          `An error occured while registering job ${job.config.name}`,
+          err
+        )
       }
-
-      await jobSchedulerService.create(name, data, cron_schedule, handler, {
-        keepExisting: keep_existing,
-      })
     }
   }
 
