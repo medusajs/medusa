@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryKey,
   PrimaryKeyType,
   Property,
@@ -30,7 +31,7 @@ export default class PriceSetMoneyAmount {
   })
   price_set?: PriceSet
 
-  @ManyToOne(() => MoneyAmount, {
+  @OneToOne(() => MoneyAmount, {
     onDelete: "cascade",
     index: "IDX_price_set_money_amount_money_amount_id",
   })

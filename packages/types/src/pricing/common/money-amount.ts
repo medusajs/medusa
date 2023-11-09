@@ -1,5 +1,6 @@
 import { BaseFilterable } from "../../dal";
 import { CreateCurrencyDTO, CurrencyDTO } from "./currency";
+import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
 
 /**
  * @interface
@@ -20,6 +21,7 @@ export interface MoneyAmountDTO {
   amount?: number
   min_quantity?: number
   max_quantity?: number
+  price_set_money_amount?: PriceSetMoneyAmountDTO
 }
 
 /**

@@ -3,6 +3,9 @@ import { ArrayNotEmpty, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
+import { FlagRouter } from "@medusajs/utils"
+import { Workflows } from "@medusajs/workflows"
+import { removePriceListProductPrices } from "@medusajs/workflows/dist/definition/price-list/remove-price-list-prices"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/prices/batch
@@ -81,13 +84,36 @@ export default async (req, res) => {
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await priceListService
-      .withTransaction(transactionManager)
-      .deletePrices(id, validated.price_ids)
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.RemovePriceListPrices,
   })
+
+  if (isWorkflowEnabled) {
+    const deletePriceListPricesWorkflow = removePriceListProductPrices(
+      req.scope
+    )
+
+    const input = {
+      priceListId: id,
+      moneyAmountIds: validated.price_ids,
+    }
+
+    await deletePriceListPricesWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      return await priceListService
+        .withTransaction(transactionManager)
+        .deletePrices(id, validated.price_ids)
+    })
+  }
 
   res.json({ ids: validated.price_ids, object: "money-amount", deleted: true })
 }

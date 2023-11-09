@@ -6,6 +6,7 @@ import {
   Index,
   ManyToMany,
   ManyToOne,
+  OneToOne,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -13,10 +14,15 @@ import {
 
 import Currency from "./currency"
 import PriceSet from "./price-set"
+import { PriceSetMoneyAmount } from "./index"
 
 @Entity()
 class MoneyAmount {
-  [OptionalProps]?: "created_at" | "updated_at" | "deleted_at"
+  [OptionalProps]?:
+    | "created_at"
+    | "updated_at"
+    | "deleted_at"
+    | "price_set_money_amount"
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -29,6 +35,12 @@ class MoneyAmount {
     mappedBy: (ps) => ps.money_amounts,
   })
   price_sets = new Collection<PriceSet>(this)
+
+  @OneToOne({
+    entity: () => PriceSetMoneyAmount,
+    mappedBy: (psma) => psma.money_amount,
+  })
+  price_set_money_amount: PriceSetMoneyAmount
 
   @ManyToOne(() => Currency, {
     nullable: true,

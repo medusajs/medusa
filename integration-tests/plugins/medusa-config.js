@@ -45,6 +45,8 @@ module.exports = {
       [Workflows.CreateCart]: true,
       [Workflows.CreatePriceList]: true,
       [Workflows.RemovePriceListProducts]: true,
+      [Workflows.RemovePriceListPrices]: true,
+      [Workflows.RemovePriceListVariants]: true,
     },
   },
   modules: {
