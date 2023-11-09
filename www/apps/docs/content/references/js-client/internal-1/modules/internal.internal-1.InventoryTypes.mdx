@@ -1,0 +1,610 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# InventoryTypes
+
+[internal](../../modules/internal.mdx).[internal](../../internal/modules/internal.internal-1.mdx).InventoryTypes
+
+## References
+
+### IInventoryService
+
+Re-exports [IInventoryService](../../internal/interfaces/internal.IInventoryService.mdx)
+
+___
+
+### InventoryItemDTO
+
+Re-exports [InventoryItemDTO](../../modules/internal.mdx#inventoryitemdto)
+
+___
+
+### InventoryLevelDTO
+
+Re-exports [InventoryLevelDTO](../../modules/internal.mdx#inventoryleveldto)
+
+___
+
+### ReservationItemDTO
+
+Re-exports [ReservationItemDTO](../../modules/internal.mdx#reservationitemdto)
+
+___
+
+### ReserveQuantityContext
+
+Re-exports [ReserveQuantityContext](../../modules/internal.mdx#reservequantitycontext)
+
+## Type Aliases
+
+### BulkUpdateInventoryLevelInput
+
+ **BulkUpdateInventoryLevelInput**: { `inventory_item_id`: `string` ; `location_id`: `string`  } & [`UpdateInventoryLevelInput`](internal.internal-1.InventoryTypes.mdx#updateinventorylevelinput)
+
+___
+
+### CreateInventoryItemInput
+
+ **CreateInventoryItemInput**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "description",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "height",
+    "type": "`number` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "hs_code",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "length",
+    "type": "`number` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "material",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\> \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "mid_code",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "origin_country",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "requires_shipping",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sku",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "thumbnail",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "title",
+    "type": "`string` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "weight",
+    "type": "`number` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "width",
+    "type": "`number` \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### CreateInventoryLevelInput
+
+ **CreateInventoryLevelInput**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "incoming_quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventory_item_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "reserved_quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "stocked_quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### CreateReservationItemInput
+
+ **CreateReservationItemInput**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_by",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "description",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "external_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventory_item_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "line_item_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\> \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### FilterableInventoryItemProps
+
+ **FilterableInventoryItemProps**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "hs_code",
+    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.StringComparisonOperator.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "origin_country",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "q",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "requires_shipping",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sku",
+    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.StringComparisonOperator.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### FilterableInventoryLevelProps
+
+ **FilterableInventoryLevelProps**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "incoming_quantity",
+    "type": "`number` \\| [`NumericalComparisonOperator`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.NumericalComparisonOperator.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventory_item_id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "reserved_quantity",
+    "type": "`number` \\| [`NumericalComparisonOperator`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.NumericalComparisonOperator.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "stocked_quantity",
+    "type": "`number` \\| [`NumericalComparisonOperator`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.NumericalComparisonOperator.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### FilterableReservationItemProps
+
+ **FilterableReservationItemProps**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_by",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "description",
+    "type": "`string` \\| [`StringComparisonOperator`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.StringComparisonOperator.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventory_item_id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "line_item_id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number` \\| [`NumericalComparisonOperator`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.NumericalComparisonOperator.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### UpdateInventoryLevelInput
+
+ **UpdateInventoryLevelInput**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "incoming_quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "stocked_quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### UpdateReservationItemInput
+
+ **UpdateReservationItemInput**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "description",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\> \\| ``null``",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,151 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# TokenService
+
+[internal](../../modules/internal.mdx).[internal](../modules/internal.internal.mdx).TokenService
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "configModule_",
+    "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "featureFlags",
+        "type": "Record<`string`, `boolean` \\| `string`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "modules",
+        "type": "Record<`string`, `boolean` \\| [`Partial`](../../modules/internal.mdx#partial)<[`InternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)\\>\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "plugins",
+        "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "projectConfig",
+        "type": "[`ProjectConfigOptions`](../../internal-1/modules/internal.internal-1.CommonTypes.mdx#projectconfigoptions)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "RESOLUTION_KEY",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### signToken
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`string` \\| `object` \\| [`Buffer`](../../modules/internal.mdx#buffer)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`SignOptions`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### verifyToken
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "token",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`VerifyOptions`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string \\| Jwt \\| JwtPayload",
+    "type": "`string` \\| `Jwt` \\| `JwtPayload`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
