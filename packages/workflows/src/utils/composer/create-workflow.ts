@@ -44,7 +44,7 @@ export function createWorkflow(name: string, composer: Function) {
   return (...args) => {
     const workflow_ = workflow(...args)
     const originalRun = workflow_.run
-    workflow_.run = (input) => {
+    workflow_.run = async (input) => {
       // Forwards the input to the ref object on composer.apply
       valueHolder.value = input as any
       return originalRun({
