@@ -1,5 +1,7 @@
 export * from "./attach-sales-channel-to-products"
 export * from "./attach-shipping-profile-to-products"
+export * from "./create-product-variants"
+export * from "./create-product-variants-prepare-data"
 export * from "./create-products"
 export * from "./create-products-prepare-data"
 export * from "./detach-sales-channel-from-products"

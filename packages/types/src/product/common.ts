@@ -13,7 +13,7 @@ export enum ProductStatus {
 
 /**
  * @interface
- * 
+ *
  * A product's data.
  * @prop id - The ID of the product.
  * @prop title - The title of the product.
@@ -79,9 +79,9 @@ export interface ProductDTO {
 
 /**
  * @interface
- * 
+ *
  * A product variant's data.
- * 
+ *
  * @prop id - The ID of the product variant.
  * @prop title - The tile of the product variant.
  * @prop sku - The SKU of the product variant. It can possibly be `null`.
@@ -138,9 +138,9 @@ export interface ProductVariantDTO {
 
 /**
  * @interface
- * 
+ *
  * A product category's data.
- * 
+ *
  * @prop id - The ID of the product category.
  * @prop name - The name of the product category.
  * @prop description - The description of the product category.
@@ -169,9 +169,9 @@ export interface ProductCategoryDTO {
 
 /**
  * @interface
- * 
+ *
  * A product category to create.
- * 
+ *
  * @prop name - The product category's name.
  * @prop handle - The product category's handle.
  * @prop is_active - Whether the product category is active.
@@ -192,9 +192,9 @@ export interface CreateProductCategoryDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product category.
- * 
+ *
  * @prop name - The name of the product category.
  * @prop handle - The handle of the product category.
  * @prop is_active - Whether the product category is active.
@@ -215,9 +215,9 @@ export interface UpdateProductCategoryDTO {
 
 /**
  * @interface
- * 
+ *
  * A product tag's data.
- * 
+ *
  * @prop id - The ID of the product tag.
  * @prop value - The value of the product tag.
  * @prop metadata - Holds custom data in key-value pairs.
@@ -232,9 +232,9 @@ export interface ProductTagDTO {
 
 /**
  * @interface
- * 
+ *
  * A product collection's data.
- * 
+ *
  * @prop id - The ID of the product collection.
  * @prop title - The title of the product collection.
  * @prop handle - The handle of the product collection. The handle can be used to create slug URL paths.
@@ -253,9 +253,9 @@ export interface ProductCollectionDTO {
 
 /**
  * @interface
- * 
+ *
  * A product type's data.
- * 
+ *
  * @prop id - The ID of the product type.
  * @prop value - The value of the product type.
  * @prop metadata - Holds custom data in key-value pairs.
@@ -270,16 +270,16 @@ export interface ProductTypeDTO {
 
 /**
  * @interface
- * 
+ *
  * A product option's data.
- * 
+ *
  * @prop id - The ID of the product option.
  * @prop title - The title of the product option.
  * @prop product - The associated product. It may only be available if the `product` relation is expanded.
  * @prop values - The associated product option values. It may only be available if the `values` relation is expanded.
  * @prop metadata - Holds custom data in key-value pairs.
  * @prop deleted_at - When the product option was deleted.
- * 
+ *
  */
 export interface ProductOptionDTO {
   id: string
@@ -292,9 +292,9 @@ export interface ProductOptionDTO {
 
 /**
  * @interface
- * 
+ *
  * The product image's data.
- * 
+ *
  * @prop id - The ID of the product image.
  * @prop url - The URL of the product image.
  * @prop metadata - Holds custom data in key-value pairs.
@@ -309,9 +309,9 @@ export interface ProductImageDTO {
 
 /**
  * @interface
- * 
+ *
  * The product option value's data.
- * 
+ *
  * @prop id - The ID of the product option value.
  * @prop value - The value of the product option value.
  * @prop option - The associated product option. It may only be available if the `option` relation is expanded.
@@ -330,9 +330,9 @@ export interface ProductOptionValueDTO {
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved products.
- * 
+ *
  * @prop q - Search through the products' attributes, such as titles and descriptions, using this search term.
  * @prop handle - The handles to filter products by.
  * @prop id - The IDs to filter products by.
@@ -357,9 +357,9 @@ export interface FilterableProductProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product tags.
- * 
+ *
  * @prop id - The IDs to filter product tags by.
  * @prop value - The value to filter product tags by.
  */
@@ -371,9 +371,9 @@ export interface FilterableProductTagProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product types.
- * 
+ *
  * @prop id - The IDs to filter product types by.
  * @prop value - The value to filter product types by.
  */
@@ -385,9 +385,9 @@ export interface FilterableProductTypeProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product options.
- * 
+ *
  * @prop id - The IDs to filter product options by.
  * @prop title - The titles to filter product options by.
  * @prop product_id - Filter the product options by their associated products' IDs.
@@ -401,9 +401,9 @@ export interface FilterableProductOptionProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product collections.
- * 
+ *
  * @prop id - The IDs to filter product collections by.
  * @prop title - The title to filter product collections by.
  */
@@ -416,9 +416,9 @@ export interface FilterableProductCollectionProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product variants.
- * 
+ *
  * @prop id - The IDs to filter product variants by.
  * @prop sku - The SKUs to filter product variants by.
  * @prop product_id - Filter the product variants by their associated products' IDs.
@@ -434,9 +434,9 @@ export interface FilterableProductVariantProps
 
 /**
  * @interface
- * 
+ *
  * The filters to apply on retrieved product categories.
- * 
+ *
  * @prop id - The IDs to filter product categories by.
  * @prop name - The names to filter product categories by.
  * @prop parent_category_id - Filter product categories by their parent category's ID.
@@ -458,9 +458,9 @@ export interface FilterableProductCategoryProps
 
 /**
  * @interface
- * 
+ *
  * A product collection to create.
- * 
+ *
  * @prop title - The product collection's title.
  * @prop handle - The product collection's handle. If not provided, the value of this attribute is set to the slug version of the title.
  * @prop products - The products to associate with the collection.
@@ -475,9 +475,9 @@ export interface CreateProductCollectionDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product collection. The `id` is used to identify which product collection to update.
- * 
+ *
  * @prop id - The ID of the product collection to update.
  * @prop value - The value of the product collection.
  * @prop title - The title of the product collection.
@@ -496,9 +496,9 @@ export interface UpdateProductCollectionDTO {
 
 /**
  * @interface
- * 
+ *
  * A product type to create.
- * 
+ *
  * @prop id - The product type's ID.
  * @prop value - The product type's value.
  * @prop metadata - Holds custom data in key-value pairs.
@@ -516,9 +516,9 @@ export interface UpsertProductTypeDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product type. The `id` is used to identify which product type to update.
- * 
+ *
  * @prop id - The ID of the product type to update.
  * @prop value - The new value of the product type.
  * @prop metadata - Holds custom data in key-value pairs.
@@ -531,9 +531,9 @@ export interface UpdateProductTypeDTO {
 
 /**
  * @interface
- * 
+ *
  * A product tag to create.
- * 
+ *
  * @prop value - The value of the product tag.
  */
 export interface CreateProductTagDTO {
@@ -546,11 +546,11 @@ export interface UpsertProductTagDTO {
 }
 
 /**
- * 
+ *
  * @interface
- * 
+ *
  * The data to update in a product tag. The `id` is used to identify which product tag to update.
- * 
+ *
  * @prop id - The ID of the product tag to update.
  * @prop value - The value of the product tag.
  */
@@ -561,9 +561,9 @@ export interface UpdateProductTagDTO {
 
 /**
  * @interface
- * 
+ *
  * A product option to create.
- * 
+ *
  * @prop title - The product option's title.
  * @prop product_id - The ID of the associated product.
  */
@@ -580,20 +580,21 @@ export interface UpdateProductOptionDTO {
 
 /**
  * @interface
- * 
+ *
  * A product variant option to create.
- * 
+ *
  * @prop value - The value of a product variant option.
  */
 export interface CreateProductVariantOptionDTO {
   value: string
+  option_id?: string
 }
 
 /**
  * @interface
- * 
+ *
  * A product variant to create.
- * 
+ *
  * @prop title - The tile of the product variant.
  * @prop sku - The SKU of the product variant.
  * @prop barcode - The barcode of the product variant.
@@ -614,6 +615,7 @@ export interface CreateProductVariantOptionDTO {
  * @prop metadata - Holds custom data in key-value pairs.
  */
 export interface CreateProductVariantDTO {
+  product_id?: string
   title: string
   sku?: string
   barcode?: string
@@ -636,9 +638,9 @@ export interface CreateProductVariantDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product variant. The `id` is used to identify which product variant to update.
- * 
+ *
  * @prop id - The ID of the product variant to update.
  * @prop title - The tile of the product variant.
  * @prop sku - The SKU of the product variant.
@@ -683,19 +685,19 @@ export interface UpdateProductVariantDTO {
 
 /**
  * @interface
- * 
+ *
  * A product to create.
- * 
+ *
  * @prop title - The title of the product.
  * @prop subtitle - The subttle of the product.
  * @prop description - The description of the product.
  * @prop is_giftcard - Whether the product is a gift card.
  * @prop discountable - Whether the product can be discounted.
- * @prop images - 
+ * @prop images -
  * The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created
  * and associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.
  * @prop thumbnail - The URL of the product's thumbnail.
- * @prop handle - 
+ * @prop handle -
  * The handle of the product. The handle can be used to create slug URL paths.
  * If not supplied, the value of the `handle` attribute of the product is set to the slug version of the `title` attribute.
  * @prop status - The status of the product. Its value can be one of the values of the enum {@link ProductStatus}.
@@ -746,20 +748,20 @@ export interface CreateProductDTO {
 
 /**
  * @interface
- * 
+ *
  * The data to update in a product. The `id` is used to identify which product to update.
- * 
+ *
  * @prop id - The ID of the product to update.
  * @prop title - The title of the product.
  * @prop subtitle - The subttle of the product.
  * @prop description - The description of the product.
  * @prop is_giftcard - Whether the product is a gift card.
  * @prop discountable - Whether the product can be discounted.
- * @prop images - 
+ * @prop images -
  * The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created
  * and associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.
  * @prop thumbnail - The URL of the product's thumbnail.
- * @prop handle - 
+ * @prop handle -
  * The handle of the product. The handle can be used to create slug URL paths.
  * If not supplied, the value of the `handle` attribute of the product is set to the slug version of the `title` attribute.
  * @prop status - The status of the product. Its value can be one of the values of the enum {@link ProductStatus}.
@@ -769,7 +771,7 @@ export interface CreateProductDTO {
  * @prop tags - The product tags to be created and associated with the product.
  * @prop categories - The product categories to associate with the product.
  * @prop options - The product options to be created and associated with the product.
- * @prop variants - 
+ * @prop variants -
  * The product variants to be created and associated with the product. You can also update existing product variants associated with the product.
  * @prop width - The width of the product.
  * @prop height - The height of the product.
@@ -836,6 +838,7 @@ export interface CreateProductOnlyDTO {
 }
 
 export interface CreateProductVariantOnlyDTO {
+  product_id?: string
   title: string
   sku?: string
   barcode?: string

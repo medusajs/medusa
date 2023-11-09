@@ -1,7 +1,6 @@
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
+import { WorkflowTypes } from "@medusajs/types"
+import { FlagRouter } from "@medusajs/utils"
+import { CreateProductVariants } from "@medusajs/workflows"
 import {
   IsArray,
   IsBoolean,
@@ -11,19 +10,25 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import {
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
 
-import { EntityManager } from "typeorm"
 import { IInventoryService } from "@medusajs/types"
 import { Type } from "class-transformer"
-import { createVariantsTransaction } from "./transaction/create-product-variant"
+import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { getProductWithIsolatedProductModule } from "./get-product"
+import { createVariantsTransaction } from "./transaction/create-product-variant"
 
 /**
  * @oas [post] /admin/products/{id}/variants
@@ -122,6 +127,8 @@ export default async (req, res) => {
     req.body
   )
 
+  const manager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const inventoryService: IInventoryService | undefined =
     req.scope.resolve("inventoryService")
   const productVariantInventoryService: ProductVariantInventoryService =
@@ -129,33 +136,63 @@ export default async (req, res) => {
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-
-  const manager: EntityManager = req.scope.resolve("manager")
-
-  await manager.transaction(async (transactionManager) => {
-    await createVariantsTransaction(
-      {
-        manager: transactionManager,
-        inventoryService,
-        productVariantInventoryService,
-        productVariantService,
-      },
-      id,
-      [validated as CreateProductVariantInput]
-    )
-  })
-
-  const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  const rawProduct = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+    const createVariantsWorkflow = CreateProductVariants.createProductVariants(
+      req.scope
+    )
 
-  const [product] = await pricingService.setAdminProductPricing([rawProduct])
+    const input = {
+      productVariants: [
+        {
+          product_id: id,
+          ...validated,
+        },
+      ] as WorkflowTypes.ProductWorkflow.CreateProductVariantsInputDTO[],
+    }
 
-  res.json({ product })
+    await createVariantsWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+
+    const rawProduct = await getProductWithIsolatedProductModule(
+      req,
+      id,
+      req.retrieveConfig
+    )
+
+    const [product] = await pricingService.setAdminProductPricing([rawProduct])
+
+    res.json({ product })
+  } else {
+    await manager.transaction(async (transactionManager) => {
+      await createVariantsTransaction(
+        {
+          manager: transactionManager,
+          inventoryService,
+          productVariantInventoryService,
+          productVariantService,
+        },
+        id,
+        [validated as CreateProductVariantInput]
+      )
+    })
+
+    const productService: ProductService = req.scope.resolve("productService")
+
+    const rawProduct = await productService.retrieve(id, {
+      select: defaultAdminProductFields,
+      relations: defaultAdminProductRelations,
+    })
+
+    const [product] = await pricingService.setAdminProductPricing([rawProduct])
+
+    res.json({ product })
+  }
 }
 
 class ProductVariantOptionReq {

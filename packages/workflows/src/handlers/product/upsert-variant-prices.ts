@@ -23,13 +23,11 @@ type HandlerInput = {
 
 export async function upsertVariantPrices({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInput>) {
   const { variantPricesMap } = data
-
   const featureFlagRouter = container.resolve("featureFlagRouter")
-  
+
   if (!featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
     return {
       createdLinks: [],

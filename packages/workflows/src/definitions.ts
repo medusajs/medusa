@@ -4,6 +4,7 @@ export enum Workflows {
   UpdateProducts = "update-products",
 
   // Product Variant workflows
+  CreateProductVariants = "create-product-variants",
   UpdateProductVariants = "update-product-variants",
 
   // Cart workflows
@@ -27,6 +28,7 @@ export enum InputAlias {
 
   ProductVariants = "productVariants",
   ProductVariantsUpdateInputData = "productVariantsUpdateInputData",
+  ProductVariantsCreateInputData = "productVariantsCreateInputData",
 
   InventoryItems = "inventoryItems",
   RemovedInventoryItems = "removedInventoryItems",
