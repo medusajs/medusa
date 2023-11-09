@@ -12,19 +12,31 @@ export function createWorkflow(name: string, composer: Function) {
     workflowId: name,
     flow: WorkflowManager.getTransactionDefinition(name),
     handlers,
+    step: (fn) => {
+      return fn.bind(context)()
+    },
   }
-  // @ts-ignore
-  //this.context = context
-  const workflowReturn = composer.apply(context)
+
+  let ref = new Proxy(
+    {},
+    {
+      get(target: {}, p: string | symbol, receiver: any): any {
+        return Reflect.get(target, p, receiver)
+      },
+    }
+  )
+
+  composer.apply(context, [ref])
 
   WorkflowManager.update(name, context.flow, handlers)
 
   const workflow = exportWorkflow(name)
   return async (input) => {
-    // @ts-ignore
+    // Forwards the input to the ref object
+    Object.assign(ref, input)
+
     await workflow().run({
       input,
-      resultFrom: workflowReturn?.__step__,
     })
   }
 }
