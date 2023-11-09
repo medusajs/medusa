@@ -114,11 +114,13 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
       }
 
       if (!!priceListData.starts_at) {
-        priceListData.starts_at = priceListData.starts_at.toISOString() as any
+        priceListData.starts_at = new Date(
+          priceListData.starts_at
+        ).toISOString()
       }
 
       if (!!priceListData.ends_at) {
-        priceListData.ends_at = priceListData.ends_at.toISOString() as any
+        priceListData.ends_at = new Date(priceListData.ends_at).toISOString()
       }
 
       return manager.assign(existingPriceList, priceListData)
