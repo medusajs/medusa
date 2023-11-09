@@ -10,7 +10,7 @@ import {
  * @oas [post] /admin/order-edits/{id}/cancel
  * operationId: "PostOrderEditsOrderEditCancel"
  * summary: "Cancel an Order Edit"
- * description: "Cancel an OrderEdit."
+ * description: "Cancel an Order Edit."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
@@ -24,9 +24,9 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.cancel(orderEditId)
- *         .then(({ order_edit }) => {
- *           console.log(order_edit.id)
- *         })
+ *       .then(({ order_edit }) => {
+ *         console.log(order_edit.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

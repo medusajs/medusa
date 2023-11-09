@@ -12,4 +12,8 @@ export interface AdminPostShippingProfilesReq {
    * The type of the Shipping Profile
    */
   type: "default" | "gift_card" | "custom"
+  /**
+   * An optional set of key-value pairs with additional information.
+   */
+  metadata?: Record<string, any>
 }

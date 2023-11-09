@@ -33,7 +33,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ currency }) => {
  *         console.log(currency.code);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

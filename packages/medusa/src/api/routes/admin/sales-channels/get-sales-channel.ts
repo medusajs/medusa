@@ -22,7 +22,7 @@ import { SalesChannelService } from "../../../../services"
  *       medusa.admin.salesChannels.retrieve(salesChannelId)
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -23,7 +23,7 @@ import CustomerService from "../../../../services/customer"
  *       medusa.customers.addresses.deleteAddress(addressId)
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

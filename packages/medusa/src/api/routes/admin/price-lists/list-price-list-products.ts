@@ -146,7 +146,7 @@ import { pickBy } from "lodash"
  *       medusa.admin.priceLists.listProducts(priceListId)
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -204,65 +204,112 @@ export default async (req: Request, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved products associated with a price list.
+ *
+ * @property {number} limit - Limit the number of products returned in the list. Default is `50`.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetPriceListsPriceListProductsParams extends extendedFindParamsMixin(
   { limit: 50 }
 ) {
+  /**
+   * ID to filter products by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Search term to search products' title, description, product variant's title and sku, and product collection's title.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Statuses to filter products by.
+   */
   @IsOptional()
   @IsEnum(ProductStatus, { each: true })
   status?: ProductStatus[]
 
+  /**
+   * Filter products by their associated collection ID.
+   */
   @IsArray()
   @IsOptional()
   collection_id?: string[]
 
+  /**
+   * Tags to filter products by.
+   */
   @IsArray()
   @IsOptional()
   tags?: string[]
 
+  /**
+   * Title to filter products by.
+   */
   @IsString()
   @IsOptional()
   title?: string
 
+  /**
+   * Description to filter products by.
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * Handle to filter products by.
+   */
   @IsString()
   @IsOptional()
   handle?: string
 
+  /**
+   * Filter products by whether they're gift cards.
+   */
   @IsBoolean()
   @IsOptional()
   @Type(() => Boolean)
   is_giftcard?: string
 
+  /**
+   * Type to filter products by.
+   */
   @IsString()
   @IsOptional()
   type?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Date filters to apply on the products' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the products' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the products' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)

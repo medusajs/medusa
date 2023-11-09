@@ -88,6 +88,7 @@ export default (app) => {
 /**
  * @schema AdminSalesChannelsRes
  * type: object
+ * description: "The sales channel's details."
  * required:
  *   - sales_channel
  * properties:
@@ -146,6 +147,7 @@ export type AdminSalesChannelsDeleteLocationRes = DeleteResponse
 /**
  * @schema AdminSalesChannelsListRes
  * type: object
+ * description: "The list of sales channels with pagination fields."
  * required:
  *   - sales_channels
  *   - count

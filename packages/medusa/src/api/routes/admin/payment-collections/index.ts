@@ -88,6 +88,7 @@ export type AdminPaymentCollectionsRes = {
 /**
  * @schema AdminPaymentCollectionDeleteRes
  * type: object
+ * description: "The details of deleting a payment collection."
  * required:
  *   - id
  *   - object

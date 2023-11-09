@@ -16,7 +16,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
  * summary: "Ship a Fulfillment"
- * description: "Mark a fulfillment as shipped. This changes the order's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ * description: "Create a shipment and mark a fulfillment as shipped. This changes the order's fulfillment status to either `partially_shipped` or `shipped`, depending on
  *  whether all the items were shipped."
  * x-authenticated: true
  * externalDocs:
@@ -46,7 +46,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

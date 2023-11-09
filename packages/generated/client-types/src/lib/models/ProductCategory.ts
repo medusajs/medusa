@@ -18,6 +18,10 @@ export interface ProductCategory {
    */
   name: string
   /**
+   * The product category's description.
+   */
+  description?: string
+  /**
    * A unique string that identifies the Product Category - can for example be used in slug structures.
    */
   handle: string

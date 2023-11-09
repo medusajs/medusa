@@ -75,6 +75,9 @@ export class MoneyAmount extends SoftDeletableEntity {
   @JoinColumn({ name: "region_id" })
   region?: Region
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): undefined | void {
     this.id = generateEntityId(this.id, "ma")
@@ -86,6 +89,9 @@ export class MoneyAmount extends SoftDeletableEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @BeforeUpdate()
   private beforeUpdate(): void {
     if (this.variant || this.variant_id) {
@@ -95,6 +101,9 @@ export class MoneyAmount extends SoftDeletableEntity {
     }
   }
 
+  /**
+   * @apiIgnore
+   */
   @AfterLoad()
   private afterLoad() {
     this.variant = this.variants?.[0]

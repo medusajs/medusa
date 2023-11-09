@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/tax-rates/{id}/products/batch
  * operationId: "PostTaxRatesTaxRateProducts"
  * summary: "Add to Products"
- * description: "Associates a Tax Rate with a list of Products."
+ * description: "Add products to a tax rate."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
@@ -54,7 +54,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -136,11 +136,20 @@ export class AdminPostTaxRatesTaxRateProductsReq {
   products: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateProductsParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]
