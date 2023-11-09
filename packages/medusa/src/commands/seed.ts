@@ -134,7 +134,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     const {
       store: seededStore,
       regions,
-      product_collections,
+      product_collections = [],
       products,
       categories = [],
       shipping_options,
