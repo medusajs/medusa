@@ -54,4 +54,8 @@ export interface AdminPostOrdersOrderReturnsReq {
    * The amount to refund.
    */
   refund?: number
+  /**
+   * The ID of the location used for the return.
+   */
+  location_id?: string
 }

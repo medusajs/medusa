@@ -9,7 +9,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
  * description: |
- *   Complete a cart and place an order or create a swap, based on what the cart is created for. This includes attempting to authorize the cart's payment.
+ *   Complete a cart and place an order or create a swap, based on the cart's type. This includes attempting to authorize the cart's payment.
  *   If authorizing the payment requires more action, the cart will not be completed and the order will not be placed or the swap will not be created.
  *
  *   An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
@@ -31,7 +31,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.complete(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

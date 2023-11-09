@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The attributes to update in an inventory item.
+ */
 export interface AdminPostInventoryItemsInventoryItemReq {
   /**
    * The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
@@ -36,6 +39,18 @@ export interface AdminPostInventoryItemsInventoryItemReq {
    * The length of the Inventory Item. May be used in shipping rate calculations.
    */
   length?: number
+  /**
+   * The inventory item's title.
+   */
+  title?: string
+  /**
+   * The inventory item's description.
+   */
+  description?: string
+  /**
+   * The inventory item's thumbnail.
+   */
+  thumbnail?: string
   /**
    * Whether the item requires shipping.
    */

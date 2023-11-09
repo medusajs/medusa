@@ -27,9 +27,9 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.publishableApiKeys.list()
- *         .then(({ publishable_api_keys, count, limit, offset }) => {
- *           console.log(publishable_api_keys)
- *         })
+ *       .then(({ publishable_api_keys, count, limit, offset }) => {
+ *         console.log(publishable_api_keys)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -82,10 +82,16 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved publishable API keys.
+ */
 export class GetPublishableApiKeysParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Search term to search publishable API keys' titles.
+   */
   @IsString()
   @IsOptional()
   q?: string

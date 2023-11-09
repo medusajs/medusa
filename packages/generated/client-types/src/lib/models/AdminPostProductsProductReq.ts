@@ -215,6 +215,10 @@ export interface AdminPostProductsProductReq {
    */
   width?: number
   /**
+   * The Harmonized System code of the product variant.
+   */
+  hs_code?: string
+  /**
    * The country of origin of the Product.
    */
   origin_country?: string

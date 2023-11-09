@@ -54,7 +54,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -136,11 +136,20 @@ export class AdminDeleteTaxRatesTaxRateProductsReq {
   products: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateProductsParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

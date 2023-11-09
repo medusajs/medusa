@@ -45,7 +45,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -247,7 +247,8 @@ class Discount {
  *     description: "The ID of the Customer to associate the Cart with."
  *     type: string
  *   context:
- *     description: "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     description: >-
+ *       An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
  *     type: object
  *     example:
  *       ip: "::1"

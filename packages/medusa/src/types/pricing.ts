@@ -3,20 +3,63 @@ import { MoneyAmount, Product, ProductVariant, ShippingOption } from "../models"
 import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
 import { TaxServiceRate } from "./tax-service"
 
+/**
+ * Pricing fields for product variants.
+ */
 export type ProductVariantPricing = {
+  /**
+   * The list of prices.
+   */
   prices: MoneyAmount[]
+  /**
+   * The original price of the variant.
+   */
   original_price: number | null
+  /**
+   * The lowest price among the retrieved prices.
+   */
   calculated_price: number | null
+  /**
+   * Whether the `original_price` field includes taxes.
+   *
+   * @featureFlag tax_inclusive_pricing
+   */
   original_price_includes_tax?: boolean | null
+  /**
+   * Whether the `calculated_price` field includes taxes.
+   *
+   * @featureFlag tax_inclusive_pricing
+   */
   calculated_price_includes_tax?: boolean | null
+  /**
+   * Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.
+   */
   calculated_price_type?: string | null
 } & TaxedPricing
 
+/**
+ * Pricing fields related to taxes.
+ */
 export type TaxedPricing = {
+  /**
+   * The price after applying the tax amount on the original price.
+   */
   original_price_incl_tax: number | null
+  /**
+   * The price after applying the tax amount on the calculated price.
+   */
   calculated_price_incl_tax: number | null
+  /**
+   * The tax amount applied to the original price.
+   */
   original_tax: number | null
+  /**
+   * The tax amount applied to the calculated price.
+   */
   calculated_tax: number | null
+  /**
+   * The list of tax rates.
+   */
   tax_rates: TaxServiceRate[] | null
 }
 
@@ -117,6 +160,7 @@ export type PricedVariant = Partial<ProductVariant> & ProductVariantPricing
  *   - type: object
  *     properties:
  *       variants:
+ *         description: "The product variants and their prices."
  *         type: array
  *         items:
  *           $ref: "#/components/schemas/PricedVariant"

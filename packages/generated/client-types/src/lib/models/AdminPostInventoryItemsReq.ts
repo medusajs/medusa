@@ -69,6 +69,18 @@ export interface AdminPostInventoryItemsReq {
    */
   material?: string
   /**
+   * The inventory item's title.
+   */
+  title?: string
+  /**
+   * The inventory item's description.
+   */
+  description?: string
+  /**
+   * The inventory item's thumbnail.
+   */
+  thumbnail?: string
+  /**
    * An optional set of key-value pairs with additional information.
    */
   metadata?: Record<string, any>

@@ -70,10 +70,9 @@ module.exports = ({
     ...globalTypedocOptions,
     entryPoints: [path.join(pathPrefix, entryPointPath)],
     out: [path.join(pathPrefix, outPath)],
-    tsconfig: path.join(
-      pathPrefix,
-      tsconfigPath || "packages/types/tsconfig.json"
-    ),
+    tsconfig: tsconfigPath.length
+      ? path.join(pathPrefix, tsconfigPath)
+      : path.join(__dirname, "extended-tsconfig", "types.json"),
     name: `${moduleName} Reference`,
     indexTitle: `${moduleName} Reference`,
     entryDocument: "index.md",
@@ -82,7 +81,7 @@ module.exports = ({
     hideBreadcrumbs: true,
     plugin: [
       ...globalTypedocOptions.plugin,
-      "typedoc-plugin-modules",
+      "typedoc-plugin-custom",
       "typedoc-plugin-rename-defaults",
       "typedoc-plugin-frontmatter",
     ],
