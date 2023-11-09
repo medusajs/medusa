@@ -34,9 +34,9 @@ describe("Workflow composer", function () {
     })
 
     const mainFlow = createWorkflow("test", function (this: any, input) {
-      const returnStep1 = this.step(step1(input))
-      const ret2 = this.step(step2(returnStep1))
-      return this.step(step3(returnStep1, ret2))
+      const returnStep1 = step1(input)
+      const ret2 = step2(returnStep1)
+      return step3(returnStep1, ret2)
     })
 
     await mainFlow({ test: "payload" })

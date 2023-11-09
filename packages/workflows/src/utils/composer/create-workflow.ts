@@ -1,6 +1,8 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
 import { exportWorkflow } from "../../helper"
 
+global.step = null
+
 export function createWorkflow(name: string, composer: Function) {
   const handlers: WorkflowHandler = new Map()
 
@@ -16,6 +18,8 @@ export function createWorkflow(name: string, composer: Function) {
       return fn.bind(context)()
     },
   }
+
+  global.step = context.step.bind(context)
 
   let ref = new Proxy(
     {},

@@ -3,8 +3,9 @@ export function createStep(
   invokeFn: Function,
   compensateFn?: Function
 ) {
-  return function (...otherStepInput) {
-    return function () {
+  return function (this: any, ...otherStepInput) {
+    const step = global.step
+    return step(function () {
       // @ts-ignore
       if (!this.workflowId) {
         throw new Error(
@@ -52,6 +53,6 @@ export function createStep(
       return {
         __step__: stepName,
       }
-    }
+    })
   }
 }
