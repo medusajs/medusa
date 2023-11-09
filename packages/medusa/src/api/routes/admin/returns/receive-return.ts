@@ -44,7 +44,7 @@ import { defaultRelations } from "."
  *       })
  *       .then((data) => {
  *         console.log(data.return.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -165,6 +165,9 @@ class Item {
  *   refund:
  *     description: The amount to refund.
  *     type: number
+ *   location_id:
+ *     description: The ID of the location to return items from.
+ *     type: string
  */
 export class AdminPostReturnsReturnReceiveReq {
   @IsArray()

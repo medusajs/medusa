@@ -21,7 +21,7 @@ import { ReturnReasonService } from "../../../../services"
  *       medusa.admin.returnReasons.delete(returnReasonId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

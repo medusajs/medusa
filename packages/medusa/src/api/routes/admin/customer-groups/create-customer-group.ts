@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/customer-groups
  * operationId: "PostCustomerGroups"
  * summary: "Create a Customer Group"
- * description: "Creates a Customer Group."
+ * description: "Create a Customer Group."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -30,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

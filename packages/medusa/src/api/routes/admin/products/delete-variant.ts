@@ -28,7 +28,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.products.deleteVariant(productId, variantId)
  *       .then(({ variant_id, object, deleted, product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

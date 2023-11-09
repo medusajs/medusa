@@ -1,5 +1,5 @@
 ---
-"@medusajs/cache-redis": major
+"@medusajs/cache-redis": minor
 "@medusajs/cache-inmemory": patch
 ---
 

@@ -37,6 +37,10 @@ jobs:
       - name: Build Packages
         run: yarn build
 
+      - name: Install Docs dependencies
+        working-directory: www
+        run: yarn install
+
       - name: Install Workspace dependencies
         run: yarn install
         working-directory: docs-util

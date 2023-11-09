@@ -29,7 +29,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.store.deleteCurrency("eur")
  *       .then(({ store }) => {
  *         console.log(store.currencies);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

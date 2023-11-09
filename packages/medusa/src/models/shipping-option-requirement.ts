@@ -13,8 +13,19 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { ShippingOption } from "./shipping-option"
 import { generateEntityId } from "../utils/generate-entity-id"
 
+/**
+ * @enum
+ * 
+ * The type of shipping option requirement.
+ */
 export enum RequirementType {
+  /**
+   * The shipping option can only be applied if the subtotal is greater than the requirement's amount.
+   */
   MIN_SUBTOTAL = "min_subtotal",
+  /**
+   * The shipping option can only be applied if the subtotal is less than the requirement's amont.
+   */
   MAX_SUBTOTAL = "max_subtotal",
 }
 
@@ -40,6 +51,9 @@ export class ShippingOptionRequirement {
   @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "sor")

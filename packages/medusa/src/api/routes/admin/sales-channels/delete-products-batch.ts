@@ -36,8 +36,8 @@ import { Type } from "class-transformer"
  *         ]
  *       })
  *       .then(({ sales_channel }) => {
- *         console.log(sales_channel.id);
- *       });
+ *         console.log(sales_channel.id)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -23,6 +23,7 @@ export const defaultRelations = [
 /**
  * @schema StoreRegionsListRes
  * type: object
+ * description: "The list of regions with pagination fields."
  * x-expanded-relations:
  *   field: regions
  *   relations:
@@ -57,6 +58,7 @@ export type StoreRegionsListRes = PaginatedResponse & {
 /**
  * @schema StoreRegionsRes
  * type: object
+ * description: "The region's details."
  * x-expanded-relations:
  *   field: region
  *   relations:

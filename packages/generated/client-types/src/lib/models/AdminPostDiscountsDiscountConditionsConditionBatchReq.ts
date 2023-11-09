@@ -9,7 +9,7 @@ export interface AdminPostDiscountsDiscountConditionsConditionBatchReq {
    */
   resources: Array<{
     /**
-     * The id of the item
+     * The ID of the item
      */
     id: string
   }>

@@ -19,6 +19,9 @@ export interface AddressPayload {
    * Phone Number
    */
   phone?: string
+  /**
+   * Company
+   */
   company?: string
   /**
    * Address line 1
