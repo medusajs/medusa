@@ -40,6 +40,8 @@ type Options = {
 }
 
 async function loadLegacyModulesEntities(configModules, container) {
+  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+
   for (const [moduleName, moduleConfig] of Object.entries(configModules)) {
     const definition = ModulesDefinition[moduleName]
 
@@ -60,6 +62,11 @@ async function loadLegacyModulesEntities(configModules, container) {
           .resources
 
     if (resources === MODULE_RESOURCE_TYPE.SHARED) {
+      if (!modulePath) {
+        logger.warn(`Unable to load module entities for ${moduleName}`)
+        continue
+      }
+
       const module = await import(modulePath)
 
       if (module.default?.models) {
