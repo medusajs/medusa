@@ -2100,6 +2100,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "troubleshooting/promise-all-rollback",
+          label: "Database Transactions and Promise.all",
+        },
+        {
+          type: "doc",
           id: "troubleshooting/redis-events",
           label: "Redis not emitting events",
         },
