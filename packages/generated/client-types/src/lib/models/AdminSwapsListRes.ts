@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Swap } from "./Swap"
 
+/**
+ * The list of swaps with pagination fields.
+ */
 export interface AdminSwapsListRes {
   /**
    * An array of swaps details.

@@ -5,6 +5,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "typedoc": "0.25.x"
+  },
   "main": "_base.js",
   "version": "0.0.0"
 }

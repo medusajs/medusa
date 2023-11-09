@@ -15,6 +15,9 @@ import type { Region } from "./Region"
 import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
+/**
+ * The order's details.
+ */
 export interface StoreOrdersRes {
   /**
    * Order details.

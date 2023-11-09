@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import BaseFulfillmentService from "medusa-interfaces"
 import { EntityManager } from "typeorm"
@@ -75,7 +76,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   async listFulfillmentOptions(
     providerIds: string[]
   ): Promise<FulfillmentOptions[]> {
-    return await Promise.all(
+    return await promiseAll(
       providerIds.map(async (p) => {
         const provider = this.retrieveProvider(p)
         return {

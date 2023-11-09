@@ -18,7 +18,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       medusa.collections.retrieve(collectionId)
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

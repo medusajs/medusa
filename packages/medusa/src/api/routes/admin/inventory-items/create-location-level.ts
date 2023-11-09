@@ -6,8 +6,8 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [post] /admin/inventory-items/{id}/location-levels
  * operationId: "PostInventoryItemsInventoryItemLocationLevels"
- * summary: "Create an Location Level"
- * description: "Create an Location Level for a given Inventory Item."
+ * summary: "Create a Location Level"
+ * description: "Create a Location Level for a given Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
@@ -34,7 +34,7 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

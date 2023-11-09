@@ -18,10 +18,27 @@ import { ReturnItem } from "./return-item"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
 
+/**
+ * @enum
+ * 
+ * The return's status.
+ */
 export enum ReturnStatus {
+  /**
+   * The return is requested.
+   */
   REQUESTED = "requested",
+  /**
+   * The return is received.
+   */
   RECEIVED = "received",
+  /**
+   * The return is awaiting action.
+   */
   REQUIRES_ACTION = "requires_action",
+  /**
+   * The return is canceled.
+   */
   CANCELED = "canceled",
 }
 
@@ -91,6 +108,9 @@ export class Return extends BaseEntity {
   @Column({ nullable: true, type: "text" })
   idempotency_key: string | null
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ret")

@@ -20,7 +20,7 @@ import GiftCardService from "../../../../services/gift-card"
  *       medusa.giftCards.retrieve(code)
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

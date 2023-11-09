@@ -21,7 +21,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.discounts.delete(discountId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

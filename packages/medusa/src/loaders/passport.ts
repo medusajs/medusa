@@ -1,8 +1,8 @@
 import { Express } from "express"
 import passport from "passport"
-import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt"
-import { Strategy as LocalStrategy } from "passport-local"
 import { Strategy as CustomStrategy } from "passport-custom"
+import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt"
+import { Strategy as LocalStrategy } from "passport-local"
 import { AuthService } from "../services"
 import { ConfigModule, MedusaContainer } from "../types/global"
 
@@ -47,32 +47,28 @@ export default async ({
   const { jwt_secret } = configModule.projectConfig
   passport.use(
     "admin-session",
-    new CustomStrategy(
-      async (req, done) => {
+    new CustomStrategy(async (req, done) => {
+      // @ts-ignore
+      if (req.session?.user_id) {
         // @ts-ignore
-        if(req.session?.user_id) {
-          // @ts-ignore
-          return done(null, { userId: req.session.user_id })
-        }
-
-        return done(null, false)
+        return done(null, { userId: req.session.user_id })
       }
-    )
+
+      return done(null, false)
+    })
   )
 
   passport.use(
     "store-session",
-    new CustomStrategy(
-      async (req, done) => {
+    new CustomStrategy(async (req, done) => {
+      // @ts-ignore
+      if (req.session?.customer_id) {
         // @ts-ignore
-        if(req.session?.customer_id) {
-          // @ts-ignore
-          return done(null, { customer_id: req.session.customer_id })
-        }
-
-        return done(null, false)
+        return done(null, { customer_id: req.session.customer_id })
       }
-    )
+
+      return done(null, false)
+    })
   )
 
   // Alternatively use API token to authenticate to the admin api
@@ -80,7 +76,7 @@ export default async ({
     "admin-api-token",
     new CustomStrategy(async (req, done) => {
       // extract the token from the header
-      const token = req.headers["x-medusa-access-token"];
+      const token = req.headers["x-medusa-access-token"]
 
       // check if header exists and is string
       // typescript will complain if we don't check for type
@@ -88,7 +84,7 @@ export default async ({
         return done(null, false)
       }
 
-      const auth = await authService.authenticateAPIToken(token);
+      const auth = await authService.authenticateAPIToken(token)
       if (auth.success) {
         done(null, auth.user)
       } else {
@@ -110,7 +106,7 @@ export default async ({
           done(null, false)
           return
         }
-    
+
         if (!token.user_id) {
           done(null, false)
           return
@@ -134,7 +130,7 @@ export default async ({
           done(null, false)
           return
         }
-    
+
         if (!token.customer_id) {
           done(null, false)
           return

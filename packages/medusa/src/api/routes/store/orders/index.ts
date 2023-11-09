@@ -130,6 +130,7 @@ export const allowedStoreOrdersFields = [
 /**
  * @schema StoreOrdersRes
  * type: object
+ * description: "The order's details."
  * required:
  *   - order
  * x-expanded-relations:
