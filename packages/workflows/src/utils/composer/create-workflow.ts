@@ -31,6 +31,7 @@ export function createWorkflow(name: string, composer: Function) {
   )
 
   composer.apply(context, [ref])
+  delete global?.step
 
   WorkflowManager.update(name, context.flow, handlers)
 

@@ -7,8 +7,13 @@ export function createStep(
 
   const returnFn = function (this: any, ...otherStepInput) {
     const step = global.step
-    return step(function () {
-      // @ts-ignore
+    if (!step) {
+      throw new Error(
+        "createStep must be used inside a createWorkflow definition"
+      )
+    }
+
+    return step(function (this: any) {
       if (!this.workflowId) {
         throw new Error(
           "createStep must be used inside a createWorkflow definition"
@@ -17,26 +22,25 @@ export function createStep(
 
       const handler = {
         invoke: async (transactionContext) => {
-          const { invoke, payload, container } = transactionContext
-          const output = await invokeFn.apply(
-            // @ts-ignore
-            this,
-            // @ts-ignore
-            otherStepInput.map((st) =>
-              st?.__step__ ? invoke[st.__step__]?.output : st
-            )
+          const { invoke } = transactionContext
+
+          const previousResultResults = otherStepInput.map((st) =>
+            st?.__step__ ? invoke[st.__step__]?.output : st
           )
+
+          const args = [transactionContext, ...previousResultResults]
+
+          const output = await invokeFn.apply(this, args)
+
           return {
             output,
           }
         },
         compensate: compensateFn
-          ? async ({ invoke }) => {
-              const output = await compensateFn.apply(
-                // @ts-ignore
-                this,
-                invoke[stepName].output
-              )
+          ? async (transactionContext) => {
+              const invokeResult = transactionContext.invoke[stepName].output
+              const args = [transactionContext, invokeResult]
+              const output = await compensateFn.apply(this, args)
               return {
                 output,
               }
@@ -44,11 +48,9 @@ export function createStep(
           : undefined,
       }
 
-      // @ts-ignore
       this.flow.addAction(stepName, {
         noCompensation: !compensateFn,
       })
-      // @ts-ignore
       this.handlers.set(stepName, handler)
 
       return {
