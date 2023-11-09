@@ -199,7 +199,7 @@ describe("Workflow composer", function () {
     await mainFlow().run({ test: "payload1" })
   })
 
-  it.only("should overwrite existing workflows if the same name is used", async () => {
+  it("should overwrite existing workflows if the same name is used", async () => {
     const step1 = createStep("step1", (context, primitiveValue) => {
       const ret =
         "return from 1 + input = " +
