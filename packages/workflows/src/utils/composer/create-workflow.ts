@@ -57,7 +57,7 @@ export function createWorkflow(name: string, composer: Function) {
         TDataOverride extends undefined ? unknown : TDataOverride
       >
     ) => {
-      input.resultFrom =
+      input.resultFrom ??=
         returnedStep.__type === SymbolWorkflowStep
           ? returnedStep?.__step__
           : returnedStep.__type === SymbolInputReference
