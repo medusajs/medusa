@@ -180,12 +180,12 @@ export function getReferenceType(
 ): string {
   const shouldShowLink = emphasis && model.name !== "Record"
   if (model.reflection || (model.name && model.typeArguments)) {
-    const reflection: string[] = []
+    const reflection: string[] = ["`"]
 
     if (model.reflection?.url) {
       reflection.push(
         shouldShowLink
-          ? `[${`\`${model.reflection.name}\``}](${Handlebars.helpers.relativeURL(
+          ? `[${model.reflection.name}](${Handlebars.helpers.relativeURL(
               model.reflection.url
             )})`
           : model.reflection.name
@@ -201,11 +201,12 @@ export function getReferenceType(
     }
     if (model.typeArguments && model.typeArguments.length > 0) {
       reflection.push(
-        `\`<${model.typeArguments
-          .map((typeArgument) => getType(typeArgument, "none", emphasis))
-          .join(", ")}>\``
+        `<${model.typeArguments
+          .map((typeArgument) => getType(typeArgument, "none", false))
+          .join(", ")}>`
       )
     }
+    reflection.push("`")
     return reflection.join("")
   }
   return shouldShowLink

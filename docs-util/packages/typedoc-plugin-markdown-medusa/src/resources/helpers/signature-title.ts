@@ -55,7 +55,11 @@ export default function (theme: MarkdownTheme) {
       }
 
       if (this.typeParameters) {
-        md.push(`\`<${this.typeParameters.join(", ")}>\``)
+        md.push(
+          `${expandMembers ? "`" : ""}<${this.typeParameters.join(", ")}>${
+            expandMembers ? "`" : ""
+          }`
+        )
       }
       md.push(`(${getParameters(this.parameters, !expandMembers)})`)
 
