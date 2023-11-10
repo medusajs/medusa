@@ -3,7 +3,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express"
 type handler = (req: Request, res: Response) => Promise<void>
 
 export default (fn: handler): RequestHandler => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     if (req?.errors?.length) {
       return res.status(400).json({
         errors: req.errors,
@@ -12,7 +12,14 @@ export default (fn: handler): RequestHandler => {
       })
     }
 
-    return fn(req, res).catch(next)
+    try {
+      return await fn(req, res)?.catch(next)
+    } catch (err) {
+      /**
+       * If the fn is not async, we need to catch the error here instead.
+       */
+      next(err)
+    }
   }
 }
 
