@@ -1,5 +1,10 @@
 import { promiseAll } from "@medusajs/utils"
-import { createStep, createWorkflow, parallelize } from "@medusajs/workflows"
+import {
+  createStep,
+  createWorkflow,
+  parallelize,
+  transform,
+} from "@medusajs/workflows"
 
 jest.setTimeout(30000)
 
@@ -8,7 +13,7 @@ describe("Workflow composer", function () {
     jest.clearAllMocks()
   })
 
-  it.only("should compose a new workflow and execute it", async () => {
+  it("should compose a new workflow and execute it", async () => {
     const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
       return { inputs: [input], obj: "return from 1" }
     })
@@ -268,5 +273,60 @@ describe("Workflow composer", function () {
     })
 
     await overwrite().run({ input: "str value" })
+  })
+
+  it("should transform the values before forward them to the next step", async () => {
+    const step1 = createStep("step1", (context, obj) => {
+      const ret = {
+        property: "property",
+      }
+      console.log(ret)
+      return ret
+    })
+
+    const step2 = createStep("step2", (context, obj) => {
+      const ret = {
+        sum: "sum = " + obj.sum,
+        ...obj,
+      }
+      console.log(ret)
+      return ret
+    })
+
+    const step3 = createStep("step3", (context, param) => {
+      const ret = {
+        avg: "avg = " + param.avg,
+        ...param,
+      }
+      console.log(ret)
+      return ret
+    })
+
+    const mainFlow = createWorkflow("test_", function (input) {
+      const step1Result = step1(input)
+
+      const sum = transform(
+        [input, step1Result],
+        (context, input, step1Res) => {
+          const newObj = {
+            ...step1Res,
+            ...input,
+            sum: input.a + input.b,
+          }
+          return newObj
+        }
+      )
+
+      const ret2 = step2(sum)
+
+      const avg = transform(ret2, (context, obj) => {
+        obj.avg = (obj.a + obj.b) / 2
+        return obj
+      })
+
+      return step3(avg)
+    })
+
+    await mainFlow().run({ input: { a: 1, b: 2 } })
   })
 })

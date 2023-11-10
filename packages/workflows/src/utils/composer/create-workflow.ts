@@ -1,5 +1,5 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
-import { exportWorkflow, FlowRunOptions } from "../../helper"
+import { FlowRunOptions, exportWorkflow } from "../../helper"
 import { CreateWorkflowComposerContext } from "./index"
 import {
   SymbolInputReference,
@@ -58,9 +58,9 @@ export function createWorkflow(name: string, composer: Function) {
       >
     ) => {
       input.resultFrom ??=
-        returnedStep.__type === SymbolWorkflowStep
-          ? returnedStep?.__step__
-          : returnedStep.__type === SymbolInputReference
+        returnedStep?.__type === SymbolWorkflowStep
+          ? returnedStep.__step__
+          : returnedStep?.__type === SymbolInputReference
           ? input?.input
           : undefined
 

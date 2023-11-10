@@ -1,9 +1,11 @@
+import { isDefined, promiseAll } from "@medusajs/utils"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowStep,
   SymbolWorkflowStepBind,
   SymbolWorkflowStepReturn,
+  SymbolWorkflowStepTransformer,
 } from "./symbol"
 import { CreateWorkflowComposerContext, StepInput, StepReturn } from "./type"
 
@@ -32,8 +34,8 @@ function applyStep({
         const { invoke: invokeRes } = transactionContext
 
         // Garb all previous invoke results by step name
-        const previousResultResults = stepInputs
-          .map((stepInput) => {
+        let previousResultResults = await promiseAll(
+          stepInputs.map(async (stepInput) => {
             if (stepInput?.__type === SymbolInputReference) {
               return stepInput.value
             }
@@ -42,13 +44,23 @@ function applyStep({
               ? stepInput
               : [stepInput]
 
-            return stepInputs_.map((st) => {
-              return st?.__type === SymbolWorkflowStep
-                ? invokeRes[st.__step__]?.output
-                : st
-            })
+            return await promiseAll(
+              stepInputs_.map(async (st) => {
+                if (st?.__type === SymbolWorkflowStepTransformer) {
+                  if (isDefined(st.__result)) {
+                    return st.__result
+                  }
+                  return await st(transactionContext)
+                }
+
+                return st?.__type === SymbolWorkflowStep
+                  ? invokeRes[st.__step__]?.output
+                  : st
+              })
+            )
           })
-          .flat()
+        )
+        previousResultResults = previousResultResults.flat()
 
         const args = [transactionContext, ...previousResultResults]
 
