@@ -36,7 +36,7 @@ ___
 
 ### deferrable
 
- `Optional` **deferrable**: [`DeferrableType`](../index.md#deferrabletype)
+ `Optional` **deferrable**: [`DeferrableType`](../types/DeferrableType.md)
 
 Indicate if foreign key constraints can be deferred.
 
@@ -88,7 +88,7 @@ ___
 
 ### onDelete
 
- `Optional` **onDelete**: [`OnDeleteType`](../index.md#ondeletetype)
+ `Optional` **onDelete**: [`OnDeleteType`](../types/OnDeleteType.md)
 
 Database cascade action on delete.
 
@@ -100,7 +100,7 @@ ___
 
 ### onUpdate
 
- `Optional` **onUpdate**: [`OnUpdateType`](../index.md#onupdatetype)
+ `Optional` **onUpdate**: [`OnUpdateType`](../types/OnUpdateType.md)
 
 Database cascade action on update.
 

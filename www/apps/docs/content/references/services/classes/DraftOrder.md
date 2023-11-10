@@ -30,7 +30,7 @@ The date the draft order was canceled at.
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L64)
+[packages/medusa/src/models/draft-order.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L64)
 
 ___
 
@@ -42,7 +42,7 @@ The details of the cart associated with the draft order.
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L53)
+[packages/medusa/src/models/draft-order.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L53)
 
 ___
 
@@ -54,7 +54,7 @@ The ID of the cart associated with the draft order.
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L49)
+[packages/medusa/src/models/draft-order.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L49)
 
 ___
 
@@ -66,7 +66,7 @@ The date the draft order was completed at.
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L67)
+[packages/medusa/src/models/draft-order.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L67)
 
 ___
 
@@ -82,7 +82,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -94,7 +94,7 @@ The draft order's display ID
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L45)
+[packages/medusa/src/models/draft-order.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L45)
 
 ___
 
@@ -110,7 +110,7 @@ The draft order's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -122,7 +122,7 @@ Randomly generated key used to continue the completion of the cart associated wi
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L76)
+[packages/medusa/src/models/draft-order.ts:76](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L76)
 
 ___
 
@@ -134,7 +134,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L73)
+[packages/medusa/src/models/draft-order.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L73)
 
 ___
 
@@ -146,7 +146,7 @@ Whether to send the customer notifications regarding order updates.
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L70)
+[packages/medusa/src/models/draft-order.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L70)
 
 ___
 
@@ -158,7 +158,7 @@ The details of the order created from the draft order when its payment is captur
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L61)
+[packages/medusa/src/models/draft-order.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L61)
 
 ___
 
@@ -170,7 +170,7 @@ The ID of the order created from the draft order when its payment is captured.
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L57)
+[packages/medusa/src/models/draft-order.ts:57](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L57)
 
 ___
 
@@ -182,7 +182,7 @@ The status of the draft order. It's changed to `completed` when it's transformed
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L40)
+[packages/medusa/src/models/draft-order.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L40)
 
 ___
 
@@ -198,7 +198,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -214,4 +214,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/draft-order.ts:82](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/draft-order.ts#L82)
+[packages/medusa/src/models/draft-order.ts:82](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/draft-order.ts#L82)

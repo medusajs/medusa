@@ -27,7 +27,7 @@ instead to convert the string to a Buffer using UTF-8 first.
 
 | Name | Description |
 | :------ | :------ |
-| `buffer?` | `string` \| [`BinarySequence`](../index.md#binarysequence) | a buffer object containing the binary data. |
+| `buffer?` | `string` \| [`BinarySequence`](../types/BinarySequence.md) | a buffer object containing the binary data. |
 | `subType?` | `number` | the option binary type. |
 
 #### Overrides
@@ -278,7 +278,7 @@ ___
 
 ### read
 
-**read**(`position`, `length`): [`BinarySequence`](../index.md#binarysequence)
+**read**(`position`, `length`): [`BinarySequence`](../types/BinarySequence.md)
 
 Reads **length** bytes starting at **position**.
 
@@ -291,7 +291,7 @@ Reads **length** bytes starting at **position**.
 
 #### Returns
 
-[`BinarySequence`](../index.md#binarysequence)
+[`BinarySequence`](../types/BinarySequence.md)
 
 -`BinarySequence`: 
 
@@ -357,7 +357,7 @@ ___
 
 ### value
 
-**value**(`asRaw?`): `string` \| [`BinarySequence`](../index.md#binarysequence)
+**value**(`asRaw?`): `string` \| [`BinarySequence`](../types/BinarySequence.md)
 
 Returns the value of this binary as a string.
 
@@ -369,7 +369,7 @@ Returns the value of this binary as a string.
 
 #### Returns
 
-`string` \| [`BinarySequence`](../index.md#binarysequence)
+`string` \| [`BinarySequence`](../types/BinarySequence.md)
 
 -`string \| BinarySequence`: (optional) 
 
@@ -393,7 +393,7 @@ Writes a buffer or string to the binary.
 
 | Name | Description |
 | :------ | :------ |
-| `sequence` | `string` \| [`BinarySequence`](../index.md#binarysequence) | a string or buffer to be written to the Binary BSON object. |
+| `sequence` | `string` \| [`BinarySequence`](../types/BinarySequence.md) | a string or buffer to be written to the Binary BSON object. |
 | `offset` | `number` | specify the binary of where to write the content. |
 
 #### Returns

@@ -8,7 +8,7 @@
 
   ↳ **`DuplexOptions`**
 
-  ↳↳ [`TransformOptions`](../index.md#transformoptions)
+  ↳↳ [`TransformOptions`](../internal/interfaces/internal.TransformOptions.md)
 
 ## Properties
 
@@ -52,7 +52,7 @@ ___
 
 ### defaultEncoding
 
- `Optional` **defaultEncoding**: [`BufferEncoding`](../index.md#bufferencoding)
+ `Optional` **defaultEncoding**: [`BufferEncoding`](../types/BufferEncoding.md)
 
 #### Inherited from
 
@@ -80,7 +80,7 @@ ___
 
 ### encoding
 
- `Optional` **encoding**: [`BufferEncoding`](../index.md#bufferencoding)
+ `Optional` **encoding**: [`BufferEncoding`](../types/BufferEncoding.md)
 
 #### Inherited from
 
@@ -305,7 +305,7 @@ ___
 | :------ |
 | `this` | [`Duplex`](../classes/Duplex.md) |
 | `chunk` | `any` |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `callback` | (`error?`: ``null`` \| `Error`) => `void` |
 
 #### Returns
@@ -333,7 +333,7 @@ ___
 | Name |
 | :------ |
 | `this` | [`Duplex`](../classes/Duplex.md) |
-| `chunks` | { `chunk`: `any` ; `encoding`: [`BufferEncoding`](../index.md#bufferencoding)  }[] |
+| `chunks` | { `chunk`: `any` ; `encoding`: [`BufferEncoding`](../types/BufferEncoding.md)  }[] |
 | `callback` | (`error?`: ``null`` \| `Error`) => `void` |
 
 #### Returns

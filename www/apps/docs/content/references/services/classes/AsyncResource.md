@@ -40,7 +40,7 @@ asyncResource.triggerAsyncId();
 
 - **`AsyncResource`**
 
-  ↳ [`EventEmitterReferencingAsyncResource`](../index.md#eventemitterreferencingasyncresource)
+  ↳ [`EventEmitterReferencingAsyncResource`](../EventEmitter/interfaces/EventEmitter.EventEmitterReferencingAsyncResource.md)
 
 ## Constructors
 

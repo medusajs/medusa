@@ -115,7 +115,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `logger?` | (`level`: [`AutoEncryptionLoggerLevel`](../index.md#autoencryptionloggerlevel-1), `message`: `string`) => `void` |
+| `logger?` | (`level`: [`AutoEncryptionLoggerLevel`](../index.md#autoencryptionloggerlevel), `message`: `string`) => `void` |
 
 #### Defined in
 

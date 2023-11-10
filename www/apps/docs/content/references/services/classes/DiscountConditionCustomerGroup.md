@@ -20,7 +20,7 @@ The ID of the Discount Condition
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-customer-group.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-customer-group.ts#L20)
+[packages/medusa/src/models/discount-condition-customer-group.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-customer-group.ts#L20)
 
 ___
 
@@ -32,7 +32,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-customer-group.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-customer-group.ts#L31)
+[packages/medusa/src/models/discount-condition-customer-group.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-customer-group.ts#L31)
 
 ___
 
@@ -44,7 +44,7 @@ Available if the relation `customer_group` is expanded.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-customer-group.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-customer-group.ts#L24)
+[packages/medusa/src/models/discount-condition-customer-group.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-customer-group.ts#L24)
 
 ___
 
@@ -56,7 +56,7 @@ The ID of the Product Tag
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-customer-group.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-customer-group.ts#L17)
+[packages/medusa/src/models/discount-condition-customer-group.ts:17](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-customer-group.ts#L17)
 
 ___
 
@@ -68,7 +68,7 @@ Available if the relation `discount_condition` is expanded.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-customer-group.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-customer-group.ts#L28)
+[packages/medusa/src/models/discount-condition-customer-group.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-customer-group.ts#L28)
 
 ___
 
@@ -80,7 +80,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-customer-group.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-customer-group.ts#L37)
+[packages/medusa/src/models/discount-condition-customer-group.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-customer-group.ts#L37)
 
 ___
 
@@ -92,4 +92,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-customer-group.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-customer-group.ts#L34)
+[packages/medusa/src/models/discount-condition-customer-group.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-customer-group.ts#L34)

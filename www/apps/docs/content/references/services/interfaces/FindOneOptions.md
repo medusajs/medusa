@@ -98,7 +98,7 @@ ___
 
 ### order
 
- `Optional` **order**: [`FindOptionsOrder`](../index.md#findoptionsorder)<`Entity`\>
+ `Optional` **order**: [`FindOptionsOrder`](../types/FindOptionsOrder.md)<`Entity`\>
 
 Order, in which entities should be ordered.
 
@@ -126,7 +126,7 @@ ___
 
 ### relations
 
- `Optional` **relations**: [`FindOptionsRelations`](../index.md#findoptionsrelations)<`Entity`\> \| [`FindOptionsRelationByString`](../index.md#findoptionsrelationbystring)
+ `Optional` **relations**: [`FindOptionsRelations`](../types/FindOptionsRelations.md)<`Entity`\> \| [`FindOptionsRelationByString`](../types/FindOptionsRelationByString.md)
 
 Indicates what relations of entity should be loaded (simplified left join form).
 
@@ -138,7 +138,7 @@ ___
 
 ### select
 
- `Optional` **select**: [`FindOptionsSelect`](../index.md#findoptionsselect)<`Entity`\> \| [`FindOptionsSelectByString`](../index.md#findoptionsselectbystring)<`Entity`\>
+ `Optional` **select**: [`FindOptionsSelect`](../types/FindOptionsSelect.md)<`Entity`\> \| [`FindOptionsSelectByString`](../types/FindOptionsSelectByString.md)<`Entity`\>
 
 Specifies what columns should be retrieved.
 
@@ -162,7 +162,7 @@ ___
 
 ### where
 
- `Optional` **where**: [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[]
+ `Optional` **where**: [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[]
 
 Simple condition that should be applied to match entities.
 

@@ -20,7 +20,7 @@ The amount to compare the Cart subtotal to.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L49)
+[packages/medusa/src/models/shipping-option-requirement.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L49)
 
 ___
 
@@ -32,7 +32,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L52)
+[packages/medusa/src/models/shipping-option-requirement.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L52)
 
 ___
 
@@ -44,7 +44,7 @@ The shipping option requirement's ID
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L35)
+[packages/medusa/src/models/shipping-option-requirement.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L35)
 
 ___
 
@@ -56,7 +56,7 @@ The details of the shipping option that the requirements belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L43)
+[packages/medusa/src/models/shipping-option-requirement.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L43)
 
 ___
 
@@ -68,7 +68,7 @@ The ID of the shipping option that the requirements belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L39)
+[packages/medusa/src/models/shipping-option-requirement.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L39)
 
 ___
 
@@ -80,7 +80,7 @@ The type of the requirement, this defines how the value will be compared to the 
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L46)
+[packages/medusa/src/models/shipping-option-requirement.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L46)
 
 ## Methods
 
@@ -96,4 +96,4 @@ The type of the requirement, this defines how the value will be compared to the 
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L58)
+[packages/medusa/src/models/shipping-option-requirement.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L58)

@@ -14,7 +14,7 @@ ___
 
 ### psk
 
- **psk**: [`TypedArray`](../index.md#typedarray) \| `DataView`
+ **psk**: [`TypedArray`](../types/TypedArray.md) \| `DataView`
 
 #### Defined in
 

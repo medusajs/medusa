@@ -30,7 +30,7 @@ The amount that the Payment has been authorized for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:51](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L51)
+[packages/medusa/src/models/payment.ts:51](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L51)
 
 ___
 
@@ -42,7 +42,7 @@ The amount of the original Payment amount that has been refunded back to the Cus
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L62)
+[packages/medusa/src/models/payment.ts:62](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L62)
 
 ___
 
@@ -54,7 +54,7 @@ The date with timezone at which the Payment was canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:75](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L75)
+[packages/medusa/src/models/payment.ts:75](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L75)
 
 ___
 
@@ -66,7 +66,7 @@ The date with timezone at which the Payment was captured.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L72)
+[packages/medusa/src/models/payment.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L72)
 
 ___
 
@@ -78,7 +78,7 @@ The details of the cart that the payment session was potentially created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L40)
+[packages/medusa/src/models/payment.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L40)
 
 ___
 
@@ -90,7 +90,7 @@ The ID of the cart that the payment session was potentially created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L36)
+[packages/medusa/src/models/payment.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L36)
 
 ___
 
@@ -106,7 +106,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -118,7 +118,7 @@ The details of the currency of the payment.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L59)
+[packages/medusa/src/models/payment.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L59)
 
 ___
 
@@ -130,7 +130,7 @@ The 3 character ISO currency code of the payment.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L55)
+[packages/medusa/src/models/payment.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L55)
 
 ___
 
@@ -142,7 +142,7 @@ The data required for the Payment Provider to identify, modify and process the P
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L69)
+[packages/medusa/src/models/payment.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L69)
 
 ___
 
@@ -158,7 +158,7 @@ The payment's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -170,7 +170,7 @@ Randomly generated key used to continue the completion of a payment in case of f
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L81)
+[packages/medusa/src/models/payment.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L81)
 
 ___
 
@@ -182,7 +182,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:78](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L78)
+[packages/medusa/src/models/payment.ts:78](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L78)
 
 ___
 
@@ -194,7 +194,7 @@ The details of the order that the payment session was potentially created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:48](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L48)
+[packages/medusa/src/models/payment.ts:48](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L48)
 
 ___
 
@@ -206,7 +206,7 @@ The ID of the order that the payment session was potentially created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:44](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L44)
+[packages/medusa/src/models/payment.ts:44](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L44)
 
 ___
 
@@ -218,7 +218,7 @@ The id of the Payment Provider that is responsible for the Payment
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L66)
+[packages/medusa/src/models/payment.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L66)
 
 ___
 
@@ -230,7 +230,7 @@ The details of the swap that this payment was potentially created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L32)
+[packages/medusa/src/models/payment.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L32)
 
 ___
 
@@ -242,7 +242,7 @@ The ID of the swap that this payment was potentially created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L28)
+[packages/medusa/src/models/payment.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L28)
 
 ___
 
@@ -258,7 +258,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -274,4 +274,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/payment.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment.ts#L87)
+[packages/medusa/src/models/payment.ts:87](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment.ts#L87)

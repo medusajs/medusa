@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/customer-groups.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/customer-groups.ts#L65)
+[packages/medusa/src/types/customer-groups.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/customer-groups.ts#L65)
 
 ___
 
@@ -24,4 +24,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/customer-groups.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/customer-groups.ts#L64)
+[packages/medusa/src/types/customer-groups.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/customer-groups.ts#L64)

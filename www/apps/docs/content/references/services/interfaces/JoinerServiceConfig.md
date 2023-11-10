@@ -28,7 +28,7 @@ ___
 
 ### extends
 
- `Optional` **extends**: { `relationship`: [`JoinerRelationship`](../index.md#joinerrelationship) ; `serviceName`: `string`  }[]
+ `Optional` **extends**: { `relationship`: [`JoinerRelationship`](../types/JoinerRelationship.md) ; `serviceName`: `string`  }[]
 
 #### Defined in
 
@@ -60,7 +60,7 @@ ___
 
 ### relationships
 
- `Optional` **relationships**: [`JoinerRelationship`](../index.md#joinerrelationship)[]
+ `Optional` **relationships**: [`JoinerRelationship`](../types/JoinerRelationship.md)[]
 
 #### Defined in
 

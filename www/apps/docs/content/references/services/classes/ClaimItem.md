@@ -30,7 +30,7 @@ The details of the claim this item belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L42)
+[packages/medusa/src/models/claim-item.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L42)
 
 ___
 
@@ -42,7 +42,7 @@ The ID of the claim this item is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L38)
+[packages/medusa/src/models/claim-item.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L38)
 
 ___
 
@@ -58,7 +58,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -74,7 +74,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -90,7 +90,7 @@ The claim item's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -102,7 +102,7 @@ The claim images that are attached to the claim item.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L34)
+[packages/medusa/src/models/claim-item.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L34)
 
 ___
 
@@ -114,7 +114,7 @@ The details of the line item in the original order that this claim item refers t
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L50)
+[packages/medusa/src/models/claim-item.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L50)
 
 ___
 
@@ -126,7 +126,7 @@ The ID of the line item that the claim item refers to.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L46)
+[packages/medusa/src/models/claim-item.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L46)
 
 ___
 
@@ -138,7 +138,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:84](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L84)
+[packages/medusa/src/models/claim-item.ts:84](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L84)
 
 ___
 
@@ -150,7 +150,7 @@ An optional note about the claim, for additional information
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L64)
+[packages/medusa/src/models/claim-item.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L64)
 
 ___
 
@@ -162,7 +162,7 @@ The quantity of the item that is being claimed; must be less than or equal to th
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L67)
+[packages/medusa/src/models/claim-item.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L67)
 
 ___
 
@@ -174,7 +174,7 @@ The reason for the claim
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L61)
+[packages/medusa/src/models/claim-item.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L61)
 
 ___
 
@@ -186,7 +186,7 @@ User defined tags for easy filtering and grouping.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L81)
+[packages/medusa/src/models/claim-item.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L81)
 
 ___
 
@@ -202,7 +202,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -214,7 +214,7 @@ The details of the product variant to potentially replace the item in the origin
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L58)
+[packages/medusa/src/models/claim-item.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L58)
 
 ___
 
@@ -226,7 +226,7 @@ The ID of the product variant that is claimed.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L54)
+[packages/medusa/src/models/claim-item.ts:54](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L54)
 
 ## Methods
 
@@ -242,4 +242,4 @@ The ID of the product variant that is claimed.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:90](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L90)
+[packages/medusa/src/models/claim-item.ts:90](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L90)

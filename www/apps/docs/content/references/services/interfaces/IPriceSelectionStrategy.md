@@ -10,7 +10,7 @@
 
 ### calculateVariantPrice
 
-**calculateVariantPrice**(`data`, `context`): `Promise`<`Map`<`string`, [`PriceSelectionResult`](../index.md#priceselectionresult)\>\>
+**calculateVariantPrice**(`data`, `context`): `Promise`<`Map`<`string`, [`PriceSelectionResult`](../types/PriceSelectionResult.md)\>\>
 
 Calculate the original and discount price for a given variant in a set of
 circumstances described in the context.
@@ -20,11 +20,11 @@ circumstances described in the context.
 | Name | Description |
 | :------ | :------ |
 | `data` | { `quantity?`: `number` ; `variantId`: `string`  }[] |
-| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) | Details relevant to determine the correct pricing of the variant |
+| `context` | [`PriceSelectionContext`](../types/PriceSelectionContext.md) | Details relevant to determine the correct pricing of the variant |
 
 #### Returns
 
-`Promise`<`Map`<`string`, [`PriceSelectionResult`](../index.md#priceselectionresult)\>\>
+`Promise`<`Map`<`string`, [`PriceSelectionResult`](../types/PriceSelectionResult.md)\>\>
 
 -`Promise`: pricing details in an object containing the calculated lowest price,
 the default price an all valid prices for the given variant
@@ -34,7 +34,7 @@ the default price an all valid prices for the given variant
 
 #### Defined in
 
-[packages/medusa/src/interfaces/price-selection-strategy.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/price-selection-strategy.ts#L16)
+[packages/medusa/src/interfaces/price-selection-strategy.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/price-selection-strategy.ts#L16)
 
 ___
 
@@ -58,7 +58,7 @@ Notify price selection strategy that variants prices have been updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/price-selection-strategy.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/price-selection-strategy.ts#L28)
+[packages/medusa/src/interfaces/price-selection-strategy.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/price-selection-strategy.ts#L28)
 
 ___
 

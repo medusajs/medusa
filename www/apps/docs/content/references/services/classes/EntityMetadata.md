@@ -716,7 +716,7 @@ ___
 
 ### orderBy
 
- `Optional` **orderBy**: [`OrderByCondition`](../index.md#orderbycondition)
+ `Optional` **orderBy**: [`OrderByCondition`](../types/OrderByCondition.md)
 
 Specifies a default order by used for queries from this table when no explicit order by is specified.
 
@@ -1004,7 +1004,7 @@ ___
 
 ### tableType
 
- **tableType**: [`TableType`](../index.md#tabletype)
+ **tableType**: [`TableType`](../types/TableType.md)
 
 Table type. Tables can be closure, junction, etc.
 
@@ -1090,7 +1090,7 @@ ___
 
 ### treeType
 
- `Optional` **treeType**: [`TreeType`](../index.md#treetype)
+ `Optional` **treeType**: [`TreeType`](../types/TreeType.md)
 
 Indicates if this entity is a tree, what type of tree it is.
 

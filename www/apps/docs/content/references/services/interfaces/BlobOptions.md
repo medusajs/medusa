@@ -4,7 +4,7 @@
 
 ### encoding
 
- `Optional` **encoding**: [`BufferEncoding`](../index.md#bufferencoding)
+ `Optional` **encoding**: [`BufferEncoding`](../types/BufferEncoding.md)
 
 **Default**
 

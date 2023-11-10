@@ -30,7 +30,7 @@ The remaining value on the Gift Card.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L26)
+[packages/medusa/src/models/gift-card.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L26)
 
 ___
 
@@ -42,7 +42,7 @@ The unique code that identifies the Gift Card. This is used by the Customer to r
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L20)
+[packages/medusa/src/models/gift-card.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L20)
 
 ___
 
@@ -58,7 +58,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -74,7 +74,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -86,7 +86,7 @@ The time at which the Gift Card can no longer be used.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:51](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L51)
+[packages/medusa/src/models/gift-card.ts:51](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L51)
 
 ___
 
@@ -102,7 +102,7 @@ The gift card's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -114,7 +114,7 @@ Whether the Gift Card has been disabled. Disabled Gift Cards cannot be applied t
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L45)
+[packages/medusa/src/models/gift-card.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L45)
 
 ___
 
@@ -126,7 +126,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L57)
+[packages/medusa/src/models/gift-card.ts:57](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L57)
 
 ___
 
@@ -138,7 +138,7 @@ The details of the order that the gift card was purchased in.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L42)
+[packages/medusa/src/models/gift-card.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L42)
 
 ___
 
@@ -150,7 +150,7 @@ The ID of the order that the gift card was purchased in.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L38)
+[packages/medusa/src/models/gift-card.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L38)
 
 ___
 
@@ -162,7 +162,7 @@ The details of the region this gift card is available in.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L34)
+[packages/medusa/src/models/gift-card.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L34)
 
 ___
 
@@ -174,7 +174,7 @@ The ID of the region this gift card is available in.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L30)
+[packages/medusa/src/models/gift-card.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L30)
 
 ___
 
@@ -186,7 +186,7 @@ The gift card's tax rate that will be applied on calculating totals
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L54)
+[packages/medusa/src/models/gift-card.ts:54](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L54)
 
 ___
 
@@ -202,7 +202,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -214,7 +214,7 @@ The value that the Gift Card represents.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L23)
+[packages/medusa/src/models/gift-card.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L23)
 
 ## Methods
 
@@ -230,4 +230,4 @@ The value that the Gift Card represents.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card.ts:63](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card.ts#L63)
+[packages/medusa/src/models/gift-card.ts:63](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card.ts#L63)

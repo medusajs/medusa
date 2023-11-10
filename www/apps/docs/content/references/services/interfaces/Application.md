@@ -23,7 +23,7 @@ v0.1.26
 
 ## Hierarchy
 
-- [`EventEmitter`](../classes/EventEmitter.md)
+- [`EventEmitter`](../classes/EventEmitter-1.md)
 
 - [`IRouter`](IRouter.md)
 
@@ -369,7 +369,7 @@ Sub-apps will:
 
 #### Overrides
 
-[EventEmitter](../classes/EventEmitter.md).[on](../classes/EventEmitter.md#on)
+[EventEmitter](../classes/EventEmitter-1.md).[on](../classes/EventEmitter-1.md#on)
 
 #### Defined in
 
@@ -638,7 +638,7 @@ ___
 
 ### use
 
- **use**: [`ApplicationRequestHandler`](../index.md#applicationrequesthandler)<[`Application`](Application.md)<`LocalsObj`\>\>
+ **use**: [`ApplicationRequestHandler`](../types/ApplicationRequestHandler.md)<[`Application`](Application.md)<`LocalsObj`\>\>
 
 #### Overrides
 
@@ -670,7 +670,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:1259
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[[captureRejectionSymbol]](../classes/EventEmitter.md#[capturerejectionsymbol])
+[EventEmitter](../classes/EventEmitter-1.md).[[captureRejectionSymbol]](../classes/EventEmitter-1.md#[capturerejectionsymbol])
 
 #### Defined in
 
@@ -703,7 +703,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[addListener](../classes/EventEmitter.md#addlistener)
+[EventEmitter](../classes/EventEmitter-1.md).[addListener](../classes/EventEmitter-1.md#addlistener)
 
 #### Defined in
 
@@ -845,7 +845,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[emit](../classes/EventEmitter.md#emit)
+[EventEmitter](../classes/EventEmitter-1.md).[emit](../classes/EventEmitter-1.md#emit)
 
 #### Defined in
 
@@ -992,7 +992,7 @@ v6.0.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[eventNames](../classes/EventEmitter.md#eventnames)
+[EventEmitter](../classes/EventEmitter-1.md).[eventNames](../classes/EventEmitter-1.md#eventnames)
 
 #### Defined in
 
@@ -1019,7 +1019,7 @@ v1.0.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[getMaxListeners](../classes/EventEmitter.md#getmaxlisteners)
+[EventEmitter](../classes/EventEmitter-1.md).[getMaxListeners](../classes/EventEmitter-1.md#getmaxlisteners)
 
 #### Defined in
 
@@ -1224,7 +1224,7 @@ v3.2.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[listenerCount](../classes/EventEmitter.md#listenercount)
+[EventEmitter](../classes/EventEmitter-1.md).[listenerCount](../classes/EventEmitter-1.md#listenercount)
 
 #### Defined in
 
@@ -1264,7 +1264,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[listeners](../classes/EventEmitter.md#listeners)
+[EventEmitter](../classes/EventEmitter-1.md).[listeners](../classes/EventEmitter-1.md#listeners)
 
 #### Defined in
 
@@ -1297,7 +1297,7 @@ v10.0.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[off](../classes/EventEmitter.md#off)
+[EventEmitter](../classes/EventEmitter-1.md).[off](../classes/EventEmitter-1.md#off)
 
 #### Defined in
 
@@ -1353,7 +1353,7 @@ v0.3.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[once](../classes/EventEmitter.md#once)
+[EventEmitter](../classes/EventEmitter-1.md).[once](../classes/EventEmitter-1.md#once)
 
 #### Defined in
 
@@ -1395,7 +1395,7 @@ it will continue on to execute the route, or subsequent parameter functions.
 | Name |
 | :------ |
 | `name` | `string` \| `string`[] |
-| `handler` | [`RequestParamHandler`](../index.md#requestparamhandler) |
+| `handler` | [`RequestParamHandler`](../types/RequestParamHandler.md) |
 
 #### Returns
 
@@ -1419,7 +1419,7 @@ Alternatively, you can pass only a callback, in which case you have the opportun
 
 | Name |
 | :------ |
-| `callback` | (`name`: `string`, `matcher`: `RegExp`) => [`RequestParamHandler`](../index.md#requestparamhandler) |
+| `callback` | (`name`: `string`, `matcher`: `RegExp`) => [`RequestParamHandler`](../types/RequestParamHandler.md) |
 
 #### Returns
 
@@ -1502,7 +1502,7 @@ v6.0.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[prependListener](../classes/EventEmitter.md#prependlistener)
+[EventEmitter](../classes/EventEmitter-1.md).[prependListener](../classes/EventEmitter-1.md#prependlistener)
 
 #### Defined in
 
@@ -1544,7 +1544,7 @@ v6.0.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[prependOnceListener](../classes/EventEmitter.md#prependoncelistener)
+[EventEmitter](../classes/EventEmitter-1.md).[prependOnceListener](../classes/EventEmitter-1.md#prependoncelistener)
 
 #### Defined in
 
@@ -1602,7 +1602,7 @@ v9.4.0
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[rawListeners](../classes/EventEmitter.md#rawlisteners)
+[EventEmitter](../classes/EventEmitter-1.md).[rawListeners](../classes/EventEmitter-1.md#rawlisteners)
 
 #### Defined in
 
@@ -1640,7 +1640,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[removeAllListeners](../classes/EventEmitter.md#removealllisteners)
+[EventEmitter](../classes/EventEmitter-1.md).[removeAllListeners](../classes/EventEmitter-1.md#removealllisteners)
 
 #### Defined in
 
@@ -1751,7 +1751,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[removeListener](../classes/EventEmitter.md#removelistener)
+[EventEmitter](../classes/EventEmitter-1.md).[removeListener](../classes/EventEmitter-1.md#removelistener)
 
 #### Defined in
 
@@ -1846,7 +1846,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:310
 
 | Name |
 | :------ |
-| `prefix` | [`PathParams`](../index.md#pathparams) |
+| `prefix` | [`PathParams`](../types/PathParams.md) |
 
 #### Returns
 
@@ -1928,7 +1928,7 @@ v0.3.5
 
 #### Inherited from
 
-[EventEmitter](../classes/EventEmitter.md).[setMaxListeners](../classes/EventEmitter.md#setmaxlisteners)
+[EventEmitter](../classes/EventEmitter-1.md).[setMaxListeners](../classes/EventEmitter-1.md#setmaxlisteners)
 
 #### Defined in
 

@@ -24,7 +24,7 @@ String sources are also copied into the `Blob`.
 
 | Name |
 | :------ |
-| `sources` | ([`Blob`](Blob.md) \| [`BinaryLike`](../index.md#binarylike))[] |
+| `sources` | ([`Blob`](Blob.md) \| [`BinaryLike`](../types/BinaryLike.md))[] |
 | `options?` | [`BlobOptions`](../interfaces/BlobOptions.md) |
 
 #### Defined in

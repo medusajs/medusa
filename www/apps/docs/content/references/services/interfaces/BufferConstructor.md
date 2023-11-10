@@ -17,7 +17,7 @@ Allocates a new buffer containing the given {str}.
 | Name | Description |
 | :------ | :------ |
 | `str` | `string` | String to store in buffer. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | encoding to use, optional. Default is 'utf8' |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | encoding to use, optional. Default is 'utf8' |
 
 **Deprecated**
 
@@ -189,7 +189,7 @@ A `TypeError` will be thrown if `size` is not a number.
 | :------ | :------ |
 | `size` | `number` | The desired length of the new `Buffer`. |
 | `fill?` | `string` \| `number` \| `Uint8Array` | A value to pre-fill the new `Buffer` with. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | If `fill` is a string, this is its encoding. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | If `fill` is a string, this is its encoding. |
 
 #### Returns
 
@@ -364,8 +364,8 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuf
 
 | Name | Description |
 | :------ | :------ |
-| `string` | `string` \| `ArrayBuffer` \| [`SharedArrayBuffer`](../index.md#sharedarraybuffer) \| [`ArrayBufferView`](../index.md#arraybufferview) | A value to calculate the length of. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | If `string` is a string, this is its encoding. |
+| `string` | `string` \| `ArrayBuffer` \| [`SharedArrayBuffer`](../index.md#sharedarraybuffer) \| [`ArrayBufferView`](../types/ArrayBufferView-1.md) | A value to calculate the length of. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | If `string` is a string, this is its encoding. |
 
 #### Returns
 
@@ -504,7 +504,7 @@ console.log(buf[1]); // 255
 
 | Name | Description |
 | :------ | :------ |
-| `view` | [`TypedArray`](../index.md#typedarray) | The {TypedArray} to copy. |
+| `view` | [`TypedArray`](../types/TypedArray.md) | The {TypedArray} to copy. |
 | `offset?` | `number` | The starting offset within `view`. |
 | `length?` | `number` | The number of elements from `view` to copy. |
 
@@ -551,7 +551,7 @@ appropriate for `Buffer.from()` variants.
 
 | Name |
 | :------ |
-| `arrayBuffer` | [`WithImplicitCoercion`](../index.md#withimplicitcoercion)<`ArrayBuffer` \| [`SharedArrayBuffer`](../index.md#sharedarraybuffer)\> |
+| `arrayBuffer` | [`WithImplicitCoercion`](../types/WithImplicitCoercion.md)<`ArrayBuffer` \| [`SharedArrayBuffer`](../index.md#sharedarraybuffer)\> |
 | `byteOffset?` | `number` |
 | `length?` | `number` |
 
@@ -595,7 +595,7 @@ docs-util/node_modules/@types/node/buffer.d.ts:330
 
 | Name |
 | :------ |
-| `data` | [`WithImplicitCoercion`](../index.md#withimplicitcoercion)<`string` \| `Uint8Array` \| readonly `number`[]\> |
+| `data` | [`WithImplicitCoercion`](../types/WithImplicitCoercion.md)<`string` \| `Uint8Array` \| readonly `number`[]\> |
 
 #### Returns
 
@@ -617,8 +617,8 @@ If not provided, {encoding} defaults to 'utf8'.
 
 | Name |
 | :------ |
-| `str` | [`WithImplicitCoercion`](../index.md#withimplicitcoercion)<`string`\> \| { `[toPrimitive]`: Method [toPrimitive]  } |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `str` | [`WithImplicitCoercion`](../types/WithImplicitCoercion.md)<`string`\> \| { `[toPrimitive]`: Method [toPrimitive]  } |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 
 #### Returns
 

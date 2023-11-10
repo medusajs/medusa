@@ -34,7 +34,7 @@ ___
 
 ### filter
 
- **filter**: [`Filter`](../index.md#filter)<`TSchema`\>
+ **filter**: [`Filter`](../types/Filter.md)<`TSchema`\>
 
 The filter to limit the updated documents.
 
@@ -46,7 +46,7 @@ ___
 
 ### hint
 
- `Optional` **hint**: [`Hint`](../index.md#hint)
+ `Optional` **hint**: [`Hint`](../types/Hint.md)
 
 The index to use. If specified, then the query system will only consider plans using the hinted index.
 
@@ -58,7 +58,7 @@ ___
 
 ### update
 
- **update**: [`UpdateFilter`](../index.md#updatefilter)<`TSchema`\> \| [`UpdateFilter`](../index.md#updatefilter)<`TSchema`\>[]
+ **update**: [`UpdateFilter`](../types/UpdateFilter.md)<`TSchema`\> \| [`UpdateFilter`](../types/UpdateFilter.md)<`TSchema`\>[]
 
 A document or pipeline containing update operators.
 

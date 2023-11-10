@@ -38,7 +38,7 @@ ___
 
 ### reason
 
- **reason**: `string` \| [`AnyError`](../index.md#anyerror)
+ **reason**: `string` \| [`AnyError`](../types/AnyError.md)
 
 The reason the attempt to check out failed
 

@@ -48,7 +48,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `architecture` | `string` |
-| `name` | [`Platform`](../index.md#platform) |
+| `name` | [`Platform`](../types/Platform.md) |
 | `type` | `string` |
 | `version` | `string` |
 

@@ -10,21 +10,21 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-41) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-41.md) |
 
 #### Defined in
 
-[packages/medusa/src/services/token.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/token.ts#L16)
+[packages/medusa/src/services/token.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/token.ts#L16)
 
 ## Properties
 
 ### configModule\_
 
- `Protected` `Readonly` **configModule\_**: [`ConfigModule`](../index.md#configmodule)
+ `Protected` `Readonly` **configModule\_**: [`ConfigModule`](../types/ConfigModule.md)
 
 #### Defined in
 
-[packages/medusa/src/services/token.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/token.ts#L14)
+[packages/medusa/src/services/token.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/token.ts#L14)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/token.ts:12](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/token.ts#L12)
+[packages/medusa/src/services/token.ts:12](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/token.ts#L12)
 
 ## Methods
 
@@ -57,7 +57,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/token.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/token.ts#L34)
+[packages/medusa/src/services/token.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/token.ts#L34)
 
 ___
 
@@ -80,4 +80,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/token.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/token.ts#L20)
+[packages/medusa/src/services/token.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/token.ts#L20)

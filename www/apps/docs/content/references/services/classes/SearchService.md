@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-36) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-36.md) |
 | `options` | `any` |
 
 #### Overrides
@@ -25,7 +25,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L16)
+[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L16)
 
 ## Properties
 
@@ -39,17 +39,17 @@
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L11)
+[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L11)
 
 ___
 
 ### logger\_
 
- `Protected` `Readonly` **logger\_**: [`Logger`](../index.md#logger)
+ `Protected` `Readonly` **logger\_**: [`Logger`](../types/Logger-2.md)
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L13)
+[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L13)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L14)
+[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L14)
 
 ## Accessors
 
@@ -115,7 +115,7 @@ Used to index documents by the search engine provider
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L40)
+[packages/medusa/src/services/search.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L40)
 
 ___
 
@@ -144,7 +144,7 @@ Used to create an index
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L28)
+[packages/medusa/src/services/search.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L28)
 
 ___
 
@@ -172,7 +172,7 @@ Used to delete all documents
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L69)
+[packages/medusa/src/services/search.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L69)
 
 ___
 
@@ -201,7 +201,7 @@ Used to delete document
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L60)
+[packages/medusa/src/services/search.ts:60](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L60)
 
 ___
 
@@ -229,7 +229,7 @@ Used to get an index
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L34)
+[packages/medusa/src/services/search.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L34)
 
 ___
 
@@ -259,7 +259,7 @@ Used to replace documents
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L50)
+[packages/medusa/src/services/search.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L50)
 
 ___
 
@@ -290,7 +290,7 @@ Used to search for a document in an index
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:75](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L75)
+[packages/medusa/src/services/search.ts:75](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L75)
 
 ___
 
@@ -319,4 +319,4 @@ Used to update the settings of an index
 
 #### Defined in
 
-[packages/medusa/src/services/search.ts:86](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L86)
+[packages/medusa/src/services/search.ts:86](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/search.ts#L86)

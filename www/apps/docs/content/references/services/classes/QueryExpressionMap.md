@@ -411,7 +411,7 @@ Optional on update statement used in insertion query in databases.
 | `indexPredicate?` | `string` |
 | `overwrite?` | `string`[] |
 | `skipUpdateIfNoValuesChanged?` | `boolean` |
-| `upsertType?` | [`UpsertType`](../index.md#upserttype) |
+| `upsertType?` | [`UpsertType`](../types/UpsertType.md) |
 
 #### Defined in
 
@@ -421,7 +421,7 @@ ___
 
 ### options
 
- **options**: [`SelectQueryBuilderOption`](../index.md#selectquerybuilderoption)[]
+ **options**: [`SelectQueryBuilderOption`](../types/SelectQueryBuilderOption.md)[]
 
 Options that define QueryBuilder behaviour.
 
@@ -433,7 +433,7 @@ ___
 
 ### orderBys
 
- **orderBys**: [`OrderByCondition`](../index.md#orderbycondition)
+ **orderBys**: [`OrderByCondition`](../types/OrderByCondition.md)
 
 ORDER BY queries.
 
@@ -716,14 +716,14 @@ node_modules/typeorm/query-builder/QueryExpressionMap.d.ts:166
 
 ### allOrderBys
 
-`get` **allOrderBys**(): [`OrderByCondition`](../index.md#orderbycondition)
+`get` **allOrderBys**(): [`OrderByCondition`](../types/OrderByCondition.md)
 
 Get all ORDER BY queries - if order by is specified by user then it uses them,
 otherwise it uses default entity order by if it was set.
 
 #### Returns
 
-[`OrderByCondition`](../index.md#orderbycondition)
+[`OrderByCondition`](../types/OrderByCondition.md)
 
 -`OrderByCondition`: Special object that defines order condition for ORDER BY in sql. Example: { "name": "ASC", "id": "DESC" }
 	-`__type`: 

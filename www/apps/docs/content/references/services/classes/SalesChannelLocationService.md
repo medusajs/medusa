@@ -18,7 +18,7 @@ Service for managing the stock locations of sales channels
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-35) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-35.md) |
 
 #### Overrides
 
@@ -26,7 +26,7 @@ Service for managing the stock locations of sales channels
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L27)
+[packages/medusa/src/services/sales-channel-location.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L27)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Service for managing the stock locations of sales channels
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:21](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L21)
+[packages/medusa/src/services/sales-channel-location.ts:21](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L21)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L20)
+[packages/medusa/src/services/sales-channel-location.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L20)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -136,7 +136,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ___
 
@@ -158,7 +158,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L23)
+[packages/medusa/src/services/sales-channel-location.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L23)
 
 ## Methods
 
@@ -183,7 +183,7 @@ Associates a sales channel with a stock location.
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L70)
+[packages/medusa/src/services/sales-channel-location.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L70)
 
 ___
 
@@ -205,7 +205,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -220,7 +220,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -246,7 +246,7 @@ Lists the stock locations associated with a sales channel.
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:101](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L101)
+[packages/medusa/src/services/sales-channel-location.ts:101](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L101)
 
 ___
 
@@ -272,7 +272,7 @@ Lists the sales channels associated with a stock location.
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:130](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L130)
+[packages/medusa/src/services/sales-channel-location.ts:130](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L130)
 
 ___
 
@@ -297,7 +297,7 @@ Removes an association between a sales channel and a stock location.
 
 #### Defined in
 
-[packages/medusa/src/services/sales-channel-location.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel-location.ts#L41)
+[packages/medusa/src/services/sales-channel-location.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/sales-channel-location.ts#L41)
 
 ___
 
@@ -323,7 +323,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -349,4 +349,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

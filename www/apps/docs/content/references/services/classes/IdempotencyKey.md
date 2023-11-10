@@ -20,7 +20,7 @@ Date which the idempotency key was locked.
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L23)
+[packages/medusa/src/models/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L23)
 
 ___
 
@@ -32,7 +32,7 @@ The idempotency key's ID
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L16)
+[packages/medusa/src/models/idempotency-key.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L16)
 
 ___
 
@@ -44,7 +44,7 @@ The unique randomly generated key used to determine the state of a process.
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L20)
+[packages/medusa/src/models/idempotency-key.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L20)
 
 ___
 
@@ -56,7 +56,7 @@ Date which the idempotency key was locked.
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L26)
+[packages/medusa/src/models/idempotency-key.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L26)
 
 ___
 
@@ -68,7 +68,7 @@ Where to continue from.
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:44](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L44)
+[packages/medusa/src/models/idempotency-key.ts:44](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L44)
 
 ___
 
@@ -80,7 +80,7 @@ The method of the request
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L29)
+[packages/medusa/src/models/idempotency-key.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L29)
 
 ___
 
@@ -92,7 +92,7 @@ The parameters passed to the request
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L32)
+[packages/medusa/src/models/idempotency-key.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L32)
 
 ___
 
@@ -104,7 +104,7 @@ The request's path
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L35)
+[packages/medusa/src/models/idempotency-key.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L35)
 
 ___
 
@@ -116,7 +116,7 @@ The response's body
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L41)
+[packages/medusa/src/models/idempotency-key.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L41)
 
 ___
 
@@ -128,7 +128,7 @@ The response's code.
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L38)
+[packages/medusa/src/models/idempotency-key.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L38)
 
 ## Methods
 
@@ -144,4 +144,4 @@ The response's code.
 
 #### Defined in
 
-[packages/medusa/src/models/idempotency-key.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/idempotency-key.ts#L50)
+[packages/medusa/src/models/idempotency-key.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/idempotency-key.ts#L50)

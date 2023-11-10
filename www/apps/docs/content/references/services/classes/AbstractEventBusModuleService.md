@@ -14,7 +14,7 @@
 
 ### eventToSubscribersMap\_
 
- `Protected` **eventToSubscribersMap\_**: `Map`<`string` \| `symbol`, [`SubscriberDescriptor`](../index.md#subscriberdescriptor)[]\>
+ `Protected` **eventToSubscribersMap\_**: `Map`<`string` \| `symbol`, [`SubscriberDescriptor`](../types/SubscriberDescriptor.md)[]\>
 
 #### Defined in
 
@@ -24,11 +24,11 @@ packages/utils/dist/event-bus/index.d.ts:3
 
 ### eventToSubscribersMap
 
-`get` **eventToSubscribersMap**(): `Map`<`string` \| `symbol`, [`SubscriberDescriptor`](../index.md#subscriberdescriptor)[]\>
+`get` **eventToSubscribersMap**(): `Map`<`string` \| `symbol`, [`SubscriberDescriptor`](../types/SubscriberDescriptor.md)[]\>
 
 #### Returns
 
-`Map`<`string` \| `symbol`, [`SubscriberDescriptor`](../index.md#subscriberdescriptor)[]\>
+`Map`<`string` \| `symbol`, [`SubscriberDescriptor`](../types/SubscriberDescriptor.md)[]\>
 
 -`Map`: 
 	-`string \| symbol`: (optional) 
@@ -81,7 +81,7 @@ packages/utils/dist/event-bus/index.d.ts:5
 
 | Name |
 | :------ |
-| `data` | [`EmitData`](../index.md#emitdata)<`T`\>[] |
+| `data` | [`EmitData`](../types/EmitData.md)<`T`\>[] |
 
 #### Returns
 
@@ -109,7 +109,7 @@ ___
 | :------ |
 | `«destructured»` | `object` |
 | › `event` | `string` \| `symbol` |
-| › `subscriber` | [`Subscriber`](../index.md#subscriber)<`unknown`\> |
+| › `subscriber` | [`Subscriber`](../types/Subscriber.md)<`unknown`\> |
 | › `subscriberId` | `string` |
 
 #### Returns
@@ -133,8 +133,8 @@ ___
 | Name |
 | :------ |
 | `eventName` | `string` \| `symbol` |
-| `subscriber` | [`Subscriber`](../index.md#subscriber)<`unknown`\> |
-| `context?` | [`SubscriberContext`](../index.md#subscribercontext) |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md)<`unknown`\> |
+| `context?` | [`SubscriberContext`](../types/SubscriberContext.md) |
 
 #### Returns
 
@@ -161,8 +161,8 @@ ___
 | Name |
 | :------ |
 | `eventName` | `string` \| `symbol` |
-| `subscriber` | [`Subscriber`](../index.md#subscriber)<`unknown`\> |
-| `context` | [`SubscriberContext`](../index.md#subscribercontext) |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md)<`unknown`\> |
+| `context` | [`SubscriberContext`](../types/SubscriberContext.md) |
 
 #### Returns
 

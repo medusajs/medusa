@@ -31,7 +31,7 @@ Authorize an existing session if it is not already authorized
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L68)
+[packages/medusa/src/interfaces/payment-processor.ts:68](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L68)
 
 ___
 
@@ -56,7 +56,7 @@ Cancel an existing session
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:110](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L110)
+[packages/medusa/src/interfaces/payment-processor.ts:110](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L110)
 
 ___
 
@@ -81,7 +81,7 @@ Capture an existing session
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:83](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L83)
+[packages/medusa/src/interfaces/payment-processor.ts:83](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L83)
 
 ___
 
@@ -106,7 +106,7 @@ Delete an existing session
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:92](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L92)
+[packages/medusa/src/interfaces/payment-processor.ts:92](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L92)
 
 ___
 
@@ -124,7 +124,7 @@ Return a unique identifier to retrieve the payment plugin provider
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L34)
+[packages/medusa/src/interfaces/payment-processor.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L34)
 
 ___
 
@@ -153,13 +153,13 @@ Return the status of the session
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:119](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L119)
+[packages/medusa/src/interfaces/payment-processor.ts:119](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L119)
 
 ___
 
 ### initiatePayment
 
-**initiatePayment**(`context`): `Promise`<[`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../index.md#paymentprocessorsessionresponse)\>
+**initiatePayment**(`context`): `Promise`<[`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.md)\>
 
 Initiate a payment session with the external provider
 
@@ -167,18 +167,18 @@ Initiate a payment session with the external provider
 
 | Name |
 | :------ |
-| `context` | [`PaymentProcessorContext`](../index.md#paymentprocessorcontext) |
+| `context` | [`PaymentProcessorContext`](../types/PaymentProcessorContext.md) |
 
 #### Returns
 
-`Promise`<[`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../index.md#paymentprocessorsessionresponse)\>
+`Promise`<[`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.md)\>
 
 -`Promise`: 
 	-`PaymentProcessorError \| PaymentProcessorSessionResponse`: (optional) 
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L39)
+[packages/medusa/src/interfaces/payment-processor.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L39)
 
 ___
 
@@ -204,7 +204,7 @@ Refund an existing session
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L56)
+[packages/medusa/src/interfaces/payment-processor.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L56)
 
 ___
 
@@ -229,13 +229,13 @@ Retrieve an existing session
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:101](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L101)
+[packages/medusa/src/interfaces/payment-processor.ts:101](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L101)
 
 ___
 
 ### updatePayment
 
-**updatePayment**(`context`): `Promise`<`void` \| [`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../index.md#paymentprocessorsessionresponse)\>
+**updatePayment**(`context`): `Promise`<`void` \| [`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.md)\>
 
 Update an existing payment session
 
@@ -243,18 +243,18 @@ Update an existing payment session
 
 | Name |
 | :------ |
-| `context` | [`PaymentProcessorContext`](../index.md#paymentprocessorcontext) |
+| `context` | [`PaymentProcessorContext`](../types/PaymentProcessorContext.md) |
 
 #### Returns
 
-`Promise`<`void` \| [`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../index.md#paymentprocessorsessionresponse)\>
+`Promise`<`void` \| [`PaymentProcessorError`](PaymentProcessorError.md) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.md)\>
 
 -`Promise`: 
 	-`void \| PaymentProcessorError \| PaymentProcessorSessionResponse`: (optional) 
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L47)
+[packages/medusa/src/interfaces/payment-processor.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L47)
 
 ___
 
@@ -280,4 +280,4 @@ Update the session data for a payment session
 
 #### Defined in
 
-[packages/medusa/src/interfaces/payment-processor.ts:126](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/payment-processor.ts#L126)
+[packages/medusa/src/interfaces/payment-processor.ts:126](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/payment-processor.ts#L126)

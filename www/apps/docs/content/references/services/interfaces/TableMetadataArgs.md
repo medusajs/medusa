@@ -78,7 +78,7 @@ ___
 
 ### orderBy
 
- `Optional` **orderBy**: [`OrderByCondition`](../index.md#orderbycondition) \| (`object`: `any`) => `any`
+ `Optional` **orderBy**: [`OrderByCondition`](../types/OrderByCondition.md) \| (`object`: `any`) => `any`
 
 Specifies a default order by used for queries from this table when no explicit order by is specified.
 
@@ -130,7 +130,7 @@ ___
 
 ### type
 
- **type**: [`TableType`](../index.md#tabletype)
+ **type**: [`TableType`](../types/TableType.md)
 
 Table type. Tables can be abstract, closure, junction, embedded, etc.
 

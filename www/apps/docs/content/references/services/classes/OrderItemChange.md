@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ The order item change's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ The details of the resulting line item after the item change. This line item is 
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L66)
+[packages/medusa/src/models/order-item-change.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L66)
 
 ___
 
@@ -90,7 +90,7 @@ The ID of the cloned line item.
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L62)
+[packages/medusa/src/models/order-item-change.ts:62](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L62)
 
 ___
 
@@ -102,7 +102,7 @@ The details of the order edit the item change is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L52)
+[packages/medusa/src/models/order-item-change.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L52)
 
 ___
 
@@ -114,7 +114,7 @@ The ID of the order edit
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:48](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L48)
+[packages/medusa/src/models/order-item-change.ts:48](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L48)
 
 ___
 
@@ -126,7 +126,7 @@ The details of the original line item this item change references. This is used 
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L59)
+[packages/medusa/src/models/order-item-change.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L59)
 
 ___
 
@@ -138,7 +138,7 @@ The ID of the original line item in the order
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L55)
+[packages/medusa/src/models/order-item-change.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L55)
 
 ___
 
@@ -150,7 +150,7 @@ The order item change's status
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L45)
+[packages/medusa/src/models/order-item-change.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L45)
 
 ___
 
@@ -166,7 +166,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -182,4 +182,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/order-item-change.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-item-change.ts#L72)
+[packages/medusa/src/models/order-item-change.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-item-change.ts#L72)

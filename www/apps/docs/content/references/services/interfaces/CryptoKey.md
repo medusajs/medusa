@@ -40,7 +40,7 @@ ___
 
 ### type
 
- `Readonly` **type**: [`KeyType`](../index.md#keytype-1)
+ `Readonly` **type**: [`KeyType`](../types/KeyType-1.md)
 
 A string identifying whether the key is a symmetric (`'secret'`) or asymmetric (`'private'` or `'public'`) key.
 
@@ -56,7 +56,7 @@ ___
 
 ### usages
 
- `Readonly` **usages**: [`KeyUsage`](../index.md#keyusage)[]
+ `Readonly` **usages**: [`KeyUsage`](../types/KeyUsage.md)[]
 
 An array of strings identifying the operations for which the key may be used.
 

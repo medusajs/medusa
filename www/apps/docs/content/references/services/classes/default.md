@@ -50,7 +50,7 @@ ___
 
 ### stream
 
- `Protected` **stream**: [`NetStream`](../index.md#netstream)
+ `Protected` **stream**: [`NetStream`](../types/NetStream.md)
 
 #### Defined in
 
@@ -82,17 +82,17 @@ ___
 
 ### connect
 
-`Abstract` **connect**(`_`): `Promise`<[`NetStream`](../index.md#netstream)\>
+`Abstract` **connect**(`_`): `Promise`<[`NetStream`](../types/NetStream.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `_` | [`ErrorEmitter`](../index.md#erroremitter) |
+| `_` | [`ErrorEmitter`](../types/ErrorEmitter.md) |
 
 #### Returns
 
-`Promise`<[`NetStream`](../index.md#netstream)\>
+`Promise`<[`NetStream`](../types/NetStream.md)\>
 
 -`Promise`: 
 	-`NetStream`: 

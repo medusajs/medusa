@@ -17,7 +17,7 @@ v0.1.26
 
 ## Hierarchy
 
-- [`internal`](internal.md)
+- [`internal`](internal-1.md)
 
   ↳ **`Stream`**
 
@@ -39,7 +39,7 @@ v0.1.26
 
 #### Overrides
 
-[internal](internal.md).[constructor](internal.md#constructor)
+[internal](internal-1.md).[constructor](internal-1.md#constructor)
 
 #### Defined in
 
@@ -61,7 +61,7 @@ v13.4.0, v12.16.0
 
 #### Inherited from
 
-[internal](internal.md).[captureRejectionSymbol](internal.md#capturerejectionsymbol)
+[internal](internal-1.md).[captureRejectionSymbol](internal-1.md#capturerejectionsymbol)
 
 #### Defined in
 
@@ -83,7 +83,7 @@ v13.4.0, v12.16.0
 
 #### Inherited from
 
-[internal](internal.md).[captureRejections](internal.md#capturerejections)
+[internal](internal-1.md).[captureRejections](internal-1.md#capturerejections)
 
 #### Defined in
 
@@ -135,7 +135,7 @@ v0.11.2
 
 #### Inherited from
 
-[internal](internal.md).[defaultMaxListeners](internal.md#defaultmaxlisteners)
+[internal](internal-1.md).[defaultMaxListeners](internal-1.md#defaultmaxlisteners)
 
 #### Defined in
 
@@ -158,7 +158,7 @@ v13.6.0, v12.17.0
 
 #### Inherited from
 
-[internal](internal.md).[errorMonitor](internal.md#errormonitor)
+[internal](internal-1.md).[errorMonitor](internal-1.md#errormonitor)
 
 #### Defined in
 
@@ -186,7 +186,7 @@ docs-util/node_modules/@types/node/events.d.ts:395
 
 #### Inherited from
 
-[internal](internal.md).[[captureRejectionSymbol]](internal.md#[capturerejectionsymbol])
+[internal](internal-1.md).[[captureRejectionSymbol]](internal-1.md#[capturerejectionsymbol])
 
 #### Defined in
 
@@ -219,7 +219,7 @@ v0.1.26
 
 #### Inherited from
 
-[internal](internal.md).[addListener](internal.md#addlistener)
+[internal](internal-1.md).[addListener](internal-1.md#addlistener)
 
 #### Defined in
 
@@ -239,7 +239,7 @@ ___
 
 | Name |
 | :------ |
-| `stream` | [`ComposeFnParam`](../index.md#composefnparam) \| `T` \| [`Iterable`](../interfaces/Iterable.md)<`T`\> \| [`AsyncIterable`](../interfaces/AsyncIterable.md)<`T`\> |
+| `stream` | [`ComposeFnParam`](../types/ComposeFnParam.md) \| `T` \| [`Iterable`](../interfaces/Iterable.md)<`T`\> \| [`AsyncIterable`](../interfaces/AsyncIterable.md)<`T`\> |
 | `options?` | `object` |
 | `options.signal` | `AbortSignal` |
 
@@ -249,7 +249,7 @@ ___
 
 #### Inherited from
 
-[internal](internal.md).[compose](internal.md#compose)
+[internal](internal-1.md).[compose](internal-1.md#compose)
 
 #### Defined in
 
@@ -318,7 +318,7 @@ v0.1.26
 
 #### Inherited from
 
-[internal](internal.md).[emit](internal.md#emit)
+[internal](internal-1.md).[emit](internal-1.md#emit)
 
 #### Defined in
 
@@ -360,7 +360,7 @@ v6.0.0
 
 #### Inherited from
 
-[internal](internal.md).[eventNames](internal.md#eventnames)
+[internal](internal-1.md).[eventNames](internal-1.md#eventnames)
 
 #### Defined in
 
@@ -387,7 +387,7 @@ v1.0.0
 
 #### Inherited from
 
-[internal](internal.md).[getMaxListeners](internal.md#getmaxlisteners)
+[internal](internal-1.md).[getMaxListeners](internal-1.md#getmaxlisteners)
 
 #### Defined in
 
@@ -422,7 +422,7 @@ v3.2.0
 
 #### Inherited from
 
-[internal](internal.md).[listenerCount](internal.md#listenercount)
+[internal](internal-1.md).[listenerCount](internal-1.md#listenercount)
 
 #### Defined in
 
@@ -462,7 +462,7 @@ v0.1.26
 
 #### Inherited from
 
-[internal](internal.md).[listeners](internal.md#listeners)
+[internal](internal-1.md).[listeners](internal-1.md#listeners)
 
 #### Defined in
 
@@ -495,7 +495,7 @@ v10.0.0
 
 #### Inherited from
 
-[internal](internal.md).[off](internal.md#off)
+[internal](internal-1.md).[off](internal-1.md#off)
 
 #### Defined in
 
@@ -553,7 +553,7 @@ v0.1.101
 
 #### Inherited from
 
-[internal](internal.md).[on](internal.md#on)
+[internal](internal-1.md).[on](internal-1.md#on)
 
 #### Defined in
 
@@ -609,7 +609,7 @@ v0.3.0
 
 #### Inherited from
 
-[internal](internal.md).[once](internal.md#once)
+[internal](internal-1.md).[once](internal-1.md#once)
 
 #### Defined in
 
@@ -639,7 +639,7 @@ ___
 
 #### Inherited from
 
-[internal](internal.md).[pipe](internal.md#pipe)
+[internal](internal-1.md).[pipe](internal-1.md#pipe)
 
 #### Defined in
 
@@ -683,7 +683,7 @@ v6.0.0
 
 #### Inherited from
 
-[internal](internal.md).[prependListener](internal.md#prependlistener)
+[internal](internal-1.md).[prependListener](internal-1.md#prependlistener)
 
 #### Defined in
 
@@ -725,7 +725,7 @@ v6.0.0
 
 #### Inherited from
 
-[internal](internal.md).[prependOnceListener](internal.md#prependoncelistener)
+[internal](internal-1.md).[prependOnceListener](internal-1.md#prependoncelistener)
 
 #### Defined in
 
@@ -783,7 +783,7 @@ v9.4.0
 
 #### Inherited from
 
-[internal](internal.md).[rawListeners](internal.md#rawlisteners)
+[internal](internal-1.md).[rawListeners](internal-1.md#rawlisteners)
 
 #### Defined in
 
@@ -821,7 +821,7 @@ v0.1.26
 
 #### Inherited from
 
-[internal](internal.md).[removeAllListeners](internal.md#removealllisteners)
+[internal](internal-1.md).[removeAllListeners](internal-1.md#removealllisteners)
 
 #### Defined in
 
@@ -932,7 +932,7 @@ v0.1.26
 
 #### Inherited from
 
-[internal](internal.md).[removeListener](internal.md#removelistener)
+[internal](internal-1.md).[removeListener](internal-1.md#removelistener)
 
 #### Defined in
 
@@ -969,7 +969,7 @@ v0.3.5
 
 #### Inherited from
 
-[internal](internal.md).[setMaxListeners](internal.md#setmaxlisteners)
+[internal](internal-1.md).[setMaxListeners](internal-1.md#setmaxlisteners)
 
 #### Defined in
 
@@ -1028,7 +1028,7 @@ v20.5.0
 
 #### Inherited from
 
-[internal](internal.md).[addAbortListener](internal.md#addabortlistener)
+[internal](internal-1.md).[addAbortListener](internal-1.md#addabortlistener)
 
 #### Defined in
 
@@ -1069,7 +1069,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
@@ -1084,7 +1084,7 @@ v15.2.0, v14.17.0
 
 #### Inherited from
 
-[internal](internal.md).[getEventListeners](internal.md#geteventlisteners)
+[internal](internal-1.md).[getEventListeners](internal-1.md#geteventlisteners)
 
 #### Defined in
 
@@ -1126,7 +1126,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 
 #### Returns
 
@@ -1140,7 +1140,7 @@ v19.9.0
 
 #### Inherited from
 
-[internal](internal.md).[getMaxListeners](internal.md#getmaxlisteners-1)
+[internal](internal-1.md).[getMaxListeners](internal-1.md#getmaxlisteners-1)
 
 #### Defined in
 
@@ -1168,7 +1168,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) | The emitter to query |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) | The emitter to query |
 | `eventName` | `string` \| `symbol` | The event name |
 
 #### Returns
@@ -1187,7 +1187,7 @@ Since v3.2.0 - Use `listenerCount` instead.
 
 #### Inherited from
 
-[internal](internal.md).[listenerCount](internal.md#listenercount-1)
+[internal](internal-1.md).[listenerCount](internal-1.md#listenercount-1)
 
 #### Defined in
 
@@ -1258,7 +1258,7 @@ process.nextTick(() => ac.abort());
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) |
 | `eventName` | `string` | The name of the event being listened for |
 | `options?` | [`StaticEventEmitterOptions`](../interfaces/StaticEventEmitterOptions.md) |
 
@@ -1275,7 +1275,7 @@ v13.6.0, v12.16.0
 
 #### Inherited from
 
-[internal](internal.md).[on](internal.md#on-1)
+[internal](internal-1.md).[on](internal-1.md#on-1)
 
 #### Defined in
 
@@ -1386,7 +1386,7 @@ v11.13.0, v10.16.0
 
 #### Inherited from
 
-[internal](internal.md).[once](internal.md#once-1)
+[internal](internal-1.md).[once](internal-1.md#once-1)
 
 #### Defined in
 
@@ -1412,7 +1412,7 @@ docs-util/node_modules/@types/node/events.d.ts:193
 
 #### Inherited from
 
-[internal](internal.md).[once](internal.md#once-1)
+[internal](internal-1.md).[once](internal-1.md#once-1)
 
 #### Defined in
 
@@ -1438,7 +1438,7 @@ setMaxListeners(5, target, emitter);
 | Name | Description |
 | :------ | :------ |
 | `n?` | `number` | A non-negative number. The maximum number of listeners per `EventTarget` event. |
-| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
+| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
 
 #### Returns
 
@@ -1452,7 +1452,7 @@ v15.4.0
 
 #### Inherited from
 
-[internal](internal.md).[setMaxListeners](internal.md#setmaxlisteners-1)
+[internal](internal-1.md).[setMaxListeners](internal-1.md#setmaxlisteners-1)
 
 #### Defined in
 

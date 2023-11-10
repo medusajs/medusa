@@ -73,7 +73,7 @@ For sharded collections, this will contain all the components of the shard key
 
 | Name | Type |
 | :------ | :------ |
-| `_id` | [`InferIdType`](../index.md#inferidtype)<`TSchema`\> |
+| `_id` | [`InferIdType`](../types/InferIdType.md)<`TSchema`\> |
 
 #### Inherited from
 
@@ -115,7 +115,7 @@ ___
 
 ### lsid
 
- `Optional` **lsid**: [`ServerSessionId`](../index.md#serversessionid)
+ `Optional` **lsid**: [`ServerSessionId`](../types/ServerSessionId.md)
 
 The identifier for the session associated with the transaction.
 Only present if the operation is part of a multi-document transaction.

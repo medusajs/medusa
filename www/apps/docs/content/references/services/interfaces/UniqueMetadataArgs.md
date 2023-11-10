@@ -18,7 +18,7 @@ ___
 
 ### deferrable
 
- `Optional` **deferrable**: [`DeferrableType`](../index.md#deferrabletype)
+ `Optional` **deferrable**: [`DeferrableType`](../types/DeferrableType.md)
 
 Indicate if unique constraints can be deferred.
 

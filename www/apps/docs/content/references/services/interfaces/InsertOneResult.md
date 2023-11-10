@@ -22,7 +22,7 @@ ___
 
 ### insertedId
 
- **insertedId**: [`InferIdType`](../index.md#inferidtype)<`TSchema`\>
+ **insertedId**: [`InferIdType`](../types/InferIdType.md)<`TSchema`\>
 
 The identifier that was inserted. If the server generated the identifier, this value will be null as the driver does not have access to that data
 

@@ -11,7 +11,7 @@ Creates a new Change Stream instance. Normally created using [Collection.watch()
 
 ## Hierarchy
 
-- [`TypedEventEmitter`](TypedEventEmitter.md)<[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>\>
+- [`TypedEventEmitter`](TypedEventEmitter.md)<[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>\>
 
   ↳ **`ChangeStream`**
 
@@ -326,7 +326,7 @@ Alias for `emitter.on(eventName, listener)`.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`] |
+| `listener` | [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`] |
 
 #### Returns
 
@@ -352,8 +352,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5085
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -376,7 +376,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5086
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -463,7 +463,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 | Name |
 | :------ |
 | `event` | `symbol` \| `EventKey` |
-| `...args` | [`Parameters`](../index.md#parameters)<[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`]\> |
+| `...args` | [`Parameters`](../types/Parameters.md)<[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`]\> |
 
 #### Returns
 
@@ -613,7 +613,7 @@ ___
 
 ### listeners
 
-**listeners**<`EventKey`\>(`event`): [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`][]
+**listeners**<`EventKey`\>(`event`): [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`][]
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -637,10 +637,10 @@ console.log(util.inspect(server.listeners('connection')));
 
 #### Returns
 
-[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`][]
+[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`][]
 
--`[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`][]`: 
-	-`[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`]`: (optional) 
+-`[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`][]`: 
+	-`[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`]`: (optional) 
 
 **Since**
 
@@ -689,7 +689,7 @@ Alias for `emitter.removeListener()`.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`] |
+| `listener` | [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`] |
 
 #### Returns
 
@@ -715,8 +715,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5097
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -739,7 +739,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5098
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -797,7 +797,7 @@ myEE.emit('foo');
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
+| `listener` | [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -823,8 +823,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5088
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -847,7 +847,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5089
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -903,7 +903,7 @@ myEE.emit('foo');
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
+| `listener` | [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -929,8 +929,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5091
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -953,7 +953,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5092
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -997,7 +997,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
+| `listener` | [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1023,8 +1023,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5105
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1047,7 +1047,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5106
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1089,7 +1089,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
+| `listener` | [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1115,8 +1115,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5108
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1139,7 +1139,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5109
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1159,7 +1159,7 @@ ___
 
 ### rawListeners
 
-**rawListeners**<`EventKey`\>(`event`): [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`][]
+**rawListeners**<`EventKey`\>(`event`): [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`][]
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -1201,10 +1201,10 @@ emitter.emit('log');
 
 #### Returns
 
-[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`][]
+[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`][]
 
--`[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`][]`: 
-	-`[`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`]`: (optional) 
+-`[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`][]`: 
+	-`[`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`]`: (optional) 
 
 **Since**
 
@@ -1355,7 +1355,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`ChangeStreamEvents`](../index.md#changestreamevents)<`TSchema`, `TChange`\>[`EventKey`] |
+| `listener` | [`ChangeStreamEvents`](../types/ChangeStreamEvents.md)<`TSchema`, `TChange`\>[`EventKey`] |
 
 #### Returns
 
@@ -1381,8 +1381,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5094
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1405,7 +1405,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5095
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1602,7 +1602,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
@@ -1659,7 +1659,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 
 #### Returns
 
@@ -1701,7 +1701,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) | The emitter to query |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) | The emitter to query |
 | `eventName` | `string` \| `symbol` | The event name |
 
 #### Returns
@@ -1791,7 +1791,7 @@ process.nextTick(() => ac.abort());
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) |
 | `eventName` | `string` | The name of the event being listened for |
 | `options?` | [`StaticEventEmitterOptions`](../interfaces/StaticEventEmitterOptions.md) |
 
@@ -1971,7 +1971,7 @@ setMaxListeners(5, target, emitter);
 | Name | Description |
 | :------ | :------ |
 | `n?` | `number` | A non-negative number. The maximum number of listeners per `EventTarget` event. |
-| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
+| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
 
 #### Returns
 

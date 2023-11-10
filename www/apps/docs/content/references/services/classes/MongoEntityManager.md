@@ -98,7 +98,7 @@ ___
 
 ### repositories
 
- `Protected` **repositories**: `Map`<[`EntityTarget`](../index.md#entitytarget)<`any`\>, [`Repository`](Repository.md)<`any`\>\>
+ `Protected` **repositories**: `Map`<[`EntityTarget`](../types/EntityTarget.md)<`any`\>, [`Repository`](Repository.md)<`any`\>\>
 
 Once created and then reused by repositories.
 Created as a future replacement for the #repositories to provide a bit more perf optimization.
@@ -160,7 +160,7 @@ Execute an aggregation framework pipeline against the collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `pipeline` | [`Document`](../interfaces/Document.md)[] |
 | `options?` | [`AggregateOptions`](../interfaces/AggregateOptions.md) |
 
@@ -191,7 +191,7 @@ This returns modified version of cursor that transforms each result into Entity 
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `pipeline` | [`Document`](../interfaces/Document.md)[] |
 | `options?` | [`AggregateOptions`](../interfaces/AggregateOptions.md) |
 
@@ -250,9 +250,9 @@ Return the AVG of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -285,8 +285,8 @@ Perform a bulkWrite operation without a fluent API.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `operations` | [`AnyBulkWriteOperation`](../index.md#anybulkwriteoperation)<[`Document`](../interfaces/Document.md)\>[] |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `operations` | [`AnyBulkWriteOperation`](../types/AnyBulkWriteOperation.md)<[`Document`](../interfaces/Document.md)\>[] |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) |
 
 #### Returns
@@ -318,7 +318,7 @@ Note: this method uses TRUNCATE and may not work as you expect in transactions o
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -354,7 +354,7 @@ Retrieve all the indexes on the collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `indexes` | `string` \| `string`[] |
 
 #### Returns
@@ -384,7 +384,7 @@ Retrieves this collections index info.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`IndexInformationOptions`](../interfaces/IndexInformationOptions.md) |
 
 #### Returns
@@ -414,7 +414,7 @@ Retrieve all the indexes on the collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -443,7 +443,7 @@ Converts FindManyOptions to mongodb query.
 
 | Name |
 | :------ |
-| `optionsOrConditions` | `undefined` \| `any`[] \| [`MongoFindManyOptions`](../interfaces/MongoFindManyOptions.md)<`Entity`\> \| [`Partial`](../index.md#partial)<`Entity`\> \| [`FilterOperators`](../interfaces/FilterOperators.md)<`Entity`\> |
+| `optionsOrConditions` | `undefined` \| `any`[] \| [`MongoFindManyOptions`](../interfaces/MongoFindManyOptions.md)<`Entity`\> \| [`Partial`](../types/Partial.md)<`Entity`\> \| [`FilterOperators`](../interfaces/FilterOperators.md)<`Entity`\> |
 
 #### Returns
 
@@ -471,7 +471,7 @@ Converts FindOneOptions to mongodb query.
 
 | Name |
 | :------ |
-| `optionsOrConditions` | `undefined` \| [`MongoFindOneOptions`](../index.md#mongofindoneoptions)<`Entity`\> \| [`Partial`](../index.md#partial)<`Entity`\> |
+| `optionsOrConditions` | `undefined` \| [`MongoFindOneOptions`](../types/MongoFindOneOptions.md)<`Entity`\> \| [`Partial`](../types/Partial.md)<`Entity`\> |
 
 #### Returns
 
@@ -519,7 +519,7 @@ Converts FindOptions into mongodb select by criteria.
 
 | Name |
 | :------ |
-| `selects` | [`FindOptionsSelect`](../index.md#findoptionsselect)<`any`\> \| [`FindOptionsSelectByString`](../index.md#findoptionsselectbystring)<`any`\> |
+| `selects` | [`FindOptionsSelect`](../types/FindOptionsSelect.md)<`any`\> \| [`FindOptionsSelectByString`](../types/FindOptionsSelectByString.md)<`any`\> |
 
 #### Returns
 
@@ -572,8 +572,8 @@ Count number of matching documents in the db to a query.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query?` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query?` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`CountOptions`](../interfaces/CountOptions.md) |
 
 #### Returns
@@ -607,7 +607,7 @@ Count number of matching documents in the db to a query.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `query?` | [`ObjectLiteral`](../interfaces/ObjectLiteral.md) |
 | `options?` | [`CountOptions`](../interfaces/CountOptions.md) |
 
@@ -643,8 +643,8 @@ Note that it copies only properties that present in entity schema.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `plainObject?` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `plainObject?` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -671,8 +671,8 @@ Note that it copies only properties that present in entity schema.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `plainObjects?` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `plainObjects?` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -704,8 +704,8 @@ Creates an index on the db and collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `fieldOrSpec` | [`IndexSpecification`](../index.md#indexspecification) |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `fieldOrSpec` | [`IndexSpecification`](../types/IndexSpecification.md) |
 | `options?` | [`CreateIndexesOptions`](../interfaces/CreateIndexesOptions.md) |
 
 #### Returns
@@ -737,7 +737,7 @@ Index specifications are defined at http://docs.mongodb.org/manual/reference/com
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `indexSpecs` | [`IndexDescription`](../interfaces/IndexDescription.md)[] |
 
 #### Returns
@@ -769,7 +769,7 @@ Creates a cursor for a query that can be used to iterate over results from Mongo
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `query?` | [`ObjectLiteral`](../interfaces/ObjectLiteral.md) |
 
 #### Returns
@@ -799,7 +799,7 @@ This returns modified version of cursor that transforms each result into Entity 
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `query?` | [`ObjectLiteral`](../interfaces/ObjectLiteral.md) |
 
 #### Returns
@@ -828,7 +828,7 @@ Creates a new query builder that can be used to build a SQL query.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `alias` | `string` |
 | `queryRunner?` | [`QueryRunner`](../interfaces/QueryRunner.md) |
 
@@ -887,7 +887,7 @@ Decrements some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `conditions` | `any` |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
@@ -926,7 +926,7 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectLiteral`](../interfaces/ObjectLiteral.md)[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] |
 
 #### Returns
@@ -960,8 +960,8 @@ Delete multiple documents on MongoDB.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`DeleteOptions`](../interfaces/DeleteOptions.md) |
 
 #### Returns
@@ -992,8 +992,8 @@ Delete a document on MongoDB.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`DeleteOptions`](../interfaces/DeleteOptions.md) |
 
 #### Returns
@@ -1024,9 +1024,9 @@ The distinct command returns returns a list of distinct values for the given key
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `key` | `string` |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`CommandOperationOptions`](../interfaces/CommandOperationOptions.md) |
 
 #### Returns
@@ -1056,7 +1056,7 @@ Drops an index from this collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `indexName` | `string` |
 | `options?` | [`CommandOperationOptions`](../interfaces/CommandOperationOptions.md) |
 
@@ -1087,7 +1087,7 @@ Drops all indexes from the collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -1114,8 +1114,8 @@ ___
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `optionsOrConditions?` | `any`[] \| [`MongoFindManyOptions`](../interfaces/MongoFindManyOptions.md)<`Entity`\> \| [`Partial`](../index.md#partial)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `optionsOrConditions?` | `any`[] \| [`MongoFindManyOptions`](../interfaces/MongoFindManyOptions.md)<`Entity`\> \| [`Partial`](../types/Partial.md)<`Entity`\> |
 
 #### Returns
 
@@ -1144,8 +1144,8 @@ Finds entities that match given find options or conditions.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `optionsOrConditions?` | [`MongoFindManyOptions`](../interfaces/MongoFindManyOptions.md)<`Entity`\> \| [`Partial`](../index.md#partial)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `optionsOrConditions?` | [`MongoFindManyOptions`](../interfaces/MongoFindManyOptions.md)<`Entity`\> \| [`Partial`](../types/Partial.md)<`Entity`\> |
 
 #### Returns
 
@@ -1175,9 +1175,9 @@ Finds first entity that matches given conditions and/or find options.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `optionsOrConditions?` | `any` |
-| `maybeOptions?` | [`MongoFindOneOptions`](../index.md#mongofindoneoptions)<`Entity`\> |
+| `maybeOptions?` | [`MongoFindOneOptions`](../types/MongoFindOneOptions.md)<`Entity`\> |
 
 #### Returns
 
@@ -1206,7 +1206,7 @@ Checks whether any entity exists with the given condition
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> |
 
 #### Returns
@@ -1268,8 +1268,8 @@ Finds entities that match given find options or conditions.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `optionsOrConditions?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> \| [`Partial`](../index.md#partial)<`Entity`\> \| [`FilterOperators`](../interfaces/FilterOperators.md)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `optionsOrConditions?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> \| [`Partial`](../types/Partial.md)<`Entity`\> \| [`FilterOperators`](../interfaces/FilterOperators.md)<`Entity`\> |
 
 #### Returns
 
@@ -1304,7 +1304,7 @@ but ignores pagination settings (from and take options).
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`MongoFindManyOptions`](../interfaces/MongoFindManyOptions.md)<`Entity`\> |
 
 #### Returns
@@ -1339,7 +1339,7 @@ Finds entities that match given where conditions.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `where` | `any` |
 
 #### Returns
@@ -1374,8 +1374,8 @@ Finds entities that match given find options.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1409,9 +1409,9 @@ Optionally find options can be applied.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `ids` | `any`[] |
-| `optionsOrConditions?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> \| [`Partial`](../index.md#partial)<`Entity`\> |
+| `optionsOrConditions?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> \| [`Partial`](../types/Partial.md)<`Entity`\> |
 
 #### Returns
 
@@ -1448,8 +1448,8 @@ Finds first entity that matches given conditions and/or find options.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `options` | [`MongoFindOneOptions`](../index.md#mongofindoneoptions)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `options` | [`MongoFindOneOptions`](../types/MongoFindOneOptions.md)<`Entity`\> |
 
 #### Returns
 
@@ -1482,7 +1482,7 @@ Find a document and delete it in one atomic operation, requires a write lock for
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `query` | [`ObjectLiteral`](../interfaces/ObjectLiteral.md) |
 | `options?` | [`FindOneAndDeleteOptions`](../interfaces/FindOneAndDeleteOptions.md) |
 
@@ -1513,8 +1513,8 @@ Find a document and replace it in one atomic operation, requires a write lock fo
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `replacement` | [`Document`](../interfaces/Document.md) |
 | `options?` | [`FindOneAndReplaceOptions`](../interfaces/FindOneAndReplaceOptions.md) |
 
@@ -1545,9 +1545,9 @@ Find a document and update it in one atomic operation, requires a write lock for
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`FindOneAndUpdateOptions`](../interfaces/FindOneAndUpdateOptions.md) |
 
 #### Returns
@@ -1577,7 +1577,7 @@ Finds first entity that matches given WHERE conditions.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `where` | `any` |
 
 #### Returns
@@ -1611,7 +1611,7 @@ Finds entity that matches given id.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `id` | `string` \| `number` \| `Date` \| [`ObjectId`](ObjectId.md) |
 
 #### Returns
@@ -1654,8 +1654,8 @@ If entity was not found in the database - rejects with error.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1688,7 +1688,7 @@ If entity was not found in the database - rejects with error.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options` | [`FindOneOptions`](../interfaces/FindOneOptions.md)<`Entity`\> |
 
 #### Returns
@@ -1721,7 +1721,7 @@ Gets custom entity repository marked with
 
 | Name |
 | :------ |
-| `customRepository` | [`ObjectType`](../index.md#objecttype)<`T`\> |
+| `customRepository` | [`ObjectType`](../types/ObjectType.md)<`T`\> |
 
 #### Returns
 
@@ -1779,7 +1779,7 @@ Gets entity mixed id.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`any`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> |
 | `entity` | `any` |
 
 #### Returns
@@ -1812,7 +1812,7 @@ Gets mongodb repository for the given entity class.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -1847,7 +1847,7 @@ When single database connection is not used, repository is being obtained from t
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -1882,7 +1882,7 @@ When single database connection is not used, repository is being obtained from t
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -1967,7 +1967,7 @@ Increments some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `conditions` | `any` |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
@@ -2003,7 +2003,7 @@ Initiate an In order bulk write operation, operations will be serially executed 
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) |
 
 #### Returns
@@ -2032,7 +2032,7 @@ Initiate a Out of order batch write operation. All operations will be buffered i
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) |
 
 #### Returns
@@ -2065,8 +2065,8 @@ You can execute bulk inserts using this method.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `entity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `entity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 
 #### Returns
 
@@ -2099,8 +2099,8 @@ Inserts an array of documents into MongoDB.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `docs` | [`OptionalId`](../index.md#optionalid)<[`Document`](../interfaces/Document.md)\>[] |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `docs` | [`OptionalId`](../types/OptionalId.md)<[`Document`](../interfaces/Document.md)\>[] |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) |
 
 #### Returns
@@ -2131,8 +2131,8 @@ Inserts a single document into MongoDB.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `doc` | [`OptionalId`](../index.md#optionalid)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `doc` | [`OptionalId`](../types/OptionalId.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`InsertOneOptions`](../interfaces/InsertOneOptions.md) |
 
 #### Returns
@@ -2163,7 +2163,7 @@ Returns if the collection is a capped collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -2192,7 +2192,7 @@ Get the list of all indexes information for the collection.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`ListIndexesOptions`](../interfaces/ListIndexesOptions.md) |
 
 #### Returns
@@ -2221,9 +2221,9 @@ Return the MAX of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -2256,9 +2256,9 @@ Merges two entities into one new entity.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `mergeIntoEntity` | `Entity` |
-| `...entityLikes` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `...entityLikes` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -2288,9 +2288,9 @@ Return the MIN of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -2326,8 +2326,8 @@ replaced from the new object.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `entityLike` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `entityLike` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -2453,7 +2453,7 @@ Recovers all given entities.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -2485,7 +2485,7 @@ Recovers a given entity.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -2572,7 +2572,7 @@ Removes a given entity from the database.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `Entity` |
 | `options?` | [`RemoveOptions`](../interfaces/RemoveOptions.md) |
 
@@ -2631,7 +2631,7 @@ Removes a given entity from the database.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `Entity`[] |
 | `options?` | [`RemoveOptions`](../interfaces/RemoveOptions.md) |
 
@@ -2666,7 +2666,7 @@ Reindex all indexes on the collection Warning: reIndex is a blocking operation (
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `newName` | `string` |
 | `options?` | [`RenameOptions`](../interfaces/RenameOptions.md) |
 
@@ -2698,8 +2698,8 @@ Replace a document on MongoDB.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `doc` | [`Document`](../interfaces/Document.md) |
 | `options?` | [`ReplaceOptions`](../interfaces/ReplaceOptions.md) |
 
@@ -2734,7 +2734,7 @@ Condition(s) cannot be empty.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `any` |
 
 #### Returns
@@ -2831,7 +2831,7 @@ If entities do not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options` | [`SaveOptions`](../interfaces/SaveOptions.md) & { `reload`: ``false``  } |
 
@@ -2864,7 +2864,7 @@ If entities do not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -2898,7 +2898,7 @@ If entity does not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options` | [`SaveOptions`](../interfaces/SaveOptions.md) & { `reload`: ``false``  } |
 
@@ -2930,7 +2930,7 @@ If entity does not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -2969,7 +2969,7 @@ Condition(s) cannot be empty.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `any` |
 
 #### Returns
@@ -3063,7 +3063,7 @@ Records the delete date of all given entities.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -3095,7 +3095,7 @@ Records the delete date of a given entity.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -3129,7 +3129,7 @@ Get all the collection statistics.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`CollStatsOptions`](../interfaces/CollStatsOptions.md) |
 
 #### Returns
@@ -3189,9 +3189,9 @@ Return the SUM of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -3254,7 +3254,7 @@ All database operations must be executed using provided entity manager.
 
 | Name |
 | :------ |
-| `isolationLevel` | [`IsolationLevel`](../index.md#isolationlevel) |
+| `isolationLevel` | [`IsolationLevel`](../types/IsolationLevel.md) |
 | `runInTransaction` | (`entityManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`T`\> |
 
 #### Returns
@@ -3290,9 +3290,9 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectLiteral`](../interfaces/ObjectLiteral.md) \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] |
-| `partialEntity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `partialEntity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -3325,9 +3325,9 @@ Update multiple documents on MongoDB.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) |
 
 #### Returns
@@ -3357,9 +3357,9 @@ Update a single document on MongoDB.
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `query` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `query` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) |
 
 #### Returns
@@ -3387,8 +3387,8 @@ ___
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `entityOrEntities` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `entityOrEntities` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 | `conflictPathsOrOptions` | `string`[] \| [`UpsertOptions`](../interfaces/UpsertOptions.md)<`Entity`\> |
 
 #### Returns
@@ -3410,7 +3410,7 @@ ___
 
 ### watch
 
-**watch**<`Entity`\>(`entityClassOrName`, `pipeline?`, `options?`): [`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../index.md#changestreamdocument)<[`Document`](../interfaces/Document.md)\>\>
+**watch**<`Entity`\>(`entityClassOrName`, `pipeline?`, `options?`): [`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../types/ChangeStreamDocument.md)<[`Document`](../interfaces/Document.md)\>\>
 
 | Name |
 | :------ |
@@ -3420,13 +3420,13 @@ ___
 
 | Name |
 | :------ |
-| `entityClassOrName` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClassOrName` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `pipeline?` | [`Document`](../interfaces/Document.md)[] |
 | `options?` | [`ChangeStreamOptions`](../interfaces/ChangeStreamOptions.md) |
 
 #### Returns
 
-[`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../index.md#changestreamdocument)<[`Document`](../interfaces/Document.md)\>\>
+[`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../types/ChangeStreamDocument.md)<[`Document`](../interfaces/Document.md)\>\>
 
 -`ChangeStream`: 
 	-`Document`: 

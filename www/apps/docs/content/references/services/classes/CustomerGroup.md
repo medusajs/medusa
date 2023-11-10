@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ The details of the customers that belong to the customer group.
 
 #### Defined in
 
-[packages/medusa/src/models/customer-group.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer-group.ts#L18)
+[packages/medusa/src/models/customer-group.ts:18](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer-group.ts#L18)
 
 ___
 
@@ -62,7 +62,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -78,7 +78,7 @@ The customer group's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -90,7 +90,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/customer-group.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer-group.ts#L26)
+[packages/medusa/src/models/customer-group.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer-group.ts#L26)
 
 ___
 
@@ -102,7 +102,7 @@ The name of the customer group
 
 #### Defined in
 
-[packages/medusa/src/models/customer-group.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer-group.ts#L13)
+[packages/medusa/src/models/customer-group.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer-group.ts#L13)
 
 ___
 
@@ -114,7 +114,7 @@ The price lists that are associated with the customer group.
 
 #### Defined in
 
-[packages/medusa/src/models/customer-group.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer-group.ts#L23)
+[packages/medusa/src/models/customer-group.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer-group.ts#L23)
 
 ___
 
@@ -130,7 +130,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -146,4 +146,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/customer-group.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer-group.ts#L32)
+[packages/medusa/src/models/customer-group.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer-group.ts#L32)

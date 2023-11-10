@@ -437,7 +437,7 @@ Creates an index on the db and collection.
 | Name | Description |
 | :------ | :------ |
 | `name` | `string` | Name of the collection to create the index on. |
-| `indexSpec` | [`IndexSpecification`](../index.md#indexspecification) | Specify the field to index, or an index specification |
+| `indexSpec` | [`IndexSpecification`](../types/IndexSpecification.md) | Specify the field to index, or an index specification |
 | `options?` | [`CreateIndexesOptions`](../interfaces/CreateIndexesOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -532,7 +532,7 @@ ___
 
 ### listCollections
 
-**listCollections**(`filter`, `options`): [`ListCollectionsCursor`](ListCollectionsCursor.md)<[`Pick`](../index.md#pick)<[`CollectionInfo`](../interfaces/CollectionInfo.md), ``"name"`` \| ``"type"``\>\>
+**listCollections**(`filter`, `options`): [`ListCollectionsCursor`](ListCollectionsCursor.md)<[`Pick`](../types/Pick.md)<[`CollectionInfo`](../interfaces/CollectionInfo.md), ``"name"`` \| ``"type"``\>\>
 
 List all collections of this database with optional filter
 
@@ -545,7 +545,7 @@ List all collections of this database with optional filter
 
 #### Returns
 
-[`ListCollectionsCursor`](ListCollectionsCursor.md)<[`Pick`](../index.md#pick)<[`CollectionInfo`](../interfaces/CollectionInfo.md), ``"name"`` \| ``"type"``\>\>
+[`ListCollectionsCursor`](ListCollectionsCursor.md)<[`Pick`](../types/Pick.md)<[`CollectionInfo`](../interfaces/CollectionInfo.md), ``"name"`` \| ``"type"``\>\>
 
 -`ListCollectionsCursor`: 
 	-`Pick`: 
@@ -590,7 +590,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:2430
 
 | Name | Type |
 | :------ | :------ |
-| `T` | [`CollectionInfo`](../interfaces/CollectionInfo.md) \| [`Pick`](../index.md#pick)<[`CollectionInfo`](../interfaces/CollectionInfo.md), ``"name"`` \| ``"type"``\> |
+| `T` | [`CollectionInfo`](../interfaces/CollectionInfo.md) \| [`Pick`](../types/Pick.md)<[`CollectionInfo`](../interfaces/CollectionInfo.md), ``"name"`` \| ``"type"``\> |
 
 #### Parameters
 
@@ -699,7 +699,7 @@ ___
 
 ### setProfilingLevel
 
-**setProfilingLevel**(`level`, `options?`): `Promise`<[`ProfilingLevel`](../index.md#profilinglevel-1)\>
+**setProfilingLevel**(`level`, `options?`): `Promise`<[`ProfilingLevel`](../index.md#profilinglevel)\>
 
 Set the current profiling level of MongoDB
 
@@ -707,12 +707,12 @@ Set the current profiling level of MongoDB
 
 | Name | Description |
 | :------ | :------ |
-| `level` | [`ProfilingLevel`](../index.md#profilinglevel-1) | The new profiling level (off, slow_only, all). |
+| `level` | [`ProfilingLevel`](../index.md#profilinglevel) | The new profiling level (off, slow_only, all). |
 | `options?` | [`CommandOperationOptions`](../interfaces/CommandOperationOptions.md) | Optional settings for the command |
 
 #### Returns
 
-`Promise`<[`ProfilingLevel`](../index.md#profilinglevel-1)\>
+`Promise`<[`ProfilingLevel`](../index.md#profilinglevel)\>
 
 -`Promise`: 
 	-`ProfilingLevel`: 

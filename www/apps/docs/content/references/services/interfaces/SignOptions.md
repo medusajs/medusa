@@ -4,7 +4,7 @@
 
 ### algorithm
 
- `Optional` **algorithm**: [`Algorithm`](../index.md#algorithm)
+ `Optional` **algorithm**: [`Algorithm`](../types/Algorithm.md)
 
 Signature algorithm. Could be one of these values :
 - HS256:    HMAC using SHA-256 hash algorithm (default)

@@ -20,7 +20,7 @@ Options for disposable resolvers.
 
 ### dispose
 
- `Optional` **dispose**: [`Disposer`](../index.md#disposer)<`T`\>
+ `Optional` **dispose**: [`Disposer`](../types/Disposer.md)<`T`\>
 
 #### Defined in
 
@@ -30,7 +30,7 @@ ___
 
 ### lifetime
 
- `Optional` **lifetime**: [`LifetimeType`](../index.md#lifetimetype)
+ `Optional` **lifetime**: [`LifetimeType`](../types/LifetimeType.md)
 
 Lifetime setting.
 

@@ -30,7 +30,7 @@ The amount that has be refunded to the Customer.
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L64)
+[packages/medusa/src/models/refund.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L64)
 
 ___
 
@@ -46,7 +46,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -62,7 +62,7 @@ The refund's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -74,7 +74,7 @@ Randomly generated key used to continue the completion of the refund in case of 
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L76)
+[packages/medusa/src/models/refund.ts:76](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L76)
 
 ___
 
@@ -86,7 +86,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L73)
+[packages/medusa/src/models/refund.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L73)
 
 ___
 
@@ -98,7 +98,7 @@ An optional note explaining why the amount was refunded.
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L67)
+[packages/medusa/src/models/refund.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L67)
 
 ___
 
@@ -110,7 +110,7 @@ The details of the order this refund was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L57)
+[packages/medusa/src/models/refund.ts:57](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L57)
 
 ___
 
@@ -122,7 +122,7 @@ The ID of the order this refund was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L49)
+[packages/medusa/src/models/refund.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L49)
 
 ___
 
@@ -134,7 +134,7 @@ The details of the payment associated with the refund.
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L61)
+[packages/medusa/src/models/refund.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L61)
 
 ___
 
@@ -146,7 +146,7 @@ The payment's ID, if available.
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L53)
+[packages/medusa/src/models/refund.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L53)
 
 ___
 
@@ -158,7 +158,7 @@ The reason given for the Refund, will automatically be set when processed as par
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L70)
+[packages/medusa/src/models/refund.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L70)
 
 ___
 
@@ -174,7 +174,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -190,4 +190,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/refund.ts:82](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/refund.ts#L82)
+[packages/medusa/src/models/refund.ts:82](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/refund.ts#L82)

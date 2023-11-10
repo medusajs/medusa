@@ -382,7 +382,7 @@ ___
 
 ### reconnectOnError
 
- `Optional` **reconnectOnError**: ``null`` \| [`ReconnectOnError`](../index.md#reconnectonerror)
+ `Optional` **reconnectOnError**: ``null`` \| [`ReconnectOnError`](../types/ReconnectOnError.md)
 
 Whether or not to reconnect on certain Redis errors.
 This options by default is `null`, which means it should never reconnect on Redis errors.

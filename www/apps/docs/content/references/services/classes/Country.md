@@ -20,7 +20,7 @@ The country name appropriate for display.
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L31)
+[packages/medusa/src/models/country.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L31)
 
 ___
 
@@ -32,7 +32,7 @@ The country's ID
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L15)
+[packages/medusa/src/models/country.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L15)
 
 ___
 
@@ -44,7 +44,7 @@ The 2 character ISO code of the country in lower case
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L19)
+[packages/medusa/src/models/country.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L19)
 
 ___
 
@@ -56,7 +56,7 @@ The 2 character ISO code of the country in lower case
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L22)
+[packages/medusa/src/models/country.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L22)
 
 ___
 
@@ -68,7 +68,7 @@ The normalized country name in upper case.
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L28)
+[packages/medusa/src/models/country.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L28)
 
 ___
 
@@ -80,7 +80,7 @@ The numerical ISO code for the country.
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L25)
+[packages/medusa/src/models/country.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L25)
 
 ___
 
@@ -92,7 +92,7 @@ The details of the region the country is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L39)
+[packages/medusa/src/models/country.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L39)
 
 ___
 
@@ -104,4 +104,4 @@ The region ID this country is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/country.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/country.ts#L35)
+[packages/medusa/src/models/country.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/country.ts#L35)

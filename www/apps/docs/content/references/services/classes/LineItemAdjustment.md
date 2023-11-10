@@ -20,7 +20,7 @@ The adjustment amount
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:44](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L44)
+[packages/medusa/src/models/line-item-adjustment.ts:44](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L44)
 
 ___
 
@@ -32,7 +32,7 @@ The line item's adjustment description
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L33)
+[packages/medusa/src/models/line-item-adjustment.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L33)
 
 ___
 
@@ -44,7 +44,7 @@ The details of the discount associated with the adjustment.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L37)
+[packages/medusa/src/models/line-item-adjustment.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L37)
 
 ___
 
@@ -56,7 +56,7 @@ The ID of the discount associated with the adjustment
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L41)
+[packages/medusa/src/models/line-item-adjustment.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L41)
 
 ___
 
@@ -68,7 +68,7 @@ The Line Item Adjustment's ID
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L22)
+[packages/medusa/src/models/line-item-adjustment.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L22)
 
 ___
 
@@ -80,7 +80,7 @@ The details of the line item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L30)
+[packages/medusa/src/models/line-item-adjustment.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L30)
 
 ___
 
@@ -92,7 +92,7 @@ The ID of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L26)
+[packages/medusa/src/models/line-item-adjustment.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L26)
 
 ___
 
@@ -104,7 +104,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L47)
+[packages/medusa/src/models/line-item-adjustment.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L47)
 
 ## Methods
 
@@ -120,4 +120,4 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-adjustment.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-adjustment.ts#L53)
+[packages/medusa/src/models/line-item-adjustment.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-adjustment.ts#L53)

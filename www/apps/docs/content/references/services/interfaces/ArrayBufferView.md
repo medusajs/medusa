@@ -4,7 +4,7 @@
 
 ### buffer
 
- **buffer**: [`ArrayBufferLike`](../index.md#arraybufferlike)
+ **buffer**: [`ArrayBufferLike`](../types/ArrayBufferLike.md)
 
 The ArrayBuffer instance referenced by the array.
 

@@ -14,9 +14,6 @@ module.exports = {
   entryDocument: "_index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
-  frontmatterData: {
-    displayed_sidebar: "entitiesSidebar",
-  },
   formatting: {
     "*": {
       showCommentsAsHeader: true,
@@ -32,6 +29,9 @@ module.exports = {
       reflectionGroups: {
         Constructors: false,
         Methods: false,
+      },
+      frontmatterData: {
+        displayed_sidebar: "entitiesSidebar",
       },
     },
   },

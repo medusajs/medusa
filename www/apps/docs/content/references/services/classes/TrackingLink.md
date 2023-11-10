@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -62,7 +62,7 @@ The details of the fulfillment that the tracking link belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/tracking-link.ts:21](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tracking-link.ts#L21)
+[packages/medusa/src/models/tracking-link.ts:21](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tracking-link.ts#L21)
 
 ___
 
@@ -74,7 +74,7 @@ The ID of the fulfillment that the tracking link belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/tracking-link.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tracking-link.ts#L17)
+[packages/medusa/src/models/tracking-link.ts:17](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tracking-link.ts#L17)
 
 ___
 
@@ -90,7 +90,7 @@ The tracking link's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -102,7 +102,7 @@ Randomly generated key used to continue the completion of a process in case of f
 
 #### Defined in
 
-[packages/medusa/src/models/tracking-link.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tracking-link.ts#L24)
+[packages/medusa/src/models/tracking-link.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tracking-link.ts#L24)
 
 ___
 
@@ -114,7 +114,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/tracking-link.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tracking-link.ts#L27)
+[packages/medusa/src/models/tracking-link.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tracking-link.ts#L27)
 
 ___
 
@@ -126,7 +126,7 @@ The tracking number given by the shipping carrier.
 
 #### Defined in
 
-[packages/medusa/src/models/tracking-link.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tracking-link.ts#L14)
+[packages/medusa/src/models/tracking-link.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tracking-link.ts#L14)
 
 ___
 
@@ -142,7 +142,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -154,7 +154,7 @@ The URL at which the status of the shipment can be tracked.
 
 #### Defined in
 
-[packages/medusa/src/models/tracking-link.ts:11](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tracking-link.ts#L11)
+[packages/medusa/src/models/tracking-link.ts:11](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tracking-link.ts#L11)
 
 ## Methods
 
@@ -170,4 +170,4 @@ The URL at which the status of the shipment can be tracked.
 
 #### Defined in
 
-[packages/medusa/src/models/tracking-link.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tracking-link.ts#L33)
+[packages/medusa/src/models/tracking-link.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tracking-link.ts#L33)

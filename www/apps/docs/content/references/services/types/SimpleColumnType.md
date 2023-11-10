@@ -1,0 +1,9 @@
+# SimpleColumnType
+
+ **SimpleColumnType**: ``"simple-array"`` \| ``"simple-json"`` \| ``"simple-enum"`` \| ``"int2"`` \| ``"integer"`` \| ``"int4"`` \| ``"int8"`` \| ``"int64"`` \| ``"unsigned big int"`` \| ``"float"`` \| ``"float4"`` \| ``"float8"`` \| ``"float64"`` \| ``"smallmoney"`` \| ``"money"`` \| ``"boolean"`` \| ``"bool"`` \| ``"tinyblob"`` \| ``"tinytext"`` \| ``"mediumblob"`` \| ``"mediumtext"`` \| ``"blob"`` \| ``"text"`` \| ``"ntext"`` \| ``"citext"`` \| ``"hstore"`` \| ``"longblob"`` \| ``"longtext"`` \| ``"alphanum"`` \| ``"shorttext"`` \| ``"bytes"`` \| ``"bytea"`` \| ``"long"`` \| ``"raw"`` \| ``"long raw"`` \| ``"bfile"`` \| ``"clob"`` \| ``"nclob"`` \| ``"image"`` \| ``"timetz"`` \| ``"timestamptz"`` \| ``"timestamp with local time zone"`` \| ``"smalldatetime"`` \| ``"date"`` \| ``"interval year to month"`` \| ``"interval day to second"`` \| ``"interval"`` \| ``"year"`` \| ``"seconddate"`` \| ``"point"`` \| ``"line"`` \| ``"lseg"`` \| ``"box"`` \| ``"circle"`` \| ``"path"`` \| ``"polygon"`` \| ``"geography"`` \| ``"geometry"`` \| ``"linestring"`` \| ``"multipoint"`` \| ``"multilinestring"`` \| ``"multipolygon"`` \| ``"geometrycollection"`` \| ``"st_geometry"`` \| ``"st_point"`` \| ``"int4range"`` \| ``"int8range"`` \| ``"numrange"`` \| ``"tsrange"`` \| ``"tstzrange"`` \| ``"daterange"`` \| ``"enum"`` \| ``"set"`` \| ``"cidr"`` \| ``"inet"`` \| ``"inet4"`` \| ``"inet6"`` \| ``"macaddr"`` \| ``"bit"`` \| ``"bit varying"`` \| ``"varbit"`` \| ``"tsvector"`` \| ``"tsquery"`` \| ``"uuid"`` \| ``"xml"`` \| ``"json"`` \| ``"jsonb"`` \| ``"varbinary"`` \| ``"hierarchyid"`` \| ``"sql_variant"`` \| ``"rowid"`` \| ``"urowid"`` \| ``"uniqueidentifier"`` \| ``"rowversion"`` \| ``"array"`` \| ``"cube"`` \| ``"ltree"``
+
+All other regular column types.
+
+#### Defined in
+
+node_modules/typeorm/driver/types/ColumnTypes.d.ts:21

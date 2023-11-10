@@ -42,7 +42,7 @@ packages/types/dist/event-bus/event-bus-module.d.ts:3
 
 | Name |
 | :------ |
-| `data` | [`EmitData`](../index.md#emitdata)<`T`\>[] |
+| `data` | [`EmitData`](../types/EmitData.md)<`T`\>[] |
 
 #### Returns
 
@@ -65,8 +65,8 @@ ___
 | Name |
 | :------ |
 | `eventName` | `string` \| `symbol` |
-| `subscriber` | [`Subscriber`](../index.md#subscriber) |
-| `context?` | [`SubscriberContext`](../index.md#subscribercontext) |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md) |
+| `context?` | [`SubscriberContext`](../types/SubscriberContext.md) |
 
 #### Returns
 
@@ -89,8 +89,8 @@ ___
 | Name |
 | :------ |
 | `eventName` | `string` \| `symbol` |
-| `subscriber` | [`Subscriber`](../index.md#subscriber) |
-| `context?` | [`SubscriberContext`](../index.md#subscribercontext) |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md) |
+| `context?` | [`SubscriberContext`](../types/SubscriberContext.md) |
 
 #### Returns
 

@@ -385,7 +385,7 @@ it will continue on to execute the route, or subsequent parameter functions.
 | Name |
 | :------ |
 | `name` | `string` |
-| `handler` | [`RequestParamHandler`](../index.md#requestparamhandler) |
+| `handler` | [`RequestParamHandler`](../types/RequestParamHandler.md) |
 
 #### Returns
 
@@ -405,7 +405,7 @@ Alternatively, you can pass only a callback, in which case you have the opportun
 
 | Name |
 | :------ |
-| `callback` | (`name`: `string`, `matcher`: `RegExp`) => [`RequestParamHandler`](../index.md#requestparamhandler) |
+| `callback` | (`name`: `string`, `matcher`: `RegExp`) => [`RequestParamHandler`](../types/RequestParamHandler.md) |
 
 #### Returns
 
@@ -453,7 +453,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:310
 
 | Name |
 | :------ |
-| `prefix` | [`PathParams`](../index.md#pathparams) |
+| `prefix` | [`PathParams`](../types/PathParams.md) |
 
 #### Returns
 

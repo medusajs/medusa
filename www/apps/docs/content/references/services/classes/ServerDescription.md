@@ -184,7 +184,7 @@ ___
 
 ### tags
 
- **tags**: [`TagSet`](../index.md#tagset)
+ **tags**: [`TagSet`](../types/TagSet.md)
 
 #### Defined in
 
@@ -204,7 +204,7 @@ ___
 
 ### type
 
- **type**: [`ServerType`](../index.md#servertype-1)
+ **type**: [`ServerType`](../index.md#servertype)
 
 #### Defined in
 

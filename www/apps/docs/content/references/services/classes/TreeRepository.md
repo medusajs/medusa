@@ -32,7 +32,7 @@ Repository
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `manager` | [`EntityManager`](EntityManager.md) |
 | `queryRunner?` | [`QueryRunner`](../interfaces/QueryRunner.md) |
 
@@ -80,7 +80,7 @@ ___
 
 ### target
 
- `Readonly` **target**: [`EntityTarget`](../index.md#entitytarget)<`Entity`\>
+ `Readonly` **target**: [`EntityTarget`](../types/EntityTarget.md)<`Entity`\>
 
 Entity target that is managed by this repository.
 If this repository manages entity from schema,
@@ -128,8 +128,8 @@ Return the AVG of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -242,7 +242,7 @@ Useful for pagination.
 
 | Name |
 | :------ |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -313,7 +313,7 @@ Note that it copies only properties that are present in entity schema.
 
 | Name |
 | :------ |
-| `entityLikeArray` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `entityLikeArray` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -338,7 +338,7 @@ Note that it copies only properties that are present in entity schema.
 
 | Name |
 | :------ |
-| `entityLike` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityLike` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -445,7 +445,7 @@ Decrements some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `conditions` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `conditions` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
 
@@ -479,7 +479,7 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 
 #### Returns
 
@@ -683,7 +683,7 @@ but ignores pagination settings (from and take options).
 
 | Name |
 | :------ |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -713,7 +713,7 @@ Finds entities that match given find options.
 
 | Name |
 | :------ |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -862,7 +862,7 @@ If entity was not found in the database - returns null.
 
 | Name |
 | :------ |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -930,7 +930,7 @@ If entity was not found in the database - rejects with error.
 
 | Name |
 | :------ |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1094,7 +1094,7 @@ Increments some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `conditions` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `conditions` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
 
@@ -1128,7 +1128,7 @@ Does not check if entity exist in the database, so query will fail if duplicate 
 
 | Name |
 | :------ |
-| `entity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `entity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 
 #### Returns
 
@@ -1157,8 +1157,8 @@ Return the MAX of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1188,7 +1188,7 @@ Merges multiple entities (or entity-like objects) into a given entity.
 | Name |
 | :------ |
 | `mergeIntoEntity` | `Entity` |
-| `...entityLikes` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `...entityLikes` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1214,8 +1214,8 @@ Return the MIN of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1250,7 +1250,7 @@ Returns undefined if entity with given id was not found.
 
 | Name |
 | :------ |
-| `entityLike` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityLike` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -1492,7 +1492,7 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 
 #### Returns
 
@@ -1652,7 +1652,7 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 
 #### Returns
 
@@ -1805,8 +1805,8 @@ Return the SUM of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1838,8 +1838,8 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
-| `partialEntity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
+| `partialEntity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -1870,7 +1870,7 @@ Executes fast and efficient INSERT ... ON CONFLICT DO UPDATE/ON DUPLICATE KEY UP
 
 | Name |
 | :------ |
-| `entityOrEntities` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `entityOrEntities` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 | `conflictPathsOrOptions` | `string`[] \| [`UpsertOptions`](../interfaces/UpsertOptions.md)<`Entity`\> |
 
 #### Returns

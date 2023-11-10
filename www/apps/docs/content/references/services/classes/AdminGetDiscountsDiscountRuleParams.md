@@ -18,7 +18,7 @@ Allocation to filter discount rules by.
 
 #### Defined in
 
-[packages/medusa/src/types/discount.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/discount.ts#L67)
+[packages/medusa/src/types/discount.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/discount.ts#L67)
 
 ___
 
@@ -30,4 +30,4 @@ Type to filter discount rules by.
 
 #### Defined in
 
-[packages/medusa/src/types/discount.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/discount.ts#L60)
+[packages/medusa/src/types/discount.ts:60](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/discount.ts#L60)

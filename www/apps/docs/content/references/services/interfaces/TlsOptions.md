@@ -398,7 +398,7 @@ ___
 
 ### maxVersion
 
- `Optional` **maxVersion**: [`SecureVersion`](../index.md#secureversion)
+ `Optional` **maxVersion**: [`SecureVersion`](../types/SecureVersion.md)
 
 Optionally set the maximum TLS version to allow. One
 of `'TLSv1.3'`, `'TLSv1.2'`, `'TLSv1.1'`, or `'TLSv1'`. Cannot be specified along with the
@@ -419,7 +419,7 @@ ___
 
 ### minVersion
 
- `Optional` **minVersion**: [`SecureVersion`](../index.md#secureversion)
+ `Optional` **minVersion**: [`SecureVersion`](../types/SecureVersion.md)
 
 Optionally set the minimum TLS version to allow. One
 of `'TLSv1.3'`, `'TLSv1.2'`, `'TLSv1.1'`, or `'TLSv1'`. Cannot be specified along with the
@@ -749,7 +749,7 @@ docs-util/node_modules/@types/node/tls.d.ts:562
 
 ### pskCallback
 
-`Optional` **pskCallback**(`socket`, `identity`): ``null`` \| [`TypedArray`](../index.md#typedarray) \| `DataView`
+`Optional` **pskCallback**(`socket`, `identity`): ``null`` \| [`TypedArray`](../types/TypedArray.md) \| `DataView`
 
 #### Parameters
 
@@ -760,7 +760,7 @@ docs-util/node_modules/@types/node/tls.d.ts:562
 
 #### Returns
 
-``null`` \| [`TypedArray`](../index.md#typedarray) \| `DataView`
+``null`` \| [`TypedArray`](../types/TypedArray.md) \| `DataView`
 
 -```null`` \| TypedArray \| DataView`: (optional) pre-shared key that must either be
 a buffer or `null` to stop the negotiation process. Returned PSK must be

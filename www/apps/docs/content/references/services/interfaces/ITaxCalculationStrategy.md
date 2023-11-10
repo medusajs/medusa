@@ -15,7 +15,7 @@ tax conditions and calculation contexts.
 | :------ | :------ |
 | `items` | [`LineItem`](../classes/LineItem.md)[] | the line items to calculate the tax total for |
 | `taxLines` | ([`LineItemTaxLine`](../classes/LineItemTaxLine.md) \| [`ShippingMethodTaxLine`](../classes/ShippingMethodTaxLine.md))[] | the tax lines that applies to the calculation |
-| `calculationContext` | [`TaxCalculationContext`](../index.md#taxcalculationcontext) | other details relevant for the calculation |
+| `calculationContext` | [`TaxCalculationContext`](../types/TaxCalculationContext.md) | other details relevant for the calculation |
 
 #### Returns
 
@@ -26,4 +26,4 @@ tax conditions and calculation contexts.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/tax-calculation-strategy.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/tax-calculation-strategy.ts#L15)
+[packages/medusa/src/interfaces/tax-calculation-strategy.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/tax-calculation-strategy.ts#L15)

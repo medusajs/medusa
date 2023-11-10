@@ -4,7 +4,7 @@
 
 | Name | Type |
 | :------ | :------ |
-| `T` | [`KeyFormat`](../index.md#keyformat) |
+| `T` | [`KeyFormat`](../types/KeyFormat.md) |
 
 ## Properties
 

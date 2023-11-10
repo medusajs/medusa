@@ -32,71 +32,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "filters",
-        "type": "`boolean` \\| `string`[] \\| [`Dictionary`](../../internal/types/internal.Dictionary.mdx)<`boolean` \\| [`Dictionary`](../../internal/types/internal.Dictionary.mdx)\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "groupBy",
-        "type": "`string` \\| `string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "limit",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "offset",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "orderBy",
-        "type": "[`Order`](../../internal/types/internal.Order-1.mdx)<`T`\\> \\| [`Order`](../../internal/types/internal.Order-1.mdx)<`T`\\>[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "populate",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "where",
@@ -105,25 +41,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "$and",
-        "type": "([`BaseFilterable`](../interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<`T`\\> \\| `T`)[]",
-        "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "$or",
-        "type": "([`BaseFilterable`](../interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<`T`\\> \\| `T`)[]",
-        "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

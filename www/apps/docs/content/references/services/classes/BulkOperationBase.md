@@ -94,7 +94,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:781
 
 | Name |
 | :------ |
-| `batchType` | [`BatchType`](../index.md#batchtype-1) |
+| `batchType` | [`BatchType`](../index.md#batchtype) |
 | `document` | [`Document`](../interfaces/Document.md) \| [`UpdateStatement`](../interfaces/UpdateStatement.md) \| [`DeleteStatement`](../interfaces/DeleteStatement.md) |
 
 #### Returns
@@ -236,7 +236,7 @@ Specifies a raw operation to perform in the bulk write.
 
 | Name |
 | :------ |
-| `op` | [`AnyBulkWriteOperation`](../index.md#anybulkwriteoperation)<[`Document`](../interfaces/Document.md)\> |
+| `op` | [`AnyBulkWriteOperation`](../types/AnyBulkWriteOperation.md)<[`Document`](../interfaces/Document.md)\> |
 
 #### Returns
 

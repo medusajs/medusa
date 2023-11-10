@@ -18,7 +18,7 @@ Provides layer to manipulate store settings.
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-39) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-39.md) |
 
 #### Overrides
 
@@ -26,7 +26,7 @@ Provides layer to manipulate store settings.
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L29)
+[packages/medusa/src/services/store.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L29)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Provides layer to manipulate store settings.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L26)
+[packages/medusa/src/services/store.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L26)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L27)
+[packages/medusa/src/services/store.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L27)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L25)
+[packages/medusa/src/services/store.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L25)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -146,7 +146,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -171,7 +171,7 @@ Add a currency to the store
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:209](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L209)
+[packages/medusa/src/services/store.ts:209](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L209)
 
 ___
 
@@ -193,7 +193,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -208,7 +208,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -227,13 +227,13 @@ Creates a store if it doesn't already exist.
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L46)
+[packages/medusa/src/services/store.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L46)
 
 ___
 
 ### getDefaultCurrency\_
 
-`Protected` **getDefaultCurrency_**(`code`): [`Partial`](../index.md#partial)<[`Currency`](Currency.md)\>
+`Protected` **getDefaultCurrency_**(`code`): [`Partial`](../types/Partial.md)<[`Currency`](Currency.md)\>
 
 #### Parameters
 
@@ -243,14 +243,14 @@ ___
 
 #### Returns
 
-[`Partial`](../index.md#partial)<[`Currency`](Currency.md)\>
+[`Partial`](../types/Partial.md)<[`Currency`](Currency.md)\>
 
 -`Partial`: 
 	-`Currency`: 
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:101](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L101)
+[packages/medusa/src/services/store.ts:101](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L101)
 
 ___
 
@@ -275,7 +275,7 @@ Removes a currency from the store
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:253](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L253)
+[packages/medusa/src/services/store.ts:253](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L253)
 
 ___
 
@@ -300,7 +300,7 @@ Retrieve the store settings. There is always a maximum of one store.
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:84](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L84)
+[packages/medusa/src/services/store.ts:84](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L84)
 
 ___
 
@@ -326,7 +326,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -340,7 +340,7 @@ Updates a store
 
 | Name | Description |
 | :------ | :------ |
-| `data` | [`UpdateStoreInput`](../index.md#updatestoreinput) | an object with the update values. |
+| `data` | [`UpdateStoreInput`](../types/UpdateStoreInput.md) | an object with the update values. |
 
 #### Returns
 
@@ -351,7 +351,7 @@ Updates a store
 
 #### Defined in
 
-[packages/medusa/src/services/store.ts:117](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/store.ts#L117)
+[packages/medusa/src/services/store.ts:117](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/store.ts#L117)
 
 ___
 
@@ -377,4 +377,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

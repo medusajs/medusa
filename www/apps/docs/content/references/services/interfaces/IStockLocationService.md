@@ -4,11 +4,11 @@
 
 ### \_\_joinerConfig
 
-**__joinerConfig**(): [`ModuleJoinerConfig`](../index.md#modulejoinerconfig)
+**__joinerConfig**(): [`ModuleJoinerConfig`](../types/ModuleJoinerConfig.md)
 
 #### Returns
 
-[`ModuleJoinerConfig`](../index.md#modulejoinerconfig)
+[`ModuleJoinerConfig`](../types/ModuleJoinerConfig.md)
 
 -`ModuleJoinerConfig`: 
 	-`alias`: (optional) Property name to use as entrypoint to the service
@@ -48,18 +48,18 @@ ___
 
 ### create
 
-**create**(`input`, `context?`): `Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)\>
+**create**(`input`, `context?`): `Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `input` | [`CreateStockLocationInput`](../index.md#createstocklocationinput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`CreateStockLocationInput`](../types/CreateStockLocationInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)\>
+`Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)\>
 
 -`Promise`: 
 	-`StockLocationDTO`: Represents a Stock Location
@@ -87,7 +87,7 @@ ___
 | Name |
 | :------ |
 | `id` | `string` |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -103,19 +103,19 @@ ___
 
 ### list
 
-**list**(`selector`, `config?`, `context?`): `Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)[]\>
+**list**(`selector`, `config?`, `context?`): `Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | [`FilterableStockLocationProps`](../index.md#filterablestocklocationprops) |
-| `config?` | [`FindConfig`](FindConfig-1.md)<[`StockLocationDTO`](../index.md#stocklocationdto)\> |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `selector` | [`FilterableStockLocationProps`](../types/FilterableStockLocationProps.md) |
+| `config?` | [`FindConfig`](FindConfig-1.md)<[`StockLocationDTO`](../types/StockLocationDTO.md)\> |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)[]\>
+`Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)[]\>
 
 -`Promise`: 
 	-`StockLocationDTO[]`: 
@@ -129,19 +129,19 @@ ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`, `context?`): `Promise`<[[`StockLocationDTO`](../index.md#stocklocationdto)[], `number`]\>
+**listAndCount**(`selector`, `config?`, `context?`): `Promise`<[[`StockLocationDTO`](../types/StockLocationDTO.md)[], `number`]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | [`FilterableStockLocationProps`](../index.md#filterablestocklocationprops) |
-| `config?` | [`FindConfig`](FindConfig-1.md)<[`StockLocationDTO`](../index.md#stocklocationdto)\> |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `selector` | [`FilterableStockLocationProps`](../types/FilterableStockLocationProps.md) |
+| `config?` | [`FindConfig`](FindConfig-1.md)<[`StockLocationDTO`](../types/StockLocationDTO.md)\> |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[[`StockLocationDTO`](../index.md#stocklocationdto)[], `number`]\>
+`Promise`<[[`StockLocationDTO`](../types/StockLocationDTO.md)[], `number`]\>
 
 -`Promise`: 
 	-`StockLocationDTO[]`: 
@@ -155,19 +155,19 @@ ___
 
 ### retrieve
 
-**retrieve**(`id`, `config?`, `context?`): `Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)\>
+**retrieve**(`id`, `config?`, `context?`): `Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `id` | `string` |
-| `config?` | [`FindConfig`](FindConfig-1.md)<[`StockLocationDTO`](../index.md#stocklocationdto)\> |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `config?` | [`FindConfig`](FindConfig-1.md)<[`StockLocationDTO`](../types/StockLocationDTO.md)\> |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)\>
+`Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)\>
 
 -`Promise`: 
 	-`StockLocationDTO`: Represents a Stock Location
@@ -188,19 +188,19 @@ ___
 
 ### update
 
-**update**(`id`, `input`, `context?`): `Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)\>
+**update**(`id`, `input`, `context?`): `Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `id` | `string` |
-| `input` | [`UpdateStockLocationInput`](../index.md#updatestocklocationinput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`UpdateStockLocationInput`](../types/UpdateStockLocationInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`StockLocationDTO`](../index.md#stocklocationdto)\>
+`Promise`<[`StockLocationDTO`](../types/StockLocationDTO.md)\>
 
 -`Promise`: 
 	-`StockLocationDTO`: Represents a Stock Location

@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:142](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L142)
+[packages/medusa/src/types/price-list.ts:142](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L142)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:136](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L136)
+[packages/medusa/src/types/price-list.ts:136](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L136)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L128)
+[packages/medusa/src/types/price-list.ts:128](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L128)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:150](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L150)
+[packages/medusa/src/types/price-list.ts:150](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L150)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:146](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L146)
+[packages/medusa/src/types/price-list.ts:146](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L146)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:132](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L132)
+[packages/medusa/src/types/price-list.ts:132](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L132)
 
 ___
 
@@ -74,4 +74,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:139](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L139)
+[packages/medusa/src/types/price-list.ts:139](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L139)

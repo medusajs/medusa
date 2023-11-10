@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:161](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L161)
+[packages/medusa/src/types/price-list.ts:161](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L161)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:158](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L158)
+[packages/medusa/src/types/price-list.ts:158](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L158)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:172](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L172)
+[packages/medusa/src/types/price-list.ts:172](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L172)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:168](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L168)
+[packages/medusa/src/types/price-list.ts:168](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L168)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:155](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L155)
+[packages/medusa/src/types/price-list.ts:155](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L155)
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/price-list.ts:164](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/price-list.ts#L164)
+[packages/medusa/src/types/price-list.ts:164](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/price-list.ts#L164)

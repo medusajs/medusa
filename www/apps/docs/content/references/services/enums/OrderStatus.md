@@ -12,7 +12,7 @@ The order is archived.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L59)
+[packages/medusa/src/models/order.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L59)
 
 ___
 
@@ -24,7 +24,7 @@ The order is canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:63](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L63)
+[packages/medusa/src/models/order.ts:63](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L63)
 
 ___
 
@@ -38,7 +38,7 @@ has been captured.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L55)
+[packages/medusa/src/models/order.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L55)
 
 ___
 
@@ -50,7 +50,7 @@ The order is pending.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L49)
+[packages/medusa/src/models/order.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L49)
 
 ___
 
@@ -62,4 +62,4 @@ The order requires action.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L67)
+[packages/medusa/src/models/order.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L67)

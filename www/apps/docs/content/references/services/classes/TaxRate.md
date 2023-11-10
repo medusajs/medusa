@@ -30,7 +30,7 @@ A code to identify the tax type by
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L25)
+[packages/medusa/src/models/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L25)
 
 ___
 
@@ -46,7 +46,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -62,7 +62,7 @@ The tax rate's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -74,7 +74,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L38)
+[packages/medusa/src/models/tax-rate.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L38)
 
 ___
 
@@ -86,7 +86,7 @@ A human friendly name for the tax
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L28)
+[packages/medusa/src/models/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L28)
 
 ___
 
@@ -98,7 +98,7 @@ The count of products
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:83](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L83)
+[packages/medusa/src/models/tax-rate.ts:83](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L83)
 
 ___
 
@@ -110,7 +110,7 @@ The count of product types
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:84](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L84)
+[packages/medusa/src/models/tax-rate.ts:84](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L84)
 
 ___
 
@@ -122,7 +122,7 @@ The details of the product types that belong to this tax rate.
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L66)
+[packages/medusa/src/models/tax-rate.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L66)
 
 ___
 
@@ -134,7 +134,7 @@ The details of the products that belong to this tax rate.
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L52)
+[packages/medusa/src/models/tax-rate.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L52)
 
 ___
 
@@ -146,7 +146,7 @@ The numeric rate to charge
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L22)
+[packages/medusa/src/models/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L22)
 
 ___
 
@@ -158,7 +158,7 @@ The details of the region that the rate belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L35)
+[packages/medusa/src/models/tax-rate.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L35)
 
 ___
 
@@ -170,7 +170,7 @@ The ID of the region that the rate belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L31)
+[packages/medusa/src/models/tax-rate.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L31)
 
 ___
 
@@ -182,7 +182,7 @@ The count of shipping options
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:85](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L85)
+[packages/medusa/src/models/tax-rate.ts:85](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L85)
 
 ___
 
@@ -194,7 +194,7 @@ The details of the shipping options that belong to this tax rate.
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:80](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L80)
+[packages/medusa/src/models/tax-rate.ts:80](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L80)
 
 ___
 
@@ -210,7 +210,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -226,4 +226,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/tax-rate.ts:91](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-rate.ts#L91)
+[packages/medusa/src/models/tax-rate.ts:91](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-rate.ts#L91)

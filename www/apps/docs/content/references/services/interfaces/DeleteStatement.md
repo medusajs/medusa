@@ -16,7 +16,7 @@ ___
 
 ### hint
 
- `Optional` **hint**: [`Hint`](../index.md#hint)
+ `Optional` **hint**: [`Hint`](../types/Hint.md)
 
 A document or string that specifies the index to use to support the query predicate.
 

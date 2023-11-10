@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-5) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-5.md) |
 
 #### Overrides
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L29)
+[packages/medusa/src/services/currency.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L29)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L25)
+[packages/medusa/src/services/currency.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L25)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L26)
+[packages/medusa/src/services/currency.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L26)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L27)
+[packages/medusa/src/services/currency.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L27)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:21](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L21)
+[packages/medusa/src/services/currency.ts:21](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L21)
 
 ## Accessors
 
@@ -160,7 +160,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -182,7 +182,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -197,7 +197,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -212,7 +212,7 @@ currencies that match the query.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Currency`](Currency.md)\> | an object that defines rules to filter currencies by |
+| `selector` | [`Selector`](../types/Selector.md)<[`Currency`](Currency.md)\> | an object that defines rules to filter currencies by |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Currency`](Currency.md)\> | object that defines the scope for what should be returned |
 
 #### Returns
@@ -227,7 +227,7 @@ currencies that match the query.
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:78](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L78)
+[packages/medusa/src/services/currency.ts:78](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L78)
 
 ___
 
@@ -252,7 +252,7 @@ Return the currency
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L47)
+[packages/medusa/src/services/currency.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L47)
 
 ___
 
@@ -278,7 +278,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -293,7 +293,7 @@ Update a currency
 | Name | Description |
 | :------ | :------ |
 | `code` | `string` | The code of the currency to update |
-| `data` | [`UpdateCurrencyInput`](../index.md#updatecurrencyinput) | The data that must be updated on the currency |
+| `data` | [`UpdateCurrencyInput`](../types/UpdateCurrencyInput.md) | The data that must be updated on the currency |
 
 #### Returns
 
@@ -304,7 +304,7 @@ Update a currency
 
 #### Defined in
 
-[packages/medusa/src/services/currency.ts:100](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/currency.ts#L100)
+[packages/medusa/src/services/currency.ts:100](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/currency.ts#L100)
 
 ___
 
@@ -330,4 +330,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

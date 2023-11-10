@@ -18,7 +18,7 @@ A resolver object returned by asClass(), asFunction() or asValue().
 
 ### lifetime
 
- `Optional` **lifetime**: [`LifetimeType`](../index.md#lifetimetype)
+ `Optional` **lifetime**: [`LifetimeType`](../types/LifetimeType.md)
 
 Lifetime setting.
 

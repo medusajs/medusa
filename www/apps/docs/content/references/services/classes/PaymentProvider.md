@@ -20,7 +20,7 @@ The ID of the payment provider as given by the payment service.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-provider.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-provider.ts#L6)
+[packages/medusa/src/models/payment-provider.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-provider.ts#L6)
 
 ___
 
@@ -32,4 +32,4 @@ Whether the payment service is installed in the current version. If a payment se
 
 #### Defined in
 
-[packages/medusa/src/models/payment-provider.ts:9](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-provider.ts#L9)
+[packages/medusa/src/models/payment-provider.ts:9](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-provider.ts#L9)

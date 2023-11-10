@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ The product option value's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/product-option-value.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option-value.ts#L40)
+[packages/medusa/src/models/product-option-value.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option-value.ts#L40)
 
 ___
 
@@ -90,7 +90,7 @@ The details of the product option that the Product Option Value belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option-value.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option-value.ts#L27)
+[packages/medusa/src/models/product-option-value.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option-value.ts#L27)
 
 ___
 
@@ -102,7 +102,7 @@ The ID of the Product Option that the Product Option Value belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option-value.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option-value.ts#L23)
+[packages/medusa/src/models/product-option-value.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option-value.ts#L23)
 
 ___
 
@@ -118,7 +118,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -130,7 +130,7 @@ The value that the Product Variant has defined for the specific Product Option (
 
 #### Defined in
 
-[packages/medusa/src/models/product-option-value.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option-value.ts#L19)
+[packages/medusa/src/models/product-option-value.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option-value.ts#L19)
 
 ___
 
@@ -142,7 +142,7 @@ The details of the product variant that uses this product option value.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option-value.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option-value.ts#L37)
+[packages/medusa/src/models/product-option-value.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option-value.ts#L37)
 
 ___
 
@@ -154,7 +154,7 @@ The ID of the product variant that uses this product option value.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option-value.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option-value.ts#L31)
+[packages/medusa/src/models/product-option-value.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option-value.ts#L31)
 
 ## Methods
 
@@ -170,4 +170,4 @@ The ID of the product variant that uses this product option value.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option-value.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option-value.ts#L46)
+[packages/medusa/src/models/product-option-value.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option-value.ts#L46)

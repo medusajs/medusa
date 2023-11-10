@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/orders.ts:386](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/orders.ts#L386)
+[packages/medusa/src/types/orders.ts:386](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/orders.ts#L386)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/orders.ts:399](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/orders.ts#L399)
+[packages/medusa/src/types/orders.ts:399](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/orders.ts#L399)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/orders.ts:391](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/orders.ts#L391)
+[packages/medusa/src/types/orders.ts:391](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/orders.ts#L391)
 
 ___
 
@@ -44,4 +44,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/orders.ts:395](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/orders.ts#L395)
+[packages/medusa/src/types/orders.ts:395](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/orders.ts#L395)

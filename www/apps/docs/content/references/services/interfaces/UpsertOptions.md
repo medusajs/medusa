@@ -10,7 +10,7 @@ Special options passed to Repository#upsert
 
 ## Hierarchy
 
-- [`InsertOrUpdateOptions`](../index.md#insertorupdateoptions)
+- [`InsertOrUpdateOptions`](../types/InsertOrUpdateOptions.md)
 
   ↳ **`UpsertOptions`**
 
@@ -60,7 +60,7 @@ ___
 
 ### upsertType
 
- `Optional` **upsertType**: [`UpsertType`](../index.md#upserttype)
+ `Optional` **upsertType**: [`UpsertType`](../types/UpsertType.md)
 
 Define the type of upsert to use (currently, CockroachDB only).
 

@@ -30,7 +30,7 @@ Address line 1
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:377](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L377)
+[packages/medusa/src/types/common.ts:377](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L377)
 
 ___
 
@@ -46,7 +46,7 @@ Address line 2
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:381](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L381)
+[packages/medusa/src/types/common.ts:381](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L381)
 
 ___
 
@@ -62,7 +62,7 @@ City
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:385](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L385)
+[packages/medusa/src/types/common.ts:385](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L385)
 
 ___
 
@@ -78,7 +78,7 @@ Company
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:373](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L373)
+[packages/medusa/src/types/common.ts:373](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L373)
 
 ___
 
@@ -94,7 +94,7 @@ The 2 character ISO code of the country in lower case
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:389](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L389)
+[packages/medusa/src/types/common.ts:389](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L389)
 
 ___
 
@@ -110,7 +110,7 @@ First name
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:357](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L357)
+[packages/medusa/src/types/common.ts:357](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L357)
 
 ___
 
@@ -126,7 +126,7 @@ Last name
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:361](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L361)
+[packages/medusa/src/types/common.ts:361](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L361)
 
 ___
 
@@ -142,7 +142,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:369](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L369)
+[packages/medusa/src/types/common.ts:369](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L369)
 
 ___
 
@@ -158,7 +158,7 @@ Phone Number
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:365](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L365)
+[packages/medusa/src/types/common.ts:365](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L365)
 
 ___
 
@@ -174,7 +174,7 @@ Postal Code
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:397](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L397)
+[packages/medusa/src/types/common.ts:397](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L397)
 
 ___
 
@@ -190,4 +190,4 @@ Province
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:393](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L393)
+[packages/medusa/src/types/common.ts:393](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L393)

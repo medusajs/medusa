@@ -43,7 +43,7 @@ node_modules/typeorm/subscriber/Broadcaster.d.ts:31
 | Name |
 | :------ |
 | `event` | `U` |
-| `...args` | [`Parameters`](../index.md#parameters)<[`BroadcasterEvents`](../interfaces/BroadcasterEvents.md)[`U`]\> |
+| `...args` | [`Parameters`](../types/Parameters.md)<[`BroadcasterEvents`](../interfaces/BroadcasterEvents.md)[`U`]\> |
 
 #### Returns
 

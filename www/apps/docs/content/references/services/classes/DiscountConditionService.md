@@ -20,7 +20,7 @@ Provides layer to manipulate discount conditions.
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-8) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-8.md) |
 
 #### Overrides
 
@@ -28,7 +28,7 @@ Provides layer to manipulate discount conditions.
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L34)
+[packages/medusa/src/services/discount-condition.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L34)
 
 ## Properties
 
@@ -42,7 +42,7 @@ Provides layer to manipulate discount conditions.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L31)
+[packages/medusa/src/services/discount-condition.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L31)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L32)
+[packages/medusa/src/services/discount-condition.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L32)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -138,7 +138,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -160,7 +160,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -175,7 +175,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -198,7 +198,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:217](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L217)
+[packages/medusa/src/services/discount-condition.ts:217](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L217)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 | Name |
 | :------ |
-| `data` | [`Omit`](../index.md#omit)<[`DiscountConditionInput`](../index.md#discountconditioninput), ``"id"``\> & { `id`: `string`  } |
+| `data` | [`Omit`](../types/Omit.md)<[`DiscountConditionInput`](../types/DiscountConditionInput.md), ``"id"``\> & { `id`: `string`  } |
 
 #### Returns
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:184](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L184)
+[packages/medusa/src/services/discount-condition.ts:184](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L184)
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L45)
+[packages/medusa/src/services/discount-condition.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L45)
 
 ___
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -282,7 +282,7 @@ ___
 
 | Name | Default value |
 | :------ | :------ |
-| `data` | [`DiscountConditionInput`](../index.md#discountconditioninput) |
+| `data` | [`DiscountConditionInput`](../types/DiscountConditionInput.md) |
 | `overrideExisting` | `boolean` | true |
 
 #### Returns
@@ -295,7 +295,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:111](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L111)
+[packages/medusa/src/services/discount-condition.ts:111](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L111)
 
 ___
 
@@ -321,7 +321,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
 
 ___
 
@@ -333,7 +333,7 @@ ___
 
 | Name |
 | :------ |
-| `data` | [`DiscountConditionInput`](../index.md#discountconditioninput) |
+| `data` | [`DiscountConditionInput`](../types/DiscountConditionInput.md) |
 
 #### Returns
 
@@ -343,4 +343,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/discount-condition.ts:74](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/discount-condition.ts#L74)
+[packages/medusa/src/services/discount-condition.ts:74](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/discount-condition.ts#L74)

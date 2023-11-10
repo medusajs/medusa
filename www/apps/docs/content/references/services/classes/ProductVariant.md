@@ -30,7 +30,7 @@ Whether the Product Variant should be purchasable when `inventory_quantity` is 0
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L72)
+[packages/medusa/src/models/product-variant.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L72)
 
 ___
 
@@ -42,7 +42,7 @@ A generic field for a GTIN number that can be used to identify the Product Varia
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L55)
+[packages/medusa/src/models/product-variant.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L55)
 
 ___
 
@@ -58,7 +58,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -74,7 +74,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -86,7 +86,7 @@ An EAN barcode number that can be used to identify the Product Variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L59)
+[packages/medusa/src/models/product-variant.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L59)
 
 ___
 
@@ -98,7 +98,7 @@ The height of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:96](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L96)
+[packages/medusa/src/models/product-variant.ts:96](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L96)
 
 ___
 
@@ -110,7 +110,7 @@ The Harmonized System code of the Product Variant. May be used by Fulfillment Pr
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:78](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L78)
+[packages/medusa/src/models/product-variant.ts:78](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L78)
 
 ___
 
@@ -126,7 +126,7 @@ The product variant's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -138,7 +138,7 @@ The details inventory items of the product variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:113](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L113)
+[packages/medusa/src/models/product-variant.ts:113](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L113)
 
 ___
 
@@ -150,7 +150,7 @@ The current quantity of the item that is stocked.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L69)
+[packages/medusa/src/models/product-variant.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L69)
 
 ___
 
@@ -162,7 +162,7 @@ The length of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:93](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L93)
+[packages/medusa/src/models/product-variant.ts:93](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L93)
 
 ___
 
@@ -174,7 +174,7 @@ Whether Medusa should manage inventory for the Product Variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:75](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L75)
+[packages/medusa/src/models/product-variant.ts:75](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L75)
 
 ___
 
@@ -186,7 +186,7 @@ The material and composition that the Product Variant is made of, May be used by
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L87)
+[packages/medusa/src/models/product-variant.ts:87](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L87)
 
 ___
 
@@ -198,7 +198,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:116](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L116)
+[packages/medusa/src/models/product-variant.ts:116](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L116)
 
 ___
 
@@ -210,7 +210,7 @@ The Manufacturers Identification code that identifies the manufacturer of the Pr
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:84](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L84)
+[packages/medusa/src/models/product-variant.ts:84](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L84)
 
 ___
 
@@ -222,7 +222,7 @@ The details of the product options that this product variant defines values for.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:104](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L104)
+[packages/medusa/src/models/product-variant.ts:104](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L104)
 
 ___
 
@@ -234,7 +234,7 @@ The country in which the Product Variant was produced. May be used by Fulfillmen
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L81)
+[packages/medusa/src/models/product-variant.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L81)
 
 ___
 
@@ -246,7 +246,7 @@ The details of the prices of the Product Variant, each represented as a Money Am
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L47)
+[packages/medusa/src/models/product-variant.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L47)
 
 ___
 
@@ -258,7 +258,7 @@ The details of the product that the product variant belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L31)
+[packages/medusa/src/models/product-variant.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L31)
 
 ___
 
@@ -270,7 +270,7 @@ The ID of the product that the product variant belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L27)
+[packages/medusa/src/models/product-variant.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L27)
 
 ___
 
@@ -288,7 +288,7 @@ A variant is purchasable if:
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:118](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L118)
+[packages/medusa/src/models/product-variant.ts:118](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L118)
 
 ___
 
@@ -300,7 +300,7 @@ The unique stock keeping unit used to identify the Product Variant. This will us
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:51](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L51)
+[packages/medusa/src/models/product-variant.ts:51](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L51)
 
 ___
 
@@ -312,7 +312,7 @@ A title that can be displayed for easy identification of the Product Variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L23)
+[packages/medusa/src/models/product-variant.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L23)
 
 ___
 
@@ -324,7 +324,7 @@ A UPC barcode number that can be used to identify the Product Variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:63](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L63)
+[packages/medusa/src/models/product-variant.ts:63](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L63)
 
 ___
 
@@ -340,7 +340,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -352,7 +352,7 @@ The ranking of this variant
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L66)
+[packages/medusa/src/models/product-variant.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L66)
 
 ___
 
@@ -364,7 +364,7 @@ The weight of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:90](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L90)
+[packages/medusa/src/models/product-variant.ts:90](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L90)
 
 ___
 
@@ -376,7 +376,7 @@ The width of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:99](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L99)
+[packages/medusa/src/models/product-variant.ts:99](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L99)
 
 ## Methods
 
@@ -392,4 +392,4 @@ The width of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant.ts:124](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant.ts#L124)
+[packages/medusa/src/models/product-variant.ts:124](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant.ts#L124)

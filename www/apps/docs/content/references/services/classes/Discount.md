@@ -30,7 +30,7 @@ A unique code for the discount - this will be used by the customer to apply the 
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L22)
+[packages/medusa/src/models/discount.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L22)
 
 ___
 
@@ -46,7 +46,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -62,7 +62,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -74,7 +74,7 @@ The time at which the discount can no longer be used.
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L52)
+[packages/medusa/src/models/discount.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L52)
 
 ___
 
@@ -90,7 +90,7 @@ The discount's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -102,7 +102,7 @@ Whether the Discount has been disabled. Disabled discounts cannot be applied to 
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L36)
+[packages/medusa/src/models/discount.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L36)
 
 ___
 
@@ -114,7 +114,7 @@ A flag to indicate if multiple instances of the discount can be generated. I.e. 
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L25)
+[packages/medusa/src/models/discount.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L25)
 
 ___
 
@@ -126,7 +126,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:78](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L78)
+[packages/medusa/src/models/discount.ts:78](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L78)
 
 ___
 
@@ -138,7 +138,7 @@ The details of the parent discount that this discount was created from.
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L43)
+[packages/medusa/src/models/discount.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L43)
 
 ___
 
@@ -150,7 +150,7 @@ The Discount that the discount was created from. This will always be a dynamic d
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L39)
+[packages/medusa/src/models/discount.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L39)
 
 ___
 
@@ -162,7 +162,7 @@ The details of the regions in which the Discount can be used.
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L69)
+[packages/medusa/src/models/discount.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L69)
 
 ___
 
@@ -174,7 +174,7 @@ The details of the discount rule that defines how the discount will be applied t
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L33)
+[packages/medusa/src/models/discount.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L33)
 
 ___
 
@@ -186,7 +186,7 @@ The ID of the discount rule that defines how the discount will be applied to a c
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L29)
+[packages/medusa/src/models/discount.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L29)
 
 ___
 
@@ -198,7 +198,7 @@ The time at which the discount can be used.
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L49)
+[packages/medusa/src/models/discount.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L49)
 
 ___
 
@@ -214,7 +214,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -226,7 +226,7 @@ The number of times a discount has been used.
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:75](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L75)
+[packages/medusa/src/models/discount.ts:75](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L75)
 
 ___
 
@@ -238,7 +238,7 @@ The maximum number of times that a discount can be used.
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L72)
+[packages/medusa/src/models/discount.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L72)
 
 ___
 
@@ -250,7 +250,7 @@ Duration the discount runs between
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L55)
+[packages/medusa/src/models/discount.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L55)
 
 ## Methods
 
@@ -266,4 +266,4 @@ Duration the discount runs between
 
 #### Defined in
 
-[packages/medusa/src/models/discount.ts:84](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount.ts#L84)
+[packages/medusa/src/models/discount.ts:84](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount.ts#L84)

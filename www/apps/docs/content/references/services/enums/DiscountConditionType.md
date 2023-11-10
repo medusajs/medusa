@@ -12,7 +12,7 @@ The discount condition is used for customer groups.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L50)
+[packages/medusa/src/models/discount-condition.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L50)
 
 ___
 
@@ -24,7 +24,7 @@ The discount condition is used for products.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L34)
+[packages/medusa/src/models/discount-condition.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L34)
 
 ___
 
@@ -36,7 +36,7 @@ The discount condition is used for product collections.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L42)
+[packages/medusa/src/models/discount-condition.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L42)
 
 ___
 
@@ -48,7 +48,7 @@ The discount condition is used for product tags.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L46)
+[packages/medusa/src/models/discount-condition.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L46)
 
 ___
 
@@ -60,4 +60,4 @@ The discount condition is used for product types.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L38)
+[packages/medusa/src/models/discount-condition.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L38)

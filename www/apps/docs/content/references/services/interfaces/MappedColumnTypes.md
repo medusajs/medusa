@@ -7,7 +7,7 @@ Column types are driver dependant.
 
 ### cacheDuration
 
- **cacheDuration**: [`ColumnType`](../index.md#columntype)
+ **cacheDuration**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for duration column in query result cache table.
 
@@ -19,7 +19,7 @@ ___
 
 ### cacheId
 
- **cacheId**: [`ColumnType`](../index.md#columntype)
+ **cacheId**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for identifier column in query result cache table.
 
@@ -31,7 +31,7 @@ ___
 
 ### cacheIdentifier
 
- **cacheIdentifier**: [`ColumnType`](../index.md#columntype)
+ **cacheIdentifier**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for identifier column in query result cache table.
 
@@ -43,7 +43,7 @@ ___
 
 ### cacheQuery
 
- **cacheQuery**: [`ColumnType`](../index.md#columntype)
+ **cacheQuery**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for query column in query result cache table.
 
@@ -55,7 +55,7 @@ ___
 
 ### cacheResult
 
- **cacheResult**: [`ColumnType`](../index.md#columntype)
+ **cacheResult**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for result column in query result cache table.
 
@@ -67,7 +67,7 @@ ___
 
 ### cacheTime
 
- **cacheTime**: [`ColumnType`](../index.md#columntype)
+ **cacheTime**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for time column in query result cache table.
 
@@ -79,7 +79,7 @@ ___
 
 ### createDate
 
- **createDate**: [`ColumnType`](../index.md#columntype)
+ **createDate**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for the create date column.
 
@@ -115,7 +115,7 @@ ___
 
 ### deleteDate
 
- **deleteDate**: [`ColumnType`](../index.md#columntype)
+ **deleteDate**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for the delete date column.
 
@@ -151,7 +151,7 @@ ___
 
 ### metadataDatabase
 
- **metadataDatabase**: [`ColumnType`](../index.md#columntype)
+ **metadataDatabase**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for metadata database name column in typeorm metadata table.
 
@@ -163,7 +163,7 @@ ___
 
 ### metadataName
 
- **metadataName**: [`ColumnType`](../index.md#columntype)
+ **metadataName**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for metadata name column in typeorm metadata table.
 
@@ -175,7 +175,7 @@ ___
 
 ### metadataSchema
 
- **metadataSchema**: [`ColumnType`](../index.md#columntype)
+ **metadataSchema**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for metadata schema name column in typeorm metadata table.
 
@@ -187,7 +187,7 @@ ___
 
 ### metadataTable
 
- **metadataTable**: [`ColumnType`](../index.md#columntype)
+ **metadataTable**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for metadata table name column in typeorm metadata table.
 
@@ -199,7 +199,7 @@ ___
 
 ### metadataType
 
- **metadataType**: [`ColumnType`](../index.md#columntype)
+ **metadataType**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for metadata type column in typeorm metadata table.
 Stores type of metadata. E.g. 'VIEW' or 'CHECK'
@@ -212,7 +212,7 @@ ___
 
 ### metadataValue
 
- **metadataValue**: [`ColumnType`](../index.md#columntype)
+ **metadataValue**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for metadata value column in typeorm metadata table.
 
@@ -224,7 +224,7 @@ ___
 
 ### migrationId
 
- **migrationId**: [`ColumnType`](../index.md#columntype)
+ **migrationId**: [`ColumnType`](../types/ColumnType.md)
 
 Column type of id column used for migrations table.
 
@@ -236,7 +236,7 @@ ___
 
 ### migrationName
 
- **migrationName**: [`ColumnType`](../index.md#columntype)
+ **migrationName**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for migration name column used for migrations table.
 
@@ -248,7 +248,7 @@ ___
 
 ### migrationTimestamp
 
- **migrationTimestamp**: [`ColumnType`](../index.md#columntype)
+ **migrationTimestamp**: [`ColumnType`](../types/ColumnType.md)
 
 Column type of timestamp column used for migrations table.
 
@@ -260,7 +260,7 @@ ___
 
 ### treeLevel
 
- **treeLevel**: [`ColumnType`](../index.md#columntype)
+ **treeLevel**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for the tree level column.
 
@@ -272,7 +272,7 @@ ___
 
 ### updateDate
 
- **updateDate**: [`ColumnType`](../index.md#columntype)
+ **updateDate**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for the update date column.
 
@@ -308,7 +308,7 @@ ___
 
 ### version
 
- **version**: [`ColumnType`](../index.md#columntype)
+ **version**: [`ColumnType`](../types/ColumnType.md)
 
 Column type for the version column.
 

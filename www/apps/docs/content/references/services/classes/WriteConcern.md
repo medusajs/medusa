@@ -19,7 +19,7 @@ Constructs a WriteConcern from the write concern properties.
 
 | Name | Description |
 | :------ | :------ |
-| `w?` | [`W`](../index.md#w) | request acknowledgment that the write operation has propagated to a specified number of mongod instances or to mongod instances with specified tags. |
+| `w?` | [`W`](../types/W.md) | request acknowledgment that the write operation has propagated to a specified number of mongod instances or to mongod instances with specified tags. |
 | `wtimeout?` | `number` | specify a time limit to prevent write operations from blocking indefinitely |
 | `j?` | `boolean` | request acknowledgment that the write operation has been written to the on-disk journal |
 | `fsync?` | `boolean` \| ``1`` | equivalent to the j option |
@@ -56,7 +56,7 @@ ___
 
 ### w
 
- `Optional` **w**: [`W`](../index.md#w)
+ `Optional` **w**: [`W`](../types/W.md)
 
 request acknowledgment that the write operation has propagated to a specified number of mongod instances or to mongod instances with specified tags.
 
@@ -88,7 +88,7 @@ Construct a WriteConcern given an options object.
 
 | Name |
 | :------ |
-| `options?` | [`WriteConcernOptions`](../interfaces/WriteConcernOptions.md) \| [`WriteConcern`](WriteConcern.md) \| [`W`](../index.md#w) |
+| `options?` | [`WriteConcernOptions`](../interfaces/WriteConcernOptions.md) \| [`WriteConcern`](WriteConcern.md) \| [`W`](../types/W.md) |
 | `inherit?` | [`WriteConcernOptions`](../interfaces/WriteConcernOptions.md) \| [`WriteConcern`](WriteConcern.md) |
 
 #### Returns

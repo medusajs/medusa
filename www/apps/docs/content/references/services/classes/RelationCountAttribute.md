@@ -11,7 +11,7 @@
 | Name |
 | :------ |
 | `expressionMap` | [`QueryExpressionMap`](QueryExpressionMap.md) |
-| `relationCountAttribute?` | [`Partial`](../index.md#partial)<[`RelationCountAttribute`](RelationCountAttribute.md)\> |
+| `relationCountAttribute?` | [`Partial`](../types/Partial.md)<[`RelationCountAttribute`](RelationCountAttribute.md)\> |
 
 #### Defined in
 

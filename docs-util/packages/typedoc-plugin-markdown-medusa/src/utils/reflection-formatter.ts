@@ -20,13 +20,14 @@ const ALLOWED_KINDS: ReflectionKind[] = [
 export default function reflectionFormatter(
   reflection: ReflectionParameterType,
   type: ParameterStyle = "table",
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): string | Parameter {
   switch (type) {
     case "list":
       return reflectionListFormatter(reflection, level)
     case "component":
-      return reflectionComponentFormatter(reflection, level)
+      return reflectionComponentFormatter(reflection, level, maxLevel)
     case "table":
       return reflectionTableFormatter(reflection)
     default:

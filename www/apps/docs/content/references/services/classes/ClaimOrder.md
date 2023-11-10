@@ -30,7 +30,7 @@ The details of the new items to be shipped when the claim's type is `replace`
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:126](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L126)
+[packages/medusa/src/models/claim-order.ts:126](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L126)
 
 ___
 
@@ -42,7 +42,7 @@ The date with timezone at which the claim was canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:164](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L164)
+[packages/medusa/src/models/claim-order.ts:164](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L164)
 
 ___
 
@@ -54,7 +54,7 @@ The details of the items that should be replaced or refunded.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:123](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L123)
+[packages/medusa/src/models/claim-order.ts:123](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L123)
 
 ___
 
@@ -70,7 +70,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:167](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L167)
+[packages/medusa/src/models/claim-order.ts:167](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L167)
 
 ___
 
@@ -86,7 +86,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:173](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L173)
+[packages/medusa/src/models/claim-order.ts:173](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L173)
 
 ___
 
@@ -98,7 +98,7 @@ The claim's fulfillment status
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:120](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L120)
+[packages/medusa/src/models/claim-order.ts:120](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L120)
 
 ___
 
@@ -110,7 +110,7 @@ The fulfillments of the new items to be shipped
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:158](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L158)
+[packages/medusa/src/models/claim-order.ts:158](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L158)
 
 ___
 
@@ -126,7 +126,7 @@ The claim's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -138,7 +138,7 @@ Randomly generated key used to continue the completion of the cart associated wi
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:182](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L182)
+[packages/medusa/src/models/claim-order.ts:182](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L182)
 
 ___
 
@@ -150,7 +150,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:179](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L179)
+[packages/medusa/src/models/claim-order.ts:179](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L179)
 
 ___
 
@@ -162,7 +162,7 @@ Flag for describing whether or not notifications related to this should be send.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:176](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L176)
+[packages/medusa/src/models/claim-order.ts:176](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L176)
 
 ___
 
@@ -174,7 +174,7 @@ The details of the order that this claim was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:137](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L137)
+[packages/medusa/src/models/claim-order.ts:137](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L137)
 
 ___
 
@@ -186,7 +186,7 @@ The ID of the order that the claim comes from.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:133](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L133)
+[packages/medusa/src/models/claim-order.ts:133](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L133)
 
 ___
 
@@ -198,7 +198,7 @@ The status of the claim's payment
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:113](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L113)
+[packages/medusa/src/models/claim-order.ts:113](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L113)
 
 ___
 
@@ -210,7 +210,7 @@ The amount that will be refunded in conjunction with the claim
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:161](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L161)
+[packages/medusa/src/models/claim-order.ts:161](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L161)
 
 ___
 
@@ -222,7 +222,7 @@ The details of the return associated with the claim if the claim's type is `repl
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:140](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L140)
+[packages/medusa/src/models/claim-order.ts:140](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L140)
 
 ___
 
@@ -234,7 +234,7 @@ The details of the address that new items should be shipped to.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:148](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L148)
+[packages/medusa/src/models/claim-order.ts:148](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L148)
 
 ___
 
@@ -246,7 +246,7 @@ The ID of the address that the new items should be shipped to
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:144](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L144)
+[packages/medusa/src/models/claim-order.ts:144](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L144)
 
 ___
 
@@ -258,7 +258,7 @@ The details of the shipping methods that the claim order will be shipped with.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:153](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L153)
+[packages/medusa/src/models/claim-order.ts:153](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L153)
 
 ___
 
@@ -270,7 +270,7 @@ The claim's type
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:129](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L129)
+[packages/medusa/src/models/claim-order.ts:129](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L129)
 
 ___
 
@@ -286,7 +286,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:170](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L170)
+[packages/medusa/src/models/claim-order.ts:170](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L170)
 
 ## Methods
 
@@ -302,4 +302,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/claim-order.ts:188](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-order.ts#L188)
+[packages/medusa/src/models/claim-order.ts:188](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-order.ts#L188)

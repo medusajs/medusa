@@ -10,7 +10,7 @@ A User is an administrator who can manage store settings and data.
 
 #### Defined in
 
-[packages/medusa/src/types/note.ts:10](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/note.ts#L10)
+[packages/medusa/src/types/note.ts:10](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/note.ts#L10)
 
 ___
 
@@ -20,7 +20,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/note.ts:9](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/note.ts#L9)
+[packages/medusa/src/types/note.ts:9](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/note.ts#L9)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/note.ts:11](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/note.ts#L11)
+[packages/medusa/src/types/note.ts:11](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/note.ts#L11)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/note.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/note.ts#L8)
+[packages/medusa/src/types/note.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/note.ts#L8)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/note.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/note.ts#L7)
+[packages/medusa/src/types/note.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/note.ts#L7)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/note.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/note.ts#L6)
+[packages/medusa/src/types/note.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/note.ts#L6)

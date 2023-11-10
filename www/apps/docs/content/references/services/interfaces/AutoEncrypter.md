@@ -39,7 +39,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:471
 | :------ |
 | `cmd` | [`Document`](Document.md) |
 | `options` | `any` |
-| `callback` | [`Callback`](../index.md#callback)<[`Document`](Document.md)\> |
+| `callback` | [`Callback`](../types/Callback.md)<[`Document`](Document.md)\> |
 
 #### Returns
 
@@ -64,7 +64,7 @@ ___
 | `ns` | `string` |
 | `cmd` | [`Document`](Document.md) |
 | `options` | `any` |
-| `callback` | [`Callback`](../index.md#callback)<[`Document`](Document.md)\> |
+| `callback` | [`Callback`](../types/Callback.md)<[`Document`](Document.md)\> |
 
 #### Returns
 
@@ -86,7 +86,7 @@ ___
 
 | Name |
 | :------ |
-| `cb` | [`Callback`](../index.md#callback)<`any`\> |
+| `cb` | [`Callback`](../types/Callback.md)<`any`\> |
 
 #### Returns
 
@@ -109,7 +109,7 @@ ___
 | Name |
 | :------ |
 | `force` | `boolean` |
-| `callback` | [`Callback`](../index.md#callback)<`any`\> |
+| `callback` | [`Callback`](../types/Callback.md)<`any`\> |
 
 #### Returns
 

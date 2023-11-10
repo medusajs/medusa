@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ The details of the customer groups that the Price List can apply to.
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L56)
+[packages/medusa/src/models/price-list.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L56)
 
 ___
 
@@ -62,7 +62,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -74,7 +74,7 @@ The price list's description
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L25)
+[packages/medusa/src/models/price-list.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L25)
 
 ___
 
@@ -86,7 +86,7 @@ The date with timezone that the Price List stops being valid.
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L40)
+[packages/medusa/src/models/price-list.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L40)
 
 ___
 
@@ -102,7 +102,7 @@ The price list's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -114,7 +114,7 @@ Whether the price list prices include tax
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L64)
+[packages/medusa/src/models/price-list.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L64)
 
 ___
 
@@ -126,7 +126,7 @@ The price list's name
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L22)
+[packages/medusa/src/models/price-list.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L22)
 
 ___
 
@@ -138,7 +138,7 @@ The prices that belong to the price list, represented as a Money Amount.
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L61)
+[packages/medusa/src/models/price-list.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L61)
 
 ___
 
@@ -150,7 +150,7 @@ The date with timezone that the Price List starts being valid.
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L37)
+[packages/medusa/src/models/price-list.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L37)
 
 ___
 
@@ -162,7 +162,7 @@ The status of the Price List
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L31)
+[packages/medusa/src/models/price-list.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L31)
 
 ___
 
@@ -174,7 +174,7 @@ The type of Price List. This can be one of either `sale` or `override`.
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L28)
+[packages/medusa/src/models/price-list.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L28)
 
 ___
 
@@ -190,7 +190,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -206,4 +206,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/price-list.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/price-list.ts#L70)
+[packages/medusa/src/models/price-list.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/price-list.ts#L70)

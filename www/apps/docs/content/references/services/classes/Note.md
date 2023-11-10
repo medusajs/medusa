@@ -30,7 +30,7 @@ The details of the user that created the note.
 
 #### Defined in
 
-[packages/medusa/src/models/note.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/note.ts#L33)
+[packages/medusa/src/models/note.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/note.ts#L33)
 
 ___
 
@@ -42,7 +42,7 @@ The ID of the user that created the note.
 
 #### Defined in
 
-[packages/medusa/src/models/note.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/note.ts#L29)
+[packages/medusa/src/models/note.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/note.ts#L29)
 
 ___
 
@@ -58,7 +58,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -74,7 +74,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -90,7 +90,7 @@ The note's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -102,7 +102,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/note.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/note.ts#L36)
+[packages/medusa/src/models/note.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/note.ts#L36)
 
 ___
 
@@ -114,7 +114,7 @@ The ID of the resource that the Note refers to.
 
 #### Defined in
 
-[packages/medusa/src/models/note.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/note.ts#L26)
+[packages/medusa/src/models/note.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/note.ts#L26)
 
 ___
 
@@ -126,7 +126,7 @@ The type of resource that the Note refers to.
 
 #### Defined in
 
-[packages/medusa/src/models/note.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/note.ts#L22)
+[packages/medusa/src/models/note.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/note.ts#L22)
 
 ___
 
@@ -142,7 +142,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -154,7 +154,7 @@ The contents of the note.
 
 #### Defined in
 
-[packages/medusa/src/models/note.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/note.ts#L18)
+[packages/medusa/src/models/note.ts:18](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/note.ts#L18)
 
 ## Methods
 
@@ -170,4 +170,4 @@ The contents of the note.
 
 #### Defined in
 
-[packages/medusa/src/models/note.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/note.ts#L42)
+[packages/medusa/src/models/note.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/note.ts#L42)

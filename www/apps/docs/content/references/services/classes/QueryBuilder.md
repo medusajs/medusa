@@ -306,7 +306,7 @@ Also sets a main string alias of the selection data.
 
 | Name |
 | :------ |
-| `entityTarget` | [`EntityTarget`](../index.md#entitytarget)<`any`\> \| (`qb`: [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\>) => [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\> |
+| `entityTarget` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> \| (`qb`: [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\>) => [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\> |
 | `aliasName?` | `string` |
 
 #### Returns
@@ -399,7 +399,7 @@ Creates "RETURNING" / "OUTPUT" expression.
 
 | Name |
 | :------ |
-| `returningType` | [`ReturningType`](../index.md#returningtype) |
+| `returningType` | [`ReturningType`](../types/ReturningType.md) |
 
 #### Returns
 
@@ -463,7 +463,7 @@ Computes given where argument - transforms to a where string all forms it can ta
 
 | Name |
 | :------ |
-| `condition` | [`WhereClauseCondition`](../index.md#whereclausecondition) |
+| `condition` | [`WhereClauseCondition`](../types/WhereClauseCondition.md) |
 | `alwaysWrap?` | `boolean` |
 
 #### Returns
@@ -767,7 +767,7 @@ ___
 
 ### getWhereCondition
 
-`Protected` **getWhereCondition**(`where`): [`WhereClauseCondition`](../index.md#whereclausecondition)
+`Protected` **getWhereCondition**(`where`): [`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 #### Parameters
 
@@ -777,7 +777,7 @@ ___
 
 #### Returns
 
-[`WhereClauseCondition`](../index.md#whereclausecondition)
+[`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 -`WhereClauseCondition`: 
 
@@ -813,7 +813,7 @@ ___
 
 ### getWherePredicateCondition
 
-`Protected` **getWherePredicateCondition**(`aliasPath`, `parameterValue`): [`WhereClauseCondition`](../index.md#whereclausecondition)
+`Protected` **getWherePredicateCondition**(`aliasPath`, `parameterValue`): [`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 #### Parameters
 
@@ -824,7 +824,7 @@ ___
 
 #### Returns
 
-[`WhereClauseCondition`](../index.md#whereclausecondition)
+[`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 -`WhereClauseCondition`: 
 
@@ -891,7 +891,7 @@ todo: move this method to manager? or create a shortcut?
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `relation` | `string` |
 
 #### Returns
@@ -919,7 +919,7 @@ todo: move this method to manager? or create a shortcut?
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `relation` | `string`[] |
 
 #### Returns
@@ -1364,7 +1364,7 @@ Sets entity's relation with which this query builder gonna work.
 
 | Name |
 | :------ |
-| `entityTarget` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `entityTarget` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `propertyPath` | `string` |
 
 #### Returns
@@ -1653,7 +1653,7 @@ Creates UPDATE query and applies given update values.
 
 | Name |
 | :------ |
-| `updateSet` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `updateSet` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -1677,8 +1677,8 @@ Creates UPDATE query for the given entity and applies given update values.
 
 | Name |
 | :------ |
-| `entity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `updateSet?` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `entity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `updateSet?` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -1699,7 +1699,7 @@ Creates UPDATE query for the given table name and applies given update values.
 | Name |
 | :------ |
 | `tableName` | `string` |
-| `updateSet?` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `updateSet?` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 

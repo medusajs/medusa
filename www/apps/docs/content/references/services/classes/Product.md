@@ -30,7 +30,7 @@ The details of the product categories that this product belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:112](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L112)
+[packages/medusa/src/models/product.ts:112](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L112)
 
 ___
 
@@ -42,7 +42,7 @@ The details of the product collection that the product belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:163](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L163)
+[packages/medusa/src/models/product.ts:163](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L163)
 
 ___
 
@@ -54,7 +54,7 @@ The ID of the product collection that the product belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:159](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L159)
+[packages/medusa/src/models/product.ts:159](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L159)
 
 ___
 
@@ -70,7 +70,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -86,7 +86,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -98,7 +98,7 @@ A short description of the Product.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:63](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L63)
+[packages/medusa/src/models/product.ts:63](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L63)
 
 ___
 
@@ -110,7 +110,7 @@ Whether the Product can be discounted. Discounts will not apply to Line Items of
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:187](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L187)
+[packages/medusa/src/models/product.ts:187](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L187)
 
 ___
 
@@ -122,7 +122,7 @@ The external ID of the product
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:190](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L190)
+[packages/medusa/src/models/product.ts:190](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L190)
 
 ___
 
@@ -134,7 +134,7 @@ A unique identifier for the Product (e.g. for slug structure).
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L67)
+[packages/medusa/src/models/product.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L67)
 
 ___
 
@@ -146,7 +146,7 @@ The height of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:141](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L141)
+[packages/medusa/src/models/product.ts:141](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L141)
 
 ___
 
@@ -158,7 +158,7 @@ The Harmonized System code of the Product Variant. May be used by Fulfillment Pr
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:147](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L147)
+[packages/medusa/src/models/product.ts:147](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L147)
 
 ___
 
@@ -174,7 +174,7 @@ The product's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -186,7 +186,7 @@ The details of the product's images.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L87)
+[packages/medusa/src/models/product.ts:87](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L87)
 
 ___
 
@@ -198,7 +198,7 @@ Whether the Product represents a Gift Card. Products that represent Gift Cards w
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L70)
+[packages/medusa/src/models/product.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L70)
 
 ___
 
@@ -210,7 +210,7 @@ The length of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:138](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L138)
+[packages/medusa/src/models/product.ts:138](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L138)
 
 ___
 
@@ -222,7 +222,7 @@ The material and composition that the Product Variant is made of, May be used by
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:156](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L156)
+[packages/medusa/src/models/product.ts:156](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L156)
 
 ___
 
@@ -234,7 +234,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:193](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L193)
+[packages/medusa/src/models/product.ts:193](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L193)
 
 ___
 
@@ -246,7 +246,7 @@ The Manufacturers Identification code that identifies the manufacturer of the Pr
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:153](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L153)
+[packages/medusa/src/models/product.ts:153](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L153)
 
 ___
 
@@ -258,7 +258,7 @@ The details of the Product Options that are defined for the Product. The product
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:93](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L93)
+[packages/medusa/src/models/product.ts:93](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L93)
 
 ___
 
@@ -270,7 +270,7 @@ The country in which the Product Variant was produced. May be used by Fulfillmen
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:150](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L150)
+[packages/medusa/src/models/product.ts:150](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L150)
 
 ___
 
@@ -282,7 +282,7 @@ The details of the shipping profile that the product belongs to. The shipping pr
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:116](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L116)
+[packages/medusa/src/models/product.ts:116](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L116)
 
 ___
 
@@ -294,7 +294,7 @@ The ID of the shipping profile that the product belongs to. The shipping profile
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:114](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L114)
+[packages/medusa/src/models/product.ts:114](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L114)
 
 ___
 
@@ -306,7 +306,7 @@ Available if the relation `profiles` is expanded.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:132](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L132)
+[packages/medusa/src/models/product.ts:132](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L132)
 
 ___
 
@@ -318,7 +318,7 @@ The details of the sales channels this product is available in.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:209](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L209)
+[packages/medusa/src/models/product.ts:209](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L209)
 
 ___
 
@@ -330,7 +330,7 @@ The status of the product
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L73)
+[packages/medusa/src/models/product.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L73)
 
 ___
 
@@ -342,7 +342,7 @@ An optional subtitle that can be used to further specify the Product.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L60)
+[packages/medusa/src/models/product.ts:60](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L60)
 
 ___
 
@@ -354,7 +354,7 @@ The details of the product tags used in this product.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:184](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L184)
+[packages/medusa/src/models/product.ts:184](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L184)
 
 ___
 
@@ -366,7 +366,7 @@ A URL to an image file that can be used to identify the Product.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:90](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L90)
+[packages/medusa/src/models/product.ts:90](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L90)
 
 ___
 
@@ -378,7 +378,7 @@ A title that can be displayed for easy identification of the Product.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L57)
+[packages/medusa/src/models/product.ts:57](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L57)
 
 ___
 
@@ -390,7 +390,7 @@ The details of the product type that the product belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:170](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L170)
+[packages/medusa/src/models/product.ts:170](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L170)
 
 ___
 
@@ -402,7 +402,7 @@ The ID of the product type that the product belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:166](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L166)
+[packages/medusa/src/models/product.ts:166](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L166)
 
 ___
 
@@ -418,7 +418,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -430,7 +430,7 @@ The details of the Product Variants that belong to the Product. Each will have a
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:98](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L98)
+[packages/medusa/src/models/product.ts:98](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L98)
 
 ___
 
@@ -442,7 +442,7 @@ The weight of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:135](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L135)
+[packages/medusa/src/models/product.ts:135](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L135)
 
 ___
 
@@ -454,7 +454,7 @@ The width of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:144](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L144)
+[packages/medusa/src/models/product.ts:144](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L144)
 
 ## Methods
 
@@ -470,7 +470,7 @@ The width of the Product Variant. May be used in shipping rate calculations.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:241](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L241)
+[packages/medusa/src/models/product.ts:241](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L241)
 
 ___
 
@@ -486,7 +486,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:215](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L215)
+[packages/medusa/src/models/product.ts:215](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L215)
 
 ___
 
@@ -502,4 +502,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:231](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L231)
+[packages/medusa/src/models/product.ts:231](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L231)

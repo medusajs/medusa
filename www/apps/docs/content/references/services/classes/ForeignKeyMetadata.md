@@ -14,12 +14,12 @@ Contains all information about entity's foreign key.
 | :------ |
 | `options` | `object` |
 | `options.columns` | [`ColumnMetadata`](ColumnMetadata.md)[] |
-| `options.deferrable?` | [`DeferrableType`](../index.md#deferrabletype) |
+| `options.deferrable?` | [`DeferrableType`](../types/DeferrableType.md) |
 | `options.entityMetadata` | [`EntityMetadata`](EntityMetadata.md) |
 | `options.name?` | `string` |
 | `options.namingStrategy?` | [`NamingStrategyInterface`](../interfaces/NamingStrategyInterface.md) |
-| `options.onDelete?` | [`OnDeleteType`](../index.md#ondeletetype) |
-| `options.onUpdate?` | [`OnUpdateType`](../index.md#onupdatetype) |
+| `options.onDelete?` | [`OnDeleteType`](../types/OnDeleteType.md) |
+| `options.onUpdate?` | [`OnUpdateType`](../types/OnUpdateType.md) |
 | `options.referencedColumns` | [`ColumnMetadata`](ColumnMetadata.md)[] |
 | `options.referencedEntityMetadata` | [`EntityMetadata`](EntityMetadata.md) |
 
@@ -55,7 +55,7 @@ ___
 
 ### deferrable
 
- `Optional` **deferrable**: [`DeferrableType`](../index.md#deferrabletype)
+ `Optional` **deferrable**: [`DeferrableType`](../types/DeferrableType.md)
 
 When to check the constraints of a foreign key.
 
@@ -105,7 +105,7 @@ ___
 
 ### onDelete
 
- `Optional` **onDelete**: [`OnDeleteType`](../index.md#ondeletetype)
+ `Optional` **onDelete**: [`OnDeleteType`](../types/OnDeleteType.md)
 
 What to do with a relation on deletion of the row containing a foreign key.
 
@@ -117,7 +117,7 @@ ___
 
 ### onUpdate
 
- `Optional` **onUpdate**: [`OnUpdateType`](../index.md#onupdatetype)
+ `Optional` **onUpdate**: [`OnUpdateType`](../types/OnUpdateType.md)
 
 What to do with a relation on update of the row containing a foreign key.
 

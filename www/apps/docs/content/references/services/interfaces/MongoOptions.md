@@ -4,9 +4,9 @@ Mongo Client Options
 
 ## Hierarchy
 
-- [`Required`](../index.md#required)<[`Pick`](../index.md#pick)<[`MongoClientOptions`](MongoClientOptions.md), ``"autoEncryption"`` \| ``"connectTimeoutMS"`` \| ``"directConnection"`` \| ``"driverInfo"`` \| ``"forceServerObjectId"`` \| ``"minHeartbeatFrequencyMS"`` \| ``"heartbeatFrequencyMS"`` \| ``"keepAlive"`` \| ``"keepAliveInitialDelay"`` \| ``"localThresholdMS"`` \| ``"maxConnecting"`` \| ``"maxIdleTimeMS"`` \| ``"maxPoolSize"`` \| ``"minPoolSize"`` \| ``"monitorCommands"`` \| ``"noDelay"`` \| ``"pkFactory"`` \| ``"raw"`` \| ``"replicaSet"`` \| ``"retryReads"`` \| ``"retryWrites"`` \| ``"serverSelectionTimeoutMS"`` \| ``"socketTimeoutMS"`` \| ``"srvMaxHosts"`` \| ``"srvServiceName"`` \| ``"tlsAllowInvalidCertificates"`` \| ``"tlsAllowInvalidHostnames"`` \| ``"tlsInsecure"`` \| ``"waitQueueTimeoutMS"`` \| ``"zlibCompressionLevel"``\>\>
+- [`Required`](../types/Required.md)<[`Pick`](../types/Pick.md)<[`MongoClientOptions`](MongoClientOptions.md), ``"autoEncryption"`` \| ``"connectTimeoutMS"`` \| ``"directConnection"`` \| ``"driverInfo"`` \| ``"forceServerObjectId"`` \| ``"minHeartbeatFrequencyMS"`` \| ``"heartbeatFrequencyMS"`` \| ``"keepAlive"`` \| ``"keepAliveInitialDelay"`` \| ``"localThresholdMS"`` \| ``"maxConnecting"`` \| ``"maxIdleTimeMS"`` \| ``"maxPoolSize"`` \| ``"minPoolSize"`` \| ``"monitorCommands"`` \| ``"noDelay"`` \| ``"pkFactory"`` \| ``"raw"`` \| ``"replicaSet"`` \| ``"retryReads"`` \| ``"retryWrites"`` \| ``"serverSelectionTimeoutMS"`` \| ``"socketTimeoutMS"`` \| ``"srvMaxHosts"`` \| ``"srvServiceName"`` \| ``"tlsAllowInvalidCertificates"`` \| ``"tlsAllowInvalidHostnames"`` \| ``"tlsInsecure"`` \| ``"waitQueueTimeoutMS"`` \| ``"zlibCompressionLevel"``\>\>
 
-- [`SupportedNodeConnectionOptions`](../index.md#supportednodeconnectionoptions)
+- [`SupportedNodeConnectionOptions`](../types/SupportedNodeConnectionOptions.md)
 
   ↳ **`MongoOptions`**
 
@@ -504,7 +504,7 @@ ___
 
 ### lookup
 
- `Optional` **lookup**: [`LookupFunction`](../index.md#lookupfunction)
+ `Optional` **lookup**: [`LookupFunction`](../types/LookupFunction.md)
 
 #### Inherited from
 

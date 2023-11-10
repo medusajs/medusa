@@ -6,7 +6,7 @@ Arguments for ColumnMetadata class.
 
 ### mode
 
- `Readonly` **mode**: [`ColumnMode`](../index.md#columnmode)
+ `Readonly` **mode**: [`ColumnMode`](../types/ColumnMode.md)
 
 Column mode in which column will work.
 

@@ -30,7 +30,7 @@ The date of the concellation.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L62)
+[packages/medusa/src/models/batch-job.ts:62](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L62)
 
 ___
 
@@ -42,7 +42,7 @@ The date of the completion.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L59)
+[packages/medusa/src/models/batch-job.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L59)
 
 ___
 
@@ -54,7 +54,7 @@ The date when the confirmation has been done.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L56)
+[packages/medusa/src/models/batch-job.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L56)
 
 ___
 
@@ -66,7 +66,7 @@ The context of the batch job, the type of the batch job determines what the cont
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L33)
+[packages/medusa/src/models/batch-job.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L33)
 
 ___
 
@@ -82,7 +82,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -94,7 +94,7 @@ The unique identifier of the user that created the batch job.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L26)
+[packages/medusa/src/models/batch-job.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L26)
 
 ___
 
@@ -106,7 +106,7 @@ The details of the user that created the batch job.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L30)
+[packages/medusa/src/models/batch-job.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L30)
 
 ___
 
@@ -122,7 +122,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -134,7 +134,7 @@ Specify if the job must apply the modifications or not.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L47)
+[packages/medusa/src/models/batch-job.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L47)
 
 ___
 
@@ -146,7 +146,7 @@ The date when the job failed.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L65)
+[packages/medusa/src/models/batch-job.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L65)
 
 ___
 
@@ -162,7 +162,7 @@ The unique identifier for the batch job.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -174,7 +174,7 @@ The date from which the job has been pre-processed.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L50)
+[packages/medusa/src/models/batch-job.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L50)
 
 ___
 
@@ -186,19 +186,19 @@ The date the job is processing at.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L53)
+[packages/medusa/src/models/batch-job.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L53)
 
 ___
 
 ### result
 
- **result**: { `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \| [`BatchJobResultError`](../index.md#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../index.md#batchjobresultstatdescriptor)[]  } & Record<`string`, `unknown`\>
+ **result**: { `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \| [`BatchJobResultError`](../types/BatchJobResultError.md))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../types/BatchJobResultStatDescriptor.md)[]  } & Record<`string`, `unknown`\>
 
 The result of the batch job.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L36)
+[packages/medusa/src/models/batch-job.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L36)
 
 ___
 
@@ -210,7 +210,7 @@ The status of the batch job.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L67)
+[packages/medusa/src/models/batch-job.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L67)
 
 ___
 
@@ -222,7 +222,7 @@ The type of batch job.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L23)
+[packages/medusa/src/models/batch-job.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L23)
 
 ___
 
@@ -238,7 +238,7 @@ The date with timezone at which the resource was last updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -254,7 +254,7 @@ The date with timezone at which the resource was last updated.
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:101](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L101)
+[packages/medusa/src/models/batch-job.ts:101](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L101)
 
 ___
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L73)
+[packages/medusa/src/models/batch-job.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L73)
 
 ___
 
@@ -288,4 +288,4 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
 
 #### Defined in
 
-[packages/medusa/src/models/batch-job.ts:105](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/batch-job.ts#L105)
+[packages/medusa/src/models/batch-job.ts:105](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/batch-job.ts#L105)

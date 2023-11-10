@@ -12,7 +12,7 @@ The profile used to ship custom items.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L32)
+[packages/medusa/src/models/shipping-profile.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L32)
 
 ___
 
@@ -24,7 +24,7 @@ The default profile used to ship item.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L24)
+[packages/medusa/src/models/shipping-profile.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L24)
 
 ___
 
@@ -36,4 +36,4 @@ The profile used to ship gift cards.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L28)
+[packages/medusa/src/models/shipping-profile.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L28)

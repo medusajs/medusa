@@ -20,7 +20,7 @@ The ID of the Discount Condition
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-product-type.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-product-type.ts#L20)
+[packages/medusa/src/models/discount-condition-product-type.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-product-type.ts#L20)
 
 ___
 
@@ -32,7 +32,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-product-type.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-product-type.ts#L31)
+[packages/medusa/src/models/discount-condition-product-type.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-product-type.ts#L31)
 
 ___
 
@@ -44,7 +44,7 @@ The details of the discount condition.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-product-type.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-product-type.ts#L28)
+[packages/medusa/src/models/discount-condition-product-type.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-product-type.ts#L28)
 
 ___
 
@@ -56,7 +56,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-product-type.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-product-type.ts#L37)
+[packages/medusa/src/models/discount-condition-product-type.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-product-type.ts#L37)
 
 ___
 
@@ -68,7 +68,7 @@ The details of the product type.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-product-type.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-product-type.ts#L24)
+[packages/medusa/src/models/discount-condition-product-type.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-product-type.ts#L24)
 
 ___
 
@@ -80,7 +80,7 @@ The ID of the Product Tag
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-product-type.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-product-type.ts#L17)
+[packages/medusa/src/models/discount-condition-product-type.ts:17](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-product-type.ts#L17)
 
 ___
 
@@ -92,4 +92,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition-product-type.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition-product-type.ts#L34)
+[packages/medusa/src/models/discount-condition-product-type.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition-product-type.ts#L34)

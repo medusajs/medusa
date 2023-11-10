@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/discount.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/discount.ts#L33)
+[packages/medusa/src/types/discount.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/discount.ts#L33)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/discount.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/discount.ts#L43)
+[packages/medusa/src/types/discount.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/discount.ts#L43)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/discount.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/discount.ts#L38)
+[packages/medusa/src/types/discount.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/discount.ts#L38)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/discount.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/discount.ts#L29)
+[packages/medusa/src/types/discount.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/discount.ts#L29)
 
 ___
 
@@ -54,4 +54,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/discount.ts:48](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/discount.ts#L48)
+[packages/medusa/src/types/discount.ts:48](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/discount.ts#L48)

@@ -12,7 +12,7 @@ The payment colleciton is authorized.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L34)
+[packages/medusa/src/models/payment-collection.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L34)
 
 ___
 
@@ -24,7 +24,7 @@ The payment collection is awaiting payment.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L30)
+[packages/medusa/src/models/payment-collection.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L30)
 
 ___
 
@@ -36,7 +36,7 @@ The payment collection is canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L42)
+[packages/medusa/src/models/payment-collection.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L42)
 
 ___
 
@@ -48,7 +48,7 @@ The payment collection isn't paid.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L26)
+[packages/medusa/src/models/payment-collection.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L26)
 
 ___
 
@@ -60,4 +60,4 @@ Some of the payments in the payment collection are authorized.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L38)
+[packages/medusa/src/models/payment-collection.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L38)

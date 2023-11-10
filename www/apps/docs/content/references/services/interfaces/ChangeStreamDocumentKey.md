@@ -35,7 +35,7 @@ For sharded collections, this will contain all the components of the shard key
 
 | Name | Type |
 | :------ | :------ |
-| `_id` | [`InferIdType`](../index.md#inferidtype)<`TSchema`\> |
+| `_id` | [`InferIdType`](../types/InferIdType.md)<`TSchema`\> |
 
 #### Defined in
 

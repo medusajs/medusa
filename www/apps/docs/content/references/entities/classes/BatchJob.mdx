@@ -258,7 +258,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "result",
-    "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../_index.mdx#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../_index.mdx#batchjobresultstatdescriptor)[]  } & Record<`string`, `unknown`\\>",
+    "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../types/BatchJobResultError.mdx))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../types/BatchJobResultStatDescriptor.mdx)[]  } & Record<`string`, `unknown`\\>",
     "description": "The result of the batch job.",
     "optional": false,
     "defaultValue": "",
@@ -284,7 +284,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "errors",
-        "type": "(`string` \\| [`BatchJobResultError`](../_index.mdx#batchjobresulterror))[]",
+        "type": "(`string` \\| [`BatchJobResultError`](../types/BatchJobResultError.mdx))[]",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -320,7 +320,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
       },
       {
         "name": "stat_descriptors",
-        "type": "[`BatchJobResultStatDescriptor`](../_index.mdx#batchjobresultstatdescriptor)[]",
+        "type": "[`BatchJobResultStatDescriptor`](../types/BatchJobResultStatDescriptor.mdx)[]",
         "description": "",
         "optional": true,
         "defaultValue": "",

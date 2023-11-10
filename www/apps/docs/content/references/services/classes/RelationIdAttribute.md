@@ -13,7 +13,7 @@ Stores all join relation id attributes which will be used to build a JOIN query.
 | Name |
 | :------ |
 | `queryExpressionMap` | [`QueryExpressionMap`](QueryExpressionMap.md) |
-| `relationIdAttribute?` | [`Partial`](../index.md#partial)<[`RelationIdAttribute`](RelationIdAttribute.md)\> |
+| `relationIdAttribute?` | [`Partial`](../types/Partial.md)<[`RelationIdAttribute`](RelationIdAttribute.md)\> |
 
 #### Defined in
 

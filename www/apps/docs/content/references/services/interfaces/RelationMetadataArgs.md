@@ -6,7 +6,7 @@ Arguments for RelationMetadata class.
 
 ### inverseSideProperty
 
- `Optional` `Readonly` **inverseSideProperty**: [`PropertyTypeFactory`](../index.md#propertytypefactory)<`any`\>
+ `Optional` `Readonly` **inverseSideProperty**: [`PropertyTypeFactory`](../types/PropertyTypeFactory.md)<`any`\>
 
 Inverse side of the relation.
 
@@ -78,7 +78,7 @@ ___
 
 ### relationType
 
- `Readonly` **relationType**: [`RelationType`](../index.md#relationtype)
+ `Readonly` **relationType**: [`RelationType`](../types/RelationType.md)
 
 Type of relation. Can be one of the value of the RelationTypes class.
 
@@ -102,7 +102,7 @@ ___
 
 ### type
 
- `Readonly` **type**: [`RelationTypeInFunction`](../index.md#relationtypeinfunction)
+ `Readonly` **type**: [`RelationTypeInFunction`](../types/RelationTypeInFunction.md)
 
 Type of the relation. This type is in function because of language specifics and problems with recursive
 referenced classes.

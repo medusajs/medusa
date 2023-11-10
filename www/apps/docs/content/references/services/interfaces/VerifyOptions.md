@@ -4,7 +4,7 @@
 
 ### algorithms
 
- `Optional` **algorithms**: [`Algorithm`](../index.md#algorithm)[]
+ `Optional` **algorithms**: [`Algorithm`](../types/Algorithm.md)[]
 
 #### Defined in
 

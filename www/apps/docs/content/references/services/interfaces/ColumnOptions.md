@@ -400,7 +400,7 @@ ___
 
 ### type
 
- `Optional` **type**: [`ColumnType`](../index.md#columntype)
+ `Optional` **type**: [`ColumnType`](../types/ColumnType.md)
 
 Column type. Must be one of the value from the ColumnTypes class.
 

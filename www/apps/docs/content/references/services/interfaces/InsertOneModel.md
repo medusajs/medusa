@@ -10,7 +10,7 @@
 
 ### document
 
- **document**: [`OptionalId`](../index.md#optionalid)<`TSchema`\>
+ **document**: [`OptionalId`](../types/OptionalId.md)<`TSchema`\>
 
 The document to insert.
 

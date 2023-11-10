@@ -12,7 +12,7 @@ The user is an admin.
 
 #### Defined in
 
-[packages/medusa/src/models/user.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/user.ts#L16)
+[packages/medusa/src/models/user.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/user.ts#L16)
 
 ___
 
@@ -24,7 +24,7 @@ The user is a developer.
 
 #### Defined in
 
-[packages/medusa/src/models/user.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/user.ts#L24)
+[packages/medusa/src/models/user.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/user.ts#L24)
 
 ___
 
@@ -36,4 +36,4 @@ The user is a team member.
 
 #### Defined in
 
-[packages/medusa/src/models/user.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/user.ts#L20)
+[packages/medusa/src/models/user.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/user.ts#L20)

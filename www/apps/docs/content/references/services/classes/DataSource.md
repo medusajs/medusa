@@ -17,7 +17,7 @@ because `Connection` isn't the best name for what it's actually is.
 
 | Name |
 | :------ |
-| `options` | [`DataSourceOptions`](../index.md#datasourceoptions) |
+| `options` | [`DataSourceOptions`](../types/DataSourceOptions.md) |
 
 #### Defined in
 
@@ -61,7 +61,7 @@ ___
 
 ### entityMetadatasMap
 
- `Readonly` **entityMetadatasMap**: `Map`<[`EntityTarget`](../index.md#entitytarget)<`any`\>, [`EntityMetadata`](EntityMetadata.md)\>
+ `Readonly` **entityMetadatasMap**: `Map`<[`EntityTarget`](../types/EntityTarget.md)<`any`\>, [`EntityMetadata`](EntityMetadata.md)\>
 
 All entity metadatas that are registered for this connection.
 This is a copy of #.entityMetadatas property -> used for more performant searches.
@@ -162,7 +162,7 @@ ___
 
 ### options
 
- `Readonly` **options**: [`DataSourceOptions`](../index.md#datasourceoptions)
+ `Readonly` **options**: [`DataSourceOptions`](../types/DataSourceOptions.md)
 
 Connection options.
 
@@ -388,7 +388,7 @@ Creates a new query builder that can be used to build a SQL query.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `alias` | `string` |
 | `queryRunner?` | [`QueryRunner`](../interfaces/QueryRunner.md) |
 
@@ -442,7 +442,7 @@ if you perform reads you can use slave databases.
 
 | Name |
 | :------ |
-| `mode?` | [`ReplicationMode`](../index.md#replicationmode) |
+| `mode?` | [`ReplicationMode`](../types/ReplicationMode.md) |
 
 #### Returns
 
@@ -847,7 +847,7 @@ Finds exist entity metadata by the given entity class, target name or table name
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`any`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> |
 
 #### Returns
 
@@ -875,7 +875,7 @@ Gets custom entity repository marked with
 
 | Name |
 | :------ |
-| `customRepository` | [`ObjectType`](../index.md#objecttype)<`T`\> |
+| `customRepository` | [`ObjectType`](../types/ObjectType.md)<`T`\> |
 
 #### Returns
 
@@ -905,7 +905,7 @@ Gets entity metadata of the junction table (many-to-many table).
 
 | Name |
 | :------ |
-| `entityTarget` | [`EntityTarget`](../index.md#entitytarget)<`any`\> |
+| `entityTarget` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> |
 | `relationPropertyPath` | `string` |
 
 #### Returns
@@ -930,7 +930,7 @@ Gets entity metadata for the given entity class or schema name.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`any`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> |
 
 #### Returns
 
@@ -959,7 +959,7 @@ Works only if connection is mongodb-specific.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -987,7 +987,7 @@ Gets repository for the given entity.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -1016,7 +1016,7 @@ Only tree-type entities can have a TreeRepository, like ones decorated with
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -1044,7 +1044,7 @@ Checks if entity metadata exist for the given entity class, target name or table
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`any`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> |
 
 #### Returns
 
@@ -1149,7 +1149,7 @@ Updates current connection options with provided options.
 
 | Name |
 | :------ |
-| `options` | [`Partial`](../index.md#partial)<[`DataSourceOptions`](../index.md#datasourceoptions)\> |
+| `options` | [`Partial`](../types/Partial.md)<[`DataSourceOptions`](../types/DataSourceOptions.md)\> |
 
 #### Returns
 
@@ -1245,7 +1245,7 @@ node_modules/typeorm/data-source/DataSource.d.ts:213
 
 | Name |
 | :------ |
-| `isolationLevel` | [`IsolationLevel`](../index.md#isolationlevel) |
+| `isolationLevel` | [`IsolationLevel`](../types/IsolationLevel.md) |
 | `runInTransaction` | (`entityManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`T`\> |
 
 #### Returns

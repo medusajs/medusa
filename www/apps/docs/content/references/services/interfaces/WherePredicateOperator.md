@@ -4,7 +4,7 @@
 
 ### operator
 
- **operator**: [`PredicateOperator`](../index.md#predicateoperator)
+ **operator**: [`PredicateOperator`](../types/PredicateOperator.md)
 
 #### Defined in
 

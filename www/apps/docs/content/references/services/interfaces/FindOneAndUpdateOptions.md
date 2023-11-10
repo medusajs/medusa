@@ -147,7 +147,7 @@ ___
 
 ### explain
 
- `Optional` **explain**: [`ExplainVerbosityLike`](../index.md#explainverbositylike)
+ `Optional` **explain**: [`ExplainVerbosityLike`](../types/ExplainVerbosityLike.md)
 
 Specifies the verbosity mode for the explain output.
 
@@ -356,7 +356,7 @@ ___
 
 ### readConcern
 
- `Optional` **readConcern**: [`ReadConcernLike`](../index.md#readconcernlike)
+ `Optional` **readConcern**: [`ReadConcernLike`](../types/ReadConcernLike.md)
 
 Specify a read concern and level for the collection. (only MongoDB 3.2 or higher supported)
 
@@ -372,7 +372,7 @@ ___
 
 ### readPreference
 
- `Optional` **readPreference**: [`ReadPreferenceLike`](../index.md#readpreferencelike)
+ `Optional` **readPreference**: [`ReadPreferenceLike`](../types/ReadPreferenceLike.md)
 
 The preferred read preference (ReadPreference.primary, ReadPreference.primary_preferred, ReadPreference.secondary, ReadPreference.secondary_preferred, ReadPreference.nearest).
 
@@ -404,7 +404,7 @@ ___
 
 ### returnDocument
 
- `Optional` **returnDocument**: [`ReturnDocument`](../index.md#returndocument-1)
+ `Optional` **returnDocument**: [`ReturnDocument`](../index.md#returndocument)
 
 When set to 'after', returns the updated document rather than the original. The default is 'before'.
 
@@ -448,7 +448,7 @@ ___
 
 ### sort
 
- `Optional` **sort**: [`Sort`](../index.md#sort)
+ `Optional` **sort**: [`Sort`](../types/Sort.md)
 
 Determines which document the operation modifies if the query selects multiple documents.
 

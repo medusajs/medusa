@@ -391,7 +391,7 @@ Alias for `emitter.on(eventName, listener)`.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`] |
+| `listener` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`] |
 
 #### Returns
 
@@ -417,8 +417,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5085
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -441,7 +441,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5086
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -732,7 +732,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 | Name |
 | :------ |
 | `event` | `symbol` \| `EventKey` |
-| `...args` | [`Parameters`](../index.md#parameters)<[`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`]\> |
+| `...args` | [`Parameters`](../types/Parameters.md)<[`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`]\> |
 
 #### Returns
 
@@ -806,7 +806,7 @@ Execute the explain for the cursor
 
 | Name |
 | :------ |
-| `verbosity?` | [`ExplainVerbosityLike`](../index.md#explainverbositylike) |
+| `verbosity?` | [`ExplainVerbosityLike`](../types/ExplainVerbosityLike.md) |
 
 #### Returns
 
@@ -933,7 +933,7 @@ Set the cursor hint
 
 | Name | Description |
 | :------ | :------ |
-| `hint` | [`Hint`](../index.md#hint) | If specified, then the query system will only consider plans using the hinted index. |
+| `hint` | [`Hint`](../types/Hint.md) | If specified, then the query system will only consider plans using the hinted index. |
 
 #### Returns
 
@@ -1011,7 +1011,7 @@ ___
 
 ### listeners
 
-**listeners**<`EventKey`\>(`event`): [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`][]
+**listeners**<`EventKey`\>(`event`): [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`][]
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -1035,10 +1035,10 @@ console.log(util.inspect(server.listeners('connection')));
 
 #### Returns
 
-[`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`][]
+[`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`][]
 
--`[`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`][]`: 
-	-`[`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`]`: (optional) 
+-`[`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`][]`: 
+	-`[`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`]`: (optional) 
 
 **Since**
 
@@ -1263,7 +1263,7 @@ Alias for `emitter.removeListener()`.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`] |
+| `listener` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`] |
 
 #### Returns
 
@@ -1289,8 +1289,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5097
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1313,7 +1313,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5098
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1371,7 +1371,7 @@ myEE.emit('foo');
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`] | The callback function |
+| `listener` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1397,8 +1397,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5088
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1421,7 +1421,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5089
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1477,7 +1477,7 @@ myEE.emit('foo');
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`] | The callback function |
+| `listener` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1503,8 +1503,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5091
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1527,7 +1527,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5092
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1571,7 +1571,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`] | The callback function |
+| `listener` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1597,8 +1597,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5105
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1621,7 +1621,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5106
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1663,7 +1663,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`] | The callback function |
+| `listener` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1689,8 +1689,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5108
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1713,7 +1713,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5109
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1779,7 +1779,7 @@ ___
 
 ### rawListeners
 
-**rawListeners**<`EventKey`\>(`event`): [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`][]
+**rawListeners**<`EventKey`\>(`event`): [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`][]
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -1821,10 +1821,10 @@ emitter.emit('log');
 
 #### Returns
 
-[`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`][]
+[`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`][]
 
--`[`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`][]`: 
-	-`[`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`]`: (optional) 
+-`[`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`][]`: 
+	-`[`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`]`: (optional) 
 
 **Since**
 
@@ -2003,7 +2003,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`AbstractCursorEvents`](../index.md#abstractcursorevents)[`EventKey`] |
+| `listener` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)[`EventKey`] |
 
 #### Returns
 
@@ -2029,8 +2029,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5094
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -2053,7 +2053,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5095
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -2216,8 +2216,8 @@ Sets the sort order of the cursor query.
 
 | Name | Description |
 | :------ | :------ |
-| `sort` | [`Sort`](../index.md#sort) | The key or keys set for the sort. |
-| `direction?` | [`SortDirection`](../index.md#sortdirection) | The direction of the sorting (1 or -1). |
+| `sort` | [`Sort`](../types/Sort.md) | The key or keys set for the sort. |
+| `direction?` | [`SortDirection`](../types/SortDirection.md) | The direction of the sorting (1 or -1). |
 
 #### Returns
 
@@ -2316,7 +2316,7 @@ Set the ReadPreference for the cursor.
 
 | Name |
 | :------ |
-| `readConcern` | [`ReadConcernLike`](../index.md#readconcernlike) |
+| `readConcern` | [`ReadConcernLike`](../types/ReadConcernLike.md) |
 
 #### Returns
 
@@ -2344,7 +2344,7 @@ Set the ReadPreference for the cursor.
 
 | Name | Description |
 | :------ | :------ |
-| `readPreference` | [`ReadPreferenceLike`](../index.md#readpreferencelike) | The new read preference for the cursor. |
+| `readPreference` | [`ReadPreferenceLike`](../types/ReadPreferenceLike.md) | The new read preference for the cursor. |
 
 #### Returns
 
@@ -2454,7 +2454,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
@@ -2511,7 +2511,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 
 #### Returns
 
@@ -2553,7 +2553,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) | The emitter to query |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) | The emitter to query |
 | `eventName` | `string` \| `symbol` | The event name |
 
 #### Returns
@@ -2643,7 +2643,7 @@ process.nextTick(() => ac.abort());
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) |
 | `eventName` | `string` | The name of the event being listened for |
 | `options?` | [`StaticEventEmitterOptions`](../interfaces/StaticEventEmitterOptions.md) |
 
@@ -2823,7 +2823,7 @@ setMaxListeners(5, target, emitter);
 | Name | Description |
 | :------ | :------ |
 | `n?` | `number` | A non-negative number. The maximum number of listeners per `EventTarget` event. |
-| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
+| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
 
 #### Returns
 

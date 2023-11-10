@@ -18,17 +18,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "description",
@@ -73,62 +63,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "amount",
-        "type": "`number`",
-        "description": "The amount to charge for the Product Variant.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "currency_code",
-        "type": "`string`",
-        "description": "The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "max_quantity",
-        "type": "`number`",
-        "description": "The maximum quantity for which the price will be used.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "min_quantity",
-        "type": "`number`",
-        "description": "The minimum quantity for which the price will be used.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "region_id",
-        "type": "`string`",
-        "description": "The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "variant_id",
-        "type": "`string`",
-        "description": "The ID of the Variant for which the price is used.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "starts_at",
@@ -146,26 +81,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "ACTIVE",
-        "type": "``\"active\"``",
-        "description": "The price list is active, meaning its prices are applied to customers.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "DRAFT",
-        "type": "``\"draft\"``",
-        "description": "The price list is a draft, meaning its not yet applied to customers.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "type",
@@ -174,25 +90,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "OVERRIDE",
-        "type": "``\"override\"``",
-        "description": "The price list is used to override original prices for specific conditions.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "SALE",
-        "type": "``\"sale\"``",
-        "description": "The price list is used for a sale.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

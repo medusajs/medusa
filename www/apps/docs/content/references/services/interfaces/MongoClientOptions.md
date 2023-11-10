@@ -10,7 +10,7 @@ https://www.mongodb.com/docs/manual/reference/connection-string
 
 - [`BSONSerializeOptions`](BSONSerializeOptions.md)
 
-- [`SupportedNodeConnectionOptions`](../index.md#supportednodeconnectionoptions)
+- [`SupportedNodeConnectionOptions`](../types/SupportedNodeConnectionOptions.md)
 
   ↳ **`MongoClientOptions`**
 
@@ -61,7 +61,7 @@ ___
 
 ### authMechanism
 
- `Optional` **authMechanism**: [`AuthMechanism`](../index.md#authmechanism-1)
+ `Optional` **authMechanism**: [`AuthMechanism`](../index.md#authmechanism)
 
 Specify the authentication mechanism that MongoDB will use to authenticate the connection.
 
@@ -582,7 +582,7 @@ ___
 
 ### lookup
 
- `Optional` **lookup**: [`LookupFunction`](../index.md#lookupfunction)
+ `Optional` **lookup**: [`LookupFunction`](../types/LookupFunction.md)
 
 #### Inherited from
 
@@ -892,7 +892,7 @@ ___
 
 ### readConcern
 
- `Optional` **readConcern**: [`ReadConcernLike`](../index.md#readconcernlike)
+ `Optional` **readConcern**: [`ReadConcernLike`](../types/ReadConcernLike.md)
 
 Specify a read concern for the collection (only MongoDB 3.2 or higher supported)
 
@@ -904,7 +904,7 @@ ___
 
 ### readConcernLevel
 
- `Optional` **readConcernLevel**: [`ReadConcernLevel`](../index.md#readconcernlevel-1)
+ `Optional` **readConcernLevel**: [`ReadConcernLevel`](../index.md#readconcernlevel)
 
 The level of isolation
 
@@ -916,7 +916,7 @@ ___
 
 ### readPreference
 
- `Optional` **readPreference**: [`ReadPreference`](../classes/ReadPreference.md) \| [`ReadPreferenceMode`](../index.md#readpreferencemode-1)
+ `Optional` **readPreference**: [`ReadPreference`](../classes/ReadPreference.md) \| [`ReadPreferenceMode`](../index.md#readpreferencemode)
 
 Specifies the read preferences for this connection
 
@@ -928,7 +928,7 @@ ___
 
 ### readPreferenceTags
 
- `Optional` **readPreferenceTags**: [`TagSet`](../index.md#tagset)[]
+ `Optional` **readPreferenceTags**: [`TagSet`](../types/TagSet.md)[]
 
 Specifies the tags document as a comma-separated list of colon-separated key-value pairs.
 
@@ -1354,7 +1354,7 @@ ___
 
 ### w
 
- `Optional` **w**: [`W`](../index.md#w)
+ `Optional` **w**: [`W`](../types/W.md)
 
 The write concern w value
 

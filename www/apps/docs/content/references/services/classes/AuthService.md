@@ -18,7 +18,7 @@ Can authenticate a user based on email password combination
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-1) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-1.md) |
 
 #### Overrides
 
@@ -26,7 +26,7 @@ Can authenticate a user based on email password combination
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/auth.ts#L22)
+[packages/medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/auth.ts#L22)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Can authenticate a user based on email password combination
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/auth.ts#L20)
+[packages/medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/auth.ts#L20)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/auth.ts#L19)
+[packages/medusa/src/services/auth.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/auth.ts#L19)
 
 ## Accessors
 
@@ -136,7 +136,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -158,7 +158,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -173,13 +173,13 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### authenticate
 
-**authenticate**(`email`, `password`): `Promise`<[`AuthenticateResult`](../index.md#authenticateresult)\>
+**authenticate**(`email`, `password`): `Promise`<[`AuthenticateResult`](../types/AuthenticateResult.md)\>
 
 Authenticates a given user based on an email, password combination. Uses
 scrypt to match password with hashed value.
@@ -193,7 +193,7 @@ scrypt to match password with hashed value.
 
 #### Returns
 
-`Promise`<[`AuthenticateResult`](../index.md#authenticateresult)\>
+`Promise`<[`AuthenticateResult`](../types/AuthenticateResult.md)\>
 
 -`Promise`: success: whether authentication succeeded
    user: the user document if authentication succeeded
@@ -206,13 +206,13 @@ scrypt to match password with hashed value.
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/auth.ts#L81)
+[packages/medusa/src/services/auth.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/auth.ts#L81)
 
 ___
 
 ### authenticateAPIToken
 
-**authenticateAPIToken**(`token`): `Promise`<[`AuthenticateResult`](../index.md#authenticateresult)\>
+**authenticateAPIToken**(`token`): `Promise`<[`AuthenticateResult`](../types/AuthenticateResult.md)\>
 
 Authenticates a given user with an API token
 
@@ -224,7 +224,7 @@ Authenticates a given user with an API token
 
 #### Returns
 
-`Promise`<[`AuthenticateResult`](../index.md#authenticateresult)\>
+`Promise`<[`AuthenticateResult`](../types/AuthenticateResult.md)\>
 
 -`Promise`: success: whether authentication succeeded
    user: the user document if authentication succeeded
@@ -237,13 +237,13 @@ Authenticates a given user with an API token
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/auth.ts#L52)
+[packages/medusa/src/services/auth.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/auth.ts#L52)
 
 ___
 
 ### authenticateCustomer
 
-**authenticateCustomer**(`email`, `password`): `Promise`<[`AuthenticateResult`](../index.md#authenticateresult)\>
+**authenticateCustomer**(`email`, `password`): `Promise`<[`AuthenticateResult`](../types/AuthenticateResult.md)\>
 
 Authenticates a customer based on an email, password combination. Uses
 scrypt to match password with hashed value.
@@ -257,7 +257,7 @@ scrypt to match password with hashed value.
 
 #### Returns
 
-`Promise`<[`AuthenticateResult`](../index.md#authenticateresult)\>
+`Promise`<[`AuthenticateResult`](../types/AuthenticateResult.md)\>
 
 -`Promise`: success: whether authentication succeeded
    customer: the customer document if authentication succeded
@@ -270,7 +270,7 @@ scrypt to match password with hashed value.
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:130](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/auth.ts#L130)
+[packages/medusa/src/services/auth.ts:130](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/auth.ts#L130)
 
 ___
 
@@ -296,7 +296,7 @@ Verifies if a password is valid given the provided password hash
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/auth.ts#L36)
+[packages/medusa/src/services/auth.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/auth.ts#L36)
 
 ___
 
@@ -322,7 +322,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -348,4 +348,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

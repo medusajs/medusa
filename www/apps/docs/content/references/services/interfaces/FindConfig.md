@@ -18,7 +18,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L53)
+[packages/medusa/src/types/common.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L53)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L52)
+[packages/medusa/src/types/common.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L52)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L49)
+[packages/medusa/src/types/common.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L49)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L50)
+[packages/medusa/src/types/common.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L50)
 
 ___
 
@@ -58,4 +58,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:51](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L51)
+[packages/medusa/src/types/common.ts:51](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L51)

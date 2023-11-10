@@ -20,4 +20,4 @@ A unique code for the discount - this will be used by the customer to apply the 
 
 #### Defined in
 
-[packages/medusa/src/types/cart.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/cart.ts#L50)
+[packages/medusa/src/types/cart.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/cart.ts#L50)

@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-6) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-6.md) |
 
 #### Overrides
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/custom-shipping-option.ts#L18)
+[packages/medusa/src/services/custom-shipping-option.ts:18](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/custom-shipping-option.ts#L18)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/custom-shipping-option.ts#L16)
+[packages/medusa/src/services/custom-shipping-option.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/custom-shipping-option.ts#L16)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -124,7 +124,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -146,7 +146,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -161,7 +161,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -190,7 +190,7 @@ Creates a custom shipping option
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:80](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/custom-shipping-option.ts#L80)
+[packages/medusa/src/services/custom-shipping-option.ts:80](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/custom-shipping-option.ts#L80)
 
 ___
 
@@ -204,7 +204,7 @@ Fetches all custom shipping options based on the given selector
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`CustomShippingOption`](CustomShippingOption.md)\> | the query object for find |
+| `selector` | [`Selector`](../types/Selector.md)<[`CustomShippingOption`](CustomShippingOption.md)\> | the query object for find |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`CustomShippingOption`](CustomShippingOption.md)\> | the configuration used to find the objects. contains relations, skip, and take. |
 
 #### Returns
@@ -217,7 +217,7 @@ Fetches all custom shipping options based on the given selector
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/custom-shipping-option.ts#L58)
+[packages/medusa/src/services/custom-shipping-option.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/custom-shipping-option.ts#L58)
 
 ___
 
@@ -243,7 +243,7 @@ Retrieves a specific shipping option.
 
 #### Defined in
 
-[packages/medusa/src/services/custom-shipping-option.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/custom-shipping-option.ts#L31)
+[packages/medusa/src/services/custom-shipping-option.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/custom-shipping-option.ts#L31)
 
 ___
 
@@ -269,7 +269,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -295,4 +295,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

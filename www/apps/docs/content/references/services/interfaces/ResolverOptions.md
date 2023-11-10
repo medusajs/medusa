@@ -22,7 +22,7 @@ The options when registering a class, function or value.
 
 ### lifetime
 
- `Optional` **lifetime**: [`LifetimeType`](../index.md#lifetimetype)
+ `Optional` **lifetime**: [`LifetimeType`](../types/LifetimeType.md)
 
 Lifetime setting.
 

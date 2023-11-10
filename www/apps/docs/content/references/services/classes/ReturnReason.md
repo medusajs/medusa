@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -62,7 +62,7 @@ A description of the Reason.
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L25)
+[packages/medusa/src/models/return-reason.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L25)
 
 ___
 
@@ -78,7 +78,7 @@ The return reason's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -90,7 +90,7 @@ A text that can be displayed to the Customer as a reason.
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L22)
+[packages/medusa/src/models/return-reason.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L22)
 
 ___
 
@@ -102,7 +102,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L42)
+[packages/medusa/src/models/return-reason.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L42)
 
 ___
 
@@ -114,7 +114,7 @@ The details of the parent reason.
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L32)
+[packages/medusa/src/models/return-reason.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L32)
 
 ___
 
@@ -126,7 +126,7 @@ The ID of the parent reason.
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L28)
+[packages/medusa/src/models/return-reason.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L28)
 
 ___
 
@@ -138,7 +138,7 @@ The details of the child reasons.
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L39)
+[packages/medusa/src/models/return-reason.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L39)
 
 ___
 
@@ -154,7 +154,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -166,7 +166,7 @@ The value to identify the reason by.
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L19)
+[packages/medusa/src/models/return-reason.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L19)
 
 ## Methods
 
@@ -182,4 +182,4 @@ The value to identify the reason by.
 
 #### Defined in
 
-[packages/medusa/src/models/return-reason.ts:48](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return-reason.ts#L48)
+[packages/medusa/src/models/return-reason.ts:48](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return-reason.ts#L48)

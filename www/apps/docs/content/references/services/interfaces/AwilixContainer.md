@@ -50,7 +50,7 @@ ___
 
 ### registrations
 
- `Readonly` **registrations**: [`RegistrationHash`](../index.md#registrationhash)
+ `Readonly` **registrations**: [`RegistrationHash`](../types/RegistrationHash.md)
 
 Getter for the rolled up registrations that merges the container family tree.
 
@@ -76,7 +76,7 @@ a resolver will not be used.
 
 | Name |
 | :------ |
-| `targetOrResolver` | [`ClassOrFunctionReturning`](../index.md#classorfunctionreturning)<`T`\> \| [`Resolver`](Resolver.md)<`T`\> |
+| `targetOrResolver` | [`ClassOrFunctionReturning`](../types/ClassOrFunctionReturning.md)<`T`\> \| [`Resolver`](Resolver.md)<`T`\> |
 | `opts?` | [`BuildResolverOptions`](BuildResolverOptions.md)<`T`\> |
 
 #### Returns
@@ -253,7 +253,7 @@ will be resolved.
 
 | Name |
 | :------ |
-| `globPatterns` | (`string` \| [`GlobWithOptions`](../index.md#globwithoptions))[] |
+| `globPatterns` | (`string` \| [`GlobWithOptions`](../types/GlobWithOptions.md))[] |
 | `options?` | [`LoadModulesOptions`](LoadModulesOptions.md)<`ESM`\> |
 
 #### Returns

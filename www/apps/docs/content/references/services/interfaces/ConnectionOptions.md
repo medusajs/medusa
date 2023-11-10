@@ -366,7 +366,7 @@ ___
 
 ### lookup
 
- `Optional` **lookup**: [`LookupFunction`](../index.md#lookupfunction)
+ `Optional` **lookup**: [`LookupFunction`](../types/LookupFunction.md)
 
 #### Defined in
 
@@ -376,7 +376,7 @@ ___
 
 ### maxVersion
 
- `Optional` **maxVersion**: [`SecureVersion`](../index.md#secureversion)
+ `Optional` **maxVersion**: [`SecureVersion`](../types/SecureVersion.md)
 
 Optionally set the maximum TLS version to allow. One
 of `'TLSv1.3'`, `'TLSv1.2'`, `'TLSv1.1'`, or `'TLSv1'`. Cannot be specified along with the
@@ -407,7 +407,7 @@ ___
 
 ### minVersion
 
- `Optional` **minVersion**: [`SecureVersion`](../index.md#secureversion)
+ `Optional` **minVersion**: [`SecureVersion`](../types/SecureVersion.md)
 
 Optionally set the minimum TLS version to allow. One
 of `'TLSv1.3'`, `'TLSv1.2'`, `'TLSv1.1'`, or `'TLSv1'`. Cannot be specified along with the

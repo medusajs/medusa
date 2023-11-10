@@ -19,7 +19,7 @@ Constructs a ReadConcern from the read concern level.
 
 | Name |
 | :------ |
-| `level` | [`ReadConcernLevel`](../index.md#readconcernlevel-1) |
+| `level` | [`ReadConcernLevel`](../index.md#readconcernlevel) |
 
 #### Defined in
 
@@ -128,8 +128,8 @@ Construct a ReadConcern given an options object.
 | Name | Description |
 | :------ | :------ |
 | `options?` | `object` | The options object from which to extract the write concern. |
-| `options.level?` | [`ReadConcernLevel`](../index.md#readconcernlevel-1) |
-| `options.readConcern?` | [`ReadConcernLike`](../index.md#readconcernlike) |
+| `options.level?` | [`ReadConcernLevel`](../index.md#readconcernlevel) |
+| `options.readConcern?` | [`ReadConcernLike`](../types/ReadConcernLike.md) |
 
 #### Returns
 

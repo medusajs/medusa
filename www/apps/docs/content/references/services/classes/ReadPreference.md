@@ -17,8 +17,8 @@ https://www.mongodb.com/docs/manual/core/read-preference/
 
 | Name | Description |
 | :------ | :------ |
-| `mode` | [`ReadPreferenceMode`](../index.md#readpreferencemode-1) | A string describing the read preference mode (primary\|primaryPreferred\|secondary\|secondaryPreferred\|nearest) |
-| `tags?` | [`TagSet`](../index.md#tagset)[] | A tag set used to target reads to members with the specified tag(s). tagSet is not available if using read preference mode primary. |
+| `mode` | [`ReadPreferenceMode`](../index.md#readpreferencemode) | A string describing the read preference mode (primary\|primaryPreferred\|secondary\|secondaryPreferred\|nearest) |
+| `tags?` | [`TagSet`](../types/TagSet.md)[] | A tag set used to target reads to members with the specified tag(s). tagSet is not available if using read preference mode primary. |
 | `options?` | [`ReadPreferenceOptions`](../interfaces/ReadPreferenceOptions.md) | Additional read preference options |
 
 #### Defined in
@@ -59,7 +59,7 @@ ___
 
 ### mode
 
- **mode**: [`ReadPreferenceMode`](../index.md#readpreferencemode-1)
+ **mode**: [`ReadPreferenceMode`](../index.md#readpreferencemode)
 
 #### Defined in
 
@@ -69,7 +69,7 @@ ___
 
 ### tags
 
- `Optional` **tags**: [`TagSet`](../index.md#tagset)[]
+ `Optional` **tags**: [`TagSet`](../types/TagSet.md)[]
 
 #### Defined in
 
@@ -179,11 +179,11 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:4463
 
 ### preference
 
-`get` **preference**(): [`ReadPreferenceMode`](../index.md#readpreferencemode-1)
+`get` **preference**(): [`ReadPreferenceMode`](../index.md#readpreferencemode)
 
 #### Returns
 
-[`ReadPreferenceMode`](../index.md#readpreferencemode-1)
+[`ReadPreferenceMode`](../index.md#readpreferencemode)
 
 -`ReadPreferenceMode`: 
 	-`nearest`: 

@@ -34,7 +34,7 @@ A code to identify the tax type by
 
 #### Defined in
 
-[packages/medusa/src/models/tax-line.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-line.ts#L13)
+[packages/medusa/src/models/tax-line.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-line.ts#L13)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -66,7 +66,7 @@ The line item tax line's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ The details of the line item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-tax-line.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-tax-line.ts#L24)
+[packages/medusa/src/models/line-item-tax-line.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-tax-line.ts#L24)
 
 ___
 
@@ -90,7 +90,7 @@ The ID of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-tax-line.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-tax-line.ts#L20)
+[packages/medusa/src/models/line-item-tax-line.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-tax-line.ts#L20)
 
 ___
 
@@ -106,7 +106,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/tax-line.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-line.ts#L16)
+[packages/medusa/src/models/tax-line.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-line.ts#L16)
 
 ___
 
@@ -122,7 +122,7 @@ A human friendly name for the tax
 
 #### Defined in
 
-[packages/medusa/src/models/tax-line.ts:10](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-line.ts#L10)
+[packages/medusa/src/models/tax-line.ts:10](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-line.ts#L10)
 
 ___
 
@@ -138,7 +138,7 @@ The numeric rate to charge tax by
 
 #### Defined in
 
-[packages/medusa/src/models/tax-line.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/tax-line.ts#L7)
+[packages/medusa/src/models/tax-line.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/tax-line.ts#L7)
 
 ___
 
@@ -154,7 +154,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -170,4 +170,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item-tax-line.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item-tax-line.ts#L30)
+[packages/medusa/src/models/line-item-tax-line.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item-tax-line.ts#L30)

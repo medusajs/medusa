@@ -5,7 +5,7 @@
 | Name | Type |
 | :------ | :------ |
 | `TSchema` | `object` |
-| `CursorEvents` | [`AbstractCursorEvents`](../index.md#abstractcursorevents) |
+| `CursorEvents` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md) |
 
 ## Hierarchy
 
@@ -30,7 +30,7 @@
 | Name | Type |
 | :------ | :------ |
 | `TSchema` | `object` |
-| `CursorEvents` | [`AbstractCursorEvents`](../index.md#abstractcursorevents) |
+| `CursorEvents` | [`AbstractCursorEvents`](../types/AbstractCursorEvents.md) |
 
 #### Parameters
 
@@ -391,8 +391,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5085
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -415,7 +415,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5086
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -477,13 +477,13 @@ ___
 
 ### clone
 
-`Abstract` **clone**(): [`AbstractCursor`](AbstractCursor.md)<`TSchema`, [`AbstractCursorEvents`](../index.md#abstractcursorevents)\>
+`Abstract` **clone**(): [`AbstractCursor`](AbstractCursor.md)<`TSchema`, [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)\>
 
 Returns a new uninitialized copy of this cursor, with options matching those that have been set on the current instance
 
 #### Returns
 
-[`AbstractCursor`](AbstractCursor.md)<`TSchema`, [`AbstractCursorEvents`](../index.md#abstractcursorevents)\>
+[`AbstractCursor`](AbstractCursor.md)<`TSchema`, [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)\>
 
 -`AbstractCursor`: 
 	-`AbstractCursorEvents`: 
@@ -561,7 +561,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 | Name |
 | :------ |
 | `event` | `symbol` \| `EventKey` |
-| `...args` | [`Parameters`](../index.md#parameters)<`CursorEvents`[`EventKey`]\> |
+| `...args` | [`Parameters`](../types/Parameters.md)<`CursorEvents`[`EventKey`]\> |
 
 #### Returns
 
@@ -780,7 +780,7 @@ ___
 
 ### map
 
-**map**<`T`\>(`transform`): [`AbstractCursor`](AbstractCursor.md)<`T`, [`AbstractCursorEvents`](../index.md#abstractcursorevents)\>
+**map**<`T`\>(`transform`): [`AbstractCursor`](AbstractCursor.md)<`T`, [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)\>
 
 Map all documents using the provided function
 If there is a transform set on the cursor, that will be called first and the result passed to
@@ -806,7 +806,7 @@ const keyCounts: number[] = await mappedCursor.toArray(); // cursor.toArray() st
 
 #### Returns
 
-[`AbstractCursor`](AbstractCursor.md)<`T`, [`AbstractCursorEvents`](../index.md#abstractcursorevents)\>
+[`AbstractCursor`](AbstractCursor.md)<`T`, [`AbstractCursorEvents`](../types/AbstractCursorEvents.md)\>
 
 -`AbstractCursor`: 
 	-`AbstractCursorEvents`: 
@@ -930,8 +930,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5097
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -954,7 +954,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5098
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1038,8 +1038,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5088
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1062,7 +1062,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5089
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1144,8 +1144,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5091
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1168,7 +1168,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5092
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1238,8 +1238,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5105
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1262,7 +1262,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5106
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1330,8 +1330,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5108
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1354,7 +1354,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5109
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1620,8 +1620,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5094
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1644,7 +1644,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5095
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1792,7 +1792,7 @@ Set the ReadPreference for the cursor.
 
 | Name |
 | :------ |
-| `readConcern` | [`ReadConcernLike`](../index.md#readconcernlike) |
+| `readConcern` | [`ReadConcernLike`](../types/ReadConcernLike.md) |
 
 #### Returns
 
@@ -1816,7 +1816,7 @@ Set the ReadPreference for the cursor.
 
 | Name | Description |
 | :------ | :------ |
-| `readPreference` | [`ReadPreferenceLike`](../index.md#readpreferencelike) | The new read preference for the cursor. |
+| `readPreference` | [`ReadPreferenceLike`](../types/ReadPreferenceLike.md) | The new read preference for the cursor. |
 
 #### Returns
 
@@ -1922,7 +1922,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
@@ -1979,7 +1979,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 
 #### Returns
 
@@ -2021,7 +2021,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) | The emitter to query |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) | The emitter to query |
 | `eventName` | `string` \| `symbol` | The event name |
 
 #### Returns
@@ -2111,7 +2111,7 @@ process.nextTick(() => ac.abort());
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) |
 | `eventName` | `string` | The name of the event being listened for |
 | `options?` | [`StaticEventEmitterOptions`](../interfaces/StaticEventEmitterOptions.md) |
 
@@ -2291,7 +2291,7 @@ setMaxListeners(5, target, emitter);
 | Name | Description |
 | :------ | :------ |
 | `n?` | `number` | A non-negative number. The maximum number of listeners per `EventTarget` event. |
-| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
+| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
 
 #### Returns
 

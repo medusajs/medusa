@@ -20,7 +20,7 @@ Data necessary for the job
 
 #### Defined in
 
-[packages/medusa/src/models/staged-job.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/staged-job.ts#L15)
+[packages/medusa/src/models/staged-job.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/staged-job.ts#L15)
 
 ___
 
@@ -32,7 +32,7 @@ The name of the event
 
 #### Defined in
 
-[packages/medusa/src/models/staged-job.ts:12](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/staged-job.ts#L12)
+[packages/medusa/src/models/staged-job.ts:12](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/staged-job.ts#L12)
 
 ___
 
@@ -44,7 +44,7 @@ The staged job's ID
 
 #### Defined in
 
-[packages/medusa/src/models/staged-job.ts:9](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/staged-job.ts#L9)
+[packages/medusa/src/models/staged-job.ts:9](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/staged-job.ts#L9)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/staged-job.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/staged-job.ts#L18)
+[packages/medusa/src/models/staged-job.ts:18](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/staged-job.ts#L18)
 
 ## Methods
 
@@ -70,4 +70,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/staged-job.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/staged-job.ts#L24)
+[packages/medusa/src/models/staged-job.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/staged-job.ts#L24)

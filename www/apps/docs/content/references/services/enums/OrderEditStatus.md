@@ -12,7 +12,7 @@ The order edit is canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:44](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L44)
+[packages/medusa/src/models/order-edit.ts:44](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L44)
 
 ___
 
@@ -24,7 +24,7 @@ The order edit is confirmed.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L28)
+[packages/medusa/src/models/order-edit.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L28)
 
 ___
 
@@ -36,7 +36,7 @@ The order edit is created.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L40)
+[packages/medusa/src/models/order-edit.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L40)
 
 ___
 
@@ -48,7 +48,7 @@ The order edit is declined.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L32)
+[packages/medusa/src/models/order-edit.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L32)
 
 ___
 
@@ -60,4 +60,4 @@ The order edit is requested.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L36)
+[packages/medusa/src/models/order-edit.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L36)

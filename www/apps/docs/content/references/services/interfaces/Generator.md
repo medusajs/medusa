@@ -34,7 +34,7 @@ ___
 
 ### next
 
-**next**(`...args`): [`IteratorResult`](../index.md#iteratorresult)<`T`, `TReturn`\>
+**next**(`...args`): [`IteratorResult`](../types/IteratorResult.md)<`T`, `TReturn`\>
 
 #### Parameters
 
@@ -44,7 +44,7 @@ ___
 
 #### Returns
 
-[`IteratorResult`](../index.md#iteratorresult)<`T`, `TReturn`\>
+[`IteratorResult`](../types/IteratorResult.md)<`T`, `TReturn`\>
 
 -`IteratorResult`: 
 
@@ -60,7 +60,7 @@ ___
 
 ### return
 
-**return**(`value`): [`IteratorResult`](../index.md#iteratorresult)<`T`, `TReturn`\>
+**return**(`value`): [`IteratorResult`](../types/IteratorResult.md)<`T`, `TReturn`\>
 
 #### Parameters
 
@@ -70,7 +70,7 @@ ___
 
 #### Returns
 
-[`IteratorResult`](../index.md#iteratorresult)<`T`, `TReturn`\>
+[`IteratorResult`](../types/IteratorResult.md)<`T`, `TReturn`\>
 
 -`IteratorResult`: 
 
@@ -86,7 +86,7 @@ ___
 
 ### throw
 
-**throw**(`e`): [`IteratorResult`](../index.md#iteratorresult)<`T`, `TReturn`\>
+**throw**(`e`): [`IteratorResult`](../types/IteratorResult.md)<`T`, `TReturn`\>
 
 #### Parameters
 
@@ -96,7 +96,7 @@ ___
 
 #### Returns
 
-[`IteratorResult`](../index.md#iteratorresult)<`T`, `TReturn`\>
+[`IteratorResult`](../types/IteratorResult.md)<`T`, `TReturn`\>
 
 -`IteratorResult`: 
 

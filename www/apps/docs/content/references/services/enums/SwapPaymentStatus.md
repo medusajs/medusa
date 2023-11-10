@@ -12,7 +12,7 @@ The swap is additional awaiting payment.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L69)
+[packages/medusa/src/models/swap.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L69)
 
 ___
 
@@ -24,7 +24,7 @@ The swap's additional payment is canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L81)
+[packages/medusa/src/models/swap.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L81)
 
 ___
 
@@ -36,7 +36,7 @@ The swap's additional payment is captured.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L73)
+[packages/medusa/src/models/swap.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L73)
 
 ___
 
@@ -48,7 +48,7 @@ The swap's additional payment is confirmed.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:77](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L77)
+[packages/medusa/src/models/swap.ts:77](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L77)
 
 ___
 
@@ -60,7 +60,7 @@ The negative difference amount between the returned item(s) and the new one(s) h
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:85](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L85)
+[packages/medusa/src/models/swap.ts:85](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L85)
 
 ___
 
@@ -72,7 +72,7 @@ The swap's additional payment isn't paid.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L65)
+[packages/medusa/src/models/swap.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L65)
 
 ___
 
@@ -84,7 +84,7 @@ Some of the negative difference amount between the returned item(s) and the new 
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:89](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L89)
+[packages/medusa/src/models/swap.ts:89](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L89)
 
 ___
 
@@ -96,7 +96,7 @@ The amount in the associated order has been refunded.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:93](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L93)
+[packages/medusa/src/models/swap.ts:93](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L93)
 
 ___
 
@@ -108,4 +108,4 @@ The swap's payment requires an action.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:97](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L97)
+[packages/medusa/src/models/swap.ts:97](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L97)

@@ -20,7 +20,7 @@ The amount that was used from the Gift Card.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L40)
+[packages/medusa/src/models/gift-card-transaction.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L40)
 
 ___
 
@@ -32,7 +32,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L43)
+[packages/medusa/src/models/gift-card-transaction.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L43)
 
 ___
 
@@ -44,7 +44,7 @@ The details of the gift card associated used in this transaction.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L29)
+[packages/medusa/src/models/gift-card-transaction.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L29)
 
 ___
 
@@ -56,7 +56,7 @@ The ID of the Gift Card that was used in the transaction.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L25)
+[packages/medusa/src/models/gift-card-transaction.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L25)
 
 ___
 
@@ -68,7 +68,7 @@ The gift card transaction's ID
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L22)
+[packages/medusa/src/models/gift-card-transaction.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L22)
 
 ___
 
@@ -80,7 +80,7 @@ Whether the transaction is taxable or not.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L46)
+[packages/medusa/src/models/gift-card-transaction.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L46)
 
 ___
 
@@ -92,7 +92,7 @@ The details of the order that the gift card was used for payment.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L37)
+[packages/medusa/src/models/gift-card-transaction.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L37)
 
 ___
 
@@ -104,7 +104,7 @@ The ID of the order that the gift card was used for payment.
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L33)
+[packages/medusa/src/models/gift-card-transaction.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L33)
 
 ___
 
@@ -116,7 +116,7 @@ The tax rate of the transaction
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L49)
+[packages/medusa/src/models/gift-card-transaction.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L49)
 
 ## Methods
 
@@ -132,4 +132,4 @@ The tax rate of the transaction
 
 #### Defined in
 
-[packages/medusa/src/models/gift-card-transaction.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/gift-card-transaction.ts#L55)
+[packages/medusa/src/models/gift-card-transaction.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/gift-card-transaction.ts#L55)

@@ -97,13 +97,13 @@ ___
 
 ### hint
 
-`get` **hint**(): `undefined` \| [`Hint`](../index.md#hint)
+`get` **hint**(): `undefined` \| [`Hint`](../types/Hint.md)
 
 The current index hint for the collection
 
 #### Returns
 
-`undefined` \| [`Hint`](../index.md#hint)
+`undefined` \| [`Hint`](../types/Hint.md)
 
 -`undefined \| Hint`: (optional) 
 
@@ -117,7 +117,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1503
 
 | Name |
 | :------ |
-| `v` | `undefined` \| [`Hint`](../index.md#hint) |
+| `v` | `undefined` \| [`Hint`](../types/Hint.md) |
 
 #### Returns
 
@@ -257,7 +257,7 @@ can be overridden by setting the **forceServerObjectId** flag.
 
 | Name | Description |
 | :------ | :------ |
-| `operations` | [`AnyBulkWriteOperation`](../index.md#anybulkwriteoperation)<`TSchema`\>[] | Bulk operations to perform |
+| `operations` | [`AnyBulkWriteOperation`](../types/AnyBulkWriteOperation.md)<`TSchema`\>[] | Bulk operations to perform |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -291,7 +291,7 @@ To obtain an estimated count of all documents in the collection, use [estimatedD
 
 | Name | Description |
 | :------ | :------ |
-| `filter?` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter for the count. |
+| `filter?` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter for the count. |
 | `options?` | [`CountOptions`](../interfaces/CountOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -394,7 +394,7 @@ await collection.createIndex(["j", ["k", -1], { l: "2d" }])
 
 | Name | Description |
 | :------ | :------ |
-| `indexSpec` | [`IndexSpecification`](../index.md#indexspecification) | The field name or index specification to create an index for |
+| `indexSpec` | [`IndexSpecification`](../types/IndexSpecification.md) | The field name or index specification to create an index for |
 | `options?` | [`CreateIndexesOptions`](../interfaces/CreateIndexesOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -473,7 +473,7 @@ Delete multiple documents from a collection
 
 | Name | Description |
 | :------ | :------ |
-| `filter?` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the documents to remove |
+| `filter?` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the documents to remove |
 | `options?` | [`DeleteOptions`](../interfaces/DeleteOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -500,7 +500,7 @@ Delete a document from a collection
 
 | Name | Description |
 | :------ | :------ |
-| `filter?` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the document to remove |
+| `filter?` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the document to remove |
 | `options?` | [`DeleteOptions`](../interfaces/DeleteOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -519,7 +519,7 @@ ___
 
 ### distinct
 
-**distinct**<`Key`\>(`key`): `Promise`<[`Flatten`](../index.md#flatten)<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]\>
+**distinct**<`Key`\>(`key`): `Promise`<[`Flatten`](../types/Flatten.md)<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]\>
 
 The distinct command returns a list of distinct values for the given key across a collection.
 
@@ -535,17 +535,17 @@ The distinct command returns a list of distinct values for the given key across 
 
 #### Returns
 
-`Promise`<[`Flatten`](../index.md#flatten)<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]\>
+`Promise`<[`Flatten`](../types/Flatten.md)<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]\>
 
 -`Promise`: 
-	-`Flatten<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]`: 
+	-`Flatten<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]`: 
 		-`Flatten`: 
 
 #### Defined in
 
 node_modules/typeorm/driver/mongodb/typings.d.ts:1769
 
-**distinct**<`Key`\>(`key`, `filter`): `Promise`<[`Flatten`](../index.md#flatten)<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]\>
+**distinct**<`Key`\>(`key`, `filter`): `Promise`<[`Flatten`](../types/Flatten.md)<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]\>
 
 | Name | Type |
 | :------ | :------ |
@@ -556,21 +556,21 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1769
 | Name |
 | :------ |
 | `key` | `Key` |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 
 #### Returns
 
-`Promise`<[`Flatten`](../index.md#flatten)<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]\>
+`Promise`<[`Flatten`](../types/Flatten.md)<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]\>
 
 -`Promise`: 
-	-`Flatten<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]`: 
+	-`Flatten<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]`: 
 		-`Flatten`: 
 
 #### Defined in
 
 node_modules/typeorm/driver/mongodb/typings.d.ts:1770
 
-**distinct**<`Key`\>(`key`, `filter`, `options`): `Promise`<[`Flatten`](../index.md#flatten)<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]\>
+**distinct**<`Key`\>(`key`, `filter`, `options`): `Promise`<[`Flatten`](../types/Flatten.md)<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]\>
 
 | Name | Type |
 | :------ | :------ |
@@ -581,15 +581,15 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1770
 | Name |
 | :------ |
 | `key` | `Key` |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 | `options` | [`CommandOperationOptions`](../interfaces/CommandOperationOptions.md) |
 
 #### Returns
 
-`Promise`<[`Flatten`](../index.md#flatten)<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]\>
+`Promise`<[`Flatten`](../types/Flatten.md)<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]\>
 
 -`Promise`: 
-	-`Flatten<[`WithId`](../index.md#withid)<`TSchema`\>[`Key`]\>[]`: 
+	-`Flatten<[`WithId`](../types/WithId.md)<`TSchema`\>[`Key`]\>[]`: 
 		-`Flatten`: 
 
 #### Defined in
@@ -623,7 +623,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1772
 | Name |
 | :------ |
 | `key` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 
 #### Returns
 
@@ -644,7 +644,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1773
 | Name |
 | :------ |
 | `key` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 | `options` | [`CommandOperationOptions`](../interfaces/CommandOperationOptions.md) |
 
 #### Returns
@@ -775,13 +775,13 @@ ___
 
 ### find
 
-**find**(): [`FindCursor`](FindCursor.md)<[`WithId`](../index.md#withid)<`TSchema`\>\>
+**find**(): [`FindCursor`](FindCursor.md)<[`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 Creates a cursor for a filter that can be used to iterate over results from MongoDB
 
 #### Returns
 
-[`FindCursor`](FindCursor.md)<[`WithId`](../index.md#withid)<`TSchema`\>\>
+[`FindCursor`](FindCursor.md)<[`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 -`FindCursor`: 
 	-`WithId`: 
@@ -790,18 +790,18 @@ Creates a cursor for a filter that can be used to iterate over results from Mong
 
 node_modules/typeorm/driver/mongodb/typings.d.ts:1614
 
-**find**(`filter`, `options?`): [`FindCursor`](FindCursor.md)<[`WithId`](../index.md#withid)<`TSchema`\>\>
+**find**(`filter`, `options?`): [`FindCursor`](FindCursor.md)<[`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 | `options?` | [`FindOptions`](../interfaces/FindOptions.md)<[`Document`](../interfaces/Document.md)\> |
 
 #### Returns
 
-[`FindCursor`](FindCursor.md)<[`WithId`](../index.md#withid)<`TSchema`\>\>
+[`FindCursor`](FindCursor.md)<[`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 -`FindCursor`: 
 	-`WithId`: 
@@ -820,7 +820,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1615
 
 | Name |
 | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 | `options?` | [`FindOptions`](../interfaces/FindOptions.md)<[`Document`](../interfaces/Document.md)\> |
 
 #### Returns
@@ -837,13 +837,13 @@ ___
 
 ### findOne
 
-**findOne**(): `Promise`<``null`` \| [`WithId`](../index.md#withid)<`TSchema`\>\>
+**findOne**(): `Promise`<``null`` \| [`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 Fetches the first document that matches the filter
 
 #### Returns
 
-`Promise`<``null`` \| [`WithId`](../index.md#withid)<`TSchema`\>\>
+`Promise`<``null`` \| [`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 -`Promise`: 
 	-```null`` \| WithId<TSchema\>`: (optional) 
@@ -852,17 +852,17 @@ Fetches the first document that matches the filter
 
 node_modules/typeorm/driver/mongodb/typings.d.ts:1603
 
-**findOne**(`filter`): `Promise`<``null`` \| [`WithId`](../index.md#withid)<`TSchema`\>\>
+**findOne**(`filter`): `Promise`<``null`` \| [`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 
 #### Returns
 
-`Promise`<``null`` \| [`WithId`](../index.md#withid)<`TSchema`\>\>
+`Promise`<``null`` \| [`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 -`Promise`: 
 	-```null`` \| WithId<TSchema\>`: (optional) 
@@ -871,18 +871,18 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1603
 
 node_modules/typeorm/driver/mongodb/typings.d.ts:1604
 
-**findOne**(`filter`, `options`): `Promise`<``null`` \| [`WithId`](../index.md#withid)<`TSchema`\>\>
+**findOne**(`filter`, `options`): `Promise`<``null`` \| [`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 | `options` | [`FindOptions`](../interfaces/FindOptions.md)<[`Document`](../interfaces/Document.md)\> |
 
 #### Returns
 
-`Promise`<``null`` \| [`WithId`](../index.md#withid)<`TSchema`\>\>
+`Promise`<``null`` \| [`WithId`](../types/WithId.md)<`TSchema`\>\>
 
 -`Promise`: 
 	-```null`` \| WithId<TSchema\>`: (optional) 
@@ -918,7 +918,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1606
 
 | Name |
 | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 
 #### Returns
 
@@ -941,7 +941,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:1607
 
 | Name |
 | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> |
 | `options?` | [`FindOptions`](../interfaces/FindOptions.md)<[`Document`](../interfaces/Document.md)\> |
 
 #### Returns
@@ -967,7 +967,7 @@ Find a document and delete it in one atomic operation. Requires a write lock for
 
 | Name | Description |
 | :------ | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the document to remove |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the document to remove |
 | `options?` | [`FindOneAndDeleteOptions`](../interfaces/FindOneAndDeleteOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -993,8 +993,8 @@ Find a document and replace it in one atomic operation. Requires a write lock fo
 
 | Name | Description |
 | :------ | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the document to replace |
-| `replacement` | [`WithoutId`](../index.md#withoutid)<`TSchema`\> | The Document that replaces the matching document |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the document to replace |
+| `replacement` | [`WithoutId`](../types/WithoutId.md)<`TSchema`\> | The Document that replaces the matching document |
 | `options?` | [`FindOneAndReplaceOptions`](../interfaces/FindOneAndReplaceOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -1020,8 +1020,8 @@ Find a document and update it in one atomic operation. Requires a write lock for
 
 | Name | Description |
 | :------ | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the document to update |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<`TSchema`\> | Update operations to be performed on the document |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the document to update |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<`TSchema`\> | Update operations to be performed on the document |
 | `options?` | [`FindOneAndUpdateOptions`](../interfaces/FindOneAndUpdateOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -1192,7 +1192,7 @@ can be overridden by setting the **forceServerObjectId** flag.
 
 | Name | Description |
 | :------ | :------ |
-| `docs` | [`OptionalUnlessRequiredId`](../index.md#optionalunlessrequiredid)<`TSchema`\>[] | The documents to insert |
+| `docs` | [`OptionalUnlessRequiredId`](../types/OptionalUnlessRequiredId.md)<`TSchema`\>[] | The documents to insert |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -1220,7 +1220,7 @@ can be overridden by setting the **forceServerObjectId** flag.
 
 | Name | Description |
 | :------ | :------ |
-| `doc` | [`OptionalUnlessRequiredId`](../index.md#optionalunlessrequiredid)<`TSchema`\> | The document to insert |
+| `doc` | [`OptionalUnlessRequiredId`](../types/OptionalUnlessRequiredId.md)<`TSchema`\> | The document to insert |
 | `options?` | [`InsertOneOptions`](../interfaces/InsertOneOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -1351,8 +1351,8 @@ Replace a document in a collection with another document
 
 | Name | Description |
 | :------ | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the document to replace |
-| `replacement` | [`WithoutId`](../index.md#withoutid)<`TSchema`\> | The Document that replaces the matching document |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the document to replace |
+| `replacement` | [`WithoutId`](../types/WithoutId.md)<`TSchema`\> | The Document that replaces the matching document |
 | `options?` | [`ReplaceOptions`](../interfaces/ReplaceOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -1433,8 +1433,8 @@ Update multiple documents in a collection
 
 | Name | Description |
 | :------ | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the documents to update |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<`TSchema`\> | The update operations to be applied to the documents |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the documents to update |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<`TSchema`\> | The update operations to be applied to the documents |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) | Optional settings for the command |
 
 #### Returns
@@ -1465,8 +1465,8 @@ Update a single document in a collection
 
 | Name | Description |
 | :------ | :------ |
-| `filter` | [`Filter`](../index.md#filter)<`TSchema`\> | The filter used to select the document to update |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<`TSchema`\> \| [`Partial`](../index.md#partial)<`TSchema`\> | The update operations to be applied to the document |
+| `filter` | [`Filter`](../types/Filter.md)<`TSchema`\> | The filter used to select the document to update |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<`TSchema`\> \| [`Partial`](../types/Partial.md)<`TSchema`\> | The update operations to be applied to the document |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) | Optional settings for the command |
 
 #### Returns

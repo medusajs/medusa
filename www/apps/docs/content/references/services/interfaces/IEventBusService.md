@@ -50,8 +50,8 @@ ___
 | Name |
 | :------ |
 | `eventName` | `string` \| `symbol` |
-| `subscriber` | [`Subscriber`](../index.md#subscriber) |
-| `context?` | [`SubscriberContext`](../index.md#subscribercontext) |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md) |
+| `context?` | [`SubscriberContext`](../types/SubscriberContext.md) |
 
 #### Returns
 
@@ -74,8 +74,8 @@ ___
 | Name |
 | :------ |
 | `eventName` | `string` \| `symbol` |
-| `subscriber` | [`Subscriber`](../index.md#subscriber) |
-| `context?` | [`SubscriberContext`](../index.md#subscribercontext) |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md) |
+| `context?` | [`SubscriberContext`](../types/SubscriberContext.md) |
 
 #### Returns
 

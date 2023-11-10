@@ -30,7 +30,7 @@ The details of the new products to send to the customer, represented as line ite
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:117](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L117)
+[packages/medusa/src/models/swap.ts:117](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L117)
 
 ___
 
@@ -42,7 +42,7 @@ If true, swaps can be completed with items out of stock
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:162](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L162)
+[packages/medusa/src/models/swap.ts:162](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L162)
 
 ___
 
@@ -54,7 +54,7 @@ The date with timezone at which the Swap was canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:156](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L156)
+[packages/medusa/src/models/swap.ts:156](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L156)
 
 ___
 
@@ -66,7 +66,7 @@ The details of the cart that the customer uses to complete the swap.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:150](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L150)
+[packages/medusa/src/models/swap.ts:150](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L150)
 
 ___
 
@@ -78,7 +78,7 @@ The ID of the cart that the customer uses to complete the swap.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:146](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L146)
+[packages/medusa/src/models/swap.ts:146](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L146)
 
 ___
 
@@ -90,7 +90,7 @@ The date with timezone at which the Swap was confirmed by the Customer.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:153](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L153)
+[packages/medusa/src/models/swap.ts:153](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L153)
 
 ___
 
@@ -106,7 +106,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -122,7 +122,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -134,7 +134,7 @@ The difference amount between the order’s original total and the new total imp
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:131](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L131)
+[packages/medusa/src/models/swap.ts:131](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L131)
 
 ___
 
@@ -146,7 +146,7 @@ The status of the Fulfillment of the Swap.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:103](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L103)
+[packages/medusa/src/models/swap.ts:103](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L103)
 
 ___
 
@@ -158,7 +158,7 @@ The details of the fulfillments that are used to send the new items to the custo
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:125](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L125)
+[packages/medusa/src/models/swap.ts:125](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L125)
 
 ___
 
@@ -174,7 +174,7 @@ The swap's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -186,7 +186,7 @@ Randomly generated key used to continue the completion of the swap in case of fa
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:165](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L165)
+[packages/medusa/src/models/swap.ts:165](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L165)
 
 ___
 
@@ -198,7 +198,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:168](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L168)
+[packages/medusa/src/models/swap.ts:168](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L168)
 
 ___
 
@@ -210,7 +210,7 @@ If set to true, no notification will be sent related to this swap
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:159](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L159)
+[packages/medusa/src/models/swap.ts:159](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L159)
 
 ___
 
@@ -222,7 +222,7 @@ The details of the order that the swap belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:114](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L114)
+[packages/medusa/src/models/swap.ts:114](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L114)
 
 ___
 
@@ -234,7 +234,7 @@ The ID of the order that the swap belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:110](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L110)
+[packages/medusa/src/models/swap.ts:110](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L110)
 
 ___
 
@@ -246,7 +246,7 @@ The details of the additional payment authorized by the customer when `differenc
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L128)
+[packages/medusa/src/models/swap.ts:128](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L128)
 
 ___
 
@@ -258,7 +258,7 @@ The status of the Payment of the Swap. The payment may either refer to the refun
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:106](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L106)
+[packages/medusa/src/models/swap.ts:106](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L106)
 
 ___
 
@@ -270,7 +270,7 @@ The details of the return that belongs to the swap, which holds the details on t
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:120](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L120)
+[packages/medusa/src/models/swap.ts:120](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L120)
 
 ___
 
@@ -282,7 +282,7 @@ The details of the shipping address that the new items should be sent to.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:138](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L138)
+[packages/medusa/src/models/swap.ts:138](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L138)
 
 ___
 
@@ -294,7 +294,7 @@ The Address to send the new Line Items to - in most cases this will be the same 
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:134](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L134)
+[packages/medusa/src/models/swap.ts:134](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L134)
 
 ___
 
@@ -306,7 +306,7 @@ The details of the shipping methods used to fulfill the additional items purchas
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:143](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L143)
+[packages/medusa/src/models/swap.ts:143](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L143)
 
 ___
 
@@ -322,7 +322,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -338,4 +338,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/swap.ts:174](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/swap.ts#L174)
+[packages/medusa/src/models/swap.ts:174](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/swap.ts#L174)

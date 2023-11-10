@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [`StreamOptions`](../index.md#streamoptions)<[`Readable`](../classes/Readable.md)\>
+- [`StreamOptions`](../internal/interfaces/internal.StreamOptions.md)<[`Readable`](../classes/Readable.md)\>
 
   ↳ **`ReadableOptions`**
 
@@ -16,7 +16,7 @@
 
 #### Inherited from
 
-[StreamOptions](../index.md#streamoptions).[autoDestroy](../index.md#autodestroy)
+[StreamOptions](../internal/interfaces/internal.StreamOptions.md).[autoDestroy](../internal/interfaces/internal.StreamOptions.md#autodestroy)
 
 #### Defined in
 
@@ -30,7 +30,7 @@ ___
 
 #### Inherited from
 
-[StreamOptions](../index.md#streamoptions).[emitClose](../index.md#emitclose)
+[StreamOptions](../internal/interfaces/internal.StreamOptions.md).[emitClose](../internal/interfaces/internal.StreamOptions.md#emitclose)
 
 #### Defined in
 
@@ -40,7 +40,7 @@ ___
 
 ### encoding
 
- `Optional` **encoding**: [`BufferEncoding`](../index.md#bufferencoding)
+ `Optional` **encoding**: [`BufferEncoding`](../types/BufferEncoding.md)
 
 #### Defined in
 
@@ -54,7 +54,7 @@ ___
 
 #### Inherited from
 
-[StreamOptions](../index.md#streamoptions).[highWaterMark](../index.md#highwatermark)
+[StreamOptions](../internal/interfaces/internal.StreamOptions.md).[highWaterMark](../internal/interfaces/internal.StreamOptions.md#highwatermark)
 
 #### Defined in
 
@@ -68,7 +68,7 @@ ___
 
 #### Inherited from
 
-[StreamOptions](../index.md#streamoptions).[objectMode](../index.md#objectmode)
+[StreamOptions](../internal/interfaces/internal.StreamOptions.md).[objectMode](../internal/interfaces/internal.StreamOptions.md#objectmode)
 
 #### Defined in
 
@@ -84,7 +84,7 @@ When provided the corresponding `AbortController` can be used to cancel an async
 
 #### Inherited from
 
-[StreamOptions](../index.md#streamoptions).[signal](../index.md#signal)
+[StreamOptions](../internal/interfaces/internal.StreamOptions.md).[signal](../internal/interfaces/internal.StreamOptions.md#signal)
 
 #### Defined in
 
@@ -111,7 +111,7 @@ docs-util/node_modules/@types/node/events.d.ts:456
 
 #### Inherited from
 
-[StreamOptions](../index.md#streamoptions).[construct](../index.md#construct)
+[StreamOptions](../internal/interfaces/internal.StreamOptions.md).[construct](../internal/interfaces/internal.StreamOptions.md#construct)
 
 #### Defined in
 
@@ -139,7 +139,7 @@ ___
 
 #### Inherited from
 
-[StreamOptions](../index.md#streamoptions).[destroy](../index.md#destroy)
+[StreamOptions](../internal/interfaces/internal.StreamOptions.md).[destroy](../internal/interfaces/internal.StreamOptions.md#destroy)
 
 #### Defined in
 

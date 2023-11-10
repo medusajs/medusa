@@ -185,7 +185,7 @@ ___
 
 ### readPreference
 
- `Optional` **readPreference**: [`ReadPreferenceLike`](../index.md#readpreferencelike)
+ `Optional` **readPreference**: [`ReadPreferenceLike`](../types/ReadPreferenceLike.md)
 
 The preferred read preference (ReadPreference.primary, ReadPreference.primary_preferred, ReadPreference.secondary, ReadPreference.secondary_preferred, ReadPreference.nearest).
 

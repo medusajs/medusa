@@ -12,7 +12,7 @@ Request parameters used to configure and paginate retrieved data.
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:122](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L122)
+[packages/medusa/src/types/common.ts:122](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L122)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:126](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L126)
+[packages/medusa/src/types/common.ts:126](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L126)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:134](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L134)
+[packages/medusa/src/types/common.ts:134](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L134)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:130](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L130)
+[packages/medusa/src/types/common.ts:130](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L130)
 
 ___
 
@@ -60,4 +60,4 @@ The field to sort the data by. By default, the sort order is ascending. To chang
 
 #### Defined in
 
-[packages/medusa/src/types/common.ts:138](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/common.ts#L138)
+[packages/medusa/src/types/common.ts:138](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/common.ts#L138)

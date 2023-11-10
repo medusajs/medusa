@@ -16,7 +16,7 @@
 
 ### $and
 
- `Optional` **$and**: [`Filter`](../index.md#filter)<`TSchema`\>[]
+ `Optional` **$and**: [`Filter`](../types/Filter.md)<`TSchema`\>[]
 
 #### Defined in
 
@@ -36,7 +36,7 @@ ___
 
 ### $nor
 
- `Optional` **$nor**: [`Filter`](../index.md#filter)<`TSchema`\>[]
+ `Optional` **$nor**: [`Filter`](../types/Filter.md)<`TSchema`\>[]
 
 #### Defined in
 
@@ -46,7 +46,7 @@ ___
 
 ### $or
 
- `Optional` **$or**: [`Filter`](../index.md#filter)<`TSchema`\>[]
+ `Optional` **$or**: [`Filter`](../types/Filter.md)<`TSchema`\>[]
 
 #### Defined in
 

@@ -465,7 +465,7 @@ ___
 | Name |
 | :------ |
 | `chunk` | `any` |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `callback` | (`error?`: ``null`` \| `Error`) => `void` |
 
 #### Returns
@@ -488,7 +488,7 @@ ___
 
 | Name |
 | :------ |
-| `chunks` | { `chunk`: `any` ; `encoding`: [`BufferEncoding`](../index.md#bufferencoding)  }[] |
+| `chunks` | { `chunk`: `any` ; `encoding`: [`BufferEncoding`](../types/BufferEncoding.md)  }[] |
 | `callback` | (`error?`: ``null`` \| `Error`) => `void` |
 
 #### Returns
@@ -717,7 +717,7 @@ ___
 
 | Name |
 | :------ |
-| `stream` | [`ComposeFnParam`](../index.md#composefnparam) \| `T` \| [`Iterable`](../interfaces/Iterable.md)<`T`\> \| [`AsyncIterable`](../interfaces/AsyncIterable.md)<`T`\> |
+| `stream` | [`ComposeFnParam`](../types/ComposeFnParam.md) \| `T` \| [`Iterable`](../interfaces/Iterable.md)<`T`\> \| [`AsyncIterable`](../interfaces/AsyncIterable.md)<`T`\> |
 | `options?` | `object` |
 | `options.signal` | `AbortSignal` |
 
@@ -1112,7 +1112,7 @@ docs-util/node_modules/@types/node/stream.d.ts:814
 | Name |
 | :------ |
 | `chunk` | `any` |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `cb?` | () => `void` |
 
 #### Returns
@@ -2613,7 +2613,7 @@ The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Wr
 
 | Name | Description |
 | :------ | :------ |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) | The new default encoding |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) | The new default encoding |
 
 #### Returns
 
@@ -2808,7 +2808,7 @@ docs-util/node_modules/@types/node/stream.d.ts:783
 | Name |
 | :------ |
 | `chunk` | `any` |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `callback?` | (`error`: `undefined` \| ``null`` \| `Error`) => `void` |
 
 #### Returns
@@ -2919,7 +2919,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
@@ -2976,7 +2976,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 
 #### Returns
 
@@ -3018,7 +3018,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) | The emitter to query |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) | The emitter to query |
 | `eventName` | `string` \| `symbol` | The event name |
 
 #### Returns
@@ -3108,7 +3108,7 @@ process.nextTick(() => ac.abort());
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) |
 | `eventName` | `string` | The name of the event being listened for |
 | `options?` | [`StaticEventEmitterOptions`](../interfaces/StaticEventEmitterOptions.md) |
 
@@ -3288,7 +3288,7 @@ setMaxListeners(5, target, emitter);
 | Name | Description |
 | :------ | :------ |
 | `n?` | `number` | A non-negative number. The maximum number of listeners per `EventTarget` event. |
-| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
+| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
 
 #### Returns
 

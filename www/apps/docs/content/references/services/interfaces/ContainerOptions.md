@@ -6,7 +6,7 @@ The options for the createContainer function.
 
 ### injectionMode
 
- `Optional` **injectionMode**: [`InjectionModeType`](../index.md#injectionmodetype)
+ `Optional` **injectionMode**: [`InjectionModeType`](../types/InjectionModeType.md)
 
 #### Defined in
 

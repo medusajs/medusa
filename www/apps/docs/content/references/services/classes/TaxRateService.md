@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L30)
+[packages/medusa/src/services/tax-rate.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L30)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L25)
+[packages/medusa/src/services/tax-rate.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L25)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L26)
+[packages/medusa/src/services/tax-rate.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L26)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L27)
+[packages/medusa/src/services/tax-rate.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L27)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L28)
+[packages/medusa/src/services/tax-rate.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L28)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -154,7 +154,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -179,7 +179,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:191](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L191)
+[packages/medusa/src/services/tax-rate.ts:191](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L191)
 
 ___
 
@@ -205,7 +205,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:227](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L227)
+[packages/medusa/src/services/tax-rate.ts:227](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L227)
 
 ___
 
@@ -231,7 +231,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:267](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L267)
+[packages/medusa/src/services/tax-rate.ts:267](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L267)
 
 ___
 
@@ -253,7 +253,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -268,7 +268,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -280,7 +280,7 @@ ___
 
 | Name |
 | :------ |
-| `data` | [`CreateTaxRateInput`](../index.md#createtaxrateinput) |
+| `data` | [`CreateTaxRateInput`](../types/CreateTaxRateInput.md) |
 
 #### Returns
 
@@ -291,7 +291,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:94](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L94)
+[packages/medusa/src/services/tax-rate.ts:94](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L94)
 
 ___
 
@@ -313,7 +313,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:125](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L125)
+[packages/medusa/src/services/tax-rate.ts:125](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L125)
 
 ___
 
@@ -325,7 +325,7 @@ ___
 
 | Name |
 | :------ |
-| `selector` | [`FilterableTaxRateProps`](../index.md#filterabletaxrateprops) |
+| `selector` | [`FilterableTaxRateProps`](../types/FilterableTaxRateProps.md) |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`TaxRate`](TaxRate.md)\> |
 
 #### Returns
@@ -338,7 +338,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L45)
+[packages/medusa/src/services/tax-rate.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L45)
 
 ___
 
@@ -350,7 +350,7 @@ ___
 
 | Name |
 | :------ |
-| `selector` | [`FilterableTaxRateProps`](../index.md#filterabletaxrateprops) |
+| `selector` | [`FilterableTaxRateProps`](../types/FilterableTaxRateProps.md) |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`TaxRate`](TaxRate.md)\> |
 
 #### Returns
@@ -363,7 +363,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L56)
+[packages/medusa/src/services/tax-rate.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L56)
 
 ___
 
@@ -376,7 +376,7 @@ ___
 | Name |
 | :------ |
 | `productId` | `string` |
-| `config` | [`TaxRateListByConfig`](../index.md#taxratelistbyconfig) |
+| `config` | [`TaxRateListByConfig`](../types/TaxRateListByConfig.md) |
 
 #### Returns
 
@@ -388,7 +388,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:315](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L315)
+[packages/medusa/src/services/tax-rate.ts:315](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L315)
 
 ___
 
@@ -412,7 +412,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:326](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L326)
+[packages/medusa/src/services/tax-rate.ts:326](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L326)
 
 ___
 
@@ -435,7 +435,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:137](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L137)
+[packages/medusa/src/services/tax-rate.ts:137](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L137)
 
 ___
 
@@ -458,7 +458,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:155](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L155)
+[packages/medusa/src/services/tax-rate.ts:155](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L155)
 
 ___
 
@@ -481,7 +481,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:173](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L173)
+[packages/medusa/src/services/tax-rate.ts:173](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L173)
 
 ___
 
@@ -505,7 +505,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L67)
+[packages/medusa/src/services/tax-rate.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L67)
 
 ___
 
@@ -531,7 +531,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -544,7 +544,7 @@ ___
 | Name |
 | :------ |
 | `id` | `string` |
-| `data` | [`UpdateTaxRateInput`](../index.md#updatetaxrateinput) |
+| `data` | [`UpdateTaxRateInput`](../types/UpdateTaxRateInput.md) |
 
 #### Returns
 
@@ -555,7 +555,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/tax-rate.ts:110](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/tax-rate.ts#L110)
+[packages/medusa/src/services/tax-rate.ts:110](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/tax-rate.ts#L110)
 
 ___
 
@@ -581,4 +581,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

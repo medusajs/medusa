@@ -82,7 +82,7 @@ Express.Request.allowedProperties
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L18)
+[packages/medusa/src/types/global.ts:18](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L18)
 
 ___
 
@@ -259,7 +259,7 @@ Express.Request.errors
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L20)
+[packages/medusa/src/types/global.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L20)
 
 ___
 
@@ -306,7 +306,7 @@ Express.Request.filterableFields
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L17)
+[packages/medusa/src/types/global.ts:17](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L17)
 
 ___
 
@@ -485,7 +485,7 @@ Express.Request.includes
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L19)
+[packages/medusa/src/types/global.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L19)
 
 ___
 
@@ -530,7 +530,7 @@ Express.Request.listConfig
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L15)
+[packages/medusa/src/types/global.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L15)
 
 ___
 
@@ -749,7 +749,7 @@ ___
 
 ### readableEncoding
 
- `Readonly` **readableEncoding**: ``null`` \| [`BufferEncoding`](../index.md#bufferencoding)
+ `Readonly` **readableEncoding**: ``null`` \| [`BufferEncoding`](../types/BufferEncoding.md)
 
 Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.
 
@@ -893,7 +893,7 @@ Express.Request.retrieveConfig
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L16)
+[packages/medusa/src/types/global.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L16)
 
 ___
 
@@ -909,7 +909,7 @@ ___
 
 ### scope
 
- **scope**: [`MedusaContainer`](../index.md#medusacontainer)
+ **scope**: [`MedusaContainer`](../types/MedusaContainer.md)
 
 #### Inherited from
 
@@ -917,7 +917,7 @@ Express.Request.scope
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:12](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L12)
+[packages/medusa/src/types/global.ts:12](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L12)
 
 ___
 
@@ -1157,7 +1157,7 @@ Express.Request.user
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:11](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L11)
+[packages/medusa/src/types/global.ts:11](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L11)
 
 ___
 
@@ -1171,7 +1171,7 @@ Express.Request.validatedBody
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L14)
+[packages/medusa/src/types/global.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L14)
 
 ___
 
@@ -1185,7 +1185,7 @@ Express.Request.validatedQuery
 
 #### Defined in
 
-[packages/medusa/src/types/global.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/global.ts#L13)
+[packages/medusa/src/types/global.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/global.ts#L13)
 
 ___
 
@@ -1902,7 +1902,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 
 | Name |
 | :------ |
-| `options?` | [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
+| `options?` | [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
 
 #### Returns
 
@@ -1936,7 +1936,7 @@ ___
 
 | Name |
 | :------ |
-| `stream` | [`ComposeFnParam`](../index.md#composefnparam) \| `T` \| [`Iterable`](Iterable.md)<`T`\> \| [`AsyncIterable`](AsyncIterable.md)<`T`\> |
+| `stream` | [`ComposeFnParam`](../types/ComposeFnParam.md) \| `T` \| [`Iterable`](Iterable.md)<`T`\> \| [`AsyncIterable`](AsyncIterable.md)<`T`\> |
 | `options?` | `object` |
 | `options.signal` | `AbortSignal` |
 
@@ -1998,7 +1998,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
 | Name | Description |
 | :------ | :------ |
 | `limit` | `number` | the number of chunks to drop from the readable. |
-| `options?` | [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
+| `options?` | [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
 
 #### Returns
 
@@ -2300,7 +2300,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> | a function to call on each chunk of the stream. Async or not. |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> | a function to call on each chunk of the stream. Async or not. |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -2336,7 +2336,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> | a function to filter chunks from the stream. Async or not. |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> | a function to filter chunks from the stream. Async or not. |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -2376,7 +2376,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => data is T | a function to call on each chunk of the stream. Async or not. |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => data is T | a function to call on each chunk of the stream. Async or not. |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -2405,7 +2405,7 @@ docs-util/node_modules/@types/node/stream.d.ts:489
 
 | Name |
 | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -2439,7 +2439,7 @@ will be merged (flattened) into the returned stream.
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `any` | a function to map over every chunk in the stream. May be async. May be a stream or generator. |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `any` | a function to map over every chunk in the stream. May be async. May be a stream or generator. |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -2481,7 +2481,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `void` \| `Promise`<`void`\> | a function to call on each chunk of the stream. Async or not. |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `void` \| `Promise`<`void`\> | a function to call on each chunk of the stream. Async or not. |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -2831,7 +2831,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `any` | a function to map over every chunk in the stream. Async or not. |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `any` | a function to map over every chunk in the stream. Async or not. |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -3850,7 +3850,7 @@ ___
 | Name |
 | :------ |
 | `chunk` | `any` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 
 #### Returns
 
@@ -3870,7 +3870,7 @@ ___
 
 ### range
 
-**range**(`size`, `options?`): `undefined` \| [`Ranges`](Ranges.md) \| [`Result`](../index.md#result)
+**range**(`size`, `options?`): `undefined` \| [`Ranges`](Ranges.md) \| [`Result`](../types/Result.md)
 
 Parse Range header field, capping to the given `size`.
 
@@ -3892,7 +3892,7 @@ should respond with 4 users when available, not 3.
 
 #### Returns
 
-`undefined` \| [`Ranges`](Ranges.md) \| [`Result`](../index.md#result)
+`undefined` \| [`Ranges`](Ranges.md) \| [`Result`](../types/Result.md)
 
 -`undefined \| Ranges \| Result`: (optional) 
 
@@ -4084,9 +4084,9 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`previous`: `any`, `data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `T` | a reducer function to call over every chunk in the stream. Async or not. |
+| `fn` | (`previous`: `any`, `data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `T` | a reducer function to call over every chunk in the stream. Async or not. |
 | `initial?` | `undefined` | the initial value to use in the reduction. |
-| `options?` | [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
+| `options?` | [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
 
 #### Returns
 
@@ -4116,9 +4116,9 @@ docs-util/node_modules/@types/node/stream.d.ts:556
 
 | Name |
 | :------ |
-| `fn` | (`previous`: `T`, `data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `T` |
+| `fn` | (`previous`: `T`, `data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `T` |
 | `initial` | `T` |
-| `options?` | [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
+| `options?` | [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
 
 #### Returns
 
@@ -4515,7 +4515,7 @@ readable.on('data', (chunk) => {
 
 | Name | Description |
 | :------ | :------ |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) | The encoding to use. |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) | The encoding to use. |
 
 #### Returns
 
@@ -4620,7 +4620,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 
 | Name | Description |
 | :------ | :------ |
-| `fn` | (`data`: `any`, `options?`: [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> | a function to call on each chunk of the stream. Async or not. |
+| `fn` | (`data`: `any`, `options?`: [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\>) => `boolean` \| `Promise`<`boolean`\> | a function to call on each chunk of the stream. Async or not. |
 | `options?` | [`ArrayOptions`](ArrayOptions.md) |
 
 #### Returns
@@ -4655,7 +4655,7 @@ This method returns a new stream with the first *limit* chunks.
 | Name | Description |
 | :------ | :------ |
 | `limit` | `number` | the number of chunks to take from the readable. |
-| `options?` | [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
+| `options?` | [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
 
 #### Returns
 
@@ -4690,7 +4690,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 
 | Name |
 | :------ |
-| `options?` | [`Pick`](../index.md#pick)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
+| `options?` | [`Pick`](../types/Pick.md)<[`ArrayOptions`](ArrayOptions.md), ``"signal"``\> |
 
 #### Returns
 
@@ -4836,7 +4836,7 @@ process of performing a read.
 | Name | Description |
 | :------ | :------ |
 | `chunk` | `any` | Chunk of data to unshift onto the read queue. For streams not operating in object mode, `chunk` must be a string, `Buffer`, `Uint8Array`, or `null`. For object mode streams, `chunk` may be any JavaScript value. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | Encoding of string chunks. Must be a valid `Buffer` encoding, such as `'utf8'` or `'ascii'`. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | Encoding of string chunks. Must be a valid `Buffer` encoding, such as `'utf8'` or `'ascii'`. |
 
 #### Returns
 

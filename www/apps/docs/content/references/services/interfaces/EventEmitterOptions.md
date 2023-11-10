@@ -4,7 +4,7 @@
 
 - **`EventEmitterOptions`**
 
-  ↳ [`EventEmitterAsyncResourceOptions`](../index.md#eventemitterasyncresourceoptions)
+  ↳ [`EventEmitterAsyncResourceOptions`](../EventEmitter/interfaces/EventEmitter.EventEmitterAsyncResourceOptions.md)
 
 ## Properties
 

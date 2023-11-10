@@ -412,7 +412,7 @@ ___
 
 ### type
 
- **type**: [`ColumnType`](../index.md#columntype)
+ **type**: [`ColumnType`](../types/ColumnType.md)
 
 Column type. Must be one of the value from the ColumnTypes class.
 

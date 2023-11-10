@@ -4,7 +4,7 @@
 
 ### condition
 
- **condition**: [`WhereClauseCondition`](../index.md#whereclausecondition)
+ **condition**: [`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 #### Defined in
 
@@ -14,7 +14,7 @@ ___
 
 ### operator
 
- **operator**: [`WrappingOperator`](../index.md#wrappingoperator)
+ **operator**: [`WrappingOperator`](../types/WrappingOperator.md)
 
 #### Defined in
 

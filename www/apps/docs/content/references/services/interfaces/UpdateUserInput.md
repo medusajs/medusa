@@ -8,7 +8,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/user.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/user.ts#L19)
+[packages/medusa/src/types/user.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/user.ts#L19)
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/user.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/user.ts#L15)
+[packages/medusa/src/types/user.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/user.ts#L15)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/user.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/user.ts#L16)
+[packages/medusa/src/types/user.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/user.ts#L16)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/user.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/user.ts#L17)
+[packages/medusa/src/types/user.ts:17](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/user.ts#L17)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/user.ts:21](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/user.ts#L21)
+[packages/medusa/src/types/user.ts:21](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/user.ts#L21)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/user.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/user.ts#L18)
+[packages/medusa/src/types/user.ts:18](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/user.ts#L18)
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/user.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/user.ts#L20)
+[packages/medusa/src/types/user.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/user.ts#L20)

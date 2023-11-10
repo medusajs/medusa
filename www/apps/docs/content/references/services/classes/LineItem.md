@@ -30,7 +30,7 @@ The details of the item's adjustments, which are available when a discount is ap
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L87)
+[packages/medusa/src/models/line-item.ts:87](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L87)
 
 ___
 
@@ -42,7 +42,7 @@ Flag to indicate if the Line Item should be included when doing discount calcula
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:118](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L118)
+[packages/medusa/src/models/line-item.ts:118](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L118)
 
 ___
 
@@ -54,7 +54,7 @@ The details of the cart that the line item may belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L53)
+[packages/medusa/src/models/line-item.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L53)
 
 ___
 
@@ -66,7 +66,7 @@ The ID of the cart that the line item may belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L49)
+[packages/medusa/src/models/line-item.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L49)
 
 ___
 
@@ -78,7 +78,7 @@ The details of the claim that the line item may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:77](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L77)
+[packages/medusa/src/models/line-item.ts:77](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L77)
 
 ___
 
@@ -90,7 +90,7 @@ The ID of the claim that the line item may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L73)
+[packages/medusa/src/models/line-item.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L73)
 
 ___
 
@@ -106,7 +106,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -118,7 +118,7 @@ A more detailed description of the contents of the Line Item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:103](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L103)
+[packages/medusa/src/models/line-item.ts:103](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L103)
 
 ___
 
@@ -130,7 +130,7 @@ The total of discount of the line item rounded
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:161](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L161)
+[packages/medusa/src/models/line-item.ts:161](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L161)
 
 ___
 
@@ -142,7 +142,7 @@ The quantity of the Line Item that has been fulfilled.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:141](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L141)
+[packages/medusa/src/models/line-item.ts:141](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L141)
 
 ___
 
@@ -154,7 +154,7 @@ The total of the gift card of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:163](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L163)
+[packages/medusa/src/models/line-item.ts:163](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L163)
 
 ___
 
@@ -166,7 +166,7 @@ Flag to indicate if the Line Item has fulfillment associated with it.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:121](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L121)
+[packages/medusa/src/models/line-item.ts:121](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L121)
 
 ___
 
@@ -182,7 +182,7 @@ The line item's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -194,7 +194,7 @@ Indicates if the line item unit_price include tax
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:153](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L153)
+[packages/medusa/src/models/line-item.ts:153](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L153)
 
 ___
 
@@ -206,7 +206,7 @@ Flag to indicate if the Line Item is a Gift Card.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:112](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L112)
+[packages/medusa/src/models/line-item.ts:112](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L112)
 
 ___
 
@@ -218,7 +218,7 @@ Is the item being returned
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:109](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L109)
+[packages/medusa/src/models/line-item.ts:109](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L109)
 
 ___
 
@@ -230,7 +230,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:150](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L150)
+[packages/medusa/src/models/line-item.ts:150](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L150)
 
 ___
 
@@ -242,7 +242,7 @@ The details of the order that the line item may belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L61)
+[packages/medusa/src/models/line-item.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L61)
 
 ___
 
@@ -254,7 +254,7 @@ The details of the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:97](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L97)
+[packages/medusa/src/models/line-item.ts:97](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L97)
 
 ___
 
@@ -266,7 +266,7 @@ The ID of the order edit that the item may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:93](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L93)
+[packages/medusa/src/models/line-item.ts:93](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L93)
 
 ___
 
@@ -278,7 +278,7 @@ The ID of the order that the line item may belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L57)
+[packages/medusa/src/models/line-item.ts:57](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L57)
 
 ___
 
@@ -290,7 +290,7 @@ The ID of the original line item. This is useful if the line item belongs to a r
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:90](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L90)
+[packages/medusa/src/models/line-item.ts:90](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L90)
 
 ___
 
@@ -302,7 +302,7 @@ The original tax total amount of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:160](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L160)
+[packages/medusa/src/models/line-item.ts:160](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L160)
 
 ___
 
@@ -314,7 +314,7 @@ The original total amount of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:159](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L159)
+[packages/medusa/src/models/line-item.ts:159](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L159)
 
 ___
 
@@ -324,7 +324,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:135](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L135)
+[packages/medusa/src/models/line-item.ts:135](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L135)
 
 ___
 
@@ -336,7 +336,7 @@ The quantity of the content in the Line Item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:138](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L138)
+[packages/medusa/src/models/line-item.ts:138](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L138)
 
 ___
 
@@ -348,7 +348,7 @@ The total of discount of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:162](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L162)
+[packages/medusa/src/models/line-item.ts:162](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L162)
 
 ___
 
@@ -360,7 +360,7 @@ The amount that can be refunded from the given Line Item. Takes taxes and discou
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:155](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L155)
+[packages/medusa/src/models/line-item.ts:155](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L155)
 
 ___
 
@@ -372,7 +372,7 @@ The quantity of the Line Item that has been returned.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:144](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L144)
+[packages/medusa/src/models/line-item.ts:144](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L144)
 
 ___
 
@@ -384,7 +384,7 @@ The quantity of the Line Item that has been shipped.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:147](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L147)
+[packages/medusa/src/models/line-item.ts:147](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L147)
 
 ___
 
@@ -396,7 +396,7 @@ Flag to indicate if new Line Items with the same variant should be merged or add
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:115](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L115)
+[packages/medusa/src/models/line-item.ts:115](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L115)
 
 ___
 
@@ -408,7 +408,7 @@ The subtotal of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:156](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L156)
+[packages/medusa/src/models/line-item.ts:156](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L156)
 
 ___
 
@@ -420,7 +420,7 @@ The details of the swap that the line item may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L69)
+[packages/medusa/src/models/line-item.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L69)
 
 ___
 
@@ -432,7 +432,7 @@ The ID of the swap that the line item may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L65)
+[packages/medusa/src/models/line-item.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L65)
 
 ___
 
@@ -444,7 +444,7 @@ The details of the item's tax lines.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:82](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L82)
+[packages/medusa/src/models/line-item.ts:82](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L82)
 
 ___
 
@@ -456,7 +456,7 @@ The total of tax of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:157](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L157)
+[packages/medusa/src/models/line-item.ts:157](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L157)
 
 ___
 
@@ -468,7 +468,7 @@ A URL string to a small image of the contents of the Line Item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:106](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L106)
+[packages/medusa/src/models/line-item.ts:106](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L106)
 
 ___
 
@@ -480,7 +480,7 @@ The title of the Line Item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:100](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L100)
+[packages/medusa/src/models/line-item.ts:100](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L100)
 
 ___
 
@@ -492,7 +492,7 @@ The total amount of the line item
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:158](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L158)
+[packages/medusa/src/models/line-item.ts:158](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L158)
 
 ___
 
@@ -504,7 +504,7 @@ The price of one unit of the content in the Line Item. This should be in the cur
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:124](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L124)
+[packages/medusa/src/models/line-item.ts:124](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L124)
 
 ___
 
@@ -520,7 +520,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -532,7 +532,7 @@ The details of the product variant that this item was created from.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:132](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L132)
+[packages/medusa/src/models/line-item.ts:132](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L132)
 
 ___
 
@@ -544,7 +544,7 @@ The id of the Product Variant contained in the Line Item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L128)
+[packages/medusa/src/models/line-item.ts:128](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L128)
 
 ## Methods
 
@@ -560,7 +560,7 @@ The id of the Product Variant contained in the Line Item.
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:202](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L202)
+[packages/medusa/src/models/line-item.ts:202](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L202)
 
 ___
 
@@ -576,7 +576,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:169](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L169)
+[packages/medusa/src/models/line-item.ts:169](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L169)
 
 ___
 
@@ -592,4 +592,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/line-item.ts:188](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/line-item.ts#L188)
+[packages/medusa/src/models/line-item.ts:188](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/line-item.ts#L188)

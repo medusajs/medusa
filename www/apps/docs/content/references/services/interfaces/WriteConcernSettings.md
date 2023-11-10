@@ -40,7 +40,7 @@ ___
 
 ### w
 
- `Optional` **w**: [`W`](../index.md#w)
+ `Optional` **w**: [`W`](../types/W.md)
 
 The write concern
 

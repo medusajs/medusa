@@ -22,7 +22,7 @@ ___
 
 ### filter
 
- **filter**: [`Filter`](../index.md#filter)<`TSchema`\>
+ **filter**: [`Filter`](../types/Filter.md)<`TSchema`\>
 
 The filter to limit the replaced document.
 
@@ -34,7 +34,7 @@ ___
 
 ### hint
 
- `Optional` **hint**: [`Hint`](../index.md#hint)
+ `Optional` **hint**: [`Hint`](../types/Hint.md)
 
 The index to use. If specified, then the query system will only consider plans using the hinted index.
 
@@ -46,7 +46,7 @@ ___
 
 ### replacement
 
- **replacement**: [`WithoutId`](../index.md#withoutid)<`TSchema`\>
+ **replacement**: [`WithoutId`](../types/WithoutId.md)<`TSchema`\>
 
 The document with which to replace the matched document.
 

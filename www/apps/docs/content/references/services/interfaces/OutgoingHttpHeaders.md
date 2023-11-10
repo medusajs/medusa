@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [`Dict`](Dict.md)<[`OutgoingHttpHeader`](../index.md#outgoinghttpheader)\>
+- [`Dict`](Dict.md)<[`OutgoingHttpHeader`](../types/OutgoingHttpHeader.md)\>
 
   ↳ **`OutgoingHttpHeaders`**
 

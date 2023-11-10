@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [`Omit`](../index.md#omit)<[`ConnectionOptions`](ConnectionOptions-1.md), ``"id"`` \| ``"generation"``\>
+- [`Omit`](../types/Omit.md)<[`ConnectionOptions`](ConnectionOptions-1.md), ``"id"`` \| ``"generation"``\>
 
   ↳ **`ConnectionPoolOptions`**
 
@@ -415,7 +415,7 @@ ___
 
 ### lookup
 
- `Optional` **lookup**: [`LookupFunction`](../index.md#lookupfunction)
+ `Optional` **lookup**: [`LookupFunction`](../types/LookupFunction.md)
 
 #### Inherited from
 

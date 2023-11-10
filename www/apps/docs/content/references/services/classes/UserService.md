@@ -18,7 +18,7 @@ Provides layer to manipulate users.
 
 | Name |
 | :------ |
-| `«destructured»` | [`UserServiceProps`](../index.md#userserviceprops) |
+| `«destructured»` | [`UserServiceProps`](../types/UserServiceProps.md) |
 
 #### Overrides
 
@@ -26,7 +26,7 @@ Provides layer to manipulate users.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L45)
+[packages/medusa/src/services/user.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L45)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Provides layer to manipulate users.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L40)
+[packages/medusa/src/services/user.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L40)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L42)
+[packages/medusa/src/services/user.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L42)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L43)
+[packages/medusa/src/services/user.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L43)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L41)
+[packages/medusa/src/services/user.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L41)
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L33)
+[packages/medusa/src/services/user.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L33)
 
 ## Accessors
 
@@ -175,7 +175,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -197,7 +197,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -212,7 +212,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -239,7 +239,7 @@ Fails if email is not a valid format.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:171](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L171)
+[packages/medusa/src/services/user.ts:171](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L171)
 
 ___
 
@@ -263,7 +263,7 @@ Deletes a user from a given user id.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:263](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L263)
+[packages/medusa/src/services/user.ts:263](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L263)
 
 ___
 
@@ -292,7 +292,7 @@ is always 15 minutes.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:327](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L327)
+[packages/medusa/src/services/user.ts:327](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L327)
 
 ___
 
@@ -317,7 +317,7 @@ Hashes a password
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:159](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L159)
+[packages/medusa/src/services/user.ts:159](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L159)
 
 ___
 
@@ -329,7 +329,7 @@ ___
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`FilterableUserProps`](../index.md#filterableuserprops) | the query object for find |
+| `selector` | [`FilterableUserProps`](../types/FilterableUserProps.md) | the query object for find |
 | `config` | `object` | the configuration object for the query |
 
 #### Returns
@@ -342,7 +342,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L65)
+[packages/medusa/src/services/user.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L65)
 
 ___
 
@@ -369,7 +369,7 @@ Throws in case of DB Error and if user was not found.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:77](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L77)
+[packages/medusa/src/services/user.ts:77](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L77)
 
 ___
 
@@ -396,7 +396,7 @@ Throws in case of DB Error and if user was not found.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:107](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L107)
+[packages/medusa/src/services/user.ts:107](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L107)
 
 ___
 
@@ -423,7 +423,7 @@ Throws in case of DB Error and if user was not found.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:135](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L135)
+[packages/medusa/src/services/user.ts:135](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L135)
 
 ___
 
@@ -451,7 +451,7 @@ password does not work.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:298](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L298)
+[packages/medusa/src/services/user.ts:298](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L298)
 
 ___
 
@@ -477,7 +477,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -503,7 +503,7 @@ Updates a user.
 
 #### Defined in
 
-[packages/medusa/src/services/user.ts:217](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/user.ts#L217)
+[packages/medusa/src/services/user.ts:217](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/user.ts#L217)
 
 ___
 
@@ -529,4 +529,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

@@ -13,7 +13,7 @@ WARNING: not meant to be instantiated directly. For internal use only.
 
 ### id
 
- **id**: [`ServerSessionId`](../index.md#serversessionid)
+ **id**: [`ServerSessionId`](../types/ServerSessionId.md)
 
 #### Defined in
 

@@ -68,11 +68,11 @@ ___
 
 ### listFlags
 
-**listFlags**(): [`FeatureFlagsResponse`](../index.md#featureflagsresponse)
+**listFlags**(): [`FeatureFlagsResponse`](../types/FeatureFlagsResponse.md)
 
 #### Returns
 
-[`FeatureFlagsResponse`](../index.md#featureflagsresponse)
+[`FeatureFlagsResponse`](../types/FeatureFlagsResponse.md)
 
 -`FeatureFlagsResponse`: 
 	-`key`: 

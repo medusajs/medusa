@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:74](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L74)
+[packages/medusa/src/services/product-variant.ts:74](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L74)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L72)
+[packages/medusa/src/services/product-variant.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L72)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L66)
+[packages/medusa/src/services/product-variant.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L66)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L69)
+[packages/medusa/src/services/product-variant.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L69)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L68)
+[packages/medusa/src/services/product-variant.ts:68](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L68)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:71](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L71)
+[packages/medusa/src/services/product-variant.ts:71](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L71)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L65)
+[packages/medusa/src/services/product-variant.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L65)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L64)
+[packages/medusa/src/services/product-variant.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L64)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L67)
+[packages/medusa/src/services/product-variant.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L67)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -192,7 +192,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L58)
+[packages/medusa/src/services/product-variant.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L58)
 
 ## Accessors
 
@@ -212,7 +212,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -243,7 +243,7 @@ Option value must be of type string or number.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:843](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L843)
+[packages/medusa/src/services/product-variant.ts:843](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L843)
 
 ___
 
@@ -265,7 +265,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -280,7 +280,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -293,7 +293,7 @@ to ensure that the variant can in fact be created.
 
 | Name | Type |
 | :------ | :------ |
-| `TVariants` | [`CreateProductVariantInput`](../index.md#createproductvariantinput) \| [`CreateProductVariantInput`](../index.md#createproductvariantinput)[] |
+| `TVariants` | [`CreateProductVariantInput`](../types/CreateProductVariantInput.md) \| [`CreateProductVariantInput`](../types/CreateProductVariantInput.md)[] |
 | `TOutput` | `object` |
 
 #### Parameters
@@ -301,7 +301,7 @@ to ensure that the variant can in fact be created.
 | Name | Description |
 | :------ | :------ |
 | `productOrProductId` | `string` \| [`Product`](Product.md) | the product the variant will be added to |
-| `variants` | [`CreateProductVariantInput`](../index.md#createproductvariantinput) \| [`CreateProductVariantInput`](../index.md#createproductvariantinput)[] |
+| `variants` | [`CreateProductVariantInput`](../types/CreateProductVariantInput.md) \| [`CreateProductVariantInput`](../types/CreateProductVariantInput.md)[] |
 
 #### Returns
 
@@ -311,7 +311,7 @@ to ensure that the variant can in fact be created.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:167](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L167)
+[packages/medusa/src/services/product-variant.ts:167](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L167)
 
 ___
 
@@ -336,7 +336,7 @@ Will never fail due to delete being idempotent.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:1013](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L1013)
+[packages/medusa/src/services/product-variant.ts:1013](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L1013)
 
 ___
 
@@ -362,7 +362,7 @@ Will never fail due to delete being idempotent.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:870](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L870)
+[packages/medusa/src/services/product-variant.ts:870](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L870)
 
 ___
 
@@ -378,7 +378,7 @@ variants that match the query.
 | Name | Description |
 | :------ | :------ |
 | `variantRepo` | [`Repository`](Repository.md)<[`ProductVariant`](ProductVariant.md)\> | the variant repository |
-| `query` | [`FindWithRelationsOptions`](../index.md#findwithrelationsoptions) | object that defines the scope for what should be returned |
+| `query` | [`FindWithRelationsOptions`](../types/FindWithRelationsOptions.md) | object that defines the scope for what should be returned |
 | `q?` | `string` | free text query |
 
 #### Returns
@@ -391,7 +391,7 @@ variants that match the query.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:1076](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L1076)
+[packages/medusa/src/services/product-variant.ts:1076](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L1076)
 
 ___
 
@@ -408,7 +408,7 @@ currency price exists the function will throw an error.
 | Name | Description |
 | :------ | :------ |
 | `variantId` | `string` | the id of the variant to get price from |
-| `context` | [`GetRegionPriceContext`](../index.md#getregionpricecontext) | context for getting region price |
+| `context` | [`GetRegionPriceContext`](../types/GetRegionPriceContext.md) | context for getting region price |
 
 #### Returns
 
@@ -419,7 +419,7 @@ currency price exists the function will throw an error.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:708](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L708)
+[packages/medusa/src/services/product-variant.ts:708](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L708)
 
 ___
 
@@ -445,7 +445,7 @@ Check if the variant is assigned to at least one of the provided sales channels.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:1051](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L1051)
+[packages/medusa/src/services/product-variant.ts:1051](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L1051)
 
 ___
 
@@ -458,7 +458,7 @@ ___
 | Name | Description |
 | :------ | :------ |
 | `selector` | [`FilterableProductVariantProps`](FilterableProductVariantProps.md) | the query object for find |
-| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../index.md#priceselectioncontext) | query config object for variant retrieval |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../types/PriceSelectionContext.md) | query config object for variant retrieval |
 
 #### Returns
 
@@ -470,7 +470,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:959](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L959)
+[packages/medusa/src/services/product-variant.ts:959](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L959)
 
 ___
 
@@ -483,7 +483,7 @@ ___
 | Name | Description |
 | :------ | :------ |
 | `selector` | [`FilterableProductVariantProps`](FilterableProductVariantProps.md) | the query object for find |
-| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../index.md#priceselectioncontext) | query config object for variant retrieval |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../types/PriceSelectionContext.md) | query config object for variant retrieval |
 
 #### Returns
 
@@ -495,7 +495,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:898](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L898)
+[packages/medusa/src/services/product-variant.ts:898](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L898)
 
 ___
 
@@ -510,7 +510,7 @@ Gets a product variant by id.
 | Name | Description |
 | :------ | :------ |
 | `variantId` | `string` | the id of the product to get. |
-| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../index.md#priceselectioncontext) | query config object for variant retrieval. |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../types/PriceSelectionContext.md) | query config object for variant retrieval. |
 
 #### Returns
 
@@ -521,7 +521,7 @@ Gets a product variant by id.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:103](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L103)
+[packages/medusa/src/services/product-variant.ts:103](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L103)
 
 ___
 
@@ -536,7 +536,7 @@ Gets a product variant by id.
 | Name | Description |
 | :------ | :------ |
 | `sku` | `string` | The unique stock keeping unit used to identify the product variant. |
-| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../index.md#priceselectioncontext) | query config object for variant retrieval. |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductVariant`](ProductVariant.md)\> & [`PriceSelectionContext`](../types/PriceSelectionContext.md) | query config object for variant retrieval. |
 
 #### Returns
 
@@ -547,7 +547,7 @@ Gets a product variant by id.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:131](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L131)
+[packages/medusa/src/services/product-variant.ts:131](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L131)
 
 ___
 
@@ -560,7 +560,7 @@ ___
 | Name | Description |
 | :------ | :------ |
 | `variantId` | `string` | the id of the variant to set prices for |
-| `price` | [`ProductVariantPrice`](../index.md#productvariantprice) | the price for the variant |
+| `price` | [`ProductVariantPrice`](../types/ProductVariantPrice.md) | the price for the variant |
 
 #### Returns
 
@@ -576,7 +576,7 @@ Sets the default price for the given currency.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:784](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L784)
+[packages/medusa/src/services/product-variant.ts:784](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L784)
 
 ___
 
@@ -589,7 +589,7 @@ ___
 | Name | Description |
 | :------ | :------ |
 | `variantId` | `string` | the id of the variant to update |
-| `price` | [`ProductVariantPrice`](../index.md#productvariantprice) | the price for the variant. |
+| `price` | [`ProductVariantPrice`](../types/ProductVariantPrice.md) | the price for the variant. |
 
 #### Returns
 
@@ -605,7 +605,7 @@ Sets the default price of a specific region
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:737](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L737)
+[packages/medusa/src/services/product-variant.ts:737](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L737)
 
 ___
 
@@ -631,7 +631,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -645,7 +645,7 @@ Updates a collection of variant.
 
 | Name | Description |
 | :------ | :------ |
-| `variantData` | { `updateData`: [`UpdateProductVariantInput`](../index.md#updateproductvariantinput) ; `variant`: [`ProductVariant`](ProductVariant.md)  }[] | a collection of variant and the data to update. |
+| `variantData` | { `updateData`: [`UpdateProductVariantInput`](../types/UpdateProductVariantInput.md) ; `variant`: [`ProductVariant`](ProductVariant.md)  }[] | a collection of variant and the data to update. |
 
 #### Returns
 
@@ -657,7 +657,7 @@ Updates a collection of variant.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:265](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L265)
+[packages/medusa/src/services/product-variant.ts:265](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L265)
 
 **update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](ProductVariant.md)\>
 
@@ -669,8 +669,8 @@ The function will throw, if price updates are attempted.
 
 | Name | Description |
 | :------ | :------ |
-| `variantOrVariantId` | `string` \| [`Partial`](../index.md#partial)<[`ProductVariant`](ProductVariant.md)\> | variant or id of a variant. |
-| `update` | [`UpdateProductVariantInput`](../index.md#updateproductvariantinput) | an object with the update values. |
+| `variantOrVariantId` | `string` \| [`Partial`](../types/Partial.md)<[`ProductVariant`](ProductVariant.md)\> | variant or id of a variant. |
+| `update` | [`UpdateProductVariantInput`](../types/UpdateProductVariantInput.md) | an object with the update values. |
 
 #### Returns
 
@@ -681,7 +681,7 @@ The function will throw, if price updates are attempted.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:280](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L280)
+[packages/medusa/src/services/product-variant.ts:280](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L280)
 
 **update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](ProductVariant.md)\>
 
@@ -689,8 +689,8 @@ The function will throw, if price updates are attempted.
 
 | Name |
 | :------ |
-| `variantOrVariantId` | `string` \| [`Partial`](../index.md#partial)<[`ProductVariant`](ProductVariant.md)\> |
-| `update` | [`UpdateProductVariantInput`](../index.md#updateproductvariantinput) |
+| `variantOrVariantId` | `string` \| [`Partial`](../types/Partial.md)<[`ProductVariant`](ProductVariant.md)\> |
+| `update` | [`UpdateProductVariantInput`](../types/UpdateProductVariantInput.md) |
 
 #### Returns
 
@@ -701,7 +701,7 @@ The function will throw, if price updates are attempted.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:285](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L285)
+[packages/medusa/src/services/product-variant.ts:285](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L285)
 
 ___
 
@@ -713,7 +713,7 @@ ___
 
 | Name |
 | :------ |
-| `variantData` | [`UpdateProductVariantData`](../index.md#updateproductvariantdata)[] |
+| `variantData` | [`UpdateProductVariantData`](../types/UpdateProductVariantData.md)[] |
 
 #### Returns
 
@@ -725,7 +725,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:339](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L339)
+[packages/medusa/src/services/product-variant.ts:339](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L339)
 
 ___
 
@@ -753,7 +753,7 @@ Option value must be of type string or number.
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:805](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L805)
+[packages/medusa/src/services/product-variant.ts:805](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L805)
 
 ___
 
@@ -768,7 +768,7 @@ Deletes any prices that are not in the update object, and is not associated with
 
 | Name |
 | :------ |
-| `data` | [`UpdateVariantPricesData`](../index.md#updatevariantpricesdata)[] |
+| `data` | [`UpdateVariantPricesData`](../types/UpdateVariantPricesData.md)[] |
 
 #### Returns
 
@@ -778,7 +778,7 @@ Deletes any prices that are not in the update object, and is not associated with
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:438](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L438)
+[packages/medusa/src/services/product-variant.ts:438](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L438)
 
 **updateVariantPrices**(`variantId`, `prices`): `Promise`<`void`\>
 
@@ -790,7 +790,7 @@ Deletes any prices that are not in the update object, and is not associated with
 | Name | Description |
 | :------ | :------ |
 | `variantId` | `string` | the id of variant |
-| `prices` | [`ProductVariantPrice`](../index.md#productvariantprice)[] | the update prices |
+| `prices` | [`ProductVariantPrice`](../types/ProductVariantPrice.md)[] | the update prices |
 
 #### Returns
 
@@ -800,7 +800,7 @@ Deletes any prices that are not in the update object, and is not associated with
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:447](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L447)
+[packages/medusa/src/services/product-variant.ts:447](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L447)
 
 ___
 
@@ -812,7 +812,7 @@ ___
 
 | Name |
 | :------ |
-| `data` | [`UpdateVariantPricesData`](../index.md#updatevariantpricesdata)[] |
+| `data` | [`UpdateVariantPricesData`](../types/UpdateVariantPricesData.md)[] |
 
 #### Returns
 
@@ -822,7 +822,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:467](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L467)
+[packages/medusa/src/services/product-variant.ts:467](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L467)
 
 ___
 
@@ -834,7 +834,7 @@ ___
 
 | Name |
 | :------ |
-| `data` | { `price`: [`WithRequiredProperty`](../index.md#withrequiredproperty)<[`ProductVariantPrice`](../index.md#productvariantprice), ``"currency_code"``\> ; `variantId`: `string`  }[] |
+| `data` | { `price`: [`WithRequiredProperty`](../types/WithRequiredProperty.md)<[`ProductVariantPrice`](../types/ProductVariantPrice.md), ``"currency_code"``\> ; `variantId`: `string`  }[] |
 
 #### Returns
 
@@ -844,7 +844,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:618](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L618)
+[packages/medusa/src/services/product-variant.ts:618](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L618)
 
 ___
 
@@ -856,7 +856,7 @@ ___
 
 | Name |
 | :------ |
-| `data` | [`UpdateVariantRegionPriceData`](../index.md#updatevariantregionpricedata)[] |
+| `data` | [`UpdateVariantRegionPriceData`](../types/UpdateVariantRegionPriceData.md)[] |
 
 #### Returns
 
@@ -866,7 +866,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:540](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L540)
+[packages/medusa/src/services/product-variant.ts:540](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L540)
 
 ___
 
@@ -879,7 +879,7 @@ ___
 | Name | Description |
 | :------ | :------ |
 | `product` | [`Product`](Product.md) | A product is a saleable item that holds general information such as name or description. It must include at least one Product Variant, where each product variant defines different options to purchase the product with (for example, different sizes or colors). The prices and inventory of the product are defined on the variant level. |
-| `variants` | [`CreateProductVariantInput`](../index.md#createproductvariantinput)[] |
+| `variants` | [`CreateProductVariantInput`](../types/CreateProductVariantInput.md)[] |
 
 #### Returns
 
@@ -889,7 +889,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/product-variant.ts:1111](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-variant.ts#L1111)
+[packages/medusa/src/services/product-variant.ts:1111](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/product-variant.ts#L1111)
 
 ___
 
@@ -915,4 +915,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

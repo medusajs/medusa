@@ -30,7 +30,7 @@ The details of the category's children.
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L62)
+[packages/medusa/src/models/product-category.ts:62](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L62)
 
 ___
 
@@ -46,7 +46,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -58,7 +58,7 @@ The product category's description.
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L35)
+[packages/medusa/src/models/product-category.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L35)
 
 ___
 
@@ -70,7 +70,7 @@ A unique string that identifies the Product Category - can for example be used i
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L39)
+[packages/medusa/src/models/product-category.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L39)
 
 ___
 
@@ -86,7 +86,7 @@ The product category's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -98,7 +98,7 @@ A flag to make product category visible/hidden in the store front
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L42)
+[packages/medusa/src/models/product-category.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L42)
 
 ___
 
@@ -110,7 +110,7 @@ A flag to make product category an internal category for admins
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L45)
+[packages/medusa/src/models/product-category.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L45)
 
 ___
 
@@ -122,7 +122,7 @@ The product category's name
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L32)
+[packages/medusa/src/models/product-category.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L32)
 
 ___
 
@@ -134,7 +134,7 @@ The details of the parent of this category.
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L55)
+[packages/medusa/src/models/product-category.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L55)
 
 ___
 
@@ -146,7 +146,7 @@ The ID of the parent category.
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L59)
+[packages/medusa/src/models/product-category.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L59)
 
 ___
 
@@ -158,7 +158,7 @@ The details of the products that belong to this category.
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L79)
+[packages/medusa/src/models/product-category.ts:79](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L79)
 
 ___
 
@@ -170,7 +170,7 @@ An integer that depicts the rank of category in a tree node
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L65)
+[packages/medusa/src/models/product-category.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L65)
 
 ___
 
@@ -186,7 +186,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -196,7 +196,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L25)
+[packages/medusa/src/models/product-category.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L25)
 
 ___
 
@@ -206,7 +206,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L29)
+[packages/medusa/src/models/product-category.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L29)
 
 ## Methods
 
@@ -222,4 +222,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/product-category.ts:85](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-category.ts#L85)
+[packages/medusa/src/models/product-category.ts:85](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-category.ts#L85)

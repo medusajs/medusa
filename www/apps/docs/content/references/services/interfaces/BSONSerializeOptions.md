@@ -4,9 +4,9 @@ BSON Serialization options.
 
 ## Hierarchy
 
-- [`Omit`](../index.md#omit)<[`SerializeOptions`](SerializeOptions.md), ``"index"``\>
+- [`Omit`](../types/Omit.md)<[`SerializeOptions`](SerializeOptions.md), ``"index"``\>
 
-- [`Omit`](../index.md#omit)<[`DeserializeOptions`](DeserializeOptions.md), ``"evalFunctions"`` \| ``"cacheFunctions"`` \| ``"cacheFunctionsCrc32"`` \| ``"allowObjectSmallerThanBufferSize"`` \| ``"index"`` \| ``"validation"``\>
+- [`Omit`](../types/Omit.md)<[`DeserializeOptions`](DeserializeOptions.md), ``"evalFunctions"`` \| ``"cacheFunctions"`` \| ``"cacheFunctionsCrc32"`` \| ``"allowObjectSmallerThanBufferSize"`` \| ``"index"`` \| ``"validation"``\>
 
   ↳ **`BSONSerializeOptions`**
 

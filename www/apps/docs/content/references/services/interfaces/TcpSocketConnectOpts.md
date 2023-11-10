@@ -110,7 +110,7 @@ ___
 
 ### lookup
 
- `Optional` **lookup**: [`LookupFunction`](../index.md#lookupfunction)
+ `Optional` **lookup**: [`LookupFunction`](../types/LookupFunction.md)
 
 #### Defined in
 

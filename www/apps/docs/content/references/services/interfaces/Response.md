@@ -183,7 +183,7 @@ ___
 
 ### json
 
- **json**: [`Send`](../index.md#send)<`ResBody`, [`Response`](Response.md)<`ResBody`, `LocalsObj`, `StatusCode`\>\>
+ **json**: [`Send`](../types/Send.md)<`ResBody`, [`Response`](Response.md)<`ResBody`, `LocalsObj`, `StatusCode`\>\>
 
 Send JSON response.
 
@@ -202,7 +202,7 @@ ___
 
 ### jsonp
 
- **jsonp**: [`Send`](../index.md#send)<`ResBody`, [`Response`](Response.md)<`ResBody`, `LocalsObj`, `StatusCode`\>\>
+ **jsonp**: [`Send`](../types/Send.md)<`ResBody`, [`Response`](Response.md)<`ResBody`, `LocalsObj`, `StatusCode`\>\>
 
 Send JSON response with JSONP callback support.
 
@@ -248,7 +248,7 @@ ___
 
 ### send
 
- **send**: [`Send`](../index.md#send)<`ResBody`, [`Response`](Response.md)<`ResBody`, `LocalsObj`, `StatusCode`\>\>
+ **send**: [`Send`](../types/Send.md)<`ResBody`, [`Response`](Response.md)<`ResBody`, `LocalsObj`, `StatusCode`\>\>
 
 Send a response.
 
@@ -692,7 +692,7 @@ ___
 | Name |
 | :------ |
 | `chunk` | `any` |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `callback` | (`error?`: ``null`` \| `Error`) => `void` |
 
 #### Returns
@@ -719,7 +719,7 @@ ___
 
 | Name |
 | :------ |
-| `chunks` | { `chunk`: `any` ; `encoding`: [`BufferEncoding`](../index.md#bufferencoding)  }[] |
+| `chunks` | { `chunk`: `any` ; `encoding`: [`BufferEncoding`](../types/BufferEncoding.md)  }[] |
 | `callback` | (`error?`: ``null`` \| `Error`) => `void` |
 
 #### Returns
@@ -1123,7 +1123,7 @@ ___
 
 | Name |
 | :------ |
-| `stream` | [`ComposeFnParam`](../index.md#composefnparam) \| `T` \| [`Iterable`](Iterable.md)<`T`\> \| [`AsyncIterable`](AsyncIterable.md)<`T`\> |
+| `stream` | [`ComposeFnParam`](../types/ComposeFnParam.md) \| `T` \| [`Iterable`](Iterable.md)<`T`\> \| [`AsyncIterable`](AsyncIterable.md)<`T`\> |
 | `options?` | `object` |
 | `options.signal` | `AbortSignal` |
 
@@ -1379,7 +1379,7 @@ This method uses `res.sendfile()`.
 | Name |
 | :------ |
 | `path` | `string` |
-| `fn?` | [`Errback`](../index.md#errback) |
+| `fn?` | [`Errback`](../types/Errback.md) |
 
 #### Returns
 
@@ -1399,7 +1399,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:831
 | :------ |
 | `path` | `string` |
 | `filename` | `string` |
-| `fn?` | [`Errback`](../index.md#errback) |
+| `fn?` | [`Errback`](../types/Errback.md) |
 
 #### Returns
 
@@ -1420,7 +1420,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:832
 | `path` | `string` |
 | `filename` | `string` |
 | `options` | [`DownloadOptions`](DownloadOptions.md) |
-| `fn?` | [`Errback`](../index.md#errback) |
+| `fn?` | [`Errback`](../types/Errback.md) |
 
 #### Returns
 
@@ -1712,7 +1712,7 @@ docs-util/node_modules/@types/node/stream.d.ts:814
 | Name |
 | :------ |
 | `chunk` | `any` |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `cb?` | () => `void` |
 
 #### Returns
@@ -3640,7 +3640,7 @@ Examples:
 | Name |
 | :------ |
 | `path` | `string` |
-| `fn?` | [`Errback`](../index.md#errback) |
+| `fn?` | [`Errback`](../types/Errback.md) |
 
 #### Returns
 
@@ -3664,7 +3664,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:798
 | :------ |
 | `path` | `string` |
 | `options` | [`SendFileOptions`](SendFileOptions.md) |
-| `fn?` | [`Errback`](../index.md#errback) |
+| `fn?` | [`Errback`](../types/Errback.md) |
 
 #### Returns
 
@@ -3767,7 +3767,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:808
 | Name |
 | :------ |
 | `path` | `string` |
-| `fn` | [`Errback`](../index.md#errback) |
+| `fn` | [`Errback`](../types/Errback.md) |
 
 #### Returns
 
@@ -3791,7 +3791,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:812
 | :------ |
 | `path` | `string` |
 | `options` | [`SendFileOptions`](SendFileOptions.md) |
-| `fn` | [`Errback`](../index.md#errback) |
+| `fn` | [`Errback`](../types/Errback.md) |
 
 #### Returns
 
@@ -3871,7 +3871,7 @@ The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Wr
 
 | Name | Description |
 | :------ | :------ |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) | The new default encoding |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) | The new default encoding |
 
 #### Returns
 
@@ -4222,7 +4222,7 @@ docs-util/node_modules/@types/node/stream.d.ts:783
 | Name |
 | :------ |
 | `chunk` | `any` |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `callback?` | (`error`: `undefined` \| ``null`` \| `Error`) => `void` |
 
 #### Returns
@@ -4399,7 +4399,7 @@ will result in a \[`Error`\]\[\] being thrown.
 | :------ |
 | `statusCode` | `number` |
 | `statusMessage?` | `string` |
-| `headers?` | [`OutgoingHttpHeaders`](OutgoingHttpHeaders.md) \| [`OutgoingHttpHeader`](../index.md#outgoinghttpheader)[] |
+| `headers?` | [`OutgoingHttpHeaders`](OutgoingHttpHeaders.md) \| [`OutgoingHttpHeader`](../types/OutgoingHttpHeader.md)[] |
 
 #### Returns
 
@@ -4426,7 +4426,7 @@ docs-util/node_modules/@types/node/http.d.ts:839
 | Name |
 | :------ |
 | `statusCode` | `number` |
-| `headers?` | [`OutgoingHttpHeaders`](OutgoingHttpHeaders.md) \| [`OutgoingHttpHeader`](../index.md#outgoinghttpheader)[] |
+| `headers?` | [`OutgoingHttpHeaders`](OutgoingHttpHeaders.md) \| [`OutgoingHttpHeader`](../types/OutgoingHttpHeader.md)[] |
 
 #### Returns
 

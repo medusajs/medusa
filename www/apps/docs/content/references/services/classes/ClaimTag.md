@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ The claim tag's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/claim-tag.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-tag.ts#L14)
+[packages/medusa/src/models/claim-tag.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-tag.ts#L14)
 
 ___
 
@@ -94,7 +94,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -106,7 +106,7 @@ The value that the claim tag holds
 
 #### Defined in
 
-[packages/medusa/src/models/claim-tag.ts:11](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-tag.ts#L11)
+[packages/medusa/src/models/claim-tag.ts:11](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-tag.ts#L11)
 
 ## Methods
 
@@ -122,4 +122,4 @@ The value that the claim tag holds
 
 #### Defined in
 
-[packages/medusa/src/models/claim-tag.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-tag.ts#L20)
+[packages/medusa/src/models/claim-tag.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-tag.ts#L20)

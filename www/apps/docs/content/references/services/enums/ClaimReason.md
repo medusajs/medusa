@@ -8,7 +8,7 @@
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L23)
+[packages/medusa/src/models/claim-item.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L23)
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L26)
+[packages/medusa/src/models/claim-item.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L26)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L25)
+[packages/medusa/src/models/claim-item.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L25)
 
 ___
 
@@ -38,4 +38,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/claim-item.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/claim-item.ts#L24)
+[packages/medusa/src/models/claim-item.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/claim-item.ts#L24)

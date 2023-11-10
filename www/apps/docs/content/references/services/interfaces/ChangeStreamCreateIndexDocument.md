@@ -83,7 +83,7 @@ ___
 
 ### lsid
 
- `Optional` **lsid**: [`ServerSessionId`](../index.md#serversessionid)
+ `Optional` **lsid**: [`ServerSessionId`](../types/ServerSessionId.md)
 
 The identifier for the session associated with the transaction.
 Only present if the operation is part of a multi-document transaction.

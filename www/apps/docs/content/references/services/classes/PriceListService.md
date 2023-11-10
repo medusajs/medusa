@@ -18,7 +18,7 @@ Provides layer to manipulate product tags.
 
 | Name |
 | :------ |
-| `«destructured»` | [`PriceListConstructorProps`](../index.md#pricelistconstructorprops) |
+| `«destructured»` | [`PriceListConstructorProps`](../types/PriceListConstructorProps.md) |
 
 #### Overrides
 
@@ -26,7 +26,7 @@ Provides layer to manipulate product tags.
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L52)
+[packages/medusa/src/services/price-list.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L52)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Provides layer to manipulate product tags.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L43)
+[packages/medusa/src/services/price-list.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L43)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L50)
+[packages/medusa/src/services/price-list.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L50)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:48](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L48)
+[packages/medusa/src/services/price-list.ts:48](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L48)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L47)
+[packages/medusa/src/services/price-list.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L47)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L45)
+[packages/medusa/src/services/price-list.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L45)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L49)
+[packages/medusa/src/services/price-list.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L49)
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:44](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L44)
+[packages/medusa/src/services/price-list.ts:44](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L44)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L46)
+[packages/medusa/src/services/price-list.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L46)
 
 ## Accessors
 
@@ -196,7 +196,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -208,7 +208,7 @@ Add `currency_code` to an MA record if `region_id`is passed.
 
 | Name | Type |
 | :------ | :------ |
-| `T` | [`PriceListPriceUpdateInput`](../index.md#pricelistpriceupdateinput) \| [`PriceListPriceCreateInput`](../index.md#pricelistpricecreateinput) |
+| `T` | [`PriceListPriceUpdateInput`](../types/PriceListPriceUpdateInput.md) \| [`PriceListPriceCreateInput`](../types/PriceListPriceCreateInput.md) |
 
 #### Parameters
 
@@ -225,7 +225,7 @@ Add `currency_code` to an MA record if `region_id`is passed.
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:524](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L524)
+[packages/medusa/src/services/price-list.ts:524](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L524)
 
 ___
 
@@ -240,7 +240,7 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
 | Name | Default value | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | id of the price list |
-| `prices` | [`PriceListPriceCreateInput`](../index.md#pricelistpricecreateinput)[] | prices to add |
+| `prices` | [`PriceListPriceCreateInput`](../types/PriceListPriceCreateInput.md)[] | prices to add |
 | `replace` | `boolean` | false | whether to replace existing prices |
 
 #### Returns
@@ -252,7 +252,7 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:242](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L242)
+[packages/medusa/src/services/price-list.ts:242](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L242)
 
 ___
 
@@ -274,7 +274,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -289,7 +289,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -313,7 +313,7 @@ Removes all prices from a price list and deletes the removed prices in bulk
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:282](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L282)
+[packages/medusa/src/services/price-list.ts:282](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L282)
 
 ___
 
@@ -327,7 +327,7 @@ Creates a Price List
 
 | Name | Description |
 | :------ | :------ |
-| `priceListObject` | [`CreatePriceListInput`](../index.md#createpricelistinput) | the Price List to create |
+| `priceListObject` | [`CreatePriceListInput`](../types/CreatePriceListInput.md) | the Price List to create |
 
 #### Returns
 
@@ -338,7 +338,7 @@ Creates a Price List
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:143](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L143)
+[packages/medusa/src/services/price-list.ts:143](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L143)
 
 ___
 
@@ -363,7 +363,7 @@ Will never fail due to delete being idempotent.
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:296](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L296)
+[packages/medusa/src/services/price-list.ts:296](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L296)
 
 ___
 
@@ -388,7 +388,7 @@ Removes prices from a price list and deletes the removed prices in bulk
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:267](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L267)
+[packages/medusa/src/services/price-list.ts:267](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L267)
 
 ___
 
@@ -413,7 +413,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:451](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L451)
+[packages/medusa/src/services/price-list.ts:451](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L451)
 
 ___
 
@@ -438,7 +438,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:488](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L488)
+[packages/medusa/src/services/price-list.ts:488](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L488)
 
 ___
 
@@ -465,7 +465,7 @@ Lists Price Lists
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:316](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L316)
+[packages/medusa/src/services/price-list.ts:316](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L316)
 
 ___
 
@@ -492,7 +492,7 @@ Lists Price Lists and adds count
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:330](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L330)
+[packages/medusa/src/services/price-list.ts:330](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L330)
 
 ___
 
@@ -515,7 +515,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:109](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L109)
+[packages/medusa/src/services/price-list.ts:109](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L109)
 
 ___
 
@@ -528,7 +528,7 @@ ___
 | Name | Default value |
 | :------ | :------ |
 | `priceListId` | `string` |
-| `selector` | [`FilterableProductProps`](FilterableProductProps.md) \| [`Selector`](../index.md#selector)<[`Product`](Product.md)\> |
+| `selector` | [`FilterableProductProps`](FilterableProductProps.md) \| [`Selector`](../types/Selector.md)<[`Product`](Product.md)\> |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Product`](Product.md)\> |
 | `requiresPriceList` | `boolean` | false |
 
@@ -542,7 +542,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:367](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L367)
+[packages/medusa/src/services/price-list.ts:367](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L367)
 
 ___
 
@@ -569,7 +569,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:417](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L417)
+[packages/medusa/src/services/price-list.ts:417](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L417)
 
 ___
 
@@ -595,7 +595,7 @@ Retrieves a product tag by id.
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L81)
+[packages/medusa/src/services/price-list.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L81)
 
 ___
 
@@ -621,7 +621,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -636,7 +636,7 @@ Updates a Price List
 | Name | Description |
 | :------ | :------ |
 | `id` | `string` | the id of the Product List to update |
-| `update` | [`UpdatePriceListInput`](../index.md#updatepricelistinput) | the update to apply |
+| `update` | [`UpdatePriceListInput`](../types/UpdatePriceListInput.md) | the update to apply |
 
 #### Returns
 
@@ -647,7 +647,7 @@ Updates a Price List
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:191](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L191)
+[packages/medusa/src/services/price-list.ts:191](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L191)
 
 ___
 
@@ -670,7 +670,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/price-list.ts:346](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/price-list.ts#L346)
+[packages/medusa/src/services/price-list.ts:346](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/price-list.ts#L346)
 
 ___
 
@@ -696,4 +696,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

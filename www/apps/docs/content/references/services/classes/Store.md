@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ The details of the enabled currencies in the store.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L46)
+[packages/medusa/src/models/store.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L46)
 
 ___
 
@@ -58,7 +58,7 @@ The details of the store's default currency.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L32)
+[packages/medusa/src/models/store.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L32)
 
 ___
 
@@ -70,7 +70,7 @@ The three character currency code that is the default of the store.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L28)
+[packages/medusa/src/models/store.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L28)
 
 ___
 
@@ -82,7 +82,7 @@ The location ID the store is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L58)
+[packages/medusa/src/models/store.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L58)
 
 ___
 
@@ -94,7 +94,7 @@ The details of the store's default sales channel.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L70)
+[packages/medusa/src/models/store.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L70)
 
 ___
 
@@ -106,7 +106,7 @@ The ID of the store's default sales channel.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L64)
+[packages/medusa/src/models/store.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L64)
 
 ___
 
@@ -122,7 +122,7 @@ The store's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -134,7 +134,7 @@ A template to generate Invite links from
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L55)
+[packages/medusa/src/models/store.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L55)
 
 ___
 
@@ -146,7 +146,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L61)
+[packages/medusa/src/models/store.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L61)
 
 ___
 
@@ -158,7 +158,7 @@ The name of the Store - this may be displayed to the Customer.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L25)
+[packages/medusa/src/models/store.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L25)
 
 ___
 
@@ -170,7 +170,7 @@ A template to generate Payment links from. Use {{cart_id}} to include the paymen
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L52)
+[packages/medusa/src/models/store.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L52)
 
 ___
 
@@ -182,7 +182,7 @@ A template to generate Swap links from. Use {{cart_id}} to include the Swap's `c
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L49)
+[packages/medusa/src/models/store.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L49)
 
 ___
 
@@ -198,7 +198,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -214,4 +214,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/store.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/store.ts#L76)
+[packages/medusa/src/models/store.ts:76](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/store.ts#L76)

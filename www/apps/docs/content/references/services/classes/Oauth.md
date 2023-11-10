@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/models/oauth.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/oauth.ts#L16)
+[packages/medusa/src/models/oauth.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/oauth.ts#L16)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/oauth.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/oauth.ts#L25)
+[packages/medusa/src/models/oauth.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/oauth.ts#L25)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/oauth.ts:12](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/oauth.ts#L12)
+[packages/medusa/src/models/oauth.ts:12](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/oauth.ts#L12)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/oauth.ts:9](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/oauth.ts#L9)
+[packages/medusa/src/models/oauth.ts:9](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/oauth.ts#L9)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/oauth.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/oauth.ts#L19)
+[packages/medusa/src/models/oauth.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/oauth.ts#L19)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/oauth.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/oauth.ts#L22)
+[packages/medusa/src/models/oauth.ts:22](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/oauth.ts#L22)
 
 ## Methods
 
@@ -80,4 +80,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/oauth.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/oauth.ts#L31)
+[packages/medusa/src/models/oauth.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/oauth.ts#L31)

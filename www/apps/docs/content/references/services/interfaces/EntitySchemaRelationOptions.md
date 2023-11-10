@@ -43,7 +43,7 @@ ___
 
 ### deferrable
 
- `Optional` **deferrable**: [`DeferrableType`](../index.md#deferrabletype)
+ `Optional` **deferrable**: [`DeferrableType`](../types/DeferrableType.md)
 
 Indicate if foreign key constraints can be deferred.
 
@@ -127,7 +127,7 @@ ___
 
 ### onDelete
 
- `Optional` **onDelete**: [`OnDeleteType`](../index.md#ondeletetype)
+ `Optional` **onDelete**: [`OnDeleteType`](../types/OnDeleteType.md)
 
 Database cascade action on delete.
 
@@ -139,7 +139,7 @@ ___
 
 ### onUpdate
 
- `Optional` **onUpdate**: [`OnUpdateType`](../index.md#onupdatetype)
+ `Optional` **onUpdate**: [`OnUpdateType`](../types/OnUpdateType.md)
 
 Database cascade action on update.
 
@@ -193,7 +193,7 @@ ___
 
 ### target
 
- **target**: [`EntityTarget`](../index.md#entitytarget)<`any`\>
+ **target**: [`EntityTarget`](../types/EntityTarget.md)<`any`\>
 
 Indicates with which entity this relation is made.
 
@@ -229,7 +229,7 @@ ___
 
 ### type
 
- **type**: [`RelationType`](../index.md#relationtype)
+ **type**: [`RelationType`](../types/RelationType.md)
 
 Type of relation. Can be one of the value of the RelationTypes class.
 

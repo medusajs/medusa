@@ -23,7 +23,7 @@ await client.insertOne({ name: "spot", kind: "dog" })
 
 ## Hierarchy
 
-- [`TypedEventEmitter`](TypedEventEmitter.md)<[`MongoClientEvents`](../index.md#mongoclientevents)\>
+- [`TypedEventEmitter`](TypedEventEmitter.md)<[`MongoClientEvents`](../types/MongoClientEvents.md)\>
 
   ↳ **`MongoClient`**
 
@@ -203,11 +203,11 @@ ___
 
 ### options
 
-`get` **options**(): [`Readonly`](../index.md#readonly)<[`MongoOptions`](../interfaces/MongoOptions.md)\>
+`get` **options**(): [`Readonly`](../types/Readonly.md)<[`MongoOptions`](../interfaces/MongoOptions.md)\>
 
 #### Returns
 
-[`Readonly`](../index.md#readonly)<[`MongoOptions`](../interfaces/MongoOptions.md)\>
+[`Readonly`](../types/Readonly.md)<[`MongoOptions`](../interfaces/MongoOptions.md)\>
 
 -`Readonly`: 
 	-`MongoOptions`: 
@@ -252,11 +252,11 @@ ___
 
 ### serverApi
 
-`get` **serverApi**(): [`Readonly`](../index.md#readonly)<`undefined` \| [`ServerApi`](../interfaces/ServerApi.md)\>
+`get` **serverApi**(): [`Readonly`](../types/Readonly.md)<`undefined` \| [`ServerApi`](../interfaces/ServerApi.md)\>
 
 #### Returns
 
-[`Readonly`](../index.md#readonly)<`undefined` \| [`ServerApi`](../interfaces/ServerApi.md)\>
+[`Readonly`](../types/Readonly.md)<`undefined` \| [`ServerApi`](../interfaces/ServerApi.md)\>
 
 -`Readonly`: 
 	-`undefined \| ServerApi`: (optional) 
@@ -326,7 +326,7 @@ Alias for `emitter.on(eventName, listener)`.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`] |
+| `listener` | [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`] |
 
 #### Returns
 
@@ -352,8 +352,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5085
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -376,7 +376,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5086
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -517,7 +517,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 | Name |
 | :------ |
 | `event` | `symbol` \| `EventKey` |
-| `...args` | [`Parameters`](../index.md#parameters)<[`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`]\> |
+| `...args` | [`Parameters`](../types/Parameters.md)<[`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`]\> |
 
 #### Returns
 
@@ -648,7 +648,7 @@ ___
 
 ### listeners
 
-**listeners**<`EventKey`\>(`event`): [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`][]
+**listeners**<`EventKey`\>(`event`): [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`][]
 
 Returns a copy of the array of listeners for the event named `eventName`.
 
@@ -672,10 +672,10 @@ console.log(util.inspect(server.listeners('connection')));
 
 #### Returns
 
-[`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`][]
+[`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`][]
 
--`[`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`][]`: 
-	-`[`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`]`: (optional) 
+-`[`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`][]`: 
+	-`[`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`]`: (optional) 
 
 **Since**
 
@@ -706,7 +706,7 @@ Alias for `emitter.removeListener()`.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`] |
+| `listener` | [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`] |
 
 #### Returns
 
@@ -732,8 +732,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5097
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -756,7 +756,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5098
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -814,7 +814,7 @@ myEE.emit('foo');
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`] | The callback function |
+| `listener` | [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -840,8 +840,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5088
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -864,7 +864,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5089
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -920,7 +920,7 @@ myEE.emit('foo');
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`] | The callback function |
+| `listener` | [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -946,8 +946,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5091
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -970,7 +970,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5092
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1014,7 +1014,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`] | The callback function |
+| `listener` | [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1040,8 +1040,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5105
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1064,7 +1064,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5106
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1106,7 +1106,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name | Description |
 | :------ | :------ |
 | `event` | `EventKey` | The name of the event. |
-| `listener` | [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`] | The callback function |
+| `listener` | [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`] | The callback function |
 
 #### Returns
 
@@ -1132,8 +1132,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5108
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1156,7 +1156,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5109
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1176,7 +1176,7 @@ ___
 
 ### rawListeners
 
-**rawListeners**<`EventKey`\>(`event`): [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`][]
+**rawListeners**<`EventKey`\>(`event`): [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`][]
 
 Returns a copy of the array of listeners for the event named `eventName`,
 including any wrappers (such as those created by `.once()`).
@@ -1218,10 +1218,10 @@ emitter.emit('log');
 
 #### Returns
 
-[`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`][]
+[`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`][]
 
--`[`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`][]`: 
-	-`[`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`]`: (optional) 
+-`[`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`][]`: 
+	-`[`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`]`: (optional) 
 
 **Since**
 
@@ -1372,7 +1372,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 | Name |
 | :------ |
 | `event` | `EventKey` |
-| `listener` | [`MongoClientEvents`](../index.md#mongoclientevents)[`EventKey`] |
+| `listener` | [`MongoClientEvents`](../types/MongoClientEvents.md)[`EventKey`] |
 
 #### Returns
 
@@ -1398,8 +1398,8 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5094
 
 | Name |
 | :------ |
-| `event` | [`CommonEvents`](../index.md#commonevents) |
-| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../index.md#genericlistener)) => `void` |
+| `event` | [`CommonEvents`](../types/CommonEvents.md) |
+| `listener` | (`eventName`: `string` \| `symbol`, `listener`: [`GenericListener`](../types/GenericListener.md)) => `void` |
 
 #### Returns
 
@@ -1422,7 +1422,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:5095
 | Name |
 | :------ |
 | `event` | `string` \| `symbol` |
-| `listener` | [`GenericListener`](../index.md#genericlistener) |
+| `listener` | [`GenericListener`](../types/GenericListener.md) |
 
 #### Returns
 
@@ -1552,7 +1552,7 @@ NOTE: presently the operation MUST return a Promise (either explicit or implicit
 
 | Name | Description |
 | :------ | :------ |
-| `callback` | [`WithSessionCallback`](../index.md#withsessioncallback) | An callback to execute with an implicitly created session |
+| `callback` | [`WithSessionCallback`](../types/WithSessionCallback.md) | An callback to execute with an implicitly created session |
 
 #### Returns
 
@@ -1571,7 +1571,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:3608
 | Name |
 | :------ |
 | `options` | [`ClientSessionOptions`](../interfaces/ClientSessionOptions.md) |
-| `callback` | [`WithSessionCallback`](../index.md#withsessioncallback) |
+| `callback` | [`WithSessionCallback`](../types/WithSessionCallback.md) |
 
 #### Returns
 
@@ -1711,7 +1711,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
@@ -1768,7 +1768,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 
 #### Returns
 
@@ -1810,7 +1810,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) | The emitter to query |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) | The emitter to query |
 | `eventName` | `string` \| `symbol` | The event name |
 
 #### Returns
@@ -1900,7 +1900,7 @@ process.nextTick(() => ac.abort());
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) |
 | `eventName` | `string` | The name of the event being listened for |
 | `options?` | [`StaticEventEmitterOptions`](../interfaces/StaticEventEmitterOptions.md) |
 
@@ -2080,7 +2080,7 @@ setMaxListeners(5, target, emitter);
 | Name | Description |
 | :------ | :------ |
 | `n?` | `number` | A non-negative number. The maximum number of listeners per `EventTarget` event. |
-| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
+| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
 
 #### Returns
 

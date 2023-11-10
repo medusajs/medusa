@@ -1322,13 +1322,13 @@ ___
 
 ### getReplicationMode
 
-**getReplicationMode**(): [`ReplicationMode`](../index.md#replicationmode)
+**getReplicationMode**(): [`ReplicationMode`](../types/ReplicationMode.md)
 
 Returns replication mode (ex: `master` or `slave`).
 
 #### Returns
 
-[`ReplicationMode`](../index.md#replicationmode)
+[`ReplicationMode`](../types/ReplicationMode.md)
 
 -`ReplicationMode`: 
 
@@ -1717,7 +1717,7 @@ Starts transaction.
 
 | Name |
 | :------ |
-| `isolationLevel?` | [`IsolationLevel`](../index.md#isolationlevel) |
+| `isolationLevel?` | [`IsolationLevel`](../types/IsolationLevel.md) |
 
 #### Returns
 

@@ -243,7 +243,7 @@ ___
 
 ### entities
 
- `Optional` `Readonly` **entities**: [`MixedList`](../index.md#mixedlist)<`string` \| `Function` \| [`EntitySchema`](../classes/EntitySchema.md)<`any`\>\>
+ `Optional` `Readonly` **entities**: [`MixedList`](../types/MixedList.md)<`string` \| `Function` \| [`EntitySchema`](../classes/EntitySchema.md)<`any`\>\>
 
 Entities to be loaded for this connection.
 Accepts both entity classes and directories where from entities need to be loaded.
@@ -460,7 +460,7 @@ ___
 
 ### logging
 
- `Optional` `Readonly` **logging**: [`LoggerOptions`](../index.md#loggeroptions)
+ `Optional` `Readonly` **logging**: [`LoggerOptions`](../types/LoggerOptions.md)
 
 Logging options.
 
@@ -521,7 +521,7 @@ ___
 
 ### migrations
 
- `Optional` `Readonly` **migrations**: [`MixedList`](../index.md#mixedlist)<`string` \| `Function`\>
+ `Optional` `Readonly` **migrations**: [`MixedList`](../types/MixedList.md)<`string` \| `Function`\>
 
 Migrations to be loaded for this connection.
 Accepts both migration classes and glob patterns representing migration files.
@@ -1016,7 +1016,7 @@ ___
 
 ### subscribers
 
- `Optional` `Readonly` **subscribers**: [`MixedList`](../index.md#mixedlist)<`string` \| `Function`\>
+ `Optional` `Readonly` **subscribers**: [`MixedList`](../types/MixedList.md)<`string` \| `Function`\>
 
 Subscribers to be loaded for this connection.
 Accepts both subscriber classes and directories where from subscribers need to be loaded.

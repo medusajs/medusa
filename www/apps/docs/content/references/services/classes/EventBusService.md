@@ -23,7 +23,7 @@ subscribers when events happen. Events will run asynchronously.
 
 | Name | Default value |
 | :------ | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-10) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-10.md) |
 | `config` | `any` |
 | `isSingleton` | `boolean` | true |
 
@@ -33,7 +33,7 @@ subscribers when events happen. Events will run asynchronously.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L39)
+[packages/medusa/src/services/event-bus.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L39)
 
 ## Properties
 
@@ -47,7 +47,7 @@ subscribers when events happen. Events will run asynchronously.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -75,17 +75,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### config\_
 
- `Protected` `Readonly` **config\_**: [`ConfigModule`](../index.md#configmodule)
+ `Protected` `Readonly` **config\_**: [`ConfigModule`](../types/ConfigModule.md)
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L27)
+[packages/medusa/src/services/event-bus.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L27)
 
 ___
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L37)
+[packages/medusa/src/services/event-bus.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L37)
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L34)
+[packages/medusa/src/services/event-bus.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L34)
 
 ___
 
@@ -119,7 +119,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -129,7 +129,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L36)
+[packages/medusa/src/services/event-bus.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L36)
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L28)
+[packages/medusa/src/services/event-bus.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L28)
 
 ___
 
@@ -153,7 +153,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -173,7 +173,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ___
 
@@ -189,7 +189,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L30)
+[packages/medusa/src/services/event-bus.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L30)
 
 ## Methods
 
@@ -211,7 +211,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -226,7 +226,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -244,7 +244,7 @@ Calls all subscribers when an event occurs.
 
 | Name | Description |
 | :------ | :------ |
-| `data` | [`EmitData`](../index.md#emitdata)<`T`\>[] | The data to use to process the events |
+| `data` | [`EmitData`](../types/EmitData.md)<`T`\>[] | The data to use to process the events |
 
 #### Returns
 
@@ -259,7 +259,7 @@ Calls all subscribers when an event occurs.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:119](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L119)
+[packages/medusa/src/services/event-bus.ts:119](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L119)
 
 **emit**<`T`\>(`eventName`, `data`, `options?`): `Promise`<`void` \| [`StagedJob`](StagedJob.md)\>
 
@@ -290,7 +290,7 @@ EventBusTypes.IEventBusService.emit
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L128)
+[packages/medusa/src/services/event-bus.ts:128](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L128)
 
 ___
 
@@ -306,7 +306,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:192](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L192)
+[packages/medusa/src/services/event-bus.ts:192](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L192)
 
 ___
 
@@ -329,7 +329,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:222](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L222)
+[packages/medusa/src/services/event-bus.ts:222](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L222)
 
 ___
 
@@ -355,7 +355,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -371,7 +371,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:182](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L182)
+[packages/medusa/src/services/event-bus.ts:182](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L182)
 
 ___
 
@@ -387,7 +387,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:187](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L187)
+[packages/medusa/src/services/event-bus.ts:187](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L187)
 
 ___
 
@@ -402,8 +402,8 @@ Adds a function to a list of event subscribers.
 | Name | Description |
 | :------ | :------ |
 | `event` | `string` \| `symbol` | the event that the subscriber will listen for. |
-| `subscriber` | [`Subscriber`](../index.md#subscriber)<`unknown`\> | the function to be called when a certain event happens. Subscribers must return a Promise. |
-| `context?` | [`SubscriberContext`](../index.md#subscribercontext) | subscriber context |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md)<`unknown`\> | the function to be called when a certain event happens. Subscribers must return a Promise. |
+| `context?` | [`SubscriberContext`](../types/SubscriberContext.md) | subscriber context |
 
 #### Returns
 
@@ -417,7 +417,7 @@ Adds a function to a list of event subscribers.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:85](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L85)
+[packages/medusa/src/services/event-bus.ts:85](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L85)
 
 ___
 
@@ -432,8 +432,8 @@ Removes function from the list of event subscribers.
 | Name | Description |
 | :------ | :------ |
 | `event` | `string` \| `symbol` | the event of the subcriber. |
-| `subscriber` | [`Subscriber`](../index.md#subscriber)<`unknown`\> | the function to be removed |
-| `context` | [`SubscriberContext`](../index.md#subscribercontext) | subscriber context |
+| `subscriber` | [`Subscriber`](../types/Subscriber.md)<`unknown`\> | the function to be removed |
+| `context` | [`SubscriberContext`](../types/SubscriberContext.md) | subscriber context |
 
 #### Returns
 
@@ -447,7 +447,7 @@ Removes function from the list of event subscribers.
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:105](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L105)
+[packages/medusa/src/services/event-bus.ts:105](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L105)
 
 ___
 
@@ -477,4 +477,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/event-bus.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/event-bus.ts#L56)
+[packages/medusa/src/services/event-bus.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/event-bus.ts#L56)

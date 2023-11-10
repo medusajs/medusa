@@ -18,7 +18,7 @@ Provides layer to manipulate customers.
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-7) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-7.md) |
 
 #### Overrides
 
@@ -26,7 +26,7 @@ Provides layer to manipulate customers.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L46)
+[packages/medusa/src/services/customer.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L46)
 
 ## Properties
 
@@ -40,7 +40,7 @@ Provides layer to manipulate customers.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L37)
+[packages/medusa/src/services/customer.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L37)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L36)
+[packages/medusa/src/services/customer.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L36)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L38)
+[packages/medusa/src/services/customer.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L38)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L40)
+[packages/medusa/src/services/customer.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L40)
 
 ## Accessors
 
@@ -164,7 +164,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -188,7 +188,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:519](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L519)
+[packages/medusa/src/services/customer.ts:519](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L519)
 
 ___
 
@@ -210,7 +210,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -225,7 +225,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -244,7 +244,7 @@ Return the total number of documents in database
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:178](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L178)
+[packages/medusa/src/services/customer.ts:178](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L178)
 
 ___
 
@@ -261,7 +261,7 @@ used to hold details of customers.
 
 | Name | Description |
 | :------ | :------ |
-| `customer` | [`CreateCustomerInput`](../index.md#createcustomerinput) | the customer to create |
+| `customer` | [`CreateCustomerInput`](../types/CreateCustomerInput.md) | the customer to create |
 
 #### Returns
 
@@ -272,7 +272,7 @@ used to hold details of customers.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:306](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L306)
+[packages/medusa/src/services/customer.ts:306](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L306)
 
 ___
 
@@ -297,7 +297,7 @@ Deletes a customer from a given customer id.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:565](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L565)
+[packages/medusa/src/services/customer.ts:565](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L565)
 
 ___
 
@@ -326,7 +326,7 @@ which is always 15 minutes.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L68)
+[packages/medusa/src/services/customer.ts:68](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L68)
 
 ___
 
@@ -351,7 +351,7 @@ Hashes a password
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:293](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L293)
+[packages/medusa/src/services/customer.ts:293](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L293)
 
 ___
 
@@ -363,7 +363,7 @@ ___
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Customer`](Customer.md)\> & { `groups?`: `string`[] ; `q?`: `string`  } | the query object for find |
+| `selector` | [`Selector`](../types/Selector.md)<[`Customer`](Customer.md)\> & { `groups?`: `string`[] ; `q?`: `string`  } | the query object for find |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Customer`](Customer.md)\> | the config object containing query settings |
 
 #### Returns
@@ -376,7 +376,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:111](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L111)
+[packages/medusa/src/services/customer.ts:111](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L111)
 
 ___
 
@@ -388,7 +388,7 @@ ___
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Customer`](Customer.md)\> & { `groups?`: `string`[] ; `q?`: `string`  } | the query object for find |
+| `selector` | [`Selector`](../types/Selector.md)<[`Customer`](Customer.md)\> & { `groups?`: `string`[] ; `q?`: `string`  } | the query object for find |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Customer`](Customer.md)\> | the config object containing query settings |
 
 #### Returns
@@ -401,7 +401,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:143](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L143)
+[packages/medusa/src/services/customer.ts:143](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L143)
 
 ___
 
@@ -426,7 +426,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:249](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L249)
+[packages/medusa/src/services/customer.ts:249](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L249)
 
 ___
 
@@ -449,7 +449,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:502](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L502)
+[packages/medusa/src/services/customer.ts:502](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L502)
 
 ___
 
@@ -475,7 +475,7 @@ Gets a customer by id.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:274](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L274)
+[packages/medusa/src/services/customer.ts:274](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L274)
 
 ___
 
@@ -503,7 +503,7 @@ Gets a registered customer by email.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:216](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L216)
+[packages/medusa/src/services/customer.ts:216](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L216)
 
 ___
 
@@ -529,7 +529,7 @@ Gets a customer by phone.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:261](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L261)
+[packages/medusa/src/services/customer.ts:261](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L261)
 
 ___
 
@@ -553,7 +553,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:239](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L239)
+[packages/medusa/src/services/customer.ts:239](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L239)
 
 ___
 
@@ -577,7 +577,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:230](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L230)
+[packages/medusa/src/services/customer.ts:230](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L230)
 
 ___
 
@@ -589,7 +589,7 @@ ___
 
 | Name |
 | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Customer`](Customer.md)\> |
+| `selector` | [`Selector`](../types/Selector.md)<[`Customer`](Customer.md)\> |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Customer`](Customer.md)\> |
 
 #### Returns
@@ -601,7 +601,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:185](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L185)
+[packages/medusa/src/services/customer.ts:185](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L185)
 
 ___
 
@@ -627,7 +627,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -642,7 +642,7 @@ Updates a customer.
 | Name | Description |
 | :------ | :------ |
 | `customerId` | `string` | the id of the variant. Must be a string that can be casted to an ObjectId |
-| `update` | [`UpdateCustomerInput`](../index.md#updatecustomerinput) | an object with the update values. |
+| `update` | [`UpdateCustomerInput`](../types/UpdateCustomerInput.md) | an object with the update values. |
 
 #### Returns
 
@@ -653,7 +653,7 @@ Updates a customer.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:362](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L362)
+[packages/medusa/src/services/customer.ts:362](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L362)
 
 ___
 
@@ -678,7 +678,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:474](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L474)
+[packages/medusa/src/services/customer.ts:474](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L474)
 
 ___
 
@@ -693,7 +693,7 @@ Updates the customers' billing address.
 | Name | Description |
 | :------ | :------ |
 | `customer` | [`Customer`](Customer.md) | the Customer to update |
-| `addressOrId` | `undefined` \| `string` \| [`DeepPartial`](../index.md#deeppartial)<[`Address`](Address.md)\> | the value to set the billing address to |
+| `addressOrId` | `undefined` \| `string` \| [`DeepPartial`](../types/DeepPartial.md)<[`Address`](Address.md)\> | the value to set the billing address to |
 
 #### Returns
 
@@ -703,7 +703,7 @@ Updates the customers' billing address.
 
 #### Defined in
 
-[packages/medusa/src/services/customer.ts:422](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/customer.ts#L422)
+[packages/medusa/src/services/customer.ts:422](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/customer.ts#L422)
 
 ___
 
@@ -729,4 +729,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

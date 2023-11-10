@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-13) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-13.md) |
 
 #### Overrides
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L25)
+[packages/medusa/src/services/idempotency-key.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L25)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L23)
+[packages/medusa/src/services/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L23)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -124,7 +124,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -146,7 +146,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -161,7 +161,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -177,7 +177,7 @@ identifier.
 
 | Name | Description |
 | :------ | :------ |
-| `payload` | [`CreateIdempotencyKeyInput`](../index.md#createidempotencykeyinput) | payload of request to create idempotency key for |
+| `payload` | [`CreateIdempotencyKeyInput`](../types/CreateIdempotencyKeyInput.md) | payload of request to create idempotency key for |
 
 #### Returns
 
@@ -188,7 +188,7 @@ identifier.
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L68)
+[packages/medusa/src/services/idempotency-key.ts:68](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L68)
 
 ___
 
@@ -216,7 +216,7 @@ Execute the initial steps in a idempotent request.
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L40)
+[packages/medusa/src/services/idempotency-key.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L40)
 
 ___
 
@@ -241,7 +241,7 @@ Locks an idempotency.
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:138](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L138)
+[packages/medusa/src/services/idempotency-key.ts:138](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L138)
 
 ___
 
@@ -255,7 +255,7 @@ Retrieves an idempotency key
 
 | Name | Description |
 | :------ | :------ |
-| `idempotencyKeyOrSelector` | `string` \| [`Selector`](../index.md#selector)<[`IdempotencyKey`](IdempotencyKey.md)\> | key or selector to retrieve |
+| `idempotencyKeyOrSelector` | `string` \| [`Selector`](../types/Selector.md)<[`IdempotencyKey`](IdempotencyKey.md)\> | key or selector to retrieve |
 
 #### Returns
 
@@ -266,7 +266,7 @@ Retrieves an idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:86](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L86)
+[packages/medusa/src/services/idempotency-key.ts:86](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L86)
 
 ___
 
@@ -292,7 +292,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -307,7 +307,7 @@ Locks an idempotency.
 | Name | Description |
 | :------ | :------ |
 | `idempotencyKey` | `string` | key to update |
-| `update` | [`DeepPartial`](../index.md#deeppartial)<[`IdempotencyKey`](IdempotencyKey.md)\> | update object |
+| `update` | [`DeepPartial`](../types/DeepPartial.md)<[`IdempotencyKey`](IdempotencyKey.md)\> | update object |
 
 #### Returns
 
@@ -318,7 +318,7 @@ Locks an idempotency.
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:167](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L167)
+[packages/medusa/src/services/idempotency-key.ts:167](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L167)
 
 ___
 
@@ -344,7 +344,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
 
 ___
 
@@ -363,7 +363,7 @@ always consist of 2 or more of these phases. The required phases are
 | Name | Description |
 | :------ | :------ |
 | `idempotencyKey` | `string` | current idempotency key |
-| `callback` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<[`IdempotencyCallbackResult`](../index.md#idempotencycallbackresult)\> | functionality to execute within the phase |
+| `callback` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<[`IdempotencyCallbackResult`](../types/IdempotencyCallbackResult.md)\> | functionality to execute within the phase |
 
 #### Returns
 
@@ -374,4 +374,4 @@ always consist of 2 or more of these phases. The required phases are
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:196](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/idempotency-key.ts#L196)
+[packages/medusa/src/services/idempotency-key.ts:196](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/idempotency-key.ts#L196)

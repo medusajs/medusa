@@ -30,7 +30,7 @@ The amount that the Payment Session has been authorized for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L59)
+[packages/medusa/src/models/payment-session.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L59)
 
 ___
 
@@ -42,7 +42,7 @@ The details of the cart that the payment session was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L37)
+[packages/medusa/src/models/payment-session.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L37)
 
 ___
 
@@ -54,7 +54,7 @@ The ID of the cart that the payment session was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L33)
+[packages/medusa/src/models/payment-session.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L33)
 
 ___
 
@@ -70,7 +70,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -82,7 +82,7 @@ The data required for the Payment Provider to identify, modify and process the P
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L53)
+[packages/medusa/src/models/payment-session.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L53)
 
 ___
 
@@ -98,7 +98,7 @@ The payment session's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -110,7 +110,7 @@ Randomly generated key used to continue the completion of a cart in case of fail
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L56)
+[packages/medusa/src/models/payment-session.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L56)
 
 ___
 
@@ -122,7 +122,7 @@ A flag to indicate if a communication with the third party provider has been ini
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L47)
+[packages/medusa/src/models/payment-session.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L47)
 
 ___
 
@@ -134,7 +134,7 @@ A flag to indicate if the Payment Session has been selected as the method that w
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:44](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L44)
+[packages/medusa/src/models/payment-session.ts:44](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L44)
 
 ___
 
@@ -146,7 +146,7 @@ The date with timezone at which the Payment Session was authorized.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L62)
+[packages/medusa/src/models/payment-session.ts:62](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L62)
 
 ___
 
@@ -158,7 +158,7 @@ The ID of the Payment Provider that is responsible for the Payment Session
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L41)
+[packages/medusa/src/models/payment-session.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L41)
 
 ___
 
@@ -170,7 +170,7 @@ Indicates the status of the Payment Session. Will default to `pending`, and will
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L50)
+[packages/medusa/src/models/payment-session.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L50)
 
 ___
 
@@ -186,7 +186,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -202,4 +202,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-session.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-session.ts#L68)
+[packages/medusa/src/models/payment-session.ts:68](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-session.ts#L68)

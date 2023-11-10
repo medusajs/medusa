@@ -12,7 +12,7 @@ SqlServer specific connection credential options.
 
 ### authentication
 
- `Optional` `Readonly` **authentication**: [`SqlServerConnectionCredentialsAuthenticationOptions`](../index.md#sqlserverconnectioncredentialsauthenticationoptions)
+ `Optional` `Readonly` **authentication**: [`SqlServerConnectionCredentialsAuthenticationOptions`](../types/SqlServerConnectionCredentialsAuthenticationOptions.md)
 
 Authentication settings
 It overrides username and password, when passed.

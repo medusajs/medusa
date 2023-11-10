@@ -12,7 +12,7 @@ The product is a draft. It's not viewable by customers.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L39)
+[packages/medusa/src/models/product.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L39)
 
 ___
 
@@ -24,7 +24,7 @@ The product is proposed, but not yet published.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L43)
+[packages/medusa/src/models/product.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L43)
 
 ___
 
@@ -36,7 +36,7 @@ The product is published.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L47)
+[packages/medusa/src/models/product.ts:47](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L47)
 
 ___
 
@@ -48,4 +48,4 @@ The product is rejected. It's not viewable by customers.
 
 #### Defined in
 
-[packages/medusa/src/models/product.ts:51](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product.ts#L51)
+[packages/medusa/src/models/product.ts:51](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product.ts#L51)

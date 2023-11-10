@@ -4,7 +4,7 @@ Options that can be passed to a ChangeStream. Note that startAfter, resumeAfter,
 
 ## Hierarchy
 
-- [`Omit`](../index.md#omit)<[`AggregateOptions`](AggregateOptions.md), ``"writeConcern"``\>
+- [`Omit`](../types/Omit.md)<[`AggregateOptions`](AggregateOptions.md), ``"writeConcern"``\>
 
   ↳ **`ChangeStreamOptions`**
 
@@ -193,7 +193,7 @@ ___
 
 ### explain
 
- `Optional` **explain**: [`ExplainVerbosityLike`](../index.md#explainverbositylike)
+ `Optional` **explain**: [`ExplainVerbosityLike`](../types/ExplainVerbosityLike.md)
 
 Specifies the verbosity mode for the explain output.
 
@@ -270,7 +270,7 @@ ___
 
 ### hint
 
- `Optional` **hint**: [`Hint`](../index.md#hint)
+ `Optional` **hint**: [`Hint`](../types/Hint.md)
 
 Add an index selection hint to an aggregation command
 
@@ -475,7 +475,7 @@ ___
 
 ### readConcern
 
- `Optional` **readConcern**: [`ReadConcernLike`](../index.md#readconcernlike)
+ `Optional` **readConcern**: [`ReadConcernLike`](../types/ReadConcernLike.md)
 
 Specify a read concern and level for the collection. (only MongoDB 3.2 or higher supported)
 
@@ -491,7 +491,7 @@ ___
 
 ### readPreference
 
- `Optional` **readPreference**: [`ReadPreferenceLike`](../index.md#readpreferencelike)
+ `Optional` **readPreference**: [`ReadPreferenceLike`](../types/ReadPreferenceLike.md)
 
 The preferred read preference (ReadPreference.primary, ReadPreference.primary_preferred, ReadPreference.secondary, ReadPreference.secondary_preferred, ReadPreference.nearest).
 

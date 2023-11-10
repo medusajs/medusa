@@ -30,7 +30,7 @@ Address line 1
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L36)
+[packages/medusa/src/models/address.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L36)
 
 ___
 
@@ -42,7 +42,7 @@ Address line 2
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L39)
+[packages/medusa/src/models/address.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L39)
 
 ___
 
@@ -54,7 +54,7 @@ City
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L42)
+[packages/medusa/src/models/address.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L42)
 
 ___
 
@@ -66,7 +66,7 @@ Company name
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L27)
+[packages/medusa/src/models/address.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L27)
 
 ___
 
@@ -78,7 +78,7 @@ A country object.
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L49)
+[packages/medusa/src/models/address.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L49)
 
 ___
 
@@ -90,7 +90,7 @@ The 2 character ISO code of the country in lower case
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L45)
+[packages/medusa/src/models/address.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L45)
 
 ___
 
@@ -106,7 +106,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -118,7 +118,7 @@ Available if the relation `customer` is expanded.
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L24)
+[packages/medusa/src/models/address.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L24)
 
 ___
 
@@ -130,7 +130,7 @@ ID of the customer this address belongs to
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L20)
+[packages/medusa/src/models/address.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L20)
 
 ___
 
@@ -146,7 +146,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -158,7 +158,7 @@ First name
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L30)
+[packages/medusa/src/models/address.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L30)
 
 ___
 
@@ -174,7 +174,7 @@ ID of the address
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -186,7 +186,7 @@ Last name
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L33)
+[packages/medusa/src/models/address.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L33)
 
 ___
 
@@ -198,7 +198,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L61)
+[packages/medusa/src/models/address.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L61)
 
 ___
 
@@ -210,7 +210,7 @@ Phone Number
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L58)
+[packages/medusa/src/models/address.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L58)
 
 ___
 
@@ -222,7 +222,7 @@ Postal Code
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L55)
+[packages/medusa/src/models/address.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L55)
 
 ___
 
@@ -234,7 +234,7 @@ Province
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L52)
+[packages/medusa/src/models/address.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L52)
 
 ___
 
@@ -250,7 +250,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -266,4 +266,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/address.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/address.ts#L67)
+[packages/medusa/src/models/address.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/address.ts#L67)

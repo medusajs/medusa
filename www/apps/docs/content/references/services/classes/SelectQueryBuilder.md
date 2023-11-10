@@ -164,7 +164,7 @@ ___
 
 ### joins
 
- `Protected` **joins**: { `alias`: `string` ; `parentAlias`: `string` ; `relationMetadata`: [`RelationMetadata`](RelationMetadata.md) ; `select`: `boolean` ; `selection`: `undefined` \| [`FindOptionsSelect`](../index.md#findoptionsselect)<`any`\> ; `type`: ``"inner"`` \| ``"left"``  }[]
+ `Protected` **joins**: { `alias`: `string` ; `parentAlias`: `string` ; `relationMetadata`: [`RelationMetadata`](RelationMetadata.md) ; `select`: `boolean` ; `selection`: `undefined` \| [`FindOptionsSelect`](../types/FindOptionsSelect.md)<`any`\> ; `type`: ``"inner"`` \| ``"left"``  }[]
 
 #### Defined in
 
@@ -327,7 +327,7 @@ Also sets a main string alias of the selection data.
 
 | Name |
 | :------ |
-| `entityTarget` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `entityTarget` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `aliasName` | `string` |
 
 #### Returns
@@ -595,8 +595,8 @@ ___
 
 | Name |
 | :------ |
-| `relations` | [`FindOptionsRelations`](../index.md#findoptionsrelations)<`any`\> |
-| `selection` | `undefined` \| [`FindOptionsSelect`](../index.md#findoptionsselect)<`any`\> |
+| `relations` | [`FindOptionsRelations`](../types/FindOptionsRelations.md)<`any`\> |
+| `selection` | `undefined` \| [`FindOptionsSelect`](../types/FindOptionsSelect.md)<`any`\> |
 | `metadata` | [`EntityMetadata`](EntityMetadata.md) |
 | `alias` | `string` |
 | `embedPrefix?` | `string` |
@@ -647,7 +647,7 @@ ___
 
 | Name |
 | :------ |
-| `order` | [`FindOptionsOrder`](../index.md#findoptionsorder)<`any`\> |
+| `order` | [`FindOptionsOrder`](../types/FindOptionsOrder.md)<`any`\> |
 | `metadata` | [`EntityMetadata`](EntityMetadata.md) |
 | `alias` | `string` |
 | `embedPrefix?` | `string` |
@@ -672,8 +672,8 @@ ___
 
 | Name |
 | :------ |
-| `relations` | [`FindOptionsRelations`](../index.md#findoptionsrelations)<`any`\> |
-| `selection` | `undefined` \| [`FindOptionsSelect`](../index.md#findoptionsselect)<`any`\> |
+| `relations` | [`FindOptionsRelations`](../types/FindOptionsRelations.md)<`any`\> |
+| `selection` | `undefined` \| [`FindOptionsSelect`](../types/FindOptionsSelect.md)<`any`\> |
 | `metadata` | [`EntityMetadata`](EntityMetadata.md) |
 | `alias` | `string` |
 | `embedPrefix?` | `string` |
@@ -698,7 +698,7 @@ ___
 
 | Name |
 | :------ |
-| `select` | [`FindOptionsSelect`](../index.md#findoptionsselect)<`any`\> |
+| `select` | [`FindOptionsSelect`](../types/FindOptionsSelect.md)<`any`\> |
 | `metadata` | [`EntityMetadata`](EntityMetadata.md) |
 | `alias` | `string` |
 | `embedPrefix?` | `string` |
@@ -723,7 +723,7 @@ ___
 
 | Name |
 | :------ |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`any`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`any`\>[] |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`any`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`any`\>[] |
 | `metadata` | [`EntityMetadata`](EntityMetadata.md) |
 | `alias` | `string` |
 | `embedPrefix?` | `string` |
@@ -963,7 +963,7 @@ Also sets a main string alias of the selection data.
 
 | Name |
 | :------ |
-| `entityTarget` | [`EntityTarget`](../index.md#entitytarget)<`any`\> \| (`qb`: [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\>) => [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\> |
+| `entityTarget` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> \| (`qb`: [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\>) => [`SelectQueryBuilder`](SelectQueryBuilder.md)<`any`\> |
 | `aliasName?` | `string` |
 
 #### Returns
@@ -1074,7 +1074,7 @@ ___
 
 ### createOrderByCombinedWithSelectExpression
 
-`Protected` **createOrderByCombinedWithSelectExpression**(`parentAlias`): [`string`, [`OrderByCondition`](../index.md#orderbycondition)]
+`Protected` **createOrderByCombinedWithSelectExpression**(`parentAlias`): [`string`, [`OrderByCondition`](../types/OrderByCondition.md)]
 
 #### Parameters
 
@@ -1084,9 +1084,9 @@ ___
 
 #### Returns
 
-[`string`, [`OrderByCondition`](../index.md#orderbycondition)]
+[`string`, [`OrderByCondition`](../types/OrderByCondition.md)]
 
--`[`string`, [`OrderByCondition`](../index.md#orderbycondition)]`: 
+-`[`string`, [`OrderByCondition`](../types/OrderByCondition.md)]`: 
 	-`string`: (optional) 
 	-`OrderByCondition`: Special object that defines order condition for ORDER BY in sql. Example: { "name": "ASC", "id": "DESC" }
 		-`__type`: 
@@ -1205,7 +1205,7 @@ Creates "RETURNING" / "OUTPUT" expression.
 
 | Name |
 | :------ |
-| `returningType` | [`ReturningType`](../index.md#returningtype) |
+| `returningType` | [`ReturningType`](../types/ReturningType.md) |
 
 #### Returns
 
@@ -1317,7 +1317,7 @@ Computes given where argument - transforms to a where string all forms it can ta
 
 | Name |
 | :------ |
-| `condition` | [`WhereClauseCondition`](../index.md#whereclausecondition) |
+| `condition` | [`WhereClauseCondition`](../types/WhereClauseCondition.md) |
 | `alwaysWrap?` | `boolean` |
 
 #### Returns
@@ -1641,7 +1641,7 @@ Removes all previously set from-s.
 
 | Name |
 | :------ |
-| `entityTarget` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `entityTarget` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `aliasName` | `string` |
 
 #### Returns
@@ -2087,7 +2087,7 @@ ___
 
 ### getWhereCondition
 
-`Protected` **getWhereCondition**(`where`): [`WhereClauseCondition`](../index.md#whereclausecondition)
+`Protected` **getWhereCondition**(`where`): [`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 #### Parameters
 
@@ -2097,7 +2097,7 @@ ___
 
 #### Returns
 
-[`WhereClauseCondition`](../index.md#whereclausecondition)
+[`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 -`WhereClauseCondition`: 
 
@@ -2141,7 +2141,7 @@ ___
 
 ### getWherePredicateCondition
 
-`Protected` **getWherePredicateCondition**(`aliasPath`, `parameterValue`): [`WhereClauseCondition`](../index.md#whereclausecondition)
+`Protected` **getWherePredicateCondition**(`aliasPath`, `parameterValue`): [`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 #### Parameters
 
@@ -2152,7 +2152,7 @@ ___
 
 #### Returns
 
-[`WhereClauseCondition`](../index.md#whereclausecondition)
+[`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 -`WhereClauseCondition`: 
 
@@ -2273,7 +2273,7 @@ todo: move this method to manager? or create a shortcut?
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `relation` | `string` |
 
 #### Returns
@@ -2305,7 +2305,7 @@ todo: move this method to manager? or create a shortcut?
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `relation` | `string`[] |
 
 #### Returns
@@ -3491,7 +3491,7 @@ Merges into expression map given expression map properties.
 
 | Name |
 | :------ |
-| `expressionMap` | [`Partial`](../index.md#partial)<[`QueryExpressionMap`](QueryExpressionMap.md)\> |
+| `expressionMap` | [`Partial`](../types/Partial.md)<[`QueryExpressionMap`](QueryExpressionMap.md)\> |
 
 #### Returns
 
@@ -4087,7 +4087,7 @@ calling this function will override previously set ORDER BY conditions.
 
 | Name |
 | :------ |
-| `order` | [`OrderByCondition`](../index.md#orderbycondition) |
+| `order` | [`OrderByCondition`](../types/OrderByCondition.md) |
 
 #### Returns
 
@@ -4161,7 +4161,7 @@ Sets entity's relation with which this query builder gonna work.
 
 | Name |
 | :------ |
-| `entityTarget` | [`EntityTarget`](../index.md#entitytarget)<`T`\> |
+| `entityTarget` | [`EntityTarget`](../types/EntityTarget.md)<`T`\> |
 | `propertyPath` | `string` |
 
 #### Returns
@@ -4495,7 +4495,7 @@ Sets extra options that can be used to configure how query builder works.
 
 | Name |
 | :------ |
-| `option` | [`SelectQueryBuilderOption`](../index.md#selectquerybuilderoption) |
+| `option` | [`SelectQueryBuilderOption`](../types/SelectQueryBuilderOption.md) |
 
 #### Returns
 
@@ -4755,7 +4755,7 @@ Creates UPDATE query and applies given update values.
 
 | Name |
 | :------ |
-| `updateSet` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `updateSet` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -4783,8 +4783,8 @@ Creates UPDATE query for the given entity and applies given update values.
 
 | Name |
 | :------ |
-| `entity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `updateSet?` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `entity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `updateSet?` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -4809,7 +4809,7 @@ Creates UPDATE query for the given table name and applies given update values.
 | Name |
 | :------ |
 | `tableName` | `string` |
-| `updateSet?` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `updateSet?` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 

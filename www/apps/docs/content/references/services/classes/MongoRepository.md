@@ -28,7 +28,7 @@ Repository used to manage mongodb documents of a single entity type.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `manager` | [`EntityManager`](EntityManager.md) |
 | `queryRunner?` | [`QueryRunner`](../interfaces/QueryRunner.md) |
 
@@ -76,7 +76,7 @@ ___
 
 ### target
 
- `Readonly` **target**: [`EntityTarget`](../index.md#entitytarget)<`Entity`\>
+ `Readonly` **target**: [`EntityTarget`](../types/EntityTarget.md)<`Entity`\>
 
 Entity target that is managed by this repository.
 If this repository manages entity from schema,
@@ -179,8 +179,8 @@ Return the AVG of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -209,7 +209,7 @@ Perform a bulkWrite operation without a fluent API.
 
 | Name |
 | :------ |
-| `operations` | [`AnyBulkWriteOperation`](../index.md#anybulkwriteoperation)[] |
+| `operations` | [`AnyBulkWriteOperation`](../types/AnyBulkWriteOperation.md)[] |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) |
 
 #### Returns
@@ -410,7 +410,7 @@ Note that it copies only properties that are present in entity schema.
 
 | Name |
 | :------ |
-| `entityLikeArray` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `entityLikeArray` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -435,7 +435,7 @@ Note that it copies only properties that are present in entity schema.
 
 | Name |
 | :------ |
-| `entityLike` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityLike` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -519,7 +519,7 @@ Creates a cursor for a query that can be used to iterate over results from Mongo
 
 | Name |
 | :------ |
-| `query?` | [`Filter`](../index.md#filter)<`Entity`\> |
+| `query?` | [`Filter`](../types/Filter.md)<`Entity`\> |
 
 #### Returns
 
@@ -544,7 +544,7 @@ This returns modified version of cursor that transforms each result into Entity 
 
 | Name |
 | :------ |
-| `query?` | [`Filter`](../index.md#filter)<`Entity`\> |
+| `query?` | [`Filter`](../types/Filter.md)<`Entity`\> |
 
 #### Returns
 
@@ -598,7 +598,7 @@ Decrements some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `conditions` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `conditions` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
 
@@ -632,7 +632,7 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 
 #### Returns
 
@@ -848,7 +848,7 @@ Finds entities that match given find options or conditions.
 
 | Name |
 | :------ |
-| `options?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> \| [`Partial`](../index.md#partial)<`Entity`\> \| [`FilterOperators`](../interfaces/FilterOperators.md)<`Entity`\> |
+| `options?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> \| [`Partial`](../types/Partial.md)<`Entity`\> \| [`FilterOperators`](../interfaces/FilterOperators.md)<`Entity`\> |
 
 #### Returns
 
@@ -1009,7 +1009,7 @@ Finds first entity that matches given find options.
 
 | Name |
 | :------ |
-| `options` | [`MongoFindOneOptions`](../index.md#mongofindoneoptions)<`Entity`\> |
+| `options` | [`MongoFindOneOptions`](../types/MongoFindOneOptions.md)<`Entity`\> |
 
 #### Returns
 
@@ -1299,7 +1299,7 @@ Increments some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `conditions` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `conditions` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
 
@@ -1381,7 +1381,7 @@ Does not check if entity exist in the database, so query will fail if duplicate 
 
 | Name |
 | :------ |
-| `entity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `entity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 
 #### Returns
 
@@ -1507,8 +1507,8 @@ Return the MAX of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1538,7 +1538,7 @@ Merges multiple entities (or entity-like objects) into a given entity.
 | Name |
 | :------ |
 | `mergeIntoEntity` | `Entity` |
-| `...entityLikes` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `...entityLikes` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1564,8 +1564,8 @@ Return the MIN of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1600,7 +1600,7 @@ Returns undefined if entity with given id was not found.
 
 | Name |
 | :------ |
-| `entityLike` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityLike` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -1897,7 +1897,7 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 
 #### Returns
 
@@ -2057,7 +2057,7 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
 
 #### Returns
 
@@ -2265,8 +2265,8 @@ Return the SUM of a column
 
 | Name |
 | :------ |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -2298,8 +2298,8 @@ Does not check if entity exist in the database.
 
 | Name |
 | :------ |
-| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> |
-| `partialEntity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `criteria` | `string` \| `number` \| `Date` \| `string`[] \| [`ObjectId`](ObjectId.md) \| `number`[] \| `Date`[] \| [`ObjectId`](ObjectId.md)[] \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> |
+| `partialEntity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -2329,7 +2329,7 @@ Update multiple documents on MongoDB.
 | Name |
 | :------ |
 | `query` | [`ObjectLiteral`](../interfaces/ObjectLiteral.md) |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) |
 
 #### Returns
@@ -2356,7 +2356,7 @@ Update a single document on MongoDB.
 | Name |
 | :------ |
 | `query` | [`ObjectLiteral`](../interfaces/ObjectLiteral.md) |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) |
 
 #### Returns
@@ -2384,7 +2384,7 @@ Executes fast and efficient INSERT ... ON CONFLICT DO UPDATE/ON DUPLICATE KEY UP
 
 | Name |
 | :------ |
-| `entityOrEntities` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `entityOrEntities` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 | `conflictPathsOrOptions` | `string`[] \| [`UpsertOptions`](../interfaces/UpsertOptions.md)<`Entity`\> |
 
 #### Returns

@@ -4,11 +4,11 @@
 
 ### \_\_joinerConfig
 
-**__joinerConfig**(): [`ModuleJoinerConfig`](../index.md#modulejoinerconfig)
+**__joinerConfig**(): [`ModuleJoinerConfig`](../types/ModuleJoinerConfig.md)
 
 #### Returns
 
-[`ModuleJoinerConfig`](../index.md#modulejoinerconfig)
+[`ModuleJoinerConfig`](../types/ModuleJoinerConfig.md)
 
 -`ModuleJoinerConfig`: 
 	-`alias`: (optional) Property name to use as entrypoint to the service
@@ -48,7 +48,7 @@ ___
 
 ### adjustInventory
 
-**adjustInventory**(`inventoryItemId`, `locationId`, `adjustment`, `context?`): `Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+**adjustInventory**(`inventoryItemId`, `locationId`, `adjustment`, `context?`): `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 #### Parameters
 
@@ -57,11 +57,11 @@ ___
 | `inventoryItemId` | `string` |
 | `locationId` | `string` |
 | `adjustment` | `number` |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+`Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 -`Promise`: 
 	-`InventoryLevelDTO`: 
@@ -93,7 +93,7 @@ ___
 | `inventoryItemId` | `string` |
 | `locationIds` | `string`[] |
 | `quantity` | `number` |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -110,18 +110,18 @@ ___
 
 ### createInventoryItem
 
-**createInventoryItem**(`input`, `context?`): `Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)\>
+**createInventoryItem**(`input`, `context?`): `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `input` | [`CreateInventoryItemInput`](../index.md#createinventoryiteminput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`CreateInventoryItemInput`](../types/CreateInventoryItemInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)\>
+`Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\>
 
 -`Promise`: 
 	-`InventoryItemDTO`: 
@@ -152,18 +152,18 @@ ___
 
 ### createInventoryItems
 
-**createInventoryItems**(`input`, `context?`): `Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)[]\>
+**createInventoryItems**(`input`, `context?`): `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `input` | [`CreateInventoryItemInput`](../index.md#createinventoryiteminput)[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`CreateInventoryItemInput`](../types/CreateInventoryItemInput.md)[] |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)[]\>
+`Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)[]\>
 
 -`Promise`: 
 	-`InventoryItemDTO[]`: 
@@ -177,18 +177,18 @@ ___
 
 ### createInventoryLevel
 
-**createInventoryLevel**(`data`, `context?`): `Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+**createInventoryLevel**(`data`, `context?`): `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `data` | [`CreateInventoryLevelInput`](../index.md#createinventorylevelinput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `data` | [`CreateInventoryLevelInput`](../types/CreateInventoryLevelInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+`Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 -`Promise`: 
 	-`InventoryLevelDTO`: 
@@ -211,18 +211,18 @@ ___
 
 ### createInventoryLevels
 
-**createInventoryLevels**(`data`, `context?`): `Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)[]\>
+**createInventoryLevels**(`data`, `context?`): `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `data` | [`CreateInventoryLevelInput`](../index.md#createinventorylevelinput)[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `data` | [`CreateInventoryLevelInput`](../types/CreateInventoryLevelInput.md)[] |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)[]\>
+`Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)[]\>
 
 -`Promise`: 
 	-`InventoryLevelDTO[]`: 
@@ -236,18 +236,18 @@ ___
 
 ### createReservationItem
 
-**createReservationItem**(`input`, `context?`): `Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)\>
+**createReservationItem**(`input`, `context?`): `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `input` | [`CreateReservationItemInput`](../index.md#createreservationiteminput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`CreateReservationItemInput`](../types/CreateReservationItemInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)\>
+`Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)\>
 
 -`Promise`: 
 	-`ReservationItemDTO`: Represents a reservation of an inventory item at a stock location
@@ -271,18 +271,18 @@ ___
 
 ### createReservationItems
 
-**createReservationItems**(`input`, `context?`): `Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)[]\>
+**createReservationItems**(`input`, `context?`): `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `input` | [`CreateReservationItemInput`](../index.md#createreservationiteminput)[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`CreateReservationItemInput`](../types/CreateReservationItemInput.md)[] |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)[]\>
+`Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)[]\>
 
 -`Promise`: 
 	-`ReservationItemDTO[]`: 
@@ -303,7 +303,7 @@ ___
 | Name |
 | :------ |
 | `inventoryItemId` | `string` \| `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -326,7 +326,7 @@ ___
 | Name |
 | :------ |
 | `locationId` | `string` \| `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -350,7 +350,7 @@ ___
 | :------ |
 | `inventoryLevelId` | `string` |
 | `locationId` | `string` |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -373,7 +373,7 @@ ___
 | Name |
 | :------ |
 | `reservationItemId` | `string` \| `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -396,7 +396,7 @@ ___
 | Name |
 | :------ |
 | `locationId` | `string` \| `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -419,7 +419,7 @@ ___
 | Name |
 | :------ |
 | `lineItemId` | `string` \| `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -435,19 +435,19 @@ ___
 
 ### listInventoryItems
 
-**listInventoryItems**(`selector`, `config?`, `context?`): `Promise`<[[`InventoryItemDTO`](../index.md#inventoryitemdto)[], `number`]\>
+**listInventoryItems**(`selector`, `config?`, `context?`): `Promise`<[[`InventoryItemDTO`](../types/InventoryItemDTO.md)[], `number`]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | [`FilterableInventoryItemProps`](../index.md#filterableinventoryitemprops) |
-| `config?` | [`FindConfig`](FindConfig-1.md)<[`InventoryItemDTO`](../index.md#inventoryitemdto)\> |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `selector` | [`FilterableInventoryItemProps`](../types/FilterableInventoryItemProps.md) |
+| `config?` | [`FindConfig`](FindConfig-1.md)<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\> |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[[`InventoryItemDTO`](../index.md#inventoryitemdto)[], `number`]\>
+`Promise`<[[`InventoryItemDTO`](../types/InventoryItemDTO.md)[], `number`]\>
 
 -`Promise`: 
 	-`InventoryItemDTO[]`: 
@@ -461,19 +461,19 @@ ___
 
 ### listInventoryLevels
 
-**listInventoryLevels**(`selector`, `config?`, `context?`): `Promise`<[[`InventoryLevelDTO`](../index.md#inventoryleveldto)[], `number`]\>
+**listInventoryLevels**(`selector`, `config?`, `context?`): `Promise`<[[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)[], `number`]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | [`FilterableInventoryLevelProps`](../index.md#filterableinventorylevelprops) |
-| `config?` | [`FindConfig`](FindConfig-1.md)<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\> |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `selector` | [`FilterableInventoryLevelProps`](../types/FilterableInventoryLevelProps.md) |
+| `config?` | [`FindConfig`](FindConfig-1.md)<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\> |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[[`InventoryLevelDTO`](../index.md#inventoryleveldto)[], `number`]\>
+`Promise`<[[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)[], `number`]\>
 
 -`Promise`: 
 	-`InventoryLevelDTO[]`: 
@@ -487,19 +487,19 @@ ___
 
 ### listReservationItems
 
-**listReservationItems**(`selector`, `config?`, `context?`): `Promise`<[[`ReservationItemDTO`](../index.md#reservationitemdto)[], `number`]\>
+**listReservationItems**(`selector`, `config?`, `context?`): `Promise`<[[`ReservationItemDTO`](../types/ReservationItemDTO.md)[], `number`]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | [`FilterableReservationItemProps`](../index.md#filterablereservationitemprops) |
-| `config?` | [`FindConfig`](FindConfig-1.md)<[`ReservationItemDTO`](../index.md#reservationitemdto)\> |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `selector` | [`FilterableReservationItemProps`](../types/FilterableReservationItemProps.md) |
+| `config?` | [`FindConfig`](FindConfig-1.md)<[`ReservationItemDTO`](../types/ReservationItemDTO.md)\> |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[[`ReservationItemDTO`](../index.md#reservationitemdto)[], `number`]\>
+`Promise`<[[`ReservationItemDTO`](../types/ReservationItemDTO.md)[], `number`]\>
 
 -`Promise`: 
 	-`ReservationItemDTO[]`: 
@@ -520,7 +520,7 @@ ___
 | Name |
 | :------ |
 | `inventoryItemId` | `string` \| `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -544,7 +544,7 @@ ___
 | :------ |
 | `inventoryItemId` | `string` |
 | `locationIds` | `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -561,19 +561,19 @@ ___
 
 ### retrieveInventoryItem
 
-**retrieveInventoryItem**(`inventoryItemId`, `config?`, `context?`): `Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)\>
+**retrieveInventoryItem**(`inventoryItemId`, `config?`, `context?`): `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `inventoryItemId` | `string` |
-| `config?` | [`FindConfig`](FindConfig-1.md)<[`InventoryItemDTO`](../index.md#inventoryitemdto)\> |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `config?` | [`FindConfig`](FindConfig-1.md)<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\> |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)\>
+`Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\>
 
 -`Promise`: 
 	-`InventoryItemDTO`: 
@@ -604,7 +604,7 @@ ___
 
 ### retrieveInventoryLevel
 
-**retrieveInventoryLevel**(`inventoryItemId`, `locationId`, `context?`): `Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+**retrieveInventoryLevel**(`inventoryItemId`, `locationId`, `context?`): `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 #### Parameters
 
@@ -612,11 +612,11 @@ ___
 | :------ |
 | `inventoryItemId` | `string` |
 | `locationId` | `string` |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+`Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 -`Promise`: 
 	-`InventoryLevelDTO`: 
@@ -639,18 +639,18 @@ ___
 
 ### retrieveReservationItem
 
-**retrieveReservationItem**(`reservationId`, `context?`): `Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)\>
+**retrieveReservationItem**(`reservationId`, `context?`): `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `reservationId` | `string` |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)\>
+`Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)\>
 
 -`Promise`: 
 	-`ReservationItemDTO`: Represents a reservation of an inventory item at a stock location
@@ -682,7 +682,7 @@ ___
 | :------ |
 | `inventoryItemId` | `string` |
 | `locationIds` | `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -707,7 +707,7 @@ ___
 | :------ |
 | `inventoryItemId` | `string` |
 | `locationIds` | `string`[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
@@ -724,19 +724,19 @@ ___
 
 ### updateInventoryItem
 
-**updateInventoryItem**(`inventoryItemId`, `input`, `context?`): `Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)\>
+**updateInventoryItem**(`inventoryItemId`, `input`, `context?`): `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `inventoryItemId` | `string` |
-| `input` | [`CreateInventoryItemInput`](../index.md#createinventoryiteminput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`CreateInventoryItemInput`](../types/CreateInventoryItemInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryItemDTO`](../index.md#inventoryitemdto)\>
+`Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.md)\>
 
 -`Promise`: 
 	-`InventoryItemDTO`: 
@@ -767,7 +767,7 @@ ___
 
 ### updateInventoryLevel
 
-**updateInventoryLevel**(`inventoryItemId`, `locationId`, `update`, `context?`): `Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+**updateInventoryLevel**(`inventoryItemId`, `locationId`, `update`, `context?`): `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 #### Parameters
 
@@ -775,12 +775,12 @@ ___
 | :------ |
 | `inventoryItemId` | `string` |
 | `locationId` | `string` |
-| `update` | [`UpdateInventoryLevelInput`](../index.md#updateinventorylevelinput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `update` | [`UpdateInventoryLevelInput`](../types/UpdateInventoryLevelInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)\>
+`Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)\>
 
 -`Promise`: 
 	-`InventoryLevelDTO`: 
@@ -803,18 +803,18 @@ ___
 
 ### updateInventoryLevels
 
-**updateInventoryLevels**(`updates`, `context?`): `Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)[]\>
+**updateInventoryLevels**(`updates`, `context?`): `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `updates` | { `inventory_item_id`: `string` ; `location_id`: `string`  } & [`UpdateInventoryLevelInput`](../index.md#updateinventorylevelinput)[] |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `updates` | { `inventory_item_id`: `string` ; `location_id`: `string`  } & [`UpdateInventoryLevelInput`](../types/UpdateInventoryLevelInput.md)[] |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`InventoryLevelDTO`](../index.md#inventoryleveldto)[]\>
+`Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.md)[]\>
 
 -`Promise`: 
 	-`InventoryLevelDTO[]`: 
@@ -828,19 +828,19 @@ ___
 
 ### updateReservationItem
 
-**updateReservationItem**(`reservationItemId`, `input`, `context?`): `Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)\>
+**updateReservationItem**(`reservationItemId`, `input`, `context?`): `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `reservationItemId` | `string` |
-| `input` | [`UpdateReservationItemInput`](../index.md#updatereservationiteminput) |
-| `context?` | [`SharedContext`](../index.md#sharedcontext) |
+| `input` | [`UpdateReservationItemInput`](../types/UpdateReservationItemInput.md) |
+| `context?` | [`SharedContext`](../types/SharedContext.md) |
 
 #### Returns
 
-`Promise`<[`ReservationItemDTO`](../index.md#reservationitemdto)\>
+`Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.md)\>
 
 -`Promise`: 
 	-`ReservationItemDTO`: Represents a reservation of an inventory item at a stock location

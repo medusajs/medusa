@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
+[packages/medusa/src/interfaces/transaction-base-service.ts:12](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L12)
 
 ## Properties
 
@@ -48,7 +48,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L39)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L39)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L37)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L37)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L36)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L36)
 
 ## Accessors
 
@@ -174,7 +174,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -196,7 +196,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -215,7 +215,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -238,7 +238,7 @@ Builds and returns a template file that can be downloaded and filled in
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L56)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L56)
 
 ___
 
@@ -266,7 +266,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L67)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L67)
 
 ___
 
@@ -294,13 +294,13 @@ Method for pre-processing a batch job
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L50)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L50)
 
 ___
 
 ### prepareBatchJobForProcessing
 
-**prepareBatchJobForProcessing**(`batchJob`, `req`): `Promise`<[`CreateBatchJobInput`](../index.md#createbatchjobinput)\>
+**prepareBatchJobForProcessing**(`batchJob`, `req`): `Promise`<[`CreateBatchJobInput`](../types/CreateBatchJobInput.md)\>
 
 Method for preparing a batch job for processing
 
@@ -308,12 +308,12 @@ Method for preparing a batch job for processing
 
 | Name |
 | :------ |
-| `batchJob` | [`CreateBatchJobInput`](../index.md#createbatchjobinput) |
+| `batchJob` | [`CreateBatchJobInput`](../types/CreateBatchJobInput.md) |
 | `req` | `Request` |
 
 #### Returns
 
-`Promise`<[`CreateBatchJobInput`](../index.md#createbatchjobinput)\>
+`Promise`<[`CreateBatchJobInput`](../types/CreateBatchJobInput.md)\>
 
 -`Promise`: 
 	-`CreateBatchJobInput`: 
@@ -327,7 +327,7 @@ Method for preparing a batch job for processing
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L41)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L41)
 
 ___
 
@@ -355,7 +355,7 @@ Method does the actual processing of the job. Should report back on the progress
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L54)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:54](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L54)
 
 ___
 
@@ -379,7 +379,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/batch-job-strategy.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/batch-job-strategy.ts#L58)
+[packages/medusa/src/interfaces/batch-job-strategy.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/batch-job-strategy.ts#L58)
 
 ___
 
@@ -409,7 +409,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -439,4 +439,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

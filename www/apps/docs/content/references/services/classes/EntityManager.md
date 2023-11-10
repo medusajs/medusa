@@ -89,7 +89,7 @@ ___
 
 ### repositories
 
- `Protected` **repositories**: `Map`<[`EntityTarget`](../index.md#entitytarget)<`any`\>, [`Repository`](Repository.md)<`any`\>\>
+ `Protected` **repositories**: `Map`<[`EntityTarget`](../types/EntityTarget.md)<`any`\>, [`Repository`](Repository.md)<`any`\>\>
 
 Once created and then reused by repositories.
 Created as a future replacement for the #repositories to provide a bit more perf optimization.
@@ -126,9 +126,9 @@ Return the AVG of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -159,7 +159,7 @@ Note: this method uses TRUNCATE and may not work as you expect in transactions o
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -192,7 +192,7 @@ Useful for pagination.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> |
 
 #### Returns
@@ -223,8 +223,8 @@ Useful for pagination.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -254,8 +254,8 @@ Note that it copies only properties that present in entity schema.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `plainObject?` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `plainObject?` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -278,8 +278,8 @@ Note that it copies only properties that present in entity schema.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `plainObjects?` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `plainObjects?` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -307,7 +307,7 @@ Creates a new query builder that can be used to build a SQL query.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `alias` | `string` |
 | `queryRunner?` | [`QueryRunner`](../interfaces/QueryRunner.md) |
 
@@ -358,7 +358,7 @@ Decrements some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `conditions` | `any` |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
@@ -394,7 +394,7 @@ Condition(s) cannot be empty.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `any` |
 
 #### Returns
@@ -424,7 +424,7 @@ Checks whether any entity exists with the given condition
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> |
 
 #### Returns
@@ -454,7 +454,7 @@ Finds entities that match given find options.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> |
 
 #### Returns
@@ -486,7 +486,7 @@ but ignores pagination settings (from and take options).
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options?` | [`FindManyOptions`](../interfaces/FindManyOptions.md)<`Entity`\> |
 
 #### Returns
@@ -519,8 +519,8 @@ but ignores pagination settings (from and take options).
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -550,8 +550,8 @@ Finds entities that match given find options.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -581,7 +581,7 @@ Optionally find options or conditions can be applied.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `ids` | `any`[] |
 
 #### Returns
@@ -620,7 +620,7 @@ If entity was not found in the database - returns null.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options` | [`FindOneOptions`](../interfaces/FindOneOptions.md)<`Entity`\> |
 
 #### Returns
@@ -651,8 +651,8 @@ If entity was not found in the database - returns null.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -682,7 +682,7 @@ If entity was not found in the database - returns null.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `id` | `string` \| `number` \| `Date` \| [`ObjectId`](ObjectId.md) |
 
 #### Returns
@@ -721,8 +721,8 @@ If entity was not found in the database - rejects with error.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `where` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `where` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -751,7 +751,7 @@ If entity was not found in the database - rejects with error.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `options` | [`FindOneOptions`](../interfaces/FindOneOptions.md)<`Entity`\> |
 
 #### Returns
@@ -780,7 +780,7 @@ Gets custom entity repository marked with
 
 | Name |
 | :------ |
-| `customRepository` | [`ObjectType`](../index.md#objecttype)<`T`\> |
+| `customRepository` | [`ObjectType`](../types/ObjectType.md)<`T`\> |
 
 #### Returns
 
@@ -830,7 +830,7 @@ Gets entity mixed id.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`any`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`any`\> |
 | `entity` | `any` |
 
 #### Returns
@@ -859,7 +859,7 @@ Gets mongodb repository for the given entity class.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -890,7 +890,7 @@ When single database connection is not used, repository is being obtained from t
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -921,7 +921,7 @@ When single database connection is not used, repository is being obtained from t
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 
 #### Returns
 
@@ -994,7 +994,7 @@ Increments some column by provided value of the entities matched given condition
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `conditions` | `any` |
 | `propertyPath` | `string` |
 | `value` | `string` \| `number` |
@@ -1030,8 +1030,8 @@ You can execute bulk inserts using this method.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `entity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `entity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 
 #### Returns
 
@@ -1060,9 +1060,9 @@ Return the MAX of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1091,9 +1091,9 @@ Merges two entities into one new entity.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `mergeIntoEntity` | `Entity` |
-| `...entityLikes` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\>[] |
+| `...entityLikes` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1119,9 +1119,9 @@ Return the MIN of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1153,8 +1153,8 @@ replaced from the new object.
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `entityLike` | [`DeepPartial`](../index.md#deeppartial)<`Entity`\> |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `entityLike` | [`DeepPartial`](../types/DeepPartial.md)<`Entity`\> |
 
 #### Returns
 
@@ -1264,7 +1264,7 @@ Recovers all given entities.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -1292,7 +1292,7 @@ Recovers a given entity.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -1367,7 +1367,7 @@ Removes a given entity from the database.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `Entity` |
 | `options?` | [`RemoveOptions`](../interfaces/RemoveOptions.md) |
 
@@ -1418,7 +1418,7 @@ Removes a given entity from the database.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `Entity`[] |
 | `options?` | [`RemoveOptions`](../interfaces/RemoveOptions.md) |
 
@@ -1453,7 +1453,7 @@ Condition(s) cannot be empty.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `any` |
 
 #### Returns
@@ -1538,7 +1538,7 @@ If entities do not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options` | [`SaveOptions`](../interfaces/SaveOptions.md) & { `reload`: ``false``  } |
 
@@ -1567,7 +1567,7 @@ If entities do not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -1597,7 +1597,7 @@ If entity does not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options` | [`SaveOptions`](../interfaces/SaveOptions.md) & { `reload`: ``false``  } |
 
@@ -1625,7 +1625,7 @@ If entity does not exist in the database then inserts, otherwise updates.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -1660,7 +1660,7 @@ Condition(s) cannot be empty.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `any` |
 
 #### Returns
@@ -1742,7 +1742,7 @@ Records the delete date of all given entities.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entities` | `T`[] |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -1770,7 +1770,7 @@ Records the delete date of a given entity.
 
 | Name |
 | :------ |
-| `targetOrEntity` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `targetOrEntity` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `entity` | `T` |
 | `options?` | [`SaveOptions`](../interfaces/SaveOptions.md) |
 
@@ -1800,9 +1800,9 @@ Return the SUM of a column
 
 | Name |
 | :------ |
-| `entityClass` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `columnName` | [`PickKeysByType`](../index.md#pickkeysbytype)<`Entity`, `number`\> |
-| `where?` | [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[] |
+| `entityClass` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `columnName` | [`PickKeysByType`](../types/PickKeysByType.md)<`Entity`, `number`\> |
+| `where?` | [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[] |
 
 #### Returns
 
@@ -1857,7 +1857,7 @@ All database operations must be executed using provided entity manager.
 
 | Name |
 | :------ |
-| `isolationLevel` | [`IsolationLevel`](../index.md#isolationlevel) |
+| `isolationLevel` | [`IsolationLevel`](../types/IsolationLevel.md) |
 | `runInTransaction` | (`entityManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`T`\> |
 
 #### Returns
@@ -1890,9 +1890,9 @@ Condition(s) cannot be empty.
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
 | `criteria` | `any` |
-| `partialEntity` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
+| `partialEntity` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> |
 
 #### Returns
 
@@ -1919,8 +1919,8 @@ ___
 
 | Name |
 | :------ |
-| `target` | [`EntityTarget`](../index.md#entitytarget)<`Entity`\> |
-| `entityOrEntities` | [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../index.md#_querydeeppartialentity)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
+| `target` | [`EntityTarget`](../types/EntityTarget.md)<`Entity`\> |
+| `entityOrEntities` | [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\> \| [`_QueryDeepPartialEntity`](../types/QueryDeepPartialEntity.md)<[`ObjectLiteral`](../interfaces/ObjectLiteral.md) extends `Entity` ? `unknown` : `Entity`\>[] |
 | `conflictPathsOrOptions` | `string`[] \| [`UpsertOptions`](../interfaces/UpsertOptions.md)<`Entity`\> |
 
 #### Returns

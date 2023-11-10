@@ -50,7 +50,7 @@ ___
 
 ### read
 
-**read**<`T`\>(`view`): `Promise`<[`ReadableStreamReadResult`](../index.md#readablestreamreadresult)<`T`\>\>
+**read**<`T`\>(`view`): `Promise`<[`ReadableStreamReadResult`](../types/ReadableStreamReadResult.md)<`T`\>\>
 
 | Name | Type |
 | :------ | :------ |
@@ -64,7 +64,7 @@ ___
 
 #### Returns
 
-`Promise`<[`ReadableStreamReadResult`](../index.md#readablestreamreadresult)<`T`\>\>
+`Promise`<[`ReadableStreamReadResult`](../types/ReadableStreamReadResult.md)<`T`\>\>
 
 -`Promise`: 
 	-`ReadableStreamReadResult`: 

@@ -12,7 +12,7 @@ The discount should be applied to applicable items in the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-rule.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-rule.ts#L41)
+[packages/medusa/src/models/discount-rule.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-rule.ts#L41)
 
 ___
 
@@ -24,4 +24,4 @@ The discount should be applied to the checkout total.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-rule.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-rule.ts#L37)
+[packages/medusa/src/models/discount-rule.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-rule.ts#L37)

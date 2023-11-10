@@ -30,7 +30,7 @@ The date with timezone at which the edit was cancelled.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:93](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L93)
+[packages/medusa/src/models/order-edit.ts:93](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L93)
 
 ___
 
@@ -42,7 +42,7 @@ The unique identifier of the user or customer who cancelled the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:90](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L90)
+[packages/medusa/src/models/order-edit.ts:90](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L90)
 
 ___
 
@@ -54,7 +54,7 @@ The details of all the changes on the original order's line items.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L60)
+[packages/medusa/src/models/order-edit.ts:60](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L60)
 
 ___
 
@@ -66,7 +66,7 @@ The date with timezone at which the edit was confirmed.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:78](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L78)
+[packages/medusa/src/models/order-edit.ts:78](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L78)
 
 ___
 
@@ -78,7 +78,7 @@ The unique identifier of the user or customer who confirmed the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:75](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L75)
+[packages/medusa/src/models/order-edit.ts:75](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L75)
 
 ___
 
@@ -94,7 +94,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -106,7 +106,7 @@ The unique identifier of the user or customer who created the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L66)
+[packages/medusa/src/models/order-edit.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L66)
 
 ___
 
@@ -118,7 +118,7 @@ The date with timezone at which the edit was declined.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L87)
+[packages/medusa/src/models/order-edit.ts:87](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L87)
 
 ___
 
@@ -130,7 +130,7 @@ The unique identifier of the user or customer who declined the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L81)
+[packages/medusa/src/models/order-edit.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L81)
 
 ___
 
@@ -142,7 +142,7 @@ An optional note why  the order edit is declined.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:84](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L84)
+[packages/medusa/src/models/order-edit.ts:84](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L84)
 
 ___
 
@@ -154,7 +154,7 @@ The difference between the total amount of the order and total amount of edited 
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:115](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L115)
+[packages/medusa/src/models/order-edit.ts:115](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L115)
 
 ___
 
@@ -166,7 +166,7 @@ The total of discount
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:108](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L108)
+[packages/medusa/src/models/order-edit.ts:108](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L108)
 
 ___
 
@@ -178,7 +178,7 @@ The total of the gift card tax amount
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:113](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L113)
+[packages/medusa/src/models/order-edit.ts:113](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L113)
 
 ___
 
@@ -190,7 +190,7 @@ The total of the gift card amount
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:112](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L112)
+[packages/medusa/src/models/order-edit.ts:112](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L112)
 
 ___
 
@@ -206,7 +206,7 @@ The order edit's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -218,7 +218,7 @@ An optional note with additional details about the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:63](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L63)
+[packages/medusa/src/models/order-edit.ts:63](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L63)
 
 ___
 
@@ -230,7 +230,7 @@ The details of the cloned items from the original order with the new changes. On
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:96](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L96)
+[packages/medusa/src/models/order-edit.ts:96](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L96)
 
 ___
 
@@ -242,7 +242,7 @@ The details of the order that this order edit was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L55)
+[packages/medusa/src/models/order-edit.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L55)
 
 ___
 
@@ -254,7 +254,7 @@ The ID of the order that is edited
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:51](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L51)
+[packages/medusa/src/models/order-edit.ts:51](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L51)
 
 ___
 
@@ -266,7 +266,7 @@ The details of the payment collection used to authorize additional payment if ne
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:104](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L104)
+[packages/medusa/src/models/order-edit.ts:104](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L104)
 
 ___
 
@@ -278,7 +278,7 @@ The ID of the payment collection
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:100](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L100)
+[packages/medusa/src/models/order-edit.ts:100](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L100)
 
 ___
 
@@ -290,7 +290,7 @@ The date with timezone at which the edit was requested.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L72)
+[packages/medusa/src/models/order-edit.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L72)
 
 ___
 
@@ -302,7 +302,7 @@ The unique identifier of the user or customer who requested the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L69)
+[packages/medusa/src/models/order-edit.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L69)
 
 ___
 
@@ -314,7 +314,7 @@ The total of the shipping amount
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:107](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L107)
+[packages/medusa/src/models/order-edit.ts:107](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L107)
 
 ___
 
@@ -326,7 +326,7 @@ The status of the order edit.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:117](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L117)
+[packages/medusa/src/models/order-edit.ts:117](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L117)
 
 ___
 
@@ -338,7 +338,7 @@ The total of subtotal
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:111](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L111)
+[packages/medusa/src/models/order-edit.ts:111](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L111)
 
 ___
 
@@ -350,7 +350,7 @@ The total of tax
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:109](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L109)
+[packages/medusa/src/models/order-edit.ts:109](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L109)
 
 ___
 
@@ -362,7 +362,7 @@ The total amount of the edited order.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:110](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L110)
+[packages/medusa/src/models/order-edit.ts:110](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L110)
 
 ___
 
@@ -378,7 +378,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -394,7 +394,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:123](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L123)
+[packages/medusa/src/models/order-edit.ts:123](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L123)
 
 ___
 
@@ -410,4 +410,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/order-edit.ts:131](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order-edit.ts#L131)
+[packages/medusa/src/models/order-edit.ts:131](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order-edit.ts#L131)

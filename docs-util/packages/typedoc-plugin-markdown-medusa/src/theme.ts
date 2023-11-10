@@ -386,20 +386,14 @@ export class MarkdownTheme extends Theme {
       return {}
     }
 
-    const optionKey =
-      Object.keys(this.formattingOptions).find((key) => {
-        if (key === "*") {
-          return false
-        }
+    const applicableOptions: FormattingOptionType[] = []
 
-        const keyPattern = new RegExp(key)
-        if (keyPattern.test(this.location)) {
-          return true
-        }
-      }) || "*"
+    Object.keys(this.formattingOptions).forEach((key) => {
+      if (key === "*" || new RegExp(key).test(this.location)) {
+        applicableOptions.push(this.formattingOptions[key])
+      }
+    })
 
-    return optionKey in this.formattingOptions
-      ? this.formattingOptions[optionKey]
-      : {}
+    return Object.assign({}, ...applicableOptions)
   }
 }

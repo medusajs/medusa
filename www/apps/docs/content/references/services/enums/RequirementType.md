@@ -12,7 +12,7 @@ The shipping option can only be applied if the subtotal is less than the require
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L29)
+[packages/medusa/src/models/shipping-option-requirement.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L29)
 
 ___
 
@@ -24,4 +24,4 @@ The shipping option can only be applied if the subtotal is greater than the requ
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-option-requirement.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-option-requirement.ts#L25)
+[packages/medusa/src/models/shipping-option-requirement.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-option-requirement.ts#L25)

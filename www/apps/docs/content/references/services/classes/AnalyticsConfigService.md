@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies.md) |
 
 #### Overrides
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:21](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/analytics-config.ts#L21)
+[packages/medusa/src/services/analytics-config.ts:21](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/analytics-config.ts#L21)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/analytics-config.ts#L18)
+[packages/medusa/src/services/analytics-config.ts:18](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/analytics-config.ts#L18)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/analytics-config.ts#L19)
+[packages/medusa/src/services/analytics-config.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/analytics-config.ts#L19)
 
 ## Accessors
 
@@ -134,7 +134,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -156,7 +156,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -171,7 +171,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -186,7 +186,7 @@ Creates an analytics config.
 | Name |
 | :------ |
 | `userId` | `string` |
-| `data` | [`CreateAnalyticsConfig`](../index.md#createanalyticsconfig) |
+| `data` | [`CreateAnalyticsConfig`](../types/CreateAnalyticsConfig.md) |
 
 #### Returns
 
@@ -197,7 +197,7 @@ Creates an analytics config.
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/analytics-config.ts#L50)
+[packages/medusa/src/services/analytics-config.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/analytics-config.ts#L50)
 
 ___
 
@@ -221,7 +221,7 @@ Deletes an analytics config.
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:94](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/analytics-config.ts#L94)
+[packages/medusa/src/services/analytics-config.ts:94](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/analytics-config.ts#L94)
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/analytics-config.ts#L28)
+[packages/medusa/src/services/analytics-config.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/analytics-config.ts#L28)
 
 ___
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -285,7 +285,7 @@ Updates an analytics config. If the config does not exist, it will be created in
 | Name |
 | :------ |
 | `userId` | `string` |
-| `update` | [`UpdateAnalyticsConfig`](../index.md#updateanalyticsconfig) |
+| `update` | [`UpdateAnalyticsConfig`](../types/UpdateAnalyticsConfig.md) |
 
 #### Returns
 
@@ -296,7 +296,7 @@ Updates an analytics config. If the config does not exist, it will be created in
 
 #### Defined in
 
-[packages/medusa/src/services/analytics-config.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/analytics-config.ts#L65)
+[packages/medusa/src/services/analytics-config.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/analytics-config.ts#L65)
 
 ___
 
@@ -322,4 +322,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

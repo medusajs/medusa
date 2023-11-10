@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ The details of the customer that this notification was sent to.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L36)
+[packages/medusa/src/models/notification.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L36)
 
 ___
 
@@ -58,7 +58,7 @@ The ID of the customer that this notification was sent to.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L32)
+[packages/medusa/src/models/notification.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L32)
 
 ___
 
@@ -70,7 +70,7 @@ The data that the Notification was sent with. This contains all the data necessa
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L42)
+[packages/medusa/src/models/notification.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L42)
 
 ___
 
@@ -82,7 +82,7 @@ The name of the event that the notification was sent for.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L20)
+[packages/medusa/src/models/notification.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L20)
 
 ___
 
@@ -98,7 +98,7 @@ The notification's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -110,7 +110,7 @@ The notification's parent ID
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L45)
+[packages/medusa/src/models/notification.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L45)
 
 ___
 
@@ -122,7 +122,7 @@ The details of the parent notification.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L49)
+[packages/medusa/src/models/notification.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L49)
 
 ___
 
@@ -134,7 +134,7 @@ The notification provider used to send the notification.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L59)
+[packages/medusa/src/models/notification.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L59)
 
 ___
 
@@ -146,7 +146,7 @@ The ID of the notification provider used to send the notification.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L55)
+[packages/medusa/src/models/notification.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L55)
 
 ___
 
@@ -158,7 +158,7 @@ The details of all resends of the notification.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L52)
+[packages/medusa/src/models/notification.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L52)
 
 ___
 
@@ -170,7 +170,7 @@ The ID of the resource that the Notification refers to.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L28)
+[packages/medusa/src/models/notification.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L28)
 
 ___
 
@@ -182,7 +182,7 @@ The type of resource that the Notification refers to.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L24)
+[packages/medusa/src/models/notification.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L24)
 
 ___
 
@@ -194,7 +194,7 @@ The address that the Notification was sent to. This will usually be an email add
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L39)
+[packages/medusa/src/models/notification.ts:39](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L39)
 
 ___
 
@@ -210,7 +210,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -226,4 +226,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/notification.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/notification.ts#L65)
+[packages/medusa/src/models/notification.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/notification.ts#L65)

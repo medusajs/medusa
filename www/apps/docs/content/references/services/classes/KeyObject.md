@@ -67,7 +67,7 @@ ___
 
 ### asymmetricKeyType
 
- `Optional` **asymmetricKeyType**: [`KeyType`](../index.md#keytype)
+ `Optional` **asymmetricKeyType**: [`KeyType`](../types/KeyType.md)
 
 For asymmetric keys, this property represents the type of the key. Supported key
 types are:
@@ -114,7 +114,7 @@ ___
 
 ### type
 
- **type**: [`KeyObjectType`](../index.md#keyobjecttype)
+ **type**: [`KeyObjectType`](../types/KeyObjectType.md)
 
 Depending on the type of this `KeyObject`, this property is either`'secret'` for secret (symmetric) keys, `'public'` for public (asymmetric) keys
 or `'private'` for private (asymmetric) keys.

@@ -30,7 +30,7 @@ The details of the billing address associated with the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:291](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L291)
+[packages/medusa/src/models/cart.ts:291](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L291)
 
 ___
 
@@ -42,7 +42,7 @@ The billing address's ID
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:285](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L285)
+[packages/medusa/src/models/cart.ts:285](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L285)
 
 ___
 
@@ -54,7 +54,7 @@ The date with timezone at which the cart was completed.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:376](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L376)
+[packages/medusa/src/models/cart.ts:376](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L376)
 
 ___
 
@@ -66,7 +66,7 @@ The context of the cart which can include info like IP or user agent.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:385](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L385)
+[packages/medusa/src/models/cart.ts:385](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L385)
 
 ___
 
@@ -82,7 +82,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -94,7 +94,7 @@ The details of the customer the cart belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:350](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L350)
+[packages/medusa/src/models/cart.ts:350](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L350)
 
 ___
 
@@ -106,7 +106,7 @@ The customer's ID
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:346](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L346)
+[packages/medusa/src/models/cart.ts:346](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L346)
 
 ___
 
@@ -122,7 +122,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -134,7 +134,7 @@ The total of discount rounded
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:400](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L400)
+[packages/medusa/src/models/cart.ts:400](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L400)
 
 ___
 
@@ -146,7 +146,7 @@ An array of details of all discounts applied to the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:328](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L328)
+[packages/medusa/src/models/cart.ts:328](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L328)
 
 ___
 
@@ -158,7 +158,7 @@ The email associated with the cart
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:281](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L281)
+[packages/medusa/src/models/cart.ts:281](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L281)
 
 ___
 
@@ -170,7 +170,7 @@ The total of gift cards with taxes
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:410](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L410)
+[packages/medusa/src/models/cart.ts:410](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L410)
 
 ___
 
@@ -182,7 +182,7 @@ The total of gift cards
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:409](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L409)
+[packages/medusa/src/models/cart.ts:409](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L409)
 
 ___
 
@@ -194,7 +194,7 @@ An array of details of all gift cards applied to the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:342](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L342)
+[packages/medusa/src/models/cart.ts:342](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L342)
 
 ___
 
@@ -210,7 +210,7 @@ The cart's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -222,7 +222,7 @@ Randomly generated key used to continue the completion of a cart in case of fail
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:382](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L382)
+[packages/medusa/src/models/cart.ts:382](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L382)
 
 ___
 
@@ -234,7 +234,7 @@ The total of items with taxes
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:402](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L402)
+[packages/medusa/src/models/cart.ts:402](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L402)
 
 ___
 
@@ -246,7 +246,7 @@ The line items added to the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:306](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L306)
+[packages/medusa/src/models/cart.ts:306](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L306)
 
 ___
 
@@ -258,7 +258,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:388](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L388)
+[packages/medusa/src/models/cart.ts:388](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L388)
 
 ___
 
@@ -268,7 +268,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:278](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L278)
+[packages/medusa/src/models/cart.ts:278](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L278)
 
 ___
 
@@ -280,7 +280,7 @@ The details of the payment associated with the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:365](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L365)
+[packages/medusa/src/models/cart.ts:365](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L365)
 
 ___
 
@@ -292,7 +292,7 @@ The date with timezone at which the payment was authorized.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:379](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L379)
+[packages/medusa/src/models/cart.ts:379](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L379)
 
 ___
 
@@ -304,7 +304,7 @@ The payment's ID if available
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:361](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L361)
+[packages/medusa/src/models/cart.ts:361](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L361)
 
 ___
 
@@ -316,7 +316,7 @@ The details of the selected payment session in the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:352](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L352)
+[packages/medusa/src/models/cart.ts:352](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L352)
 
 ___
 
@@ -328,7 +328,7 @@ The details of all payment sessions created on the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:357](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L357)
+[packages/medusa/src/models/cart.ts:357](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L357)
 
 ___
 
@@ -340,7 +340,7 @@ The total of discount
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:401](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L401)
+[packages/medusa/src/models/cart.ts:401](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L401)
 
 ___
 
@@ -352,7 +352,7 @@ The amount that can be refunded
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:408](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L408)
+[packages/medusa/src/models/cart.ts:408](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L408)
 
 ___
 
@@ -364,7 +364,7 @@ The total amount refunded if the order associated with this cart is returned.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:405](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L405)
+[packages/medusa/src/models/cart.ts:405](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L405)
 
 ___
 
@@ -376,7 +376,7 @@ The details of the region associated with the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:314](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L314)
+[packages/medusa/src/models/cart.ts:314](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L314)
 
 ___
 
@@ -388,7 +388,7 @@ The region's ID
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:310](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L310)
+[packages/medusa/src/models/cart.ts:310](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L310)
 
 ___
 
@@ -400,7 +400,7 @@ The details of the sales channel associated with the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:397](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L397)
+[packages/medusa/src/models/cart.ts:397](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L397)
 
 ___
 
@@ -412,7 +412,7 @@ The sales channel ID the cart is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:391](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L391)
+[packages/medusa/src/models/cart.ts:391](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L391)
 
 ___
 
@@ -424,7 +424,7 @@ The details of the shipping address associated with the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:301](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L301)
+[packages/medusa/src/models/cart.ts:301](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L301)
 
 ___
 
@@ -436,7 +436,7 @@ The shipping address's ID
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:295](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L295)
+[packages/medusa/src/models/cart.ts:295](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L295)
 
 ___
 
@@ -448,7 +448,7 @@ The details of the shipping methods added to the cart.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:370](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L370)
+[packages/medusa/src/models/cart.ts:370](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L370)
 
 ___
 
@@ -460,7 +460,7 @@ The total of shipping with taxes
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:403](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L403)
+[packages/medusa/src/models/cart.ts:403](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L403)
 
 ___
 
@@ -472,7 +472,7 @@ The total of shipping
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:399](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L399)
+[packages/medusa/src/models/cart.ts:399](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L399)
 
 ___
 
@@ -484,7 +484,7 @@ The subtotal of the cart
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:407](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L407)
+[packages/medusa/src/models/cart.ts:407](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L407)
 
 ___
 
@@ -496,7 +496,7 @@ The total of tax
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:404](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L404)
+[packages/medusa/src/models/cart.ts:404](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L404)
 
 ___
 
@@ -508,7 +508,7 @@ The total amount of the cart
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:406](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L406)
+[packages/medusa/src/models/cart.ts:406](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L406)
 
 ___
 
@@ -520,7 +520,7 @@ The cart's type.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:373](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L373)
+[packages/medusa/src/models/cart.ts:373](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L373)
 
 ___
 
@@ -536,7 +536,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -552,7 +552,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:416](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L416)
+[packages/medusa/src/models/cart.ts:416](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L416)
 
 ___
 
@@ -568,4 +568,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:426](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L426)
+[packages/medusa/src/models/cart.ts:426](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L426)

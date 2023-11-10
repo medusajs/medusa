@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-16) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-16.md) |
 
 #### Overrides
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L28)
+[packages/medusa/src/services/note.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L28)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L26)
+[packages/medusa/src/services/note.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L26)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L25)
+[packages/medusa/src/services/note.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L25)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L19)
+[packages/medusa/src/services/note.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L19)
 
 ## Accessors
 
@@ -152,7 +152,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -174,7 +174,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -189,7 +189,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -216,7 +216,7 @@ Creates a note associated with a given author
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:119](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L119)
+[packages/medusa/src/services/note.ts:119](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L119)
 
 ___
 
@@ -240,7 +240,7 @@ Deletes a given note
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:177](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L177)
+[packages/medusa/src/services/note.ts:177](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L177)
 
 ___
 
@@ -254,7 +254,7 @@ Fetches all notes related to the given selector
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Note`](Note.md)\> | the query object for find |
+| `selector` | [`Selector`](../types/Selector.md)<[`Note`](Note.md)\> | the query object for find |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Note`](Note.md)\> | the configuration used to find the objects. contains relations, skip, and take. |
 
 #### Returns
@@ -267,7 +267,7 @@ Fetches all notes related to the given selector
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:77](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L77)
+[packages/medusa/src/services/note.ts:77](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L77)
 
 ___
 
@@ -281,7 +281,7 @@ Fetches all notes related to the given selector
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Note`](Note.md)\> | the query object for find |
+| `selector` | [`Selector`](../types/Selector.md)<[`Note`](Note.md)\> | the query object for find |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Note`](Note.md)\> | the configuration used to find the objects. contains relations, skip, and take. |
 
 #### Returns
@@ -294,7 +294,7 @@ Fetches all notes related to the given selector
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:98](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L98)
+[packages/medusa/src/services/note.ts:98](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L98)
 
 ___
 
@@ -320,7 +320,7 @@ Retrieves a specific note.
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L42)
+[packages/medusa/src/services/note.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L42)
 
 ___
 
@@ -346,7 +346,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -372,7 +372,7 @@ Updates a given note with a new value
 
 #### Defined in
 
-[packages/medusa/src/services/note.ts:155](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/note.ts#L155)
+[packages/medusa/src/services/note.ts:155](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/note.ts#L155)
 
 ___
 
@@ -398,4 +398,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

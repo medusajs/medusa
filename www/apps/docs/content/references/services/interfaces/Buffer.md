@@ -40,7 +40,7 @@ ___
 
 ### buffer
 
- `Readonly` **buffer**: [`ArrayBufferLike`](../index.md#arraybufferlike)
+ `Readonly` **buffer**: [`ArrayBufferLike`](../types/ArrayBufferLike.md)
 
 The ArrayBuffer instance referenced by the array.
 
@@ -515,7 +515,7 @@ console.log(buf.fill('zz', 'hex'));
 | `value` | `string` \| `number` \| `Uint8Array` | The value with which to fill `buf`. Empty value (string, Uint8Array, Buffer) is coerced to `0`. |
 | `offset?` | `number` | Number of bytes to skip before starting to fill `buf`. |
 | `end?` | `number` | Where to stop filling `buf` (not inclusive). |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | The encoding for `value` if `value` is a string. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | The encoding for `value` if `value` is a string. |
 
 #### Returns
 
@@ -775,7 +775,7 @@ console.log(buf.includes('this', 4));
 | :------ | :------ |
 | `value` | `string` \| `number` \| [`Buffer`](../index.md#buffer) | What to search for. |
 | `byteOffset?` | `number` | Where to begin searching in `buf`. If negative, then offset is calculated from the end of `buf`. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | If `value` is a string, this is its encoding. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | If `value` is a string, this is its encoding. |
 
 #### Returns
 
@@ -869,7 +869,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
 | :------ | :------ |
 | `value` | `string` \| `number` \| `Uint8Array` | What to search for. |
 | `byteOffset?` | `number` | Where to begin searching in `buf`. If negative, then offset is calculated from the end of `buf`. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`. |
 
 #### Returns
 
@@ -1034,7 +1034,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
 | :------ | :------ |
 | `value` | `string` \| `number` \| `Uint8Array` | What to search for. |
 | `byteOffset?` | `number` | Where to begin searching in `buf`. If negative, then offset is calculated from the end of `buf`. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`. |
 
 #### Returns
 
@@ -2944,7 +2944,7 @@ console.log(buf2.toString(undefined, 0, 3));
 
 | Name | Description |
 | :------ | :------ |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | The character encoding to use. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | The character encoding to use. |
 | `start?` | `number` | The byte offset to start decoding at. |
 | `end?` | `number` | The byte offset to stop decoding at (not inclusive). |
 
@@ -3106,7 +3106,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 | Name | Description |
 | :------ | :------ |
 | `string` | `string` | String to write to `buf`. |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) | The character encoding of `string`. |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) | The character encoding of `string`. |
 
 #### Returns
 
@@ -3130,7 +3130,7 @@ docs-util/node_modules/@types/node/buffer.d.ts:661
 | :------ |
 | `string` | `string` |
 | `offset` | `number` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 
 #### Returns
 
@@ -3151,7 +3151,7 @@ docs-util/node_modules/@types/node/buffer.d.ts:662
 | `string` | `string` |
 | `offset` | `number` |
 | `length` | `number` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 
 #### Returns
 

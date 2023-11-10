@@ -40,7 +40,7 @@ Map of the index of the inserted document to the id of the inserted document
 
 #### Index signature
 
-▪ [key: `number`]: [`InferIdType`](../index.md#inferidtype)<`TSchema`\>
+▪ [key: `number`]: [`InferIdType`](../types/InferIdType.md)<`TSchema`\>
 
 #### Defined in
 

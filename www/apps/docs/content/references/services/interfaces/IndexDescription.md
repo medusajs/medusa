@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [`Pick`](../index.md#pick)<[`CreateIndexesOptions`](CreateIndexesOptions.md), ``"background"`` \| ``"unique"`` \| ``"partialFilterExpression"`` \| ``"sparse"`` \| ``"hidden"`` \| ``"expireAfterSeconds"`` \| ``"storageEngine"`` \| ``"version"`` \| ``"weights"`` \| ``"default_language"`` \| ``"language_override"`` \| ``"textIndexVersion"`` \| ``"2dsphereIndexVersion"`` \| ``"bits"`` \| ``"min"`` \| ``"max"`` \| ``"bucketSize"`` \| ``"wildcardProjection"``\>
+- [`Pick`](../types/Pick.md)<[`CreateIndexesOptions`](CreateIndexesOptions.md), ``"background"`` \| ``"unique"`` \| ``"partialFilterExpression"`` \| ``"sparse"`` \| ``"hidden"`` \| ``"expireAfterSeconds"`` \| ``"storageEngine"`` \| ``"version"`` \| ``"weights"`` \| ``"default_language"`` \| ``"language_override"`` \| ``"textIndexVersion"`` \| ``"2dsphereIndexVersion"`` \| ``"bits"`` \| ``"min"`` \| ``"max"`` \| ``"bucketSize"`` \| ``"wildcardProjection"``\>
 
   ↳ **`IndexDescription`**
 
@@ -124,7 +124,7 @@ ___
 
 ### key
 
- **key**: { `[key: string]`: [`IndexDirection`](../index.md#indexdirection);  } \| `Map`<`string`, [`IndexDirection`](../index.md#indexdirection)\>
+ **key**: { `[key: string]`: [`IndexDirection`](../types/IndexDirection.md);  } \| `Map`<`string`, [`IndexDirection`](../types/IndexDirection.md)\>
 
 #### Defined in
 

@@ -1461,7 +1461,7 @@ ___
 
 | Name |
 | :------ |
-| `options?` | [`EJSONOptions`](../index.md#ejsonoptions) |
+| `options?` | [`EJSONOptions`](../types/EJSONOptions.md) |
 
 #### Returns
 
@@ -1737,7 +1737,7 @@ ___
 | :------ |
 | `doc` | `object` |
 | `doc.$numberLong` | `string` |
-| `options?` | [`EJSONOptions`](../index.md#ejsonoptions) |
+| `options?` | [`EJSONOptions`](../types/EJSONOptions.md) |
 
 #### Returns
 

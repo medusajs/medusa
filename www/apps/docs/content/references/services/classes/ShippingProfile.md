@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ The shipping profile's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L61)
+[packages/medusa/src/models/shipping-profile.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L61)
 
 ___
 
@@ -90,7 +90,7 @@ The name given to the Shipping profile - this may be displayed to the Customer.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L38)
+[packages/medusa/src/models/shipping-profile.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L38)
 
 ___
 
@@ -102,7 +102,7 @@ The details of the products that the Shipping Profile defines Shipping Options f
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L55)
+[packages/medusa/src/models/shipping-profile.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L55)
 
 ___
 
@@ -114,7 +114,7 @@ The details of the shipping options that can be used to create shipping methods 
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L58)
+[packages/medusa/src/models/shipping-profile.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L58)
 
 ___
 
@@ -126,7 +126,7 @@ The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L41)
+[packages/medusa/src/models/shipping-profile.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L41)
 
 ___
 
@@ -142,7 +142,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -158,4 +158,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-profile.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-profile.ts#L67)
+[packages/medusa/src/models/shipping-profile.ts:67](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-profile.ts#L67)

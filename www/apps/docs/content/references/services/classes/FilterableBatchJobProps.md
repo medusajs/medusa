@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/batch-job.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/batch-job.ts#L64)
+[packages/medusa/src/types/batch-job.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/batch-job.ts#L64)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/batch-job.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/batch-job.ts#L59)
+[packages/medusa/src/types/batch-job.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/batch-job.ts#L59)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/batch-job.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/batch-job.ts#L46)
+[packages/medusa/src/types/batch-job.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/batch-job.ts#L46)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/batch-job.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/batch-job.ts#L50)
+[packages/medusa/src/types/batch-job.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/batch-job.ts#L50)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/batch-job.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/batch-job.ts#L54)
+[packages/medusa/src/types/batch-job.ts:54](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/batch-job.ts#L54)
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/batch-job.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/batch-job.ts#L69)
+[packages/medusa/src/types/batch-job.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/batch-job.ts#L69)

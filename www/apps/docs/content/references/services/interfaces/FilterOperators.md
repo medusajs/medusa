@@ -8,7 +8,7 @@
 
 ## Hierarchy
 
-- [`NonObjectIdLikeDocument`](../index.md#nonobjectidlikedocument)
+- [`NonObjectIdLikeDocument`](../types/NonObjectIdLikeDocument.md)
 
   ↳ **`FilterOperators`**
 
@@ -26,7 +26,7 @@ ___
 
 ### $bitsAllClear
 
- `Optional` **$bitsAllClear**: [`BitwiseFilter`](../index.md#bitwisefilter)
+ `Optional` **$bitsAllClear**: [`BitwiseFilter`](../types/BitwiseFilter.md)
 
 #### Defined in
 
@@ -36,7 +36,7 @@ ___
 
 ### $bitsAllSet
 
- `Optional` **$bitsAllSet**: [`BitwiseFilter`](../index.md#bitwisefilter)
+ `Optional` **$bitsAllSet**: [`BitwiseFilter`](../types/BitwiseFilter.md)
 
 #### Defined in
 
@@ -46,7 +46,7 @@ ___
 
 ### $bitsAnyClear
 
- `Optional` **$bitsAnyClear**: [`BitwiseFilter`](../index.md#bitwisefilter)
+ `Optional` **$bitsAnyClear**: [`BitwiseFilter`](../types/BitwiseFilter.md)
 
 #### Defined in
 
@@ -56,7 +56,7 @@ ___
 
 ### $bitsAnySet
 
- `Optional` **$bitsAnySet**: [`BitwiseFilter`](../index.md#bitwisefilter)
+ `Optional` **$bitsAnySet**: [`BitwiseFilter`](../types/BitwiseFilter.md)
 
 #### Defined in
 
@@ -305,7 +305,7 @@ ___
 
 ### $type
 
- `Optional` **$type**: ``"string"`` \| ``"symbol"`` \| ``"undefined"`` \| ``"object"`` \| ``"double"`` \| ``"decimal"`` \| ``"timestamp"`` \| ``"int"`` \| ``"bool"`` \| ``"long"`` \| ``"date"`` \| ``"array"`` \| ``"null"`` \| ``"binData"`` \| ``"objectId"`` \| ``"regex"`` \| ``"dbPointer"`` \| ``"javascript"`` \| ``"javascriptWithScope"`` \| ``"minKey"`` \| ``"maxKey"`` \| [`BSONType`](../index.md#bsontype-1)
+ `Optional` **$type**: ``"string"`` \| ``"symbol"`` \| ``"undefined"`` \| ``"object"`` \| ``"double"`` \| ``"decimal"`` \| ``"timestamp"`` \| ``"int"`` \| ``"bool"`` \| ``"long"`` \| ``"date"`` \| ``"array"`` \| ``"null"`` \| ``"binData"`` \| ``"objectId"`` \| ``"regex"`` \| ``"dbPointer"`` \| ``"javascript"`` \| ``"javascriptWithScope"`` \| ``"minKey"`` \| ``"maxKey"`` \| [`BSONType`](../index.md#bsontype)
 
 #### Defined in
 

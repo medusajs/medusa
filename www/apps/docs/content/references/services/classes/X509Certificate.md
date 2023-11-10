@@ -25,7 +25,7 @@ v15.6.0
 
 | Name |
 | :------ |
-| `buffer` | [`BinaryLike`](../index.md#binarylike) |
+| `buffer` | [`BinaryLike`](../types/BinaryLike.md) |
 
 #### Defined in
 
@@ -336,7 +336,7 @@ considered, even if the certificate contains no subject alternative names.
 | Name |
 | :------ |
 | `email` | `string` |
-| `options?` | [`Pick`](../index.md#pick)<[`X509CheckOptions`](../interfaces/X509CheckOptions.md), ``"subject"``\> |
+| `options?` | [`Pick`](../types/Pick.md)<[`X509CheckOptions`](../interfaces/X509CheckOptions.md), ``"subject"``\> |
 
 #### Returns
 

@@ -39,7 +39,7 @@ ___
 
 ### deferrable
 
- `Optional` **deferrable**: [`DeferrableType`](../index.md#deferrabletype)
+ `Optional` **deferrable**: [`DeferrableType`](../types/DeferrableType.md)
 
 What to do with a relation on update of the row containing a foreign key.
 
@@ -90,7 +90,7 @@ ___
 
 ### givenInverseSidePropertyFactory
 
- **givenInverseSidePropertyFactory**: [`PropertyTypeFactory`](../index.md#propertytypefactory)<`any`\>
+ **givenInverseSidePropertyFactory**: [`PropertyTypeFactory`](../types/PropertyTypeFactory.md)<`any`\>
 
 Inverse side of the relation set by user.
 
@@ -458,7 +458,7 @@ ___
 
 ### onDelete
 
- `Optional` **onDelete**: [`OnDeleteType`](../index.md#ondeletetype)
+ `Optional` **onDelete**: [`OnDeleteType`](../types/OnDeleteType.md)
 
 What to do with a relation on deletion of the row containing a foreign key.
 
@@ -470,7 +470,7 @@ ___
 
 ### onUpdate
 
- `Optional` **onUpdate**: [`OnUpdateType`](../index.md#onupdatetype)
+ `Optional` **onUpdate**: [`OnUpdateType`](../types/OnUpdateType.md)
 
 What to do with a relation on update of the row containing a foreign key.
 
@@ -538,7 +538,7 @@ ___
 
 ### relationType
 
- **relationType**: [`RelationType`](../index.md#relationtype)
+ **relationType**: [`RelationType`](../types/RelationType.md)
 
 Relation type, e.g. is it one-to-one, one-to-many, many-to-one or many-to-many.
 

@@ -30,7 +30,7 @@ The details of the billing address associated with the customer.
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L40)
+[packages/medusa/src/models/customer.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L40)
 
 ___
 
@@ -42,7 +42,7 @@ The customer's billing address ID
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L36)
+[packages/medusa/src/models/customer.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L36)
 
 ___
 
@@ -58,7 +58,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -74,7 +74,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -86,7 +86,7 @@ The customer's email
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L26)
+[packages/medusa/src/models/customer.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L26)
 
 ___
 
@@ -98,7 +98,7 @@ The customer's first name
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L29)
+[packages/medusa/src/models/customer.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L29)
 
 ___
 
@@ -110,7 +110,7 @@ The customer groups the customer belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:74](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L74)
+[packages/medusa/src/models/customer.ts:74](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L74)
 
 ___
 
@@ -122,7 +122,7 @@ Whether the customer has an account or not
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L55)
+[packages/medusa/src/models/customer.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L55)
 
 ___
 
@@ -138,7 +138,7 @@ The customer's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -150,7 +150,7 @@ The customer's last name
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L32)
+[packages/medusa/src/models/customer.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L32)
 
 ___
 
@@ -162,7 +162,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:77](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L77)
+[packages/medusa/src/models/customer.ts:77](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L77)
 
 ___
 
@@ -174,7 +174,7 @@ The details of the orders this customer placed.
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L58)
+[packages/medusa/src/models/customer.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L58)
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L49)
+[packages/medusa/src/models/customer.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L49)
 
 ___
 
@@ -196,7 +196,7 @@ The customer's phone number
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L52)
+[packages/medusa/src/models/customer.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L52)
 
 ___
 
@@ -208,7 +208,7 @@ The details of the shipping addresses associated with the customer.
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L43)
+[packages/medusa/src/models/customer.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L43)
 
 ___
 
@@ -224,7 +224,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -240,4 +240,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/customer.ts:83](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/customer.ts#L83)
+[packages/medusa/src/models/customer.ts:83](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/customer.ts#L83)

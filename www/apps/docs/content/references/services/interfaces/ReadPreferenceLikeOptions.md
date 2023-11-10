@@ -44,7 +44,7 @@ ___
 
 ### readPreference
 
- `Optional` **readPreference**: [`ReadPreferenceLike`](../index.md#readpreferencelike) \| { `maxStalenessSeconds?`: `number` ; `mode?`: [`ReadPreferenceMode`](../index.md#readpreferencemode-1) ; `preference?`: [`ReadPreferenceMode`](../index.md#readpreferencemode-1) ; `tags?`: [`TagSet`](../index.md#tagset)[]  }
+ `Optional` **readPreference**: [`ReadPreferenceLike`](../types/ReadPreferenceLike.md) \| { `maxStalenessSeconds?`: `number` ; `mode?`: [`ReadPreferenceMode`](../index.md#readpreferencemode) ; `preference?`: [`ReadPreferenceMode`](../index.md#readpreferencemode) ; `tags?`: [`TagSet`](../types/TagSet.md)[]  }
 
 #### Defined in
 

@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `controller` | [`ReadableStreamController`](../index.md#readablestreamcontroller)<`R`\> |
+| `controller` | [`ReadableStreamController`](../types/ReadableStreamController.md)<`R`\> |
 
 #### Returns
 

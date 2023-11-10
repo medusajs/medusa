@@ -66,7 +66,7 @@ ___
 
 ### preferredSlaves
 
- `Optional` **preferredSlaves**: [`PreferredSlaves`](../index.md#preferredslaves)
+ `Optional` **preferredSlaves**: [`PreferredSlaves`](../types/PreferredSlaves.md)
 
 #### Defined in
 
@@ -200,7 +200,7 @@ ___
 
 ### sentinels
 
- `Optional` **sentinels**: [`Partial`](../index.md#partial)<[`SentinelAddress`](SentinelAddress.md)\>[]
+ `Optional` **sentinels**: [`Partial`](../types/Partial.md)<[`SentinelAddress`](SentinelAddress.md)\>[]
 
 #### Defined in
 

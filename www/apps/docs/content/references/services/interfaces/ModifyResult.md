@@ -36,7 +36,7 @@ ___
 
 ### value
 
- **value**: ``null`` \| [`WithId`](../index.md#withid)<`TSchema`\>
+ **value**: ``null`` \| [`WithId`](../types/WithId.md)<`TSchema`\>
 
 #### Defined in
 

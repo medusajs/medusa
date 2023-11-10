@@ -14,7 +14,7 @@ ___
 
 ### mechanism
 
- `Optional` **mechanism**: [`AuthMechanism`](../index.md#authmechanism-1)
+ `Optional` **mechanism**: [`AuthMechanism`](../index.md#authmechanism)
 
 #### Defined in
 

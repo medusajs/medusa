@@ -243,7 +243,7 @@ docs-util/node_modules/@types/node/globals.d.ts:248
 | Name |
 | :------ |
 | `str` | `string` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `cb?` | () => `void` |
 
 #### Returns
@@ -970,7 +970,7 @@ ___
 
 | Name |
 | :------ |
-| `encoding` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding` | [`BufferEncoding`](../types/BufferEncoding.md) |
 
 #### Returns
 
@@ -1060,7 +1060,7 @@ ___
 | Name |
 | :------ |
 | `chunk` | `string` \| `Uint8Array` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 
 #### Returns
 
@@ -1136,7 +1136,7 @@ docs-util/node_modules/@types/node/globals.d.ts:245
 | Name |
 | :------ |
 | `str` | `string` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `cb?` | (`err?`: ``null`` \| `Error`) => `void` |
 
 #### Returns

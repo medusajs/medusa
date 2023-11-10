@@ -175,7 +175,7 @@ ___
 
 ### readConcern
 
- `Optional` **readConcern**: [`ReadConcernLike`](../index.md#readconcernlike)
+ `Optional` **readConcern**: [`ReadConcernLike`](../types/ReadConcernLike.md)
 
 Specify a read concern for the collection. (only MongoDB 3.2 or higher supported)
 
@@ -187,7 +187,7 @@ ___
 
 ### readPreference
 
- `Optional` **readPreference**: [`ReadPreferenceLike`](../index.md#readpreferencelike)
+ `Optional` **readPreference**: [`ReadPreferenceLike`](../types/ReadPreferenceLike.md)
 
 The preferred read preference (ReadPreference.PRIMARY, ReadPreference.PRIMARY_PREFERRED, ReadPreference.SECONDARY, ReadPreference.SECONDARY_PREFERRED, ReadPreference.NEAREST).
 

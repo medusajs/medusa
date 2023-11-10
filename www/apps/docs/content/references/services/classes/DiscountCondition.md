@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -46,7 +46,7 @@ Customer groups associated with this condition if `type` is `customer_groups`.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:160](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L160)
+[packages/medusa/src/models/discount-condition.ts:160](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L160)
 
 ___
 
@@ -62,7 +62,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -74,7 +74,7 @@ The details of the discount rule associated with the condition.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:90](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L90)
+[packages/medusa/src/models/discount-condition.ts:90](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L90)
 
 ___
 
@@ -86,7 +86,7 @@ The ID of the discount rule associated with the condition
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:86](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L86)
+[packages/medusa/src/models/discount-condition.ts:86](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L86)
 
 ___
 
@@ -102,7 +102,7 @@ The discount condition's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -114,7 +114,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:163](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L163)
+[packages/medusa/src/models/discount-condition.ts:163](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L163)
 
 ___
 
@@ -126,7 +126,7 @@ The operator of the condition. `in` indicates that discountable resources are wi
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:82](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L82)
+[packages/medusa/src/models/discount-condition.ts:82](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L82)
 
 ___
 
@@ -138,7 +138,7 @@ Product collections associated with this condition if `type` is `product_collect
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:146](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L146)
+[packages/medusa/src/models/discount-condition.ts:146](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L146)
 
 ___
 
@@ -150,7 +150,7 @@ Product tags associated with this condition if `type` is `product_tags`.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:132](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L132)
+[packages/medusa/src/models/discount-condition.ts:132](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L132)
 
 ___
 
@@ -162,7 +162,7 @@ Product types associated with this condition if `type` is `product_types`.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:118](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L118)
+[packages/medusa/src/models/discount-condition.ts:118](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L118)
 
 ___
 
@@ -174,7 +174,7 @@ products associated with this condition if `type` is `products`.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:104](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L104)
+[packages/medusa/src/models/discount-condition.ts:104](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L104)
 
 ___
 
@@ -186,7 +186,7 @@ The type of the condition. The type affects the available resources associated w
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L76)
+[packages/medusa/src/models/discount-condition.ts:76](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L76)
 
 ___
 
@@ -202,7 +202,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -218,4 +218,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/discount-condition.ts:169](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/discount-condition.ts#L169)
+[packages/medusa/src/models/discount-condition.ts:169](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/discount-condition.ts#L169)

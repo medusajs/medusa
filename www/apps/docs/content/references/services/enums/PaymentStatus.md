@@ -12,7 +12,7 @@ The order's payment is awaiting capturing.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:127](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L127)
+[packages/medusa/src/models/order.ts:127](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L127)
 
 ___
 
@@ -24,7 +24,7 @@ The order's payment is canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:143](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L143)
+[packages/medusa/src/models/order.ts:143](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L143)
 
 ___
 
@@ -36,7 +36,7 @@ The order's payment is captured.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:131](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L131)
+[packages/medusa/src/models/order.ts:131](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L131)
 
 ___
 
@@ -48,7 +48,7 @@ The order's payment is not paid.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:123](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L123)
+[packages/medusa/src/models/order.ts:123](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L123)
 
 ___
 
@@ -60,7 +60,7 @@ Some of the order's payment amount is refunded.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:135](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L135)
+[packages/medusa/src/models/order.ts:135](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L135)
 
 ___
 
@@ -72,7 +72,7 @@ The order's payment amount is refunded.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:139](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L139)
+[packages/medusa/src/models/order.ts:139](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L139)
 
 ___
 
@@ -84,4 +84,4 @@ The order's payment requires action.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:147](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L147)
+[packages/medusa/src/models/order.ts:147](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L147)

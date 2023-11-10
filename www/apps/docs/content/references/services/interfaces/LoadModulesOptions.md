@@ -33,7 +33,7 @@ ___
 
 ### formatName
 
- `Optional` **formatName**: [`NameFormatter`](../index.md#nameformatter) \| ``"camelCase"``
+ `Optional` **formatName**: [`NameFormatter`](../types/NameFormatter.md) \| ``"camelCase"``
 
 #### Defined in
 

@@ -20,4 +20,4 @@ The unique code that identifies the Gift Card. This is used by the Customer to r
 
 #### Defined in
 
-[packages/medusa/src/types/cart.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/cart.ts#L46)
+[packages/medusa/src/types/cart.ts:46](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/cart.ts#L46)

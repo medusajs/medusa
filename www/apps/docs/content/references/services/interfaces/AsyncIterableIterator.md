@@ -32,7 +32,7 @@ ___
 
 ### next
 
-**next**(`...args`): `Promise`<[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>\>
+**next**(`...args`): `Promise`<[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>\>
 
 #### Parameters
 
@@ -42,7 +42,7 @@ ___
 
 #### Returns
 
-`Promise`<[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>\>
+`Promise`<[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>\>
 
 -`Promise`: 
 	-`IteratorResult`: 
@@ -60,7 +60,7 @@ ___
 
 ### return
 
-`Optional` **return**(`value?`): `Promise`<[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>\>
+`Optional` **return**(`value?`): `Promise`<[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>\>
 
 #### Parameters
 
@@ -70,7 +70,7 @@ ___
 
 #### Returns
 
-`Promise`<[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>\>
+`Promise`<[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>\>
 
 -`Promise`: 
 	-`IteratorResult`: 
@@ -88,7 +88,7 @@ ___
 
 ### throw
 
-`Optional` **throw**(`e?`): `Promise`<[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>\>
+`Optional` **throw**(`e?`): `Promise`<[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>\>
 
 #### Parameters
 
@@ -98,7 +98,7 @@ ___
 
 #### Returns
 
-`Promise`<[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>\>
+`Promise`<[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>\>
 
 -`Promise`: 
 	-`IteratorResult`: 

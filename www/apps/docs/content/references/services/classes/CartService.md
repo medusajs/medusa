@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-3) |
+| `«destructured»` | [`InjectedDependencies`](../types/InjectedDependencies-3.md) |
 
 #### Overrides
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:141](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L141)
+[packages/medusa/src/services/cart.ts:141](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L141)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:114](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L114)
+[packages/medusa/src/services/cart.ts:114](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L114)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:113](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L113)
+[packages/medusa/src/services/cart.ts:113](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L113)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:133](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L133)
+[packages/medusa/src/services/cart.ts:133](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L133)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:125](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L125)
+[packages/medusa/src/services/cart.ts:125](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L125)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L128)
+[packages/medusa/src/services/cart.ts:128](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L128)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:117](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L117)
+[packages/medusa/src/services/cart.ts:117](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L117)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:136](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L136)
+[packages/medusa/src/services/cart.ts:136](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L136)
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:129](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L129)
+[packages/medusa/src/services/cart.ts:129](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L129)
 
 ___
 
@@ -156,7 +156,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:135](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L135)
+[packages/medusa/src/services/cart.ts:135](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L135)
 
 ___
 
@@ -166,7 +166,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:116](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L116)
+[packages/medusa/src/services/cart.ts:116](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L116)
 
 ___
 
@@ -176,7 +176,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:123](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L123)
+[packages/medusa/src/services/cart.ts:123](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L123)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:132](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L132)
+[packages/medusa/src/services/cart.ts:132](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L132)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:124](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L124)
+[packages/medusa/src/services/cart.ts:124](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L124)
 
 ___
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:115](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L115)
+[packages/medusa/src/services/cart.ts:115](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L115)
 
 ___
 
@@ -230,7 +230,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:134](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L134)
+[packages/medusa/src/services/cart.ts:134](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L134)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:139](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L139)
+[packages/medusa/src/services/cart.ts:139](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L139)
 
 ___
 
@@ -250,7 +250,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:119](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L119)
+[packages/medusa/src/services/cart.ts:119](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L119)
 
 ___
 
@@ -260,7 +260,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:138](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L138)
+[packages/medusa/src/services/cart.ts:138](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L138)
 
 ___
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:118](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L118)
+[packages/medusa/src/services/cart.ts:118](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L118)
 
 ___
 
@@ -280,7 +280,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:122](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L122)
+[packages/medusa/src/services/cart.ts:122](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L122)
 
 ___
 
@@ -290,7 +290,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:121](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L121)
+[packages/medusa/src/services/cart.ts:121](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L121)
 
 ___
 
@@ -300,7 +300,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:112](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L112)
+[packages/medusa/src/services/cart.ts:112](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L112)
 
 ___
 
@@ -310,7 +310,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:126](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L126)
+[packages/medusa/src/services/cart.ts:126](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L126)
 
 ___
 
@@ -320,7 +320,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:127](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L127)
+[packages/medusa/src/services/cart.ts:127](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L127)
 
 ___
 
@@ -330,7 +330,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:120](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L120)
+[packages/medusa/src/services/cart.ts:120](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L120)
 
 ___
 
@@ -340,7 +340,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:130](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L130)
+[packages/medusa/src/services/cart.ts:130](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L130)
 
 ___
 
@@ -350,7 +350,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:131](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L131)
+[packages/medusa/src/services/cart.ts:131](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L131)
 
 ___
 
@@ -364,7 +364,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -382,7 +382,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:106](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L106)
+[packages/medusa/src/services/cart.ts:106](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L106)
 
 ## Accessors
 
@@ -402,7 +402,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -433,7 +433,7 @@ Use [addOrUpdateLineItems](CartService.md#addorupdatelineitems) instead.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:652](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L652)
+[packages/medusa/src/services/cart.ts:652](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L652)
 
 ___
 
@@ -461,7 +461,7 @@ to have has_shipping to false. Finally, the adjustments will be updated.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:792](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L792)
+[packages/medusa/src/services/cart.ts:792](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L792)
 
 ___
 
@@ -492,7 +492,7 @@ shop.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2177](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2177)
+[packages/medusa/src/services/cart.ts:2177](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2177)
 
 ___
 
@@ -520,7 +520,7 @@ if a free shipping was present, we set shipping methods to original amount
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1111](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1111)
+[packages/medusa/src/services/cart.ts:1111](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1111)
 
 ___
 
@@ -548,7 +548,7 @@ Throws if discount regions does not include the cart region
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1522](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1522)
+[packages/medusa/src/services/cart.ts:1522](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1522)
 
 ___
 
@@ -576,7 +576,7 @@ Throws if discount regions does not include the cart region
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1534](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1534)
+[packages/medusa/src/services/cart.ts:1534](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1534)
 
 ___
 
@@ -599,7 +599,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1487](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1487)
+[packages/medusa/src/services/cart.ts:1487](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1487)
 
 ___
 
@@ -621,7 +621,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -636,7 +636,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -666,7 +666,7 @@ set the payment on the cart.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1701](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1701)
+[packages/medusa/src/services/cart.ts:1701](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1701)
 
 ___
 
@@ -680,7 +680,7 @@ Creates a cart.
 
 | Name | Description |
 | :------ | :------ |
-| `data` | [`CartCreateProps`](../index.md#cartcreateprops) | the data to create the cart with |
+| `data` | [`CartCreateProps`](../types/CartCreateProps.md) | the data to create the cart with |
 
 #### Returns
 
@@ -691,7 +691,7 @@ Creates a cart.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:350](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L350)
+[packages/medusa/src/services/cart.ts:350](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L350)
 
 ___
 
@@ -716,7 +716,7 @@ Creates or fetches a user based on an email.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1373](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1373)
+[packages/medusa/src/services/cart.ts:1373](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1373)
 
 ___
 
@@ -738,24 +738,24 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2628](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2628)
+[packages/medusa/src/services/cart.ts:2628](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2628)
 
 ___
 
 ### decorateTotals
 
-**decorateTotals**(`cart`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../index.md#withrequiredproperty)<[`Cart`](Cart.md), ``"total"``\>\>
+**decorateTotals**(`cart`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.md)<[`Cart`](Cart.md), ``"total"``\>\>
 
 #### Parameters
 
 | Name | Description |
 | :------ | :------ |
 | `cart` | [`Cart`](Cart.md) | A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim. |
-| `totalsConfig` | [`TotalsConfig`](../index.md#totalsconfig) |
+| `totalsConfig` | [`TotalsConfig`](../types/TotalsConfig.md) |
 
 #### Returns
 
-`Promise`<[`WithRequiredProperty`](../index.md#withrequiredproperty)<[`Cart`](Cart.md), ``"total"``\>\>
+`Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.md)<[`Cart`](Cart.md), ``"total"``\>\>
 
 -`Promise`: 
 	-`WithRequiredProperty`: 
@@ -764,7 +764,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2680](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2680)
+[packages/medusa/src/services/cart.ts:2680](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2680)
 
 ___
 
@@ -777,8 +777,8 @@ ___
 | Name |
 | :------ |
 | `cart` | [`Cart`](Cart.md) |
-| `totalsToSelect` | [`TotalField`](../index.md#totalfield)[] |
-| `options` | [`TotalsConfig`](../index.md#totalsconfig) |
+| `totalsToSelect` | [`TotalField`](../types/TotalField.md)[] |
+| `options` | [`TotalsConfig`](../types/TotalsConfig.md) |
 
 #### Returns
 
@@ -793,7 +793,7 @@ Use decorateTotals instead
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2863](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2863)
+[packages/medusa/src/services/cart.ts:2863](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2863)
 
 ___
 
@@ -818,7 +818,7 @@ Deletes a cart from the database. Completed carts cannot be deleted.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2547](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2547)
+[packages/medusa/src/services/cart.ts:2547](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2547)
 
 ___
 
@@ -843,7 +843,7 @@ Removes a payment session from the cart.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2070](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2070)
+[packages/medusa/src/services/cart.ts:2070](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2070)
 
 ___
 
@@ -865,7 +865,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2660](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2660)
+[packages/medusa/src/services/cart.ts:2660](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2660)
 
 ___
 
@@ -891,7 +891,7 @@ throws if custom options is not empty and no shipping option corresponds to opti
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2310](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2310)
+[packages/medusa/src/services/cart.ts:2310](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2310)
 
 ___
 
@@ -914,7 +914,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2914](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2914)
+[packages/medusa/src/services/cart.ts:2914](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2914)
 
 ___
 
@@ -937,7 +937,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:488](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L488)
+[packages/medusa/src/services/cart.ts:488](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L488)
 
 ___
 
@@ -962,7 +962,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:207](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L207)
+[packages/medusa/src/services/cart.ts:207](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L207)
 
 ___
 
@@ -987,7 +987,7 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1319](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1319)
+[packages/medusa/src/services/cart.ts:1319](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1319)
 
 ___
 
@@ -1009,7 +1009,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2787](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2787)
+[packages/medusa/src/services/cart.ts:2787](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2787)
 
 ___
 
@@ -1034,7 +1034,7 @@ Refreshes a payment session on a cart
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2122](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2122)
+[packages/medusa/src/services/cart.ts:2122](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2122)
 
 ___
 
@@ -1060,7 +1060,7 @@ Removes a discount based on a discount code.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1612](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1612)
+[packages/medusa/src/services/cart.ts:1612](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1612)
 
 ___
 
@@ -1086,7 +1086,7 @@ Removes a line item from the cart.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:520](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L520)
+[packages/medusa/src/services/cart.ts:520](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L520)
 
 ___
 
@@ -1102,7 +1102,7 @@ Gets a cart by id.
 | :------ | :------ |
 | `cartId` | `string` | the id of the cart to get. |
 | `options` | [`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> | the options to get a cart |
-| `totalsConfig` | [`TotalsConfig`](../index.md#totalsconfig) |
+| `totalsConfig` | [`TotalsConfig`](../types/TotalsConfig.md) |
 
 #### Returns
 
@@ -1113,7 +1113,7 @@ Gets a cart by id.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:224](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L224)
+[packages/medusa/src/services/cart.ts:224](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L224)
 
 ___
 
@@ -1127,7 +1127,7 @@ ___
 | :------ |
 | `cartId` | `string` |
 | `options` | [`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> |
-| `totalsConfig` | [`TotalsConfig`](../index.md#totalsconfig) |
+| `totalsConfig` | [`TotalsConfig`](../types/TotalsConfig.md) |
 
 #### Returns
 
@@ -1140,13 +1140,13 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:287](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L287)
+[packages/medusa/src/services/cart.ts:287](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L287)
 
 ___
 
 ### retrieveWithTotals
 
-**retrieveWithTotals**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../index.md#withrequiredproperty)<[`Cart`](Cart.md), ``"total"``\>\>
+**retrieveWithTotals**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.md)<[`Cart`](Cart.md), ``"total"``\>\>
 
 #### Parameters
 
@@ -1154,11 +1154,11 @@ ___
 | :------ |
 | `cartId` | `string` |
 | `options` | [`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> |
-| `totalsConfig` | [`TotalsConfig`](../index.md#totalsconfig) |
+| `totalsConfig` | [`TotalsConfig`](../types/TotalsConfig.md) |
 
 #### Returns
 
-`Promise`<[`WithRequiredProperty`](../index.md#withrequiredproperty)<[`Cart`](Cart.md), ``"total"``\>\>
+`Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.md)<[`Cart`](Cart.md), ``"total"``\>\>
 
 -`Promise`: 
 	-`WithRequiredProperty`: 
@@ -1167,7 +1167,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:315](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L315)
+[packages/medusa/src/services/cart.ts:315](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L315)
 
 ___
 
@@ -1196,7 +1196,7 @@ others metadata fields, setMetadata is provided.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2588](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2588)
+[packages/medusa/src/services/cart.ts:2588](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2588)
 
 ___
 
@@ -1221,7 +1221,7 @@ Selects a payment session for a cart and creates a payment object in the externa
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1775](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1775)
+[packages/medusa/src/services/cart.ts:1775](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1775)
 
 ___
 
@@ -1249,7 +1249,7 @@ that are not available for the cart's region.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1891](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1891)
+[packages/medusa/src/services/cart.ts:1891](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1891)
 
 ___
 
@@ -1275,7 +1275,7 @@ Set's the region of a cart.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2408](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2408)
+[packages/medusa/src/services/cart.ts:2408](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2408)
 
 ___
 
@@ -1301,13 +1301,13 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### transformQueryForTotals\_
 
-`Protected` **transformQueryForTotals_**(`config`): [`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> & { `totalsToSelect`: [`TotalField`](../index.md#totalfield)[]  }
+`Protected` **transformQueryForTotals_**(`config`): [`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> & { `totalsToSelect`: [`TotalField`](../types/TotalField.md)[]  }
 
 #### Parameters
 
@@ -1317,13 +1317,13 @@ ___
 
 #### Returns
 
-[`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> & { `totalsToSelect`: [`TotalField`](../index.md#totalfield)[]  }
+[`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> & { `totalsToSelect`: [`TotalField`](../types/TotalField.md)[]  }
 
--`[`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> & { `totalsToSelect`: [`TotalField`](../index.md#totalfield)[]  }`: (optional) 
+-`[`FindConfig`](../interfaces/FindConfig.md)<[`Cart`](Cart.md)\> & { `totalsToSelect`: [`TotalField`](../types/TotalField.md)[]  }`: (optional) 
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2805](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2805)
+[packages/medusa/src/services/cart.ts:2805](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2805)
 
 ___
 
@@ -1336,7 +1336,7 @@ ___
 | Name |
 | :------ |
 | `cartOrId` | `string` \| [`Cart`](Cart.md) |
-| `data` | [`CartUpdateProps`](../index.md#cartupdateprops) |
+| `data` | [`CartUpdateProps`](../types/CartUpdateProps.md) |
 
 #### Returns
 
@@ -1347,7 +1347,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1152](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1152)
+[packages/medusa/src/services/cart.ts:1152](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1152)
 
 ___
 
@@ -1362,7 +1362,7 @@ Updates the cart's billing address.
 | Name | Description |
 | :------ | :------ |
 | `cart` | [`Cart`](Cart.md) | the cart to update |
-| `addressOrId` | `string` \| [`AddressPayload`](AddressPayload.md) \| [`Partial`](../index.md#partial)<[`Address`](Address.md)\> | the value to set the billing address to |
+| `addressOrId` | `string` \| [`AddressPayload`](AddressPayload.md) \| [`Partial`](../types/Partial.md)<[`Address`](Address.md)\> | the value to set the billing address to |
 | `addrRepo` | [`Repository`](Repository.md)<[`Address`](Address.md)\> | the repository to use for address updates |
 
 #### Returns
@@ -1373,7 +1373,7 @@ Updates the cart's billing address.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1400](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1400)
+[packages/medusa/src/services/cart.ts:1400](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1400)
 
 ___
 
@@ -1398,7 +1398,7 @@ Sets the customer id of a cart
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1355](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1355)
+[packages/medusa/src/services/cart.ts:1355](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1355)
 
 ___
 
@@ -1414,7 +1414,7 @@ Updates a cart's existing line item.
 | :------ | :------ |
 | `cartId` | `string` | the id of the cart to update |
 | `lineItemId` | `string` | the id of the line item to update. |
-| `update` | [`LineItemUpdate`](../index.md#lineitemupdate) |
+| `update` | [`LineItemUpdate`](../types/LineItemUpdate.md) |
 
 #### Returns
 
@@ -1425,7 +1425,7 @@ Updates a cart's existing line item.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:999](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L999)
+[packages/medusa/src/services/cart.ts:999](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L999)
 
 ___
 
@@ -1451,7 +1451,7 @@ Updates the currently selected payment session.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1663](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1663)
+[packages/medusa/src/services/cart.ts:1663](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1663)
 
 ___
 
@@ -1466,7 +1466,7 @@ Updates the cart's shipping address.
 | Name | Description |
 | :------ | :------ |
 | `cart` | [`Cart`](Cart.md) | the cart to update |
-| `addressOrId` | `string` \| [`AddressPayload`](AddressPayload.md) \| [`Partial`](../index.md#partial)<[`Address`](Address.md)\> | the value to set the shipping address to |
+| `addressOrId` | `string` \| [`AddressPayload`](AddressPayload.md) \| [`Partial`](../types/Partial.md)<[`Address`](Address.md)\> | the value to set the shipping address to |
 | `addrRepo` | [`Repository`](Repository.md)<[`Address`](Address.md)\> | the repository to use for address updates |
 
 #### Returns
@@ -1477,7 +1477,7 @@ Updates the cart's shipping address.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:1438](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L1438)
+[packages/medusa/src/services/cart.ts:1438](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L1438)
 
 ___
 
@@ -1501,7 +1501,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:2329](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L2329)
+[packages/medusa/src/services/cart.ts:2329](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L2329)
 
 ___
 
@@ -1517,7 +1517,7 @@ Check if line item's variant belongs to the cart's sales channel.
 | :------ | :------ |
 | `sales_channel_id` | `object` | the cart for the line item |
 | `sales_channel_id.sales_channel_id` | ``null`` \| `string` |
-| `lineItem` | [`LineItemValidateData`](../index.md#lineitemvalidatedata) | the line item being added |
+| `lineItem` | [`LineItemValidateData`](../types/LineItemValidateData.md) | the line item being added |
 
 #### Returns
 
@@ -1528,7 +1528,7 @@ Check if line item's variant belongs to the cart's sales channel.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:618](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L618)
+[packages/medusa/src/services/cart.ts:618](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L618)
 
 ___
 
@@ -1555,7 +1555,7 @@ shipping methods.
 
 #### Defined in
 
-[packages/medusa/src/services/cart.ts:589](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/cart.ts#L589)
+[packages/medusa/src/services/cart.ts:589](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/cart.ts#L589)
 
 ___
 
@@ -1581,4 +1581,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

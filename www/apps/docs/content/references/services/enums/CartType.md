@@ -8,7 +8,7 @@
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:270](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L270)
+[packages/medusa/src/models/cart.ts:270](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L270)
 
 ___
 
@@ -18,7 +18,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:266](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L266)
+[packages/medusa/src/models/cart.ts:266](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L266)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:268](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L268)
+[packages/medusa/src/models/cart.ts:268](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L268)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:269](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L269)
+[packages/medusa/src/models/cart.ts:269](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L269)
 
 ___
 
@@ -48,4 +48,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/cart.ts:267](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L267)
+[packages/medusa/src/models/cart.ts:267](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/cart.ts#L267)

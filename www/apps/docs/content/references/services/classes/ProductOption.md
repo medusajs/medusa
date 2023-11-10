@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ The product option's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/product-option.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option.ts#L34)
+[packages/medusa/src/models/product-option.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option.ts#L34)
 
 ___
 
@@ -90,7 +90,7 @@ The details of the product that this product option belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option.ts#L31)
+[packages/medusa/src/models/product-option.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option.ts#L31)
 
 ___
 
@@ -102,7 +102,7 @@ The ID of the product that this product option belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option.ts#L27)
+[packages/medusa/src/models/product-option.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option.ts#L27)
 
 ___
 
@@ -114,7 +114,7 @@ The title that the Product Option is defined by (e.g. `Size`).
 
 #### Defined in
 
-[packages/medusa/src/models/product-option.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option.ts#L19)
+[packages/medusa/src/models/product-option.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option.ts#L19)
 
 ___
 
@@ -130,7 +130,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -142,7 +142,7 @@ The details of the values of the product option.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option.ts#L24)
+[packages/medusa/src/models/product-option.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option.ts#L24)
 
 ## Methods
 
@@ -158,4 +158,4 @@ The details of the values of the product option.
 
 #### Defined in
 
-[packages/medusa/src/models/product-option.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-option.ts#L40)
+[packages/medusa/src/models/product-option.ts:40](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-option.ts#L40)

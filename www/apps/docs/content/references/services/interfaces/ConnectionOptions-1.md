@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [`SupportedNodeConnectionOptions`](../index.md#supportednodeconnectionoptions)
+- [`SupportedNodeConnectionOptions`](../types/SupportedNodeConnectionOptions.md)
 
 - [`StreamDescriptionOptions`](StreamDescriptionOptions.md)
 
@@ -409,7 +409,7 @@ ___
 
 ### lookup
 
- `Optional` **lookup**: [`LookupFunction`](../index.md#lookupfunction)
+ `Optional` **lookup**: [`LookupFunction`](../types/LookupFunction.md)
 
 #### Inherited from
 

@@ -4,7 +4,7 @@
 
 ### condition
 
- **condition**: [`WhereClauseCondition`](../index.md#whereclausecondition)
+ **condition**: [`WhereClauseCondition`](../types/WhereClauseCondition.md)
 
 #### Defined in
 

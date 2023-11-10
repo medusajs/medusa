@@ -17,7 +17,7 @@
 
 | Name |
 | :------ |
-| `...handlers` | [`RequestHandler`](RequestHandler-1.md)<[`RouteParameters`](../index.md#routeparameters)<`Route`\>, `any`, `any`, [`ParsedQs`](ParsedQs.md), Record<`string`, `any`\>\>[] |
+| `...handlers` | [`RequestHandler`](RequestHandler-1.md)<[`RouteParameters`](../types/RouteParameters.md)<`Route`\>, `any`, `any`, [`ParsedQs`](ParsedQs.md), Record<`string`, `any`\>\>[] |
 
 #### Returns
 
@@ -35,7 +35,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:189
 
 | Name |
 | :------ |
-| `...handlers` | [`RequestHandlerParams`](../index.md#requesthandlerparams)<[`RouteParameters`](../index.md#routeparameters)<`Route`\>, `any`, `any`, [`ParsedQs`](ParsedQs.md), Record<`string`, `any`\>\>[] |
+| `...handlers` | [`RequestHandlerParams`](../types/RequestHandlerParams.md)<[`RouteParameters`](../types/RouteParameters.md)<`Route`\>, `any`, `any`, [`ParsedQs`](ParsedQs.md), Record<`string`, `any`\>\>[] |
 
 #### Returns
 
@@ -87,7 +87,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:191
 
 | Name |
 | :------ |
-| `...handlers` | [`RequestHandlerParams`](../index.md#requesthandlerparams)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
+| `...handlers` | [`RequestHandlerParams`](../types/RequestHandlerParams.md)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
 
 #### Returns
 
@@ -139,7 +139,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:213
 
 | Name |
 | :------ |
-| `...handlers` | [`RequestHandlerParams`](../index.md#requesthandlerparams)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
+| `...handlers` | [`RequestHandlerParams`](../types/RequestHandlerParams.md)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
 
 #### Returns
 

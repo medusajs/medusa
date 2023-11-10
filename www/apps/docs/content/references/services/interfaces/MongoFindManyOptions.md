@@ -10,7 +10,7 @@ Defines a special criteria to find specific entities.
 
 ## Hierarchy
 
-- [`MongoFindOneOptions`](../index.md#mongofindoneoptions)<`Entity`\>
+- [`MongoFindOneOptions`](../types/MongoFindOneOptions.md)<`Entity`\>
 
   ↳ **`MongoFindManyOptions`**
 
@@ -122,7 +122,7 @@ ___
 
 ### order
 
- `Optional` **order**: [`FindOptionsOrder`](../index.md#findoptionsorder)<`Entity`\>
+ `Optional` **order**: [`FindOptionsOrder`](../types/FindOptionsOrder.md)<`Entity`\>
 
 Order, in which entities should be ordered.
 
@@ -158,7 +158,7 @@ ___
 
 ### relations
 
- `Optional` **relations**: [`FindOptionsRelationByString`](../index.md#findoptionsrelationbystring) \| [`FindOptionsRelations`](../index.md#findoptionsrelations)<`Entity`\>
+ `Optional` **relations**: [`FindOptionsRelationByString`](../types/FindOptionsRelationByString.md) \| [`FindOptionsRelations`](../types/FindOptionsRelations.md)<`Entity`\>
 
 Indicates what relations of entity should be loaded (simplified left join form).
 
@@ -174,7 +174,7 @@ ___
 
 ### select
 
- `Optional` **select**: [`FindOptionsSelect`](../index.md#findoptionsselect)<`Entity`\> \| [`FindOptionsSelectByString`](../index.md#findoptionsselectbystring)<`Entity`\>
+ `Optional` **select**: [`FindOptionsSelect`](../types/FindOptionsSelect.md)<`Entity`\> \| [`FindOptionsSelectByString`](../types/FindOptionsSelectByString.md)<`Entity`\>
 
 Specifies what columns should be retrieved.
 
@@ -230,7 +230,7 @@ ___
 
 ### where
 
- `Optional` **where**: [`ObjectLiteral`](ObjectLiteral.md) \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\> \| [`FindOptionsWhere`](../index.md#findoptionswhere)<`Entity`\>[]
+ `Optional` **where**: [`ObjectLiteral`](ObjectLiteral.md) \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\> \| [`FindOptionsWhere`](../types/FindOptionsWhere.md)<`Entity`\>[]
 
 Simple condition that should be applied to match entities.
 

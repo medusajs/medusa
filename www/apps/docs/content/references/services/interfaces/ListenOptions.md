@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [`Abortable`](../index.md#abortable)
+- [`Abortable`](../EventEmitter/interfaces/EventEmitter.Abortable.md)
 
   ↳ **`ListenOptions`**
 
@@ -92,7 +92,7 @@ When provided the corresponding `AbortController` can be used to cancel an async
 
 #### Inherited from
 
-[Abortable](../index.md#abortable).[signal](../index.md#signal)
+[Abortable](../EventEmitter/interfaces/EventEmitter.Abortable.md).[signal](../EventEmitter/interfaces/EventEmitter.Abortable.md#signal)
 
 #### Defined in
 

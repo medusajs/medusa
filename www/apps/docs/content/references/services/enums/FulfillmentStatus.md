@@ -12,7 +12,7 @@ The order's fulfillments are canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:107](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L107)
+[packages/medusa/src/models/order.ts:107](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L107)
 
 ___
 
@@ -24,7 +24,7 @@ The order's items are fulfilled.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L87)
+[packages/medusa/src/models/order.ts:87](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L87)
 
 ___
 
@@ -36,7 +36,7 @@ The order's items are not fulfilled.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L79)
+[packages/medusa/src/models/order.ts:79](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L79)
 
 ___
 
@@ -48,7 +48,7 @@ Some of the order's items, but not all, are fulfilled.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:83](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L83)
+[packages/medusa/src/models/order.ts:83](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L83)
 
 ___
 
@@ -60,7 +60,7 @@ Some of the order's items, but not all, are returned.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:99](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L99)
+[packages/medusa/src/models/order.ts:99](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L99)
 
 ___
 
@@ -72,7 +72,7 @@ Some of the order's items, but not all, are shipped.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:91](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L91)
+[packages/medusa/src/models/order.ts:91](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L91)
 
 ___
 
@@ -84,7 +84,7 @@ The order's fulfillment requires action.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:111](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L111)
+[packages/medusa/src/models/order.ts:111](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L111)
 
 ___
 
@@ -96,7 +96,7 @@ The order's items are returned.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:103](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L103)
+[packages/medusa/src/models/order.ts:103](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L103)
 
 ___
 
@@ -108,4 +108,4 @@ The order's items are shipped.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:95](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L95)
+[packages/medusa/src/models/order.ts:95](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L95)

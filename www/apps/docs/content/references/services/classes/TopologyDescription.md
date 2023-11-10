@@ -14,7 +14,7 @@ Create a TopologyDescription
 
 | Name |
 | :------ |
-| `topologyType` | [`TopologyType`](../index.md#topologytype-1) |
+| `topologyType` | [`TopologyType`](../index.md#topologytype) |
 | `serverDescriptions?` | ``null`` \| `Map`<`string`, [`ServerDescription`](ServerDescription.md)\> |
 | `setName?` | ``null`` \| `string` |
 | `maxSetVersion?` | ``null`` \| `number` |
@@ -140,7 +140,7 @@ ___
 
 ### type
 
- **type**: [`TopologyType`](../index.md#topologytype-1)
+ **type**: [`TopologyType`](../index.md#topologytype)
 
 #### Defined in
 

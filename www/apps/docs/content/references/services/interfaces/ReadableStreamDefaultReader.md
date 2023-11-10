@@ -56,11 +56,11 @@ ___
 
 ### read
 
-**read**(): `Promise`<[`ReadableStreamDefaultReadResult`](../index.md#readablestreamdefaultreadresult)<`R`\>\>
+**read**(): `Promise`<[`ReadableStreamDefaultReadResult`](../types/ReadableStreamDefaultReadResult.md)<`R`\>\>
 
 #### Returns
 
-`Promise`<[`ReadableStreamDefaultReadResult`](../index.md#readablestreamdefaultreadresult)<`R`\>\>
+`Promise`<[`ReadableStreamDefaultReadResult`](../types/ReadableStreamDefaultReadResult.md)<`R`\>\>
 
 -`Promise`: 
 	-`ReadableStreamDefaultReadResult`: 

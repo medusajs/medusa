@@ -30,7 +30,7 @@ The date with timezone at which the Fulfillment was canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:82](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L82)
+[packages/medusa/src/models/fulfillment.ts:82](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L82)
 
 ___
 
@@ -42,7 +42,7 @@ The details of the claim that the fulfillment may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L29)
+[packages/medusa/src/models/fulfillment.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L29)
 
 ___
 
@@ -54,7 +54,7 @@ The ID of the Claim that the Fulfillment belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L25)
+[packages/medusa/src/models/fulfillment.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L25)
 
 ___
 
@@ -70,7 +70,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -82,7 +82,7 @@ This contains all the data necessary for the Fulfillment provider to handle the 
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L76)
+[packages/medusa/src/models/fulfillment.ts:76](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L76)
 
 ___
 
@@ -98,7 +98,7 @@ The fulfillment's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -110,7 +110,7 @@ Randomly generated key used to continue the completion of the fulfillment in cas
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:88](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L88)
+[packages/medusa/src/models/fulfillment.ts:88](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L88)
 
 ___
 
@@ -122,7 +122,7 @@ The Fulfillment Items in the Fulfillment. These hold information about how many 
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L65)
+[packages/medusa/src/models/fulfillment.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L65)
 
 ___
 
@@ -134,7 +134,7 @@ The ID of the stock location the fulfillment will be shipped from
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L55)
+[packages/medusa/src/models/fulfillment.ts:55](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L55)
 
 ___
 
@@ -146,7 +146,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:85](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L85)
+[packages/medusa/src/models/fulfillment.ts:85](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L85)
 
 ___
 
@@ -158,7 +158,7 @@ Flag for describing whether or not notifications related to this should be sent.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:48](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L48)
+[packages/medusa/src/models/fulfillment.ts:48](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L48)
 
 ___
 
@@ -170,7 +170,7 @@ The details of the order that the fulfillment may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L45)
+[packages/medusa/src/models/fulfillment.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L45)
 
 ___
 
@@ -182,7 +182,7 @@ The ID of the Order that the Fulfillment belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L41)
+[packages/medusa/src/models/fulfillment.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L41)
 
 ___
 
@@ -194,7 +194,7 @@ The details of the fulfillment provider responsible for handling the fulfillment
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L59)
+[packages/medusa/src/models/fulfillment.ts:59](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L59)
 
 ___
 
@@ -206,7 +206,7 @@ The ID of the Fulfillment Provider responsible for handling the fulfillment.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L52)
+[packages/medusa/src/models/fulfillment.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L52)
 
 ___
 
@@ -218,7 +218,7 @@ The date with timezone at which the Fulfillment was shipped.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L79)
+[packages/medusa/src/models/fulfillment.ts:79](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L79)
 
 ___
 
@@ -230,7 +230,7 @@ The details of the swap that the fulfillment may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L37)
+[packages/medusa/src/models/fulfillment.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L37)
 
 ___
 
@@ -242,7 +242,7 @@ The ID of the Swap that the Fulfillment belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L33)
+[packages/medusa/src/models/fulfillment.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L33)
 
 ___
 
@@ -254,7 +254,7 @@ The Tracking Links that can be used to track the status of the Fulfillment. Thes
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L70)
+[packages/medusa/src/models/fulfillment.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L70)
 
 ___
 
@@ -266,7 +266,7 @@ The tracking numbers that can be used to track the status of the fulfillment.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L73)
+[packages/medusa/src/models/fulfillment.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L73)
 
 ___
 
@@ -282,7 +282,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -298,4 +298,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/fulfillment.ts:94](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/fulfillment.ts#L94)
+[packages/medusa/src/models/fulfillment.ts:94](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/fulfillment.ts#L94)

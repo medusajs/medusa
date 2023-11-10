@@ -30,7 +30,7 @@ ___
 
 ### type
 
- `Readonly` **type**: [`EventListenerType`](../index.md#eventlistenertype)
+ `Readonly` **type**: [`EventListenerType`](../types/EventListenerType.md)
 
 The type of the listener.
 

@@ -12,7 +12,7 @@ The return is canceled.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L42)
+[packages/medusa/src/models/return.ts:42](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L42)
 
 ___
 
@@ -24,7 +24,7 @@ The return is received.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L34)
+[packages/medusa/src/models/return.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L34)
 
 ___
 
@@ -36,7 +36,7 @@ The return is requested.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L30)
+[packages/medusa/src/models/return.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L30)
 
 ___
 
@@ -48,4 +48,4 @@ The return is awaiting action.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L38)
+[packages/medusa/src/models/return.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L38)

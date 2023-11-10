@@ -728,7 +728,7 @@ ___
 
 ### type
 
- **type**: [`ColumnType`](../index.md#columntype)
+ **type**: [`ColumnType`](../types/ColumnType.md)
 
 The database type of the column.
 

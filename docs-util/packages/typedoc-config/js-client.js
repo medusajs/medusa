@@ -55,13 +55,14 @@ module.exports = {
   internalModule: "internal",
   formatting: {
     "*": defaultFormattingOptions,
+    "^classes/": classesFormattingOptions,
     AdminOrdersResource: {
-      ...classesFormattingOptions,
       maxLevel: 2,
     },
-    "^classes/": classesFormattingOptions,
+    internal: {
+      maxLevel: 1,
+    },
     "internal/modules/internal": {
-      ...defaultFormattingOptions,
       reflectionGroups: {
         ...defaultFormattingOptions.reflectionGroups,
         "Type Aliases": false,
@@ -70,11 +71,6 @@ module.exports = {
         Functions: false,
         Interfaces: false,
       },
-      maxLevel: 1,
-    },
-    internal: {
-      ...defaultFormattingOptions,
-      maxLevel: 1,
     },
   },
   objectLiteralTypeDeclarationStyle: "component",

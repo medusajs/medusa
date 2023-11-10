@@ -18,7 +18,7 @@ Filter products by their associated product category's ID.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:127](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L127)
+[packages/medusa/src/types/product.ts:127](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L127)
 
 ___
 
@@ -30,7 +30,7 @@ Filter products by their associated product collection's ID.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L64)
+[packages/medusa/src/types/product.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L64)
 
 ___
 
@@ -42,7 +42,7 @@ Date filters to apply on the products' `created_at` date.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:145](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L145)
+[packages/medusa/src/types/product.ts:145](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L145)
 
 ___
 
@@ -54,7 +54,7 @@ Date filters to apply on the products' `deleted_at` date.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:161](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L161)
+[packages/medusa/src/types/product.ts:161](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L161)
 
 ___
 
@@ -66,7 +66,7 @@ Description to filter products by.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:85](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L85)
+[packages/medusa/src/types/product.ts:85](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L85)
 
 ___
 
@@ -78,7 +78,7 @@ Filter products by their associated discount condition's ID.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:120](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L120)
+[packages/medusa/src/types/product.ts:120](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L120)
 
 ___
 
@@ -90,7 +90,7 @@ Handle to filter products by.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:92](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L92)
+[packages/medusa/src/types/product.ts:92](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L92)
 
 ___
 
@@ -102,7 +102,7 @@ IDs to filter products by.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L36)
+[packages/medusa/src/types/product.ts:36](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L36)
 
 ___
 
@@ -114,7 +114,7 @@ Whether to include product category children in the response.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:137](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L137)
+[packages/medusa/src/types/product.ts:137](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L137)
 
 ___
 
@@ -126,7 +126,7 @@ Filter products by whether they're gift cards.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:100](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L100)
+[packages/medusa/src/types/product.ts:100](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L100)
 
 ___
 
@@ -138,7 +138,7 @@ Filter products by their associated price lists' ID.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L57)
+[packages/medusa/src/types/product.ts:57](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L57)
 
 ___
 
@@ -150,7 +150,7 @@ Search term to search products' title, description, variants' title and sku, and
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L43)
+[packages/medusa/src/types/product.ts:43](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L43)
 
 ___
 
@@ -162,7 +162,7 @@ Filter products by their associated sales channels' ID.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:113](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L113)
+[packages/medusa/src/types/product.ts:113](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L113)
 
 ___
 
@@ -174,7 +174,7 @@ Statuses to filter products by.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L50)
+[packages/medusa/src/types/product.ts:50](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L50)
 
 ___
 
@@ -186,7 +186,7 @@ Filter products by their associated tags' value.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:71](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L71)
+[packages/medusa/src/types/product.ts:71](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L71)
 
 ___
 
@@ -198,7 +198,7 @@ Title to filter products by.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:78](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L78)
+[packages/medusa/src/types/product.ts:78](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L78)
 
 ___
 
@@ -210,7 +210,7 @@ Filter products by their associated product type's ID.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:107](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L107)
+[packages/medusa/src/types/product.ts:107](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L107)
 
 ___
 
@@ -222,4 +222,4 @@ Date filters to apply on the products' `updated_at` date.
 
 #### Defined in
 
-[packages/medusa/src/types/product.ts:153](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/product.ts#L153)
+[packages/medusa/src/types/product.ts:153](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/product.ts#L153)

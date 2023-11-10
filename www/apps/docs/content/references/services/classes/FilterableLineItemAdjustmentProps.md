@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[packages/medusa/src/types/line-item-adjustment.ts:23](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/line-item-adjustment.ts#L23)
+[packages/medusa/src/types/line-item-adjustment.ts:23](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/line-item-adjustment.ts#L23)
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/line-item-adjustment.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/line-item-adjustment.ts#L16)
+[packages/medusa/src/types/line-item-adjustment.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/line-item-adjustment.ts#L16)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/line-item-adjustment.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/line-item-adjustment.ts#L8)
+[packages/medusa/src/types/line-item-adjustment.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/line-item-adjustment.ts#L8)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/line-item-adjustment.ts:12](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/line-item-adjustment.ts#L12)
+[packages/medusa/src/types/line-item-adjustment.ts:12](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/line-item-adjustment.ts#L12)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/line-item-adjustment.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/line-item-adjustment.ts#L20)
+[packages/medusa/src/types/line-item-adjustment.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/line-item-adjustment.ts#L20)
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/types/line-item-adjustment.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/types/line-item-adjustment.ts#L26)
+[packages/medusa/src/types/line-item-adjustment.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/types/line-item-adjustment.ts#L26)

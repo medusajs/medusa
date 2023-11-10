@@ -30,7 +30,7 @@ ___
 
 ### type
 
- **type**: [`TreeType`](../index.md#treetype)
+ **type**: [`TreeType`](../types/TreeType.md)
 
 Tree type.
 

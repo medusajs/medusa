@@ -30,7 +30,7 @@ The amount in the smallest currecny unit (e.g. cents 100 cents to charge $1) tha
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L32)
+[packages/medusa/src/models/money-amount.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L32)
 
 ___
 
@@ -46,7 +46,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -58,7 +58,7 @@ The details of the currency that the money amount may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L29)
+[packages/medusa/src/models/money-amount.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L29)
 
 ___
 
@@ -70,7 +70,7 @@ The 3 character currency code that the money amount may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L25)
+[packages/medusa/src/models/money-amount.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L25)
 
 ___
 
@@ -86,7 +86,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -102,7 +102,7 @@ The money amount's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -114,7 +114,7 @@ The maximum quantity that the Money Amount applies to. If this value is not set,
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L38)
+[packages/medusa/src/models/money-amount.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L38)
 
 ___
 
@@ -126,7 +126,7 @@ The minimum quantity that the Money Amount applies to. If this value is not set,
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L35)
+[packages/medusa/src/models/money-amount.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L35)
 
 ___
 
@@ -138,7 +138,7 @@ The details of the price list that the money amount may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:48](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L48)
+[packages/medusa/src/models/money-amount.ts:48](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L48)
 
 ___
 
@@ -150,7 +150,7 @@ The ID of the price list that the money amount may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L41)
+[packages/medusa/src/models/money-amount.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L41)
 
 ___
 
@@ -162,7 +162,7 @@ The details of the region that the money amount may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L76)
+[packages/medusa/src/models/money-amount.ts:76](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L76)
 
 ___
 
@@ -174,7 +174,7 @@ The region's ID
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L72)
+[packages/medusa/src/models/money-amount.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L72)
 
 ___
 
@@ -190,7 +190,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -202,7 +202,7 @@ The details of the product variant that the money amount may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L66)
+[packages/medusa/src/models/money-amount.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L66)
 
 ___
 
@@ -214,7 +214,7 @@ The ID of the Product Variant contained in the Line Item.
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L68)
+[packages/medusa/src/models/money-amount.ts:68](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L68)
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L64)
+[packages/medusa/src/models/money-amount.ts:64](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L64)
 
 ## Methods
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:108](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L108)
+[packages/medusa/src/models/money-amount.ts:108](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L108)
 
 ___
 
@@ -256,7 +256,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:82](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L82)
+[packages/medusa/src/models/money-amount.ts:82](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L82)
 
 ___
 
@@ -272,4 +272,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/money-amount.ts:96](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/money-amount.ts#L96)
+[packages/medusa/src/models/money-amount.ts:96](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/money-amount.ts#L96)

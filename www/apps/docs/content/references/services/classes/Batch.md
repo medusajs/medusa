@@ -23,7 +23,7 @@ correctly after command execution
 
 | Name |
 | :------ |
-| `batchType` | [`BatchType`](../index.md#batchtype-1) |
+| `batchType` | [`BatchType`](../index.md#batchtype) |
 | `originalZeroIndex` | `number` |
 
 #### Defined in
@@ -34,7 +34,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:674
 
 ### batchType
 
- **batchType**: [`BatchType`](../index.md#batchtype-1)
+ **batchType**: [`BatchType`](../index.md#batchtype)
 
 #### Defined in
 

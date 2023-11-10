@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- [`EventEmitter`](EventEmitter-1.md)
+- [`EventEmitter`](EventEmitter-2.md)
 
   ↳ **`WritableStream`**
 
@@ -44,7 +44,7 @@ docs-util/node_modules/@types/node/globals.d.ts:244
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[[captureRejectionSymbol]](EventEmitter-1.md#[capturerejectionsymbol])
+[EventEmitter](EventEmitter-2.md).[[captureRejectionSymbol]](EventEmitter-2.md#[capturerejectionsymbol])
 
 #### Defined in
 
@@ -77,7 +77,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[addListener](EventEmitter-1.md#addlistener)
+[EventEmitter](EventEmitter-2.md).[addListener](EventEmitter-2.md#addlistener)
 
 #### Defined in
 
@@ -146,7 +146,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[emit](EventEmitter-1.md#emit)
+[EventEmitter](EventEmitter-2.md).[emit](EventEmitter-2.md#emit)
 
 #### Defined in
 
@@ -200,7 +200,7 @@ docs-util/node_modules/@types/node/globals.d.ts:248
 | Name |
 | :------ |
 | `str` | `string` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `cb?` | () => `void` |
 
 #### Returns
@@ -249,7 +249,7 @@ v6.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[eventNames](EventEmitter-1.md#eventnames)
+[EventEmitter](EventEmitter-2.md).[eventNames](EventEmitter-2.md#eventnames)
 
 #### Defined in
 
@@ -276,7 +276,7 @@ v1.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[getMaxListeners](EventEmitter-1.md#getmaxlisteners)
+[EventEmitter](EventEmitter-2.md).[getMaxListeners](EventEmitter-2.md#getmaxlisteners)
 
 #### Defined in
 
@@ -311,7 +311,7 @@ v3.2.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[listenerCount](EventEmitter-1.md#listenercount)
+[EventEmitter](EventEmitter-2.md).[listenerCount](EventEmitter-2.md#listenercount)
 
 #### Defined in
 
@@ -351,7 +351,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[listeners](EventEmitter-1.md#listeners)
+[EventEmitter](EventEmitter-2.md).[listeners](EventEmitter-2.md#listeners)
 
 #### Defined in
 
@@ -384,7 +384,7 @@ v10.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[off](EventEmitter-1.md#off)
+[EventEmitter](EventEmitter-2.md).[off](EventEmitter-2.md#off)
 
 #### Defined in
 
@@ -442,7 +442,7 @@ v0.1.101
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[on](EventEmitter-1.md#on)
+[EventEmitter](EventEmitter-2.md).[on](EventEmitter-2.md#on)
 
 #### Defined in
 
@@ -498,7 +498,7 @@ v0.3.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[once](EventEmitter-1.md#once)
+[EventEmitter](EventEmitter-2.md).[once](EventEmitter-2.md#once)
 
 #### Defined in
 
@@ -542,7 +542,7 @@ v6.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[prependListener](EventEmitter-1.md#prependlistener)
+[EventEmitter](EventEmitter-2.md).[prependListener](EventEmitter-2.md#prependlistener)
 
 #### Defined in
 
@@ -584,7 +584,7 @@ v6.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[prependOnceListener](EventEmitter-1.md#prependoncelistener)
+[EventEmitter](EventEmitter-2.md).[prependOnceListener](EventEmitter-2.md#prependoncelistener)
 
 #### Defined in
 
@@ -642,7 +642,7 @@ v9.4.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[rawListeners](EventEmitter-1.md#rawlisteners)
+[EventEmitter](EventEmitter-2.md).[rawListeners](EventEmitter-2.md#rawlisteners)
 
 #### Defined in
 
@@ -680,7 +680,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[removeAllListeners](EventEmitter-1.md#removealllisteners)
+[EventEmitter](EventEmitter-2.md).[removeAllListeners](EventEmitter-2.md#removealllisteners)
 
 #### Defined in
 
@@ -791,7 +791,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[removeListener](EventEmitter-1.md#removelistener)
+[EventEmitter](EventEmitter-2.md).[removeListener](EventEmitter-2.md#removelistener)
 
 #### Defined in
 
@@ -828,7 +828,7 @@ v0.3.5
 
 #### Inherited from
 
-[EventEmitter](EventEmitter-1.md).[setMaxListeners](EventEmitter-1.md#setmaxlisteners)
+[EventEmitter](EventEmitter-2.md).[setMaxListeners](EventEmitter-2.md#setmaxlisteners)
 
 #### Defined in
 
@@ -864,7 +864,7 @@ docs-util/node_modules/@types/node/globals.d.ts:245
 | Name |
 | :------ |
 | `str` | `string` |
-| `encoding?` | [`BufferEncoding`](../index.md#bufferencoding) |
+| `encoding?` | [`BufferEncoding`](../types/BufferEncoding.md) |
 | `cb?` | (`err?`: ``null`` \| `Error`) => `void` |
 
 #### Returns

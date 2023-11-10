@@ -30,7 +30,7 @@ The details of the claim that the return may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:74](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L74)
+[packages/medusa/src/models/return.ts:74](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L74)
 
 ___
 
@@ -42,7 +42,7 @@ The ID of the claim that the return may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L70)
+[packages/medusa/src/models/return.ts:70](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L70)
 
 ___
 
@@ -58,7 +58,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -74,7 +74,7 @@ The return's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -86,7 +86,7 @@ Randomly generated key used to continue the completion of the return in case of 
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:109](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L109)
+[packages/medusa/src/models/return.ts:109](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L109)
 
 ___
 
@@ -98,7 +98,7 @@ The details of the items that the customer is returning.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L58)
+[packages/medusa/src/models/return.ts:58](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L58)
 
 ___
 
@@ -110,7 +110,7 @@ The ID of the stock location the return will be added back.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:91](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L91)
+[packages/medusa/src/models/return.ts:91](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L91)
 
 ___
 
@@ -122,7 +122,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:106](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L106)
+[packages/medusa/src/models/return.ts:106](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L106)
 
 ___
 
@@ -134,7 +134,7 @@ When set to true, no notification will be sent related to this return.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:103](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L103)
+[packages/medusa/src/models/return.ts:103](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L103)
 
 ___
 
@@ -146,7 +146,7 @@ The details of the order that the return was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:82](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L82)
+[packages/medusa/src/models/return.ts:82](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L82)
 
 ___
 
@@ -158,7 +158,7 @@ The ID of the order that the return was created for.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:78](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L78)
+[packages/medusa/src/models/return.ts:78](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L78)
 
 ___
 
@@ -170,7 +170,7 @@ The date with timezone at which the return was received.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:100](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L100)
+[packages/medusa/src/models/return.ts:100](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L100)
 
 ___
 
@@ -182,7 +182,7 @@ The amount that should be refunded as a result of the return.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:97](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L97)
+[packages/medusa/src/models/return.ts:97](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L97)
 
 ___
 
@@ -194,7 +194,7 @@ Data about the return shipment as provided by the Fulfilment Provider that handl
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:94](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L94)
+[packages/medusa/src/models/return.ts:94](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L94)
 
 ___
 
@@ -206,7 +206,7 @@ The details of the Shipping Method that will be used to send the Return back. Ca
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L87)
+[packages/medusa/src/models/return.ts:87](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L87)
 
 ___
 
@@ -218,7 +218,7 @@ Status of the Return.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L52)
+[packages/medusa/src/models/return.ts:52](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L52)
 
 ___
 
@@ -230,7 +230,7 @@ The details of the swap that the return may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L66)
+[packages/medusa/src/models/return.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L66)
 
 ___
 
@@ -242,7 +242,7 @@ The ID of the swap that the return may belong to.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L62)
+[packages/medusa/src/models/return.ts:62](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L62)
 
 ___
 
@@ -258,7 +258,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -274,4 +274,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/return.ts:115](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/return.ts#L115)
+[packages/medusa/src/models/return.ts:115](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/return.ts#L115)

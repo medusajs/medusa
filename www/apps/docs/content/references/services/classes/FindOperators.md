@@ -115,7 +115,7 @@ Specifies hint for the bulk operation.
 
 | Name |
 | :------ |
-| `hint` | [`Hint`](../index.md#hint) |
+| `hint` | [`Hint`](../types/Hint.md) |
 
 #### Returns
 

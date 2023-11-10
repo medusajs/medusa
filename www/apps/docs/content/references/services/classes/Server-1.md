@@ -8,7 +8,7 @@ v0.1.90
 
 ## Hierarchy
 
-- [`EventEmitter`](EventEmitter.md)
+- [`EventEmitter`](EventEmitter-1.md)
 
   ↳ **`Server`**
 
@@ -28,7 +28,7 @@ v0.1.90
 
 #### Overrides
 
-[EventEmitter](EventEmitter.md).[constructor](EventEmitter.md#constructor)
+[EventEmitter](EventEmitter-1.md).[constructor](EventEmitter-1.md#constructor)
 
 #### Defined in
 
@@ -113,7 +113,7 @@ v13.4.0, v12.16.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[captureRejectionSymbol](EventEmitter.md#capturerejectionsymbol)
+[EventEmitter](EventEmitter-1.md).[captureRejectionSymbol](EventEmitter-1.md#capturerejectionsymbol)
 
 #### Defined in
 
@@ -135,7 +135,7 @@ v13.4.0, v12.16.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[captureRejections](EventEmitter.md#capturerejections)
+[EventEmitter](EventEmitter-1.md).[captureRejections](EventEmitter-1.md#capturerejections)
 
 #### Defined in
 
@@ -187,7 +187,7 @@ v0.11.2
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[defaultMaxListeners](EventEmitter.md#defaultmaxlisteners)
+[EventEmitter](EventEmitter-1.md).[defaultMaxListeners](EventEmitter-1.md#defaultmaxlisteners)
 
 #### Defined in
 
@@ -210,7 +210,7 @@ v13.6.0, v12.17.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[errorMonitor](EventEmitter.md#errormonitor)
+[EventEmitter](EventEmitter-1.md).[errorMonitor](EventEmitter-1.md#errormonitor)
 
 #### Defined in
 
@@ -260,7 +260,7 @@ ___
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[[captureRejectionSymbol]](EventEmitter.md#[capturerejectionsymbol])
+[EventEmitter](EventEmitter-1.md).[[captureRejectionSymbol]](EventEmitter-1.md#[capturerejectionsymbol])
 
 #### Defined in
 
@@ -294,7 +294,7 @@ events.EventEmitter
 
 #### Overrides
 
-[EventEmitter](EventEmitter.md).[addListener](EventEmitter.md#addlistener)
+[EventEmitter](EventEmitter-1.md).[addListener](EventEmitter-1.md#addlistener)
 
 #### Defined in
 
@@ -555,7 +555,7 @@ v0.1.26
 
 #### Overrides
 
-[EventEmitter](EventEmitter.md).[emit](EventEmitter.md#emit)
+[EventEmitter](EventEmitter-1.md).[emit](EventEmitter-1.md#emit)
 
 #### Defined in
 
@@ -710,7 +710,7 @@ v6.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[eventNames](EventEmitter.md#eventnames)
+[EventEmitter](EventEmitter-1.md).[eventNames](EventEmitter-1.md#eventnames)
 
 #### Defined in
 
@@ -768,7 +768,7 @@ v1.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[getMaxListeners](EventEmitter.md#getmaxlisteners)
+[EventEmitter](EventEmitter-1.md).[getMaxListeners](EventEmitter-1.md#getmaxlisteners)
 
 #### Defined in
 
@@ -1024,7 +1024,7 @@ v3.2.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[listenerCount](EventEmitter.md#listenercount)
+[EventEmitter](EventEmitter-1.md).[listenerCount](EventEmitter-1.md#listenercount)
 
 #### Defined in
 
@@ -1064,7 +1064,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[listeners](EventEmitter.md#listeners)
+[EventEmitter](EventEmitter-1.md).[listeners](EventEmitter-1.md#listeners)
 
 #### Defined in
 
@@ -1097,7 +1097,7 @@ v10.0.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[off](EventEmitter.md#off)
+[EventEmitter](EventEmitter-1.md).[off](EventEmitter-1.md#off)
 
 #### Defined in
 
@@ -1155,7 +1155,7 @@ v0.1.101
 
 #### Overrides
 
-[EventEmitter](EventEmitter.md).[on](EventEmitter.md#on)
+[EventEmitter](EventEmitter-1.md).[on](EventEmitter-1.md#on)
 
 #### Defined in
 
@@ -1326,7 +1326,7 @@ v0.3.0
 
 #### Overrides
 
-[EventEmitter](EventEmitter.md).[once](EventEmitter.md#once)
+[EventEmitter](EventEmitter-1.md).[once](EventEmitter-1.md#once)
 
 #### Defined in
 
@@ -1485,7 +1485,7 @@ v6.0.0
 
 #### Overrides
 
-[EventEmitter](EventEmitter.md).[prependListener](EventEmitter.md#prependlistener)
+[EventEmitter](EventEmitter-1.md).[prependListener](EventEmitter-1.md#prependlistener)
 
 #### Defined in
 
@@ -1642,7 +1642,7 @@ v6.0.0
 
 #### Overrides
 
-[EventEmitter](EventEmitter.md).[prependOnceListener](EventEmitter.md#prependoncelistener)
+[EventEmitter](EventEmitter-1.md).[prependOnceListener](EventEmitter-1.md#prependoncelistener)
 
 #### Defined in
 
@@ -1815,7 +1815,7 @@ v9.4.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[rawListeners](EventEmitter.md#rawlisteners)
+[EventEmitter](EventEmitter-1.md).[rawListeners](EventEmitter-1.md#rawlisteners)
 
 #### Defined in
 
@@ -1876,7 +1876,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[removeAllListeners](EventEmitter.md#removealllisteners)
+[EventEmitter](EventEmitter-1.md).[removeAllListeners](EventEmitter-1.md#removealllisteners)
 
 #### Defined in
 
@@ -1987,7 +1987,7 @@ v0.1.26
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[removeListener](EventEmitter.md#removelistener)
+[EventEmitter](EventEmitter-1.md).[removeListener](EventEmitter-1.md#removelistener)
 
 #### Defined in
 
@@ -2024,7 +2024,7 @@ v0.3.5
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[setMaxListeners](EventEmitter.md#setmaxlisteners)
+[EventEmitter](EventEmitter-1.md).[setMaxListeners](EventEmitter-1.md#setmaxlisteners)
 
 #### Defined in
 
@@ -2106,7 +2106,7 @@ v20.5.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[addAbortListener](EventEmitter.md#addabortlistener)
+[EventEmitter](EventEmitter-1.md).[addAbortListener](EventEmitter-1.md#addabortlistener)
 
 #### Defined in
 
@@ -2147,7 +2147,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
@@ -2162,7 +2162,7 @@ v15.2.0, v14.17.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[getEventListeners](EventEmitter.md#geteventlisteners)
+[EventEmitter](EventEmitter-1.md).[getEventListeners](EventEmitter-1.md#geteventlisteners)
 
 #### Defined in
 
@@ -2204,7 +2204,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 
 | Name |
 | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md) |
 
 #### Returns
 
@@ -2218,7 +2218,7 @@ v19.9.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[getMaxListeners](EventEmitter.md#getmaxlisteners-1)
+[EventEmitter](EventEmitter-1.md).[getMaxListeners](EventEmitter-1.md#getmaxlisteners-1)
 
 #### Defined in
 
@@ -2246,7 +2246,7 @@ console.log(listenerCount(myEmitter, 'event'));
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) | The emitter to query |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) | The emitter to query |
 | `eventName` | `string` \| `symbol` | The event name |
 
 #### Returns
@@ -2265,7 +2265,7 @@ Since v3.2.0 - Use `listenerCount` instead.
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[listenerCount](EventEmitter.md#listenercount-1)
+[EventEmitter](EventEmitter-1.md).[listenerCount](EventEmitter-1.md#listenercount-1)
 
 #### Defined in
 
@@ -2336,7 +2336,7 @@ process.nextTick(() => ac.abort());
 
 | Name | Description |
 | :------ | :------ |
-| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-1.md) |
+| `emitter` | [`EventEmitter`](../interfaces/EventEmitter-2.md) |
 | `eventName` | `string` | The name of the event being listened for |
 | `options?` | [`StaticEventEmitterOptions`](../interfaces/StaticEventEmitterOptions.md) |
 
@@ -2353,7 +2353,7 @@ v13.6.0, v12.16.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[on](EventEmitter.md#on-1)
+[EventEmitter](EventEmitter-1.md).[on](EventEmitter-1.md#on-1)
 
 #### Defined in
 
@@ -2464,7 +2464,7 @@ v11.13.0, v10.16.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[once](EventEmitter.md#once-1)
+[EventEmitter](EventEmitter-1.md).[once](EventEmitter-1.md#once-1)
 
 #### Defined in
 
@@ -2490,7 +2490,7 @@ docs-util/node_modules/@types/node/events.d.ts:193
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[once](EventEmitter.md#once-1)
+[EventEmitter](EventEmitter-1.md).[once](EventEmitter-1.md#once-1)
 
 #### Defined in
 
@@ -2516,7 +2516,7 @@ setMaxListeners(5, target, emitter);
 | Name | Description |
 | :------ | :------ |
 | `n?` | `number` | A non-negative number. The maximum number of listeners per `EventTarget` event. |
-| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-1.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
+| `...eventTargets` | ([`EventEmitter`](../interfaces/EventEmitter-2.md) \| [`_DOMEventTarget`](../interfaces/DOMEventTarget.md))[] |
 
 #### Returns
 
@@ -2530,7 +2530,7 @@ v15.4.0
 
 #### Inherited from
 
-[EventEmitter](EventEmitter.md).[setMaxListeners](EventEmitter.md#setmaxlisteners-1)
+[EventEmitter](EventEmitter-1.md).[setMaxListeners](EventEmitter-1.md#setmaxlisteners-1)
 
 #### Defined in
 

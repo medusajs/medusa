@@ -66,7 +66,7 @@ ___
 
 ### updatedFields
 
- `Optional` **updatedFields**: [`Partial`](../index.md#partial)<`TSchema`\>
+ `Optional` **updatedFields**: [`Partial`](../types/Partial.md)<`TSchema`\>
 
 A document containing key:value pairs of names of the fields that were
 changed, and the new value for those fields.

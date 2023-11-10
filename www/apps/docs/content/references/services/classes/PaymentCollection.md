@@ -30,7 +30,7 @@ Amount of the payment collection.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L69)
+[packages/medusa/src/models/payment-collection.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L69)
 
 ___
 
@@ -42,7 +42,7 @@ Authorized amount of the payment collection.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L72)
+[packages/medusa/src/models/payment-collection.ts:72](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L72)
 
 ___
 
@@ -58,7 +58,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -70,7 +70,7 @@ The ID of the user that created the payment collection.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:122](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L122)
+[packages/medusa/src/models/payment-collection.ts:122](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L122)
 
 ___
 
@@ -82,7 +82,7 @@ The details of the currency this payment collection is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:88](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L88)
+[packages/medusa/src/models/payment-collection.ts:88](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L88)
 
 ___
 
@@ -94,7 +94,7 @@ The three character ISO code for the currency this payment collection is associa
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:84](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L84)
+[packages/medusa/src/models/payment-collection.ts:84](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L84)
 
 ___
 
@@ -110,7 +110,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -122,7 +122,7 @@ Description of the payment collection
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L66)
+[packages/medusa/src/models/payment-collection.ts:66](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L66)
 
 ___
 
@@ -138,7 +138,7 @@ The payment collection's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -150,7 +150,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:119](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L119)
+[packages/medusa/src/models/payment-collection.ts:119](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L119)
 
 ___
 
@@ -162,7 +162,7 @@ The details of the payment sessions created as part of the payment collection.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:102](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L102)
+[packages/medusa/src/models/payment-collection.ts:102](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L102)
 
 ___
 
@@ -174,7 +174,7 @@ The details of the payments created as part of the payment collection.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:116](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L116)
+[packages/medusa/src/models/payment-collection.ts:116](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L116)
 
 ___
 
@@ -186,7 +186,7 @@ The details of the region this payment collection is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:80](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L80)
+[packages/medusa/src/models/payment-collection.ts:80](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L80)
 
 ___
 
@@ -198,7 +198,7 @@ The ID of the region this payment collection is associated with.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L76)
+[packages/medusa/src/models/payment-collection.ts:76](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L76)
 
 ___
 
@@ -210,7 +210,7 @@ The type of the payment collection
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:63](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L63)
+[packages/medusa/src/models/payment-collection.ts:63](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L63)
 
 ___
 
@@ -222,7 +222,7 @@ The type of the payment collection
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L60)
+[packages/medusa/src/models/payment-collection.ts:60](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L60)
 
 ___
 
@@ -238,7 +238,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -254,4 +254,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/payment-collection.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/payment-collection.ts#L128)
+[packages/medusa/src/models/payment-collection.ts:128](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/payment-collection.ts#L128)

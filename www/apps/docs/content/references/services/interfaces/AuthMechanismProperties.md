@@ -20,7 +20,7 @@ ___
 
 ### CANONICALIZE\_HOST\_NAME
 
- `Optional` **CANONICALIZE\_HOST\_NAME**: [`GSSAPICanonicalizationValue`](../index.md#gssapicanonicalizationvalue-1)
+ `Optional` **CANONICALIZE\_HOST\_NAME**: [`GSSAPICanonicalizationValue`](../index.md#gssapicanonicalizationvalue)
 
 #### Defined in
 
@@ -40,7 +40,7 @@ ___
 
 ### REFRESH\_TOKEN\_CALLBACK
 
- `Optional` **REFRESH\_TOKEN\_CALLBACK**: [`OIDCRefreshFunction`](../index.md#oidcrefreshfunction)
+ `Optional` **REFRESH\_TOKEN\_CALLBACK**: [`OIDCRefreshFunction`](../types/OIDCRefreshFunction.md)
 
 #### Defined in
 
@@ -50,7 +50,7 @@ ___
 
 ### REQUEST\_TOKEN\_CALLBACK
 
- `Optional` **REQUEST\_TOKEN\_CALLBACK**: [`OIDCRequestFunction`](../index.md#oidcrequestfunction)
+ `Optional` **REQUEST\_TOKEN\_CALLBACK**: [`OIDCRequestFunction`](../types/OIDCRequestFunction.md)
 
 #### Defined in
 

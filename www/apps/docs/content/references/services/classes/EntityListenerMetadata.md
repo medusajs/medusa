@@ -74,7 +74,7 @@ ___
 
 ### type
 
- **type**: [`EventListenerType`](../index.md#eventlistenertype)
+ **type**: [`EventListenerType`](../types/EventListenerType.md)
 
 The type of the listener.
 

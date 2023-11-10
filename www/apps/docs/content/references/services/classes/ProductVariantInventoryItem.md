@@ -34,7 +34,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -50,7 +50,7 @@ The date with timezone at which the resource was deleted.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
+[packages/medusa/src/interfaces/models/soft-deletable-entity.ts:7](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/soft-deletable-entity.ts#L7)
 
 ___
 
@@ -66,7 +66,7 @@ The product variant inventory item's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -78,7 +78,7 @@ The id of the inventory item
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant-inventory-item.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant-inventory-item.ts#L17)
+[packages/medusa/src/models/product-variant-inventory-item.ts:17](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant-inventory-item.ts#L17)
 
 ___
 
@@ -90,7 +90,7 @@ The quantity of an inventory item required for the variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant-inventory-item.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant-inventory-item.ts#L28)
+[packages/medusa/src/models/product-variant-inventory-item.ts:28](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant-inventory-item.ts#L28)
 
 ___
 
@@ -106,7 +106,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ___
 
@@ -118,7 +118,7 @@ The details of the product variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant-inventory-item.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant-inventory-item.ts#L25)
+[packages/medusa/src/models/product-variant-inventory-item.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant-inventory-item.ts#L25)
 
 ___
 
@@ -130,7 +130,7 @@ The id of the variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant-inventory-item.ts:21](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant-inventory-item.ts#L21)
+[packages/medusa/src/models/product-variant-inventory-item.ts:21](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant-inventory-item.ts#L21)
 
 ## Methods
 
@@ -146,4 +146,4 @@ The id of the variant.
 
 #### Defined in
 
-[packages/medusa/src/models/product-variant-inventory-item.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-variant-inventory-item.ts#L34)
+[packages/medusa/src/models/product-variant-inventory-item.ts:34](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-variant-inventory-item.ts#L34)

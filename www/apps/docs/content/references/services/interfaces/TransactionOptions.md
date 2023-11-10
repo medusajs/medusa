@@ -125,7 +125,7 @@ ___
 
 ### explain
 
- `Optional` **explain**: [`ExplainVerbosityLike`](../index.md#explainverbositylike)
+ `Optional` **explain**: [`ExplainVerbosityLike`](../types/ExplainVerbosityLike.md)
 
 Specifies the verbosity mode for the explain output.
 
@@ -310,7 +310,7 @@ ___
 
 ### readConcern
 
- `Optional` **readConcern**: [`ReadConcernLike`](../index.md#readconcernlike)
+ `Optional` **readConcern**: [`ReadConcernLike`](../types/ReadConcernLike.md)
 
 A default read concern for commands in this transaction
 
@@ -326,7 +326,7 @@ ___
 
 ### readPreference
 
- `Optional` **readPreference**: [`ReadPreferenceLike`](../index.md#readpreferencelike)
+ `Optional` **readPreference**: [`ReadPreferenceLike`](../types/ReadPreferenceLike.md)
 
 A default read preference for commands in this transaction
 

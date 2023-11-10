@@ -8,7 +8,7 @@ items and shipping methods.
 
 ### getTaxLines
 
-**getTaxLines**(`itemLines`, `shippingLines`, `context`): `Promise`<[`ProviderTaxLine`](../index.md#providertaxline)[]\>
+**getTaxLines**(`itemLines`, `shippingLines`, `context`): `Promise`<[`ProviderTaxLine`](../types/ProviderTaxLine.md)[]\>
 
 Retrieves the numerical tax lines for a calculation context.
 
@@ -16,13 +16,13 @@ Retrieves the numerical tax lines for a calculation context.
 
 | Name | Description |
 | :------ | :------ |
-| `itemLines` | [`ItemTaxCalculationLine`](../index.md#itemtaxcalculationline)[] | the line item calculation lines |
-| `shippingLines` | [`ShippingTaxCalculationLine`](../index.md#shippingtaxcalculationline)[] |
-| `context` | [`TaxCalculationContext`](../index.md#taxcalculationcontext) | other details relevant to the tax determination |
+| `itemLines` | [`ItemTaxCalculationLine`](../types/ItemTaxCalculationLine.md)[] | the line item calculation lines |
+| `shippingLines` | [`ShippingTaxCalculationLine`](../types/ShippingTaxCalculationLine.md)[] |
+| `context` | [`TaxCalculationContext`](../types/TaxCalculationContext.md) | other details relevant to the tax determination |
 
 #### Returns
 
-`Promise`<[`ProviderTaxLine`](../index.md#providertaxline)[]\>
+`Promise`<[`ProviderTaxLine`](../types/ProviderTaxLine.md)[]\>
 
 -`Promise`: numerical tax rates that should apply to the provided calculation
   lines
@@ -31,4 +31,4 @@ Retrieves the numerical tax lines for a calculation context.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/tax-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/tax-service.ts#L56)
+[packages/medusa/src/interfaces/tax-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/tax-service.ts#L56)

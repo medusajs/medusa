@@ -116,7 +116,7 @@ ___
 
 ### spatialTypes
 
- **spatialTypes**: [`ColumnType`](../index.md#columntype)[]
+ **spatialTypes**: [`ColumnType`](../types/ColumnType.md)[]
 
 Gets list of spatial column data types.
 
@@ -128,7 +128,7 @@ ___
 
 ### supportedDataTypes
 
- **supportedDataTypes**: [`ColumnType`](../index.md#columntype)[]
+ **supportedDataTypes**: [`ColumnType`](../types/ColumnType.md)[]
 
 Gets list of supported column data types by a driver.
 
@@ -140,7 +140,7 @@ ___
 
 ### supportedOnDeleteTypes
 
- `Optional` **supportedOnDeleteTypes**: [`OnDeleteType`](../index.md#ondeletetype)[]
+ `Optional` **supportedOnDeleteTypes**: [`OnDeleteType`](../types/OnDeleteType.md)[]
 
 Returns list of supported onDelete types by driver
 
@@ -152,7 +152,7 @@ ___
 
 ### supportedOnUpdateTypes
 
- `Optional` **supportedOnUpdateTypes**: [`OnUpdateType`](../index.md#onupdatetype)[]
+ `Optional` **supportedOnUpdateTypes**: [`OnUpdateType`](../types/OnUpdateType.md)[]
 
 Returns list of supported onUpdate types by driver
 
@@ -164,7 +164,7 @@ ___
 
 ### supportedUpsertTypes
 
- **supportedUpsertTypes**: [`UpsertType`](../index.md#upserttype)[]
+ **supportedUpsertTypes**: [`UpsertType`](../types/UpsertType.md)[]
 
 Returns type of upsert supported by driver if any
 
@@ -212,7 +212,7 @@ ___
 
 ### withLengthColumnTypes
 
- **withLengthColumnTypes**: [`ColumnType`](../index.md#columntype)[]
+ **withLengthColumnTypes**: [`ColumnType`](../types/ColumnType.md)[]
 
 Gets list of column data types that support length by a driver.
 
@@ -224,7 +224,7 @@ ___
 
 ### withPrecisionColumnTypes
 
- **withPrecisionColumnTypes**: [`ColumnType`](../index.md#columntype)[]
+ **withPrecisionColumnTypes**: [`ColumnType`](../types/ColumnType.md)[]
 
 Gets list of column data types that support precision by a driver.
 
@@ -236,7 +236,7 @@ ___
 
 ### withScaleColumnTypes
 
- **withScaleColumnTypes**: [`ColumnType`](../index.md#columntype)[]
+ **withScaleColumnTypes**: [`ColumnType`](../types/ColumnType.md)[]
 
 Gets list of column data types that support scale by a driver.
 
@@ -396,7 +396,7 @@ Creates a query runner used for common queries.
 
 | Name |
 | :------ |
-| `mode` | [`ReplicationMode`](../index.md#replicationmode) |
+| `mode` | [`ReplicationMode`](../types/ReplicationMode.md) |
 
 #### Returns
 
@@ -924,7 +924,7 @@ Returns true if driver supports RETURNING / OUTPUT statement.
 
 | Name |
 | :------ |
-| `returningType` | [`ReturningType`](../index.md#returningtype) |
+| `returningType` | [`ReturningType`](../types/ReturningType.md) |
 
 #### Returns
 

@@ -32,7 +32,7 @@ ___
 
 ### next
 
-**next**(`...args`): [`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>
+**next**(`...args`): [`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>
 
 #### Parameters
 
@@ -42,7 +42,7 @@ ___
 
 #### Returns
 
-[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>
+[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>
 
 -`IteratorResult`: 
 	-`any`: (optional) 
@@ -59,7 +59,7 @@ ___
 
 ### return
 
-`Optional` **return**(`value?`): [`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>
+`Optional` **return**(`value?`): [`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>
 
 #### Parameters
 
@@ -69,7 +69,7 @@ ___
 
 #### Returns
 
-[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>
+[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>
 
 -`IteratorResult`: 
 	-`any`: (optional) 
@@ -86,7 +86,7 @@ ___
 
 ### throw
 
-`Optional` **throw**(`e?`): [`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>
+`Optional` **throw**(`e?`): [`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>
 
 #### Parameters
 
@@ -96,7 +96,7 @@ ___
 
 #### Returns
 
-[`IteratorResult`](../index.md#iteratorresult)<`T`, `any`\>
+[`IteratorResult`](../types/IteratorResult.md)<`T`, `any`\>
 
 -`IteratorResult`: 
 	-`any`: (optional) 

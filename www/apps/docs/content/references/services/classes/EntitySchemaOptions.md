@@ -130,7 +130,7 @@ ___
 
 ### orderBy
 
- `Optional` **orderBy**: [`OrderByCondition`](../index.md#orderbycondition)
+ `Optional` **orderBy**: [`OrderByCondition`](../types/OrderByCondition.md)
 
 Specifies a property name by which queries will perform ordering by default when fetching rows.
 
@@ -216,7 +216,7 @@ ___
 
 ### type
 
- `Optional` **type**: [`TableType`](../index.md#tabletype)
+ `Optional` **type**: [`TableType`](../types/TableType.md)
 
 Table type.
 

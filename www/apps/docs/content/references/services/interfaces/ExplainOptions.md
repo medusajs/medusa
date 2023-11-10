@@ -10,7 +10,7 @@
 
 ### explain
 
- `Optional` **explain**: [`ExplainVerbosityLike`](../index.md#explainverbositylike)
+ `Optional` **explain**: [`ExplainVerbosityLike`](../types/ExplainVerbosityLike.md)
 
 Specifies the verbosity mode for the explain output.
 

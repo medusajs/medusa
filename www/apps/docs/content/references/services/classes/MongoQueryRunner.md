@@ -309,7 +309,7 @@ Perform a bulkWrite operation without a fluent API.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `operations` | [`AnyBulkWriteOperation`](../index.md#anybulkwriteoperation)<[`Document`](../interfaces/Document.md)\>[] |
+| `operations` | [`AnyBulkWriteOperation`](../types/AnyBulkWriteOperation.md)<[`Document`](../interfaces/Document.md)\>[] |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) |
 
 #### Returns
@@ -591,7 +591,7 @@ Count number of matching documents in the db to a query.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`CountOptions`](../interfaces/CountOptions.md) |
 
 #### Returns
@@ -618,7 +618,7 @@ Count number of matching documents in the db to a query.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`CountDocumentsOptions`](../interfaces/CountDocumentsOptions.md) |
 
 #### Returns
@@ -703,7 +703,7 @@ Creates an index on the db and collection.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `indexSpec` | [`IndexSpecification`](../index.md#indexspecification) |
+| `indexSpec` | [`IndexSpecification`](../types/IndexSpecification.md) |
 | `options?` | [`CreateIndexesOptions`](../interfaces/CreateIndexesOptions.md) |
 
 #### Returns
@@ -1132,7 +1132,7 @@ Creates a cursor for a query that can be used to iterate over results from Mongo
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 
 #### Returns
 
@@ -1158,7 +1158,7 @@ Delete multiple documents on MongoDB.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options` | [`DeleteOptions`](../interfaces/DeleteOptions.md) |
 
 #### Returns
@@ -1186,7 +1186,7 @@ Delete a document on MongoDB.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`DeleteOptions`](../interfaces/DeleteOptions.md) |
 
 #### Returns
@@ -1240,7 +1240,7 @@ The distinct command returns returns a list of distinct values for the given key
 | :------ |
 | `collectionName` | `string` |
 | `key` | `any` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`CommandOperationOptions`](../interfaces/CommandOperationOptions.md) |
 
 #### Returns
@@ -1877,7 +1877,7 @@ Find a document and delete it in one atomic operation, requires a write lock for
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`FindOneAndDeleteOptions`](../interfaces/FindOneAndDeleteOptions.md) |
 
 #### Returns
@@ -1904,7 +1904,7 @@ Find a document and replace it in one atomic operation, requires a write lock fo
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `replacement` | [`Document`](../interfaces/Document.md) |
 | `options?` | [`FindOneAndReplaceOptions`](../interfaces/FindOneAndReplaceOptions.md) |
 
@@ -1932,8 +1932,8 @@ Find a document and update it in one atomic operation, requires a write lock for
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`FindOneAndUpdateOptions`](../interfaces/FindOneAndUpdateOptions.md) |
 
 #### Returns
@@ -2068,13 +2068,13 @@ ___
 
 ### getReplicationMode
 
-**getReplicationMode**(): [`ReplicationMode`](../index.md#replicationmode)
+**getReplicationMode**(): [`ReplicationMode`](../types/ReplicationMode.md)
 
 Returns replication mode (ex: `master` or `slave`).
 
 #### Returns
 
-[`ReplicationMode`](../index.md#replicationmode)
+[`ReplicationMode`](../types/ReplicationMode.md)
 
 -`ReplicationMode`: 
 
@@ -2415,7 +2415,7 @@ Inserts an array of documents into MongoDB.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `docs` | [`OptionalId`](../index.md#optionalid)<[`Document`](../interfaces/Document.md)\>[] |
+| `docs` | [`OptionalId`](../types/OptionalId.md)<[`Document`](../interfaces/Document.md)\>[] |
 | `options?` | [`BulkWriteOptions`](../interfaces/BulkWriteOptions.md) |
 
 #### Returns
@@ -2443,7 +2443,7 @@ Inserts a single document into MongoDB.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `doc` | [`OptionalId`](../index.md#optionalid)<[`Document`](../interfaces/Document.md)\> |
+| `doc` | [`OptionalId`](../types/OptionalId.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`InsertOneOptions`](../interfaces/InsertOneOptions.md) |
 
 #### Returns
@@ -2660,7 +2660,7 @@ Replace a document on MongoDB.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
 | `replacement` | [`Document`](../interfaces/Document.md) |
 | `options?` | [`ReplaceOptions`](../interfaces/ReplaceOptions.md) |
 
@@ -2820,8 +2820,8 @@ Update multiple documents on MongoDB.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) |
 
 #### Returns
@@ -2848,8 +2848,8 @@ Update a single document on MongoDB.
 | Name |
 | :------ |
 | `collectionName` | `string` |
-| `filter` | [`Filter`](../index.md#filter)<[`Document`](../interfaces/Document.md)\> |
-| `update` | [`UpdateFilter`](../index.md#updatefilter)<[`Document`](../interfaces/Document.md)\> |
+| `filter` | [`Filter`](../types/Filter.md)<[`Document`](../interfaces/Document.md)\> |
+| `update` | [`UpdateFilter`](../types/UpdateFilter.md)<[`Document`](../interfaces/Document.md)\> |
 | `options?` | [`UpdateOptions`](../interfaces/UpdateOptions.md) |
 
 #### Returns
@@ -2896,7 +2896,7 @@ ___
 
 ### watch
 
-**watch**(`collectionName`, `pipeline?`, `options?`): [`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../index.md#changestreamdocument)<[`Document`](../interfaces/Document.md)\>\>
+**watch**(`collectionName`, `pipeline?`, `options?`): [`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../types/ChangeStreamDocument.md)<[`Document`](../interfaces/Document.md)\>\>
 
 Watching new changes as stream.
 
@@ -2910,7 +2910,7 @@ Watching new changes as stream.
 
 #### Returns
 
-[`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../index.md#changestreamdocument)<[`Document`](../interfaces/Document.md)\>\>
+[`ChangeStream`](ChangeStream.md)<[`Document`](../interfaces/Document.md), [`ChangeStreamDocument`](../types/ChangeStreamDocument.md)<[`Document`](../interfaces/Document.md)\>\>
 
 -`ChangeStream`: 
 	-`Document`: 

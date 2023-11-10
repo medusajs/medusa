@@ -20,7 +20,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/models/product-tax-rate.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-tax-rate.ts#L32)
+[packages/medusa/src/models/product-tax-rate.ts:32](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-tax-rate.ts#L32)
 
 ___
 
@@ -32,7 +32,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/product-tax-rate.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-tax-rate.ts#L38)
+[packages/medusa/src/models/product-tax-rate.ts:38](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-tax-rate.ts#L38)
 
 ___
 
@@ -44,7 +44,7 @@ The details of the product.
 
 #### Defined in
 
-[packages/medusa/src/models/product-tax-rate.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-tax-rate.ts#L24)
+[packages/medusa/src/models/product-tax-rate.ts:24](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-tax-rate.ts#L24)
 
 ___
 
@@ -56,7 +56,7 @@ The ID of the Product
 
 #### Defined in
 
-[packages/medusa/src/models/product-tax-rate.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-tax-rate.ts#L17)
+[packages/medusa/src/models/product-tax-rate.ts:17](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-tax-rate.ts#L17)
 
 ___
 
@@ -68,7 +68,7 @@ The ID of the Tax Rate
 
 #### Defined in
 
-[packages/medusa/src/models/product-tax-rate.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-tax-rate.ts#L20)
+[packages/medusa/src/models/product-tax-rate.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-tax-rate.ts#L20)
 
 ___
 
@@ -80,7 +80,7 @@ The details of the tax rate.
 
 #### Defined in
 
-[packages/medusa/src/models/product-tax-rate.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-tax-rate.ts#L29)
+[packages/medusa/src/models/product-tax-rate.ts:29](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-tax-rate.ts#L29)
 
 ___
 
@@ -92,4 +92,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/product-tax-rate.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/product-tax-rate.ts#L35)
+[packages/medusa/src/models/product-tax-rate.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/product-tax-rate.ts#L35)

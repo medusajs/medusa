@@ -587,7 +587,7 @@ ___
 
 ### flat
 
-**flat**<`A`, `D`\>(`this`, `depth?`): [`FlatArray`](../index.md#flatarray)<`A`, `D`\>[]
+**flat**<`A`, `D`\>(`this`, `depth?`): [`FlatArray`](../types/FlatArray.md)<`A`, `D`\>[]
 
 Returns a new array with all sub-array elements concatenated into it recursively up to the
 specified depth.
@@ -606,7 +606,7 @@ specified depth.
 
 #### Returns
 
-[`FlatArray`](../index.md#flatarray)<`A`, `D`\>[]
+[`FlatArray`](../types/FlatArray.md)<`A`, `D`\>[]
 
 -`FlatArray<A, D\>[]`: 
 	-`FlatArray`: 

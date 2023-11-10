@@ -78,13 +78,13 @@ ___
 
 ### getSql
 
-`get` **getSql**(): `undefined` \| [`SqlGeneratorType`](../index.md#sqlgeneratortype)
+`get` **getSql**(): `undefined` \| [`SqlGeneratorType`](../types/SqlGeneratorType.md)
 
 Gets the SQL generator
 
 #### Returns
 
-`undefined` \| [`SqlGeneratorType`](../index.md#sqlgeneratortype)
+`undefined` \| [`SqlGeneratorType`](../types/SqlGeneratorType.md)
 
 -`undefined \| SqlGeneratorType`: (optional) 
 
@@ -145,13 +145,13 @@ ___
 
 ### type
 
-`get` **type**(): [`FindOperatorType`](../index.md#findoperatortype)
+`get` **type**(): [`FindOperatorType`](../types/FindOperatorType.md)
 
 Gets the Type of this FindOperator
 
 #### Returns
 
-[`FindOperatorType`](../index.md#findoperatortype)
+[`FindOperatorType`](../types/FindOperatorType.md)
 
 -`FindOperatorType`: List of types that FindOperator can be.
 

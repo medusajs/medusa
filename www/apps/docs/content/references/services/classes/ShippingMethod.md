@@ -20,7 +20,7 @@ The details of the cart that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L61)
+[packages/medusa/src/models/shipping-method.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L61)
 
 ___
 
@@ -32,7 +32,7 @@ The ID of the cart that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L57)
+[packages/medusa/src/models/shipping-method.ts:57](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L57)
 
 ___
 
@@ -44,7 +44,7 @@ The details of the claim that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L53)
+[packages/medusa/src/models/shipping-method.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L53)
 
 ___
 
@@ -56,7 +56,7 @@ The ID of the claim that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L49)
+[packages/medusa/src/models/shipping-method.ts:49](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L49)
 
 ___
 
@@ -68,7 +68,7 @@ Additional data that the Fulfillment Provider needs to fulfill the shipment. Thi
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:92](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L92)
+[packages/medusa/src/models/shipping-method.ts:92](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L92)
 
 ___
 
@@ -80,7 +80,7 @@ The shipping method's ID
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L33)
+[packages/medusa/src/models/shipping-method.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L33)
 
 ___
 
@@ -92,7 +92,7 @@ Whether the shipping method price include tax
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:95](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L95)
+[packages/medusa/src/models/shipping-method.ts:95](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L95)
 
 ___
 
@@ -104,7 +104,7 @@ The details of the order that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L45)
+[packages/medusa/src/models/shipping-method.ts:45](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L45)
 
 ___
 
@@ -116,7 +116,7 @@ The ID of the order that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L41)
+[packages/medusa/src/models/shipping-method.ts:41](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L41)
 
 ___
 
@@ -128,7 +128,7 @@ The amount to charge for the Shipping Method. The currency of the price is defin
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:89](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L89)
+[packages/medusa/src/models/shipping-method.ts:89](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L89)
 
 ___
 
@@ -140,7 +140,7 @@ The ID of the return that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L73)
+[packages/medusa/src/models/shipping-method.ts:73](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L73)
 
 ___
 
@@ -152,7 +152,7 @@ The details of the return that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:77](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L77)
+[packages/medusa/src/models/shipping-method.ts:77](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L77)
 
 ___
 
@@ -164,7 +164,7 @@ The details of the shipping option the method was created from.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:81](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L81)
+[packages/medusa/src/models/shipping-method.ts:81](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L81)
 
 ___
 
@@ -176,7 +176,7 @@ The ID of the Shipping Option that the Shipping Method is built from.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L37)
+[packages/medusa/src/models/shipping-method.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L37)
 
 ___
 
@@ -188,7 +188,7 @@ The subtotal of the shipping
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:97](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L97)
+[packages/medusa/src/models/shipping-method.ts:97](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L97)
 
 ___
 
@@ -200,7 +200,7 @@ The details of the swap that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L69)
+[packages/medusa/src/models/shipping-method.ts:69](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L69)
 
 ___
 
@@ -212,7 +212,7 @@ The ID of the swap that the shipping method is used in.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L65)
+[packages/medusa/src/models/shipping-method.ts:65](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L65)
 
 ___
 
@@ -224,7 +224,7 @@ The details of the tax lines applied on the shipping method.
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:86](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L86)
+[packages/medusa/src/models/shipping-method.ts:86](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L86)
 
 ___
 
@@ -236,7 +236,7 @@ The total of tax
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:99](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L99)
+[packages/medusa/src/models/shipping-method.ts:99](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L99)
 
 ___
 
@@ -248,7 +248,7 @@ The total amount of the shipping
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:98](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L98)
+[packages/medusa/src/models/shipping-method.ts:98](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L98)
 
 ## Methods
 
@@ -264,4 +264,4 @@ The total amount of the shipping
 
 #### Defined in
 
-[packages/medusa/src/models/shipping-method.ts:105](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/shipping-method.ts#L105)
+[packages/medusa/src/models/shipping-method.ts:105](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/shipping-method.ts#L105)

@@ -20,7 +20,7 @@ Builder resolver options.
 
 ### dispose
 
- `Optional` **dispose**: [`Disposer`](../index.md#disposer)<`T`\>
+ `Optional` **dispose**: [`Disposer`](../types/Disposer.md)<`T`\>
 
 #### Inherited from
 
@@ -34,7 +34,7 @@ ___
 
 ### injectionMode
 
- `Optional` **injectionMode**: [`InjectionModeType`](../index.md#injectionmodetype)
+ `Optional` **injectionMode**: [`InjectionModeType`](../types/InjectionModeType.md)
 
 Resolution mode.
 
@@ -46,7 +46,7 @@ ___
 
 ### injector
 
- `Optional` **injector**: [`InjectorFunction`](../index.md#injectorfunction)
+ `Optional` **injector**: [`InjectorFunction`](../types/InjectorFunction.md)
 
 Injector function to provide additional parameters.
 
@@ -58,7 +58,7 @@ ___
 
 ### lifetime
 
- `Optional` **lifetime**: [`LifetimeType`](../index.md#lifetimetype)
+ `Optional` **lifetime**: [`LifetimeType`](../types/LifetimeType.md)
 
 Lifetime setting.
 

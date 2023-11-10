@@ -16,7 +16,7 @@
 
 | Name |
 | :------ |
-| `container` | [`InjectedDependencies`](../index.md#injecteddependencies-17) |
+| `container` | [`InjectedDependencies`](../types/InjectedDependencies-17.md) |
 
 #### Overrides
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L35)
+[packages/medusa/src/services/notification.ts:35](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L35)
 
 ## Properties
 
@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,27 +76,27 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L26)
+[packages/medusa/src/services/notification.ts:26](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L26)
 
 ___
 
 ### container\_
 
- `Protected` `Readonly` **container\_**: [`InjectedDependencies`](../index.md#injecteddependencies-17) & {}
+ `Protected` `Readonly` **container\_**: [`InjectedDependencies`](../types/InjectedDependencies-17.md) & {}
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L27)
+[packages/medusa/src/services/notification.ts:27](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L27)
 
 ___
 
 ### logger\_
 
- `Protected` `Readonly` **logger\_**: [`Logger`](../index.md#logger)
+ `Protected` `Readonly` **logger\_**: [`Logger`](../types/Logger-2.md)
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L30)
+[packages/medusa/src/services/notification.ts:30](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L30)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L33)
+[packages/medusa/src/services/notification.ts:33](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L33)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L31)
+[packages/medusa/src/services/notification.ts:31](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L31)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L25)
+[packages/medusa/src/services/notification.ts:25](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L25)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -174,7 +174,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -196,7 +196,7 @@ transaction manager is created.
 | Name | Description |
 | :------ | :------ |
 | `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../types/IsolationLevel.md) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -211,7 +211,7 @@ transaction manager is created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -239,7 +239,7 @@ order to allow for resends. Will log any errors that are encountered.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:186](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L186)
+[packages/medusa/src/services/notification.ts:186](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L186)
 
 ___
 
@@ -253,7 +253,7 @@ Retrieves a list of notifications.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Notification`](Notification.md)\> | the params to select the notifications by. |
+| `selector` | [`Selector`](../types/Selector.md)<[`Notification`](Notification.md)\> | the params to select the notifications by. |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Notification`](Notification.md)\> | the configuration to apply to the query |
 
 #### Returns
@@ -266,7 +266,7 @@ Retrieves a list of notifications.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L79)
+[packages/medusa/src/services/notification.ts:79](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L79)
 
 ___
 
@@ -280,7 +280,7 @@ Retrieves a list of notifications and total count.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | [`Selector`](../index.md#selector)<[`Notification`](Notification.md)\> | the params to select the notifications by. |
+| `selector` | [`Selector`](../types/Selector.md)<[`Notification`](Notification.md)\> | the params to select the notifications by. |
 | `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Notification`](Notification.md)\> | the configuration to apply to the query |
 
 #### Returns
@@ -293,7 +293,7 @@ Retrieves a list of notifications and total count.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:98](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L98)
+[packages/medusa/src/services/notification.ts:98](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L98)
 
 ___
 
@@ -318,7 +318,7 @@ used to generate on demand invoices or other documents.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L53)
+[packages/medusa/src/services/notification.ts:53](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L53)
 
 ___
 
@@ -342,7 +342,7 @@ Takes a list of notification provider ids and persists them in the database.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L61)
+[packages/medusa/src/services/notification.ts:61](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L61)
 
 ___
 
@@ -369,7 +369,7 @@ underlying provider's resendNotification method.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:266](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L266)
+[packages/medusa/src/services/notification.ts:266](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L266)
 
 ___
 
@@ -395,7 +395,7 @@ Retrieves a notification with a given id
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:119](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L119)
+[packages/medusa/src/services/notification.ts:119](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L119)
 
 ___
 
@@ -420,7 +420,7 @@ resolution fails.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:167](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L167)
+[packages/medusa/src/services/notification.ts:167](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L167)
 
 ___
 
@@ -448,7 +448,7 @@ method. Persists the Notification in the database.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:218](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L218)
+[packages/medusa/src/services/notification.ts:218](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L218)
 
 ___
 
@@ -474,7 +474,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -499,7 +499,7 @@ Subscribes a given provider to an event.
 
 #### Defined in
 
-[packages/medusa/src/services/notification.ts:146](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L146)
+[packages/medusa/src/services/notification.ts:146](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/services/notification.ts#L146)
 
 ___
 
@@ -525,4 +525,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

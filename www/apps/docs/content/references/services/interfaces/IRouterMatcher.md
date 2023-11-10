@@ -55,7 +55,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:131
 | Name |
 | :------ |
 | `path` | `Path` |
-| `...handlers` | [`RequestHandlerParams`](../index.md#requesthandlerparams)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
+| `...handlers` | [`RequestHandlerParams`](../types/RequestHandlerParams.md)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
 
 #### Returns
 
@@ -81,7 +81,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:146
 
 | Name |
 | :------ |
-| `path` | [`PathParams`](../index.md#pathparams) |
+| `path` | [`PathParams`](../types/PathParams.md) |
 | `...handlers` | [`RequestHandler`](RequestHandler-1.md)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
 
 #### Returns
@@ -108,8 +108,8 @@ node_modules/@types/express-serve-static-core/index.d.ts:161
 
 | Name |
 | :------ |
-| `path` | [`PathParams`](../index.md#pathparams) |
-| `...handlers` | [`RequestHandlerParams`](../index.md#requesthandlerparams)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
+| `path` | [`PathParams`](../types/PathParams.md) |
+| `...handlers` | [`RequestHandlerParams`](../types/RequestHandlerParams.md)<`P`, `ResBody`, `ReqBody`, `ReqQuery`, `LocalsObj`\>[] |
 
 #### Returns
 
@@ -127,7 +127,7 @@ node_modules/@types/express-serve-static-core/index.d.ts:173
 
 | Name |
 | :------ |
-| `path` | [`PathParams`](../index.md#pathparams) |
+| `path` | [`PathParams`](../types/PathParams.md) |
 | `subApplication` | [`Application`](Application.md)<Record<`string`, `any`\>\> |
 
 #### Returns

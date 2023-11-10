@@ -22,7 +22,7 @@ node_modules/typeorm/driver/mongodb/typings.d.ts:3823
 
 ### mechanism
 
- `Readonly` **mechanism**: [`AuthMechanism`](../index.md#authmechanism-1)
+ `Readonly` **mechanism**: [`AuthMechanism`](../index.md#authmechanism)
 
 The method used to authenticate
 
@@ -154,7 +154,7 @@ ___
 | Name |
 | :------ |
 | `creds` | `undefined` \| [`MongoCredentials`](MongoCredentials.md) |
-| `options` | [`Partial`](../index.md#partial)<[`MongoCredentialsOptions`](../interfaces/MongoCredentialsOptions.md)\> |
+| `options` | [`Partial`](../types/Partial.md)<[`MongoCredentialsOptions`](../interfaces/MongoCredentialsOptions.md)\> |
 
 #### Returns
 

@@ -30,7 +30,7 @@ The details of the billing address associated with the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:200](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L200)
+[packages/medusa/src/models/order.ts:200](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L200)
 
 ___
 
@@ -42,7 +42,7 @@ The ID of the billing address associated with the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:196](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L196)
+[packages/medusa/src/models/order.ts:196](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L196)
 
 ___
 
@@ -54,7 +54,7 @@ The date the order was canceled on.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:301](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L301)
+[packages/medusa/src/models/order.ts:301](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L301)
 
 ___
 
@@ -66,7 +66,7 @@ The details of the cart associated with the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:181](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L181)
+[packages/medusa/src/models/order.ts:181](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L181)
 
 ___
 
@@ -78,7 +78,7 @@ The ID of the cart associated with the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:177](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L177)
+[packages/medusa/src/models/order.ts:177](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L177)
 
 ___
 
@@ -90,7 +90,7 @@ The details of the claims created for the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:274](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L274)
+[packages/medusa/src/models/order.ts:274](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L274)
 
 ___
 
@@ -106,7 +106,7 @@ The date with timezone at which the resource was created.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L16)
+[packages/medusa/src/interfaces/models/base-entity.ts:16](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L16)
 
 ___
 
@@ -118,7 +118,7 @@ The details of the currency used in the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:224](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L224)
+[packages/medusa/src/models/order.ts:224](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L224)
 
 ___
 
@@ -130,7 +130,7 @@ The 3 character currency code that is used in the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:220](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L220)
+[packages/medusa/src/models/order.ts:220](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L220)
 
 ___
 
@@ -142,7 +142,7 @@ The details of the customer associated with the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:189](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L189)
+[packages/medusa/src/models/order.ts:189](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L189)
 
 ___
 
@@ -154,7 +154,7 @@ The ID of the customer associated with the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:185](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L185)
+[packages/medusa/src/models/order.ts:185](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L185)
 
 ___
 
@@ -166,7 +166,7 @@ The total of discount rounded
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:327](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L327)
+[packages/medusa/src/models/order.ts:327](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L327)
 
 ___
 
@@ -178,7 +178,7 @@ The details of the discounts applied on the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:241](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L241)
+[packages/medusa/src/models/order.ts:241](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L241)
 
 ___
 
@@ -190,7 +190,7 @@ The order's display ID
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:173](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L173)
+[packages/medusa/src/models/order.ts:173](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L173)
 
 ___
 
@@ -202,7 +202,7 @@ The details of the draft order this order was created from.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:287](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L287)
+[packages/medusa/src/models/order.ts:287](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L287)
 
 ___
 
@@ -214,7 +214,7 @@ The ID of the draft order this order was created from.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:283](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L283)
+[packages/medusa/src/models/order.ts:283](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L283)
 
 ___
 
@@ -226,7 +226,7 @@ The details of the order edits done on the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:290](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L290)
+[packages/medusa/src/models/order.ts:290](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L290)
 
 ___
 
@@ -238,7 +238,7 @@ The email associated with the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:192](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L192)
+[packages/medusa/src/models/order.ts:192](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L192)
 
 ___
 
@@ -250,7 +250,7 @@ The ID of an external order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:313](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L313)
+[packages/medusa/src/models/order.ts:313](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L313)
 
 ___
 
@@ -262,7 +262,7 @@ The order's fulfillment status
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:165](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L165)
+[packages/medusa/src/models/order.ts:165](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L165)
 
 ___
 
@@ -274,7 +274,7 @@ The details of the fulfillments created for the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:268](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L268)
+[packages/medusa/src/models/order.ts:268](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L268)
 
 ___
 
@@ -286,7 +286,7 @@ The total of gift cards with taxes
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:337](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L337)
+[packages/medusa/src/models/order.ts:337](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L337)
 
 ___
 
@@ -298,7 +298,7 @@ The total of gift cards
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:336](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L336)
+[packages/medusa/src/models/order.ts:336](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L336)
 
 ___
 
@@ -310,7 +310,7 @@ The gift card transactions made in the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:298](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L298)
+[packages/medusa/src/models/order.ts:298](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L298)
 
 ___
 
@@ -322,7 +322,7 @@ The details of the gift card used in the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:255](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L255)
+[packages/medusa/src/models/order.ts:255](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L255)
 
 ___
 
@@ -338,7 +338,7 @@ The order's ID
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L13)
+[packages/medusa/src/interfaces/models/base-entity.ts:13](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L13)
 
 ___
 
@@ -350,7 +350,7 @@ Randomly generated key used to continue the processing of the order in case of f
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:310](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L310)
+[packages/medusa/src/models/order.ts:310](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L310)
 
 ___
 
@@ -362,7 +362,7 @@ The tax total applied on items
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:329](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L329)
+[packages/medusa/src/models/order.ts:329](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L329)
 
 ___
 
@@ -374,7 +374,7 @@ The details of the line items that belong to the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:295](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L295)
+[packages/medusa/src/models/order.ts:295](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L295)
 
 ___
 
@@ -386,7 +386,7 @@ An optional key-value map with additional details
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:304](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L304)
+[packages/medusa/src/models/order.ts:304](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L304)
 
 ___
 
@@ -398,7 +398,7 @@ Flag for describing whether or not notifications related to this should be send.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:307](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L307)
+[packages/medusa/src/models/order.ts:307](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L307)
 
 ___
 
@@ -408,7 +408,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:155](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L155)
+[packages/medusa/src/models/order.ts:155](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L155)
 
 ___
 
@@ -420,7 +420,7 @@ The total amount paid
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:334](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L334)
+[packages/medusa/src/models/order.ts:334](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L334)
 
 ___
 
@@ -432,7 +432,7 @@ The order's payment status
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:168](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L168)
+[packages/medusa/src/models/order.ts:168](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L168)
 
 ___
 
@@ -444,7 +444,7 @@ The details of the payments used in the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:263](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L263)
+[packages/medusa/src/models/order.ts:263](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L263)
 
 ___
 
@@ -456,7 +456,7 @@ The total of discount
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:328](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L328)
+[packages/medusa/src/models/order.ts:328](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L328)
 
 ___
 
@@ -468,7 +468,7 @@ The amount that can be refunded
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:335](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L335)
+[packages/medusa/src/models/order.ts:335](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L335)
 
 ___
 
@@ -480,7 +480,7 @@ The total amount refunded if the order is returned.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:331](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L331)
+[packages/medusa/src/models/order.ts:331](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L331)
 
 ___
 
@@ -492,7 +492,7 @@ The details of the refunds created for the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:277](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L277)
+[packages/medusa/src/models/order.ts:277](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L277)
 
 ___
 
@@ -504,7 +504,7 @@ The details of the region this order was created in.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:216](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L216)
+[packages/medusa/src/models/order.ts:216](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L216)
 
 ___
 
@@ -516,7 +516,7 @@ The ID of the region this order was created in.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:212](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L212)
+[packages/medusa/src/models/order.ts:212](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L212)
 
 ___
 
@@ -528,7 +528,7 @@ The details of the line items that are returnable as part of the order, swaps, o
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:339](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L339)
+[packages/medusa/src/models/order.ts:339](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L339)
 
 ___
 
@@ -540,7 +540,7 @@ The details of the returns created for the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:271](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L271)
+[packages/medusa/src/models/order.ts:271](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L271)
 
 ___
 
@@ -552,7 +552,7 @@ The details of the sales channel this order belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:322](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L322)
+[packages/medusa/src/models/order.ts:322](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L322)
 
 ___
 
@@ -564,7 +564,7 @@ The ID of the sales channel this order belongs to.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:316](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L316)
+[packages/medusa/src/models/order.ts:316](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L316)
 
 ___
 
@@ -576,7 +576,7 @@ The details of the shipping address associated with the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:208](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L208)
+[packages/medusa/src/models/order.ts:208](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L208)
 
 ___
 
@@ -588,7 +588,7 @@ The ID of the shipping address associated with the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:204](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L204)
+[packages/medusa/src/models/order.ts:204](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L204)
 
 ___
 
@@ -600,7 +600,7 @@ The details of the shipping methods used in the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:260](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L260)
+[packages/medusa/src/models/order.ts:260](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L260)
 
 ___
 
@@ -612,7 +612,7 @@ The tax total applied on shipping
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:326](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L326)
+[packages/medusa/src/models/order.ts:326](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L326)
 
 ___
 
@@ -624,7 +624,7 @@ The total of shipping
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:325](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L325)
+[packages/medusa/src/models/order.ts:325](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L325)
 
 ___
 
@@ -636,7 +636,7 @@ The order's status
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:158](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L158)
+[packages/medusa/src/models/order.ts:158](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L158)
 
 ___
 
@@ -648,7 +648,7 @@ The subtotal of the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:333](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L333)
+[packages/medusa/src/models/order.ts:333](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L333)
 
 ___
 
@@ -660,7 +660,7 @@ The details of the swaps created for the order.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:280](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L280)
+[packages/medusa/src/models/order.ts:280](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L280)
 
 ___
 
@@ -672,7 +672,7 @@ The order's tax rate
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:227](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L227)
+[packages/medusa/src/models/order.ts:227](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L227)
 
 ___
 
@@ -684,7 +684,7 @@ The total of tax
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:330](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L330)
+[packages/medusa/src/models/order.ts:330](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L330)
 
 ___
 
@@ -696,7 +696,7 @@ The total amount of the order
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:332](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L332)
+[packages/medusa/src/models/order.ts:332](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L332)
 
 ___
 
@@ -712,7 +712,7 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/models/base-entity.ts#L19)
+[packages/medusa/src/interfaces/models/base-entity.ts:19](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/interfaces/models/base-entity.ts#L19)
 
 ## Methods
 
@@ -728,4 +728,4 @@ The date with timezone at which the resource was updated.
 
 #### Defined in
 
-[packages/medusa/src/models/order.ts:345](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/order.ts#L345)
+[packages/medusa/src/models/order.ts:345](https://github.com/medusajs/medusa/blob/3d9f5ae63/packages/medusa/src/models/order.ts#L345)
