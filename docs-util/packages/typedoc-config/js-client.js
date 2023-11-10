@@ -44,7 +44,7 @@ module.exports = {
   tsconfig: path.join(__dirname, "extended-tsconfig", "js-client.json"),
   name: "JS Client Reference",
   indexTitle: "JS Client Reference",
-  entryDocument: "_index.mdx",
+  entryDocument: "index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
   plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-rename-defaults"],

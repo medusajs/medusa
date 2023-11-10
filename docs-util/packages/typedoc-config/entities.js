@@ -11,7 +11,7 @@ module.exports = {
   tsconfig: path.join(__dirname, "extended-tsconfig", "medusa.json"),
   name: "Entities Reference",
   indexTitle: "Entities Reference",
-  entryDocument: "_index.mdx",
+  entryDocument: "index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
   formatting: {
