@@ -121,7 +121,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the invite is accepted successfully.",
@@ -161,7 +161,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostInvitesPayload`](../modules/internal.mdx#adminpostinvitespayload)",
+    "type": "[`AdminPostInvitesPayload`](../internal/types/internal.AdminPostInvitesPayload.mdx)",
     "description": "The invite to be created.",
     "optional": false,
     "defaultValue": "",
@@ -178,7 +178,7 @@ medusa.admin.invites
       },
       {
         "name": "role",
-        "type": "[`InviteUserRolesEnum`](../modules/internal.mdx#inviteuserrolesenum)",
+        "type": "[`InviteUserRolesEnum`](../internal/types/internal.InviteUserRolesEnum.mdx)",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -203,7 +203,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the invite is created successfully.",
@@ -257,7 +257,7 @@ medusa.admin.invites.delete(inviteId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -330,7 +330,7 @@ medusa.admin.invites.list().then(({ invites }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminListInvitesRes`](../modules/internal.mdx#adminlistinvitesres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminListInvitesRes`](../internal/types/internal.AdminListInvitesRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of invites.",
@@ -502,7 +502,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the invite is resent successfully.",

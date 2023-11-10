@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterQuery
+
+ **FilterQuery**<`T`, `Prev`\>: `Prev` extends `never` ? `never` : { [Key in keyof T]?: T[Key] extends boolean \| number \| string \| bigint \| symbol \| Date ? T[Key] \| OperatorMap<T[Key]\\> : T[Key] extends infer U ? U extends Object ? V extends object ? FilterQuery<Partial<V\\>, PrevLimit[Prev]\\> : never : never : never }
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Prev",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

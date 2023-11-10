@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 Writes `value` to `buf` at the specified `offset` as little-endian
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.allocUnsafe(8);
 
@@ -34,6 +34,7 @@ This function is also available under the `writeBigUint64LE` alias.
     "description": "Number to be written to `buf`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -42,6 +43,7 @@ This function is also available under the `writeBigUint64LE` alias.
     "description": "Number of bytes to skip before starting to write. Must satisfy: `0 <= offset <= buf.length - 8`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -57,6 +59,7 @@ This function is also available under the `writeBigUint64LE` alias.
     "optional": true,
     "defaultValue": "",
     "description": "`offset` plus the number of bytes written.",
+    "expandable": false,
     "children": []
   }
 ]} />

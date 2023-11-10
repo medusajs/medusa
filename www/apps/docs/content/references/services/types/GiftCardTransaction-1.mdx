@@ -1,0 +1,52 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# GiftCardTransaction
+
+ **GiftCardTransaction**: `Object`
+
+Gift Card Transactions are created once a Customer uses a Gift Card to pay for their Order.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "amount",
+    "type": "`number`",
+    "description": "The amount that was used from the Gift Card.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "gift_card",
+    "type": "[`GiftCard`](../classes/GiftCard.mdx)",
+    "description": "The details of the gift card associated used in this transaction.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "is_taxable",
+    "type": "`boolean` \\| ``null``",
+    "description": "Whether the transaction is taxable or not.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rate",
+    "type": "`number` \\| ``null``",
+    "description": "The tax rate of the transaction",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

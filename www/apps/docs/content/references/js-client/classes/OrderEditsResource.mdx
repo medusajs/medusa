@@ -59,7 +59,7 @@ medusa.orderEdits.complete(orderEditId).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreOrderEditsRes`](../modules/internal.mdx#storeordereditsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreOrderEditsRes`](../internal/types/internal.StoreOrderEditsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -75,7 +75,7 @@ medusa.orderEdits.complete(orderEditId).then(({ order_edit }) => {
         "children": [
           {
             "name": "order_edit",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx), ``\"internal_note\"`` \\| ``\"created_by\"`` \\| ``\"confirmed_by\"`` \\| ``\"canceled_by\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx), ``\"internal_note\"`` \\| ``\"created_by\"`` \\| ``\"confirmed_by\"`` \\| ``\"canceled_by\"``\\>",
             "description": "Order edit details.",
             "optional": false,
             "defaultValue": "",
@@ -377,7 +377,7 @@ medusa.orderEdits.decline(orderEditId).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreOrderEditsRes`](../modules/internal.mdx#storeordereditsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreOrderEditsRes`](../internal/types/internal.StoreOrderEditsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -393,7 +393,7 @@ medusa.orderEdits.decline(orderEditId).then(({ order_edit }) => {
         "children": [
           {
             "name": "order_edit",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx), ``\"internal_note\"`` \\| ``\"created_by\"`` \\| ``\"confirmed_by\"`` \\| ``\"canceled_by\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx), ``\"internal_note\"`` \\| ``\"created_by\"`` \\| ``\"confirmed_by\"`` \\| ``\"canceled_by\"``\\>",
             "description": "Order edit details.",
             "optional": false,
             "defaultValue": "",
@@ -676,7 +676,7 @@ medusa.orderEdits.retrieve(orderEditId).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreOrderEditsRes`](../modules/internal.mdx#storeordereditsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreOrderEditsRes`](../internal/types/internal.StoreOrderEditsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -692,7 +692,7 @@ medusa.orderEdits.retrieve(orderEditId).then(({ order_edit }) => {
         "children": [
           {
             "name": "order_edit",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx), ``\"internal_note\"`` \\| ``\"created_by\"`` \\| ``\"confirmed_by\"`` \\| ``\"canceled_by\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx), ``\"internal_note\"`` \\| ``\"created_by\"`` \\| ``\"confirmed_by\"`` \\| ``\"canceled_by\"``\\>",
             "description": "Order edit details.",
             "optional": false,
             "defaultValue": "",

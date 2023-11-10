@@ -17,6 +17,7 @@ A product's data.
     "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -25,6 +26,7 @@ A product's data.
     "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "deleted_at",
@@ -32,6 +34,7 @@ A product's data.
         "description": "When the product collection was deleted.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -40,6 +43,7 @@ A product's data.
         "description": "The handle of the product collection. The handle can be used to create slug URL paths.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -48,6 +52,7 @@ A product's data.
         "description": "The ID of the product collection.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -56,6 +61,7 @@ A product's data.
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -64,6 +70,7 @@ A product's data.
         "description": "The associated products. It may only be available if the `products` relation is expanded.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "categories",
@@ -71,6 +78,7 @@ A product's data.
             "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -79,6 +87,7 @@ A product's data.
             "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -87,6 +96,7 @@ A product's data.
             "description": "When the product was created.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -95,6 +105,7 @@ A product's data.
             "description": "When the product was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -103,6 +114,7 @@ A product's data.
             "description": "The description of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -111,6 +123,7 @@ A product's data.
             "description": "Whether the product can be discounted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -119,6 +132,7 @@ A product's data.
             "description": "The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -127,6 +141,7 @@ A product's data.
             "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -135,6 +150,7 @@ A product's data.
             "description": "The height of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -143,6 +159,7 @@ A product's data.
             "description": "The HS Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -151,6 +168,7 @@ A product's data.
             "description": "The ID of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -159,6 +177,7 @@ A product's data.
             "description": "The associated product images. It may only be available if the `images` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -167,6 +186,7 @@ A product's data.
             "description": "Whether the product is a gift card.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -175,6 +195,7 @@ A product's data.
             "description": "The length of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -183,6 +204,7 @@ A product's data.
             "description": "The material of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -191,6 +213,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -199,6 +222,7 @@ A product's data.
             "description": "The MID Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -207,6 +231,7 @@ A product's data.
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -215,6 +240,7 @@ A product's data.
             "description": "The origin country of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -223,6 +249,7 @@ A product's data.
             "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -231,6 +258,7 @@ A product's data.
             "description": "The subttle of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -239,6 +267,7 @@ A product's data.
             "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -247,6 +276,7 @@ A product's data.
             "description": "The URL of the product's thumbnail. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -255,6 +285,7 @@ A product's data.
             "description": "The title of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -263,6 +294,7 @@ A product's data.
             "description": "The associated product type. It may only be available if the `type` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -271,6 +303,7 @@ A product's data.
             "description": "When the product was updated.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -279,6 +312,7 @@ A product's data.
             "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -287,6 +321,7 @@ A product's data.
             "description": "The weight of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -295,6 +330,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -305,6 +341,7 @@ A product's data.
         "description": "The title of the product collection.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -315,6 +352,7 @@ A product's data.
     "description": "When the product was created.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -323,6 +361,7 @@ A product's data.
     "description": "When the product was deleted.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -331,6 +370,7 @@ A product's data.
     "description": "The description of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -339,6 +379,7 @@ A product's data.
     "description": "Whether the product can be discounted.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -347,6 +388,7 @@ A product's data.
     "description": "The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -355,6 +397,7 @@ A product's data.
     "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -363,6 +406,7 @@ A product's data.
     "description": "The height of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -371,6 +415,7 @@ A product's data.
     "description": "The HS Code of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -379,6 +424,7 @@ A product's data.
     "description": "The ID of the product.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -387,6 +433,7 @@ A product's data.
     "description": "The associated product images. It may only be available if the `images` relation is expanded.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "deleted_at",
@@ -394,6 +441,7 @@ A product's data.
         "description": "When the product image was deleted.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -402,6 +450,7 @@ A product's data.
         "description": "The ID of the product image.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -410,6 +459,7 @@ A product's data.
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -418,6 +468,7 @@ A product's data.
         "description": "The URL of the product image.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -428,6 +479,7 @@ A product's data.
     "description": "Whether the product is a gift card.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -436,6 +488,7 @@ A product's data.
     "description": "The length of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -444,6 +497,7 @@ A product's data.
     "description": "The material of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -452,6 +506,7 @@ A product's data.
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -460,6 +515,7 @@ A product's data.
     "description": "The MID Code of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -468,6 +524,7 @@ A product's data.
     "description": "The associated product options. It may only be available if the `options` relation is expanded.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "deleted_at",
@@ -475,6 +532,7 @@ A product's data.
         "description": "When the product option was deleted.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -483,6 +541,7 @@ A product's data.
         "description": "The ID of the product option.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -491,6 +550,7 @@ A product's data.
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -499,6 +559,7 @@ A product's data.
         "description": "The associated product. It may only be available if the `product` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "categories",
@@ -506,6 +567,7 @@ A product's data.
             "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -514,6 +576,7 @@ A product's data.
             "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -522,6 +585,7 @@ A product's data.
             "description": "When the product was created.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -530,6 +594,7 @@ A product's data.
             "description": "When the product was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -538,6 +603,7 @@ A product's data.
             "description": "The description of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -546,6 +612,7 @@ A product's data.
             "description": "Whether the product can be discounted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -554,6 +621,7 @@ A product's data.
             "description": "The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -562,6 +630,7 @@ A product's data.
             "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -570,6 +639,7 @@ A product's data.
             "description": "The height of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -578,6 +648,7 @@ A product's data.
             "description": "The HS Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -586,6 +657,7 @@ A product's data.
             "description": "The ID of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -594,6 +666,7 @@ A product's data.
             "description": "The associated product images. It may only be available if the `images` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -602,6 +675,7 @@ A product's data.
             "description": "Whether the product is a gift card.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -610,6 +684,7 @@ A product's data.
             "description": "The length of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -618,6 +693,7 @@ A product's data.
             "description": "The material of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -626,6 +702,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -634,6 +711,7 @@ A product's data.
             "description": "The MID Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -642,6 +720,7 @@ A product's data.
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -650,6 +729,7 @@ A product's data.
             "description": "The origin country of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -658,6 +738,7 @@ A product's data.
             "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -666,6 +747,7 @@ A product's data.
             "description": "The subttle of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -674,6 +756,7 @@ A product's data.
             "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -682,6 +765,7 @@ A product's data.
             "description": "The URL of the product's thumbnail. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -690,6 +774,7 @@ A product's data.
             "description": "The title of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -698,6 +783,7 @@ A product's data.
             "description": "The associated product type. It may only be available if the `type` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -706,6 +792,7 @@ A product's data.
             "description": "When the product was updated.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -714,6 +801,7 @@ A product's data.
             "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -722,6 +810,7 @@ A product's data.
             "description": "The weight of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -730,6 +819,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -740,6 +830,7 @@ A product's data.
         "description": "The title of the product option.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -748,6 +839,7 @@ A product's data.
         "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "deleted_at",
@@ -755,6 +847,7 @@ A product's data.
             "description": "When the product option value was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -763,6 +856,7 @@ A product's data.
             "description": "The ID of the product option value.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -771,6 +865,7 @@ A product's data.
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -779,6 +874,7 @@ A product's data.
             "description": "The associated product option. It may only be available if the `option` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -787,6 +883,7 @@ A product's data.
             "description": "The value of the product option value.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -795,6 +892,7 @@ A product's data.
             "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -807,6 +905,7 @@ A product's data.
     "description": "The origin country of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -815,6 +914,7 @@ A product's data.
     "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "DRAFT",
@@ -822,6 +922,7 @@ A product's data.
         "description": "",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -830,6 +931,7 @@ A product's data.
         "description": "",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -838,6 +940,7 @@ A product's data.
         "description": "",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -846,6 +949,7 @@ A product's data.
         "description": "",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -856,6 +960,7 @@ A product's data.
     "description": "The subttle of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -864,6 +969,7 @@ A product's data.
     "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "id",
@@ -871,6 +977,7 @@ A product's data.
         "description": "The ID of the product tag.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -879,6 +986,7 @@ A product's data.
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -887,6 +995,7 @@ A product's data.
         "description": "The associated products. It may only be available if the `products` relation is expanded.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "categories",
@@ -894,6 +1003,7 @@ A product's data.
             "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -902,6 +1012,7 @@ A product's data.
             "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -910,6 +1021,7 @@ A product's data.
             "description": "When the product was created.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -918,6 +1030,7 @@ A product's data.
             "description": "When the product was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -926,6 +1039,7 @@ A product's data.
             "description": "The description of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -934,6 +1048,7 @@ A product's data.
             "description": "Whether the product can be discounted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -942,6 +1057,7 @@ A product's data.
             "description": "The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -950,6 +1066,7 @@ A product's data.
             "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -958,6 +1075,7 @@ A product's data.
             "description": "The height of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -966,6 +1084,7 @@ A product's data.
             "description": "The HS Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -974,6 +1093,7 @@ A product's data.
             "description": "The ID of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -982,6 +1102,7 @@ A product's data.
             "description": "The associated product images. It may only be available if the `images` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -990,6 +1111,7 @@ A product's data.
             "description": "Whether the product is a gift card.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -998,6 +1120,7 @@ A product's data.
             "description": "The length of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1006,6 +1129,7 @@ A product's data.
             "description": "The material of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1014,6 +1138,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1022,6 +1147,7 @@ A product's data.
             "description": "The MID Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1030,6 +1156,7 @@ A product's data.
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1038,6 +1165,7 @@ A product's data.
             "description": "The origin country of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1046,6 +1174,7 @@ A product's data.
             "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1054,6 +1183,7 @@ A product's data.
             "description": "The subttle of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1062,6 +1192,7 @@ A product's data.
             "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1070,6 +1201,7 @@ A product's data.
             "description": "The URL of the product's thumbnail. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1078,6 +1210,7 @@ A product's data.
             "description": "The title of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1086,6 +1219,7 @@ A product's data.
             "description": "The associated product type. It may only be available if the `type` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1094,6 +1228,7 @@ A product's data.
             "description": "When the product was updated.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1102,6 +1237,7 @@ A product's data.
             "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1110,6 +1246,7 @@ A product's data.
             "description": "The weight of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1118,6 +1255,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -1128,6 +1266,7 @@ A product's data.
         "description": "The value of the product tag.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -1138,6 +1277,7 @@ A product's data.
     "description": "The URL of the product's thumbnail. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -1146,6 +1286,7 @@ A product's data.
     "description": "The title of the product.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -1154,6 +1295,7 @@ A product's data.
     "description": "The associated product type. It may only be available if the `type` relation is expanded.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "deleted_at",
@@ -1161,6 +1303,7 @@ A product's data.
         "description": "When the product type was deleted.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1169,6 +1312,7 @@ A product's data.
         "description": "The ID of the product type.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1177,6 +1321,7 @@ A product's data.
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1185,6 +1330,7 @@ A product's data.
         "description": "The value of the product type.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -1195,6 +1341,7 @@ A product's data.
     "description": "When the product was updated.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -1203,6 +1350,7 @@ A product's data.
     "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "allow_backorder",
@@ -1210,6 +1358,7 @@ A product's data.
         "description": "Whether the product variant can be ordered when it's out of stock.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1218,6 +1367,7 @@ A product's data.
         "description": "The barcode of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1226,6 +1376,7 @@ A product's data.
         "description": "When the product variant was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1234,6 +1385,7 @@ A product's data.
         "description": "When the product variant was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1242,6 +1394,7 @@ A product's data.
         "description": "The EAN of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1250,6 +1403,7 @@ A product's data.
         "description": "The height of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1258,6 +1412,7 @@ A product's data.
         "description": "The HS Code of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1266,6 +1421,7 @@ A product's data.
         "description": "The ID of the product variant.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1274,6 +1430,7 @@ A product's data.
         "description": "The inventory quantiy of the product variant.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1282,6 +1439,7 @@ A product's data.
         "description": "The length of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1290,6 +1448,7 @@ A product's data.
         "description": "Whether the product variant's inventory should be managed by the core system.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1298,6 +1457,7 @@ A product's data.
         "description": "The material of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1306,6 +1466,7 @@ A product's data.
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1314,6 +1475,7 @@ A product's data.
         "description": "The MID Code of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1322,6 +1484,7 @@ A product's data.
         "description": "The associated product options. It may only be available if the `options` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "deleted_at",
@@ -1329,6 +1492,7 @@ A product's data.
             "description": "When the product option value was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1337,6 +1501,7 @@ A product's data.
             "description": "The ID of the product option value.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1345,6 +1510,7 @@ A product's data.
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1353,6 +1519,7 @@ A product's data.
             "description": "The associated product option. It may only be available if the `option` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1361,6 +1528,7 @@ A product's data.
             "description": "The value of the product option value.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1369,6 +1537,7 @@ A product's data.
             "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -1379,6 +1548,7 @@ A product's data.
         "description": "The origin country of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1387,6 +1557,7 @@ A product's data.
         "description": "The associated product. It may only be available if the `product` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "categories",
@@ -1394,6 +1565,7 @@ A product's data.
             "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1402,6 +1574,7 @@ A product's data.
             "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1410,6 +1583,7 @@ A product's data.
             "description": "When the product was created.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1418,6 +1592,7 @@ A product's data.
             "description": "When the product was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1426,6 +1601,7 @@ A product's data.
             "description": "The description of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1434,6 +1610,7 @@ A product's data.
             "description": "Whether the product can be discounted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1442,6 +1619,7 @@ A product's data.
             "description": "The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1450,6 +1628,7 @@ A product's data.
             "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1458,6 +1637,7 @@ A product's data.
             "description": "The height of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1466,6 +1646,7 @@ A product's data.
             "description": "The HS Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1474,6 +1655,7 @@ A product's data.
             "description": "The ID of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1482,6 +1664,7 @@ A product's data.
             "description": "The associated product images. It may only be available if the `images` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1490,6 +1673,7 @@ A product's data.
             "description": "Whether the product is a gift card.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1498,6 +1682,7 @@ A product's data.
             "description": "The length of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1506,6 +1691,7 @@ A product's data.
             "description": "The material of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1514,6 +1700,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1522,6 +1709,7 @@ A product's data.
             "description": "The MID Code of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1530,6 +1718,7 @@ A product's data.
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1538,6 +1727,7 @@ A product's data.
             "description": "The origin country of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1546,6 +1736,7 @@ A product's data.
             "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1554,6 +1745,7 @@ A product's data.
             "description": "The subttle of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1562,6 +1754,7 @@ A product's data.
             "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1570,6 +1763,7 @@ A product's data.
             "description": "The URL of the product's thumbnail. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1578,6 +1772,7 @@ A product's data.
             "description": "The title of the product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1586,6 +1781,7 @@ A product's data.
             "description": "The associated product type. It may only be available if the `type` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1594,6 +1790,7 @@ A product's data.
             "description": "When the product was updated.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1602,6 +1799,7 @@ A product's data.
             "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1610,6 +1808,7 @@ A product's data.
             "description": "The weight of the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -1618,6 +1817,7 @@ A product's data.
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -1628,6 +1828,7 @@ A product's data.
         "description": "The ID of the associated product.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1636,6 +1837,7 @@ A product's data.
         "description": "The SKU of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1644,6 +1846,7 @@ A product's data.
         "description": "The tile of the product variant.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1652,6 +1855,7 @@ A product's data.
         "description": "The UPC of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1660,6 +1864,7 @@ A product's data.
         "description": "When the product variant was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1668,6 +1873,7 @@ A product's data.
         "description": "The ranking of the variant among other variants associated with the product. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1676,6 +1882,7 @@ A product's data.
         "description": "The weight of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1684,6 +1891,7 @@ A product's data.
         "description": "The width of the product variant. It can possibly be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -1694,6 +1902,7 @@ A product's data.
     "description": "The weight of the product. It can possibly be `null`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -1702,6 +1911,7 @@ A product's data.
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

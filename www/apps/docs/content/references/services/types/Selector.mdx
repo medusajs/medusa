@@ -1,0 +1,23 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Selector
+
+ **Selector**<`TEntity`\>: { [key in keyof TEntity]?: TEntity[key] \| TEntity[key][] \| DateComparisonOperator \| StringComparisonOperator \| NumericalComparisonOperator \| FindOperator<TEntity[key][] \| string \| string[]\\> }
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "TEntity",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

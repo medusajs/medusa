@@ -206,7 +206,7 @@ medusa.product.variants
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreVariantsListRes`](../modules/internal.mdx#storevariantslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreVariantsListRes`](../internal/types/internal.StoreVariantsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product variants.",
@@ -222,7 +222,7 @@ medusa.product.variants
         "children": [
           {
             "name": "variants",
-            "type": "[`PricedVariant`](../modules/internal.mdx#pricedvariant)[]",
+            "type": "[`PricedVariant`](../internal/types/internal.PricedVariant.mdx)[]",
             "description": "An array of product variant descriptions.",
             "optional": false,
             "defaultValue": "",
@@ -574,7 +574,7 @@ medusa.product.variants
               },
               {
                 "name": "tax_rates",
-                "type": "[`TaxServiceRate`](../modules/internal.mdx#taxservicerate)[] \\| ``null``",
+                "type": "[`TaxServiceRate`](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
                 "description": "The list of tax rates.",
                 "optional": false,
                 "defaultValue": "",
@@ -638,7 +638,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreVariantsRes`](../modules/internal.mdx#storevariantsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreVariantsRes`](../internal/types/internal.StoreVariantsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product variant's details.",
@@ -654,7 +654,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
         "children": [
           {
             "name": "variant",
-            "type": "[`PricedVariant`](../modules/internal.mdx#pricedvariant)",
+            "type": "[`PricedVariant`](../internal/types/internal.PricedVariant.mdx)",
             "description": "Product variant description.",
             "optional": false,
             "defaultValue": "",
@@ -1006,7 +1006,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "[`TaxServiceRate`](../modules/internal.mdx#taxservicerate)[] \\| ``null``",
+                "type": "[`TaxServiceRate`](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
                 "description": "The list of tax rates.",
                 "optional": false,
                 "defaultValue": "",

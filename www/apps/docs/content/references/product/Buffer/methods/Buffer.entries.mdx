@@ -14,7 +14,7 @@ Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/J
 of `buf`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Log the entire contents of a `Buffer`.
 
@@ -43,6 +43,7 @@ for (const pair of buf.entries()) {
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": [
       {
         "name": "number",
@@ -50,6 +51,7 @@ for (const pair of buf.entries()) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -58,6 +60,7 @@ for (const pair of buf.entries()) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       }
     ]

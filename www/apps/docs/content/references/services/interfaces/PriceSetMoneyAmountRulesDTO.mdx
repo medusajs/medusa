@@ -1,0 +1,50 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PriceSetMoneyAmountRulesDTO
+
+A price set money amount rule's data.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the price set money amount.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price_set_money_amount",
+    "type": "[`PriceSetMoneyAmountDTO`](PriceSetMoneyAmountDTO.mdx)",
+    "description": "The associated price set money amount. It may only be available if the relation `price_set_money_amount` is expanded.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rule_type",
+    "type": "[`RuleTypeDTO`](RuleTypeDTO.mdx)",
+    "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`string`",
+    "description": "The value of the price set money amount rule.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

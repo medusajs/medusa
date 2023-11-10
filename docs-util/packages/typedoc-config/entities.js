@@ -11,13 +11,9 @@ module.exports = {
   tsconfig: path.join(__dirname, "extended-tsconfig", "medusa.json"),
   name: "Entities Reference",
   indexTitle: "Entities Reference",
-  entryDocument: "_index.mdx",
+  entryDocument: "index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
-  plugin: [...globalTypedocOptions.plugin],
-  frontmatterData: {
-    displayed_sidebar: "entitiesSidebar",
-  },
   formatting: {
     "*": {
       showCommentsAsHeader: true,
@@ -34,8 +30,15 @@ module.exports = {
         Constructors: false,
         Methods: false,
       },
+      frontmatterData: {
+        displayed_sidebar: "entitiesSidebar",
+      },
+    },
+    "(Order|Swap|Cart|LineItem)": {
+      maxLevel: 1,
     },
   },
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
+  maxLevel: 2,
 }

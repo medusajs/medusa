@@ -7,17 +7,11 @@ module.exports = modulesConfig({
   moduleName: "Pricing Module Reference",
   documentsToFormat: [
     {
-      pattern: "IPricingModuleService.md",
+      pattern: "*",
+      useDefaults: true,
       additionalFormatting: {
-        reflectionDescription:
-          "This section of the documentation provides a reference to the `IPricingModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Pricing Module.",
         frontmatterData: {
           displayed_sidebar: "pricingReference",
-          badge: {
-            variant: "orange",
-            text: "Beta",
-          },
-          slug: "/references/pricing",
         },
       },
     },
@@ -43,11 +37,17 @@ module.exports = modulesConfig({
       },
     },
     {
-      pattern: "*",
-      useDefaults: true,
+      pattern: "IPricingModuleService.md",
       additionalFormatting: {
+        reflectionDescription:
+          "This section of the documentation provides a reference to the `IPricingModuleService` interface’s methods. This is the interface developers use to use the functionalities provided by the Pricing Module.",
         frontmatterData: {
           displayed_sidebar: "pricingReference",
+          badge: {
+            variant: "orange",
+            text: "Beta",
+          },
+          slug: "/references/pricing",
         },
       },
     },

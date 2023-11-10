@@ -1,0 +1,52 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminProductsDeleteOptionRes
+
+ **AdminProductsDeleteOptionRes**: `Object`
+
+The details of deleting a product's option.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "deleted",
+    "type": "`boolean`",
+    "description": "Whether or not the items were deleted.",
+    "optional": false,
+    "defaultValue": "true",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "object",
+    "type": "``\"option\"``",
+    "description": "The type of the object that was deleted.",
+    "optional": false,
+    "defaultValue": "option",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "option_id",
+    "type": "`string`",
+    "description": "The ID of the deleted Product Option",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "product",
+    "type": "[`Product`](../classes/internal.Product.mdx)",
+    "description": "Product details.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

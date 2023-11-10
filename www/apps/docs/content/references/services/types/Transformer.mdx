@@ -1,0 +1,61 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Transformer
+
+ **Transformer**: (`item?`: [`LineItem`](../classes/LineItem.mdx), `quantity?`: `number`, `additional?`: [`OrdersReturnItem`](../classes/OrdersReturnItem.mdx)) => `Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>\> \| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>
+
+#### Type declaration
+
+(`item?`, `quantity?`, `additional?`): `Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>\> \| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "item",
+    "type": "[`LineItem`](../classes/LineItem.mdx)",
+    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "additional",
+    "type": "[`OrdersReturnItem`](../classes/OrdersReturnItem.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+`Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>\> \| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise<DeepPartial<LineItem\\>\\> \\| DeepPartial<LineItem\\>",
+    "type": "`Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\\>\\> \\| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\\>",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

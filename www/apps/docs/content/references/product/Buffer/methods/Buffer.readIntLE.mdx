@@ -14,7 +14,7 @@ Reads `byteLength` number of bytes from `buf` at the specified `offset`and inter
 supporting up to 48 bits of accuracy.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56, 0x78, 0x90, 0xab]);
 
@@ -31,6 +31,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
     "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - byteLength`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -39,6 +40,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
     "description": "Number of bytes to read. Must satisfy `0 < byteLength <= 6`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -54,6 +56,7 @@ console.log(buf.readIntLE(0, 6).toString(16));
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

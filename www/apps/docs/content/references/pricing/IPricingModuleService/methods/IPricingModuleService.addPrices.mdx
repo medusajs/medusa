@@ -97,6 +97,7 @@ async function addPricesToPriceSet (priceSetId: string) {
     "description": "The data defining the price set to add the prices to, along with the prices to add.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "priceSetId",
@@ -104,6 +105,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "The ID of the price set to add prices to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -112,6 +114,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "The prices to add to the price set.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "amount",
@@ -119,6 +122,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The amount of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -127,6 +131,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The currency of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -135,6 +140,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The currency code of this money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -143,6 +149,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The ID of the money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -151,6 +158,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The maximum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -159,6 +167,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The minimum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -167,6 +176,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -179,6 +189,7 @@ async function addPricesToPriceSet (priceSetId: string) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -186,6 +197,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -194,6 +206,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -202,6 +215,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -210,6 +224,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -218,6 +233,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -233,6 +249,7 @@ async function addPricesToPriceSet (priceSetId: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The price set that the prices were added to.",
+    "expandable": false,
     "children": [
       {
         "name": "id",
@@ -240,6 +257,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "The ID of the price set.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -248,6 +266,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "The prices that belong to this price set.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "amount",
@@ -255,6 +274,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The price of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -263,6 +283,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -271,6 +292,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The currency code of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -279,6 +301,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The ID of the money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -287,6 +310,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The maximum quantity required to be purchased for this price to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -295,6 +319,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The minimum quantity required to be purchased for this price to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -305,6 +330,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "The rule types applied on this price set.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "default_priority",
@@ -312,6 +338,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -320,6 +347,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The ID of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -328,6 +356,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The display name of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -336,6 +365,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -428,6 +458,7 @@ async function addPricesToPriceSet (priceSetId: string) {
     "description": "The data defining the prices to add per price set.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "priceSetId",
@@ -435,6 +466,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "The ID of the price set to add prices to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -443,6 +475,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "The prices to add to the price set.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "amount",
@@ -450,6 +483,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The amount of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -458,6 +492,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The currency of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -466,6 +501,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The currency code of this money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -474,6 +510,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The ID of the money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -482,6 +519,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The maximum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -490,6 +528,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The minimum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -498,6 +537,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -510,6 +550,7 @@ async function addPricesToPriceSet (priceSetId: string) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -517,6 +558,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -525,6 +567,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -533,6 +576,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -541,6 +585,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -549,6 +594,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -564,6 +610,7 @@ async function addPricesToPriceSet (priceSetId: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The list of the price sets that prices were added to.",
+    "expandable": false,
     "children": [
       {
         "name": "PriceSetDTO[]",
@@ -571,6 +618,7 @@ async function addPricesToPriceSet (priceSetId: string) {
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "id",
@@ -578,6 +626,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The ID of the price set.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -586,6 +635,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The prices that belong to this price set.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -594,6 +644,7 @@ async function addPricesToPriceSet (priceSetId: string) {
             "description": "The rule types applied on this price set.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

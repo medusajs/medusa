@@ -20,18 +20,24 @@ module.exports = {
       sections: {
         member_sources_definedIn: false,
         reflection_hierarchy: false,
-        member_signature_typeParameters: false,
+        member_sources_inheritedFrom: false,
+        member_sources_implementationOf: false,
+        reflection_implementedBy: false,
         member_signature_sources: false,
-        member_signature_title: false,
-        member_signature_returns: false,
+        reflection_callable: false,
+        reflection_indexable: false,
       },
       parameterStyle: "component",
       parameterComponent: "ParameterTypes",
       mdxImports: [
         `import ParameterTypes from "@site/src/components/ParameterTypes"`,
       ],
+      frontmatterData: {
+        displayed_sidebar: "servicesSidebar",
+      },
     },
   },
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
+  maxLevel: 1,
 }

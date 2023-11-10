@@ -86,7 +86,7 @@ medusa.shippingOptions.list().then(({ shipping_options }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal.mdx#storeshippingoptionslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreShippingOptionsListRes`](../internal/types/internal.StoreShippingOptionsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
@@ -102,7 +102,7 @@ medusa.shippingOptions.list().then(({ shipping_options }) => {
         "children": [
           {
             "name": "shipping_options",
-            "type": "[`PricedShippingOption`](../modules/internal.mdx#pricedshippingoption)[]",
+            "type": "[`PricedShippingOption`](../internal/types/internal.PricedShippingOption.mdx)[]",
             "description": "An array of shipping options details.",
             "optional": false,
             "defaultValue": "",
@@ -300,7 +300,7 @@ medusa.shippingOptions.list().then(({ shipping_options }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "[`TaxServiceRate`](../modules/internal.mdx#taxservicerate)[] \\| ``null``",
+                "type": "[`TaxServiceRate`](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
                 "description": "An array of applied tax rates",
                 "optional": false,
                 "defaultValue": "",
@@ -359,7 +359,7 @@ medusa.shippingOptions.listCartOptions(cartId).then(({ shipping_options }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreShippingOptionsListRes`](../modules/internal.mdx#storeshippingoptionslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreShippingOptionsListRes`](../internal/types/internal.StoreShippingOptionsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
@@ -375,7 +375,7 @@ medusa.shippingOptions.listCartOptions(cartId).then(({ shipping_options }) => {
         "children": [
           {
             "name": "shipping_options",
-            "type": "[`PricedShippingOption`](../modules/internal.mdx#pricedshippingoption)[]",
+            "type": "[`PricedShippingOption`](../internal/types/internal.PricedShippingOption.mdx)[]",
             "description": "An array of shipping options details.",
             "optional": false,
             "defaultValue": "",
@@ -573,7 +573,7 @@ medusa.shippingOptions.listCartOptions(cartId).then(({ shipping_options }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "[`TaxServiceRate`](../modules/internal.mdx#taxservicerate)[] \\| ``null``",
+                "type": "[`TaxServiceRate`](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
                 "description": "An array of applied tax rates",
                 "optional": false,
                 "defaultValue": "",
