@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.draftOrders.list()
 .then(({ draft_orders, limit, offset, count }) => {
   console.log(draft_orders.length);
-});
+})

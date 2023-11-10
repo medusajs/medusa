@@ -1,4 +1,5 @@
 type: object
+description: The list of product categories with pagination fields.
 x-expanded-relations:
   field: product_categories
   relations:
