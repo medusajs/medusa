@@ -8,7 +8,7 @@ module.exports = {
   ...globalTypedocOptions,
   entryPoints: [path.join(pathPrefix, "packages/medusa/src/services/index.ts")],
   out: [path.join(pathPrefix, "www/apps/docs/content/references/services")],
-  tsconfig: path.join(pathPrefix, "packages/medusa/tsconfig.json"),
+  tsconfig: path.join(__dirname, "extended-tsconfig", "medusa.json"),
   name: "Services Reference",
   indexTitle: "Services Reference",
   entryDocument: "index.md",

@@ -280,7 +280,7 @@ const PriceListProductsForm = ({
 
   const { products, count, isLoading, isError } = useAdminProducts(
     {
-      limit: PAGE_SIZE,
+      limit: 20,
       offset,
       expand: "variants,sales_channels,collection",
       q: debouncedQuery,

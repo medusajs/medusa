@@ -12,7 +12,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Create Payment Sessions"
- * description: "Create Payment Sessions for each of the available Payment Providers in the Cart's Region. If there only one payment session is created,
+ * description: "Create Payment Sessions for each of the available Payment Providers in the Cart's Region. If there's only one payment session created,
  *  it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
@@ -27,7 +27,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.createPaymentSessions(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

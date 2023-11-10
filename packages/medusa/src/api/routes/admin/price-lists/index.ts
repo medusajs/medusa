@@ -108,6 +108,7 @@ export const defaultAdminPriceListRelations = [
 /**
  * @schema AdminPriceListRes
  * type: object
+ * description: "The price list's details."
  * x-expanded-relations:
  *   field: price_list
  *   relations:
@@ -127,6 +128,7 @@ export type AdminPriceListRes = {
 /**
  * @schema AdminPriceListDeleteBatchRes
  * type: object
+ * description: "The details of deleting a price list."
  * required:
  *   - ids
  *   - object
@@ -134,9 +136,10 @@ export type AdminPriceListRes = {
  * properties:
  *   ids:
  *     type: array
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
- *       description: The IDs of the deleted prices.
+ *       description: The ID of a deleted price.
  *   object:
  *     type: string
  *     description: The type of the object that was deleted. A price is also named `money-amount`.
@@ -225,6 +228,7 @@ export type AdminPriceListDeleteRes = DeleteResponse
 /**
  * @schema AdminPriceListsListRes
  * type: object
+ * description: "The list of price lists with pagination fields."
  * required:
  *   - price_lists
  *   - count
@@ -253,6 +257,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
 /**
  * @schema AdminPriceListsProductsListRes
  * type: object
+ * description: "The list of products with pagination fields."
  * x-expanded-relations:
  *   field: products
  *   relations:

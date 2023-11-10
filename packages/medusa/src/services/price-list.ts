@@ -13,7 +13,7 @@ import { isDefined, MedusaError } from "medusa-core-utils"
 import { CustomerGroupService } from "."
 import { FilterableProductProps } from "../types/product"
 import { FilterableProductVariantProps } from "../types/product-variant"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { PriceListRepository } from "../repositories/price-list"
 import ProductService from "./product"
@@ -384,10 +384,10 @@ class PriceListService extends TransactionBaseService {
 
       const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
-      const productsWithPrices = await Promise.all(
+      const productsWithPrices = await promiseAll(
         products.map(async (p) => {
           if (p.variants?.length) {
-            p.variants = await Promise.all(
+            p.variants = await promiseAll(
               p.variants.map(async (v) => {
                 const [prices] =
                   await moneyAmountRepo.findManyForVariantInPriceList(
@@ -431,7 +431,7 @@ class PriceListService extends TransactionBaseService {
 
       const moneyAmountRepo = manager.withRepository(this.moneyAmountRepo_)
 
-      const variantsWithPrices = await Promise.all(
+      const variantsWithPrices = await promiseAll(
         variants.map(async (variant) => {
           const [prices] = await moneyAmountRepo.findManyForVariantInPriceList(
             variant.id,

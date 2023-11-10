@@ -21,7 +21,7 @@ import { ProductService } from "../../../../services"
  *       medusa.admin.products.delete(productId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

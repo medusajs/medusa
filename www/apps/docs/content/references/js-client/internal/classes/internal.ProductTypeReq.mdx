@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductTypeReq
+
+The details of a product type, used to create or update an existing product type.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the product type. It's only required when referring to an existing product type.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`string`",
+    "description": "The value of the product type.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

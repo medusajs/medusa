@@ -128,7 +128,7 @@ import { Type } from "class-transformer"
  *       medusa.admin.priceLists.list()
  *       .then(({ price_lists, limit, offset, count }) => {
  *         console.log(price_lists.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -179,22 +179,39 @@ export default async (req: Request, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved price lists.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetPriceListPaginationParams extends FilterablePriceListProps {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 10
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 10
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string

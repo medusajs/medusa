@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.20.2"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -36,6 +36,10 @@ jobs:
 
       - name: Build Packages
         run: yarn build
+
+      - name: Install Docs dependencies
+        working-directory: www
+        run: yarn install
 
       - name: Install Workspace dependencies
         run: yarn install
@@ -89,7 +93,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.20.2"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
