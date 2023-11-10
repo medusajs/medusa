@@ -51,23 +51,3 @@ export async function removePriceListPriceSetPrices({
 prepareCreatePriceLists.aliases = {
   payload: "payload",
 }
-
-type QueryResult = {
-  id: string
-  variants: {
-    id: string
-    price: {
-      price_set_id: string
-      variant_id: string
-    }
-  }[]
-}
-
-const defaultAdminProductRemoteQueryObject = {
-  fields: ["id"],
-  variants: {
-    price: {
-      fields: ["variant_id", "price_set_id"],
-    },
-  },
-}
