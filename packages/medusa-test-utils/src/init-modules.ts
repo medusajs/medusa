@@ -23,17 +23,23 @@ export async function initModules({
   modulesConfig,
   joinerConfig,
 }: InitModulesOptions) {
-  const sharedPgConnection = knex<any, any>({
-    client: "pg",
-    searchPath: databaseConfig.schema,
-    connection: {
-      connectionString: databaseConfig.clientUrl,
-    },
-  })
-
   injectedDependencies ??= {}
-  injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
-    sharedPgConnection
+
+  let sharedPgConnection =
+    injectedDependencies?.[ContainerRegistrationKeys.PG_CONNECTION]
+
+  if (!sharedPgConnection) {
+    sharedPgConnection = knex<any, any>({
+      client: "pg",
+      searchPath: databaseConfig.schema,
+      connection: {
+        connectionString: databaseConfig.clientUrl,
+      },
+    })
+
+    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
+      sharedPgConnection
+  }
 
   const { modules } = await MedusaApp({
     modulesConfig,
