@@ -15,13 +15,16 @@ export function transform(
     let stepValues = Array.isArray(values) ? values : [values]
 
     stepValues = stepValues.map((value: any) => {
+      let returnVal
       if (value?.__type === SymbolInputReference) {
-        return value.value
+        returnVal = value.value
+      } else if (value?.__type === SymbolWorkflowStep) {
+        returnVal = invoke[value.__step__]?.output
+      } else {
+        returnVal = value
       }
-
-      return value?.__type === SymbolWorkflowStep
-        ? invoke[value.__step__]?.output
-        : value
+      // TODO: use structuredClone
+      return returnVal ? JSON.parse(JSON.stringify(returnVal)) : returnVal
     })
 
     let finalResult
