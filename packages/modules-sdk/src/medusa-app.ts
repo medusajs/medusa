@@ -183,7 +183,6 @@ export async function MedusaApp(
     linkModules,
     remoteFetchData,
     injectedDependencies,
-    onApplicationStartCb,
   }: {
     sharedContainer?: MedusaContainer
     sharedResourcesConfig?: SharedResources
@@ -195,7 +194,6 @@ export async function MedusaApp(
     linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
     remoteFetchData?: RemoteFetchDataCallback
     injectedDependencies?: any
-    onApplicationStartCb?: () => void
   } = {
     injectedDependencies: {},
   }
@@ -308,6 +306,6 @@ export async function MedusaApp(
       runMigrations,
     }
   } finally {
-    MedusaModule.onApplicationStart(onApplicationStartCb)
+    MedusaModule.onApplicationStart()
   }
 }

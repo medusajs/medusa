@@ -27,6 +27,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@medusajs/modules-sdk": "workspace:^",
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
     "medusa-core-utils": "^1.2.0",

@@ -7909,7 +7909,7 @@ __metadata:
     jest: ^29.6.3
     knex: 2.4.2
     lodash: ^4.17.21
-    medusa-test-utils: ^1.1.40
+    medusa-test-utils: "workspace:^"
     pg-god: ^1.0.12
     rimraf: ^3.0.2
     ts-jest: ^29.1.1
@@ -36378,10 +36378,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-test-utils@^1.1.40, medusa-test-utils@workspace:packages/medusa-test-utils":
+"medusa-test-utils@^1.1.40, medusa-test-utils@workspace:^, medusa-test-utils@workspace:packages/medusa-test-utils":
   version: 0.0.0-use.local
   resolution: "medusa-test-utils@workspace:packages/medusa-test-utils"
   dependencies:
+    "@medusajs/modules-sdk": "workspace:^"
     "@mikro-orm/migrations": 5.7.12
     "@mikro-orm/postgresql": 5.7.12
     cross-env: ^5.2.1

@@ -1,2 +1,2 @@
 export * from "./database"
-export * from "./init-module"
+export * from "./init-modules-config"

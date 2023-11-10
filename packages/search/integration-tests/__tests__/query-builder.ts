@@ -1,7 +1,8 @@
 import { ISearchModuleService } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
 import { EventBusService } from "../__fixtures__"
-import { initModules, TestDatabase } from "../utils"
+import { getInitModuleConfig, TestDatabase } from "../utils"
+import { initModules } from "medusa-test-utils"
 
 const eventBus = new EventBusService()
 const remoteQueryMock = jest.fn()
@@ -16,18 +17,16 @@ describe("SearchEngineModuleService query", function () {
     await TestDatabase.setupDatabase()
     const manager = TestDatabase.forkManager()
 
-    let moduleBootstrapPromiseOk
-    const moduleBootstrapPromise = new Promise((resolve) => {
-      moduleBootstrapPromiseOk = resolve
-    })
-
-    const { searchService, shutdown } = await initModules({
+    const initModulesConfig = getInitModuleConfig({
       remoteQueryMock,
       eventBusMock: eventBus,
-      callback: () => {
-        moduleBootstrapPromiseOk()
-      },
     })
+
+    const {
+      modules: { searchService },
+      shutdown,
+    } = await initModules(initModulesConfig)
+
     module = searchService
     shutdown_ = shutdown
 
@@ -185,8 +184,6 @@ describe("SearchEngineModuleService query", function () {
         },
       ].map((data) => catalogRelationRepository.create(data))
     )
-
-    await moduleBootstrapPromise
   })
 
   afterEach(async () => {

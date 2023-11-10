@@ -1,7 +1,8 @@
 import { EventBusTypes } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
 import { EventBusService } from "../__fixtures__"
-import { initModules, TestDatabase } from "../utils"
+import { getInitModuleConfig, TestDatabase } from "../utils"
+import { initModules } from "medusa-test-utils"
 
 const eventBus = new EventBusService()
 const remoteQueryMock = jest.fn()
@@ -11,10 +12,12 @@ jest.setTimeout(300000)
 const beforeEach_ = async (eventDataToEmit) => {
   await TestDatabase.setupDatabase()
 
-  const { shutdown } = await initModules({
+  const initModulesConfig = getInitModuleConfig({
     remoteQueryMock,
     eventBusMock: eventBus,
   })
+
+  const { shutdown } = await initModules(initModulesConfig)
 
   await sendEvents(eventDataToEmit)
   return { manager: TestDatabase.forkManager(), shutdown }
