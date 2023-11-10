@@ -14,7 +14,7 @@ module.exports = {
   entryDocument: "_index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
-  plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-frontmatter"],
+  plugin: [...globalTypedocOptions.plugin],
   frontmatterData: {
     displayed_sidebar: "entitiesSidebar",
   },

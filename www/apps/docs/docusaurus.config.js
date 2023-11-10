@@ -1,8 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-require("dotenv").config()
-const fs = require("fs")
-const reverseSidebar = require("./src/utils/reverse-sidebar")
-const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
+// require("dotenv").config()
+// const fs = require("fs")
+// const reverseSidebar = require("./src/utils/reverse-sidebar")
+// const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
+import "dotenv/config"
+import fs from "fs"
+import reverseSidebarItems from "./src/utils/reverse-sidebar"
+import excludeSidebarResults from "./src/utils/exclude-sidebar-results"
+import prismTheme from "./src/themes/medusaDocs"
 
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
 
@@ -24,7 +28,6 @@ const config = {
       headingIds: false,
     },
   },
-
   plugins: [
     require.resolve("docusaurus-plugin-image-zoom"),
     async function tailwindPlugin() {
@@ -32,8 +35,8 @@ const config = {
         name: "docusaurus-tailwindcss",
         configurePostCss(postcssOptions) {
           // Appends TailwindCSS and AutoPrefixer.
-          postcssOptions.plugins.push(require("tailwindcss"))
-          postcssOptions.plugins.push(require("autoprefixer"))
+          postcssOptions.plugins.push(import("tailwindcss"))
+          postcssOptions.plugins.push(import("autoprefixer"))
           return postcssOptions
         },
       }
@@ -133,9 +136,10 @@ const config = {
         process.env.AI_API_ASSISTANT_RECAPTCHA_SITE_KEY || "temp",
     },
     prism: {
-      defaultLanguage: "js",
+      defaultLanguage: "ts",
+      additionalLanguages: ["bash", "json"],
       plugins: ["line-numbers", "show-language"],
-      theme: require("./src/themes/medusaDocs"),
+      theme: prismTheme,
     },
     zoom: {
       selector: ".markdown :not(.no-zoom-img) > img:not(.no-zoom-img)",
@@ -266,7 +270,7 @@ const config = {
             ...args
           }) {
             const sidebarItems = await defaultSidebarItemsGenerator(args)
-            return reverseSidebar(
+            return reverseSidebarItems(
               excludeSidebarResults(sidebarItems, args.item),
               args.item
             )
@@ -290,4 +294,4 @@ if (Object.keys(announcementBar).length) {
   config.themeConfig.announcementBar = announcementBar
 }
 
-module.exports = config
+export default config

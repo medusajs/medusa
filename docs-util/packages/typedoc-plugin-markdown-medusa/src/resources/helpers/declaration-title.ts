@@ -44,9 +44,9 @@ export default function (theme: MarkdownTheme) {
       )
       if (this instanceof DeclarationReflection && this.typeParameters) {
         md.push(
-          `<${this.typeParameters
+          `\`<${this.typeParameters
             .map((typeParameter) => `\`${typeParameter.name}\``)
-            .join(", ")}\\>`
+            .join(", ")}>\``
         )
       }
 
@@ -57,7 +57,9 @@ export default function (theme: MarkdownTheme) {
         this.defaultValue &&
         this.defaultValue !== "..."
       ) {
-        md.push(` = \`${stripLineBreaks(stripComments(this.defaultValue))}\``)
+        md.push(
+          ` = \`${stripLineBreaks(stripComments(`${this.defaultValue}`))}\``
+        )
       }
       return md.join("")
     }

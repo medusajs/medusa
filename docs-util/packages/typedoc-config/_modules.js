@@ -79,12 +79,7 @@ module.exports = ({
     entryPointStrategy: "expand",
     hideInPageTOC: true,
     hideBreadcrumbs: true,
-    plugin: [
-      ...globalTypedocOptions.plugin,
-      "typedoc-plugin-custom",
-      "typedoc-plugin-rename-defaults",
-      "typedoc-plugin-frontmatter",
-    ],
+    plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-rename-defaults"],
     formatting,
     allReflectionsHaveOwnDocument: true,
     objectLiteralTypeDeclarationStyle: "component",

@@ -95,69 +95,49 @@ const plugins = [
 
 The rest of this section includes the field names you can customize using this option for each content model type.
 
-<details>
-<summary>
-product
-</summary>
+<Details>
+  <summary>product</summary>
+  - `title`
+  - `subtitle`
+  - `description`
+  - `variants`
+  - `options`
+  - `medusaId`
+  - `type`
+  - `collection`
+  - `tags`
+  - `handle`
+</Details>
 
-- `title`
-- `subtitle`
-- `description`
-- `variants`
-- `options`
-- `medusaId`
-- `type`
-- `collection`
-- `tags`
-- `handle`
+<Details>
+  <summary>variant</summary>
+  - `title`
+  - `sku`
+  - `prices`
+  - `options`
+  - `medusaId`
+</Details>
 
-</details>
+<Details>
+  <summary>region</summary>
+  - `name`
+  - `countries`
+  - `paymentProviders`
+  - `fulfillmentProviders`
+  - `medusaId`
+</Details>
 
-<details>
-<summary>
-variant
-</summary>
+<Details>
+  <summary>collection</summary>
+  - `title`
+  - `medusaId`
+</Details>
 
-- `title`
-- `sku`
-- `prices`
-- `options`
-- `medusaId`
-
-</details>
-
-<details>
-<summary>
-region
-</summary>
-
-- `name`
-- `countries`
-- `paymentProviders`
-- `fulfillmentProviders`
-- `medusaId`
-
-</details>
-
-<details>
-<summary>
-collection
-</summary>
-
-- `title`
-- `medusaId`
-
-</details>
-
-<details>
-<summary>
-type
-</summary>
-
-- `name`
-- `medusaId`
-
-</details>
+<Details>
+  <summary>type</summary>
+  - `name`
+  - `medusaId`
+</Details>
 
 ### Migrate Content Models
 
@@ -173,252 +153,234 @@ Before creating the migration scripts, run the following command in the root of 
 npm install --save-dev contentful-migration
 ```
 
-<details>
-<summary>
-product Content Model
-</summary>
+<Details>
+  <summary>product Content Model</summary>
+  Create the file `src/loaders/contentful-migrations/product.ts` with the following content:
 
-Create the file `src/loaders/contentful-migrations/product.ts` with the following content:
+  ```ts title=src/loaders/contentful-migrations/product.ts
+  import Migration, { 
+    MigrationContext,
+  } from "contentful-migration"
 
-```ts title=src/loaders/contentful-migrations/product.ts
-import Migration, { 
-  MigrationContext,
-} from "contentful-migration"
+  export function productMigration(
+    migration: Migration,
+    context?: MigrationContext
+  ) {
+    const product = migration
+      .createContentType("product")
+      .name("Product")
+      .displayField("title")
 
-export function productMigration(
-  migration: Migration,
-  context?: MigrationContext
-) {
-  const product = migration
-    .createContentType("product")
-    .name("Product")
-    .displayField("title")
-
-  product
-    .createField("title")
-    .name("Title")
-    .type("Symbol")
-    .required(true)
-  product
-    .createField("subtitle")
-    .name("Subtitle")
-    .type("Symbol")
-  product
-    .createField("handle")
-    .name("Handle")
-    .type("Symbol")
-  product
-    .createField("thumbnail")
-    .name("Thumbnail")
-    .type("Link")
-    .linkType("Asset")
-  product
-    .createField("description")
-    .name("Description")
-    .type("Text")
-  product
-    .createField("options")
-    .name("Options")
-    .type("Object")
-  product
-    .createField("tags")
-    .name("Tags")
-    .type("Object")
-  product
-    .createField("collection")
-    .name("Collection")
-    .type("Symbol")
-  product
-    .createField("type")
-    .name("Type")
-    .type("Symbol")
-  product
-    .createField("variants")
-    .name("Variants")
-    .type("Array")
-    .items({
-      type: "Link",
-      linkType: "Entry",
-      validations: [
-        {
-          linkContentType: ["productVariant"],
-        },
-      ],
-    })
-  product
-    .createField("medusaId")
-    .name("Medusa ID")
-    .type("Symbol")
-}
-```
-
-</details>
-
-<details>
-<summary>
-productVariant Content Model
-</summary>
-
-Create the file `src/loaders/contentful-migrations/product-variant.ts` with the following content:
-
-```ts title=src/loaders/contentful-migrations/product-variant.ts
-import Migration, { 
-  MigrationContext,
-} from "contentful-migration"
-
-export function productVariantMigration(
-  migration: Migration,
-  context?: MigrationContext
-) {
-  const productVariant = migration
-    .createContentType("productVariant")
-    .name("Product Variant")
-    .displayField("title")
-
-  productVariant
-    .createField("title")
-    .name("Title")
-    .type("Symbol")
-    .required(true)
-  productVariant
-    .createField("sku")
-    .name("SKU")
-    .type("Symbol")
-  productVariant
-    .createField("options")
-    .name("Options")
-    .type("Object")
-  productVariant
-    .createField("prices")
-    .name("Prices")
-    .type("Object")
-  productVariant
-    .createField("medusaId")
-    .name("Medusa ID")
-    .type("Symbol")
-}
-```
-
-</details>
-
-<details>
-<summary>
-collection Content Model
-</summary>
-
-Create the file `src/loaders/contentful-migrations/product-collection.ts` with the following content:
-
-```ts title=src/loaders/contentful-migrations/product-collection.ts
-import Migration, { 
-  MigrationContext,
-} from "contentful-migration"
-
-export function productCollectionMigration(
-  migration: Migration,
-  context?: MigrationContext
-) {
-  const collection = migration
-    .createContentType("collection")
-    .name("Product Collection")
-    .displayField("title")
-
-    collection
+    product
       .createField("title")
       .name("Title")
       .type("Symbol")
       .required(true)
-    collection
+    product
+      .createField("subtitle")
+      .name("Subtitle")
+      .type("Symbol")
+    product
+      .createField("handle")
+      .name("Handle")
+      .type("Symbol")
+    product
+      .createField("thumbnail")
+      .name("Thumbnail")
+      .type("Link")
+      .linkType("Asset")
+    product
+      .createField("description")
+      .name("Description")
+      .type("Text")
+    product
+      .createField("options")
+      .name("Options")
+      .type("Object")
+    product
+      .createField("tags")
+      .name("Tags")
+      .type("Object")
+    product
+      .createField("collection")
+      .name("Collection")
+      .type("Symbol")
+    product
+      .createField("type")
+      .name("Type")
+      .type("Symbol")
+    product
+      .createField("variants")
+      .name("Variants")
+      .type("Array")
+      .items({
+        type: "Link",
+        linkType: "Entry",
+        validations: [
+          {
+            linkContentType: ["productVariant"],
+          },
+        ],
+      })
+    product
       .createField("medusaId")
       .name("Medusa ID")
       .type("Symbol")
-}
-```
-</details>
+  }
+  ```
+</Details>
 
-<details>
-<summary>
-productType Content Model
-</summary>
+<Details>
+  <summary>productVariant Content Model</summary>
+  Create the file `src/loaders/contentful-migrations/product-variant.ts` with the following content:
 
-Create the file `src/loaders/contentful-migrations/product-type.ts` with the following content:
+  ```ts title=src/loaders/contentful-migrations/product-variant.ts
+  import Migration, { 
+    MigrationContext,
+  } from "contentful-migration"
 
-```ts title=src/loaders/contentful-migrations/product-type.ts
-import Migration, { 
-  MigrationContext,
-} from "contentful-migration"
+  export function productVariantMigration(
+    migration: Migration,
+    context?: MigrationContext
+  ) {
+    const productVariant = migration
+      .createContentType("productVariant")
+      .name("Product Variant")
+      .displayField("title")
 
-export function productTypeMigration(
-  migration: Migration,
-  context?: MigrationContext
-) {
-  const collection = migration
-    .createContentType("productType")
-    .name("Product Type")
-    .displayField("title")
-
-    collection
+    productVariant
       .createField("title")
       .name("Title")
       .type("Symbol")
       .required(true)
-    collection
+    productVariant
+      .createField("sku")
+      .name("SKU")
+      .type("Symbol")
+    productVariant
+      .createField("options")
+      .name("Options")
+      .type("Object")
+    productVariant
+      .createField("prices")
+      .name("Prices")
+      .type("Object")
+    productVariant
       .createField("medusaId")
       .name("Medusa ID")
       .type("Symbol")
-}
-```
-</details>
+  }
+  ```
+</Details>
+
+<Details>
+  <summary>collection Content Model</summary>
+  Create the file `src/loaders/contentful-migrations/product-collection.ts` with the following content:
+
+  ```ts title=src/loaders/contentful-migrations/product-collection.ts
+  import Migration, { 
+    MigrationContext,
+  } from "contentful-migration"
+
+  export function productCollectionMigration(
+    migration: Migration,
+    context?: MigrationContext
+  ) {
+    const collection = migration
+      .createContentType("collection")
+      .name("Product Collection")
+      .displayField("title")
+
+      collection
+        .createField("title")
+        .name("Title")
+        .type("Symbol")
+        .required(true)
+      collection
+        .createField("medusaId")
+        .name("Medusa ID")
+        .type("Symbol")
+  }
+  ```
+</Details>
+
+<Details>
+  <summary>productType Content Model</summary>
+  Create the file `src/loaders/contentful-migrations/product-type.ts` with the following content:
+
+  ```ts title=src/loaders/contentful-migrations/product-type.ts
+  import Migration, { 
+    MigrationContext,
+  } from "contentful-migration"
+
+  export function productTypeMigration(
+    migration: Migration,
+    context?: MigrationContext
+  ) {
+    const collection = migration
+      .createContentType("productType")
+      .name("Product Type")
+      .displayField("title")
+
+      collection
+        .createField("title")
+        .name("Title")
+        .type("Symbol")
+        .required(true)
+      collection
+        .createField("medusaId")
+        .name("Medusa ID")
+        .type("Symbol")
+  }
+  ```
+</Details>
     
-<details>
-<summary>
-region Content Model
-</summary>
+<Details>
+  <summary>region Content Model</summary>
+  Create the file `src/loaders/contentful-migrations/region.ts` with the following content:
 
-Create the file `src/loaders/contentful-migrations/region.ts` with the following content:
+  ```ts title=src/loaders/contentful-migrations/region.ts
+  import Migration, { 
+    MigrationContext,
+  } from "contentful-migration"
 
-```ts title=src/loaders/contentful-migrations/region.ts
-import Migration, { 
-  MigrationContext,
-} from "contentful-migration"
+  export function regionMigration(
+    migration: Migration,
+    context?: MigrationContext
+  ) {
+    const region = migration
+      .createContentType("region")
+      .name("Region")
+      .displayField("name")
 
-export function regionMigration(
-  migration: Migration,
-  context?: MigrationContext
-) {
-  const region = migration
-    .createContentType("region")
-    .name("Region")
-    .displayField("name")
-
-  region
-    .createField("name")
-    .name("Name")
-    .type("Symbol")
-    .required(true)
-  region
-    .createField("countries")
-    .name("Options")
-    .type("Object")
-  region
-    .createField("paymentProviders")
-    .name("Payment Providers")
-    .type("Object")
-  region
-    .createField("fulfillmentProviders")
-    .name("Fulfillment Providers")
-    .type("Object")
-  region
-    .createField("currencyCode")
-    .name("Currency Code")
-    .type("Symbol")
-  region
-    .createField("medusaId")
-    .name("Medusa ID")
-    .type("Symbol")
-}
-```
-
-</details>
+    region
+      .createField("name")
+      .name("Name")
+      .type("Symbol")
+      .required(true)
+    region
+      .createField("countries")
+      .name("Options")
+      .type("Object")
+    region
+      .createField("paymentProviders")
+      .name("Payment Providers")
+      .type("Object")
+    region
+      .createField("fulfillmentProviders")
+      .name("Fulfillment Providers")
+      .type("Object")
+    region
+      .createField("currencyCode")
+      .name("Currency Code")
+      .type("Symbol")
+    region
+      .createField("medusaId")
+      .name("Medusa ID")
+      .type("Symbol")
+  }
+  ```
+</Details>
 
 Finally, create a [loader](../../development/loaders/overview.mdx) at `src/loaders/index.ts` with the following content:
 

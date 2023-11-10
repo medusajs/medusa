@@ -573,41 +573,37 @@ Files and directories prefixed with `_` are ignored. This can be helpful if you 
 For example:
 
 <Tabs groupId="files" isCodeTabs={true}>
-<TabItem value="custom-route" label="src/api/custom/route.ts" default>
+  <TabItem value="custom-route" label="src/api/custom/route.ts" default>
+    ```ts
+    import getProducts from "../_methods/get-products"
 
-```ts
-import getProducts from "../_methods/get-products"
+    export const GET = getProducts
+    ```
+  </TabItem>
+  <TabItem value="internal-method" label="src/api/_methods/get-product.ts">
+    ```ts
+    import { 
+      MedusaRequest, 
+      MedusaResponse, 
+      ProductService,
+    } from "@medusajs/medusa"
 
-export const GET = getProducts
-```
+    export default async function (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) {
+      const productService = req.scope.resolve<ProductService>(
+        "productService"
+      )
 
-</TabItem>
-<TabItem value="internal-method" label="src/api/_methods/get-product.ts">
+      const products = await productService.list({})
 
-```ts
-import { 
-  MedusaRequest, 
-  MedusaResponse, 
-  ProductService,
-} from "@medusajs/medusa"
-
-export default async function (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) {
-  const productService = req.scope.resolve<ProductService>(
-    "productService"
-  )
-
-  const products = await productService.list({})
-
-  res.json({
-    products,
-  })
-}
-```
-
-</TabItem>
+      res.json({
+        products,
+      })
+    }
+    ```
+  </TabItem>
 </Tabs>
 
 ---
@@ -623,117 +619,113 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
 :::
 
 <Tabs groupId="files" isCodeTabs={true}>
-<TabItem value="posts-routes" label="src/api/admin/posts/route.ts" default>
+  <TabItem value="posts-routes" label="src/api/admin/posts/route.ts" default>
+    ```ts
+    import type {
+      MedusaRequest, 
+      MedusaResponse,
+    } from "@medusajs/medusa"
+    import { PostService } from "../../../services/post"
 
-```ts
-import type {
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
-import { PostService } from "../../../services/post"
+    // list posts
+    export const GET = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-// list posts
-export const GET = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+      res.json({
+        posts: await postService.list(),
+      })
+    }
 
-  res.json({
-    posts: await postService.list(),
-  })
-}
+    // create a post
+    export const POST = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-// create a post
-export const POST = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+      // basic validation of request body
+      if (!req.body.title || !req.body.author_id) {
+        throw new Error("`title` and `author_id` are required.")
+      }
 
-  // basic validation of request body
-  if (!req.body.title || !req.body.author_id) {
-    throw new Error("`title` and `author_id` are required.")
-  }
+      const post = await postService.create(req.body)
 
-  const post = await postService.create(req.body)
+      res.json({
+        post,
+      })
+    }
+    ```
+  </TabItem>
+  <TabItem value="posts-id-routes" label="src/api/admin/posts/[id]/route.ts">
+    ```ts
+    import type { 
+      MedusaRequest, 
+      MedusaResponse,
+    } from "@medusajs/medusa"
+    import { PostService } from "../../../services/post"
 
-  res.json({
-    post,
-  })
-}
-```
+    // retrieve a post by its ID
+    export const GET = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-</TabItem>
-<TabItem value="posts-id-routes" label="src/api/admin/posts/[id]/route.ts">
+      const post = await postService.retrieve(req.params.id)
 
-```ts
-import type { 
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
-import { PostService } from "../../../services/post"
+      res.json({
+        post,
+      })
+    }
 
-// retrieve a post by its ID
-export const GET = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+    // update a post by its ID
+    export const POST = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-  const post = await postService.retrieve(req.params.id)
+      // basic validation of request body
+      if (req.body.id) {
+        throw new Error("Can't update post ID")
+      }
 
-  res.json({
-    post,
-  })
-}
+      const post = await postService.update(
+        req.params.id,
+        req.body
+      )
 
-// update a post by its ID
-export const POST = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+      res.json({
+        post,
+      })
+    }
 
-  // basic validation of request body
-  if (req.body.id) {
-    throw new Error("Can't update post ID")
-  }
+    // delete a post by its ID
+    export const DELETE = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-  const post = await postService.update(
-    req.params.id,
-    req.body
-  )
+      await postService.delete(req.params.id)
 
-  res.json({
-    post,
-  })
-}
-
-// delete a post by its ID
-export const DELETE = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
-
-  await postService.delete(req.params.id)
-
-  res.status(200).end()
-}
-```
-
-</TabItem>
+      res.status(200).end()
+    }
+    ```
+  </TabItem>
 </Tabs>
 
 ---

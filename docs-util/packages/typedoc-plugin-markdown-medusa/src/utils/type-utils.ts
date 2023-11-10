@@ -103,7 +103,7 @@ export function getReflectionType(
   }
   return collapse === "object" || collapse === "all"
     ? `\`object\``
-    : getDeclarationType(model as DeclarationReflection)
+    : `\`${getDeclarationType(model as DeclarationReflection)}\``
 }
 
 export function getDeclarationType(model: DeclarationReflection): string {
@@ -148,9 +148,9 @@ export function getFunctionType(
 ): string {
   const functions = modelSignatures.map((fn) => {
     const typeParams = fn.typeParameters
-      ? `<${fn.typeParameters
+      ? `\`<${fn.typeParameters
           .map((typeParameter) => typeParameter.name)
-          .join(", ")}\\>`
+          .join(", ")}>\``
       : []
     const params = fn.parameters
       ? fn.parameters.map((param) => {
@@ -201,9 +201,9 @@ export function getReferenceType(
     }
     if (model.typeArguments && model.typeArguments.length > 0) {
       reflection.push(
-        `<${model.typeArguments
+        `\`<${model.typeArguments
           .map((typeArgument) => getType(typeArgument, "none", emphasis))
-          .join(", ")}\\>`
+          .join(", ")}>\``
       )
     }
     return reflection.join("")

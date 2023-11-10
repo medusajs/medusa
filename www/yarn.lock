@@ -7822,13 +7822,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tsconfig/docusaurus@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "@tsconfig/docusaurus@npm:1.0.7"
-  checksum: 49a9bb6f04a4eaee889a6950084dd14c6755fbd68951c7b9101f7031f7186ab7b46bb7e58e60e7a42d58db7ea20f981f43501ea653c1125f9863287c7108eb86
-  languageName: node
-  linkType: hard
-
 "@tsconfig/node10@npm:^1.0.7":
   version: 1.0.9
   resolution: "@tsconfig/node10@npm:1.0.9"
@@ -21555,7 +21548,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tsconfig@workspace:packages/tsconfig"
   dependencies:
-    "@tsconfig/docusaurus": ^1.0.7
+    "@docusaurus/tsconfig": 3.0.0
   languageName: unknown
   linkType: soft
 

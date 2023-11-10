@@ -2,8 +2,8 @@
 description: 'Learn how to install the Medusa JS Client in a storefront. Medusa JS Client provides easy access to the Medusa API from a client written in TypeScript.'
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
 
 # Medusa JS Client
 
@@ -39,30 +39,26 @@ Where `MEDUSA_BACKEND_URL` is the URL to your Medusa backend. If the `baseUrl` o
 
 After initialization, you can use the client's properties and methods to send requests to the Medusa backend.
 
-<details>
-<summary>
-Troubleshooting: Could not find a declaration file for module '@medusajs/medusa-js'
-</summary>
+<Details>
+  <summary>Troubleshooting: Could not find a declaration file for module '@medusajs/medusa-js'</summary>
+  If you import `@medusajs/medusa-js` in your code and see the following TypeScript error:
 
-If you import `@medusajs/medusa-js` in your code and see the following TypeScript error:
+  ```bash
+  Could not find a declaration file for module '@medusajs/medusa-js'
+  ```
 
-```bash
-Could not find a declaration file for module '@medusajs/medusa-js'
-```
+  Make sure to set `moduleResolution` in your `tsconfig.json` to `nodenext` or `node`:
 
-Make sure to set `moduleResolution` in your `tsconfig.json` to `nodenext` or `node`:
-
-```json title=tsconfig.json
-{
-  "compilerOptions": {
-    "moduleResolution": "nodenext",
+  ```json title=tsconfig.json
+  {
+    "compilerOptions": {
+      "moduleResolution": "nodenext",
+      // ...
+    },
     // ...
-  },
-  // ...
-}
-```
-
-</details>
+  }
+  ```
+</Details>
 
 ## How to Use this Reference
 
@@ -128,38 +124,34 @@ Once the user or customer is authenticated successfully, the Medusa client autom
 For example:
 
 <Tabs groupId="client-authentication-type" isCodeTabs={true}>
-<TabItem value="user" label="Admin User" default>
-
-```ts
-import Medusa from "@medusajs/medusa-js"
-const medusa = new Medusa({
-  baseUrl: MEDUSA_BACKEND_URL,
-  maxRetries: 3,
-})
-await medusa.admin.auth.getToken({
-  email: "user@example.com",
-  password: "supersecret",
-})
-// send authenticated requests now
-```
-
-</TabItem>
-<TabItem value="customer" label="Customer">
-
-```ts
-import Medusa from "@medusajs/medusa-js"
-const medusa = new Medusa({
-  baseUrl: MEDUSA_BACKEND_URL,
-  maxRetries: 3,
-})
-await medusa.auth.getToken({
-  email: "user@example.com",
-  password: "supersecret",
-})
-// send authenticated requests now
-```
-
-</TabItem>
+  <TabItem value="user" label="Admin User" default>
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
+    const medusa = new Medusa({
+      baseUrl: MEDUSA_BACKEND_URL,
+      maxRetries: 3,
+    })
+    await medusa.admin.auth.getToken({
+      email: "user@example.com",
+      password: "supersecret",
+    })
+    // send authenticated requests now
+    ```
+  </TabItem>
+  <TabItem value="customer" label="Customer">
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
+    const medusa = new Medusa({
+      baseUrl: MEDUSA_BACKEND_URL,
+      maxRetries: 3,
+    })
+    await medusa.auth.getToken({
+      email: "user@example.com",
+      password: "supersecret",
+    })
+    // send authenticated requests now
+    ```
+  </TabItem>
 </Tabs>
 
 ### Cookie Session ID
@@ -173,38 +165,34 @@ Once the user or customer is authenticated successfully, the Medusa client sets 
 For example:
 
 <Tabs groupId="client-authentication-type" isCodeTabs={true}>
-<TabItem value="user" label="Admin User" default>
-
-```ts
-import Medusa from "@medusajs/medusa-js"
-const medusa = new Medusa({
-  baseUrl: MEDUSA_BACKEND_URL,
-  maxRetries: 3,
-})
-await medusa.admin.AdminAuthResource.createSession({
-  email: "user@example.com",
-  password: "supersecret",
-})
-// send authenticated requests now
-```
-
-</TabItem>
-<TabItem value="customer" label="Customer">
-
-```ts
-import Medusa from "@medusajs/medusa-js"
-const medusa = new Medusa({
-  baseUrl: MEDUSA_BACKEND_URL,
-  maxRetries: 3,
-})
-await medusa.auth.authenticate({
-  email: "user@example.com",
-  password: "user@example.com",
-})
-// send authenticated requests now
-```
-
-</TabItem>
+  <TabItem value="user" label="Admin User" default>
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
+    const medusa = new Medusa({
+      baseUrl: MEDUSA_BACKEND_URL,
+      maxRetries: 3,
+    })
+    await medusa.admin.AdminAuthResource.createSession({
+      email: "user@example.com",
+      password: "supersecret",
+    })
+    // send authenticated requests now
+    ```
+  </TabItem>
+  <TabItem value="customer" label="Customer">
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
+    const medusa = new Medusa({
+      baseUrl: MEDUSA_BACKEND_URL,
+      maxRetries: 3,
+    })
+    await medusa.auth.authenticate({
+      email: "user@example.com",
+      password: "user@example.com",
+    })
+    // send authenticated requests now
+    ```
+  </TabItem>
 </Tabs>
 
 ### API Key
@@ -214,36 +202,32 @@ You can authenticate admin users with a personal API Token.
 If a user doesn't have a personal API token, create one with the [admin.users.update](../references/js-client/admin_users/classes/admin_users.AdminUsersResource.mdx#update) method:
 
 <Tabs groupId="client-type" isCodeTabs={true}>
-<TabItem value="js-client" label="JS Client" default>
-
-```ts
-import Medusa from "@medusajs/medusa-js"
-const medusa = new Medusa({
-  baseUrl: MEDUSA_BACKEND_URL,
-  maxRetries: 3,
-})
-// must be previously logged in or use api token
-medusa.admin.users.update(userId, {
-  api_token,
-})
-.then(({ user }) => {
-  console.log(user.api_token)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \\
--H 'Cookie: connect.sid={sid}' \\
--H 'Content-Type: application/json' \\
---data-raw '{
-    "api_token": "{api_token}"
-}'
-```
-
-</TabItem>
+  <TabItem value="js-client" label="JS Client" default>
+    ```ts
+    import Medusa from "@medusajs/medusa-js"
+    const medusa = new Medusa({
+      baseUrl: MEDUSA_BACKEND_URL,
+      maxRetries: 3,
+    })
+    // must be previously logged in or use api token
+    medusa.admin.users.update(userId, {
+      api_token,
+    })
+    .then(({ user }) => {
+      console.log(user.api_token)
+    })
+    ```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \\
+    -H 'Cookie: connect.sid={sid}' \\
+    -H 'Content-Type: application/json' \\
+    --data-raw '{
+        "api_token": "{api_token}"
+    }'
+    ```
+  </TabItem>
 </Tabs>
 
 Then, initialize the Medusa client passing it the `apiKey` option:

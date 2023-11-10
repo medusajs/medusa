@@ -55,60 +55,54 @@ Customers should be able to see the list of available regions and select their r
 You can retrieve available regions by sending a request to the [List Regions API Route](https://docs.medusajs.com/api/store#regions_getregions):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.regions.list()
+    .then(({ regions }) => {
+      console.log(regions.length)
+      // show customers available regions
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { Region } from "@medusajs/medusa"
+    import { useRegions } from "medusa-react"
 
-```ts
-medusa.regions.list()
-.then(({ regions }) => {
-  console.log(regions.length)
-  // show customers available regions
-})
-```
+    const Regions = () => {
+      const { regions, isLoading } = useRegions()
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {regions?.length && (
+            <ul>
+              {regions.map((region: Region) => (
+                <li key={region.id}>
+                  {region.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-```tsx
-import { Region } from "@medusajs/medusa"
-import { useRegions } from "medusa-react"
-
-const Regions = () => {
-  const { regions, isLoading } = useRegions()
-
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {regions?.length && (
-        <ul>
-          {regions.map((region: Region) => (
-            <li key={region.id}>
-              {region.name}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
-
-export default Regions
-```
-
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-```ts
-fetch(`<BACKEND_URL>/store/regions`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ regions }) => {
-  console.log(regions.length)
-  // show customers available regions
-})
-```
-
-</TabItem>
+    export default Regions
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+    ```ts
+    fetch(`<BACKEND_URL>/store/regions`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ regions }) => {
+      console.log(regions.length)
+      // show customers available regions
+    })
+    ```
+  </TabItem>
 </Tabs>
 
 This request returns the list of available regions. You can show them to your customers to select their region.
@@ -124,56 +118,50 @@ To retrieve products with the prices based on the selected regions, you can pass
 For example:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.products.list({
+      region_id: regionId,
+    })
+    .then(({ products, limit, offset, count }) => {
+      console.log(products.length)
+      // show customer the products
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { formatVariantPrice } from "medusa-react"
 
-```ts
-medusa.products.list({
-  region_id: regionId,
-})
-.then(({ products, limit, offset, count }) => {
-  console.log(products.length)
-  // show customer the products
-})
-```
+    const Product = () => {
+      // retrieve the region and variant(s)
+      // ...
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+      return (
+        <span>
+          {formatVariantPrice({
+            variant, // ProductVariant
+            region, // Region
+          })}
+        </span>
+      )
+    }
 
-```tsx
-import { formatVariantPrice } from "medusa-react"
-
-const Product = () => {
-  // retrieve the region and variant(s)
-  // ...
-
-  return (
-    <span>
-      {formatVariantPrice({
-        variant, // ProductVariant
-        region, // Region
-      })}
-    </span>
-  )
-}
-
-export default Product
-```
-
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-```ts
-fetch(`<BACKEND_URL>/store/products?region_id=${regionId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ products, limit, offset, count }) => {
-  console.log(products.length)
-  // show customer the products
-})
-```
-
-</TabItem>
+    export default Product
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+    ```ts
+    fetch(`<BACKEND_URL>/store/products?region_id=${regionId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ products, limit, offset, count }) => {
+      console.log(products.length)
+      // show customer the products
+    })
+    ```
+  </TabItem>
 </Tabs>
 
 In this example, you send a request to the List Products API Route, passing it the `region_id` query parameter. It is assumed that you have the ID of the region stored in the variable `regionId`.
@@ -197,58 +185,52 @@ You can learn how to implement cart functionalities in your storefront in [this 
 For example:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
-
-```ts
-medusa.carts.update(cartId, {
-  region_id: regionId,
-})
-.then(({ cart }) => {
-  console.log(cart.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useCart } from "medusa-react"
-
-const Cart = () => {
-  // ...
-
-  const { updateCart } = useCart()
-
-  const changeRegionId = (region_id: string) => {
-    updateCart.mutate({
-      region_id,
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.carts.update(cartId, {
+      region_id: regionId,
     })
-  }
+    .then(({ cart }) => {
+      console.log(cart.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { useCart } from "medusa-react"
 
-  // ...
-}
+    const Cart = () => {
+      // ...
 
-export default Cart
-```
+      const { updateCart } = useCart()
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+      const changeRegionId = (region_id: string) => {
+        updateCart.mutate({
+          region_id,
+        })
+      }
 
-```ts
-fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
-  method: "POST",
-  credentials: "include",
-  body: JSON.stringify({
-    region_id: regionId,
-  }),
-})
-.then((response) => response.json())
-.then(({ cart }) => {
-  console.log(cart.id)
-})
-```
+      // ...
+    }
 
-</TabItem>
+    export default Cart
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+    ```ts
+    fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        region_id: regionId,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ cart }) => {
+      console.log(cart.id)
+    })
+    ```
+  </TabItem>
 </Tabs>
 
 In this example, you send a request to the [Update Cart API Route](https://docs.medusajs.com/api/store#carts_postcartscart). In the request’s body, you pass the parameter `region_id` and set its value to the selected region’s ID. It is assumed that you have the ID of the region stored in the variable `regionId`.

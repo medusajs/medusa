@@ -54,73 +54,65 @@ You can learn more about [authenticating as an admin user in the API reference](
 You can retrieve available categories by sending a request to the [List Categories API Route](https://docs.medusajs.com/api/admin#product-categories_getproductcategories):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.admin.productCategories.list()
+    .then(({ product_categories, limit, offset, count }) => {
+      console.log(product_categories.length)
+      // display categories
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { useAdminProductCategories } from "medusa-react"
+    import { ProductCategory } from "@medusajs/medusa"
 
-```ts
-medusa.admin.productCategories.list()
-.then(({ product_categories, limit, offset, count }) => {
-  console.log(product_categories.length)
-  // display categories
-})
-```
+    function Categories() {
+      const { 
+        product_categories,
+        isLoading } = useAdminProductCategories()
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminProductCategories } from "medusa-react"
-import { ProductCategory } from "@medusajs/medusa"
-
-function Categories() {
-  const { 
-    product_categories,
-    isLoading } = useAdminProductCategories()
-
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {product_categories && !product_categories.length && (
-        <span>No Categories</span>
-      )}
-      {product_categories && product_categories.length > 0 && (
-        <ul>
-          {product_categories.map(
-            (category: ProductCategory) => (
-              <li key={category.id}>{category.name}</li>
-            )
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {product_categories && !product_categories.length && (
+            <span>No Categories</span>
           )}
-        </ul>
-      )}
-    </div>
-  )
-}
+          {product_categories && product_categories.length > 0 && (
+            <ul>
+              {product_categories.map(
+                (category: ProductCategory) => (
+                  <li key={category.id}>{category.name}</li>
+                )
+              )}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default Categories
-```
-
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-```ts
-fetch(`<BACKEND_URL>/admin/product-categories`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ product_categories, limit, offset, count }) => {
-  console.log(product_categories.length)
-  // display product categories
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/product-categories' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
-
-</TabItem>
+    export default Categories
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/product-categories`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ product_categories, limit, offset, count }) => {
+      console.log(product_categories.length)
+      // display product categories
+    })
+    ```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/product-categories' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
+  </TabItem>
 </Tabs>
 
 This request returns an array of product categories, as well as [pagination fields](https://docs.medusajs.com/api/admin#pagination).
@@ -134,72 +126,64 @@ You can also pass filters and other selection query parameters to the request. C
 You can create a category by sending a request to the [Create a Category API Route](https://docs.medusajs.com/api/admin#product-categories_postproductcategories):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
-
-```ts
-medusa.admin.productCategories.create({
-  name: "Skinny Jeans",
-})
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateProductCategory } from "medusa-react"
-
-const CreateCategory = () => {
-  const createCategory = useAdminCreateProductCategory()
-  // ...
-
-  const handleCreate = () => {
-    createCategory.mutate({
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.admin.productCategories.create({
       name: "Skinny Jeans",
     })
-  }
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { useAdminCreateProductCategory } from "medusa-react"
 
-  // ...
-}
+    const CreateCategory = () => {
+      const createCategory = useAdminCreateProductCategory()
+      // ...
 
-export default CreateCategory
-```
+      const handleCreate = () => {
+        createCategory.mutate({
+          name: "Skinny Jeans",
+        })
+      }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+      // ...
+    }
 
-```ts
-fetch(`<BACKEND_URL>/admin/product-categories`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "Skinny Jeans",
-  }),
-})
-.then((response) => response.json())
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/product-categories' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "name": "Skinny Jeans"
-}'
-```
-
-</TabItem>
+    export default CreateCategory
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/product-categories`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "Skinny Jeans",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/product-categories' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "Skinny Jeans"
+    }'
+    ```
+  </TabItem>
 </Tabs>
 
 This request requires one body parameter `name`, which is the name of the category. The request also accepts the following optional body parameters:
@@ -218,63 +202,54 @@ The request returns the newly created product category.
 You can retrieve a product category by sending a request to the [Get a Product Category API Route](https://docs.medusajs.com/api/admin#product-categories_getproductcategoriescategory):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.admin.productCategories.retrieve(productCategoryId)
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { useAdminProductCategory } from "medusa-react"
 
-```ts
-medusa.admin.productCategories.retrieve(productCategoryId)
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
+    const Category = () => {
+      const { 
+        product_category, 
+        isLoading, 
+      } = useAdminProductCategory(productCategoryId)
+    
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {product_category && <span>{product_category.name}</span>}
+          
+        </div>
+      )
+    }
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminProductCategory } from "medusa-react"
-
-const Category = () => {
-  const { 
-    product_category, 
-    isLoading, 
-  } = useAdminProductCategory(productCategoryId)
- 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {product_category && <span>{product_category.name}</span>}
-      
-    </div>
-  )
-}
-
-export default Category
-```
-
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-<!-- eslint-disable max-len -->
-
-```ts
-fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
-
-</TabItem>
+    export default Category
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+  <!-- eslint-disable max-len -->
+    ```ts
+    fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the category to be passed as a path parameter.
@@ -288,76 +263,67 @@ It returns the full object of the product category.
 You can edit a product category by sending a request to the [Update a Product Category API Route](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriescategory):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
-
-```ts
-medusa.admin.productCategories.update(productCategoryId, {
-    name: "Skinny Jeans",
-})
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateProductCategory } from "medusa-react"
-
-const UpdateCategory = () => {
-  const updateCategory = useAdminUpdateProductCategory(
-    productCategoryId
-  )
-  // ...
-
-  const handleUpdate = () => {
-    updateCategory.mutate({
-      name: "Skinny Jeans",
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.admin.productCategories.update(productCategoryId, {
+        name: "Skinny Jeans",
     })
-  }
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { useAdminUpdateProductCategory } from "medusa-react"
 
-  // ...
-}
+    const UpdateCategory = () => {
+      const updateCategory = useAdminUpdateProductCategory(
+        productCategoryId
+      )
+      // ...
 
-export default UpdateCategory
-```
+      const handleUpdate = () => {
+        updateCategory.mutate({
+          name: "Skinny Jeans",
+        })
+      }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+      // ...
+    }
 
-<!-- eslint-disable max-len -->
-
-```ts
-fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}`, {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: "Skinny Jeans",
-    }),
-  })
-  .then((response) => response.json())
-  .then(({ product_category }) => {
-    console.log(product_category.id)
-  })
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "name": "Skinny Jeans",
-}'
-```
-
-</TabItem>
+    export default UpdateCategory
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+  <!-- eslint-disable max-len -->
+    ```ts
+    fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}`, {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: "Skinny Jeans",
+        }),
+      })
+      .then((response) => response.json())
+      .then(({ product_category }) => {
+        console.log(product_category.id)
+      })
+    ```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "Skinny Jeans",
+    }'
+    ```
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the category to be passed as a path parameter.
@@ -383,38 +349,9 @@ You can manage the categories of each product individually using the [product AP
 You can add more than one product to a category using the [Add Products to a Category API Route](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriescategoryproductsbatch):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
-
-```ts
-medusa.admin.productCategories.addProducts(productCategoryId, {
-  product_ids: [
-    {
-      id: productId1,
-    },
-    {
-      id: productId2,
-    },
-  ],
-})
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminAddProductsToCategory } from "medusa-react"
-
-const UpdateProductsInCategory = () => {
-  const addProductsToCategory = useAdminAddProductsToCategory(
-    productCategoryId
-  )
-  // ...
-
-  const handleAdd = () => {
-    addProductsToCategory.mutate({
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.admin.productCategories.addProducts(productCategoryId, {
       product_ids: [
         {
           id: productId1,
@@ -424,63 +361,83 @@ const UpdateProductsInCategory = () => {
         },
       ],
     })
-  }
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { useAdminAddProductsToCategory } from "medusa-react"
 
-  // ...
-}
+    const UpdateProductsInCategory = () => {
+      const addProductsToCategory = useAdminAddProductsToCategory(
+        productCategoryId
+      )
+      // ...
 
-export default UpdateProductsInCategory
-```
+      const handleAdd = () => {
+        addProductsToCategory.mutate({
+          product_ids: [
+            {
+              id: productId1,
+            },
+            {
+              id: productId2,
+            },
+          ],
+        })
+      }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-<!-- eslint-disable max-len -->
-
-```ts
-fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}/products/batch`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    product_ids: [
-      {
-        id: productId1,
-      },
-      {
-        id: productId2,
-      },
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/product-categories/<CAT_ID>/products/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "product_ids": [
-    {
-      "id": "productId1"
-    },
-    {
-      "id": "productId2"
+      // ...
     }
-  ]
-}'
-```
 
-</TabItem>
+    export default UpdateProductsInCategory
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+  <!-- eslint-disable max-len -->
+    ```ts
+    fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}/products/batch`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_ids: [
+          {
+            id: productId1,
+          },
+          {
+            id: productId2,
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/product-categories/<CAT_ID>/products/batch' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "product_ids": [
+        {
+          "id": "productId1"
+        },
+        {
+          "id": "productId2"
+        }
+      ]
+    }'
+    ```
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the category to be passed as a path parameter.
@@ -494,108 +451,99 @@ The request returns the full object of the product category updated with the new
 You can remove products from a category by sending a request to the [Delete Products API Route](https://docs.medusajs.com/api/admin#product-categories_deleteproductcategoriescategoryproductsbatch):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
-
-```ts
-medusa.admin.productCategories.removeProducts(
-  productCategoryId,
-  {
-    product_ids: [
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.admin.productCategories.removeProducts(
+      productCategoryId,
       {
-        id: productId1,
-      },
-      {
-        id: productId2,
-      },
-    ],
-  }
-)
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { 
-  useAdminDeleteProductsFromCategory,
-} from "medusa-react"
-
-const DeleteProductsFromCategory = () => {
-  const deleteProductsFromCategory = 
-    useAdminDeleteProductsFromCategory(productCategoryId)
-  // ...
-
-  const handleDelete = () => {
-    deleteProductsFromCategory.mutate({
-      product_ids: [
-        {
-          id: productId1,
-        },
-        {
-          id: productId2,
-        },
-      ],
+        product_ids: [
+          {
+            id: productId1,
+          },
+          {
+            id: productId2,
+          },
+        ],
+      }
+    )
+    .then(({ product_category }) => {
+      console.log(product_category.id)
     })
-  }
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { 
+      useAdminDeleteProductsFromCategory,
+    } from "medusa-react"
 
-  // ...
-}
+    const DeleteProductsFromCategory = () => {
+      const deleteProductsFromCategory = 
+        useAdminDeleteProductsFromCategory(productCategoryId)
+      // ...
 
-export default DeleteProductsFromCategory
-```
+      const handleDelete = () => {
+        deleteProductsFromCategory.mutate({
+          product_ids: [
+            {
+              id: productId1,
+            },
+            {
+              id: productId2,
+            },
+          ],
+        })
+      }
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-<!-- eslint-disable max-len -->
-
-```ts
-fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}/products/batch`, {
-  credentials: "include",
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    product_ids: [
-      {
-        id: productId1,
-      },
-      {
-        id: productId2,
-      },
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ product_category }) => {
-  console.log(product_category.id)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/product-categories/<CAT_ID>/products/batch' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-  "product_ids": [
-    {
-      "id": "productId1"
-    },
-    {
-      "id": "productId2"
+      // ...
     }
-  ]
-}'
-```
 
-</TabItem>
+    export default DeleteProductsFromCategory
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+  <!-- eslint-disable max-len -->
+    ```ts
+    fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}/products/batch`, {
+      credentials: "include",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product_ids: [
+          {
+            id: productId1,
+          },
+          {
+            id: productId2,
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ product_category }) => {
+      console.log(product_category.id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/product-categories/<CAT_ID>/products/batch' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+      "product_ids": [
+        {
+          "id": "productId1"
+        },
+        {
+          "id": "productId2"
+        }
+      ]
+    }'
+    ```
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the category to be passed as a path parameter.
@@ -611,62 +559,54 @@ The request returns the full object of the product category updated with the its
 You can delete a product category by sending a request to the [Delete a Product Category API Route](https://docs.medusajs.com/api/admin#product-categories_deleteproductcategoriescategory):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
+    ```ts
+    medusa.admin.productCategories.delete(productCategoryId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
+    ```tsx
+    import { useAdminDeleteProductCategory } from "medusa-react"
 
-```ts
-medusa.admin.productCategories.delete(productCategoryId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    const Category = () => {
+      const deleteCategory = useAdminDeleteProductCategory(
+        productCategoryId
+      )
+      // ...
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+      const handleDelete = () => {
+        deleteCategory.mutate()
+      }
 
-```tsx
-import { useAdminDeleteProductCategory } from "medusa-react"
+      // ...
+    }
 
-const Category = () => {
-  const deleteCategory = useAdminDeleteProductCategory(
-    productCategoryId
-  )
-  // ...
+    export default Category
+    ```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+  <!-- eslint-disable max-len -->
 
-  const handleDelete = () => {
-    deleteCategory.mutate()
-  }
-
-  // ...
-}
-
-export default Category
-```
-
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
-
-<!-- eslint-disable max-len -->
-
-```ts
-fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}`, {
-  credentials: "include",
-  method: "DELETE",
-})
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
-
-</TabItem>
+    ```ts
+    fetch(`<BACKEND_URL>/admin/product-categories/${productCategoryId}`, {
+      credentials: "include",
+      method: "DELETE",
+    })
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
+    </TabItem>
+    <TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/product-categories/<CAT_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the category to be passed as a path parameter.

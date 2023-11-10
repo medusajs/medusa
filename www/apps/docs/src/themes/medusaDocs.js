@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const vsCodeTheme = require("prism-react-renderer/themes/vsDark")
+import { themes } from "prism-react-renderer"
 
 const theme = {
-  ...vsCodeTheme,
+  ...themes.vsDark,
   plain: {
-    ...vsCodeTheme.plain,
+    ...themes.vsDark.plain,
     backgroundColor: "#111827",
   },
 }
 
-module.exports = theme
+export default theme
