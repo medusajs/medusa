@@ -494,17 +494,6 @@ class CartService extends TransactionBaseService {
         const createdCart = cartRepo.create(rawCart)
         const cart = await cartRepo.save(createdCart)
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            IsolateSalesChannelDomainFeatureFlag.key
-          )
-        ) {
-          const salesChannel = await this.getValidatedSalesChannel(
-            data.sales_channel_id
-          )
-          await this.salesChannelService_.addCarts(salesChannel.id, [cart.id])
-        }
-
         await this.eventBus_
           .withTransaction(transactionManager)
           .emit(CartService.Events.CREATED, {
@@ -1273,15 +1262,7 @@ class CartService extends TransactionBaseService {
 
           await this.onSalesChannelChange(cart, data.sales_channel_id)
 
-          if (
-            this.featureFlagRouter_.isFeatureEnabled(
-              IsolateSalesChannelDomainFeatureFlag.key
-            )
-          ) {
-            await this.salesChannelService_.addCarts(salesChannel.id, [cart.id])
-          } else {
-            cart.sales_channel_id = salesChannel.id
-          }
+          cart.sales_channel_id = salesChannel.id
         }
 
         if (isDefined(data.discounts) && data.discounts.length) {
