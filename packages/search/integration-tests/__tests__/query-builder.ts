@@ -2,7 +2,6 @@ import { ISearchModuleService } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
 import { EventBusService } from "../__fixtures__"
 import { initModules, TestDatabase } from "../utils"
-import { MedusaModule } from "@medusajs/modules-sdk"
 
 const eventBus = new EventBusService()
 const remoteQueryMock = jest.fn()
@@ -194,7 +193,6 @@ describe("SearchEngineModuleService query", function () {
     await TestDatabase.clearDatabase()
     await shutdown_()
     jest.clearAllMocks()
-    MedusaModule.clearInstances()
   })
 
   it("should query all products ordered by sku DESC", async () => {

@@ -1,4 +1,3 @@
-import { MedusaModule } from "@medusajs/modules-sdk"
 import { EventBusTypes } from "@medusajs/types"
 import { Catalog, CatalogRelation } from "@models"
 import { EventBusService } from "../__fixtures__"
@@ -136,7 +135,6 @@ describe("SearchEngineModuleService", function () {
     afterEach(async () => {
       await TestDatabase.clearDatabase()
       await shutdown_()
-      MedusaModule.clearInstances()
       jest.clearAllMocks()
     })
 
@@ -298,7 +296,6 @@ describe("SearchEngineModuleService", function () {
     afterEach(async () => {
       await TestDatabase.clearDatabase()
       await shutdown_()
-      MedusaModule.clearInstances()
       jest.clearAllMocks()
     })
 
@@ -482,7 +479,6 @@ describe("SearchEngineModuleService", function () {
     afterEach(async () => {
       await TestDatabase.clearDatabase()
       await shutdown_()
-      MedusaModule.clearInstances()
       jest.clearAllMocks()
     })
 
@@ -596,7 +592,6 @@ describe("SearchEngineModuleService", function () {
     afterEach(async () => {
       await TestDatabase.clearDatabase()
       await shutdown_()
-      MedusaModule.clearInstances()
       jest.clearAllMocks()
     })
 

@@ -2,7 +2,12 @@ import { knex } from "knex"
 import { DB_URL } from "./database"
 import { joinerConfig, schema } from "../__fixtures__"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { MedusaApp, Modules, ModulesDefinition } from "@medusajs/modules-sdk"
+import {
+  MedusaApp,
+  MedusaModule,
+  Modules,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
 import modulesConfig from "../__fixtures__/modules-config"
 import { ISearchModuleService } from "@medusajs/types"
 
@@ -54,6 +59,7 @@ export async function initModules({
 
   async function shutdown() {
     await (sharedPgConnection as any).context?.destroy()
+    MedusaModule.clearInstances()
   }
 
   return {
