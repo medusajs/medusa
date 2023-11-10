@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`OauthService`**
 
@@ -16,15 +16,15 @@
 
 | Name |
 | :------ |
-| `cradle` | `InjectedDependencies` |
+| `cradle` | [`InjectedDependencies`](../index.md#injecteddependencies-18) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:28](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L28)
+[packages/medusa/src/services/oauth.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L28)
 
 ## Properties
 
@@ -34,11 +34,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -48,11 +48,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -62,21 +62,21 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### container\_
 
- `Protected` **container\_**: `InjectedDependencies`
+ `Protected` **container\_**: [`InjectedDependencies`](../index.md#injecteddependencies-18)
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:24](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L24)
+[packages/medusa/src/services/oauth.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L24)
 
 ___
 
@@ -86,45 +86,45 @@ ___
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:26](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L26)
+[packages/medusa/src/services/oauth.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L26)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### oauthRepository\_
 
- `Protected` **oauthRepository\_**: `Repository`<`Oauth`\>
+ `Protected` **oauthRepository\_**: [`Repository`](Repository.md)<[`Oauth`](Oauth.md)\>
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:25](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L25)
+[packages/medusa/src/services/oauth.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L25)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -141,17 +141,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:19](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L19)
+[packages/medusa/src/services/oauth.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L19)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -161,7 +161,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -182,8 +182,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -194,40 +194,40 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`data`): `Promise`<`Oauth`\>
+**create**(`data`): `Promise`<[`Oauth`](Oauth.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `data` | `CreateOauthInput` |
+| `data` | [`CreateOauthInput`](../index.md#createoauthinput) |
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<[`Oauth`](Oauth.md)\>
 
 -`Promise`: 
 	-`Oauth`: 
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:87](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L87)
+[packages/medusa/src/services/oauth.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L87)
 
 ___
 
 ### generateToken
 
-**generateToken**(`appName`, `code`, `state`): `Promise`<`Oauth`\>
+**generateToken**(`appName`, `code`, `state`): `Promise`<[`Oauth`](Oauth.md)\>
 
 #### Parameters
 
@@ -239,30 +239,30 @@ ___
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<[`Oauth`](Oauth.md)\>
 
 -`Promise`: 
 	-`Oauth`: 
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:121](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L121)
+[packages/medusa/src/services/oauth.ts:121](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L121)
 
 ___
 
 ### list
 
-**list**(`selector`): `Promise`<`Oauth`[]\>
+**list**(`selector`): `Promise`<[`Oauth`](Oauth.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | `Selector`<`Oauth`\> |
+| `selector` | [`Selector`](../index.md#selector)<[`Oauth`](Oauth.md)\> |
 
 #### Returns
 
-`Promise`<`Oauth`[]\>
+`Promise`<[`Oauth`](Oauth.md)[]\>
 
 -`Promise`: 
 	-`Oauth[]`: 
@@ -270,13 +270,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:79](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L79)
+[packages/medusa/src/services/oauth.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L79)
 
 ___
 
 ### refreshToken
 
-**refreshToken**(`appName`): `Promise`<`Oauth`\>
+**refreshToken**(`appName`): `Promise`<[`Oauth`](Oauth.md)\>
 
 #### Parameters
 
@@ -286,43 +286,43 @@ ___
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<[`Oauth`](Oauth.md)\>
 
 -`Promise`: 
 	-`Oauth`: 
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:155](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L155)
+[packages/medusa/src/services/oauth.ts:155](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L155)
 
 ___
 
 ### registerOauthApp
 
-**registerOauthApp**(`appDetails`): `Promise`<`Oauth`\>
+**registerOauthApp**(`appDetails`): `Promise`<[`Oauth`](Oauth.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `appDetails` | `CreateOauthInput` |
+| `appDetails` | [`CreateOauthInput`](../index.md#createoauthinput) |
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<[`Oauth`](Oauth.md)\>
 
 -`Promise`: 
 	-`Oauth`: 
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:111](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L111)
+[packages/medusa/src/services/oauth.ts:111](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L111)
 
 ___
 
 ### retrieve
 
-**retrieve**(`oauthId`): `Promise`<`Oauth`\>
+**retrieve**(`oauthId`): `Promise`<[`Oauth`](Oauth.md)\>
 
 #### Parameters
 
@@ -332,20 +332,20 @@ ___
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<[`Oauth`](Oauth.md)\>
 
 -`Promise`: 
 	-`Oauth`: 
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:54](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L54)
+[packages/medusa/src/services/oauth.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L54)
 
 ___
 
 ### retrieveByName
 
-**retrieveByName**(`appName`): `Promise`<`Oauth`\>
+**retrieveByName**(`appName`): `Promise`<[`Oauth`](Oauth.md)\>
 
 #### Parameters
 
@@ -355,14 +355,14 @@ ___
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<[`Oauth`](Oauth.md)\>
 
 -`Promise`: 
 	-`Oauth`: 
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:36](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L36)
+[packages/medusa/src/services/oauth.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L36)
 
 ___
 
@@ -384,35 +384,35 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`id`, `update`): `Promise`<`Oauth`\>
+**update**(`id`, `update`): `Promise`<[`Oauth`](Oauth.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `id` | `string` |
-| `update` | `UpdateOauthInput` |
+| `update` | [`UpdateOauthInput`](../index.md#updateoauthinput) |
 
 #### Returns
 
-`Promise`<`Oauth`\>
+`Promise`<[`Oauth`](Oauth.md)\>
 
 -`Promise`: 
 	-`Oauth`: 
 
 #### Defined in
 
-[medusa/src/services/oauth.ts:100](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/oauth.ts#L100)
+[packages/medusa/src/services/oauth.ts:100](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/oauth.ts#L100)
 
 ___
 
@@ -424,7 +424,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -434,8 +434,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

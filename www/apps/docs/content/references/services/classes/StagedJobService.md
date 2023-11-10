@@ -4,7 +4,7 @@ Provides layer to manipulate users.
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`StagedJobService`**
 
@@ -18,15 +18,15 @@ Provides layer to manipulate users.
 
 | Name |
 | :------ |
-| `«destructured»` | `StagedJobServiceProps` |
+| `«destructured»` | [`StagedJobServiceProps`](../index.md#stagedjobserviceprops) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/staged-job.ts:22](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/staged-job.ts#L22)
+[packages/medusa/src/services/staged-job.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/staged-job.ts#L22)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,59 +64,59 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### stagedJobRepository\_
 
- `Protected` **stagedJobRepository\_**: `Repository`<`StagedJob`\> & { `insertBulk`: Method insertBulk  }
+ `Protected` **stagedJobRepository\_**: [`Repository`](Repository.md)<[`StagedJob`](StagedJob.md)\> & { `insertBulk`: Method insertBulk  }
 
 #### Defined in
 
-[medusa/src/services/staged-job.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/staged-job.ts#L20)
+[packages/medusa/src/services/staged-job.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/staged-job.ts#L20)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -126,7 +126,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -147,8 +147,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -159,27 +159,27 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`data`): `Promise`<`StagedJob`[]\>
+**create**(`data`): `Promise`<[`StagedJob`](StagedJob.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `data` | `EmitData`<`unknown`\> \| `EmitData`<`unknown`\>[] |
+| `data` | [`EmitData`](../index.md#emitdata)<`unknown`\> \| [`EmitData`](../index.md#emitdata)<`unknown`\>[] |
 
 #### Returns
 
-`Promise`<`StagedJob`[]\>
+`Promise`<[`StagedJob`](StagedJob.md)[]\>
 
 -`Promise`: 
 	-`StagedJob[]`: 
@@ -187,7 +187,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/staged-job.ts:45](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/staged-job.ts#L45)
+[packages/medusa/src/services/staged-job.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/staged-job.ts#L45)
 
 ___
 
@@ -209,23 +209,23 @@ ___
 
 #### Defined in
 
-[medusa/src/services/staged-job.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/staged-job.ts#L37)
+[packages/medusa/src/services/staged-job.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/staged-job.ts#L37)
 
 ___
 
 ### list
 
-**list**(`config`): `Promise`<`StagedJob`[]\>
+**list**(`config`): `Promise`<[`StagedJob`](StagedJob.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `config` | `FindConfig`<`StagedJob`\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`StagedJob`](StagedJob.md)\> |
 
 #### Returns
 
-`Promise`<`StagedJob`[]\>
+`Promise`<[`StagedJob`](StagedJob.md)[]\>
 
 -`Promise`: 
 	-`StagedJob[]`: 
@@ -233,7 +233,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/staged-job.ts:29](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/staged-job.ts#L29)
+[packages/medusa/src/services/staged-job.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/staged-job.ts#L29)
 
 ___
 
@@ -255,11 +255,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -271,7 +271,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -281,8 +281,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

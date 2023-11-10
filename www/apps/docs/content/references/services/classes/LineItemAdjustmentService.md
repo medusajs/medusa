@@ -4,7 +4,7 @@ Provides layer to manipulate line item adjustments.
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`LineItemAdjustmentService`**
 
@@ -18,15 +18,15 @@ Provides layer to manipulate line item adjustments.
 
 | Name |
 | :------ |
-| `«destructured»` | `LineItemAdjustmentServiceProps` |
+| `«destructured»` | [`LineItemAdjustmentServiceProps`](../index.md#lineitemadjustmentserviceprops) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:36](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L36)
+[packages/medusa/src/services/line-item-adjustment.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L37)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,11 +64,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,55 +78,55 @@ ___
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:34](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L34)
+[packages/medusa/src/services/line-item-adjustment.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L35)
 
 ___
 
 ### lineItemAdjustmentRepo\_
 
- `Private` `Readonly` **lineItemAdjustmentRepo\_**: `Repository`<`LineItemAdjustment`\>
+ `Private` `Readonly` **lineItemAdjustmentRepo\_**: [`Repository`](Repository.md)<[`LineItemAdjustment`](LineItemAdjustment.md)\>
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:33](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L33)
+[packages/medusa/src/services/line-item-adjustment.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L34)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -136,7 +136,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -157,8 +157,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -169,17 +169,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`data`): `Promise`<`LineItemAdjustment`\>
+**create**(`data`): `Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)\>
 
 Creates a line item adjustment
 
@@ -187,24 +187,24 @@ Creates a line item adjustment
 
 | Name | Description |
 | :------ | :------ |
-| `data` | `Partial`<`LineItemAdjustment`\> | the line item adjustment to create |
+| `data` | [`Partial`](../index.md#partial)<[`LineItemAdjustment`](LineItemAdjustment.md)\> | the line item adjustment to create |
 
 #### Returns
 
-`Promise`<`LineItemAdjustment`\>
+`Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)\>
 
 -`Promise`: line item adjustment
 	-`LineItemAdjustment`: 
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:86](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L86)
+[packages/medusa/src/services/line-item-adjustment.ts:87](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L87)
 
 ___
 
 ### createAdjustmentForLineItem
 
-**createAdjustmentForLineItem**(`cart`, `lineItem`): `Promise`<`LineItemAdjustment`[]\>
+**createAdjustmentForLineItem**(`cart`, `lineItem`): `Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)[]\>
 
 Creates adjustment for a line item
 
@@ -212,12 +212,12 @@ Creates adjustment for a line item
 
 | Name | Description |
 | :------ | :------ |
-| `cart` | `Cart` | the cart object holding discounts |
-| `lineItem` | `LineItem` | the line item for which a line item adjustment might be created |
+| `cart` | [`Cart`](Cart.md) | the cart object holding discounts |
+| `lineItem` | [`LineItem`](LineItem.md) | the line item for which a line item adjustment might be created |
 
 #### Returns
 
-`Promise`<`LineItemAdjustment`[]\>
+`Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)[]\>
 
 -`Promise`: a line item adjustment or undefined if no adjustment was created
 	-`LineItemAdjustment[]`: 
@@ -225,13 +225,13 @@ Creates adjustment for a line item
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:262](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L262)
+[packages/medusa/src/services/line-item-adjustment.ts:263](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L263)
 
 ___
 
 ### createAdjustments
 
-**createAdjustments**(`cart`, `lineItem?`): `Promise`<`LineItemAdjustment`[] \| `LineItemAdjustment`[][]\>
+**createAdjustments**(`cart`, `lineItem?`): `Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)[] \| [`LineItemAdjustment`](LineItemAdjustment.md)[][]\>
 
 Creates adjustment for a line item
 
@@ -239,12 +239,12 @@ Creates adjustment for a line item
 
 | Name | Description |
 | :------ | :------ |
-| `cart` | `Cart` | the cart object holding discounts |
-| `lineItem?` | `LineItem` | the line item for which a line item adjustment might be created |
+| `cart` | [`Cart`](Cart.md) | the cart object holding discounts |
+| `lineItem?` | [`LineItem`](LineItem.md) | the line item for which a line item adjustment might be created |
 
 #### Returns
 
-`Promise`<`LineItemAdjustment`[] \| `LineItemAdjustment`[][]\>
+`Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)[] \| [`LineItemAdjustment`](LineItemAdjustment.md)[][]\>
 
 -`Promise`: if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created
 otherwise returns an array of line item adjustments for each line item in the cart
@@ -252,7 +252,7 @@ otherwise returns an array of line item adjustments for each line item in the ca
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:290](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L290)
+[packages/medusa/src/services/line-item-adjustment.ts:291](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L291)
 
 ___
 
@@ -266,7 +266,7 @@ Deletes line item adjustments matching a selector
 
 | Name | Description |
 | :------ | :------ |
-| `selectorOrIds` | `string` \| `string`[] \| `FilterableLineItemAdjustmentProps` & { `discount_id?`: `FindOperator`<``null`` \| `string`\>  } | the query object for find or the line item adjustment id |
+| `selectorOrIds` | `string` \| `string`[] \| [`FilterableLineItemAdjustmentProps`](FilterableLineItemAdjustmentProps.md) & { `discount_id?`: [`FindOperator`](FindOperator.md)<``null`` \| `string`\>  } | the query object for find or the line item adjustment id |
 
 #### Returns
 
@@ -276,13 +276,13 @@ Deletes line item adjustments matching a selector
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:153](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L153)
+[packages/medusa/src/services/line-item-adjustment.ts:154](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L154)
 
 ___
 
 ### generateAdjustments
 
-**generateAdjustments**(`calculationContextData`, `generatedLineItem`, `context`): `Promise`<`GeneratedAdjustment`[]\>
+**generateAdjustments**(`calculationContextData`, `generatedLineItem`, `context`): `Promise`<[`GeneratedAdjustment`](../index.md#generatedadjustment)[]\>
 
 Creates adjustment for a line item
 
@@ -290,26 +290,27 @@ Creates adjustment for a line item
 
 | Name | Description |
 | :------ | :------ |
-| `calculationContextData` | `CalculationContextData` | the calculationContextData object holding discounts |
-| `generatedLineItem` | `LineItem` | the line item for which a line item adjustment might be created |
-| `context` | `AdjustmentContext` | the line item for which a line item adjustment might be created |
+| `calculationContextData` | [`CalculationContextData`](../index.md#calculationcontextdata) | the calculationContextData object holding discounts |
+| `generatedLineItem` | [`LineItem`](LineItem.md) | the line item for which a line item adjustment might be created |
+| `context` | [`AdjustmentContext`](../index.md#adjustmentcontext) | the line item for which a line item adjustment might be created |
 
 #### Returns
 
-`Promise`<`GeneratedAdjustment`[]\>
+`Promise`<[`GeneratedAdjustment`](../index.md#generatedadjustment)[]\>
 
 -`Promise`: a line item adjustment or undefined if no adjustment was created
 	-`GeneratedAdjustment[]`: 
+		-`GeneratedAdjustment`: 
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:188](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L188)
+[packages/medusa/src/services/line-item-adjustment.ts:189](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L189)
 
 ___
 
 ### list
 
-**list**(`selector?`, `config?`): `Promise`<`LineItemAdjustment`[]\>
+**list**(`selector?`, `config?`): `Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)[]\>
 
 Lists line item adjustments
 
@@ -317,12 +318,12 @@ Lists line item adjustments
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `FilterableLineItemAdjustmentProps` | the query object for find |
-| `config` | `FindConfig`<`LineItemAdjustment`\> | the config to be used for find |
+| `selector` | [`FilterableLineItemAdjustmentProps`](FilterableLineItemAdjustmentProps.md) | the query object for find |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`LineItemAdjustment`](LineItemAdjustment.md)\> | the config to be used for find |
 
 #### Returns
 
-`Promise`<`LineItemAdjustment`[]\>
+`Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)[]\>
 
 -`Promise`: the result of the find operation
 	-`LineItemAdjustment[]`: 
@@ -330,13 +331,13 @@ Lists line item adjustments
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:136](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L136)
+[packages/medusa/src/services/line-item-adjustment.ts:137](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L137)
 
 ___
 
 ### retrieve
 
-**retrieve**(`lineItemAdjustmentId`, `config?`): `Promise`<`LineItemAdjustment`\>
+**retrieve**(`lineItemAdjustmentId`, `config?`): `Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)\>
 
 Retrieves a line item adjustment by id.
 
@@ -345,18 +346,18 @@ Retrieves a line item adjustment by id.
 | Name | Description |
 | :------ | :------ |
 | `lineItemAdjustmentId` | `string` | the id of the line item adjustment to retrieve |
-| `config` | `FindConfig`<`LineItemAdjustment`\> | the config to retrieve the line item adjustment by |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`LineItemAdjustment`](LineItemAdjustment.md)\> | the config to retrieve the line item adjustment by |
 
 #### Returns
 
-`Promise`<`LineItemAdjustment`\>
+`Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)\>
 
 -`Promise`: the line item adjustment.
 	-`LineItemAdjustment`: 
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:53](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L53)
+[packages/medusa/src/services/line-item-adjustment.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L54)
 
 ___
 
@@ -378,17 +379,17 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`id`, `data`): `Promise`<`LineItemAdjustment`\>
+**update**(`id`, `data`): `Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)\>
 
 Creates a line item adjustment
 
@@ -397,18 +398,18 @@ Creates a line item adjustment
 | Name | Description |
 | :------ | :------ |
 | `id` | `string` | the line item adjustment id to update |
-| `data` | `Partial`<`LineItemAdjustment`\> | the line item adjustment to create |
+| `data` | [`Partial`](../index.md#partial)<[`LineItemAdjustment`](LineItemAdjustment.md)\> | the line item adjustment to create |
 
 #### Returns
 
-`Promise`<`LineItemAdjustment`\>
+`Promise`<[`LineItemAdjustment`](LineItemAdjustment.md)\>
 
 -`Promise`: line item adjustment
 	-`LineItemAdjustment`: 
 
 #### Defined in
 
-[medusa/src/services/line-item-adjustment.ts:104](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/line-item-adjustment.ts#L104)
+[packages/medusa/src/services/line-item-adjustment.ts:105](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/line-item-adjustment.ts#L105)
 
 ___
 
@@ -420,7 +421,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -430,8 +431,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

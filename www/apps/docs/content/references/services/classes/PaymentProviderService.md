@@ -4,7 +4,7 @@ Helps retrieve payment providers
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`PaymentProviderService`**
 
@@ -18,15 +18,15 @@ Helps retrieve payment providers
 
 | Name |
 | :------ |
-| `container` | `InjectedDependencies` |
+| `container` | [`InjectedDependencies`](../index.md#injecteddependencies-24) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:70](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L70)
+[packages/medusa/src/services/payment-provider.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L70)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,21 +64,21 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### container\_
 
- `Protected` `Readonly` **container\_**: `InjectedDependencies`
+ `Protected` `Readonly` **container\_**: [`InjectedDependencies`](../index.md#injecteddependencies-24)
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:55](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L55)
+[packages/medusa/src/services/payment-provider.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L55)
 
 ___
 
@@ -88,105 +88,105 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:65](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L65)
+[packages/medusa/src/services/payment-provider.ts:65](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L65)
 
 ___
 
 ### featureFlagRouter\_
 
- `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
+ `Protected` `Readonly` **featureFlagRouter\_**: [`FlagRouter`](FlagRouter.md)
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:68](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L68)
+[packages/medusa/src/services/payment-provider.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L68)
 
 ___
 
 ### logger\_
 
- `Protected` `Readonly` **logger\_**: `Logger`
+ `Protected` `Readonly` **logger\_**: [`Logger`](../index.md#logger)
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:66](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L66)
+[packages/medusa/src/services/payment-provider.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L66)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### paymentProviderRepository\_
 
- `Protected` `Readonly` **paymentProviderRepository\_**: `Repository`<`PaymentProvider`\>
+ `Protected` `Readonly` **paymentProviderRepository\_**: [`Repository`](Repository.md)<[`PaymentProvider`](PaymentProvider.md)\>
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:58](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L58)
+[packages/medusa/src/services/payment-provider.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L58)
 
 ___
 
 ### paymentRepository\_
 
- `Protected` `Readonly` **paymentRepository\_**: `Repository`<`Payment`\>
+ `Protected` `Readonly` **paymentRepository\_**: [`Repository`](Repository.md)<[`Payment`](Payment.md)\>
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:59](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L59)
+[packages/medusa/src/services/payment-provider.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L59)
 
 ___
 
 ### paymentSessionRepository\_
 
- `Protected` `Readonly` **paymentSessionRepository\_**: `Repository`<`PaymentSession`\>
+ `Protected` `Readonly` **paymentSessionRepository\_**: [`Repository`](Repository.md)<[`PaymentSession`](PaymentSession.md)\>
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L56)
+[packages/medusa/src/services/payment-provider.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L56)
 
 ___
 
 ### refundRepository\_
 
- `Protected` `Readonly` **refundRepository\_**: `Repository`<`Refund`\>
+ `Protected` `Readonly` **refundRepository\_**: [`Repository`](Repository.md)<[`Refund`](Refund.md)\>
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:64](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L64)
+[packages/medusa/src/services/payment-provider.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L64)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -196,7 +196,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ___
 
@@ -212,7 +212,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:60](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L60)
+[packages/medusa/src/services/payment-provider.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L60)
 
 ## Methods
 
@@ -233,8 +233,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -245,41 +245,41 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### authorizePayment
 
-**authorizePayment**(`paymentSession`, `context`): `Promise`<`undefined` \| `PaymentSession`\>
+**authorizePayment**(`paymentSession`, `context`): `Promise`<`undefined` \| [`PaymentSession`](PaymentSession.md)\>
 
 #### Parameters
 
-| Name |
-| :------ |
-| `paymentSession` | `PaymentSession` |
+| Name | Description |
+| :------ | :------ |
+| `paymentSession` | [`PaymentSession`](PaymentSession.md) | A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections. |
 | `context` | Record<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`undefined` \| `PaymentSession`\>
+`Promise`<`undefined` \| [`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: 
 	-`undefined \| PaymentSession`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:523](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L523)
+[packages/medusa/src/services/payment-provider.ts:523](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L523)
 
 ___
 
 ### buildPaymentProcessorContext
 
-`Protected` **buildPaymentProcessorContext**(`cartOrData`): `Cart` & `PaymentContext`
+`Protected` **buildPaymentProcessorContext**(`cartOrData`): [`Cart`](Cart.md) & [`PaymentContext`](../index.md#paymentcontext)
 
 Build the create session context for both legacy and new API
 
@@ -287,103 +287,103 @@ Build the create session context for both legacy and new API
 
 | Name |
 | :------ |
-| `cartOrData` | `Cart` \| `PaymentSessionInput` |
+| `cartOrData` | [`Cart`](Cart.md) \| [`PaymentSessionInput`](../index.md#paymentsessioninput) |
 
 #### Returns
 
-`Cart` & `PaymentContext`
+[`Cart`](Cart.md) & [`PaymentContext`](../index.md#paymentcontext)
 
--``Cart` & `PaymentContext``: (optional) 
+-`[`Cart`](Cart.md) & [`PaymentContext`](../index.md#paymentcontext)`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:845](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L845)
+[packages/medusa/src/services/payment-provider.ts:845](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L845)
 
 ___
 
 ### cancelPayment
 
-**cancelPayment**(`paymentObj`): `Promise`<`Payment`\>
+**cancelPayment**(`paymentObj`): `Promise`<[`Payment`](Payment.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `paymentObj` | `Partial`<`Payment`\> & { `id`: `string`  } |
+| `paymentObj` | [`Partial`](../index.md#partial)<[`Payment`](Payment.md)\> & { `id`: `string`  } |
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: 
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:602](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L602)
+[packages/medusa/src/services/payment-provider.ts:602](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L602)
 
 ___
 
 ### capturePayment
 
-**capturePayment**(`paymentObj`): `Promise`<`Payment`\>
+**capturePayment**(`paymentObj`): `Promise`<[`Payment`](Payment.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `paymentObj` | `Partial`<`Payment`\> & { `id`: `string`  } |
+| `paymentObj` | [`Partial`](../index.md#partial)<[`Payment`](Payment.md)\> & { `id`: `string`  } |
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: 
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:641](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L641)
+[packages/medusa/src/services/payment-provider.ts:641](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L641)
 
 ___
 
 ### createPayment
 
-**createPayment**(`data`): `Promise`<`Payment`\>
+**createPayment**(`data`): `Promise`<[`Payment`](Payment.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `data` | `CreatePaymentInput` |
+| `data` | [`CreatePaymentInput`](../index.md#createpaymentinput) |
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: 
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:471](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L471)
+[packages/medusa/src/services/payment-provider.ts:471](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L471)
 
 ___
 
 ### createSession
 
-**createSession**(`providerId`, `cart`): `Promise`<`PaymentSession`\>
+**createSession**(`providerId`, `cart`): `Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `providerId` | `string` |
-| `cart` | `Cart` |
+| `cart` | [`Cart`](Cart.md) |
 
 #### Returns
 
-`Promise`<`PaymentSession`\>
+`Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: 
 	-`PaymentSession`: 
@@ -392,9 +392,9 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:205](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L205)
+[packages/medusa/src/services/payment-provider.ts:205](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L205)
 
-**createSession**(`sessionInput`): `Promise`<`PaymentSession`\>
+**createSession**(`sessionInput`): `Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 Creates a payment session with the given provider.
 
@@ -402,73 +402,78 @@ Creates a payment session with the given provider.
 
 | Name |
 | :------ |
-| `sessionInput` | `PaymentSessionInput` |
+| `sessionInput` | [`PaymentSessionInput`](../index.md#paymentsessioninput) |
 
 #### Returns
 
-`Promise`<`PaymentSession`\>
+`Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: 
 	-`PaymentSession`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:211](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L211)
+[packages/medusa/src/services/payment-provider.ts:211](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L211)
 
 ___
 
 ### deleteSession
 
-**deleteSession**(`paymentSession`): `Promise`<`undefined` \| `PaymentSession`\>
+**deleteSession**(`paymentSession`): `Promise`<`undefined` \| [`PaymentSession`](PaymentSession.md)\>
 
 #### Parameters
 
-| Name |
-| :------ |
-| `paymentSession` | `PaymentSession` |
+| Name | Description |
+| :------ | :------ |
+| `paymentSession` | [`PaymentSession`](PaymentSession.md) | A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections. |
 
 #### Returns
 
-`Promise`<`undefined` \| `PaymentSession`\>
+`Promise`<`undefined` \| [`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: 
 	-`undefined \| PaymentSession`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:402](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L402)
+[packages/medusa/src/services/payment-provider.ts:402](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L402)
 
 ___
 
 ### getStatus
 
-**getStatus**(`payment`): `Promise`<`PaymentSessionStatus`\>
+**getStatus**(`payment`): `Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.md)\>
 
 #### Parameters
 
-| Name |
-| :------ |
-| `payment` | `Payment` |
+| Name | Description |
+| :------ | :------ |
+| `payment` | [`Payment`](Payment.md) | A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources. |
 
 #### Returns
 
-`Promise`<`PaymentSessionStatus`\>
+`Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.md)\>
 
 -`Promise`: 
+	-`AUTHORIZED`: (optional) 
+	-`CANCELED`: (optional) 
+	-`ERROR`: (optional) 
+	-`PENDING`: (optional) 
+	-`REQUIRES_MORE`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:630](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L630)
+[packages/medusa/src/services/payment-provider.ts:630](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L630)
 
 ___
 
 ### list
 
-**list**(): `Promise`<`PaymentProvider`[]\>
+**list**(): `Promise`<[`PaymentProvider`](PaymentProvider.md)[]\>
 
 #### Returns
 
-`Promise`<`PaymentProvider`[]\>
+`Promise`<[`PaymentProvider`](PaymentProvider.md)[]\>
 
 -`Promise`: 
 	-`PaymentProvider[]`: 
@@ -476,13 +481,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:102](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L102)
+[packages/medusa/src/services/payment-provider.ts:102](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L102)
 
 ___
 
 ### listPayments
 
-**listPayments**(`selector`, `config?`): `Promise`<`Payment`[]\>
+**listPayments**(`selector`, `config?`): `Promise`<[`Payment`](Payment.md)[]\>
 
 List all the payments according to the given selector and config.
 
@@ -490,12 +495,12 @@ List all the payments according to the given selector and config.
 
 | Name |
 | :------ |
-| `selector` | `Selector`<`Payment`\> |
-| `config` | `FindConfig`<`Payment`\> |
+| `selector` | [`Selector`](../index.md#selector)<[`Payment`](Payment.md)\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Payment`](Payment.md)\> |
 
 #### Returns
 
-`Promise`<`Payment`[]\>
+`Promise`<[`Payment`](Payment.md)[]\>
 
 -`Promise`: 
 	-`Payment[]`: 
@@ -503,7 +508,7 @@ List all the payments according to the given selector and config.
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:154](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L154)
+[packages/medusa/src/services/payment-provider.ts:154](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L154)
 
 ___
 
@@ -520,7 +525,7 @@ Process the collected data. Can be used every time we need to process some colle
 | `data` | `object` |
 | `data.customer?` | `object` |
 | `data.customer.id?` | `string` |
-| `paymentResponse` | Record<`string`, `unknown`\> \| `PaymentSessionResponse` |
+| `paymentResponse` | Record<`string`, `unknown`\> \| [`PaymentSessionResponse`](../index.md#paymentsessionresponse) |
 
 #### Returns
 
@@ -530,13 +535,13 @@ Process the collected data. Can be used every time we need to process some colle
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:935](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L935)
+[packages/medusa/src/services/payment-provider.ts:935](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L935)
 
 ___
 
 ### refreshSession
 
-**refreshSession**(`paymentSession`, `sessionInput`): `Promise`<`PaymentSession`\>
+**refreshSession**(`paymentSession`, `sessionInput`): `Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 Refreshes a payment session with the given provider.
 This means, that we delete the current one and create a new.
@@ -549,70 +554,70 @@ This means, that we delete the current one and create a new.
 | `paymentSession.data` | Record<`string`, `unknown`\> |
 | `paymentSession.id` | `string` |
 | `paymentSession.provider_id` | `string` |
-| `sessionInput` | `PaymentSessionInput` |
+| `sessionInput` | [`PaymentSessionInput`](../index.md#paymentsessioninput) |
 
 #### Returns
 
-`Promise`<`PaymentSession`\>
+`Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: the payment session
 	-`PaymentSession`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:301](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L301)
+[packages/medusa/src/services/payment-provider.ts:301](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L301)
 
 ___
 
 ### refundFromPayment
 
-**refundFromPayment**(`payment`, `amount`, `reason`, `note?`): `Promise`<`Refund`\>
+**refundFromPayment**(`payment`, `amount`, `reason`, `note?`): `Promise`<[`Refund`](Refund.md)\>
 
 #### Parameters
 
-| Name |
-| :------ |
-| `payment` | `Payment` |
+| Name | Description |
+| :------ | :------ |
+| `payment` | [`Payment`](Payment.md) | A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources. |
 | `amount` | `number` |
 | `reason` | `string` |
 | `note?` | `string` |
 
 #### Returns
 
-`Promise`<`Refund`\>
+`Promise`<[`Refund`](Refund.md)\>
 
 -`Promise`: 
 	-`Refund`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:771](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L771)
+[packages/medusa/src/services/payment-provider.ts:771](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L771)
 
 ___
 
 ### refundPayment
 
-**refundPayment**(`payObjs`, `amount`, `reason`, `note?`): `Promise`<`Refund`\>
+**refundPayment**(`payObjs`, `amount`, `reason`, `note?`): `Promise`<[`Refund`](Refund.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `payObjs` | `Payment`[] |
+| `payObjs` | [`Payment`](Payment.md)[] |
 | `amount` | `number` |
 | `reason` | `string` |
 | `note?` | `string` |
 
 #### Returns
 
-`Promise`<`Refund`\>
+`Promise`<[`Refund`](Refund.md)\>
 
 -`Promise`: 
 	-`Refund`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:672](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L672)
+[packages/medusa/src/services/payment-provider.ts:672](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L672)
 
 ___
 
@@ -634,13 +639,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:83](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L83)
+[packages/medusa/src/services/payment-provider.ts:83](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L83)
 
 ___
 
 ### retrievePayment
 
-**retrievePayment**(`paymentId`, `relations?`): `Promise`<`Payment`\>
+**retrievePayment**(`paymentId`, `relations?`): `Promise`<[`Payment`](Payment.md)\>
 
 Retrieve a payment entity with the given id.
 
@@ -649,24 +654,24 @@ Retrieve a payment entity with the given id.
 | Name | Default value |
 | :------ | :------ |
 | `paymentId` | `string` |
-| `relations` | `string`[] | `[]` |
+| `relations` | `string`[] | [] |
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: 
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:114](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L114)
+[packages/medusa/src/services/payment-provider.ts:114](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L114)
 
 ___
 
 ### retrieveProvider
 
-**retrieveProvider**<`TProvider`\>(`providerId`): `TProvider` extends `AbstractPaymentService` ? `AbstractPaymentService` : `TProvider` extends `AbstractPaymentProcessor` ? `AbstractPaymentProcessor` : `any`
+**retrieveProvider**<`TProvider`\>(`providerId`): `TProvider` extends [`AbstractPaymentService`](AbstractPaymentService.md) ? [`AbstractPaymentService`](AbstractPaymentService.md) : `TProvider` extends [`AbstractPaymentProcessor`](AbstractPaymentProcessor.md) ? [`AbstractPaymentProcessor`](AbstractPaymentProcessor.md) : `any`
 
 Finds a provider given an id
 
@@ -682,43 +687,43 @@ Finds a provider given an id
 
 #### Returns
 
-`TProvider` extends `AbstractPaymentService` ? `AbstractPaymentService` : `TProvider` extends `AbstractPaymentProcessor` ? `AbstractPaymentProcessor` : `any`
+`TProvider` extends [`AbstractPaymentService`](AbstractPaymentService.md) ? [`AbstractPaymentService`](AbstractPaymentService.md) : `TProvider` extends [`AbstractPaymentProcessor`](AbstractPaymentProcessor.md) ? [`AbstractPaymentProcessor`](AbstractPaymentProcessor.md) : `any`
 
--``TProvider` extends `AbstractPaymentService` ? `AbstractPaymentService` : `TProvider` extends `AbstractPaymentProcessor` ? `AbstractPaymentProcessor` : `any``: (optional) the payment provider
+-``TProvider` extends [`AbstractPaymentService`](AbstractPaymentService.md) ? [`AbstractPaymentService`](AbstractPaymentService.md) : `TProvider` extends [`AbstractPaymentProcessor`](AbstractPaymentProcessor.md) ? [`AbstractPaymentProcessor`](AbstractPaymentProcessor.md) : `any``: (optional) the payment provider
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:442](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L442)
+[packages/medusa/src/services/payment-provider.ts:442](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L442)
 
 ___
 
 ### retrieveRefund
 
-**retrieveRefund**(`id`, `config?`): `Promise`<`Refund`\>
+**retrieveRefund**(`id`, `config?`): `Promise`<[`Refund`](Refund.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `id` | `string` |
-| `config` | `FindConfig`<`Refund`\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Refund`](Refund.md)\> |
 
 #### Returns
 
-`Promise`<`Refund`\>
+`Promise`<[`Refund`](Refund.md)\>
 
 -`Promise`: 
 	-`Refund`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:822](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L822)
+[packages/medusa/src/services/payment-provider.ts:822](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L822)
 
 ___
 
 ### retrieveSession
 
-**retrieveSession**(`paymentSessionId`, `relations?`): `Promise`<`PaymentSession`\>
+**retrieveSession**(`paymentSessionId`, `relations?`): `Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 Return the payment session for the given id.
 
@@ -727,24 +732,24 @@ Return the payment session for the given id.
 | Name | Default value |
 | :------ | :------ |
 | `paymentSessionId` | `string` |
-| `relations` | `string`[] | `[]` |
+| `relations` | `string`[] | [] |
 
 #### Returns
 
-`Promise`<`PaymentSession`\>
+`Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: 
 	-`PaymentSession`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:172](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L172)
+[packages/medusa/src/services/payment-provider.ts:172](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L172)
 
 ___
 
 ### saveSession
 
-`Protected` **saveSession**(`providerId`, `data`): `Promise`<`PaymentSession`\>
+`Protected` **saveSession**(`providerId`, `data`): `Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 Create or update a Payment session data.
 
@@ -760,18 +765,18 @@ Create or update a Payment session data.
 | `data.isSelected?` | `boolean` |
 | `data.payment_session_id?` | `string` |
 | `data.sessionData` | Record<`string`, `unknown`\> |
-| `data.status?` | `PaymentSessionStatus` |
+| `data.status?` | [`PaymentSessionStatus`](../enums/PaymentSessionStatus.md) |
 
 #### Returns
 
-`Promise`<`PaymentSession`\>
+`Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: 
 	-`PaymentSession`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:887](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L887)
+[packages/medusa/src/services/payment-provider.ts:887](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L887)
 
 ___
 
@@ -793,11 +798,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -809,7 +814,7 @@ ___
 
 | Name |
 | :------ |
-| `errObj` | `PaymentProcessorError` |
+| `errObj` | [`PaymentProcessorError`](../interfaces/PaymentProcessorError.md) |
 
 #### Returns
 
@@ -819,13 +824,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:954](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L954)
+[packages/medusa/src/services/payment-provider.ts:954](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L954)
 
 ___
 
 ### updatePayment
 
-**updatePayment**(`paymentId`, `data`): `Promise`<`Payment`\>
+**updatePayment**(`paymentId`, `data`): `Promise`<[`Payment`](Payment.md)\>
 
 #### Parameters
 
@@ -838,20 +843,20 @@ ___
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: 
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:512](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L512)
+[packages/medusa/src/services/payment-provider.ts:512](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L512)
 
 ___
 
 ### updateSession
 
-**updateSession**(`paymentSession`, `sessionInput`): `Promise`<`PaymentSession`\>
+**updateSession**(`paymentSession`, `sessionInput`): `Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 Update a payment session with the given provider.
 
@@ -863,42 +868,42 @@ Update a payment session with the given provider.
 | `paymentSession.data` | Record<`string`, `unknown`\> |
 | `paymentSession.id` | `string` |
 | `paymentSession.provider_id` | `string` |
-| `sessionInput` | `Cart` \| `PaymentSessionInput` |
+| `sessionInput` | [`Cart`](Cart.md) \| [`PaymentSessionInput`](../index.md#paymentsessioninput) |
 
 #### Returns
 
-`Promise`<`PaymentSession`\>
+`Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: the payment session
 	-`PaymentSession`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:342](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L342)
+[packages/medusa/src/services/payment-provider.ts:342](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L342)
 
 ___
 
 ### updateSessionData
 
-**updateSessionData**(`paymentSession`, `data`): `Promise`<`PaymentSession`\>
+**updateSessionData**(`paymentSession`, `data`): `Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 #### Parameters
 
-| Name |
-| :------ |
-| `paymentSession` | `PaymentSession` |
+| Name | Description |
+| :------ | :------ |
+| `paymentSession` | [`PaymentSession`](PaymentSession.md) | A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections. |
 | `data` | Record<`string`, `unknown`\> |
 
 #### Returns
 
-`Promise`<`PaymentSession`\>
+`Promise`<[`PaymentSession`](PaymentSession.md)\>
 
 -`Promise`: 
 	-`PaymentSession`: 
 
 #### Defined in
 
-[medusa/src/services/payment-provider.ts:569](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment-provider.ts#L569)
+[packages/medusa/src/services/payment-provider.ts:569](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment-provider.ts#L569)
 
 ___
 
@@ -910,7 +915,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -920,8 +925,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

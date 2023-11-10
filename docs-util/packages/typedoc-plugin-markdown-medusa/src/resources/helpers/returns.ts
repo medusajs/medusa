@@ -24,7 +24,7 @@ function getReturnFromType(
   theme: MarkdownTheme,
   reflection: SignatureReflection
 ) {
-  const { parameterStyle, parameterComponent } =
+  const { parameterStyle, parameterComponent, maxLevel } =
     theme.getFormattingOptionsForLocation()
 
   if (!reflection.type) {
@@ -35,7 +35,8 @@ function getReturnFromType(
     reflection.type,
     reflection.project || theme.project,
     reflection.comment,
-    1
+    1,
+    maxLevel
   )
 
   if (parameterStyle === "component") {

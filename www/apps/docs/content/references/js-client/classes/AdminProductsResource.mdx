@@ -84,7 +84,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `options` property.",
@@ -1041,7 +1041,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -1695,7 +1695,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `variants` property.",
@@ -2086,7 +2086,7 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsDeleteRes`](../modules/internal.mdx#adminproductsdeleteres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsDeleteRes`](../internal/types/internal.AdminProductsDeleteRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2176,7 +2176,7 @@ Delete a product option. If there are product variants that use this product opt
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsDeleteOptionRes`](../modules/internal.mdx#adminproductsdeleteoptionres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsDeleteOptionRes`](../internal/types/internal.AdminProductsDeleteOptionRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2605,7 +2605,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsDeleteVariantRes`](../modules/internal.mdx#adminproductsdeletevariantres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsDeleteVariantRes`](../internal/types/internal.AdminProductsDeleteVariantRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -3414,7 +3414,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsListRes`](../modules/internal.mdx#adminproductslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsListRes`](../internal/types/internal.AdminProductsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
@@ -3422,7 +3422,7 @@ medusa.admin.products
     "children": [
       {
         "name": "AdminProductsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `products`: ([`PricedProduct`](../modules/internal.mdx#pricedproduct) \\| [`Product`](../internal/classes/internal.Product.mdx))[]  }",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `products`: ([`PricedProduct`](../internal/types/internal.PricedProduct.mdx) \\| [`Product`](../internal/classes/internal.Product.mdx))[]  }",
         "description": "The list of products with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -3457,7 +3457,7 @@ medusa.admin.products
           },
           {
             "name": "products",
-            "type": "([`PricedProduct`](../modules/internal.mdx#pricedproduct) \\| [`Product`](../internal/classes/internal.Product.mdx))[]",
+            "type": "([`PricedProduct`](../internal/types/internal.PricedProduct.mdx) \\| [`Product`](../internal/classes/internal.Product.mdx))[]",
             "description": "An array of products details.",
             "optional": false,
             "defaultValue": "",
@@ -3506,7 +3506,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsListTagsRes`](../modules/internal.mdx#adminproductslisttagsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsListTagsRes`](../internal/types/internal.AdminProductsListTagsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of tags.",
@@ -3522,7 +3522,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
         "children": [
           {
             "name": "tags",
-            "type": "[`Pick`](../modules/internal.mdx#pick)<[`ProductTag`](../internal/classes/internal.ProductTag.mdx), ``\"id\"`` \\| ``\"value\"``\\> & { `usage_count`: `number`  }[]",
+            "type": "[`Pick`](../internal/types/internal.Pick.mdx)<[`ProductTag`](../internal/classes/internal.ProductTag.mdx), ``\"id\"`` \\| ``\"value\"``\\> & { `usage_count`: `number`  }[]",
             "description": "An array of product tags details.",
             "optional": false,
             "defaultValue": "",
@@ -3644,7 +3644,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -4069,7 +4069,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -5022,7 +5022,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -5445,7 +5445,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `options` property.",
@@ -6117,7 +6117,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductsRes`](../modules/internal.mdx#adminproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `variants` property.",

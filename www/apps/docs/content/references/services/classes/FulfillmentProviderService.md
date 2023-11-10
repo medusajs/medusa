@@ -4,7 +4,7 @@ Helps retrieve fulfillment providers
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`FulfillmentProviderService`**
 
@@ -18,15 +18,15 @@ Helps retrieve fulfillment providers
 
 | Name |
 | :------ |
-| `container` | `FulfillmentProviderContainer` |
+| `container` | [`FulfillmentProviderContainer`](../index.md#fulfillmentprovidercontainer) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:44](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L44)
+[packages/medusa/src/services/fulfillment-provider.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L45)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,69 +64,69 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### container\_
 
- `Protected` `Readonly` **container\_**: `FulfillmentProviderContainer`
+ `Protected` `Readonly` **container\_**: [`FulfillmentProviderContainer`](../index.md#fulfillmentprovidercontainer)
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:40](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L40)
+[packages/medusa/src/services/fulfillment-provider.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L41)
 
 ___
 
 ### fulfillmentProviderRepository\_
 
- `Protected` `Readonly` **fulfillmentProviderRepository\_**: `Repository`<`FulfillmentProvider`\>
+ `Protected` `Readonly` **fulfillmentProviderRepository\_**: [`Repository`](Repository.md)<[`FulfillmentProvider`](FulfillmentProvider.md)\>
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:42](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L42)
+[packages/medusa/src/services/fulfillment-provider.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L43)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -136,7 +136,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -157,8 +157,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -169,11 +169,11 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -183,11 +183,11 @@ ___
 
 #### Parameters
 
-| Name |
-| :------ |
-| `option` | `ShippingOption` |
+| Name | Description |
+| :------ | :------ |
+| `option` | [`ShippingOption`](ShippingOption.md) | A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information. |
 | `data` | Record<`string`, `unknown`\> |
-| `cart?` | `Order` \| `Cart` |
+| `cart?` | [`Order`](Order.md) \| [`Cart`](Cart.md) |
 
 #### Returns
 
@@ -198,7 +198,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:147](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L147)
+[packages/medusa/src/services/fulfillment-provider.ts:148](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L148)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 | Name |
 | :------ |
-| `option` | `CalculateOptionPriceInput` |
+| `option` | [`CalculateOptionPriceInput`](../index.md#calculateoptionpriceinput) |
 
 #### Returns
 
@@ -221,30 +221,30 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:122](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L122)
+[packages/medusa/src/services/fulfillment-provider.ts:123](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L123)
 
 ___
 
 ### cancelFulfillment
 
-**cancelFulfillment**(`fulfillment`): `Promise`<`Fulfillment`\>
+**cancelFulfillment**(`fulfillment`): `Promise`<[`Fulfillment`](Fulfillment.md)\>
 
 #### Parameters
 
-| Name |
-| :------ |
-| `fulfillment` | `Fulfillment` |
+| Name | Description |
+| :------ | :------ |
+| `fulfillment` | [`Fulfillment`](Fulfillment.md) | A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns. |
 
 #### Returns
 
-`Promise`<`Fulfillment`\>
+`Promise`<[`Fulfillment`](Fulfillment.md)\>
 
 -`Promise`: 
 	-`Fulfillment`: 
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:140](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L140)
+[packages/medusa/src/services/fulfillment-provider.ts:141](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L141)
 
 ___
 
@@ -254,12 +254,12 @@ ___
 
 #### Parameters
 
-| Name |
-| :------ |
-| `method` | `ShippingMethod` |
-| `items` | `LineItem`[] |
-| `order` | `CreateFulfillmentOrder` |
-| `fulfillment` | `Omit`<`Fulfillment`, ``"beforeInsert"``\> |
+| Name | Description |
+| :------ | :------ |
+| `method` | [`ShippingMethod`](ShippingMethod.md) | A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of. |
+| `items` | [`LineItem`](LineItem.md)[] |
+| `order` | [`CreateFulfillmentOrder`](../index.md#createfulfillmentorder) |
+| `fulfillment` | [`Omit`](../index.md#omit)<[`Fulfillment`](Fulfillment.md), ``"beforeInsert"``\> |
 
 #### Returns
 
@@ -272,7 +272,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:107](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L107)
+[packages/medusa/src/services/fulfillment-provider.ts:108](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L108)
 
 ___
 
@@ -284,7 +284,7 @@ ___
 
 | Name |
 | :------ |
-| `returnOrder` | `CreateReturnType` |
+| `returnOrder` | [`CreateReturnType`](../index.md#createreturntype) |
 
 #### Returns
 
@@ -297,17 +297,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:165](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L165)
+[packages/medusa/src/services/fulfillment-provider.ts:166](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L166)
 
 ___
 
 ### list
 
-**list**(): `Promise`<`FulfillmentProvider`[]\>
+**list**(): `Promise`<[`FulfillmentProvider`](FulfillmentProvider.md)[]\>
 
 #### Returns
 
-`Promise`<`FulfillmentProvider`[]\>
+`Promise`<[`FulfillmentProvider`](FulfillmentProvider.md)[]\>
 
 -`Promise`: 
 	-`FulfillmentProvider[]`: 
@@ -315,13 +315,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:67](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L67)
+[packages/medusa/src/services/fulfillment-provider.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L68)
 
 ___
 
 ### listFulfillmentOptions
 
-**listFulfillmentOptions**(`providerIds`): `Promise`<`FulfillmentOptions`[]\>
+**listFulfillmentOptions**(`providerIds`): `Promise`<[`FulfillmentOptions`](../index.md#fulfillmentoptions)[]\>
 
 #### Parameters
 
@@ -331,14 +331,15 @@ ___
 
 #### Returns
 
-`Promise`<`FulfillmentOptions`[]\>
+`Promise`<[`FulfillmentOptions`](../index.md#fulfillmentoptions)[]\>
 
 -`Promise`: 
 	-`FulfillmentOptions[]`: 
+		-`FulfillmentOptions`: 
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:75](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L75)
+[packages/medusa/src/services/fulfillment-provider.ts:76](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L76)
 
 ___
 
@@ -360,7 +361,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:53](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L53)
+[packages/medusa/src/services/fulfillment-provider.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L54)
 
 ___
 
@@ -387,7 +388,7 @@ Fetches documents from the fulfillment provider
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:184](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L184)
+[packages/medusa/src/services/fulfillment-provider.ts:185](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L185)
 
 ___
 
@@ -409,7 +410,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:96](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L96)
+[packages/medusa/src/services/fulfillment-provider.ts:97](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L97)
 
 ___
 
@@ -431,11 +432,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -445,11 +446,11 @@ ___
 
 #### Parameters
 
-| Name |
-| :------ |
-| `option` | `ShippingOption` |
+| Name | Description |
+| :------ | :------ |
+| `option` | [`ShippingOption`](ShippingOption.md) | A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information. |
 | `data` | Record<`string`, `unknown`\> |
-| `cart` | Record<`string`, `unknown`\> \| `Cart` |
+| `cart` | Record<`string`, `unknown`\> \| [`Cart`](Cart.md) |
 
 #### Returns
 
@@ -462,7 +463,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:127](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L127)
+[packages/medusa/src/services/fulfillment-provider.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L128)
 
 ___
 
@@ -472,9 +473,9 @@ ___
 
 #### Parameters
 
-| Name |
-| :------ |
-| `option` | `ShippingOption` |
+| Name | Description |
+| :------ | :------ |
+| `option` | [`ShippingOption`](ShippingOption.md) | A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information. |
 
 #### Returns
 
@@ -485,7 +486,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/fulfillment-provider.ts:160](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/fulfillment-provider.ts#L160)
+[packages/medusa/src/services/fulfillment-provider.ts:161](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/fulfillment-provider.ts#L161)
 
 ___
 
@@ -497,7 +498,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -507,8 +508,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

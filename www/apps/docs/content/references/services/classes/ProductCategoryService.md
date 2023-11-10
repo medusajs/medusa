@@ -4,7 +4,7 @@ Provides layer to manipulate product categories.
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`ProductCategoryService`**
 
@@ -18,15 +18,15 @@ Provides layer to manipulate product categories.
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-27) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:40](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L40)
+[packages/medusa/src/services/product-category.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L40)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,11 +64,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,45 +78,45 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:32](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L32)
+[packages/medusa/src/services/product-category.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L32)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### productCategoryRepo\_
 
- `Protected` `Readonly` **productCategoryRepo\_**: `TreeRepository`<`ProductCategory`\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }
+ `Protected` `Readonly` **productCategoryRepo\_**: [`TreeRepository`](TreeRepository.md)<[`ProductCategory`](ProductCategory.md)\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:31](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L31)
+[packages/medusa/src/services/product-category.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L31)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -134,17 +134,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:34](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L34)
+[packages/medusa/src/services/product-category.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L34)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -154,7 +154,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -179,7 +179,7 @@ Add a batch of product to a product category
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:314](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L314)
+[packages/medusa/src/services/product-category.ts:314](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L314)
 
 ___
 
@@ -200,8 +200,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -212,17 +212,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`productCategoryInput`): `Promise`<`ProductCategory`\>
+**create**(`productCategoryInput`): `Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 Creates a product category
 
@@ -230,18 +230,18 @@ Creates a product category
 
 | Name | Description |
 | :------ | :------ |
-| `productCategoryInput` | `CreateProductCategoryInput` | parameters to create a product category |
+| `productCategoryInput` | [`CreateProductCategoryInput`](../index.md#createproductcategoryinput) | parameters to create a product category |
 
 #### Returns
 
-`Promise`<`ProductCategory`\>
+`Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 -`Promise`: created product category
 	-`ProductCategory`: 
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:187](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L187)
+[packages/medusa/src/services/product-category.ts:187](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L187)
 
 ___
 
@@ -265,35 +265,46 @@ Deletes a product category
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:268](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L268)
+[packages/medusa/src/services/product-category.ts:268](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L268)
 
 ___
 
 ### fetchReorderConditions
 
-`Protected` **fetchReorderConditions**(`productCategory`, `input`, `shouldDeleteElement?`): `ReorderConditions`
+`Protected` **fetchReorderConditions**(`productCategory`, `input`, `shouldDeleteElement?`): [`ReorderConditions`](../index.md#reorderconditions)
 
 #### Parameters
 
-| Name | Default value |
-| :------ | :------ |
-| `productCategory` | `ProductCategory` |
-| `input` | `UpdateProductCategoryInput` |
-| `shouldDeleteElement` | `boolean` | `false` |
+| Name | Default value | Description |
+| :------ | :------ | :------ |
+| `productCategory` | [`ProductCategory`](ProductCategory.md) | A product category can be used to categorize products into a hierarchy of categories. |
+| `input` | [`UpdateProductCategoryInput`](../index.md#updateproductcategoryinput) |
+| `shouldDeleteElement` | `boolean` | false |
 
 #### Returns
 
-`ReorderConditions`
+[`ReorderConditions`](../index.md#reorderconditions)
+
+-`ReorderConditions`: 
+	-`originalParentId`: 
+	-`originalRank`: 
+	-`shouldChangeParent`: 
+	-`shouldChangeRank`: 
+	-`shouldDeleteElement`: 
+	-`shouldIncrementRank`: 
+	-`targetCategoryId`: 
+	-`targetParentId`: 
+	-`targetRank`: 
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:349](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L349)
+[packages/medusa/src/services/product-category.ts:349](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L349)
 
 ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`, `treeSelector?`): `Promise`<[`ProductCategory`[], `number`]\>
+**listAndCount**(`selector`, `config?`, `treeSelector?`): `Promise`<[[`ProductCategory`](ProductCategory.md)[], `number`]\>
 
 Lists product category based on the provided parameters and includes the count of
 product category that match the query.
@@ -302,13 +313,13 @@ product category that match the query.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `TreeQuerySelector`<`ProductCategory`\> | Filter options for product category. |
-| `config` | `FindConfig`<`ProductCategory`\> | Configuration for query. |
-| `treeSelector` | `QuerySelector`<`ProductCategory`\> | Filter options for product category tree relations |
+| `selector` | [`TreeQuerySelector`](../index.md#treequeryselector)<[`ProductCategory`](ProductCategory.md)\> | Filter options for product category. |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductCategory`](ProductCategory.md)\> | Configuration for query. |
+| `treeSelector` | [`QuerySelector`](../index.md#queryselector)<[`ProductCategory`](ProductCategory.md)\> | Filter options for product category tree relations |
 
 #### Returns
 
-`Promise`<[`ProductCategory`[], `number`]\>
+`Promise`<[[`ProductCategory`](ProductCategory.md)[], `number`]\>
 
 -`Promise`: an array containing the product category as
   the first element and the total count of product category that matches the query
@@ -318,7 +329,7 @@ product category that match the query.
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:61](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L61)
+[packages/medusa/src/services/product-category.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L61)
 
 ___
 
@@ -330,8 +341,8 @@ ___
 
 | Name |
 | :------ |
-| `repository` | `TreeRepository`<`ProductCategory`\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  } |
-| `conditions` | `ReorderConditions` |
+| `repository` | [`TreeRepository`](TreeRepository.md)<[`ProductCategory`](ProductCategory.md)\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  } |
+| `conditions` | [`ReorderConditions`](../index.md#reorderconditions) |
 
 #### Returns
 
@@ -341,7 +352,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:377](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L377)
+[packages/medusa/src/services/product-category.ts:377](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L377)
 
 ___
 
@@ -366,13 +377,13 @@ Remove a batch of product from a product category
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:333](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L333)
+[packages/medusa/src/services/product-category.ts:333](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L333)
 
 ___
 
 ### retrieve
 
-**retrieve**(`productCategoryId`, `config?`, `selector?`, `treeSelector?`): `Promise`<`ProductCategory`\>
+**retrieve**(`productCategoryId`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 Retrieves a product category by id.
 
@@ -381,26 +392,26 @@ Retrieves a product category by id.
 | Name | Description |
 | :------ | :------ |
 | `productCategoryId` | `string` | the id of the product category to retrieve. |
-| `config` | `FindConfig`<`ProductCategory`\> | the config of the product category to retrieve. |
-| `selector` | `Selector`<`ProductCategory`\> |
-| `treeSelector` | `QuerySelector`<`ProductCategory`\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductCategory`](ProductCategory.md)\> | the config of the product category to retrieve. |
+| `selector` | [`Selector`](../index.md#selector)<[`ProductCategory`](ProductCategory.md)\> |
+| `treeSelector` | [`QuerySelector`](../index.md#queryselector)<[`ProductCategory`](ProductCategory.md)\> |
 
 #### Returns
 
-`Promise`<`ProductCategory`\>
+`Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 -`Promise`: the product category.
 	-`ProductCategory`: 
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:139](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L139)
+[packages/medusa/src/services/product-category.ts:139](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L139)
 
 ___
 
 ### retrieveByHandle
 
-**retrieveByHandle**(`handle`, `config?`, `selector?`, `treeSelector?`): `Promise`<`ProductCategory`\>
+**retrieveByHandle**(`handle`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 Retrieves a product category by handle.
 
@@ -409,26 +420,26 @@ Retrieves a product category by handle.
 | Name | Description |
 | :------ | :------ |
 | `handle` | `string` | the handle of the category |
-| `config` | `FindConfig`<`ProductCategory`\> | the config of the product category to retrieve. |
-| `selector` | `Selector`<`ProductCategory`\> |
-| `treeSelector` | `QuerySelector`<`ProductCategory`\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductCategory`](ProductCategory.md)\> | the config of the product category to retrieve. |
+| `selector` | [`Selector`](../index.md#selector)<[`ProductCategory`](ProductCategory.md)\> |
+| `treeSelector` | [`QuerySelector`](../index.md#queryselector)<[`ProductCategory`](ProductCategory.md)\> |
 
 #### Returns
 
-`Promise`<`ProductCategory`\>
+`Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 -`Promise`: the product category.
 	-`ProductCategory`: 
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:165](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L165)
+[packages/medusa/src/services/product-category.ts:165](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L165)
 
 ___
 
 ### retrieve\_
 
-`Protected` **retrieve_**(`config?`, `selector?`, `treeSelector?`): `Promise`<`ProductCategory`\>
+`Protected` **retrieve_**(`config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 A generic retrieve for fining product categories by different attributes.
 
@@ -436,20 +447,20 @@ A generic retrieve for fining product categories by different attributes.
 
 | Name | Description |
 | :------ | :------ |
-| `config` | `FindConfig`<`ProductCategory`\> | the config of the product category to retrieve. |
-| `selector` | `Selector`<`ProductCategory`\> |
-| `treeSelector` | `QuerySelector`<`ProductCategory`\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductCategory`](ProductCategory.md)\> | the config of the product category to retrieve. |
+| `selector` | [`Selector`](../index.md#selector)<[`ProductCategory`](ProductCategory.md)\> |
+| `treeSelector` | [`QuerySelector`](../index.md#queryselector)<[`ProductCategory`](ProductCategory.md)\> |
 
 #### Returns
 
-`Promise`<`ProductCategory`\>
+`Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 -`Promise`: the product category.
 	-`ProductCategory`: 
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:102](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L102)
+[packages/medusa/src/services/product-category.ts:102](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L102)
 
 ___
 
@@ -461,8 +472,8 @@ ___
 
 | Name |
 | :------ |
-| `repository` | `TreeRepository`<`ProductCategory`\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  } |
-| `conditions` | `ReorderConditions` |
+| `repository` | [`TreeRepository`](TreeRepository.md)<[`ProductCategory`](ProductCategory.md)\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  } |
+| `conditions` | [`ReorderConditions`](../index.md#reorderconditions) |
 
 #### Returns
 
@@ -472,7 +483,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:415](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L415)
+[packages/medusa/src/services/product-category.ts:415](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L415)
 
 ___
 
@@ -494,17 +505,17 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### transformParentIdToEntity
 
-`Protected` **transformParentIdToEntity**(`productCategoryInput`): `Promise`<`CreateProductCategoryInput` \| `UpdateProductCategoryInput`\>
+`Protected` **transformParentIdToEntity**(`productCategoryInput`): `Promise`<[`CreateProductCategoryInput`](../index.md#createproductcategoryinput) \| [`UpdateProductCategoryInput`](../index.md#updateproductcategoryinput)\>
 
 Accepts an input object and transforms product_category_id
 into product_category entity.
@@ -513,24 +524,24 @@ into product_category entity.
 
 | Name | Description |
 | :------ | :------ |
-| `productCategoryInput` | `CreateProductCategoryInput` \| `UpdateProductCategoryInput` | params used to create/update |
+| `productCategoryInput` | [`CreateProductCategoryInput`](../index.md#createproductcategoryinput) \| [`UpdateProductCategoryInput`](../index.md#updateproductcategoryinput) | params used to create/update |
 
 #### Returns
 
-`Promise`<`CreateProductCategoryInput` \| `UpdateProductCategoryInput`\>
+`Promise`<[`CreateProductCategoryInput`](../index.md#createproductcategoryinput) \| [`UpdateProductCategoryInput`](../index.md#updateproductcategoryinput)\>
 
 -`Promise`: transformed productCategoryInput
 	-`CreateProductCategoryInput \| UpdateProductCategoryInput`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:513](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L513)
+[packages/medusa/src/services/product-category.ts:513](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L513)
 
 ___
 
 ### update
 
-**update**(`productCategoryId`, `productCategoryInput`): `Promise`<`ProductCategory`\>
+**update**(`productCategoryId`, `productCategoryInput`): `Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 Updates a product category
 
@@ -539,18 +550,18 @@ Updates a product category
 | Name | Description |
 | :------ | :------ |
 | `productCategoryId` | `string` | id of product category to update |
-| `productCategoryInput` | `UpdateProductCategoryInput` | parameters to update in product category |
+| `productCategoryInput` | [`UpdateProductCategoryInput`](../index.md#updateproductcategoryinput) | parameters to update in product category |
 
 #### Returns
 
-`Promise`<`ProductCategory`\>
+`Promise`<[`ProductCategory`](ProductCategory.md)\>
 
 -`Promise`: updated product category
 	-`ProductCategory`: 
 
 #### Defined in
 
-[medusa/src/services/product-category.ts:221](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-category.ts#L221)
+[packages/medusa/src/services/product-category.ts:221](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-category.ts#L221)
 
 ___
 
@@ -562,7 +573,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -572,8 +583,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

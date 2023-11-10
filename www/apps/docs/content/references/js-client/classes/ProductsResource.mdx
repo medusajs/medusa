@@ -386,7 +386,7 @@ medusa.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreProductsListRes`](../modules/internal.mdx#storeproductslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreProductsListRes`](../internal/types/internal.StoreProductsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
@@ -394,7 +394,7 @@ medusa.products
     "children": [
       {
         "name": "StoreProductsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `products`: [`PricedProduct`](../modules/internal.mdx#pricedproduct)[]  }",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `products`: [`PricedProduct`](../internal/types/internal.PricedProduct.mdx)[]  }",
         "description": "The list of products with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -429,7 +429,7 @@ medusa.products
           },
           {
             "name": "products",
-            "type": "[`PricedProduct`](../modules/internal.mdx#pricedproduct)[]",
+            "type": "[`PricedProduct`](../internal/types/internal.PricedProduct.mdx)[]",
             "description": "An array of products details.",
             "optional": false,
             "defaultValue": "",
@@ -744,7 +744,7 @@ medusa.products
               },
               {
                 "name": "variants",
-                "type": "[`PricedVariant`](../modules/internal.mdx#pricedvariant)[]",
+                "type": "[`PricedVariant`](../internal/types/internal.PricedVariant.mdx)[]",
                 "description": "The product variants and their prices.",
                 "optional": false,
                 "defaultValue": "",
@@ -807,7 +807,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreProductsRes`](../modules/internal.mdx#storeproductsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreProductsRes`](../internal/types/internal.StoreProductsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -823,7 +823,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
         "children": [
           {
             "name": "product",
-            "type": "[`PricedProduct`](../modules/internal.mdx#pricedproduct)",
+            "type": "[`PricedProduct`](../internal/types/internal.PricedProduct.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -1138,7 +1138,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "variants",
-                "type": "[`PricedVariant`](../modules/internal.mdx#pricedvariant)[]",
+                "type": "[`PricedVariant`](../internal/types/internal.PricedVariant.mdx)[]",
                 "description": "The product variants and their prices.",
                 "optional": false,
                 "defaultValue": "",
@@ -1239,7 +1239,7 @@ medusa.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StorePostSearchRes`](../modules/internal.mdx#storepostsearchres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StorePostSearchRes`](../internal/types/internal.StorePostSearchRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of search results. The format of the items depends on the search engine installed on the Medusa backend.",

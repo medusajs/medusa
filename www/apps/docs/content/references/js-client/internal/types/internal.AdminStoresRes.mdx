@@ -1,0 +1,392 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminStoresRes
+
+ **AdminStoresRes**: `Object`
+
+The store's details.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "store",
+    "type": "[`Store`](../classes/internal.Store.mdx)",
+    "description": "Store details.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "created_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was created.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currencies",
+        "type": "[`Currency`](../classes/internal.Currency.mdx)[]",
+        "description": "The details of the enabled currencies in the store.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The 3 character ISO code for the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "Whether the currency prices include tax",
+            "optional": true,
+            "defaultValue": "false",
+            "expandable": false,
+            "featureFlag": "tax_inclusive_pricing",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The written name of the currency",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol",
+            "type": "`string`",
+            "description": "The symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol_native",
+            "type": "`string`",
+            "description": "The native symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "default_currency",
+        "type": "[`Currency`](../classes/internal.Currency.mdx)",
+        "description": "The details of the store's default currency.",
+        "optional": false,
+        "defaultValue": "usd",
+        "expandable": true,
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The 3 character ISO code for the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "includes_tax",
+            "type": "`boolean`",
+            "description": "Whether the currency prices include tax",
+            "optional": true,
+            "defaultValue": "false",
+            "expandable": false,
+            "featureFlag": "tax_inclusive_pricing",
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The written name of the currency",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol",
+            "type": "`string`",
+            "description": "The symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "symbol_native",
+            "type": "`string`",
+            "description": "The native symbol used to indicate the currency.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "default_currency_code",
+        "type": "`string`",
+        "description": "The three character currency code that is the default of the store.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "default_location_id",
+        "type": "`string`",
+        "description": "The location ID the store is associated with.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "default_sales_channel",
+        "type": "[`SalesChannel`](../classes/internal.SalesChannel.mdx)",
+        "description": "The details of the store's default sales channel.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": true,
+        "children": [
+          {
+            "name": "created_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was created.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "deleted_at",
+            "type": "``null`` \\| `Date`",
+            "description": "The date with timezone at which the resource was deleted.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "description",
+            "type": "``null`` \\| `string`",
+            "description": "The description of the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The sales channel's ID",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "is_disabled",
+            "type": "`boolean`",
+            "description": "Specify if the sales channel is enabled or disabled.",
+            "optional": false,
+            "defaultValue": "false",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "locations",
+            "type": "[`SalesChannelLocation`](../classes/internal.internal.SalesChannelLocation.mdx)[]",
+            "description": "The details of the stock locations related to the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": true,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The Sales Channel Stock Location's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "location_id",
+                "type": "`string`",
+                "description": "The ID of the Location Stock.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel the location is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "`string`",
+                "description": "The ID of the Sales Channel",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "metadata",
+            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "description": "An optional key-value map with additional details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "name",
+            "type": "`string`",
+            "description": "The name of the sales channel.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "updated_at",
+            "type": "`Date`",
+            "description": "The date with timezone at which the resource was updated.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "default_sales_channel_id",
+        "type": "``null`` \\| `string`",
+        "description": "The ID of the store's default sales channel.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The store's ID",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "invite_link_template",
+        "type": "``null`` \\| `string`",
+        "description": "A template to generate Invite links from",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "description": "An optional key-value map with additional details",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the Store - this may be displayed to the Customer.",
+        "optional": false,
+        "defaultValue": "Medusa Store",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "payment_link_template",
+        "type": "``null`` \\| `string`",
+        "description": "A template to generate Payment links from. Use {{cart_id}} to include the payment's `cart_id` in the link.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "swap_link_template",
+        "type": "``null`` \\| `string`",
+        "description": "A template to generate Swap links from. Use {{cart_id}} to include the Swap's `cart_id` in the link.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "`Date`",
+        "description": "The date with timezone at which the resource was updated.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

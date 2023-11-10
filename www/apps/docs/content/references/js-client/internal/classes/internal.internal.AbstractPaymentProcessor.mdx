@@ -26,51 +26,12 @@ Payment processor in charge of creating , managing and processing a payment
   },
   {
     "name": "container",
-    "type": "[`MedusaContainer`](../../modules/internal.mdx#medusacontainer-1)",
+    "type": "[`MedusaContainer`](../types/internal.MedusaContainer-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "createScope",
-        "type": "() => [`MedusaContainer`](../../modules/internal.mdx#medusacontainer)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "() => [`MedusaContainer`](../../modules/internal.mdx#medusacontainer)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "registerAdd",
-        "type": "<T\\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](../../modules/internal.mdx#medusacontainer)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "<T\\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](../../modules/internal.mdx#medusacontainer)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   },
   {
     "name": "identifier",
@@ -122,17 +83,7 @@ Authorize an existing session if it is not already authorized
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "PaymentProcessorError \\| { `data`: Record<`string`, `unknown`\\> ; `status`: [`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)  }",
-        "type": "[`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx) \\| { `data`: Record<`string`, `unknown`\\> ; `status`: [`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)  }",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -166,17 +117,7 @@ Cancel an existing session
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -210,17 +151,7 @@ Capture an existing session
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -254,17 +185,7 @@ Delete an existing session
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -318,53 +239,7 @@ Return the status of the session
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "AUTHORIZED",
-        "type": "``\"authorized\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "CANCELED",
-        "type": "``\"canceled\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "ERROR",
-        "type": "``\"error\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PENDING",
-        "type": "``\"pending\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REQUIRES_MORE",
-        "type": "``\"requires_more\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -379,7 +254,7 @@ Initiate a payment session with the external provider
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "[`PaymentProcessorContext`](../modules/internal.internal.mdx#paymentprocessorcontext)",
+    "type": "[`PaymentProcessorContext`](../types/internal.internal.PaymentProcessorContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -393,22 +268,12 @@ Initiate a payment session with the external provider
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)\\>",
+    "type": "`Promise`<[`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../types/internal.internal.PaymentProcessorSessionResponse.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "PaymentProcessorError \\| PaymentProcessorSessionResponse",
-        "type": "[`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -451,17 +316,7 @@ Refund an existing session
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -495,17 +350,7 @@ Retrieve an existing session
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -520,7 +365,7 @@ Update an existing payment session
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "[`PaymentProcessorContext`](../modules/internal.internal.mdx#paymentprocessorcontext)",
+    "type": "[`PaymentProcessorContext`](../types/internal.internal.PaymentProcessorContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -534,22 +379,12 @@ Update an existing payment session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)\\>",
+    "type": "`Promise`<`void` \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../types/internal.internal.PaymentProcessorSessionResponse.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "void \\| PaymentProcessorError \\| PaymentProcessorSessionResponse",
-        "type": "`void` \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -592,16 +427,6 @@ Update the session data for a payment session
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](../interfaces/internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

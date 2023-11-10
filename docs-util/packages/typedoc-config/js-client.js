@@ -28,6 +28,14 @@ const defaultFormattingOptions = {
   },
 }
 
+const classesFormattingOptions = {
+  ...defaultFormattingOptions,
+  frontmatterData: {
+    ...defaultFormattingOptions.frontmatterData,
+    slug: "/references/js-client/{{alias}}",
+  },
+}
+
 /** @type {import('typedoc').TypeDocOptions} */
 module.exports = {
   ...globalTypedocOptions,
@@ -39,11 +47,7 @@ module.exports = {
   entryDocument: "_index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
-  plugin: [
-    ...globalTypedocOptions.plugin,
-    "typedoc-plugin-rename-defaults",
-    "typedoc-plugin-custom",
-  ],
+  plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-rename-defaults"],
   exclude: [
     path.join(pathPrefix, "packages/medusa-js/src/resources/base.ts"),
     path.join(pathPrefix, "node_modules/**"),
@@ -51,16 +55,33 @@ module.exports = {
   internalModule: "internal",
   formatting: {
     "*": defaultFormattingOptions,
-    "^classes/": {
+    AdminOrdersResource: {
+      ...classesFormattingOptions,
+      maxLevel: 2,
+    },
+    "^classes/": classesFormattingOptions,
+    "internal/modules/internal": {
       ...defaultFormattingOptions,
-      frontmatterData: {
-        ...defaultFormattingOptions.frontmatterData,
-        slug: "/references/js-client/{{alias}}",
+      reflectionGroups: {
+        ...defaultFormattingOptions.reflectionGroups,
+        "Type Aliases": false,
+        Enumerations: false,
+        Classes: false,
+        Functions: false,
+        Interfaces: false,
       },
+      maxLevel: 1,
+    },
+    internal: {
+      ...defaultFormattingOptions,
+      maxLevel: 1,
     },
   },
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
   maxLevel: 4,
   ignoreApi: true,
+  outputModules: false,
+  outputNamespace: false,
+  excludeReferences: true,
 }

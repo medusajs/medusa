@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `AbstractSearchService`
+- [`AbstractSearchService`](AbstractSearchService.md)
 
   ↳ **`SearchService`**
 
@@ -16,16 +16,16 @@
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-36) |
 | `options` | `any` |
 
 #### Overrides
 
-AbstractSearchService.constructor
+[AbstractSearchService](AbstractSearchService.md).[constructor](AbstractSearchService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L16)
+[packages/medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L16)
 
 ## Properties
 
@@ -35,21 +35,21 @@ AbstractSearchService.constructor
 
 #### Overrides
 
-AbstractSearchService.isDefault
+[AbstractSearchService](AbstractSearchService.md).[isDefault](AbstractSearchService.md#isdefault)
 
 #### Defined in
 
-[medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L11)
+[packages/medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L11)
 
 ___
 
 ### logger\_
 
- `Protected` `Readonly` **logger\_**: `Logger`
+ `Protected` `Readonly` **logger\_**: [`Logger`](../index.md#logger)
 
 #### Defined in
 
-[medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L13)
+[packages/medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L13)
 
 ___
 
@@ -59,11 +59,11 @@ ___
 
 #### Overrides
 
-AbstractSearchService.options\_
+[AbstractSearchService](AbstractSearchService.md).[options_](AbstractSearchService.md#options_)
 
 #### Defined in
 
-[medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L14)
+[packages/medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L14)
 
 ## Accessors
 
@@ -85,7 +85,7 @@ AbstractSearchService.options
 
 #### Defined in
 
-utils/dist/search/abstract-service.d.ts:5
+packages/utils/dist/search/abstract-service.d.ts:5
 
 ## Methods
 
@@ -93,27 +93,29 @@ utils/dist/search/abstract-service.d.ts:5
 
 **addDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
 
+Used to index documents by the search engine provider
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
-| `documents` | `unknown` |
-| `type` | `string` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name |
+| `documents` | `unknown` | documents array to be indexed |
+| `type` | `string` | of documents to be added (e.g: products, regions, orders, etc) |
 
 #### Returns
 
 `Promise`<`void`\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 
 #### Overrides
 
-AbstractSearchService.addDocuments
+[AbstractSearchService](AbstractSearchService.md).[addDocuments](AbstractSearchService.md#adddocuments)
 
 #### Defined in
 
-[medusa/src/services/search.ts:40](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L40)
+[packages/medusa/src/services/search.ts:40](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L40)
 
 ___
 
@@ -121,26 +123,28 @@ ___
 
 **createIndex**(`indexName`, `options`): `Promise`<`void`\>
 
+Used to create an index
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
-| `options` | `unknown` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name |
+| `options` | `unknown` | the options |
 
 #### Returns
 
 `Promise`<`void`\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 
 #### Overrides
 
-AbstractSearchService.createIndex
+[AbstractSearchService](AbstractSearchService.md).[createIndex](AbstractSearchService.md#createindex)
 
 #### Defined in
 
-[medusa/src/services/search.ts:28](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L28)
+[packages/medusa/src/services/search.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L28)
 
 ___
 
@@ -148,25 +152,27 @@ ___
 
 **deleteAllDocuments**(`indexName`): `Promise`<`void`\>
 
+Used to delete all documents
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name |
 
 #### Returns
 
 `Promise`<`void`\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 
 #### Overrides
 
-AbstractSearchService.deleteAllDocuments
+[AbstractSearchService](AbstractSearchService.md).[deleteAllDocuments](AbstractSearchService.md#deletealldocuments)
 
 #### Defined in
 
-[medusa/src/services/search.ts:69](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L69)
+[packages/medusa/src/services/search.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L69)
 
 ___
 
@@ -174,26 +180,28 @@ ___
 
 **deleteDocument**(`indexName`, `document_id`): `Promise`<`void`\>
 
+Used to delete document
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
-| `document_id` | `string` \| `number` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name |
+| `document_id` | `string` \| `number` | the id of the document |
 
 #### Returns
 
 `Promise`<`void`\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 
 #### Overrides
 
-AbstractSearchService.deleteDocument
+[AbstractSearchService](AbstractSearchService.md).[deleteDocument](AbstractSearchService.md#deletedocument)
 
 #### Defined in
 
-[medusa/src/services/search.ts:60](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L60)
+[packages/medusa/src/services/search.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L60)
 
 ___
 
@@ -201,25 +209,27 @@ ___
 
 **getIndex**(`indexName`): `Promise`<`void`\>
 
+Used to get an index
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name. |
 
 #### Returns
 
 `Promise`<`void`\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 
 #### Overrides
 
-AbstractSearchService.getIndex
+[AbstractSearchService](AbstractSearchService.md).[getIndex](AbstractSearchService.md#getindex)
 
 #### Defined in
 
-[medusa/src/services/search.ts:34](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L34)
+[packages/medusa/src/services/search.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L34)
 
 ___
 
@@ -227,27 +237,29 @@ ___
 
 **replaceDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
 
+Used to replace documents
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
-| `documents` | `unknown` |
-| `type` | `string` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name. |
+| `documents` | `unknown` | array of document objects that will replace existing documents |
+| `type` | `string` | type of documents to be replaced (e.g: products, regions, orders, etc) |
 
 #### Returns
 
 `Promise`<`void`\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 
 #### Overrides
 
-AbstractSearchService.replaceDocuments
+[AbstractSearchService](AbstractSearchService.md).[replaceDocuments](AbstractSearchService.md#replacedocuments)
 
 #### Defined in
 
-[medusa/src/services/search.ts:50](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L50)
+[packages/medusa/src/services/search.ts:50](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L50)
 
 ___
 
@@ -255,28 +267,30 @@ ___
 
 **search**(`indexName`, `query`, `options`): `Promise`<{ `hits`: `unknown`[]  }\>
 
+Used to search for a document in an index
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
-| `query` | `unknown` |
-| `options` | `unknown` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name |
+| `query` | `unknown` | the search query |
+| `options` | `unknown` | any options passed to the request object other than the query and indexName - additionalOptions contain any provider specific options |
 
 #### Returns
 
 `Promise`<{ `hits`: `unknown`[]  }\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 	-``object``: (optional) 
 
 #### Overrides
 
-AbstractSearchService.search
+[AbstractSearchService](AbstractSearchService.md).[search](AbstractSearchService.md#search)
 
 #### Defined in
 
-[medusa/src/services/search.ts:75](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L75)
+[packages/medusa/src/services/search.ts:75](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L75)
 
 ___
 
@@ -284,23 +298,25 @@ ___
 
 **updateSettings**(`indexName`, `settings`): `Promise`<`void`\>
 
+Used to update the settings of an index
+
 #### Parameters
 
-| Name |
-| :------ |
-| `indexName` | `string` |
-| `settings` | `unknown` |
+| Name | Description |
+| :------ | :------ |
+| `indexName` | `string` | the index name |
+| `settings` | `unknown` | settings object |
 
 #### Returns
 
 `Promise`<`void`\>
 
--`Promise`: 
+-`Promise`: returns response from search engine provider
 
 #### Overrides
 
-AbstractSearchService.updateSettings
+[AbstractSearchService](AbstractSearchService.md).[updateSettings](AbstractSearchService.md#updatesettings)
 
 #### Defined in
 
-[medusa/src/services/search.ts:86](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/search.ts#L86)
+[packages/medusa/src/services/search.ts:86](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/search.ts#L86)

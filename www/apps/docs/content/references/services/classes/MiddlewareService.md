@@ -10,47 +10,47 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:22](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L22)
+[packages/medusa/src/services/middleware.ts:22](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L22)
 
 ## Properties
 
 ### postAuthentication\_
 
- `Protected` `Readonly` **postAuthentication\_**: `middlewareType`[]
+ `Protected` `Readonly` **postAuthentication\_**: [`middlewareType`](../index.md#middlewaretype)[]
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:17](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L17)
+[packages/medusa/src/services/middleware.ts:17](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L17)
 
 ___
 
 ### preAuthentication\_
 
- `Protected` `Readonly` **preAuthentication\_**: `middlewareType`[]
+ `Protected` `Readonly` **preAuthentication\_**: [`middlewareType`](../index.md#middlewaretype)[]
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:18](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L18)
+[packages/medusa/src/services/middleware.ts:18](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L18)
 
 ___
 
 ### preCartCreation\_
 
- `Protected` `Readonly` **preCartCreation\_**: `RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\>\>[]
+ `Protected` `Readonly` **preCartCreation\_**: [`RequestHandler`](../interfaces/RequestHandler.md)<[`ParamsDictionary`](../interfaces/ParamsDictionary.md), `any`, `any`, [`ParsedQs`](../interfaces/ParsedQs.md), Record<`string`, `any`\>\>[]
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:19](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L19)
+[packages/medusa/src/services/middleware.ts:19](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L19)
 
 ___
 
 ### routers
 
- `Protected` `Readonly` **routers**: Record<`string`, `Router`[]\>
+ `Protected` `Readonly` **routers**: Record<`string`, [`Router`](../index.md#router)[]\>
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L20)
+[packages/medusa/src/services/middleware.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L20)
 
 ## Methods
 
@@ -64,7 +64,7 @@ Adds a middleware function to be called after authentication is completed.
 
 | Name | Description |
 | :------ | :------ |
-| `middleware` | `middlewareHandlerType` | the middleware function. Should return a middleware function. |
+| `middleware` | [`middlewareHandlerType`](../index.md#middlewarehandlertype) | the middleware function. Should return a middleware function. |
 | `options` | Record<`string`, `unknown`\> | the arguments that will be passed to the middleware |
 
 #### Returns
@@ -75,7 +75,7 @@ Adds a middleware function to be called after authentication is completed.
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:60](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L60)
+[packages/medusa/src/services/middleware.ts:60](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L60)
 
 ___
 
@@ -89,7 +89,7 @@ Adds a middleware function to be called before authentication is completed.
 
 | Name | Description |
 | :------ | :------ |
-| `middleware` | `middlewareHandlerType` | the middleware function. Should return a middleware function. |
+| `middleware` | [`middlewareHandlerType`](../index.md#middlewarehandlertype) | the middleware function. Should return a middleware function. |
 | `options` | Record<`string`, `unknown`\> | the arguments that will be passed to the middleware |
 
 #### Returns
@@ -100,7 +100,7 @@ Adds a middleware function to be called before authentication is completed.
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:79](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L79)
+[packages/medusa/src/services/middleware.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L79)
 
 ___
 
@@ -114,7 +114,7 @@ Adds a middleware function to be called before cart creation
 
 | Name | Description |
 | :------ | :------ |
-| `middleware` | `RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\>\> | the middleware function. Should return a middleware function. |
+| `middleware` | [`RequestHandler`](../interfaces/RequestHandler.md)<[`ParamsDictionary`](../interfaces/ParamsDictionary.md), `any`, `any`, [`ParsedQs`](../interfaces/ParsedQs.md), Record<`string`, `any`\>\> | the middleware function. Should return a middleware function. |
 
 #### Returns
 
@@ -124,7 +124,7 @@ Adds a middleware function to be called before cart creation
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:96](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L96)
+[packages/medusa/src/services/middleware.ts:96](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L96)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 | Name |
 | :------ |
 | `path` | `string` |
-| `router` | `Router` |
+| `router` | [`Router`](../index.md#router) |
 
 #### Returns
 
@@ -147,13 +147,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:29](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L29)
+[packages/medusa/src/services/middleware.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L29)
 
 ___
 
 ### getRouters
 
-**getRouters**(`path`): `Router`[]
+**getRouters**(`path`): [`Router`](../index.md#router)[]
 
 #### Parameters
 
@@ -163,14 +163,14 @@ ___
 
 #### Returns
 
-`Router`[]
+[`Router`](../index.md#router)[]
 
 -`Router[]`: 
 	-`Router`: 
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:34](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L34)
+[packages/medusa/src/services/middleware.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L34)
 
 ___
 
@@ -184,7 +184,7 @@ Adds post authentication middleware to an express app.
 
 | Name | Description |
 | :------ | :------ |
-| `app` | `Router` | the express app to add the middleware to |
+| `app` | [`Router`](../index.md#router) | the express app to add the middleware to |
 
 #### Returns
 
@@ -194,7 +194,7 @@ Adds post authentication middleware to an express app.
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:106](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L106)
+[packages/medusa/src/services/middleware.ts:106](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L106)
 
 ___
 
@@ -208,7 +208,7 @@ Adds pre authentication middleware to an express app.
 
 | Name | Description |
 | :------ | :------ |
-| `app` | `Router` | the express app to add the middleware to |
+| `app` | [`Router`](../index.md#router) | the express app to add the middleware to |
 
 #### Returns
 
@@ -218,27 +218,29 @@ Adds pre authentication middleware to an express app.
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:117](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L117)
+[packages/medusa/src/services/middleware.ts:117](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L117)
 
 ___
 
 ### usePreCartCreation
 
-**usePreCartCreation**(): `RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\>\>[]
+**usePreCartCreation**(): [`RequestHandler`](../interfaces/RequestHandler.md)<[`ParamsDictionary`](../interfaces/ParamsDictionary.md), `any`, `any`, [`ParsedQs`](../interfaces/ParsedQs.md), Record<`string`, `any`\>\>[]
 
 #### Returns
 
-`RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\>\>[]
+[`RequestHandler`](../interfaces/RequestHandler.md)<[`ParamsDictionary`](../interfaces/ParamsDictionary.md), `any`, `any`, [`ParsedQs`](../interfaces/ParsedQs.md), Record<`string`, `any`\>\>[]
 
 -`RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any\>\>[]`: 
 	-`RequestHandler`: 
+		-`ParamsDictionary`: 
 		-`any`: (optional) 
 		-`any`: (optional) 
+		-`ParsedQs`: 
 		-`Record`: 
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:123](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L123)
+[packages/medusa/src/services/middleware.ts:123](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L123)
 
 ___
 
@@ -262,4 +264,4 @@ Validates a middleware function, throws if fn is not of type function.
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:43](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/middleware.ts#L43)
+[packages/medusa/src/services/middleware.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/middleware.ts#L43)

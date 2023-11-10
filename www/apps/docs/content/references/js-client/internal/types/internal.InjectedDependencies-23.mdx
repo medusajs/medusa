@@ -1,0 +1,2759 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# InjectedDependencies
+
+ **InjectedDependencies**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "featureFlagRouter",
+    "type": "[`FlagRouter`](../classes/internal.FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "flags",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "manager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceSelectionStrategy",
+    "type": "[`IPriceSelectionStrategy`](../interfaces/internal.internal.IPriceSelectionStrategy.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "pricingModuleService",
+    "type": "[`IPricingModuleService`](../interfaces/internal.IPricingModuleService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantService",
+    "type": "[`ProductVariantService`](../classes/internal.internal.ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cartRepository_",
+        "type": "`Repository`<[`Cart`](../classes/internal.Cart.mdx)\\> & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[`EventBusService`](../classes/internal.internal.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "config_",
+            "type": "[`ConfigModule`](internal.ConfigModule.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "featureFlags",
+                "type": "Record<`string`, `boolean` \\| `string`\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "modules",
+                "type": "Record<`string`, `boolean` \\| [`Partial`](internal.Partial.mdx)<[`InternalModuleDeclaration`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.InternalModuleDeclaration.mdx) \\| [`ExternalModuleDeclaration`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ExternalModuleDeclaration.mdx)\\>\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "plugins",
+                "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "projectConfig",
+                "type": "[`ProjectConfigOptions`](../../CommonTypes/types/internal.internal-1.CommonTypes.ProjectConfigOptions.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "enqueue_",
+            "type": "`Promise`<`void`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "logger_",
+            "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "activity",
+                "type": "(`message`: `string`, `config?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "debug",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "error",
+                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "failure",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "info",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "log",
+                "type": "(...`args`: `any`[]) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "panic",
+                "type": "(`data`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "progress",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "setLogLevel",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shouldLog",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "success",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "unsetLogLevel",
+                "type": "() => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "warn",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "shouldEnqueuerRun",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "stagedJobService_",
+            "type": "[`StagedJobService`](../classes/internal.internal.StagedJobService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "stagedJobRepository_",
+                "type": "`Repository`<[`StagedJob`](../classes/internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "moneyAmountRepository_",
+        "type": "`Repository`<[`MoneyAmount`](../classes/internal.internal.MoneyAmount.mdx)\\> & { `addPriceListPrices`: Method addPriceListPrices ; `createProductVariantMoneyAmounts`: Method createProductVariantMoneyAmounts ; `deletePriceListPrices`: Method deletePriceListPrices ; `deleteVariantPricesNotIn`: Method deleteVariantPricesNotIn ; `findCurrencyMoneyAmounts`: Method findCurrencyMoneyAmounts ; `findManyForVariantInPriceList`: Method findManyForVariantInPriceList ; `findManyForVariantInRegion`: Method findManyForVariantInRegion ; `findManyForVariantsInRegion`: Method findManyForVariantsInRegion ; `findRegionMoneyAmounts`: Method findRegionMoneyAmounts ; `findVariantPricesNotIn`: Method findVariantPricesNotIn ; `getPricesForVariantInRegion`: Method getPricesForVariantInRegion ; `insertBulk`: Method insertBulk ; `updatePriceListPrices`: Method updatePriceListPrices ; `upsertVariantCurrencyPrice`: Method upsertVariantCurrencyPrice  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "priceSelectionStrategy_",
+        "type": "[`IPriceSelectionStrategy`](../interfaces/internal.internal.IPriceSelectionStrategy.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productOptionValueRepository_",
+        "type": "`Repository`<[`ProductOptionValue`](../classes/internal.internal.ProductOptionValue.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productRepository_",
+        "type": "`Repository`<[`Product`](../classes/internal.Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "productVariantRepository_",
+        "type": "`Repository`<[`ProductVariant`](../classes/internal.internal.ProductVariant.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "regionService_",
+        "type": "[`RegionService`](../classes/internal.internal.RegionService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "countryRepository_",
+            "type": "`Repository`<[`Country`](../classes/internal.internal.Country.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currencyRepository_",
+            "type": "`Repository`<[`Currency`](../classes/internal.Currency.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "eventBus_",
+            "type": "[`EventBusService`](../classes/internal.internal.EventBusService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "config_",
+                "type": "[`ConfigModule`](internal.ConfigModule.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "enqueue_",
+                "type": "`Promise`<`void`\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "logger_",
+                "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shouldEnqueuerRun",
+                "type": "`boolean`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "stagedJobService_",
+                "type": "[`StagedJobService`](../classes/internal.internal.StagedJobService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "featureFlagRouter_",
+            "type": "[`FlagRouter`](../classes/internal.FlagRouter.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "flags",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "fulfillmentProviderRepository_",
+            "type": "`Repository`<[`FulfillmentProvider`](../classes/internal.internal.FulfillmentProvider.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "fulfillmentProviderService_",
+            "type": "[`FulfillmentProviderService`](../classes/internal.internal.FulfillmentProviderService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "container_",
+                "type": "[`FulfillmentProviderContainer`](internal.FulfillmentProviderContainer.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillmentProviderRepository_",
+                "type": "`Repository`<[`FulfillmentProvider`](../classes/internal.internal.FulfillmentProvider.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "paymentProviderRepository_",
+            "type": "`Repository`<[`PaymentProvider`](../classes/internal.PaymentProvider.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "paymentProviderService_",
+            "type": "[`PaymentProviderService`](../classes/internal.internal.PaymentProviderService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "container_",
+                "type": "[`InjectedDependencies`](internal.InjectedDependencies-22.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customerService_",
+                "type": "[`CustomerService`](../classes/internal.internal.CustomerService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "featureFlagRouter_",
+                "type": "[`FlagRouter`](../classes/internal.FlagRouter.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "logger_",
+                "type": "[`Logger`](internal.internal.Logger.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "paymentProviderRepository_",
+                "type": "`Repository`<[`PaymentProvider`](../classes/internal.PaymentProvider.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "paymentRepository_",
+                "type": "`Repository`<[`Payment`](../classes/internal.Payment.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "paymentSessionRepository_",
+                "type": "`Repository`<[`PaymentSession`](../classes/internal.PaymentSession.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refundRepository_",
+                "type": "`Repository`<[`Refund`](../classes/internal.Refund.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "throwFromPaymentProcessorError",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "regionRepository_",
+            "type": "`Repository`<[`Region`](../classes/internal.Region.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "storeService_",
+            "type": "[`StoreService`](../classes/internal.internal.StoreService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currencyRepository_",
+                "type": "`Repository`<[`Currency`](../classes/internal.Currency.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "eventBus_",
+                "type": "[`EventBusService`](../classes/internal.internal.EventBusService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "storeRepository_",
+                "type": "`Repository`<[`Store`](../classes/internal.Store.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "taxProviderRepository_",
+            "type": "`Repository`<[`TaxProvider`](../classes/internal.TaxProvider.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "Events",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "CREATED",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "DELETED",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "UPDATED",
+                "type": "`string`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "CREATED",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DELETED",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "UPDATED",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "regionService",
+    "type": "[`RegionService`](../classes/internal.internal.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "countryRepository_",
+        "type": "`Repository`<[`Country`](../classes/internal.internal.Country.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currencyRepository_",
+        "type": "`Repository`<[`Currency`](../classes/internal.Currency.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[`EventBusService`](../classes/internal.internal.EventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "config_",
+            "type": "[`ConfigModule`](internal.ConfigModule.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "featureFlags",
+                "type": "Record<`string`, `boolean` \\| `string`\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "modules",
+                "type": "Record<`string`, `boolean` \\| [`Partial`](internal.Partial.mdx)<[`InternalModuleDeclaration`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.InternalModuleDeclaration.mdx) \\| [`ExternalModuleDeclaration`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ExternalModuleDeclaration.mdx)\\>\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "plugins",
+                "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "projectConfig",
+                "type": "[`ProjectConfigOptions`](../../CommonTypes/types/internal.internal-1.CommonTypes.ProjectConfigOptions.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "enqueue_",
+            "type": "`Promise`<`void`\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "logger_",
+            "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "activity",
+                "type": "(`message`: `string`, `config?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "debug",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "error",
+                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "failure",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "info",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "log",
+                "type": "(...`args`: `any`[]) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "panic",
+                "type": "(`data`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "progress",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "setLogLevel",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shouldLog",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "success",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "unsetLogLevel",
+                "type": "() => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "warn",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "shouldEnqueuerRun",
+            "type": "`boolean`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "stagedJobService_",
+            "type": "[`StagedJobService`](../classes/internal.internal.StagedJobService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "stagedJobRepository_",
+                "type": "`Repository`<[`StagedJob`](../classes/internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "featureFlagRouter_",
+        "type": "[`FlagRouter`](../classes/internal.FlagRouter.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "flags",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "fulfillmentProviderRepository_",
+        "type": "`Repository`<[`FulfillmentProvider`](../classes/internal.internal.FulfillmentProvider.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillmentProviderService_",
+        "type": "[`FulfillmentProviderService`](../classes/internal.internal.FulfillmentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "container_",
+            "type": "[`FulfillmentProviderContainer`](internal.FulfillmentProviderContainer.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "createScope",
+                "type": "() => [`MedusaContainer`](internal.MedusaContainer.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "registerAdd",
+                "type": "<T\\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](internal.MedusaContainer.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillmentProviderRepository",
+                "type": "typeof [`FulfillmentProviderRepository`](../../modules/internal.mdx#fulfillmentproviderrepository)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "fulfillmentProviderRepository_",
+            "type": "`Repository`<[`FulfillmentProvider`](../classes/internal.internal.FulfillmentProvider.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderRepository_",
+        "type": "`Repository`<[`PaymentProvider`](../classes/internal.PaymentProvider.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "paymentProviderService_",
+        "type": "[`PaymentProviderService`](../classes/internal.internal.PaymentProviderService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "container_",
+            "type": "[`InjectedDependencies`](internal.InjectedDependencies-22.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "analyticsConfigRepository",
+                "type": "typeof [`AnalyticsConfigRepository`](../../modules/internal.mdx#analyticsconfigrepository)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "customerService_",
+            "type": "[`CustomerService`](../classes/internal.internal.CustomerService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "addressRepository_",
+                "type": "`Repository`<[`Address`](../classes/internal.Address.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customerRepository_",
+                "type": "`Repository`<[`Customer`](../classes/internal.Customer.mdx)\\> & { `listAndCount`: Method listAndCount  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "eventBusService_",
+                "type": "[`EventBusService`](../classes/internal.internal.EventBusService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "retrieve_",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "Events",
+                "type": "`object`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "featureFlagRouter_",
+            "type": "[`FlagRouter`](../classes/internal.FlagRouter.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "flags",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "logger_",
+            "type": "[`Logger`](internal.internal.Logger.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "activity",
+                "type": "(`message`: `string`, `config?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "debug",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "error",
+                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "failure",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "info",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "log",
+                "type": "(...`args`: `any`[]) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "panic",
+                "type": "(`data`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "progress",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "setLogLevel",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shouldLog",
+                "type": "(`level`: `string`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "success",
+                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "unsetLogLevel",
+                "type": "() => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "warn",
+                "type": "(`message`: `any`) => `void`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "paymentProviderRepository_",
+            "type": "`Repository`<[`PaymentProvider`](../classes/internal.PaymentProvider.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "paymentRepository_",
+            "type": "`Repository`<[`Payment`](../classes/internal.Payment.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "paymentSessionRepository_",
+            "type": "`Repository`<[`PaymentSession`](../classes/internal.PaymentSession.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "refundRepository_",
+            "type": "`Repository`<[`Refund`](../classes/internal.Refund.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "throwFromPaymentProcessorError",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "regionRepository_",
+        "type": "`Repository`<[`Region`](../classes/internal.Region.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "storeService_",
+        "type": "[`StoreService`](../classes/internal.internal.StoreService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "currencyRepository_",
+            "type": "`Repository`<[`Currency`](../classes/internal.Currency.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "eventBus_",
+            "type": "[`EventBusService`](../classes/internal.internal.EventBusService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "config_",
+                "type": "[`ConfigModule`](internal.ConfigModule.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "enqueue_",
+                "type": "`Promise`<`void`\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "logger_",
+                "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shouldEnqueuerRun",
+                "type": "`boolean`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "stagedJobService_",
+                "type": "[`StagedJobService`](../classes/internal.internal.StagedJobService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "storeRepository_",
+            "type": "`Repository`<[`Store`](../classes/internal.Store.mdx)\\>",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "taxProviderRepository_",
+        "type": "`Repository`<[`TaxProvider`](../classes/internal.TaxProvider.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "Events",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "CREATED",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DELETED",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "UPDATED",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "remoteQuery",
+    "type": "[`RemoteQueryFunction`](internal.RemoteQueryFunction.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`query`: `string` \\| [`RemoteJoinerQuery`](../../internal-1/interfaces/internal.internal-1.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: Record<`string`, `unknown`\\>) => `Promise`<`any`\\> \\| ``null``",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "taxProviderService",
+    "type": "[`TaxProviderService`](../classes/internal.internal.TaxProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "__configModule__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__container__",
+        "type": "`any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "__moduleDeclaration__",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "cacheService_",
+        "type": "[`ICacheService`](../interfaces/internal.ICacheService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "container_",
+        "type": "`AwilixContainer`<`any`\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "eventBus_",
+        "type": "[`IEventBusService`](../interfaces/internal.IEventBusService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "getCacheKey",
+        "type": "`any`",
+        "description": "The cache key to get cache hits by.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "manager_",
+        "type": "`EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "smTaxLineRepo_",
+        "type": "`Repository`<[`ShippingMethodTaxLine`](../classes/internal.internal.ShippingMethodTaxLine.mdx)\\> & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxLineRepo_",
+        "type": "`Repository`<[`LineItemTaxLine`](../classes/internal.internal.LineItemTaxLine.mdx)\\> & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxProviderRepo_",
+        "type": "`Repository`<[`TaxProvider`](../classes/internal.TaxProvider.mdx)\\>",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "taxRateService_",
+        "type": "[`TaxRateService`](../classes/internal.internal.TaxRateService.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "__configModule__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__container__",
+            "type": "`any`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "__moduleDeclaration__",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "manager_",
+            "type": "`EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "productService_",
+            "type": "[`ProductService`](../classes/internal.internal.ProductService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "eventBus_",
+                "type": "[`EventBusService`](../classes/internal.internal.EventBusService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "featureFlagRouter_",
+                "type": "[`FlagRouter`](../classes/internal.FlagRouter.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "imageRepository_",
+                "type": "`Repository`<[`Image`](../classes/internal.internal.Image.mdx)\\> & { `insertBulk`: Method insertBulk ; `upsertImages`: Method upsertImages  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "productCategoryRepository_",
+                "type": "`TreeRepository`<[`ProductCategory`](../classes/internal.ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "productOptionRepository_",
+                "type": "`Repository`<[`ProductOption`](../classes/internal.internal.ProductOption.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "productRepository_",
+                "type": "`Repository`<[`Product`](../classes/internal.Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "productTagRepository_",
+                "type": "`Repository`<[`ProductTag`](../classes/internal.ProductTag.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `insertBulk`: Method insertBulk ; `listTagsByUsage`: Method listTagsByUsage ; `upsertTags`: Method upsertTags  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "productTypeRepository_",
+                "type": "`Repository`<[`ProductType`](../classes/internal.ProductType.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "productVariantRepository_",
+                "type": "`Repository`<[`ProductVariant`](../classes/internal.internal.ProductVariant.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "productVariantService_",
+                "type": "[`ProductVariantService`](../classes/internal.internal.ProductVariantService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "searchService_",
+                "type": "[`SearchService`](../classes/internal.internal.SearchService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "Events",
+                "type": "`object`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "IndexName",
+                "type": "``\"products\"``",
+                "description": "",
+                "optional": false,
+                "defaultValue": "\"products\"",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "productTypeService_",
+            "type": "[`ProductTypeService`](../classes/internal.internal.ProductTypeService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "typeRepository_",
+                "type": "`Repository`<[`ProductType`](../classes/internal.ProductType.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "shippingOptionService_",
+            "type": "[`ShippingOptionService`](../classes/internal.internal.ShippingOptionService.mdx)",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "__configModule__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__container__",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "__moduleDeclaration__",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "featureFlagRouter_",
+                "type": "[`FlagRouter`](../classes/internal.FlagRouter.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "manager_",
+                "type": "`EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "methodRepository_",
+                "type": "`Repository`<[`ShippingMethod`](../classes/internal.ShippingMethod-4.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "optionRepository_",
+                "type": "`Repository`<[`ShippingOption`](../classes/internal.ShippingOption.mdx)\\> & { `upsertShippingProfile`: Method upsertShippingProfile  }",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "providerService_",
+                "type": "[`FulfillmentProviderService`](../classes/internal.internal.FulfillmentProviderService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "regionService_",
+                "type": "[`RegionService`](../classes/internal.internal.RegionService.mdx)",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requirementRepository_",
+                "type": "`Repository`<[`ShippingOptionRequirement`](../classes/internal.internal.ShippingOptionRequirement.mdx)\\>",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "transactionManager_",
+                "type": "`undefined` \\| `EntityManager`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "validateAndMutatePrice",
+                "type": "`any`",
+                "description": "",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "taxRateRepository_",
+            "type": "`Repository`<[`TaxRate`](../classes/internal.TaxRate.mdx)\\> & { `addToProduct`: Method addToProduct ; `addToProductType`: Method addToProductType ; `addToShippingOption`: Method addToShippingOption ; `applyResolutionsToQueryBuilder`: Method applyResolutionsToQueryBuilder ; `findAndCountWithResolution`: Method findAndCountWithResolution ; `findOneWithResolution`: Method findOneWithResolution ; `findWithResolution`: Method findWithResolution ; `getFindQueryBuilder`: Method getFindQueryBuilder ; `listByProduct`: Method listByProduct ; `listByShippingOption`: Method listByShippingOption ; `removeFromProduct`: Method removeFromProduct ; `removeFromProductType`: Method removeFromProductType ; `removeFromShippingOption`: Method removeFromShippingOption  }",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "transactionManager_",
+            "type": "`undefined` \\| `EntityManager`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "transactionManager_",
+        "type": "`undefined` \\| `EntityManager`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />

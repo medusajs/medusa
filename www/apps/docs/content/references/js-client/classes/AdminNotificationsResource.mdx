@@ -177,7 +177,7 @@ medusa.admin.notifications
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminNotificationsListRes`](../modules/internal.mdx#adminnotificationslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminNotificationsListRes`](../internal/types/internal.AdminNotificationsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of notifications with pagination fields.",
@@ -185,7 +185,7 @@ medusa.admin.notifications
     "children": [
       {
         "name": "AdminNotificationsListRes",
-        "type": "[`PaginatedResponse`](../modules/internal.mdx#paginatedresponse) & { `notifications`: [`Notification`](../internal/classes/internal.Notification.mdx)[]  }",
+        "type": "[`PaginatedResponse`](../internal/types/internal.PaginatedResponse-1.mdx) & { `notifications`: [`Notification`](../internal/classes/internal.Notification.mdx)[]  }",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -433,7 +433,7 @@ medusa.admin.notifications.resend(notificationId).then(({ notification }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminNotificationsRes`](../modules/internal.mdx#adminnotificationsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminNotificationsRes`](../internal/types/internal.AdminNotificationsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the notification's details.",

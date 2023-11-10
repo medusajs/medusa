@@ -4,7 +4,7 @@ Allows retrieval of prices.
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`PricingService`**
 
@@ -18,15 +18,15 @@ Allows retrieval of prices.
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-25) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:62](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L62)
+[packages/medusa/src/services/pricing.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L66)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,55 +64,45 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### featureFlagRouter
 
- `Protected` `Readonly` **featureFlagRouter**: `FlagRouter`
+ `Protected` `Readonly` **featureFlagRouter**: [`FlagRouter`](FlagRouter.md)
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:58](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L58)
+[packages/medusa/src/services/pricing.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L57)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### priceSelectionStrategy
 
- `Protected` `Readonly` **priceSelectionStrategy**: `IPriceSelectionStrategy`
+ `Protected` `Readonly` **priceSelectionStrategy**: [`IPriceSelectionStrategy`](../interfaces/IPriceSelectionStrategy.md)
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L56)
-
-___
-
-### pricingModuleService
-
- `Protected` `Readonly` **pricingModuleService**: `IPricingModuleService`
-
-#### Defined in
-
-[medusa/src/services/pricing.ts:59](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L59)
+[packages/medusa/src/services/pricing.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L55)
 
 ___
 
@@ -122,7 +112,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:57](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L57)
+[packages/medusa/src/services/pricing.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L56)
 
 ___
 
@@ -132,17 +122,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:54](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L54)
-
-___
-
-### remoteQuery
-
- `Protected` `Readonly` **remoteQuery**: `RemoteQueryFunction`
-
-#### Defined in
-
-[medusa/src/services/pricing.ts:60](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L60)
+[packages/medusa/src/services/pricing.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L53)
 
 ___
 
@@ -152,31 +132,31 @@ ___
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:55](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L55)
+[packages/medusa/src/services/pricing.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L54)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -186,7 +166,80 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+
+___
+
+### pricingModuleService
+
+`Protected` `get` **pricingModuleService**(): [`IPricingModuleService`](../interfaces/IPricingModuleService.md)
+
+#### Returns
+
+[`IPricingModuleService`](../interfaces/IPricingModuleService.md)
+
+-`addPrices`: 
+-`addRules`: 
+-`calculatePrices`: 
+-`create`: 
+-`createCurrencies`: 
+-`createMoneyAmounts`: 
+-`createPriceRules`: 
+-`createPriceSetMoneyAmountRules`: 
+-`createRuleTypes`: 
+-`delete`: 
+-`deleteCurrencies`: 
+-`deleteMoneyAmounts`: 
+-`deletePriceRules`: 
+-`deletePriceSetMoneyAmountRules`: 
+-`deleteRuleTypes`: 
+-`list`: 
+-`listAndCount`: 
+-`listAndCountCurrencies`: 
+-`listAndCountMoneyAmounts`: 
+-`listAndCountPriceRules`: 
+-`listAndCountPriceSetMoneyAmountRules`: 
+-`listAndCountPriceSetMoneyAmounts`: 
+-`listAndCountRuleTypes`: 
+-`listCurrencies`: 
+-`listMoneyAmounts`: 
+-`listPriceRules`: 
+-`listPriceSetMoneyAmountRules`: 
+-`listPriceSetMoneyAmounts`: 
+-`listRuleTypes`: 
+-`removeRules`: 
+-`retrieve`: 
+-`retrieveCurrency`: 
+-`retrieveMoneyAmount`: 
+-`retrievePriceRule`: 
+-`retrievePriceSetMoneyAmountRules`: 
+-`retrieveRuleType`: 
+-`updateCurrencies`: 
+-`updateMoneyAmounts`: 
+-`updatePriceRules`: 
+-`updatePriceSetMoneyAmountRules`: 
+-`updateRuleTypes`: 
+
+#### Defined in
+
+[packages/medusa/src/services/pricing.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L59)
+
+___
+
+### remoteQuery
+
+`Protected` `get` **remoteQuery**(): [`RemoteQueryFunction`](../index.md#remotequeryfunction)
+
+#### Returns
+
+[`RemoteQueryFunction`](../index.md#remotequeryfunction)
+
+-`RemoteQueryFunction`: 
+	-`__type`: 
+
+#### Defined in
+
+[packages/medusa/src/services/pricing.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L62)
 
 ## Methods
 
@@ -207,8 +260,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -219,17 +272,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### calculateTaxes
 
-**calculateTaxes**(`variantPricing`, `productRates`): `TaxedPricing`
+**calculateTaxes**(`variantPricing`, `productRates`): [`TaxedPricing`](../index.md#taxedpricing)
 
 Gets the prices for a product variant
 
@@ -237,22 +290,29 @@ Gets the prices for a product variant
 
 | Name | Description |
 | :------ | :------ |
-| `variantPricing` | `ProductVariantPricing` | the prices retrieved from a variant |
-| `productRates` | `TaxServiceRate`[] | the tax rates that the product has applied |
+| `variantPricing` | [`ProductVariantPricing`](../index.md#productvariantpricing) | the prices retrieved from a variant |
+| `productRates` | [`TaxServiceRate`](../index.md#taxservicerate)[] | the tax rates that the product has applied |
 
 #### Returns
 
-`TaxedPricing`
+[`TaxedPricing`](../index.md#taxedpricing)
+
+-`TaxedPricing`: Pricing fields related to taxes.
+	-`calculated_price_incl_tax`: The price after applying the tax amount on the calculated price.
+	-`calculated_tax`: The tax amount applied to the calculated price.
+	-`original_price_incl_tax`: The price after applying the tax amount on the original price.
+	-`original_tax`: The tax amount applied to the original price.
+	-`tax_rates`: The list of tax rates.
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:125](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L125)
+[packages/medusa/src/services/pricing.ts:125](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L125)
 
 ___
 
 ### collectPricingContext
 
-**collectPricingContext**(`context`): `Promise`<`PricingContext`\>
+**collectPricingContext**(`context`): `Promise`<[`PricingContext`](../index.md#pricingcontext)\>
 
 Collects additional information necessary for completing the price
 selection.
@@ -261,23 +321,27 @@ selection.
 
 | Name | Description |
 | :------ | :------ |
-| `context` | `PriceSelectionContext` | the price selection context to use |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<`PricingContext`\>
+`Promise`<[`PricingContext`](../index.md#pricingcontext)\>
 
 -`Promise`: The pricing context
+	-`PricingContext`: 
+		-`automatic_taxes`: 
+		-`price_selection`: 
+		-`tax_rate`: 
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:89](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L89)
+[packages/medusa/src/services/pricing.ts:89](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L89)
 
 ___
 
 ### getPricingModuleVariantMoneyAmounts
 
-`Private` **getPricingModuleVariantMoneyAmounts**(`variantIds`): `Promise`<`Map`<`string`, `MoneyAmount`[]\>\>
+`Private` **getPricingModuleVariantMoneyAmounts**(`variantIds`): `Promise`<`Map`<`string`, [`MoneyAmount`](MoneyAmount.md)[]\>\>
 
 #### Parameters
 
@@ -287,7 +351,7 @@ ___
 
 #### Returns
 
-`Promise`<`Map`<`string`, `MoneyAmount`[]\>\>
+`Promise`<`Map`<`string`, [`MoneyAmount`](MoneyAmount.md)[]\>\>
 
 -`Promise`: 
 	-`Map`: 
@@ -296,13 +360,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:640](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L640)
+[packages/medusa/src/services/pricing.ts:640](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L640)
 
 ___
 
 ### getProductPricing
 
-**getProductPricing**(`product`, `context`): `Promise`<Record<`string`, `ProductVariantPricing`\>\>
+**getProductPricing**(`product`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>
 
 Gets all the variant prices for a product. All the product's variants will
 be fetched.
@@ -311,26 +375,27 @@ be fetched.
 
 | Name | Description |
 | :------ | :------ |
-| `product` | `Pick`<`Product`, ``"id"`` \| ``"variants"``\> | the product to get pricing for. |
-| `context` | `PriceSelectionContext` | the price selection context to use |
+| `product` | [`Pick`](../index.md#pick)<[`Product`](Product.md), ``"id"`` \| ``"variants"``\> | the product to get pricing for. |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<Record<`string`, `ProductVariantPricing`\>\>
+`Promise`<Record<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>
 
 -`Promise`: A map of variant ids to their corresponding prices
 	-`Record`: 
 		-`string`: (optional) 
+		-`ProductVariantPricing`: Pricing fields for product variants.
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:538](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L538)
+[packages/medusa/src/services/pricing.ts:538](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L538)
 
 ___
 
 ### getProductPricingById
 
-**getProductPricingById**(`productId`, `context`): `Promise`<Record<`string`, `ProductVariantPricing`\>\>
+**getProductPricingById**(`productId`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>
 
 Gets all the variant prices for a product by the product id
 
@@ -339,36 +404,37 @@ Gets all the variant prices for a product by the product id
 | Name | Description |
 | :------ | :------ |
 | `productId` | `string` | the id of the product to get prices for |
-| `context` | `PriceSelectionContext` | the price selection context to use |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<Record<`string`, `ProductVariantPricing`\>\>
+`Promise`<Record<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>
 
 -`Promise`: A map of variant ids to their corresponding prices
 	-`Record`: 
 		-`string`: (optional) 
+		-`ProductVariantPricing`: Pricing fields for product variants.
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:556](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L556)
+[packages/medusa/src/services/pricing.ts:556](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L556)
 
 ___
 
 ### getProductPricing\_
 
-`Private` **getProductPricing_**(`data`, `context`): `Promise`<`Map`<`string`, Record<`string`, `ProductVariantPricing`\>\>\>
+`Private` **getProductPricing_**(`data`, `context`): `Promise`<`Map`<`string`, Record<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `data` | { `productId`: `string` ; `variants`: `ProductVariant`[]  }[] |
-| `context` | `PricingContext` |
+| `data` | { `productId`: `string` ; `variants`: [`ProductVariant`](ProductVariant.md)[]  }[] |
+| `context` | [`PricingContext`](../index.md#pricingcontext) |
 
 #### Returns
 
-`Promise`<`Map`<`string`, Record<`string`, `ProductVariantPricing`\>\>\>
+`Promise`<`Map`<`string`, Record<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>\>
 
 -`Promise`: 
 	-`Map`: 
@@ -377,13 +443,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:481](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L481)
+[packages/medusa/src/services/pricing.ts:481](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L481)
 
 ___
 
 ### getProductVariantPricing
 
-**getProductVariantPricing**(`variant`, `context`): `Promise`<`ProductVariantPricing`\>
+**getProductVariantPricing**(`variant`, `context`): `Promise`<[`ProductVariantPricing`](../index.md#productvariantpricing)\>
 
 Gets the prices for a product variant.
 
@@ -391,24 +457,36 @@ Gets the prices for a product variant.
 
 | Name | Description |
 | :------ | :------ |
-| `variant` | `Pick`<`ProductVariant`, ``"id"`` \| ``"product_id"``\> |
-| `context` | `PriceSelectionContext` \| `PricingContext` | the price selection context to use |
+| `variant` | [`Pick`](../index.md#pick)<[`ProductVariant`](ProductVariant.md), ``"id"`` \| ``"product_id"``\> |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) \| [`PricingContext`](../index.md#pricingcontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<`ProductVariantPricing`\>
+`Promise`<[`ProductVariantPricing`](../index.md#productvariantpricing)\>
 
 -`Promise`: The product variant prices
+	-`ProductVariantPricing`: Pricing fields for product variants.
+		-`calculated_price`: The lowest price among the retrieved prices.
+		-`calculated_price_includes_tax`: (optional) Whether the `calculated_price` field includes taxes.
+		-`calculated_price_type`: (optional) Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.
+		-`original_price`: The original price of the variant.
+		-`original_price_includes_tax`: (optional) Whether the `original_price` field includes taxes.
+		-`prices`: The list of prices.
+		-`calculated_price_incl_tax`: The price after applying the tax amount on the calculated price.
+		-`calculated_tax`: The tax amount applied to the calculated price.
+		-`original_price_incl_tax`: The price after applying the tax amount on the original price.
+		-`original_tax`: The tax amount applied to the original price.
+		-`tax_rates`: The list of tax rates.
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:335](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L335)
+[packages/medusa/src/services/pricing.ts:335](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L335)
 
 ___
 
 ### getProductVariantPricingById
 
-**getProductVariantPricingById**(`variantId`, `context`): `Promise`<`ProductVariantPricing`\>
+**getProductVariantPricingById**(`variantId`, `context`): `Promise`<[`ProductVariantPricing`](../index.md#productvariantpricing)\>
 
 Gets the prices for a product variant by a variant id.
 
@@ -417,13 +495,25 @@ Gets the prices for a product variant by a variant id.
 | Name | Description |
 | :------ | :------ |
 | `variantId` | `string` | the id of the variant to get prices for |
-| `context` | `PriceSelectionContext` \| `PricingContext` | the price selection context to use |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) \| [`PricingContext`](../index.md#pricingcontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<`ProductVariantPricing`\>
+`Promise`<[`ProductVariantPricing`](../index.md#productvariantpricing)\>
 
 -`Promise`: The product variant prices
+	-`ProductVariantPricing`: Pricing fields for product variants.
+		-`calculated_price`: The lowest price among the retrieved prices.
+		-`calculated_price_includes_tax`: (optional) Whether the `calculated_price` field includes taxes.
+		-`calculated_price_type`: (optional) Either `default` if the `calculated_price` is the original price, or the type of the price list applied, if any.
+		-`original_price`: The original price of the variant.
+		-`original_price_includes_tax`: (optional) Whether the `original_price` field includes taxes.
+		-`prices`: The list of prices.
+		-`calculated_price_incl_tax`: The price after applying the tax amount on the calculated price.
+		-`calculated_tax`: The tax amount applied to the calculated price.
+		-`original_price_incl_tax`: The price after applying the tax amount on the original price.
+		-`original_tax`: The tax amount applied to the original price.
+		-`tax_rates`: The list of tax rates.
 
 **Deprecated**
 
@@ -431,7 +521,7 @@ Use [getProductVariantsPricing](PricingService.md#getproductvariantspricing) ins
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:384](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L384)
+[packages/medusa/src/services/pricing.ts:384](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L384)
 
 ___
 
@@ -444,7 +534,7 @@ ___
 | Name |
 | :------ |
 | `variantPriceData` | { `quantity?`: `number` ; `variantId`: `string`  }[] |
-| `context` | `PricingContext` |
+| `context` | [`PricingContext`](../index.md#pricingcontext) |
 
 #### Returns
 
@@ -457,38 +547,39 @@ ___
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:187](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L187)
+[packages/medusa/src/services/pricing.ts:187](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L187)
 
 ___
 
 ### getProductVariantPricing\_
 
-`Private` **getProductVariantPricing_**(`data`, `context`): `Promise`<`Map`<`string`, `ProductVariantPricing`\>\>
+`Private` **getProductVariantPricing_**(`data`, `context`): `Promise`<`Map`<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `data` | { `quantity?`: `number` ; `variantId`: `string`  }[] |
-| `context` | `PricingContext` |
+| `context` | [`PricingContext`](../index.md#pricingcontext) |
 
 #### Returns
 
-`Promise`<`Map`<`string`, `ProductVariantPricing`\>\>
+`Promise`<`Map`<`string`, [`ProductVariantPricing`](../index.md#productvariantpricing)\>\>
 
 -`Promise`: 
 	-`Map`: 
 		-`string`: (optional) 
+		-`ProductVariantPricing`: Pricing fields for product variants.
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:271](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L271)
+[packages/medusa/src/services/pricing.ts:271](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L271)
 
 ___
 
 ### getProductVariantsPricing
 
-**getProductVariantsPricing**(`data`, `context`): `Promise`<{ `[variant_id: string]`: `ProductVariantPricing`;  }\>
+**getProductVariantsPricing**(`data`, `context`): `Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../index.md#productvariantpricing);  }\>
 
 Gets the prices for a collection of variants.
 
@@ -497,24 +588,24 @@ Gets the prices for a collection of variants.
 | Name | Description |
 | :------ | :------ |
 | `data` | { `quantity?`: `number` ; `variantId`: `string`  }[] |
-| `context` | `PriceSelectionContext` \| `PricingContext` | the price selection context to use |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) \| [`PricingContext`](../index.md#pricingcontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<{ `[variant_id: string]`: `ProductVariantPricing`;  }\>
+`Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../index.md#productvariantpricing);  }\>
 
 -`Promise`: The product variant prices
 	-``object``: (optional) 
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:429](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L429)
+[packages/medusa/src/services/pricing.ts:429](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L429)
 
 ___
 
 ### getShippingOptionPricing
 
-**getShippingOptionPricing**(`shippingOption`, `context`): `Promise`<`PricedShippingOption`\>
+**getShippingOptionPricing**(`shippingOption`, `context`): `Promise`<[`PricedShippingOption`](../index.md#pricedshippingoption)\>
 
 Gets the prices for a shipping option.
 
@@ -522,34 +613,57 @@ Gets the prices for a shipping option.
 
 | Name | Description |
 | :------ | :------ |
-| `shippingOption` | `ShippingOption` | the shipping option to get prices for |
-| `context` | `PriceSelectionContext` \| `PricingContext` | the price selection context to use |
+| `shippingOption` | [`ShippingOption`](ShippingOption.md) | the shipping option to get prices for |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) \| [`PricingContext`](../index.md#pricingcontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<`PricedShippingOption`\>
+`Promise`<[`PricedShippingOption`](../index.md#pricedshippingoption)\>
 
 -`Promise`: The shipping option prices
+	-`PricedShippingOption`: 
+		-`admin_only`: (default: false) Flag to indicate if the Shipping Option usage is restricted to admin users.
+		-`amount`: The amount to charge for shipping when the Shipping Option price type is `flat_rate`.
+		-`created_at`: The date with timezone at which the resource was created.
+		-`data`: The data needed for the Fulfillment Provider to identify the Shipping Option.
+		-`deleted_at`: The date with timezone at which the resource was deleted.
+		-`id`: The shipping option's ID
+		-`includes_tax`: (default: false) Whether the shipping option price include tax
+		-`is_return`: (default: false) Flag to indicate if the Shipping Option can be used for Return shipments.
+		-`metadata`: An optional key-value map with additional details
+		-`name`: The name given to the Shipping Option - this may be displayed to the Customer.
+		-`price_type`: The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.
+		-`profile`: The details of the shipping profile that the shipping option belongs to.
+		-`profile_id`: The ID of the Shipping Profile that the shipping option belongs to.
+		-`provider`: The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.
+		-`provider_id`: The ID of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.
+		-`region`: The details of the region this shipping option can be used in.
+		-`region_id`: The ID of the region this shipping option can be used in.
+		-`requirements`: The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.
+		-`updated_at`: The date with timezone at which the resource was updated.
+		-`price_incl_tax`: Price including taxes
+		-`tax_amount`: The taxes applied.
+		-`tax_rates`: An array of applied tax rates
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:807](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L807)
+[packages/medusa/src/services/pricing.ts:807](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L807)
 
 ___
 
 ### setAdminProductPricing
 
-**setAdminProductPricing**(`products`): `Promise`<(`Product` \| `PricedProduct`)[]\>
+**setAdminProductPricing**(`products`): `Promise`<([`Product`](Product.md) \| [`PricedProduct`](../index.md#pricedproduct))[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `products` | `Product`[] |
+| `products` | [`Product`](Product.md)[] |
 
 #### Returns
 
-`Promise`<(`Product` \| `PricedProduct`)[]\>
+`Promise`<([`Product`](Product.md) \| [`PricedProduct`](../index.md#pricedproduct))[]\>
 
 -`Promise`: 
 	-`(Product \| PricedProduct)[]`: 
@@ -557,37 +671,38 @@ ___
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:754](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L754)
+[packages/medusa/src/services/pricing.ts:754](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L754)
 
 ___
 
 ### setAdminVariantPricing
 
-**setAdminVariantPricing**(`variants`, `context?`): `Promise`<`PricedVariant`[]\>
+**setAdminVariantPricing**(`variants`, `context?`): `Promise`<[`PricedVariant`](../index.md#pricedvariant)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `variants` | `ProductVariant`[] |
-| `context` | `PriceSelectionContext` |
+| `variants` | [`ProductVariant`](ProductVariant.md)[] |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) |
 
 #### Returns
 
-`Promise`<`PricedVariant`[]\>
+`Promise`<[`PricedVariant`](../index.md#pricedvariant)[]\>
 
 -`Promise`: 
 	-`PricedVariant[]`: 
+		-`PricedVariant`: 
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:717](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L717)
+[packages/medusa/src/services/pricing.ts:717](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L717)
 
 ___
 
 ### setProductPrices
 
-**setProductPrices**(`products`, `context?`): `Promise`<(`Product` \| `PricedProduct`)[]\>
+**setProductPrices**(`products`, `context?`): `Promise`<([`Product`](Product.md) \| [`PricedProduct`](../index.md#pricedproduct))[]\>
 
 Set additional prices on a list of products.
 
@@ -595,12 +710,12 @@ Set additional prices on a list of products.
 
 | Name | Description |
 | :------ | :------ |
-| `products` | `Product`[] | list of products on which to set additional prices |
-| `context` | `PriceSelectionContext` | the price selection context to use |
+| `products` | [`Product`](Product.md)[] | list of products on which to set additional prices |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<(`Product` \| `PricedProduct`)[]\>
+`Promise`<([`Product`](Product.md) \| [`PricedProduct`](../index.md#pricedproduct))[]\>
 
 -`Promise`: A list of products with variants decorated with prices
 	-`(Product \| PricedProduct)[]`: 
@@ -608,13 +723,13 @@ Set additional prices on a list of products.
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:605](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L605)
+[packages/medusa/src/services/pricing.ts:605](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L605)
 
 ___
 
 ### setShippingOptionPrices
 
-**setShippingOptionPrices**(`shippingOptions`, `context?`): `Promise`<`PricedShippingOption`[]\>
+**setShippingOptionPrices**(`shippingOptions`, `context?`): `Promise`<[`PricedShippingOption`](../index.md#pricedshippingoption)[]\>
 
 Set additional prices on a list of shipping options.
 
@@ -622,25 +737,26 @@ Set additional prices on a list of shipping options.
 
 | Name | Description |
 | :------ | :------ |
-| `shippingOptions` | `ShippingOption`[] | list of shipping options on which to set additional prices |
-| `context` | `Omit`<`PriceSelectionContext`, ``"region_id"``\> | the price selection context to use |
+| `shippingOptions` | [`ShippingOption`](ShippingOption.md)[] | list of shipping options on which to set additional prices |
+| `context` | [`Omit`](../index.md#omit)<[`PriceSelectionContext`](../index.md#priceselectioncontext), ``"region_id"``\> | the price selection context to use |
 
 #### Returns
 
-`Promise`<`PricedShippingOption`[]\>
+`Promise`<[`PricedShippingOption`](../index.md#pricedshippingoption)[]\>
 
 -`Promise`: A list of shipping options with prices
 	-`PricedShippingOption[]`: 
+		-`PricedShippingOption`: 
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:869](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L869)
+[packages/medusa/src/services/pricing.ts:869](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L869)
 
 ___
 
 ### setVariantPrices
 
-**setVariantPrices**(`variants`, `context?`): `Promise`<`PricedVariant`[]\>
+**setVariantPrices**(`variants`, `context?`): `Promise`<[`PricedVariant`](../index.md#pricedvariant)[]\>
 
 Set additional prices on a list of product variants.
 
@@ -648,19 +764,20 @@ Set additional prices on a list of product variants.
 
 | Name | Description |
 | :------ | :------ |
-| `variants` | `ProductVariant`[] |
-| `context` | `PriceSelectionContext` | the price selection context to use |
+| `variants` | [`ProductVariant`](ProductVariant.md)[] |
+| `context` | [`PriceSelectionContext`](../index.md#priceselectioncontext) | the price selection context to use |
 
 #### Returns
 
-`Promise`<`PricedVariant`[]\>
+`Promise`<[`PricedVariant`](../index.md#pricedvariant)[]\>
 
 -`Promise`: A list of products with variants decorated with prices
 	-`PricedVariant[]`: 
+		-`PricedVariant`: 
 
 #### Defined in
 
-[medusa/src/services/pricing.ts:578](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/pricing.ts#L578)
+[packages/medusa/src/services/pricing.ts:578](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/pricing.ts#L578)
 
 ___
 
@@ -682,11 +799,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -698,7 +815,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -708,8 +825,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

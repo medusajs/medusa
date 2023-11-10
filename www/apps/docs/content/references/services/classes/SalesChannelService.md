@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`SalesChannelService`**
 
@@ -16,15 +16,15 @@
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-33) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:34](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L34)
+[packages/medusa/src/services/sales-channel.ts:34](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L34)
 
 ## Properties
 
@@ -34,11 +34,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -48,11 +48,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -62,11 +62,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,31 +76,31 @@ ___
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:31](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L31)
+[packages/medusa/src/services/sales-channel.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L31)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### salesChannelRepository\_
 
- `Protected` `Readonly` **salesChannelRepository\_**: `Repository`<`SalesChannel`\> & { `addProducts`: Method addProducts ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `listProductIdsBySalesChannelIds`: Method listProductIdsBySalesChannelIds ; `removeProducts`: Method removeProducts  }
+ `Protected` `Readonly` **salesChannelRepository\_**: [`Repository`](Repository.md)<[`SalesChannel`](SalesChannel.md)\> & { `addProducts`: Method addProducts ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `listProductIdsBySalesChannelIds`: Method listProductIdsBySalesChannelIds ; `removeProducts`: Method removeProducts  }
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:30](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L30)
+[packages/medusa/src/services/sales-channel.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L30)
 
 ___
 
@@ -110,21 +110,21 @@ ___
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:32](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L32)
+[packages/medusa/src/services/sales-channel.ts:32](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L32)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -142,17 +142,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:24](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L24)
+[packages/medusa/src/services/sales-channel.ts:24](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L24)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -162,13 +162,13 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
 ### addProducts
 
-**addProducts**(`salesChannelId`, `productIds`): `Promise`<`SalesChannel`\>
+**addProducts**(`salesChannelId`, `productIds`): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 Add a batch of product to a sales channel
 
@@ -181,14 +181,14 @@ Add a batch of product to a sales channel
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: the sales channel on which the products have been added
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:348](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L348)
+[packages/medusa/src/services/sales-channel.ts:348](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L348)
 
 ___
 
@@ -209,8 +209,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -221,17 +221,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`data`): `Promise`<`SalesChannel`\>
+**create**(`data`): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 Creates a SalesChannel
 
@@ -242,37 +242,37 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 | Name |
 | :------ |
-| `data` | `CreateSalesChannelInput` |
+| `data` | [`CreateSalesChannelInput`](../index.md#createsaleschannelinput) |
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: the created channel
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:168](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L168)
+[packages/medusa/src/services/sales-channel.ts:168](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L168)
 
 ___
 
 ### createDefault
 
-**createDefault**(): `Promise`<`SalesChannel`\>
+**createDefault**(): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 Creates a default sales channel, if this does not already exist.
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: the sales channel
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:258](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L258)
+[packages/medusa/src/services/sales-channel.ts:258](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L258)
 
 ___
 
@@ -298,13 +298,13 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:219](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L219)
+[packages/medusa/src/services/sales-channel.ts:219](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L219)
 
 ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`): `Promise`<[`SalesChannel`[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`SalesChannel`](SalesChannel.md)[], `number`]\>
 
 Lists sales channels based on the provided parameters and includes the count of
 sales channels that match the query.
@@ -313,12 +313,12 @@ sales channels that match the query.
 
 | Name |
 | :------ |
-| `selector` | `QuerySelector`<`SalesChannel`\> |
-| `config` | `FindConfig`<`SalesChannel`\> |
+| `selector` | [`QuerySelector`](../index.md#queryselector)<[`SalesChannel`](SalesChannel.md)\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`SalesChannel`](SalesChannel.md)\> |
 
 #### Returns
 
-`Promise`<[`SalesChannel`[], `number`]\>
+`Promise`<[[`SalesChannel`](SalesChannel.md)[], `number`]\>
 
 -`Promise`: an array containing the sales channels as
   the first element and the total count of sales channels that matches the query
@@ -328,7 +328,7 @@ sales channels that match the query.
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:134](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L134)
+[packages/medusa/src/services/sales-channel.ts:134](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L134)
 
 ___
 
@@ -353,13 +353,13 @@ List all product ids that belongs to the sales channels ids
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:310](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L310)
+[packages/medusa/src/services/sales-channel.ts:310](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L310)
 
 ___
 
 ### removeProducts
 
-**removeProducts**(`salesChannelId`, `productIds`): `Promise`<`SalesChannel`\>
+**removeProducts**(`salesChannelId`, `productIds`): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 Remove a batch of product from a sales channel
 
@@ -372,20 +372,20 @@ Remove a batch of product from a sales channel
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: the sales channel on which the products have been removed
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:327](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L327)
+[packages/medusa/src/services/sales-channel.ts:327](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L327)
 
 ___
 
 ### retrieve
 
-**retrieve**(`salesChannelId`, `config?`): `Promise`<`SalesChannel`\>
+**retrieve**(`salesChannelId`, `config?`): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 Retrieve a SalesChannel by id
 
@@ -394,18 +394,18 @@ Retrieve a SalesChannel by id
 | Name | Description |
 | :------ | :------ |
 | `salesChannelId` | `string` | id of the channel to retrieve |
-| `config` | `FindConfig`<`SalesChannel`\> | SC config This feature is under development and may change in the future. To use this feature please enable the corresponding feature flag in your medusa backend project. |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`SalesChannel`](SalesChannel.md)\> | SC config This feature is under development and may change in the future. To use this feature please enable the corresponding feature flag in your medusa backend project. |
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: a sales channel
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:92](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L92)
+[packages/medusa/src/services/sales-channel.ts:92](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L92)
 
 ___
 
@@ -420,7 +420,7 @@ Find a sales channel by name.
 | Name | Description |
 | :------ | :------ |
 | `name` | `string` | of the sales channel |
-| `config` | `FindConfig`<`SalesChannel`\> | find config |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`SalesChannel`](SalesChannel.md)\> | find config |
 
 #### Returns
 
@@ -431,32 +431,32 @@ Find a sales channel by name.
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:113](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L113)
+[packages/medusa/src/services/sales-channel.ts:113](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L113)
 
 ___
 
 ### retrieveDefault
 
-**retrieveDefault**(): `Promise`<`SalesChannel`\>
+**retrieveDefault**(): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 Retrieves the default sales channel.
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: the sales channel
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:288](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L288)
+[packages/medusa/src/services/sales-channel.ts:288](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L288)
 
 ___
 
 ### retrieve\_
 
-`Protected` **retrieve_**(`selector`, `config?`): `Promise`<`SalesChannel`\>
+`Protected` **retrieve_**(`selector`, `config?`): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 A generic retrieve used to find a sales channel by different attributes.
 
@@ -464,19 +464,19 @@ A generic retrieve used to find a sales channel by different attributes.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `Selector`<`SalesChannel`\> | SC selector |
-| `config` | `FindConfig`<`SalesChannel`\> | find config |
+| `selector` | [`Selector`](../index.md#selector)<[`SalesChannel`](SalesChannel.md)\> | SC selector |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`SalesChannel`](SalesChannel.md)\> | find config |
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: a single SC matching the query or throws
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:54](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L54)
+[packages/medusa/src/services/sales-channel.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L54)
 
 ___
 
@@ -498,35 +498,35 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`salesChannelId`, `data`): `Promise`<`SalesChannel`\>
+**update**(`salesChannelId`, `data`): `Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `salesChannelId` | `string` |
-| `data` | `Partial`<`CreateSalesChannelInput`\> |
+| `data` | [`Partial`](../index.md#partial)<[`CreateSalesChannelInput`](../index.md#createsaleschannelinput)\> |
 
 #### Returns
 
-`Promise`<`SalesChannel`\>
+`Promise`<[`SalesChannel`](SalesChannel.md)\>
 
 -`Promise`: 
 	-`SalesChannel`: 
 
 #### Defined in
 
-[medusa/src/services/sales-channel.ts:185](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/sales-channel.ts#L185)
+[packages/medusa/src/services/sales-channel.ts:185](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/sales-channel.ts#L185)
 
 ___
 
@@ -538,7 +538,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -548,8 +548,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

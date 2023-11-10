@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`PaymentService`**
 
@@ -16,15 +16,15 @@
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-22) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/payment.ts:39](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L39)
+[packages/medusa/src/services/payment.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L39)
 
 ## Properties
 
@@ -34,11 +34,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -48,11 +48,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -62,11 +62,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,21 +76,21 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment.ts:27](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L27)
+[packages/medusa/src/services/payment.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L27)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -100,31 +100,31 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment.ts:28](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L28)
+[packages/medusa/src/services/payment.ts:28](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L28)
 
 ___
 
 ### paymentRepository\_
 
- `Protected` `Readonly` **paymentRepository\_**: `Repository`<`Payment`\>
+ `Protected` `Readonly` **paymentRepository\_**: [`Repository`](Repository.md)<[`Payment`](Payment.md)\>
 
 #### Defined in
 
-[medusa/src/services/payment.ts:29](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L29)
+[packages/medusa/src/services/payment.ts:29](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L29)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -145,17 +145,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/payment.ts:30](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L30)
+[packages/medusa/src/services/payment.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L30)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -165,7 +165,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -186,8 +186,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -198,17 +198,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### capture
 
-**capture**(`paymentOrId`): `Promise`<`Payment`\>
+**capture**(`paymentOrId`): `Promise`<[`Payment`](Payment.md)\>
 
 Captures a payment.
 
@@ -216,24 +216,24 @@ Captures a payment.
 
 | Name | Description |
 | :------ | :------ |
-| `paymentOrId` | `string` \| `Payment` | the id or the class instance of the payment |
+| `paymentOrId` | `string` \| [`Payment`](Payment.md) | the id or the class instance of the payment |
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: the payment captured.
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment.ts:153](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L153)
+[packages/medusa/src/services/payment.ts:153](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L153)
 
 ___
 
 ### create
 
-**create**(`paymentInput`): `Promise`<`Payment`\>
+**create**(`paymentInput`): `Promise`<[`Payment`](Payment.md)\>
 
 Created a new payment.
 
@@ -241,24 +241,24 @@ Created a new payment.
 
 | Name | Description |
 | :------ | :------ |
-| `paymentInput` | `PaymentDataInput` | info to create the payment |
+| `paymentInput` | [`PaymentDataInput`](../index.md#paymentdatainput) | info to create the payment |
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: the payment created.
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment.ts:92](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L92)
+[packages/medusa/src/services/payment.ts:92](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L92)
 
 ___
 
 ### refund
 
-**refund**(`paymentOrId`, `amount`, `reason`, `note?`): `Promise`<`Refund`\>
+**refund**(`paymentOrId`, `amount`, `reason`, `note?`): `Promise`<[`Refund`](Refund.md)\>
 
 refunds a payment.
 
@@ -266,27 +266,27 @@ refunds a payment.
 
 | Name | Description |
 | :------ | :------ |
-| `paymentOrId` | `string` \| `Payment` | the id or the class instance of the payment |
+| `paymentOrId` | `string` \| [`Payment`](Payment.md) | the id or the class instance of the payment |
 | `amount` | `number` | the amount to be refunded from the payment |
 | `reason` | `string` | the refund reason |
 | `note?` | `string` | additional note of the refund |
 
 #### Returns
 
-`Promise`<`Refund`\>
+`Promise`<[`Refund`](Refund.md)\>
 
 -`Promise`: the refund created.
 	-`Refund`: 
 
 #### Defined in
 
-[medusa/src/services/payment.ts:202](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L202)
+[packages/medusa/src/services/payment.ts:202](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L202)
 
 ___
 
 ### retrieve
 
-**retrieve**(`paymentId`, `config?`): `Promise`<`Payment`\>
+**retrieve**(`paymentId`, `config?`): `Promise`<[`Payment`](Payment.md)\>
 
 Retrieves a payment by id.
 
@@ -295,18 +295,18 @@ Retrieves a payment by id.
 | Name | Description |
 | :------ | :------ |
 | `paymentId` | `string` | the id of the payment |
-| `config` | `FindConfig`<`Payment`\> | the config to retrieve the payment |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Payment`](Payment.md)\> | the config to retrieve the payment |
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: the payment.
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment.ts:58](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L58)
+[packages/medusa/src/services/payment.ts:58](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L58)
 
 ___
 
@@ -328,17 +328,17 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`paymentId`, `data`): `Promise`<`Payment`\>
+**update**(`paymentId`, `data`): `Promise`<[`Payment`](Payment.md)\>
 
 Updates a payment in order to link it to an order or a swap.
 
@@ -353,14 +353,14 @@ Updates a payment in order to link it to an order or a swap.
 
 #### Returns
 
-`Promise`<`Payment`\>
+`Promise`<[`Payment`](Payment.md)\>
 
 -`Promise`: the payment updated.
 	-`Payment`: 
 
 #### Defined in
 
-[medusa/src/services/payment.ts:121](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/payment.ts#L121)
+[packages/medusa/src/services/payment.ts:121](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/payment.ts#L121)
 
 ___
 
@@ -372,7 +372,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -382,8 +382,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

@@ -1,0 +1,51 @@
+# CartType
+
+## Enumeration Members
+
+### CLAIM
+
+ **CLAIM** = ``"claim"``
+
+#### Defined in
+
+[packages/medusa/src/models/cart.ts:270](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L270)
+
+___
+
+### DEFAULT
+
+ **DEFAULT** = ``"default"``
+
+#### Defined in
+
+[packages/medusa/src/models/cart.ts:266](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L266)
+
+___
+
+### DRAFT\_ORDER
+
+ **DRAFT\_ORDER** = ``"draft_order"``
+
+#### Defined in
+
+[packages/medusa/src/models/cart.ts:268](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L268)
+
+___
+
+### PAYMENT\_LINK
+
+ **PAYMENT\_LINK** = ``"payment_link"``
+
+#### Defined in
+
+[packages/medusa/src/models/cart.ts:269](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L269)
+
+___
+
+### SWAP
+
+ **SWAP** = ``"swap"``
+
+#### Defined in
+
+[packages/medusa/src/models/cart.ts:267](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/models/cart.ts#L267)

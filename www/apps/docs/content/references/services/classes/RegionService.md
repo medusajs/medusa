@@ -4,7 +4,7 @@ Provides layer to manipulate regions.
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`RegionService`**
 
@@ -18,15 +18,15 @@ Provides layer to manipulate regions.
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-30) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/region.ts:64](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L64)
+[packages/medusa/src/services/region.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L64)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,31 +64,31 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### countryRepository\_
 
- `Protected` `Readonly` **countryRepository\_**: `Repository`<`Country`\>
+ `Protected` `Readonly` **countryRepository\_**: [`Repository`](Repository.md)<[`Country`](Country.md)\>
 
 #### Defined in
 
-[medusa/src/services/region.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L56)
+[packages/medusa/src/services/region.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L56)
 
 ___
 
 ### currencyRepository\_
 
- `Protected` `Readonly` **currencyRepository\_**: `Repository`<`Currency`\>
+ `Protected` `Readonly` **currencyRepository\_**: [`Repository`](Repository.md)<[`Currency`](Currency.md)\>
 
 #### Defined in
 
-[medusa/src/services/region.ts:57](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L57)
+[packages/medusa/src/services/region.ts:57](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L57)
 
 ___
 
@@ -98,27 +98,27 @@ ___
 
 #### Defined in
 
-[medusa/src/services/region.ts:51](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L51)
+[packages/medusa/src/services/region.ts:51](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L51)
 
 ___
 
 ### featureFlagRouter\_
 
- `Protected` **featureFlagRouter\_**: `FlagRouter`
+ `Protected` **featureFlagRouter\_**: [`FlagRouter`](FlagRouter.md)
 
 #### Defined in
 
-[medusa/src/services/region.ts:49](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L49)
+[packages/medusa/src/services/region.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L49)
 
 ___
 
 ### fulfillmentProviderRepository\_
 
- `Protected` `Readonly` **fulfillmentProviderRepository\_**: `Repository`<`FulfillmentProvider`\>
+ `Protected` `Readonly` **fulfillmentProviderRepository\_**: [`Repository`](Repository.md)<[`FulfillmentProvider`](FulfillmentProvider.md)\>
 
 #### Defined in
 
-[medusa/src/services/region.ts:61](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L61)
+[packages/medusa/src/services/region.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L61)
 
 ___
 
@@ -128,31 +128,31 @@ ___
 
 #### Defined in
 
-[medusa/src/services/region.ts:54](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L54)
+[packages/medusa/src/services/region.ts:54](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L54)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### paymentProviderRepository\_
 
- `Protected` `Readonly` **paymentProviderRepository\_**: `Repository`<`PaymentProvider`\>
+ `Protected` `Readonly` **paymentProviderRepository\_**: [`Repository`](Repository.md)<[`PaymentProvider`](PaymentProvider.md)\>
 
 #### Defined in
 
-[medusa/src/services/region.ts:59](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L59)
+[packages/medusa/src/services/region.ts:59](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L59)
 
 ___
 
@@ -162,17 +162,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/region.ts:53](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L53)
+[packages/medusa/src/services/region.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L53)
 
 ___
 
 ### regionRepository\_
 
- `Protected` `Readonly` **regionRepository\_**: `Repository`<`Region`\>
+ `Protected` `Readonly` **regionRepository\_**: [`Repository`](Repository.md)<[`Region`](Region.md)\>
 
 #### Defined in
 
-[medusa/src/services/region.ts:55](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L55)
+[packages/medusa/src/services/region.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L55)
 
 ___
 
@@ -182,31 +182,31 @@ ___
 
 #### Defined in
 
-[medusa/src/services/region.ts:52](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L52)
+[packages/medusa/src/services/region.ts:52](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L52)
 
 ___
 
 ### taxProviderRepository\_
 
- `Protected` `Readonly` **taxProviderRepository\_**: `Repository`<`TaxProvider`\>
+ `Protected` `Readonly` **taxProviderRepository\_**: [`Repository`](Repository.md)<[`TaxProvider`](TaxProvider.md)\>
 
 #### Defined in
 
-[medusa/src/services/region.ts:62](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L62)
+[packages/medusa/src/services/region.ts:62](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L62)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -224,17 +224,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/region.ts:43](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L43)
+[packages/medusa/src/services/region.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L43)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -244,13 +244,13 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
 ### addCountry
 
-**addCountry**(`regionId`, `code`): `Promise`<`Region`\>
+**addCountry**(`regionId`, `code`): `Promise`<[`Region`](Region.md)\>
 
 Adds a country to the region.
 
@@ -263,20 +263,20 @@ Adds a country to the region.
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the updated Region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:577](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L577)
+[packages/medusa/src/services/region.ts:577](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L577)
 
 ___
 
 ### addFulfillmentProvider
 
-**addFulfillmentProvider**(`regionId`, `providerId`): `Promise`<`Region`\>
+**addFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.md)\>
 
 Adds a fulfillment provider that is available in the region. Fails if the
 provider doesn't exist.
@@ -290,20 +290,20 @@ provider doesn't exist.
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the updated Region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:705](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L705)
+[packages/medusa/src/services/region.ts:705](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L705)
 
 ___
 
 ### addPaymentProvider
 
-**addPaymentProvider**(`regionId`, `providerId`): `Promise`<`Region`\>
+**addPaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.md)\>
 
 Adds a payment provider that is available in the region. Fails if the
 provider doesn't exist.
@@ -317,14 +317,14 @@ provider doesn't exist.
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the updated Region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:656](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L656)
+[packages/medusa/src/services/region.ts:656](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L656)
 
 ___
 
@@ -345,8 +345,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -357,17 +357,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`data`): `Promise`<`Region`\>
+**create**(`data`): `Promise`<[`Region`](Region.md)\>
 
 Creates a region.
 
@@ -375,18 +375,18 @@ Creates a region.
 
 | Name | Description |
 | :------ | :------ |
-| `data` | `CreateRegionInput` | the unvalidated region |
+| `data` | [`CreateRegionInput`](../index.md#createregioninput) | the unvalidated region |
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the newly created region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:100](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L100)
+[packages/medusa/src/services/region.ts:100](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L100)
 
 ___
 
@@ -410,13 +410,13 @@ Deletes a region.
 
 #### Defined in
 
-[medusa/src/services/region.ts:546](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L546)
+[packages/medusa/src/services/region.ts:546](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L546)
 
 ___
 
 ### list
 
-**list**(`selector?`, `config?`): `Promise`<`Region`[]\>
+**list**(`selector?`, `config?`): `Promise`<[`Region`](Region.md)[]\>
 
 Lists all regions based on a query
 
@@ -424,12 +424,12 @@ Lists all regions based on a query
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `Selector`<`Region`\> | query object for find |
-| `config` | `FindConfig`<`Region`\> | configuration settings |
+| `selector` | [`Selector`](../index.md#selector)<[`Region`](Region.md)\> | query object for find |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Region`](Region.md)\> | configuration settings |
 
 #### Returns
 
-`Promise`<`Region`[]\>
+`Promise`<[`Region`](Region.md)[]\>
 
 -`Promise`: result of the find operation
 	-`Region[]`: 
@@ -437,13 +437,13 @@ Lists all regions based on a query
 
 #### Defined in
 
-[medusa/src/services/region.ts:505](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L505)
+[packages/medusa/src/services/region.ts:505](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L505)
 
 ___
 
 ### listAndCount
 
-**listAndCount**(`selector?`, `config?`): `Promise`<[`Region`[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`Region`](Region.md)[], `number`]\>
 
 Lists all regions based on a query and returns them along with count
 
@@ -451,12 +451,12 @@ Lists all regions based on a query and returns them along with count
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `Selector`<`Region`\> | query object for find |
-| `config` | `FindConfig`<`Region`\> | configuration settings |
+| `selector` | [`Selector`](../index.md#selector)<[`Region`](Region.md)\> | query object for find |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Region`](Region.md)\> | configuration settings |
 
 #### Returns
 
-`Promise`<[`Region`[], `number`]\>
+`Promise`<[[`Region`](Region.md)[], `number`]\>
 
 -`Promise`: result of the find operation
 	-`Region[]`: 
@@ -464,13 +464,13 @@ Lists all regions based on a query and returns them along with count
 
 #### Defined in
 
-[medusa/src/services/region.ts:524](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L524)
+[packages/medusa/src/services/region.ts:524](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L524)
 
 ___
 
 ### removeCountry
 
-**removeCountry**(`regionId`, `code`): `Promise`<`Region`\>
+**removeCountry**(`regionId`, `code`): `Promise`<[`Region`](Region.md)\>
 
 Removes a country from a Region.
 
@@ -483,20 +483,20 @@ Removes a country from a Region.
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the updated Region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:615](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L615)
+[packages/medusa/src/services/region.ts:615](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L615)
 
 ___
 
 ### removeFulfillmentProvider
 
-**removeFulfillmentProvider**(`regionId`, `providerId`): `Promise`<`Region`\>
+**removeFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.md)\>
 
 Removes a fulfillment provider from a region. Is idempotent.
 
@@ -509,20 +509,20 @@ Removes a fulfillment provider from a region. Is idempotent.
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the updated Region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:791](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L791)
+[packages/medusa/src/services/region.ts:791](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L791)
 
 ___
 
 ### removePaymentProvider
 
-**removePaymentProvider**(`regionId`, `providerId`): `Promise`<`Region`\>
+**removePaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.md)\>
 
 Removes a payment provider from a region. Is idempotent.
 
@@ -535,20 +535,20 @@ Removes a payment provider from a region. Is idempotent.
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the updated Region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:752](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L752)
+[packages/medusa/src/services/region.ts:752](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L752)
 
 ___
 
 ### retrieve
 
-**retrieve**(`regionId`, `config?`): `Promise`<`Region`\>
+**retrieve**(`regionId`, `config?`): `Promise`<[`Region`](Region.md)\>
 
 Retrieves a region by its id.
 
@@ -557,24 +557,24 @@ Retrieves a region by its id.
 | Name | Description |
 | :------ | :------ |
 | `regionId` | `string` | the id of the region to retrieve |
-| `config` | `FindConfig`<`Region`\> | configuration settings |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Region`](Region.md)\> | configuration settings |
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the region
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:470](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L470)
+[packages/medusa/src/services/region.ts:470](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L470)
 
 ___
 
 ### retrieveByCountryCode
 
-**retrieveByCountryCode**(`code`, `config?`): `Promise`<`Region`\>
+**retrieveByCountryCode**(`code`, `config?`): `Promise`<[`Region`](Region.md)\>
 
 Retrieve a region by country code.
 
@@ -583,24 +583,24 @@ Retrieve a region by country code.
 | Name | Description |
 | :------ | :------ |
 | `code` | `string` | a 2 digit alphanumeric ISO country code |
-| `config` | `FindConfig`<`Region`\> | region find config |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Region`](Region.md)\> | region find config |
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: a Region with country code
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:416](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L416)
+[packages/medusa/src/services/region.ts:416](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L416)
 
 ___
 
 ### retrieveByName
 
-**retrieveByName**(`name`): `Promise`<`Region`\>
+**retrieveByName**(`name`): `Promise`<[`Region`](Region.md)\>
 
 Retrieves a region by name.
 
@@ -612,14 +612,14 @@ Retrieves a region by name.
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: region with the matching name
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:450](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L450)
+[packages/medusa/src/services/region.ts:450](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L450)
 
 ___
 
@@ -641,17 +641,17 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`regionId`, `update`): `Promise`<`Region`\>
+**update**(`regionId`, `update`): `Promise`<[`Region`](Region.md)\>
 
 Updates a region
 
@@ -660,24 +660,24 @@ Updates a region
 | Name | Description |
 | :------ | :------ |
 | `regionId` | `string` | the region to update |
-| `update` | `UpdateRegionInput` | the data to update the region with |
+| `update` | [`UpdateRegionInput`](../index.md#updateregioninput) | the data to update the region with |
 
 #### Returns
 
-`Promise`<`Region`\>
+`Promise`<[`Region`](Region.md)\>
 
 -`Promise`: the result of the update operation
 	-`Region`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:171](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L171)
+[packages/medusa/src/services/region.ts:171](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L171)
 
 ___
 
 ### validateCountry
 
-`Protected` **validateCountry**(`code`, `regionId`): `Promise`<`Country`\>
+`Protected` **validateCountry**(`code`, `regionId`): `Promise`<[`Country`](Country.md)\>
 
 Validates a country code. Will normalize the code before checking for
 existence.
@@ -691,14 +691,14 @@ existence.
 
 #### Returns
 
-`Promise`<`Country`\>
+`Promise`<[`Country`](Country.md)\>
 
 -`Promise`: the validated Country
 	-`Country`: 
 
 #### Defined in
 
-[medusa/src/services/region.ts:367](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L367)
+[packages/medusa/src/services/region.ts:367](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L367)
 
 ___
 
@@ -726,31 +726,31 @@ if the provided currency code is invalid
 
 #### Defined in
 
-[medusa/src/services/region.ts:342](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L342)
+[packages/medusa/src/services/region.ts:342](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L342)
 
 ___
 
 ### validateFields
 
-`Protected` **validateFields**<`T`\>(`regionData`, `id?`): `Promise`<`DeepPartial`<`Region`\>\>
+`Protected` **validateFields**<`T`\>(`regionData`, `id?`): `Promise`<[`DeepPartial`](../index.md#deeppartial)<[`Region`](Region.md)\>\>
 
 Validates fields for creation and updates. If the region already exists
 the id can be passed to check that country updates are allowed.
 
 | Name | Type |
 | :------ | :------ |
-| `T` | `UpdateRegionInput` \| `CreateRegionInput` |
+| `T` | [`UpdateRegionInput`](../index.md#updateregioninput) \| [`CreateRegionInput`](../index.md#createregioninput) |
 
 #### Parameters
 
 | Name | Description |
 | :------ | :------ |
-| `regionData` | `Omit`<`T`, ``"metadata"`` \| ``"currency_code"``\> | the region data to validate |
-| `id?` | `T` extends `UpdateRegionInput` ? `string` : `undefined` | optional id of the region to check against |
+| `regionData` | [`Omit`](../index.md#omit)<`T`, ``"metadata"`` \| ``"currency_code"``\> | the region data to validate |
+| `id?` | `T` extends [`UpdateRegionInput`](../index.md#updateregioninput) ? `string` : `undefined` | optional id of the region to check against |
 
 #### Returns
 
-`Promise`<`DeepPartial`<`Region`\>\>
+`Promise`<[`DeepPartial`](../index.md#deeppartial)<[`Region`](Region.md)\>\>
 
 -`Promise`: the validated region data
 	-`DeepPartial`: 
@@ -758,7 +758,7 @@ the id can be passed to check that country updates are allowed.
 
 #### Defined in
 
-[medusa/src/services/region.ts:240](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L240)
+[packages/medusa/src/services/region.ts:240](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L240)
 
 ___
 
@@ -786,7 +786,7 @@ if the tax rate isn't number between 0-100
 
 #### Defined in
 
-[medusa/src/services/region.ts:326](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/region.ts#L326)
+[packages/medusa/src/services/region.ts:326](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/region.ts#L326)
 
 ___
 
@@ -798,7 +798,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -808,8 +808,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`NotificationService`**
 
@@ -16,15 +16,15 @@
 
 | Name |
 | :------ |
-| `container` | `InjectedDependencies` |
+| `container` | [`InjectedDependencies`](../index.md#injecteddependencies-17) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/notification.ts:34](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L34)
+[packages/medusa/src/services/notification.ts:35](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L35)
 
 ## Properties
 
@@ -34,11 +34,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -48,11 +48,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -62,11 +62,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,61 +76,61 @@ ___
 
 #### Defined in
 
-[medusa/src/services/notification.ts:25](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L25)
+[packages/medusa/src/services/notification.ts:26](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L26)
 
 ___
 
 ### container\_
 
- `Protected` `Readonly` **container\_**: `InjectedDependencies` & {}
+ `Protected` `Readonly` **container\_**: [`InjectedDependencies`](../index.md#injecteddependencies-17) & {}
 
 #### Defined in
 
-[medusa/src/services/notification.ts:26](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L26)
+[packages/medusa/src/services/notification.ts:27](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L27)
 
 ___
 
 ### logger\_
 
- `Protected` `Readonly` **logger\_**: `Logger`
+ `Protected` `Readonly` **logger\_**: [`Logger`](../index.md#logger)
 
 #### Defined in
 
-[medusa/src/services/notification.ts:29](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L29)
+[packages/medusa/src/services/notification.ts:30](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L30)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### notificationProviderRepository\_
 
- `Protected` `Readonly` **notificationProviderRepository\_**: `Repository`<`NotificationProvider`\>
+ `Protected` `Readonly` **notificationProviderRepository\_**: [`Repository`](Repository.md)<[`NotificationProvider`](NotificationProvider.md)\>
 
 #### Defined in
 
-[medusa/src/services/notification.ts:32](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L32)
+[packages/medusa/src/services/notification.ts:33](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L33)
 
 ___
 
 ### notificationRepository\_
 
- `Protected` `Readonly` **notificationRepository\_**: `Repository`<`Notification`\>
+ `Protected` `Readonly` **notificationRepository\_**: [`Repository`](Repository.md)<[`Notification`](Notification.md)\>
 
 #### Defined in
 
-[medusa/src/services/notification.ts:30](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L30)
+[packages/medusa/src/services/notification.ts:31](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L31)
 
 ___
 
@@ -140,31 +140,31 @@ ___
 
 #### Defined in
 
-[medusa/src/services/notification.ts:24](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L24)
+[packages/medusa/src/services/notification.ts:25](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L25)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -174,7 +174,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -195,8 +195,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -207,17 +207,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### handleEvent
 
-**handleEvent**(`eventName`, `data`): `Promise`<`undefined` \| `void` \| `Notification`[]\>
+**handleEvent**(`eventName`, `data`): `Promise`<`undefined` \| `void` \| [`Notification`](Notification.md)[]\>
 
 Handles an event by relaying the event data to the subscribing providers.
 The result of the notification send will be persisted in the database in
@@ -232,20 +232,20 @@ order to allow for resends. Will log any errors that are encountered.
 
 #### Returns
 
-`Promise`<`undefined` \| `void` \| `Notification`[]\>
+`Promise`<`undefined` \| `void` \| [`Notification`](Notification.md)[]\>
 
 -`Promise`: the result of notification subscribed
 	-`undefined \| void \| Notification[]`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/notification.ts:185](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L185)
+[packages/medusa/src/services/notification.ts:186](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L186)
 
 ___
 
 ### list
 
-**list**(`selector`, `config?`): `Promise`<`Notification`[]\>
+**list**(`selector`, `config?`): `Promise`<[`Notification`](Notification.md)[]\>
 
 Retrieves a list of notifications.
 
@@ -253,12 +253,12 @@ Retrieves a list of notifications.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `Selector`<`Notification`\> | the params to select the notifications by. |
-| `config` | `FindConfig`<`Notification`\> | the configuration to apply to the query |
+| `selector` | [`Selector`](../index.md#selector)<[`Notification`](Notification.md)\> | the params to select the notifications by. |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Notification`](Notification.md)\> | the configuration to apply to the query |
 
 #### Returns
 
-`Promise`<`Notification`[]\>
+`Promise`<[`Notification`](Notification.md)[]\>
 
 -`Promise`: the notifications that satisfy the query.
 	-`Notification[]`: 
@@ -266,13 +266,13 @@ Retrieves a list of notifications.
 
 #### Defined in
 
-[medusa/src/services/notification.ts:78](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L78)
+[packages/medusa/src/services/notification.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L79)
 
 ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`): `Promise`<[`Notification`[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Notification`](Notification.md)[], `number`]\>
 
 Retrieves a list of notifications and total count.
 
@@ -280,12 +280,12 @@ Retrieves a list of notifications and total count.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `Selector`<`Notification`\> | the params to select the notifications by. |
-| `config` | `FindConfig`<`Notification`\> | the configuration to apply to the query |
+| `selector` | [`Selector`](../index.md#selector)<[`Notification`](Notification.md)\> | the params to select the notifications by. |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Notification`](Notification.md)\> | the configuration to apply to the query |
 
 #### Returns
 
-`Promise`<[`Notification`[], `number`]\>
+`Promise`<[[`Notification`](Notification.md)[], `number`]\>
 
 -`Promise`: the notifications that satisfy the query as well as the count.
 	-`Notification[]`: 
@@ -293,7 +293,7 @@ Retrieves a list of notifications and total count.
 
 #### Defined in
 
-[medusa/src/services/notification.ts:97](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L97)
+[packages/medusa/src/services/notification.ts:98](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L98)
 
 ___
 
@@ -318,7 +318,7 @@ used to generate on demand invoices or other documents.
 
 #### Defined in
 
-[medusa/src/services/notification.ts:52](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L52)
+[packages/medusa/src/services/notification.ts:53](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L53)
 
 ___
 
@@ -342,13 +342,13 @@ Takes a list of notification provider ids and persists them in the database.
 
 #### Defined in
 
-[medusa/src/services/notification.ts:60](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L60)
+[packages/medusa/src/services/notification.ts:61](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L61)
 
 ___
 
 ### resend
 
-**resend**(`id`, `config?`): `Promise`<`Notification`\>
+**resend**(`id`, `config?`): `Promise`<[`Notification`](Notification.md)\>
 
 Resends a notification by retrieving a prior notification and calling the
 underlying provider's resendNotification method.
@@ -358,24 +358,24 @@ underlying provider's resendNotification method.
 | Name | Description |
 | :------ | :------ |
 | `id` | `string` | the id of the notification |
-| `config` | `FindConfig`<`Notification`\> | any configuration that might override the previous send |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Notification`](Notification.md)\> | any configuration that might override the previous send |
 
 #### Returns
 
-`Promise`<`Notification`\>
+`Promise`<[`Notification`](Notification.md)\>
 
 -`Promise`: the newly created notification
 	-`Notification`: 
 
 #### Defined in
 
-[medusa/src/services/notification.ts:265](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L265)
+[packages/medusa/src/services/notification.ts:266](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L266)
 
 ___
 
 ### retrieve
 
-**retrieve**(`id`, `config?`): `Promise`<`Notification`\>
+**retrieve**(`id`, `config?`): `Promise`<[`Notification`](Notification.md)\>
 
 Retrieves a notification with a given id
 
@@ -384,24 +384,24 @@ Retrieves a notification with a given id
 | Name | Description |
 | :------ | :------ |
 | `id` | `string` | the id of the notification |
-| `config` | `FindConfig`<`Notification`\> | the configuration to apply to the query |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`Notification`](Notification.md)\> | the configuration to apply to the query |
 
 #### Returns
 
-`Promise`<`Notification`\>
+`Promise`<[`Notification`](Notification.md)\>
 
 -`Promise`: the notification
 	-`Notification`: 
 
 #### Defined in
 
-[medusa/src/services/notification.ts:118](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L118)
+[packages/medusa/src/services/notification.ts:119](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L119)
 
 ___
 
 ### retrieveProvider\_
 
-`Protected` **retrieveProvider_**(`id`): `AbstractNotificationService`
+`Protected` **retrieveProvider_**(`id`): [`AbstractNotificationService`](AbstractNotificationService.md)
 
 Finds a provider with a given id. Will throw a NOT_FOUND error if the
 resolution fails.
@@ -414,19 +414,19 @@ resolution fails.
 
 #### Returns
 
-`AbstractNotificationService`
+[`AbstractNotificationService`](AbstractNotificationService.md)
 
 -`AbstractNotificationService`: the notification provider
 
 #### Defined in
 
-[medusa/src/services/notification.ts:166](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L166)
+[packages/medusa/src/services/notification.ts:167](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L167)
 
 ___
 
 ### send
 
-**send**(`event`, `eventData`, `providerId`): `Promise`<`undefined` \| `Notification`\>
+**send**(`event`, `eventData`, `providerId`): `Promise`<`undefined` \| [`Notification`](Notification.md)\>
 
 Sends a notification, by calling the given provider's sendNotification
 method. Persists the Notification in the database.
@@ -441,14 +441,14 @@ method. Persists the Notification in the database.
 
 #### Returns
 
-`Promise`<`undefined` \| `Notification`\>
+`Promise`<`undefined` \| [`Notification`](Notification.md)\>
 
 -`Promise`: the created notification
 	-`undefined \| Notification`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/notification.ts:217](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L217)
+[packages/medusa/src/services/notification.ts:218](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L218)
 
 ___
 
@@ -470,11 +470,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -499,7 +499,7 @@ Subscribes a given provider to an event.
 
 #### Defined in
 
-[medusa/src/services/notification.ts:145](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/notification.ts#L145)
+[packages/medusa/src/services/notification.ts:146](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/notification.ts#L146)
 
 ___
 
@@ -511,7 +511,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -521,8 +521,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

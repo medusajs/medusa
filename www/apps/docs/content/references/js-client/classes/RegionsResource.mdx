@@ -50,7 +50,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreRegionsListRes`](../modules/internal.mdx#storeregionslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreRegionsListRes`](../internal/types/internal.StoreRegionsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of regions with pagination fields.",
@@ -58,7 +58,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
     "children": [
       {
         "name": "StoreRegionsListRes",
-        "type": "[`PaginatedResponse`](../modules/internal.mdx#paginatedresponse) & { `regions`: [`Region`](../internal/classes/internal.Region.mdx)[]  }",
+        "type": "[`PaginatedResponse`](../internal/types/internal.PaginatedResponse-1.mdx) & { `regions`: [`Region`](../internal/classes/internal.Region.mdx)[]  }",
         "description": "The list of regions with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -323,7 +323,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreRegionsRes`](../modules/internal.mdx#storeregionsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreRegionsRes`](../internal/types/internal.StoreRegionsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the region's details.",

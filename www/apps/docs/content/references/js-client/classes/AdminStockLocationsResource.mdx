@@ -177,7 +177,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminStockLocationsRes`](../modules/internal.mdx#adminstocklocationsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminStockLocationsRes`](../internal/types/internal.AdminStockLocationsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
@@ -193,7 +193,7 @@ medusa.admin.stockLocations
         "children": [
           {
             "name": "stock_location",
-            "type": "[`StockLocationExpandedDTO`](../modules/internal.mdx#stocklocationexpandeddto)",
+            "type": "[`StockLocationExpandedDTO`](../internal/types/internal.StockLocationExpandedDTO.mdx)",
             "description": "Stock location details.",
             "optional": false,
             "defaultValue": "",
@@ -201,7 +201,7 @@ medusa.admin.stockLocations
             "children": [
               {
                 "name": "address",
-                "type": "[`StockLocationAddressDTO`](../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#stocklocationaddressdto)",
+                "type": "[`StockLocationAddressDTO`](../StockLocationTypes/types/internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
                 "description": "The Address of the Stock Location",
                 "optional": true,
                 "defaultValue": "",
@@ -335,7 +335,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../modules/internal.mdx#deleteresponse)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/types/internal.DeleteResponse-1.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -537,7 +537,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminStockLocationsListRes`](../modules/internal.mdx#adminstocklocationslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminStockLocationsListRes`](../internal/types/internal.AdminStockLocationsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of stock locations with pagination fields.",
@@ -545,7 +545,7 @@ medusa.admin.stockLocations
     "children": [
       {
         "name": "AdminStockLocationsListRes",
-        "type": "[`PaginatedResponse`](../modules/internal.mdx#paginatedresponse) & { `stock_locations`: [`StockLocationExpandedDTO`](../modules/internal.mdx#stocklocationexpandeddto)[]  }",
+        "type": "[`PaginatedResponse`](../internal/types/internal.PaginatedResponse-1.mdx) & { `stock_locations`: [`StockLocationExpandedDTO`](../internal/types/internal.StockLocationExpandedDTO.mdx)[]  }",
         "description": "The list of stock locations with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -580,7 +580,7 @@ medusa.admin.stockLocations
           },
           {
             "name": "stock_locations",
-            "type": "[`StockLocationExpandedDTO`](../modules/internal.mdx#stocklocationexpandeddto)[]",
+            "type": "[`StockLocationExpandedDTO`](../internal/types/internal.StockLocationExpandedDTO.mdx)[]",
             "description": "",
             "optional": false,
             "defaultValue": "",
@@ -588,7 +588,7 @@ medusa.admin.stockLocations
             "children": [
               {
                 "name": "address",
-                "type": "[`StockLocationAddressDTO`](../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#stocklocationaddressdto)",
+                "type": "[`StockLocationAddressDTO`](../StockLocationTypes/types/internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
                 "description": "The Address of the Stock Location",
                 "optional": true,
                 "defaultValue": "",
@@ -722,7 +722,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminStockLocationsRes`](../modules/internal.mdx#adminstocklocationsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminStockLocationsRes`](../internal/types/internal.AdminStockLocationsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
@@ -738,7 +738,7 @@ medusa.admin.stockLocations
         "children": [
           {
             "name": "stock_location",
-            "type": "[`StockLocationExpandedDTO`](../modules/internal.mdx#stocklocationexpandeddto)",
+            "type": "[`StockLocationExpandedDTO`](../internal/types/internal.StockLocationExpandedDTO.mdx)",
             "description": "Stock location details.",
             "optional": false,
             "defaultValue": "",
@@ -746,7 +746,7 @@ medusa.admin.stockLocations
             "children": [
               {
                 "name": "address",
-                "type": "[`StockLocationAddressDTO`](../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#stocklocationaddressdto)",
+                "type": "[`StockLocationAddressDTO`](../StockLocationTypes/types/internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
                 "description": "The Address of the Stock Location",
                 "optional": true,
                 "defaultValue": "",
@@ -1001,7 +1001,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminStockLocationsRes`](../modules/internal.mdx#adminstocklocationsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminStockLocationsRes`](../internal/types/internal.AdminStockLocationsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
@@ -1017,7 +1017,7 @@ medusa.admin.stockLocations
         "children": [
           {
             "name": "stock_location",
-            "type": "[`StockLocationExpandedDTO`](../modules/internal.mdx#stocklocationexpandeddto)",
+            "type": "[`StockLocationExpandedDTO`](../internal/types/internal.StockLocationExpandedDTO.mdx)",
             "description": "Stock location details.",
             "optional": false,
             "defaultValue": "",
@@ -1025,7 +1025,7 @@ medusa.admin.stockLocations
             "children": [
               {
                 "name": "address",
-                "type": "[`StockLocationAddressDTO`](../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#stocklocationaddressdto)",
+                "type": "[`StockLocationAddressDTO`](../StockLocationTypes/types/internal.internal-1.StockLocationTypes.StockLocationAddressDTO.mdx)",
                 "description": "The Address of the Stock Location",
                 "optional": true,
                 "defaultValue": "",

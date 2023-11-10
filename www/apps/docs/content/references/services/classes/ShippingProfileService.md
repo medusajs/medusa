@@ -6,7 +6,7 @@ Provides layer to manipulate profiles.
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`ShippingProfileService`**
 
@@ -20,15 +20,15 @@ Provides layer to manipulate profiles.
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-38) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:49](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L49)
+[packages/medusa/src/services/shipping-profile.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L49)
 
 ## Properties
 
@@ -38,11 +38,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,11 +52,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,11 +66,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -80,41 +80,41 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:43](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L43)
+[packages/medusa/src/services/shipping-profile.ts:43](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L43)
 
 ___
 
 ### featureFlagRouter\_
 
- `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
+ `Protected` `Readonly` **featureFlagRouter\_**: [`FlagRouter`](FlagRouter.md)
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:47](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L47)
+[packages/medusa/src/services/shipping-profile.ts:47](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L47)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### productRepository\_
 
- `Protected` `Readonly` **productRepository\_**: `Repository`<`Product`\> & { `_applyCategoriesQuery`: Method \_applyCategoriesQuery ; `_findWithRelations`: Method \_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }
+ `Protected` `Readonly` **productRepository\_**: [`Repository`](Repository.md)<[`Product`](Product.md)\> & { `_applyCategoriesQuery`: Method \_applyCategoriesQuery ; `_findWithRelations`: Method \_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:46](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L46)
+[packages/medusa/src/services/shipping-profile.ts:46](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L46)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:41](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L41)
+[packages/medusa/src/services/shipping-profile.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L41)
 
 ___
 
@@ -134,41 +134,41 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:42](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L42)
+[packages/medusa/src/services/shipping-profile.ts:42](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L42)
 
 ___
 
 ### shippingProfileRepository\_
 
- `Protected` `Readonly` **shippingProfileRepository\_**: `Repository`<`ShippingProfile`\> & { `findByProducts`: Method findByProducts  }
+ `Protected` `Readonly` **shippingProfileRepository\_**: [`Repository`](Repository.md)<[`ShippingProfile`](ShippingProfile.md)\> & { `findByProducts`: Method findByProducts  }
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:45](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L45)
+[packages/medusa/src/services/shipping-profile.ts:45](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L45)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -178,13 +178,13 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
 ### addProduct
 
-**addProduct**(`profileId`, `productId`): `Promise`<`ShippingProfile`\>
+**addProduct**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 #### Parameters
 
@@ -195,7 +195,7 @@ TransactionBaseService.activeManager\_
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: 
 	-`ShippingProfile`: 
@@ -206,13 +206,13 @@ use [addProducts](ShippingProfileService.md#addproducts) instead
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:371](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L371)
+[packages/medusa/src/services/shipping-profile.ts:371](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L371)
 
 ___
 
 ### addProducts
 
-**addProducts**(`profileId`, `productId`): `Promise`<`ShippingProfile`\>
+**addProducts**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 Adds a product or an array of products to the profile.
 
@@ -225,20 +225,20 @@ Adds a product or an array of products to the profile.
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the result of update
 	-`ShippingProfile`: 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:384](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L384)
+[packages/medusa/src/services/shipping-profile.ts:384](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L384)
 
 ___
 
 ### addShippingOption
 
-**addShippingOption**(`profileId`, `optionId`): `Promise`<`ShippingProfile`\>
+**addShippingOption**(`profileId`, `optionId`): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 Adds a shipping option to the profile. The shipping option can be used to
 fulfill the products in the products field.
@@ -252,14 +252,14 @@ fulfill the products in the products field.
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the result of the model update operation
 	-`ShippingProfile`: 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:427](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L427)
+[packages/medusa/src/services/shipping-profile.ts:427](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L427)
 
 ___
 
@@ -280,8 +280,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -292,17 +292,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`profile`): `Promise`<`ShippingProfile`\>
+**create**(`profile`): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 Creates a new shipping profile.
 
@@ -310,57 +310,57 @@ Creates a new shipping profile.
 
 | Name | Description |
 | :------ | :------ |
-| `profile` | `CreateShippingProfile` | the shipping profile to create from |
+| `profile` | [`CreateShippingProfile`](../index.md#createshippingprofile) | the shipping profile to create from |
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the result of the create operation
 	-`ShippingProfile`: 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:275](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L275)
+[packages/medusa/src/services/shipping-profile.ts:275](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L275)
 
 ___
 
 ### createDefault
 
-**createDefault**(): `Promise`<`ShippingProfile`\>
+**createDefault**(): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 Creates a default shipping profile, if this does not already exist.
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the shipping profile
 	-`ShippingProfile`: 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:205](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L205)
+[packages/medusa/src/services/shipping-profile.ts:205](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L205)
 
 ___
 
 ### createGiftCardDefault
 
-**createGiftCardDefault**(): `Promise`<`ShippingProfile`\>
+**createGiftCardDefault**(): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 Creates a default shipping profile, for gift cards if unless it already
 exists.
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the shipping profile
 	-`ShippingProfile`: 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:249](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L249)
+[packages/medusa/src/services/shipping-profile.ts:249](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L249)
 
 ___
 
@@ -384,13 +384,13 @@ Deletes a profile with a given profile id.
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:349](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L349)
+[packages/medusa/src/services/shipping-profile.ts:349](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L349)
 
 ___
 
 ### fetchCartOptions
 
-**fetchCartOptions**(`cart`): `Promise`<`ShippingOption`[]\>
+**fetchCartOptions**(`cart`): `Promise`<[`ShippingOption`](ShippingOption.md)[]\>
 
 Finds all the shipping profiles that cover the products in a cart, and
 validates all options that are available for the cart.
@@ -403,7 +403,7 @@ validates all options that are available for the cart.
 
 #### Returns
 
-`Promise`<`ShippingOption`[]\>
+`Promise`<[`ShippingOption`](ShippingOption.md)[]\>
 
 -`Promise`: a list of the available shipping options
 	-`ShippingOption[]`: 
@@ -411,7 +411,7 @@ validates all options that are available for the cart.
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:452](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L452)
+[packages/medusa/src/services/shipping-profile.ts:452](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L452)
 
 ___
 
@@ -436,7 +436,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:88](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L88)
+[packages/medusa/src/services/shipping-profile.ts:88](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L88)
 
 ___
 
@@ -450,7 +450,7 @@ Returns a list of all the productIds in the cart.
 
 | Name | Description |
 | :------ | :------ |
-| `cart` | `Cart` | the cart to extract products from |
+| `cart` | [`Cart`](Cart.md) | the cart to extract products from |
 
 #### Returns
 
@@ -462,24 +462,24 @@ Returns a list of all the productIds in the cart.
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:518](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L518)
+[packages/medusa/src/services/shipping-profile.ts:518](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L518)
 
 ___
 
 ### list
 
-**list**(`selector?`, `config?`): `Promise`<`ShippingProfile`[]\>
+**list**(`selector?`, `config?`): `Promise`<[`ShippingProfile`](ShippingProfile.md)[]\>
 
 #### Parameters
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `Selector`<`ShippingProfile`\> | the query object for find |
-| `config` | `FindConfig`<`ShippingProfile`\> | the config object for find |
+| `selector` | [`Selector`](../index.md#selector)<[`ShippingProfile`](ShippingProfile.md)\> | the query object for find |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ShippingProfile`](ShippingProfile.md)\> | the config object for find |
 
 #### Returns
 
-`Promise`<`ShippingProfile`[]\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)[]\>
 
 -`Promise`: the result of the find operation
 	-`ShippingProfile[]`: 
@@ -487,13 +487,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:73](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L73)
+[packages/medusa/src/services/shipping-profile.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L73)
 
 ___
 
 ### removeProducts
 
-**removeProducts**(`profileId`, `productId`): `Promise`<`void` \| `ShippingProfile`\>
+**removeProducts**(`profileId`, `productId`): `Promise`<`void` \| [`ShippingProfile`](ShippingProfile.md)\>
 
 Removes a product or an array of products from the profile.
 
@@ -506,20 +506,20 @@ Removes a product or an array of products from the profile.
 
 #### Returns
 
-`Promise`<`void` \| `ShippingProfile`\>
+`Promise`<`void` \| [`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the result of update
 	-`void \| ShippingProfile`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:406](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L406)
+[packages/medusa/src/services/shipping-profile.ts:406](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L406)
 
 ___
 
 ### retrieve
 
-**retrieve**(`profileId`, `options?`): `Promise`<`ShippingProfile`\>
+**retrieve**(`profileId`, `options?`): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 Gets a profile by id.
 Throws in case of DB Error and if profile was not found.
@@ -529,41 +529,41 @@ Throws in case of DB Error and if profile was not found.
 | Name | Description |
 | :------ | :------ |
 | `profileId` | `string` | the id of the profile to get. |
-| `options` | `FindConfig`<`ShippingProfile`\> | options opf the query. |
+| `options` | [`FindConfig`](../interfaces/FindConfig.md)<[`ShippingProfile`](ShippingProfile.md)\> | options opf the query. |
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the profile document.
 	-`ShippingProfile`: 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:130](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L130)
+[packages/medusa/src/services/shipping-profile.ts:130](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L130)
 
 ___
 
 ### retrieveDefault
 
-**retrieveDefault**(): `Promise`<``null`` \| `ShippingProfile`\>
+**retrieveDefault**(): `Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.md)\>
 
 #### Returns
 
-`Promise`<``null`` \| `ShippingProfile`\>
+`Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: 
 	-```null`` \| ShippingProfile`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:189](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L189)
+[packages/medusa/src/services/shipping-profile.ts:189](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L189)
 
 ___
 
 ### retrieveForProducts
 
-**retrieveForProducts**(`productIds`): `Promise`<{ `[product_id: string]`: `ShippingProfile`[];  }\>
+**retrieveForProducts**(`productIds`): `Promise`<{ `[product_id: string]`: [`ShippingProfile`](ShippingProfile.md)[];  }\>
 
 #### Parameters
 
@@ -573,33 +573,33 @@ ___
 
 #### Returns
 
-`Promise`<{ `[product_id: string]`: `ShippingProfile`[];  }\>
+`Promise`<{ `[product_id: string]`: [`ShippingProfile`](ShippingProfile.md)[];  }\>
 
 -`Promise`: 
 	-``object``: (optional) 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:159](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L159)
+[packages/medusa/src/services/shipping-profile.ts:159](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L159)
 
 ___
 
 ### retrieveGiftCardDefault
 
-**retrieveGiftCardDefault**(): `Promise`<``null`` \| `ShippingProfile`\>
+**retrieveGiftCardDefault**(): `Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.md)\>
 
 Retrieves the default gift card profile
 
 #### Returns
 
-`Promise`<``null`` \| `ShippingProfile`\>
+`Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: the shipping profile for gift cards
 	-```null`` \| ShippingProfile`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:232](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L232)
+[packages/medusa/src/services/shipping-profile.ts:232](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L232)
 
 ___
 
@@ -621,17 +621,17 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`profileId`, `update`): `Promise`<`ShippingProfile`\>
+**update**(`profileId`, `update`): `Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 Updates a profile. Metadata updates and product updates should use
 dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
@@ -642,18 +642,18 @@ will throw errors if metadata or product updates are attempted.
 | Name | Description |
 | :------ | :------ |
 | `profileId` | `string` | the id of the profile. Must be a string that can be casted to an ObjectId |
-| `update` | `UpdateShippingProfile` | an object with the update values. |
+| `update` | [`UpdateShippingProfile`](../index.md#updateshippingprofile) | an object with the update values. |
 
 #### Returns
 
-`Promise`<`ShippingProfile`\>
+`Promise`<[`ShippingProfile`](ShippingProfile.md)\>
 
 -`Promise`: resolves to the update result.
 	-`ShippingProfile`: 
 
 #### Defined in
 
-[medusa/src/services/shipping-profile.ts:310](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/shipping-profile.ts#L310)
+[packages/medusa/src/services/shipping-profile.ts:310](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/shipping-profile.ts#L310)
 
 ___
 
@@ -665,7 +665,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -675,8 +675,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

@@ -9,6 +9,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 ## Enumerations
 
 - [AllocationType](enums/AllocationType.mdx)
+- [BatchJobStatus](enums/BatchJobStatus.mdx)
 - [CartType](enums/CartType.mdx)
 - [ClaimFulfillmentStatus](enums/ClaimFulfillmentStatus.mdx)
 - [ClaimPaymentStatus](enums/ClaimPaymentStatus.mdx)
@@ -26,6 +27,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [PaymentCollectionType](enums/PaymentCollectionType.mdx)
 - [PaymentSessionStatus](enums/PaymentSessionStatus.mdx)
 - [PaymentStatus](enums/PaymentStatus.mdx)
+- [PriceListStatus](enums/PriceListStatus.mdx)
+- [PriceListType](enums/PriceListType.mdx)
 - [ProductStatus](enums/ProductStatus.mdx)
 - [RefundReason](enums/RefundReason.mdx)
 - [RequirementType](enums/RequirementType.mdx)
@@ -40,6 +43,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 - [Address](classes/Address.mdx)
 - [AnalyticsConfig](classes/AnalyticsConfig.mdx)
+- [BaseEntity](classes/BaseEntity.mdx)
 - [BatchJob](classes/BatchJob.mdx)
 - [Cart](classes/Cart.mdx)
 - [ClaimImage](classes/ClaimImage.mdx)
@@ -74,6 +78,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [MoneyAmount](classes/MoneyAmount.mdx)
 - [Note](classes/Note.mdx)
 - [Notification](classes/Notification.mdx)
+- [NotificationProvider](classes/NotificationProvider.mdx)
 - [Oauth](classes/Oauth.mdx)
 - [Order](classes/Order.mdx)
 - [OrderEdit](classes/OrderEdit.mdx)
@@ -110,10 +115,166 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 - [ShippingOptionRequirement](classes/ShippingOptionRequirement.mdx)
 - [ShippingProfile](classes/ShippingProfile.mdx)
 - [ShippingTaxRate](classes/ShippingTaxRate.mdx)
+- [SoftDeletableEntity](classes/SoftDeletableEntity.mdx)
 - [StagedJob](classes/StagedJob.mdx)
 - [Store](classes/Store.mdx)
 - [Swap](classes/Swap.mdx)
+- [TaxLine](classes/TaxLine.mdx)
 - [TaxProvider](classes/TaxProvider.mdx)
 - [TaxRate](classes/TaxRate.mdx)
 - [TrackingLink](classes/TrackingLink.mdx)
 - [User](classes/User.mdx)
+
+## Interfaces
+
+- [Boolean](interfaces/Boolean.mdx)
+
+## Type Aliases
+
+### BatchJobResultError
+
+ **BatchJobResultError**: `Object`
+
+#### Index signature
+
+▪ [key: `string`]: `unknown`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "code",
+    "type": "`string` \\| `number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "message",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### BatchJobResultStatDescriptor
+
+ **BatchJobResultStatDescriptor**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "key",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "message",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### Record
+
+ **Record**<`K`, `T`\>: { [P in K]: T }
+
+Construct a type with a set of properties K of type T
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "K",
+    "type": "keyof `any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Functions
+
+### Boolean
+
+**Boolean**<`T`\>(`value?`): `boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`T`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

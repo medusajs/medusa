@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`OrderEditService`**
 
@@ -16,15 +16,15 @@
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-20) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:75](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L75)
+[packages/medusa/src/services/order-edit.ts:79](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L79)
 
 ## Properties
 
@@ -34,11 +34,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -48,11 +48,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -62,11 +62,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,17 +76,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:69](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L69)
-
-___
-
-### inventoryService\_
-
- `Protected` `Readonly` **inventoryService\_**: `undefined` \| `IInventoryService`
-
-#### Defined in
-
-[medusa/src/services/order-edit.ts:73](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L73)
+[packages/medusa/src/services/order-edit.ts:70](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L70)
 
 ___
 
@@ -96,7 +86,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:71](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L71)
+[packages/medusa/src/services/order-edit.ts:72](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L72)
 
 ___
 
@@ -106,21 +96,21 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:68](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L68)
+[packages/medusa/src/services/order-edit.ts:69](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L69)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -130,7 +120,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:67](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L67)
+[packages/medusa/src/services/order-edit.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L68)
 
 ___
 
@@ -140,17 +130,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:72](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L72)
+[packages/medusa/src/services/order-edit.ts:73](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L73)
 
 ___
 
 ### orderEditRepository\_
 
- `Protected` `Readonly` **orderEditRepository\_**: `Repository`<`OrderEdit`\>
+ `Protected` `Readonly` **orderEditRepository\_**: [`Repository`](Repository.md)<[`OrderEdit`](OrderEdit.md)\>
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:63](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L63)
+[packages/medusa/src/services/order-edit.ts:64](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L64)
 
 ___
 
@@ -160,7 +150,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:65](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L65)
+[packages/medusa/src/services/order-edit.ts:66](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L66)
 
 ___
 
@@ -170,7 +160,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:70](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L70)
+[packages/medusa/src/services/order-edit.ts:71](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L71)
 
 ___
 
@@ -180,21 +170,21 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:66](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L66)
+[packages/medusa/src/services/order-edit.ts:67](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L67)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -215,17 +205,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:54](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L54)
+[packages/medusa/src/services/order-edit.ts:55](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L55)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -235,7 +225,23 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+
+___
+
+### inventoryService\_
+
+`Protected` `get` **inventoryService_**(): `undefined` \| [`IInventoryService`](../interfaces/IInventoryService.md)
+
+#### Returns
+
+`undefined` \| [`IInventoryService`](../interfaces/IInventoryService.md)
+
+-`undefined \| IInventoryService`: (optional) 
+
+#### Defined in
+
+[packages/medusa/src/services/order-edit.ts:75](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L75)
 
 ## Methods
 
@@ -248,7 +254,7 @@ TransactionBaseService.activeManager\_
 | Name |
 | :------ |
 | `orderEditId` | `string` |
-| `data` | `AddOrderEditLineItemInput` |
+| `data` | [`AddOrderEditLineItemInput`](../index.md#addordereditlineiteminput) |
 
 #### Returns
 
@@ -258,7 +264,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:541](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L541)
+[packages/medusa/src/services/order-edit.ts:543](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L543)
 
 ___
 
@@ -279,8 +285,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -291,17 +297,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### cancel
 
-**cancel**(`orderEditId`, `context?`): `Promise`<`OrderEdit`\>
+**cancel**(`orderEditId`, `context?`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
@@ -313,20 +319,20 @@ ___
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:687](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L687)
+[packages/medusa/src/services/order-edit.ts:689](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L689)
 
 ___
 
 ### confirm
 
-**confirm**(`orderEditId`, `context?`): `Promise`<`OrderEdit`\>
+**confirm**(`orderEditId`, `context?`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
@@ -338,45 +344,45 @@ ___
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:726](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L726)
+[packages/medusa/src/services/order-edit.ts:728](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L728)
 
 ___
 
 ### create
 
-**create**(`data`, `context`): `Promise`<`OrderEdit`\>
+**create**(`data`, `context`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `data` | `CreateOrderEditInput` |
+| `data` | [`CreateOrderEditInput`](../index.md#createordereditinput) |
 | `context` | `object` |
 | `context.createdBy` | `string` |
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:162](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L162)
+[packages/medusa/src/services/order-edit.ts:164](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L164)
 
 ___
 
 ### decline
 
-**decline**(`orderEditId`, `context`): `Promise`<`OrderEdit`\>
+**decline**(`orderEditId`, `context`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
@@ -389,37 +395,37 @@ ___
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:260](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L260)
+[packages/medusa/src/services/order-edit.ts:262](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L262)
 
 ___
 
 ### decorateTotals
 
-**decorateTotals**(`orderEdit`): `Promise`<`OrderEdit`\>
+**decorateTotals**(`orderEdit`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
-| Name |
-| :------ |
-| `orderEdit` | `OrderEdit` |
+| Name | Description |
+| :------ | :------ |
+| `orderEdit` | [`OrderEdit`](OrderEdit.md) | Order edit allows modifying items in an order, such as adding, updating, or deleting items from the original order. Once the order edit is confirmed, the changes are reflected on the original order. |
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:490](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L490)
+[packages/medusa/src/services/order-edit.ts:492](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L492)
 
 ___
 
@@ -441,7 +447,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:238](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L238)
+[packages/medusa/src/services/order-edit.ts:240](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L240)
 
 ___
 
@@ -463,7 +469,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:808](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L808)
+[packages/medusa/src/services/order-edit.ts:810](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L810)
 
 ___
 
@@ -486,24 +492,24 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:613](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L613)
+[packages/medusa/src/services/order-edit.ts:615](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L615)
 
 ___
 
 ### list
 
-**list**(`selector`, `config?`): `Promise`<`OrderEdit`[]\>
+**list**(`selector`, `config?`): `Promise`<[`OrderEdit`](OrderEdit.md)[]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | `Selector`<`OrderEdit`\> |
-| `config?` | `FindConfig`<`OrderEdit`\> |
+| `selector` | [`Selector`](../index.md#selector)<[`OrderEdit`](OrderEdit.md)\> |
+| `config?` | [`FindConfig`](../interfaces/FindConfig.md)<[`OrderEdit`](OrderEdit.md)\> |
 
 #### Returns
 
-`Promise`<`OrderEdit`[]\>
+`Promise`<[`OrderEdit`](OrderEdit.md)[]\>
 
 -`Promise`: 
 	-`OrderEdit[]`: 
@@ -511,24 +517,24 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:154](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L154)
+[packages/medusa/src/services/order-edit.ts:156](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L156)
 
 ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`): `Promise`<[`OrderEdit`[], `number`]\>
+**listAndCount**(`selector`, `config?`): `Promise`<[[`OrderEdit`](OrderEdit.md)[], `number`]\>
 
 #### Parameters
 
 | Name |
 | :------ |
-| `selector` | `Selector`<`OrderEdit`\> & { `q?`: `string`  } |
-| `config?` | `FindConfig`<`OrderEdit`\> |
+| `selector` | [`Selector`](../index.md#selector)<[`OrderEdit`](OrderEdit.md)\> & { `q?`: `string`  } |
+| `config?` | [`FindConfig`](../interfaces/FindConfig.md)<[`OrderEdit`](OrderEdit.md)\> |
 
 #### Returns
 
-`Promise`<[`OrderEdit`[], `number`]\>
+`Promise`<[[`OrderEdit`](OrderEdit.md)[], `number`]\>
 
 -`Promise`: 
 	-`OrderEdit[]`: 
@@ -536,7 +542,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:130](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L130)
+[packages/medusa/src/services/order-edit.ts:132](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L132)
 
 ___
 
@@ -550,7 +556,7 @@ ___
 | :------ | :------ |
 | `orderEditId` | `string` |
 | `config` | `object` |
-| `config.preserveCustomAdjustments` | `boolean` | `false` |
+| `config.preserveCustomAdjustments` | `boolean` | false |
 
 #### Returns
 
@@ -560,7 +566,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:439](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L439)
+[packages/medusa/src/services/order-edit.ts:441](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L441)
 
 ___
 
@@ -583,13 +589,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:382](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L382)
+[packages/medusa/src/services/order-edit.ts:384](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L384)
 
 ___
 
 ### requestConfirmation
 
-**requestConfirmation**(`orderEditId`, `context?`): `Promise`<`OrderEdit`\>
+**requestConfirmation**(`orderEditId`, `context?`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
@@ -601,62 +607,62 @@ ___
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:645](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L645)
+[packages/medusa/src/services/order-edit.ts:647](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L647)
 
 ___
 
 ### retrieve
 
-**retrieve**(`orderEditId`, `config?`): `Promise`<`OrderEdit`\>
+**retrieve**(`orderEditId`, `config?`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `orderEditId` | `string` |
-| `config` | `FindConfig`<`OrderEdit`\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`OrderEdit`](OrderEdit.md)\> |
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:102](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L102)
+[packages/medusa/src/services/order-edit.ts:104](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L104)
 
 ___
 
 ### retrieveActive
 
-`Protected` **retrieveActive**(`orderId`, `config?`): `Promise`<`undefined` \| ``null`` \| `OrderEdit`\>
+`Protected` **retrieveActive**(`orderId`, `config?`): `Promise`<`undefined` \| ``null`` \| [`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `orderId` | `string` |
-| `config` | `FindConfig`<`OrderEdit`\> |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`OrderEdit`](OrderEdit.md)\> |
 
 #### Returns
 
-`Promise`<`undefined` \| ``null`` \| `OrderEdit`\>
+`Promise`<`undefined` \| ``null`` \| [`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`undefined \| ``null`` \| OrderEdit`: (optional) 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:788](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L788)
+[packages/medusa/src/services/order-edit.ts:790](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L790)
 
 ___
 
@@ -678,35 +684,35 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`orderEditId`, `data`): `Promise`<`OrderEdit`\>
+**update**(`orderEditId`, `data`): `Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 #### Parameters
 
 | Name |
 | :------ |
 | `orderEditId` | `string` |
-| `data` | `DeepPartial`<`OrderEdit`\> |
+| `data` | [`DeepPartial`](../index.md#deeppartial)<[`OrderEdit`](OrderEdit.md)\> |
 
 #### Returns
 
-`Promise`<`OrderEdit`\>
+`Promise`<[`OrderEdit`](OrderEdit.md)\>
 
 -`Promise`: 
 	-`OrderEdit`: 
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:211](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L211)
+[packages/medusa/src/services/order-edit.ts:213](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L213)
 
 ___
 
@@ -735,7 +741,7 @@ Create or update order edit item change line item and apply the quantity
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:309](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L309)
+[packages/medusa/src/services/order-edit.ts:311](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L311)
 
 ___
 
@@ -747,7 +753,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -757,11 +763,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
 
 ___
 
@@ -771,9 +777,9 @@ ___
 
 #### Parameters
 
-| Name |
-| :------ |
-| `orderEdit` | `OrderEdit` |
+| Name | Description |
+| :------ | :------ |
+| `orderEdit` | [`OrderEdit`](OrderEdit.md) | Order edit allows modifying items in an order, such as adding, updating, or deleting items from the original order. Once the order edit is confirmed, the changes are reflected on the original order. |
 
 #### Returns
 
@@ -783,4 +789,4 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit.ts:860](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/order-edit.ts#L860)
+[packages/medusa/src/services/order-edit.ts:862](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/order-edit.ts#L862)

@@ -4,7 +4,7 @@ Provides layer to manipulate product collections.
 
 ## Hierarchy
 
-- `TransactionBaseService`
+- [`TransactionBaseService`](TransactionBaseService.md)
 
   ↳ **`ProductCollectionService`**
 
@@ -18,15 +18,15 @@ Provides layer to manipulate product collections.
 
 | Name |
 | :------ |
-| `«destructured»` | `InjectedDependencies` |
+| `«destructured»` | [`InjectedDependencies`](../index.md#injecteddependencies-28) |
 
 #### Overrides
 
-TransactionBaseService.constructor
+[TransactionBaseService](TransactionBaseService.md).[constructor](TransactionBaseService.md#constructor)
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:49](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L49)
+[packages/medusa/src/services/product-collection.ts:49](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L49)
 
 ## Properties
 
@@ -36,11 +36,11 @@ TransactionBaseService.constructor
 
 #### Inherited from
 
-TransactionBaseService.\_\_configModule\_\_
+[TransactionBaseService](TransactionBaseService.md).[__configModule__](TransactionBaseService.md#__configmodule__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[packages/medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -50,11 +50,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_container\_\_
+[TransactionBaseService](TransactionBaseService.md).[__container__](TransactionBaseService.md#__container__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -64,11 +64,11 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.\_\_moduleDeclaration\_\_
+[TransactionBaseService](TransactionBaseService.md).[__moduleDeclaration__](TransactionBaseService.md#__moduledeclaration__)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[packages/medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -78,55 +78,55 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:36](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L36)
+[packages/medusa/src/services/product-collection.ts:36](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L36)
 
 ___
 
 ### manager\_
 
- `Protected` **manager\_**: `EntityManager`
+ `Protected` **manager\_**: [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.manager\_
+[TransactionBaseService](TransactionBaseService.md).[manager_](TransactionBaseService.md#manager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[packages/medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### productCollectionRepository\_
 
- `Protected` `Readonly` **productCollectionRepository\_**: `Repository`<`ProductCollection`\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId  }
+ `Protected` `Readonly` **productCollectionRepository\_**: [`Repository`](Repository.md)<[`ProductCollection`](ProductCollection.md)\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId  }
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:38](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L38)
+[packages/medusa/src/services/product-collection.ts:38](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L38)
 
 ___
 
 ### productRepository\_
 
- `Protected` `Readonly` **productRepository\_**: `Repository`<`Product`\> & { `_applyCategoriesQuery`: Method \_applyCategoriesQuery ; `_findWithRelations`: Method \_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }
+ `Protected` `Readonly` **productRepository\_**: [`Repository`](Repository.md)<[`Product`](Product.md)\> & { `_applyCategoriesQuery`: Method \_applyCategoriesQuery ; `_findWithRelations`: Method \_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:39](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L39)
+[packages/medusa/src/services/product-collection.ts:39](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L39)
 
 ___
 
 ### transactionManager\_
 
- `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+ `Protected` **transactionManager\_**: `undefined` \| [`EntityManager`](EntityManager.md)
 
 #### Inherited from
 
-TransactionBaseService.transactionManager\_
+[TransactionBaseService](TransactionBaseService.md).[transactionManager_](TransactionBaseService.md#transactionmanager_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[packages/medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -146,17 +146,17 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:41](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L41)
+[packages/medusa/src/services/product-collection.ts:41](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L41)
 
 ## Accessors
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected` `get` **activeManager_**(): [`EntityManager`](EntityManager.md)
 
 #### Returns
 
-`EntityManager`
+[`EntityManager`](EntityManager.md)
 
 -`EntityManager`: 
 
@@ -166,13 +166,13 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[packages/medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
 ### addProducts
 
-**addProducts**(`collectionId`, `productIds`): `Promise`<`ProductCollection`\>
+**addProducts**(`collectionId`, `productIds`): `Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 #### Parameters
 
@@ -183,14 +183,14 @@ TransactionBaseService.activeManager\_
 
 #### Returns
 
-`Promise`<`ProductCollection`\>
+`Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 -`Promise`: 
 	-`ProductCollection`: 
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:216](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L216)
+[packages/medusa/src/services/product-collection.ts:216](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L216)
 
 ___
 
@@ -211,8 +211,8 @@ transaction manager is created.
 
 | Name | Description |
 | :------ | :------ |
-| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
-| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `work` | (`transactionManager`: [`EntityManager`](EntityManager.md)) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | [`IsolationLevel`](../index.md#isolationlevel) \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
 | `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
 
 #### Returns
@@ -223,17 +223,17 @@ transaction manager is created.
 
 #### Inherited from
 
-TransactionBaseService.atomicPhase\_
+[TransactionBaseService](TransactionBaseService.md).[atomicPhase_](TransactionBaseService.md#atomicphase_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[packages/medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
 ### create
 
-**create**(`collection`): `Promise`<`ProductCollection`\>
+**create**(`collection`): `Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 Creates a product collection
 
@@ -241,18 +241,18 @@ Creates a product collection
 
 | Name | Description |
 | :------ | :------ |
-| `collection` | `CreateProductCollection` | the collection to create |
+| `collection` | [`CreateProductCollection`](../index.md#createproductcollection) | the collection to create |
 
 #### Returns
 
-`Promise`<`ProductCollection`\>
+`Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 -`Promise`: created collection
 	-`ProductCollection`: 
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:128](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L128)
+[packages/medusa/src/services/product-collection.ts:128](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L128)
 
 ___
 
@@ -276,13 +276,13 @@ Deletes a product collection idempotently
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:192](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L192)
+[packages/medusa/src/services/product-collection.ts:192](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L192)
 
 ___
 
 ### list
 
-**list**(`selector?`, `config?`): `Promise`<`ProductCollection`[]\>
+**list**(`selector?`, `config?`): `Promise`<[`ProductCollection`](ProductCollection.md)[]\>
 
 Lists product collections
 
@@ -290,14 +290,14 @@ Lists product collections
 
 | Name | Default value | Description |
 | :------ | :------ | :------ |
-| `selector` | `Selector`<`ProductCollection`\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | the query object for find |
+| `selector` | [`Selector`](../index.md#selector)<[`ProductCollection`](ProductCollection.md)\> & { `discount_condition_id?`: `string` ; `q?`: `string`  } | the query object for find |
 | `config` | `object` | the config to be used for find |
-| `config.skip` | `number` | `0` |
-| `config.take` | `number` | `20` |
+| `config.skip` | `number` | 0 |
+| `config.take` | `number` | 20 |
 
 #### Returns
 
-`Promise`<`ProductCollection`[]\>
+`Promise`<[`ProductCollection`](ProductCollection.md)[]\>
 
 -`Promise`: the result of the find operation
 	-`ProductCollection[]`: 
@@ -305,13 +305,13 @@ Lists product collections
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:274](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L274)
+[packages/medusa/src/services/product-collection.ts:274](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L274)
 
 ___
 
 ### listAndCount
 
-**listAndCount**(`selector?`, `config?`): `Promise`<[`ProductCollection`[], `number`]\>
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`ProductCollection`](ProductCollection.md)[], `number`]\>
 
 Lists product collections and add count.
 
@@ -319,12 +319,12 @@ Lists product collections and add count.
 
 | Name | Description |
 | :------ | :------ |
-| `selector` | `ListAndCountSelector` | the query object for find |
-| `config` | `FindConfig`<`ProductCollection`\> | the config to be used for find |
+| `selector` | [`ListAndCountSelector`](../index.md#listandcountselector) | the query object for find |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductCollection`](ProductCollection.md)\> | the config to be used for find |
 
 #### Returns
 
-`Promise`<[`ProductCollection`[], `number`]\>
+`Promise`<[[`ProductCollection`](ProductCollection.md)[], `number`]\>
 
 -`Promise`: the result of the find operation
 	-`ProductCollection[]`: 
@@ -332,7 +332,7 @@ Lists product collections and add count.
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:291](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L291)
+[packages/medusa/src/services/product-collection.ts:291](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L291)
 
 ___
 
@@ -355,13 +355,13 @@ ___
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:242](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L242)
+[packages/medusa/src/services/product-collection.ts:242](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L242)
 
 ___
 
 ### retrieve
 
-**retrieve**(`collectionId`, `config?`): `Promise`<`ProductCollection`\>
+**retrieve**(`collectionId`, `config?`): `Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 Retrieves a product collection by id.
 
@@ -370,24 +370,24 @@ Retrieves a product collection by id.
 | Name | Description |
 | :------ | :------ |
 | `collectionId` | `string` | the id of the collection to retrieve. |
-| `config` | `FindConfig`<`ProductCollection`\> | the config of the collection to retrieve. |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductCollection`](ProductCollection.md)\> | the config of the collection to retrieve. |
 
 #### Returns
 
-`Promise`<`ProductCollection`\>
+`Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 -`Promise`: the collection.
 	-`ProductCollection`: 
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:68](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L68)
+[packages/medusa/src/services/product-collection.ts:68](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L68)
 
 ___
 
 ### retrieveByHandle
 
-**retrieveByHandle**(`collectionHandle`, `config?`): `Promise`<`ProductCollection`\>
+**retrieveByHandle**(`collectionHandle`, `config?`): `Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 Retrieves a product collection by id.
 
@@ -396,18 +396,18 @@ Retrieves a product collection by id.
 | Name | Description |
 | :------ | :------ |
 | `collectionHandle` | `string` | the handle of the collection to retrieve. |
-| `config` | `FindConfig`<`ProductCollection`\> | query config for request |
+| `config` | [`FindConfig`](../interfaces/FindConfig.md)<[`ProductCollection`](ProductCollection.md)\> | query config for request |
 
 #### Returns
 
-`Promise`<`ProductCollection`\>
+`Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 -`Promise`: the collection.
 	-`ProductCollection`: 
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:102](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L102)
+[packages/medusa/src/services/product-collection.ts:102](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L102)
 
 ___
 
@@ -429,17 +429,17 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.shouldRetryTransaction\_
+[TransactionBaseService](TransactionBaseService.md).[shouldRetryTransaction_](TransactionBaseService.md#shouldretrytransaction_)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[packages/medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
 ### update
 
-**update**(`collectionId`, `update`): `Promise`<`ProductCollection`\>
+**update**(`collectionId`, `update`): `Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 Updates a product collection
 
@@ -448,18 +448,18 @@ Updates a product collection
 | Name | Description |
 | :------ | :------ |
 | `collectionId` | `string` | id of collection to update |
-| `update` | `UpdateProductCollection` | update object |
+| `update` | [`UpdateProductCollection`](../index.md#updateproductcollection) | update object |
 
 #### Returns
 
-`Promise`<`ProductCollection`\>
+`Promise`<[`ProductCollection`](ProductCollection.md)\>
 
 -`Promise`: update collection
 	-`ProductCollection`: 
 
 #### Defined in
 
-[medusa/src/services/product-collection.ts:154](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/product-collection.ts#L154)
+[packages/medusa/src/services/product-collection.ts:154](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/services/product-collection.ts#L154)
 
 ___
 
@@ -471,7 +471,7 @@ ___
 
 | Name |
 | :------ |
-| `transactionManager?` | `EntityManager` |
+| `transactionManager?` | [`EntityManager`](EntityManager.md) |
 
 #### Returns
 
@@ -481,8 +481,8 @@ ___
 
 #### Inherited from
 
-TransactionBaseService.withTransaction
+[TransactionBaseService](TransactionBaseService.md).[withTransaction](TransactionBaseService.md#withtransaction)
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[packages/medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/e39010127/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
