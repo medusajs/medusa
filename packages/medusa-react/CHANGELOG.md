@@ -1,5 +1,17 @@
 # Change Log
 
+## 9.0.11
+
+### Patch Changes
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+- Updated dependencies [[`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298)]:
+  - @medusajs/medusa-js@6.1.4
+
 ## 9.0.10
 
 ### Patch Changes

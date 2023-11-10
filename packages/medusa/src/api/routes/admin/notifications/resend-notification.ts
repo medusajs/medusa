@@ -34,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.notifications.resend(notificationId)
  *       .then(({ notification }) => {
  *         console.log(notification.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -104,7 +104,8 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   to:
- *     description: "A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used."
+ *     description: >-
+ *       A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used.
  *     type: string
  */
 export class AdminPostNotificationsNotificationResendReq {

@@ -97,7 +97,7 @@ import { Type } from "class-transformer"
  *       medusa.admin.collections.list()
  *       .then(({ collections, limit, offset, count }) => {
  *         console.log(collections.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -150,47 +150,80 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to configure the pagination of the retrieved product collections.
+ */
 export class AdminGetCollectionsPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product collections.
+ */
 // eslint-disable-next-line max-len
 export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationParams {
+  /**
+   * Title to filter product collections by.
+   */
   @IsOptional()
   @IsString()
   title?: string
 
+  /**
+   * Handle to filter product collections by.
+   */
   @IsOptional()
   @IsString()
   handle?: string
 
+  /**
+   * Date filters to apply on the product collections' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product collections' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product collections' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
 
+  /**
+   * Term to search product collections by their title and handle.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Filter product collections by their associated discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

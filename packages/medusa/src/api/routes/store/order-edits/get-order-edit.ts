@@ -19,7 +19,7 @@ import { OrderEditService } from "../../../../services"
  *       medusa.orderEdits.retrieve(orderEditId)
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

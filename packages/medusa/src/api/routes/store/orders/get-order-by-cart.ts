@@ -19,7 +19,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.orders.retrieveByCartId(cartId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

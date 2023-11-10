@@ -6,7 +6,7 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /admin/discounts/{id}
  * operationId: "GetDiscountsDiscount"
  * summary: "Get a Discount"
- * description: "Retrieves a Discount"
+ * description: "Retrieve a Discount."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
@@ -25,7 +25,7 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.retrieve(discountId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -144,6 +144,7 @@ export type StockLocationDTO = {
  *   - type: object
  *     properties:
  *       sales_channels:
+ *         description: "The associated sales channels."
  *         $ref: "#/components/schemas/SalesChannel"
  */
 export type StockLocationExpandedDTO = StockLocationDTO & {

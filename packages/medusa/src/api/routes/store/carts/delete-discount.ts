@@ -11,7 +11,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [delete] /store/carts/{id}/discounts/{code}
  * operationId: DeleteCartsCartDiscountsDiscount
  * summary: "Remove Discount"
- * description: "Remove a Discount from a Cart. This only removes the application of the discount, and not completely delete it. The totals will be re-calculated and the payment sessions
+ * description: "Remove a Discount from a Cart. This only removes the application of the discount, and not completely deletes it. The totals will be re-calculated and the payment sessions
  *  will be refreshed after the removal."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
@@ -27,7 +27,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.deleteDiscount(cartId, code)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

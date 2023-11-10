@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PaymentMethod
+
+The attributes to update in the order's payment method.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "The data to attach to the payment.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the payment provider used in the order.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

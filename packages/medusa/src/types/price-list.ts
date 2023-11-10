@@ -12,55 +12,110 @@ import { PriceList } from "../models/price-list"
 import { DateComparisonOperator, FindConfig } from "./common"
 import { XorConstraint } from "./validators/xor"
 
+/**
+ * @enum
+ *
+ * The type of price list.
+ */
 export enum PriceListType {
+  /**
+   * The price list is used for a sale.
+   */
   SALE = "sale",
+  /**
+   * The price list is used to override original prices for specific conditions.
+   */
   OVERRIDE = "override",
 }
 
+/**
+ * @enum
+ *
+ * The status of a price list.
+ */
 export enum PriceListStatus {
+  /**
+   * The price list is active, meaning its prices are applied to customers.
+   */
   ACTIVE = "active",
+  /**
+   * The price list is a draft, meaning its not yet applied to customers.
+   */
   DRAFT = "draft",
 }
 
+/**
+ * Filters to apply on the retrieved price lists.
+ */
 export class FilterablePriceListProps {
+  /**
+   * IDs to filter price lists by.
+   */
   @IsString()
   @IsOptional()
   id?: string
 
+  /**
+   * Search terms to search price lists' description, name, and customer group's name.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Statuses to filter price lists by.
+   */
   @IsOptional()
   @IsEnum(PriceListStatus, { each: true })
   status?: PriceListStatus[]
 
+  /**
+   * Name to filter price lists by.
+   */
   @IsString()
   @IsOptional()
   name?: string
 
+  /**
+   * Filter price lists by their associated customer groups.
+   */
   @IsOptional()
   @IsString({ each: true })
   customer_groups?: string[]
 
+  /**
+   * Description to filter price lists by.
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * Types to filter price lists by.
+   */
   @IsOptional()
   @IsEnum(PriceListType, { each: true })
   type?: PriceListType[]
 
+  /**
+   * Date filters to apply on the price lists' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the price lists' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the price lists' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)

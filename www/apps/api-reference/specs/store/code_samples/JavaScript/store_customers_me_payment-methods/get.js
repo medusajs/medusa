@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.customers.paymentMethods.list()
 .then(({ payment_methods }) => {
   console.log(payment_methods.length);
-});
+})

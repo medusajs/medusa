@@ -25,6 +25,7 @@ export const defaultRelations = ["orders", "orders.items", "shipping_addresses"]
 /**
  * @schema StoreAuthRes
  * type: object
+ * description: "The customer's details."
  * x-expanded-relations:
  *   field: customer
  *   relations:
@@ -45,6 +46,7 @@ export type StoreAuthRes = {
 /**
  * @schema StoreBearerAuthRes
  * type: object
+ * description: "The access token details."
  * properties:
  *   access_token:
  *     description: Access token that can be used to send authenticated requests.
@@ -57,6 +59,7 @@ export type StoreBearerAuthRes = {
 /**
  * @schema StoreGetAuthEmailRes
  * type: object
+ * description: "Details on whether the email exists."
  * required:
  *   - exists
  * properties:

@@ -1,4 +1,5 @@
 type: object
+description: The list of fulfillment options in a region.
 required:
   - fulfillment_options
 properties:

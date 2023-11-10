@@ -20,7 +20,7 @@ tags:
   - name: Batch Jobs
     description: |
       A batch job is a task that is performed by the Medusa backend asynchronusly. For example, the Import Product feature is implemented using batch jobs.
-      Batch Job API Routes allows admins to manage the batch jobs and their state.
+      Batch Job API Routes allow admins to manage the batch jobs and their state.
     externalDocs:
       description: How to import products
       url: https://docs.medusajs.com/modules/products/admin/import-products
@@ -194,7 +194,7 @@ tags:
       A shipping profile is used to group products that can be shipped in the same manner.
       They are created by the admin and they're not associated with a fulfillment provider.
     externalDocs:
-      description: Shipping Option architecture
+      description: Shipping Profile architecture
       url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile
   - name: Stock Locations
     description: |

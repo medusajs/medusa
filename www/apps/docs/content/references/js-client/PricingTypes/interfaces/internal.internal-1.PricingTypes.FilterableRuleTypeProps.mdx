@@ -1,0 +1,59 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterableRuleTypeProps
+
+Filters to apply on rule types.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "([`FilterableRuleTypeProps`](internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableRuleTypeProps`](internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "([`FilterableRuleTypeProps`](internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableRuleTypeProps`](internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`[]",
+    "description": "The IDs to filter rule types by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`[]",
+    "description": "The names to filter rule types by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rule_attribute",
+    "type": "`string`[]",
+    "description": "The rule attributes to filter rule types by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

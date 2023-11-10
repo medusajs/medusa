@@ -32,7 +32,7 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.deleteCountry(regionId, "dk")
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

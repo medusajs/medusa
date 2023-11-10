@@ -1,5 +1,30 @@
 # Change Log
 
+## 1.17.4
+
+### Patch Changes
+
+- [#5594](https://github.com/medusajs/medusa/pull/5594) [`4ad66c179`](https://github.com/medusajs/medusa/commit/4ad66c1795af2b5e9f0a0e958447b688e525651a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Load legacy modules entities
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+
+- [#5510](https://github.com/medusajs/medusa/pull/5510) [`203e1fccb`](https://github.com/medusajs/medusa/commit/203e1fccb404a7408b53767456eee52ea719356c) Thanks [@adamlamaa](https://github.com/adamlamaa)! - feat(medusa): Include Product Collections in Seed command
+
+- [#5496](https://github.com/medusajs/medusa/pull/5496) [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, modules-sdk, types, utils): Re work modules loading and remove legacy functions
+
+- [#5543](https://github.com/medusajs/medusa/pull/5543) [`f90ba0208`](https://github.com/medusajs/medusa/commit/f90ba02087778d8131aed3a59a6dc9c8ca3c95f4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Introduce promiseAll util
+
+- Updated dependencies [[`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/modules-sdk@1.12.3
+  - @medusajs/orchestration@0.4.4
+  - @medusajs/utils@1.10.5
+  - @medusajs/workflows@0.2.5
+  - @medusajs/link-modules@0.2.3
+
 ## 1.17.3
 
 ### Patch Changes

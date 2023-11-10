@@ -8,11 +8,11 @@ info:
 tags:
   - name: Auth
     description: >
-      Authentication API Routes allow customers to manage their session, such as
-      login or log out.
+      Authentication API Routes allow you to manage a customer's session, such
+      as login or log out.
 
-      When a customer is logged in, the cookie header is set indicating the
-      customer's login session.
+      You can send authenticated requests for a customer either using the Cookie
+      header or using the JWT Token.
     externalDocs:
       description: How to implement customer profiles in your storefront
       url: >-

@@ -16,4 +16,5 @@ properties:
       url: >-
         https://docs.medusajs.com/development/entities/overview#metadata-attribute
   address:
+    description: The data of an associated address to create or update.
     $ref: ./StockLocationAddressInput.yaml

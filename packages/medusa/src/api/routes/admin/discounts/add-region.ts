@@ -25,7 +25,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.discounts.addRegion(discountId, regionId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

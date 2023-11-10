@@ -48,6 +48,7 @@ const getDevServerConfig = () => {
         onListening: function () {
           openBrowser(`http://localhost:7001`)
         },
+        allowedHosts: 'auto',
       } as Configuration,
     },
   }
