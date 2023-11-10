@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator"
+import { IsNotEmpty, IsString, IsObject, IsOptional } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -122,12 +122,22 @@ export default async (req: Request, res: Response) => {
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesReq extends AdminProductCategoriesReqBase {
   @IsString()
   @IsNotEmpty()
   name: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }
 
 export class AdminPostProductCategoriesParams extends FindParams {}
