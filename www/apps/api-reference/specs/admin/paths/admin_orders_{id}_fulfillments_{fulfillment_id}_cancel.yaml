@@ -1,7 +1,9 @@
 post:
   operationId: PostOrdersOrderFulfillmentsCancel
   summary: Cancel a Fulfilmment
-  description: Cancel an order's fulfillment and change its status.
+  description: >-
+    Cancel an order's fulfillment and change its fulfillment status to
+    `canceled`.
   x-authenticated: true
   parameters:
     - in: path

@@ -1,4 +1,5 @@
 type: object
+description: The list of reservations with pagination fields.
 required:
   - reservations
   - count

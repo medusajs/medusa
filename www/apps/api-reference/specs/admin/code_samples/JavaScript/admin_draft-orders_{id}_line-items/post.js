@@ -6,4 +6,4 @@ medusa.admin.draftOrders.addLineItem(draftOrderId, {
 })
 .then(({ draft_order }) => {
   console.log(draft_order.id);
-});
+})

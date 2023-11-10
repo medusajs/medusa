@@ -72,6 +72,15 @@ properties:
       used by Fulfillment Providers to pass customs information to shipping
       carriers.
     type: string
+  title:
+    description: The inventory item's title.
+    type: string
+  description:
+    description: The inventory item's description.
+    type: string
+  thumbnail:
+    description: The inventory item's thumbnail.
+    type: string
   metadata:
     description: An optional set of key-value pairs with additional information.
     type: object

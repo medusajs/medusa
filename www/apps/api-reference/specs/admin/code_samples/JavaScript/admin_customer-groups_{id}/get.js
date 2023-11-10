@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.customerGroups.retrieve(customerGroupId)
 .then(({ customer_group }) => {
   console.log(customer_group.id);
-});
+})

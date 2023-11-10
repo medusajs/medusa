@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.variants.retrieve(variantId)
 .then(({ variant }) => {
   console.log(variant.id);
-});
+})

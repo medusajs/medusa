@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.stockLocations.list()
 .then(({ stock_locations, limit, offset, count }) => {
   console.log(stock_locations.length);
-});
+})
