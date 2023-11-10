@@ -117,6 +117,9 @@ export class ProductVariant extends SoftDeletableEntity {
 
   purchasable?: boolean
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "variant")

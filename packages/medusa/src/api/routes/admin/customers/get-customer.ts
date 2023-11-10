@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.customers.retrieve(customerId)
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

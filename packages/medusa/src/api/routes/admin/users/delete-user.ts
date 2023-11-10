@@ -21,7 +21,7 @@ import UserService from "../../../../services/user"
  *       medusa.admin.users.delete(userId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

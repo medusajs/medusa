@@ -22,7 +22,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  *       medusa.returnReasons.retrieve(reasonId)
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -7,9 +7,8 @@ import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
 import MDXContentClient from "@/components/MDXContent/Client"
-import type { TagsOperationFeatureFlagNoticeProps } from "../FeatureFlagNotice"
 import { useArea } from "../../../../providers/area"
-import { Feedback, Badge, NextLink } from "docs-ui"
+import { Feedback, Badge, NextLink, FeatureFlagNotice } from "docs-ui"
 import { usePathname } from "next/navigation"
 import formatReportLink from "../../../../utils/format-report-link"
 
@@ -27,12 +26,6 @@ const TagsOperationDescriptionSectionResponses =
   dynamic<TagsOperationDescriptionSectionResponsesProps>(
     async () => import("./Responses")
   ) as React.FC<TagsOperationDescriptionSectionResponsesProps>
-
-const TagsOperationFeatureFlagNotice =
-  dynamic<TagsOperationFeatureFlagNoticeProps>(
-    async () => import("../FeatureFlagNotice")
-  ) as React.FC<TagsOperationFeatureFlagNoticeProps>
-
 type TagsOperationDescriptionSectionProps = {
   operation: Operation
 }
@@ -52,7 +45,7 @@ const TagsOperationDescriptionSection = ({
           </Badge>
         )}
         {operation["x-featureFlag"] && (
-          <TagsOperationFeatureFlagNotice
+          <FeatureFlagNotice
             featureFlag={operation["x-featureFlag"]}
             tooltipTextClassName="font-normal text-medusa-fg-subtle"
             badgeClassName="ml-0.5"

@@ -58,6 +58,7 @@ export const defaultAdminSwapFields = [
 /**
  * @schema AdminSwapsListRes
  * type: object
+ * description: "The list of swaps with pagination fields."
  * required:
  *   - swaps
  *   - count
@@ -86,6 +87,7 @@ export type AdminSwapsListRes = PaginatedResponse & {
 /**
  * @schema AdminSwapsRes
  * type: object
+ * description: "The swap's details."
  * x-expanded-relations:
  *   field: swap
  *   relations:

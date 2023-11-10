@@ -76,7 +76,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

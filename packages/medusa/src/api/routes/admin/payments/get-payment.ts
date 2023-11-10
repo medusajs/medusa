@@ -22,7 +22,7 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.payments.retrieve(paymentId)
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

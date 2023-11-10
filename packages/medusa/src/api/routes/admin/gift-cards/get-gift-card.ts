@@ -20,7 +20,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  *       medusa.admin.giftCards.retrieve(giftCardId)
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -16,7 +16,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
  * summary: "Ship a Swap's Fulfillment"
- * description: "RMark a swap's fulfillment as shipped. This changes the swap's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ * description: "Create a shipment for a swap and mark its fulfillment as shipped. This changes the swap's fulfillment status to either `partially_shipped` or `shipped`, depending on
  *  whether all the items were shipped."
  * x-authenticated: true
  * externalDocs:
@@ -42,12 +42,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createSwapShipment(order_id, swap_id, {
+ *       medusa.admin.orders.createSwapShipment(orderId, swapId, {
  *         fulfillment_id
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

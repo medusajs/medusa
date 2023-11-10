@@ -96,7 +96,7 @@ import { Request, Response } from "express"
  *       medusa.admin.productTags.list()
  *       .then(({ product_tags }) => {
  *         console.log(product_tags.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -146,43 +146,78 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetProductTagsPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 10
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product tags.
+ */
 export class AdminGetProductTagsParams extends AdminGetProductTagsPaginationParams {
+  /**
+   * IDs to filter product tags by.
+   */
   @IsOptional()
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator
 
+  /**
+   * Search term to search product tags' value.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Values to search product tags by.
+   */
   @IsOptional()
   @IsType([String, [String], StringComparisonOperator])
   value?: string | string[] | StringComparisonOperator
 
+  /**
+   * Date filters to apply on the product tags' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product tags' `updated_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   updated_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Filter product tags by their associated discount condition's ID.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string
