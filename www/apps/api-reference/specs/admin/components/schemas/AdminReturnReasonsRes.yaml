@@ -1,4 +1,5 @@
 type: object
+description: The return reason's details.
 x-expanded-relations:
   field: return_reason
   relations:
@@ -8,4 +9,5 @@ required:
   - return_reason
 properties:
   return_reason:
+    description: The return reason's details.
     $ref: ./ReturnReason.yaml

@@ -1,4 +1,5 @@
 type: object
+description: The list of payment providers in a store.
 required:
   - payment_providers
 properties:

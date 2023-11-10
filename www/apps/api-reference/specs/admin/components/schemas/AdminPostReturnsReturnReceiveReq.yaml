@@ -20,3 +20,6 @@ properties:
   refund:
     description: The amount to refund.
     type: number
+  location_id:
+    description: The ID of the location to return items from.
+    type: string
