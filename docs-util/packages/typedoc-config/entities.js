@@ -34,7 +34,11 @@ module.exports = {
         displayed_sidebar: "entitiesSidebar",
       },
     },
+    "(Order|Swap|Cart|LineItem)": {
+      maxLevel: 1,
+    },
   },
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
+  maxLevel: 2,
 }

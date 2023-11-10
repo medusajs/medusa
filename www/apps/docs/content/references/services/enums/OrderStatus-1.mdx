@@ -1,0 +1,49 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# OrderStatus
+
+The status of an order.
+
+## Enumeration Members
+
+### archived
+
+ **archived** = ``"archived"``
+
+Order is archived.
+
+___
+
+### canceled
+
+ **canceled** = ``"canceled"``
+
+Order is canceled.
+
+___
+
+### completed
+
+ **completed** = ``"completed"``
+
+Order is completed. An order is completed when it's paid and fulfilled.
+
+___
+
+### pending
+
+ **pending** = ``"pending"``
+
+Order is pending.
+
+___
+
+### requires\_action
+
+ **requires\_action** = ``"requires_action"``
+
+Order requires an action. This status is applied when the order's payment or fulfillment requires an additional action.

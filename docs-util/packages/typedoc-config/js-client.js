@@ -49,8 +49,8 @@ module.exports = {
   hideBreadcrumbs: true,
   plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-rename-defaults"],
   exclude: [
+    ...globalTypedocOptions.exclude,
     path.join(pathPrefix, "packages/medusa-js/src/resources/base.ts"),
-    path.join(pathPrefix, "node_modules/**"),
   ],
   internalModule: "internal",
   formatting: {

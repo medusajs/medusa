@@ -1,0 +1,853 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# BatchJobService
+
+## Constructors
+
+### constructor
+
+**new BatchJobService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-2.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "batchJobRepository_",
+    "type": "`Repository`<[`BatchJob`](BatchJob.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "batchJobStatusMapToProps",
+    "type": "`Map`<[`BatchJobStatus`](../enums/BatchJobStatus.mdx), { `entityColumnName`: `string` ; `eventType`: `string`  }\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategyResolver_",
+    "type": "[`StrategyResolverService`](StrategyResolverService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CANCELED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.canceled\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.COMPLETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.completed\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CONFIRMED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.confirmed\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.FAILED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.failed\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PRE_PROCESSED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.pre_processed\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PROCESSING",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.processing\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"batch.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancel
+
+**cancel**(`batchJobOrId`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### complete
+
+**complete**(`batchJobOrId`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### confirm
+
+**confirm**(`batchJobOrId`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`data`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`BatchJobCreateProps`](../types/BatchJobCreateProps.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`BatchJob`](BatchJob.mdx)[], `number`]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableBatchJobProps`](FilterableBatchJobProps.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`BatchJob`](BatchJob.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`BatchJob`](BatchJob.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`BatchJob`](BatchJob.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### prepareBatchJobForProcessing
+
+**prepareBatchJobForProcessing**(`data`, `req`): `Promise`<[`CreateBatchJobInput`](../types/CreateBatchJobInput.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`CreateBatchJobInput`](../types/CreateBatchJobInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "req",
+    "type": "`Request`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\\>\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`CreateBatchJobInput`](../types/CreateBatchJobInput.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`CreateBatchJobInput`](../types/CreateBatchJobInput.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`batchJobId`, `config?`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`BatchJob`](BatchJob.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setFailed
+
+**setFailed**(`batchJobOrId`, `error?`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "error",
+    "type": "`string` \\| [`BatchJobResultError`](../types/BatchJobResultError.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setPreProcessingDone
+
+**setPreProcessingDone**(`batchJobOrId`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setProcessing
+
+**setProcessing**(`batchJobOrId`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`batchJobOrId`, `data`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`Partial`](../types/Partial.mdx)<[`Pick`](../types/Pick.mdx)<[`BatchJob`](BatchJob.mdx), ``\"context\"`` \\| ``\"result\"``\\>\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateStatus
+
+`Protected` **updateStatus**(`batchJobOrId`, `status`): `Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "batchJobOrId",
+    "type": "`string` \\| [`BatchJob`](BatchJob.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "[`BatchJobStatus`](../enums/BatchJobStatus.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`BatchJob`](BatchJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`BatchJob`](BatchJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`BatchJobService`](BatchJobService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`BatchJobService`](BatchJobService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "BatchJobService",
+    "type": "[`BatchJobService`](BatchJobService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

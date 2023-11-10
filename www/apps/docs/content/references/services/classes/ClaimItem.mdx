@@ -1,0 +1,188 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ClaimItem
+
+A claim item is an item created as part of a claim. It references an item in the order that should be exchanged or refunded.
+
+## Constructors
+
+### constructor
+
+**new ClaimItem**()
+
+A claim item is an item created as part of a claim. It references an item in the order that should be exchanged or refunded.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "claim_order",
+    "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+    "description": "The details of the claim this item belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "claim_order_id",
+    "type": "`string`",
+    "description": "The ID of the claim this item is associated with.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "``null`` \\| `Date`",
+    "description": "The date with timezone at which the resource was deleted.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The claim item's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "images",
+    "type": "[`ClaimImage`](ClaimImage.mdx)[]",
+    "description": "The claim images that are attached to the claim item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "item",
+    "type": "[`LineItem`](LineItem.mdx)",
+    "description": "The details of the line item in the original order that this claim item refers to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "item_id",
+    "type": "`string`",
+    "description": "The ID of the line item that the claim item refers to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "note",
+    "type": "`string`",
+    "description": "An optional note about the claim, for additional information",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "The quantity of the item that is being claimed; must be less than or equal to the amount purchased in the original order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "reason",
+    "type": "[`ClaimReason`](../enums/ClaimReason.mdx)",
+    "description": "The reason for the claim",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tags",
+    "type": "[`ClaimTag`](ClaimTag.mdx)[]",
+    "description": "User defined tags for easy filtering and grouping.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant",
+    "type": "[`ProductVariant`](ProductVariant.mdx)",
+    "description": "The details of the product variant to potentially replace the item in the original order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "variant_id",
+    "type": "`string`",
+    "description": "The ID of the product variant that is claimed.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

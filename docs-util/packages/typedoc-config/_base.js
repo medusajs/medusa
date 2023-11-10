@@ -13,6 +13,7 @@ module.exports = {
     "www/packages/eslint-config-docs/content.js"
   ),
   pluginsResolvePath: path.join(pathPrefix, "www"),
+  exclude: [path.join(pathPrefix, "node_modules/**")],
   // Uncomment this when debugging
   // showConfig: true,
 }
