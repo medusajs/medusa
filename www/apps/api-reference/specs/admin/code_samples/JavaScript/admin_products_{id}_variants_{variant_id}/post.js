@@ -19,4 +19,4 @@ medusa.admin.products.updateVariant(productId, variantId, {
 })
 .then(({ product }) => {
   console.log(product.id);
-});
+})

@@ -8,4 +8,4 @@ medusa.admin.taxRates.removeShippingOptions(taxRateId, {
 })
 .then(({ tax_rate }) => {
   console.log(tax_rate.id);
-});
+})

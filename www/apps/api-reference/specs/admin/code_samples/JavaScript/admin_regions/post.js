@@ -17,4 +17,4 @@ medusa.admin.regions.create({
 })
 .then(({ region }) => {
   console.log(region.id);
-});
+})

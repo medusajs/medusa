@@ -9,4 +9,4 @@ medusa.admin.users.sendResetPasswordToken({
 })
 .catch(() => {
   // error occurred
-});
+})

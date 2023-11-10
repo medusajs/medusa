@@ -1,3 +1,4 @@
+description: The list of search results.
 allOf:
   - type: object
     required:

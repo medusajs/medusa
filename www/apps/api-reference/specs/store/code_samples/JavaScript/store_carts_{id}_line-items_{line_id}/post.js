@@ -5,4 +5,4 @@ medusa.carts.lineItems.update(cartId, lineId, {
 })
 .then(({ cart }) => {
   console.log(cart.id);
-});
+})

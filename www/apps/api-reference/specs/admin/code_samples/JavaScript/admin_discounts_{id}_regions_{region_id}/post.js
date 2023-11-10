@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.discounts.addRegion(discountId, regionId)
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})
