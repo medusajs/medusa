@@ -105,7 +105,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -121,7 +121,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -534,7 +534,7 @@ medusa.carts.complete(cartId).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCompleteCartRes`](../modules/internal.mdx#storecompletecartres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCompleteCartRes`](../internal/types/internal.StoreCompleteCartRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the completion details.",
@@ -664,7 +664,7 @@ medusa.carts.create().then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the created cart's details.",
@@ -680,7 +680,7 @@ medusa.carts.create().then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1090,7 +1090,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -1106,7 +1106,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1525,7 +1525,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -1541,7 +1541,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1959,7 +1959,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -1975,7 +1975,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -2393,7 +2393,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -2409,7 +2409,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -2818,7 +2818,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -2834,7 +2834,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -3267,7 +3267,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -3283,7 +3283,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -3816,7 +3816,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -3832,7 +3832,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -4275,7 +4275,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -4291,7 +4291,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",

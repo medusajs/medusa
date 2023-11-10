@@ -18,26 +18,7 @@ The details of the claim to be created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "quantity",
-        "type": "`number`",
-        "description": "The quantity of the Product Variant.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "variant_id",
-        "type": "`string`",
-        "description": "The ID of the Product Variant.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "claim_items",
@@ -46,99 +27,7 @@ The details of the claim to be created.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "images",
-        "type": "`string`[]",
-        "description": "A list of image URL's that will be associated with the Claim",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "item_id",
-        "type": "`string`",
-        "description": "The ID of the Line Item that will be claimed.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "note",
-        "type": "`string`",
-        "description": "Short text describing the Claim Item in further detail.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "quantity",
-        "type": "`number`",
-        "description": "The number of items that will be returned",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "reason",
-        "type": "[`ClaimReason`](../enums/internal.internal.ClaimReason.mdx)",
-        "description": "The reason for the Claim",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "MISSING_ITEM",
-            "type": "``\"missing_item\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "OTHER",
-            "type": "``\"other\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "PRODUCTION_FAILURE",
-            "type": "``\"production_failure\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "WRONG_ITEM",
-            "type": "``\"wrong_item\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "tags",
-        "type": "`string`[]",
-        "description": "A list of tags to add to the Claim Item",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "metadata",
@@ -183,26 +72,7 @@ The details of the claim to be created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "option_id",
-        "type": "`string`",
-        "description": "The ID of the shipping option used for the return.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "price",
-        "type": "`number`",
-        "description": "The shipping method's price.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "shipping_address",
@@ -211,107 +81,7 @@ The details of the claim to be created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "address_1",
-        "type": "`string`",
-        "description": "Address line 1",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "address_2",
-        "type": "`string`",
-        "description": "Address line 2",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "city",
-        "type": "`string`",
-        "description": "City",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "company",
-        "type": "`string`",
-        "description": "Company",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "country_code",
-        "type": "`string`",
-        "description": "The 2 character ISO code of the country in lower case",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "first_name",
-        "type": "`string`",
-        "description": "First name",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "last_name",
-        "type": "`string`",
-        "description": "Last name",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "An optional key-value map with additional details",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "phone",
-        "type": "`string`",
-        "description": "Phone Number",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "postal_code",
-        "type": "`string`",
-        "description": "Postal Code",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "province",
-        "type": "`string`",
-        "description": "Province",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "shipping_methods",
@@ -320,44 +90,7 @@ The details of the claim to be created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "An optional set of key-value pairs to hold additional information.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of an existing Shipping Method",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "option_id",
-        "type": "`string`",
-        "description": "The ID of the Shipping Option to create a Shipping Method from",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "price",
-        "type": "`number`",
-        "description": "The price to charge for the Shipping Method",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "type",

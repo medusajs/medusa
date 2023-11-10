@@ -1,0 +1,68 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ModuleExports
+
+ **ModuleExports**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "loaders",
+    "type": "[`ModuleLoaderFunction`](internal.internal-1.ModulesSdkTypes.ModuleLoaderFunction.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "migrations",
+    "type": "`any`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "models",
+    "type": "[`Constructor`](../../internal/types/internal.Constructor.mdx)<`any`\\>[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "service",
+    "type": "[`Constructor`](../../internal/types/internal.Constructor.mdx)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "revertMigration",
+    "type": "(`options`: [`LoaderOptions`](internal.internal-1.ModulesSdkTypes.LoaderOptions.mdx)<Record<`string`, `unknown`\\>\\>, `moduleDeclaration?`: [`InternalModuleDeclaration`](internal.internal-1.ModulesSdkTypes.InternalModuleDeclaration.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "runMigrations",
+    "type": "(`options`: [`LoaderOptions`](internal.internal-1.ModulesSdkTypes.LoaderOptions.mdx)<Record<`string`, `unknown`\\>\\>, `moduleDeclaration?`: [`InternalModuleDeclaration`](internal.internal-1.ModulesSdkTypes.InternalModuleDeclaration.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

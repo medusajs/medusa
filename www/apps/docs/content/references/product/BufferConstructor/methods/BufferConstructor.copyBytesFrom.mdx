@@ -1,0 +1,74 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# copyBytesFrom
+
+[BufferConstructor](../../interfaces/BufferConstructor.mdx).copyBytesFrom
+
+**copyBytesFrom**(`view`, `offset?`, `length?`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Copies the underlying memory of `view` into a new `Buffer`.
+
+```js
+const u16 = new Uint16Array([0, 0xffff]);
+const buf = Buffer.copyBytesFrom(u16, 1, 1);
+u16[1] = 0;
+console.log(buf.length); // 2
+console.log(buf[0]); // 255
+console.log(buf[1]); // 255
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "view",
+    "type": "[`TypedArray`](../../types/TypedArray.mdx)",
+    "description": "The {TypedArray} to copy.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "The starting offset within `view`.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "length",
+    "type": "`number`",
+    "description": "The number of elements from `view` to copy.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v19.8.0

@@ -14,7 +14,7 @@ Fills `buf` with the specified `value`. If the `offset` and `end` are not given,
 the entire `buf` will be filled:
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Fill a `Buffer` with the ASCII character 'h'.
 
@@ -22,6 +22,12 @@ const b = Buffer.allocUnsafe(50).fill('h');
 
 console.log(b.toString());
 // Prints: hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+// Fill a buffer with empty string
+const c = Buffer.allocUnsafe(5).fill('');
+
+console.log(c.fill(''));
+// Prints: <Buffer 00 00 00 00 00>
 ```
 
 `value` is coerced to a `uint32` value if it is not a string, `Buffer`, or
@@ -32,7 +38,7 @@ If the final write of a `fill()` operation falls on a multi-byte character,
 then only the bytes of that character that fit into `buf` are written:
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Fill a `Buffer` with character that takes up two bytes in UTF-8.
 
@@ -44,7 +50,7 @@ If `value` contains invalid characters, it is truncated; if no valid
 fill data remains, an exception is thrown:
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.allocUnsafe(5);
 
@@ -62,9 +68,10 @@ console.log(buf.fill('zz', 'hex'));
   {
     "name": "value",
     "type": "`string` \\| `number` \\| `Uint8Array`",
-    "description": "The value with which to fill `buf`.",
+    "description": "The value with which to fill `buf`. Empty value (string, Uint8Array, Buffer) is coerced to `0`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -73,6 +80,7 @@ console.log(buf.fill('zz', 'hex'));
     "description": "Number of bytes to skip before starting to fill `buf`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -81,6 +89,7 @@ console.log(buf.fill('zz', 'hex'));
     "description": "Where to stop filling `buf` (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -89,6 +98,7 @@ console.log(buf.fill('zz', 'hex'));
     "description": "The encoding for `value` if `value` is a string.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -104,6 +114,7 @@ console.log(buf.fill('zz', 'hex'));
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -15,7 +15,7 @@ Reads an unsigned, little-endian 64-bit integer from `buf` at the specified`offs
 This function is also available under the `readBigUint64LE` alias.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from([0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0xff, 0xff]);
 
@@ -32,6 +32,7 @@ console.log(buf.readBigUInt64LE(0));
     "description": "Number of bytes to skip before starting to read. Must satisfy: `0 <= offset <= buf.length - 8`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -47,6 +48,7 @@ console.log(buf.readBigUInt64LE(0));
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

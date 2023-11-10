@@ -61,7 +61,7 @@ medusa.admin.store.addCurrency("eur").then(({ store }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminStoresRes`](../modules/internal.mdx#adminstoresres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminStoresRes`](../internal/types/internal.AdminStoresRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
@@ -262,7 +262,7 @@ medusa.admin.store.deleteCurrency("eur").then(({ store }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminStoresRes`](../modules/internal.mdx#adminstoresres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminStoresRes`](../internal/types/internal.AdminStoresRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
@@ -454,7 +454,7 @@ medusa.admin.store.listPaymentProviders().then(({ payment_providers }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminPaymentProvidersList`](../modules/internal.mdx#adminpaymentproviderslist)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPaymentProvidersList`](../internal/types/internal.AdminPaymentProvidersList.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of payment providers.",
@@ -538,7 +538,7 @@ medusa.admin.store.listTaxProviders().then(({ tax_providers }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxProvidersList`](../modules/internal.mdx#admintaxproviderslist)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxProvidersList`](../internal/types/internal.AdminTaxProvidersList.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of tax providers.",
@@ -622,7 +622,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminExtendedStoresRes`](../modules/internal.mdx#adminextendedstoresres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminExtendedStoresRes`](../internal/types/internal.AdminExtendedStoresRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
@@ -638,7 +638,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
         "children": [
           {
             "name": "store",
-            "type": "[`ExtendedStoreDTO`](../modules/internal.mdx#extendedstoredto)",
+            "type": "[`ExtendedStoreDTO`](../internal/types/internal.ExtendedStoreDTO.mdx)",
             "description": "Store details.",
             "optional": false,
             "defaultValue": "",
@@ -772,7 +772,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
               },
               {
                 "name": "feature_flags",
-                "type": "[`FeatureFlagsResponse`](../modules/internal.mdx#featureflagsresponse)",
+                "type": "[`FeatureFlagsResponse`](../internal/types/internal.FeatureFlagsResponse.mdx)",
                 "description": "The feature flags enabled in the store's backend.",
                 "optional": false,
                 "defaultValue": "",
@@ -790,7 +790,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
               },
               {
                 "name": "modules",
-                "type": "[`ModulesResponse`](../modules/internal.mdx#modulesresponse-1)",
+                "type": "[`ModulesResponse`](../internal/types/internal.ModulesResponse.mdx)",
                 "description": "The modules installed in the store's backend.",
                 "optional": false,
                 "defaultValue": "",
@@ -927,7 +927,7 @@ medusa.admin.store
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminStoresRes`](../modules/internal.mdx#adminstoresres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminStoresRes`](../internal/types/internal.AdminStoresRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",

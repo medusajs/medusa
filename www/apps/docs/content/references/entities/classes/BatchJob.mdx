@@ -6,134 +6,143 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # BatchJob
 
+A Batch Job indicates an asynchronus task stored in the Medusa backend. Its status determines whether it has been executed or not.
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "canceled_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date of the concellation.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "completed_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date of the completion.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "confirmed_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date when the confirmation has been done.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "context",
     "type": "Record<`string`, `unknown`\\>",
-    "description": "",
+    "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "created_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "created_by",
     "type": "``null`` \\| `string`",
-    "description": "",
+    "description": "The unique identifier of the user that created the batch job.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "created_by_user",
     "type": "[`User`](User.mdx)",
-    "description": "",
+    "description": "The details of the user that created the batch job.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`User`](User.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "api_token",
         "type": "`string`",
-        "description": "",
+        "description": "An API token associated with the user.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "email",
         "type": "`string`",
-        "description": "",
+        "description": "The email of the User",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "first_name",
         "type": "`string`",
-        "description": "",
+        "description": "The first name of the User",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The user's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "last_name",
         "type": "`string`",
-        "description": "",
+        "description": "The last name of the User",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -142,55 +151,25 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
         "description": "",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "role",
         "type": "[`UserRoles`](../enums/UserRoles.mdx)",
-        "description": "",
+        "description": "The user's role. These roles don't provide any different privileges.",
         "optional": false,
-        "defaultValue": "",
-        "children": [
-          {
-            "name": "ADMIN",
-            "type": "``\"admin\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "DEVELOPER",
-            "type": "``\"developer\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "MEMBER",
-            "type": "``\"member\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "defaultValue": "member",
+        "expandable": false,
+        "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -198,81 +177,219 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "deleted_at",
     "type": "``null`` \\| `Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "dry_run",
     "type": "`boolean`",
-    "description": "",
+    "description": "Specify if the job must apply the modifications or not.",
     "optional": false,
-    "defaultValue": "`false`",
+    "defaultValue": "false",
+    "expandable": false,
     "children": []
   },
   {
     "name": "failed_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date when the job failed.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The unique identifier for the batch job.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "pre_processed_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date from which the job has been pre-processed.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "processing_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date the job is processing at.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "result",
-    "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| `BatchJobResultError`)[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: `BatchJobResultStatDescriptor`[]  } & Record<`string`, `unknown`\\>",
-    "description": "",
+    "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../types/BatchJobResultError.mdx))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../types/BatchJobResultStatDescriptor.mdx)[]  } & Record<`string`, `unknown`\\>",
+    "description": "The result of the batch job.",
     "optional": false,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "advancement_count",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "count",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "errors",
+        "type": "(`string` \\| [`BatchJobResultError`](../types/BatchJobResultError.mdx))[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "file_key",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "file_size",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "progress",
+        "type": "`number`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "stat_descriptors",
+        "type": "[`BatchJobResultStatDescriptor`](../types/BatchJobResultStatDescriptor.mdx)[]",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "status",
-    "type": "`BatchJobStatus`",
-    "description": "",
+    "type": "[`BatchJobStatus`](../enums/BatchJobStatus.mdx)",
+    "description": "The status of the batch job.",
     "optional": false,
-    "defaultValue": "",
-    "children": []
+    "defaultValue": "created",
+    "expandable": false,
+    "children": [
+      {
+        "name": "CANCELED",
+        "type": "``\"canceled\"``",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "COMPLETED",
+        "type": "``\"completed\"``",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "CONFIRMED",
+        "type": "``\"confirmed\"``",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "CREATED",
+        "type": "``\"created\"``",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "FAILED",
+        "type": "``\"failed\"``",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "PRE_PROCESSED",
+        "type": "``\"pre_processed\"``",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "PROCESSING",
+        "type": "``\"processing\"``",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "type",
     "type": "`string`",
-    "description": "",
+    "description": "The type of batch job.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "updated_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was last updated.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

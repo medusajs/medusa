@@ -1,0 +1,1467 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PricingService
+
+Allows retrieval of prices.
+
+## Constructors
+
+### constructor
+
+**new PricingService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-25.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter",
+    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceSelectionStrategy",
+    "type": "[`IPriceSelectionStrategy`](../interfaces/IPriceSelectionStrategy.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantService",
+    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionService",
+    "type": "[`RegionService`](RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxProviderService",
+    "type": "[`TaxProviderService`](TaxProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### pricingModuleService
+
+`Protected` `get` **pricingModuleService**(): [`IPricingModuleService`](../interfaces/IPricingModuleService.mdx)
+
+#### Returns
+
+[`IPricingModuleService`](../interfaces/IPricingModuleService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "addPrices",
+    "type": "(`data`: [`AddPricesDTO`](../interfaces/AddPricesDTO.mdx), `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)\\>(`data`: [`AddPricesDTO`](../interfaces/AddPricesDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addRules",
+    "type": "(`data`: [`AddRulesDTO`](../interfaces/AddRulesDTO.mdx), `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)\\>(`data`: [`AddRulesDTO`](../interfaces/AddRulesDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculatePrices",
+    "type": "(`filters`: [`PricingFilters`](../interfaces/PricingFilters.mdx), `context?`: [`PricingContext`](../interfaces/PricingContext.mdx), `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`CalculatedPriceSetDTO`](../interfaces/CalculatedPriceSetDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "create",
+    "type": "(`data`: [`CreatePriceSetDTO`](../interfaces/CreatePriceSetDTO.mdx), `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)\\>(`data`: [`CreatePriceSetDTO`](../interfaces/CreatePriceSetDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createCurrencies",
+    "type": "(`data`: [`CreateCurrencyDTO`](../interfaces/CreateCurrencyDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createMoneyAmounts",
+    "type": "(`data`: [`CreateMoneyAmountDTO`](../interfaces/CreateMoneyAmountDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createPriceRules",
+    "type": "(`data`: [`CreatePriceRuleDTO`](../interfaces/CreatePriceRuleDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createPriceSetMoneyAmountRules",
+    "type": "(`data`: [`CreatePriceSetMoneyAmountRulesDTO`](../interfaces/CreatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createRuleTypes",
+    "type": "(`data`: [`CreateRuleTypeDTO`](../interfaces/CreateRuleTypeDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "delete",
+    "type": "(`ids`: `string`[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteCurrencies",
+    "type": "(`currencyCodes`: `string`[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteMoneyAmounts",
+    "type": "(`ids`: `string`[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceRules",
+    "type": "(`priceRuleIds`: `string`[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceSetMoneyAmountRules",
+    "type": "(`ids`: `string`[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteRuleTypes",
+    "type": "(`ruleTypeIds`: `string`[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "list",
+    "type": "(`filters?`: [`FilterablePriceSetProps`](../interfaces/FilterablePriceSetProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCount",
+    "type": "(`filters?`: [`FilterablePriceSetProps`](../interfaces/FilterablePriceSetProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountCurrencies",
+    "type": "(`filters?`: [`FilterableCurrencyProps`](../interfaces/FilterableCurrencyProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountMoneyAmounts",
+    "type": "(`filters?`: [`FilterableMoneyAmountProps`](../interfaces/FilterableMoneyAmountProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceRules",
+    "type": "(`filters?`: [`FilterablePriceRuleProps`](../interfaces/FilterablePriceRuleProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceSetMoneyAmountRules",
+    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountRulesProps`](../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceSetMoneyAmounts",
+    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountProps`](../interfaces/FilterablePriceSetMoneyAmountProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetMoneyAmountDTO`](../interfaces/PriceSetMoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[[`PriceSetMoneyAmountDTO`](../interfaces/PriceSetMoneyAmountDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountRuleTypes",
+    "type": "(`filters?`: [`FilterableRuleTypeProps`](../interfaces/FilterableRuleTypeProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listCurrencies",
+    "type": "(`filters?`: [`FilterableCurrencyProps`](../interfaces/FilterableCurrencyProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listMoneyAmounts",
+    "type": "(`filters?`: [`FilterableMoneyAmountProps`](../interfaces/FilterableMoneyAmountProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceRules",
+    "type": "(`filters?`: [`FilterablePriceRuleProps`](../interfaces/FilterablePriceRuleProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceSetMoneyAmountRules",
+    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountRulesProps`](../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceSetMoneyAmounts",
+    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountProps`](../interfaces/FilterablePriceSetMoneyAmountProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetMoneyAmountDTO`](../interfaces/PriceSetMoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetMoneyAmountDTO`](../interfaces/PriceSetMoneyAmountDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listRuleTypes",
+    "type": "(`filters?`: [`FilterableRuleTypeProps`](../interfaces/FilterableRuleTypeProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removeRules",
+    "type": "(`data`: [`RemovePriceSetRulesDTO`](../interfaces/RemovePriceSetRulesDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieve",
+    "type": "(`id`: `string`, `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetDTO`](../interfaces/PriceSetDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveCurrency",
+    "type": "(`code`: `string`, `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveMoneyAmount",
+    "type": "(`id`: `string`, `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePriceRule",
+    "type": "(`id`: `string`, `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePriceSetMoneyAmountRules",
+    "type": "(`id`: `string`, `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveRuleType",
+    "type": "(`id`: `string`, `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)\\>, `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateCurrencies",
+    "type": "(`data`: [`UpdateCurrencyDTO`](../interfaces/UpdateCurrencyDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`CurrencyDTO`](../interfaces/CurrencyDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateMoneyAmounts",
+    "type": "(`data`: [`UpdateMoneyAmountDTO`](../interfaces/UpdateMoneyAmountDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../interfaces/MoneyAmountDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceRules",
+    "type": "(`data`: [`UpdatePriceRuleDTO`](../interfaces/UpdatePriceRuleDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceRuleDTO`](../interfaces/PriceRuleDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceSetMoneyAmountRules",
+    "type": "(`data`: [`UpdatePriceSetMoneyAmountRulesDTO`](../interfaces/UpdatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../interfaces/PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateRuleTypes",
+    "type": "(`data`: [`UpdateRuleTypeDTO`](../interfaces/UpdateRuleTypeDTO.mdx)[], `sharedContext?`: [`Context`](../interfaces/Context.mdx)) => `Promise`<[`RuleTypeDTO`](../interfaces/RuleTypeDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### remoteQuery
+
+`Protected` `get` **remoteQuery**(): [`RemoteQueryFunction`](../types/RemoteQueryFunction.mdx)
+
+#### Returns
+
+[`RemoteQueryFunction`](../types/RemoteQueryFunction.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "RemoteQueryFunction",
+    "type": "(`query`: `string` \\| [`RemoteJoinerQuery`](../interfaces/RemoteJoinerQuery.mdx) \\| `object`, `variables?`: Record<`string`, `unknown`\\>) => `Promise`<`any`\\> \\| ``null``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### calculateTaxes
+
+**calculateTaxes**(`variantPricing`, `productRates`): [`TaxedPricing`](../types/TaxedPricing.mdx)
+
+Gets the prices for a product variant
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantPricing",
+    "type": "[`ProductVariantPricing`](../types/ProductVariantPricing.mdx)",
+    "description": "the prices retrieved from a variant",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productRates",
+    "type": "[`TaxServiceRate`](../types/TaxServiceRate.mdx)[]",
+    "description": "the tax rates that the product has applied",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`TaxedPricing`](../types/TaxedPricing.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "TaxedPricing",
+    "type": "`object`",
+    "description": "Pricing fields related to taxes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### collectPricingContext
+
+**collectPricingContext**(`context`): `Promise`<[`PricingContext`](../types/PricingContext-1.mdx)\>
+
+Collects additional information necessary for completing the price
+selection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PricingContext`](../types/PricingContext-1.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PricingContext`](../types/PricingContext-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The pricing context",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getPricingModuleVariantMoneyAmounts
+
+`Private` **getPricingModuleVariantMoneyAmounts**(`variantIds`): `Promise`<`Map`<`string`, [`MoneyAmount`](MoneyAmount.mdx)[]\>\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantIds",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`Map`<`string`, [`MoneyAmount`](MoneyAmount.mdx)[]\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`Map`<`string`, [`MoneyAmount`](MoneyAmount.mdx)[]\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProductPricing
+
+**getProductPricing**(`product`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>
+
+Gets all the variant prices for a product. All the product's variants will
+be fetched.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "product",
+    "type": "[`Pick`](../types/Pick.mdx)<[`Product`](Product.mdx), ``\"id\"`` \\| ``\"variants\"``\\>",
+    "description": "the product to get pricing for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A map of variant ids to their corresponding prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProductPricingById
+
+**getProductPricingById**(`productId`, `context`): `Promise`<Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>
+
+Gets all the variant prices for a product by the product id
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the id of the product to get prices for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A map of variant ids to their corresponding prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProductPricing\_
+
+`Private` **getProductPricing_**(`data`, `context`): `Promise`<`Map`<`string`, Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "{ `productId`: `string` ; `variants`: [`ProductVariant`](ProductVariant.mdx)[]  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PricingContext`](../types/PricingContext-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`Map`<`string`, Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`Map`<`string`, Record<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\\>\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProductVariantPricing
+
+**getProductVariantPricing**(`variant`, `context`): `Promise`<[`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>
+
+Gets the prices for a product variant.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variant",
+    "type": "[`Pick`](../types/Pick.mdx)<[`ProductVariant`](ProductVariant.mdx), ``\"id\"`` \\| ``\"product_id\"``\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx) \\| [`PricingContext`](../types/PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The product variant prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProductVariantPricingById
+
+**getProductVariantPricingById**(`variantId`, `context`): `Promise`<[`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>
+
+Gets the prices for a product variant by a variant id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the id of the variant to get prices for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx) \\| [`PricingContext`](../types/PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The product variant prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+Use [getProductVariantsPricing](PricingService.mdx#getproductvariantspricing) instead.
+
+___
+
+### getProductVariantPricingModulePricing\_
+
+`Private` **getProductVariantPricingModulePricing_**(`variantPriceData`, `context`): `Promise`<`Map`<`any`, `any`\>\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantPriceData",
+    "type": "{ `quantity?`: `number` ; `variantId`: `string`  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PricingContext`](../types/PricingContext-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`Map`<`any`, `any`\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`Map`<`any`, `any`\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProductVariantPricing\_
+
+`Private` **getProductVariantPricing_**(`data`, `context`): `Promise`<`Map`<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "{ `quantity?`: `number` ; `variantId`: `string`  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PricingContext`](../types/PricingContext-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`Map`<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`Map`<`string`, [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProductVariantsPricing
+
+**getProductVariantsPricing**(`data`, `context`): `Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../types/ProductVariantPricing.mdx);  }\>
+
+Gets the prices for a collection of variants.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "{ `quantity?`: `number` ; `variantId`: `string`  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx) \\| [`PricingContext`](../types/PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../types/ProductVariantPricing.mdx);  }\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../types/ProductVariantPricing.mdx);  }\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The product variant prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getShippingOptionPricing
+
+**getShippingOptionPricing**(`shippingOption`, `context`): `Promise`<[`PricedShippingOption`](../types/PricedShippingOption.mdx)\>
+
+Gets the prices for a shipping option.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingOption",
+    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "description": "the shipping option to get prices for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx) \\| [`PricingContext`](../types/PricingContext-1.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PricedShippingOption`](../types/PricedShippingOption.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PricedShippingOption`](../types/PricedShippingOption.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The shipping option prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setAdminProductPricing
+
+**setAdminProductPricing**(`products`): `Promise`<([`Product`](Product.mdx) \| [`PricedProduct`](../types/PricedProduct.mdx))[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "products",
+    "type": "[`Product`](Product.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<([`Product`](Product.mdx) \| [`PricedProduct`](../types/PricedProduct.mdx))[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<([`Product`](Product.mdx) \\| [`PricedProduct`](../types/PricedProduct.mdx))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setAdminVariantPricing
+
+**setAdminVariantPricing**(`variants`, `context?`): `Promise`<[`PricedVariant`](../types/PricedVariant.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variants",
+    "type": "[`ProductVariant`](ProductVariant.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PricedVariant`](../types/PricedVariant.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PricedVariant`](../types/PricedVariant.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setProductPrices
+
+**setProductPrices**(`products`, `context?`): `Promise`<([`Product`](Product.mdx) \| [`PricedProduct`](../types/PricedProduct.mdx))[]\>
+
+Set additional prices on a list of products.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "products",
+    "type": "[`Product`](Product.mdx)[]",
+    "description": "list of products on which to set additional prices",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<([`Product`](Product.mdx) \| [`PricedProduct`](../types/PricedProduct.mdx))[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<([`Product`](Product.mdx) \\| [`PricedProduct`](../types/PricedProduct.mdx))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A list of products with variants decorated with prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setShippingOptionPrices
+
+**setShippingOptionPrices**(`shippingOptions`, `context?`): `Promise`<[`PricedShippingOption`](../types/PricedShippingOption.mdx)[]\>
+
+Set additional prices on a list of shipping options.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingOptions",
+    "type": "[`ShippingOption`](ShippingOption.mdx)[]",
+    "description": "list of shipping options on which to set additional prices",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`Omit`](../types/Omit.mdx)<[`PriceSelectionContext`](../types/PriceSelectionContext.mdx), ``\"region_id\"``\\>",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PricedShippingOption`](../types/PricedShippingOption.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PricedShippingOption`](../types/PricedShippingOption.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A list of shipping options with prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setVariantPrices
+
+**setVariantPrices**(`variants`, `context?`): `Promise`<[`PricedVariant`](../types/PricedVariant.mdx)[]\>
+
+Set additional prices on a list of product variants.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variants",
+    "type": "[`ProductVariant`](ProductVariant.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "the price selection context to use",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PricedVariant`](../types/PricedVariant.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PricedVariant`](../types/PricedVariant.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A list of products with variants decorated with prices",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`PricingService`](PricingService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PricingService`](PricingService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "PricingService",
+    "type": "[`PricingService`](PricingService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

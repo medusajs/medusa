@@ -1,0 +1,57 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Transformer
+
+ **Transformer**: (`item?`: [`LineItem`](../classes/internal.LineItem.mdx), `quantity?`: `number`, `additional?`: [`OrdersReturnItem`](../classes/internal.OrdersReturnItem.mdx)) => `Promise`<`DeepPartial`<[`LineItem`](../classes/internal.LineItem.mdx)\>\> \| `DeepPartial`<[`LineItem`](../classes/internal.LineItem.mdx)\>
+
+#### Type declaration
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "item",
+    "type": "[`LineItem`](../classes/internal.LineItem.mdx)",
+    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "additional",
+    "type": "[`OrdersReturnItem`](../classes/internal.OrdersReturnItem.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise<DeepPartial<LineItem\\>\\> \\| DeepPartial<LineItem\\>",
+    "type": "`Promise`<`DeepPartial`<[`LineItem`](../classes/internal.LineItem.mdx)\\>\\> \\| `DeepPartial`<[`LineItem`](../classes/internal.LineItem.mdx)\\>",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

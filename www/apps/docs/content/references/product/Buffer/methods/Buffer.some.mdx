@@ -21,7 +21,18 @@ Determines whether the specified callback function returns true for any element 
     "description": "A function that accepts up to three arguments. The some method calls the predicate function for each element in the array until the predicate returns a value which is coercible to the Boolean value true, or until the end of the array.",
     "optional": false,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "thisArg",
@@ -29,6 +40,7 @@ Determines whether the specified callback function returns true for any element 
     "description": "An object to which the this keyword can refer in the predicate function. If thisArg is omitted, undefined is used as the this value.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -44,6 +56,7 @@ Determines whether the specified callback function returns true for any element 
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

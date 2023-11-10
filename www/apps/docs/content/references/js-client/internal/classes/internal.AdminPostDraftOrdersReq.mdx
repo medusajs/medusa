@@ -34,17 +34,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string`",
-        "description": "The code of the discount to apply",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "email",
@@ -62,53 +52,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "The optional key-value map with additional details about the line item.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "quantity",
-        "type": "`number`",
-        "description": "The quantity of the line item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "title",
-        "type": "`string`",
-        "description": "The title of the line item if `variant_id` is not provided.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "unit_price",
-        "type": "`number`",
-        "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "variant_id",
-        "type": "`string`",
-        "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "metadata",
@@ -153,35 +97,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "The optional additional data needed for the shipping method",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "option_id",
-        "type": "`string`",
-        "description": "The ID of the shipping option in use",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "price",
-        "type": "`number`",
-        "description": "The price of the shipping method.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "status",

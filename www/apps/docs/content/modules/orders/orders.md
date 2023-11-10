@@ -52,15 +52,15 @@ You have full freedom in how you create your orders. Within the Medusa backend, 
 
 ## Payments in Orders
 
-In the cart completion process, or when you use the `OrderService`'s method [createFromCart](../../references/services/classes/OrderService.md#createfromcart), the cart’s payment is also associated with the order by setting the `order_id` of the payment to the newly created order’s ID.
+In the cart completion process, or when you use the `OrderService`'s method [createFromCart](../../references/services/classes/OrderService.mdx#createfromcart), the cart’s payment is also associated with the order by setting the `order_id` of the payment to the newly created order’s ID.
 
 An order can have more than one payment. You can access the order’s payments by expanding the `payments` relation and accessing `order.payments`.
 
 By default, the payment will be authorized but not captured. Some payment processor plugins, such as the Stripe plugin, allow changing this behavior to automatically capture the payment. You can also do that within your custom payment processor.
 
-In the default scenario, the merchant would have to capture that payment manually, which would change the `payment_status` of the order. The payment can be captured using the `PaymentService`'s [capture method](../../references/services/classes/PaymentService.md#capture).
+In the default scenario, the merchant would have to capture that payment manually, which would change the `payment_status` of the order. The payment can be captured using the `PaymentService`'s [capture method](../../references/services/classes/PaymentService.mdx#capture).
 
-After a payment has been captured, it can be refunded either fully or a specific amount of it. This is useful if items of an order has been returned or swapped, or if an order has been edited. The payment can be refunded using the `PaymentService`'s [refund method](../../references/services/classes/PaymentService.md#refund).
+After a payment has been captured, it can be refunded either fully or a specific amount of it. This is useful if items of an order has been returned or swapped, or if an order has been edited. The payment can be refunded using the `PaymentService`'s [refund method](../../references/services/classes/PaymentService.mdx#refund).
 
 The Medusa backend also provides payment admin APIs that you can use to retrieve, capture, and refund the payment.
 
@@ -80,13 +80,13 @@ A fulfillment can instead be canceled, changing the `fulfillment_status` to `can
 
 If one or some items in an order are returned, the `fulfillment_status` is set to `partially_returned`. If all items were returned, the `fulfillment_status` is set to `returned`.
 
-The Medusa backend provides these functionalities through the admin APIs. You can also use the `OrderService`'s methods to perform these functionalities in a custom flow, such as the [createFulfillment](../../references/services/classes/OrderService.md#createfulfillment) or [createShipment](../../references/services/classes/OrderService.md#createshipment) methods.
+The Medusa backend provides these functionalities through the admin APIs. You can also use the `OrderService`'s methods to perform these functionalities in a custom flow, such as the [createFulfillment](../../references/services/classes/OrderService.mdx#createfulfillment) or [createShipment](../../references/services/classes/OrderService.mdx#createshipment) methods.
 
 ---
 
 ## Order Totals Calculations
 
-By default, the `Order` entity doesn’t hold any details regarding the totals. These are computed and added to the order instance using the `OrderService`'s [decorateTotals method](../../references/services/classes/OrderService.md#decoratetotals). There's also a dedicated method in the `OrderService`, [retrieveWithTotals](../../references/services/classes/OrderService.md#retrievewithtotals), attaching the totals to the order instance automatically. It is recommended to use this method by default when you need to retrieve the order.
+By default, the `Order` entity doesn’t hold any details regarding the totals. These are computed and added to the order instance using the `OrderService`'s [decorateTotals method](../../references/services/classes/OrderService.mdx#decoratetotals). There's also a dedicated method in the `OrderService`, [retrieveWithTotals](../../references/services/classes/OrderService.mdx#retrievewithtotals), attaching the totals to the order instance automatically. It is recommended to use this method by default when you need to retrieve the order.
 
 The order’s totals are calculated based on the content and context of the order. This includes the order’s region, whether tax-inclusive pricing is enabled, the chosen shipping methods, and more.
 
@@ -133,7 +133,7 @@ A merchant may also choose to force the edit on the order, by-passing the custom
 
 Although this process is implemented in this flow within the Medusa backend, there is no requirement for you to actually follow it. For example, you can allow the customer or a third-party service to create and manage the order edit.
 
-The Medusa backend provides the [order edit admin APIs](https://docs.medusajs.com/api/admin#order-edits), but you can also use the [OrderEditService](../../references/services/classes/OrderEditService.md) to perform the same functionalities in a custom flow.
+The Medusa backend provides the [order edit admin APIs](https://docs.medusajs.com/api/admin#order-edits), but you can also use the [OrderEditService](../../references/services/classes/OrderEditService.mdx) to perform the same functionalities in a custom flow.
 
 Order edits are represented by the `OrderEdit` entity. This entity is linked to the order through the `order_id` attribute. You can access an order’s edits by expanding the `edits` relation and accessing `order.edits`. Notice that an order can have multiple edits during its lifecycle, but it can’t have more than one ongoing edit.
 

@@ -116,5 +116,19 @@ export function load(app: Application) {
     type: ParameterType.Number,
     defaultValue: 3,
   })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] Whether to output modules file for namespaces.",
+    name: "outputNamespace",
+    type: ParameterType.Boolean,
+    defaultValue: true,
+  })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] Whether to output module files.",
+    name: "outputModules",
+    type: ParameterType.Boolean,
+    defaultValue: true,
+  })
 }
 export { MarkdownTheme }

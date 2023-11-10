@@ -21,7 +21,7 @@ This method is inherited from [`TypedArray.prototype.subarray()`](https://develo
 Modifying the new `Buffer` slice will modify the memory in the original `Buffer`because the allocated memory of the two objects overlap.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Create a `Buffer` with the ASCII alphabet, take a slice, and modify one byte
 // from the original `Buffer`.
@@ -48,7 +48,7 @@ Specifying negative indexes causes the slice to be generated relative to the
 end of `buf` rather than the beginning.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('buffer');
 
@@ -74,6 +74,7 @@ console.log(buf.subarray(-5, -2).toString());
     "description": "Where the new `Buffer` will start.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -82,6 +83,7 @@ console.log(buf.subarray(-5, -2).toString());
     "description": "Where the new `Buffer` will end (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -97,6 +99,7 @@ console.log(buf.subarray(-5, -2).toString());
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

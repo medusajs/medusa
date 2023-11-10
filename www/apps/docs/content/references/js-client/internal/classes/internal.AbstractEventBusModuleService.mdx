@@ -15,7 +15,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "eventToSubscribersMap_",
-    "type": "`Map`<`string` \\| `symbol`, [`SubscriberDescriptor`](../../internal-1/modules/internal.internal-1.EventBusTypes.mdx#subscriberdescriptor)[]\\>",
+    "type": "`Map`<`string` \\| `symbol`, [`SubscriberDescriptor`](../../EventBusTypes/types/internal.internal-1.EventBusTypes.SubscriberDescriptor.mdx)[]\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -33,60 +33,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Map",
-    "type": "`Map`<`string` \\| `symbol`, [`SubscriberDescriptor`](../../internal-1/modules/internal.internal-1.EventBusTypes.mdx#subscriberdescriptor)[]\\>",
+    "type": "`Map`<`string` \\| `symbol`, [`SubscriberDescriptor`](../../EventBusTypes/types/internal.internal-1.EventBusTypes.SubscriberDescriptor.mdx)[]\\>",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "string \\| symbol",
-        "type": "`string` \\| `symbol`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "SubscriberDescriptor[]",
-        "type": "[`SubscriberDescriptor`](../../internal-1/modules/internal.internal-1.EventBusTypes.mdx#subscriberdescriptor)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "SubscriberDescriptor",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "subscriber",
-                "type": "[`Subscriber`](../../modules/internal.mdx#subscriber)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -149,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`EmitData`](../../modules/internal.mdx#emitdata)<`T`\\>[]",
+    "type": "[`EmitData`](../types/internal.EmitData.mdx)<`T`\\>[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -186,35 +138,7 @@ ___
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "event",
-        "type": "`string` \\| `symbol`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "subscriber",
-        "type": "[`Subscriber`](../../modules/internal.mdx#subscriber)<`unknown`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "subscriberId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "__namedParameters.event",
@@ -227,7 +151,7 @@ ___
   },
   {
     "name": "__namedParameters.subscriber",
-    "type": "[`Subscriber`](../../modules/internal.mdx#subscriber)<`unknown`\\>",
+    "type": "[`Subscriber`](../types/internal.Subscriber.mdx)<`unknown`\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -277,7 +201,7 @@ ___
   },
   {
     "name": "subscriber",
-    "type": "[`Subscriber`](../../modules/internal.mdx#subscriber)<`unknown`\\>",
+    "type": "[`Subscriber`](../types/internal.Subscriber.mdx)<`unknown`\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -286,22 +210,12 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SubscriberContext`](../../modules/internal.mdx#subscribercontext)",
+    "type": "[`SubscriberContext`](../types/internal.SubscriberContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "subscriberId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -337,7 +251,7 @@ ___
   },
   {
     "name": "subscriber",
-    "type": "[`Subscriber`](../../modules/internal.mdx#subscriber)<`unknown`\\>",
+    "type": "[`Subscriber`](../types/internal.Subscriber.mdx)<`unknown`\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -346,22 +260,12 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SubscriberContext`](../../modules/internal.mdx#subscribercontext)",
+    "type": "[`SubscriberContext`](../types/internal.SubscriberContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "subscriberId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 

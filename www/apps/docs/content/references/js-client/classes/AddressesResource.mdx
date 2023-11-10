@@ -181,7 +181,7 @@ medusa.customers.addresses
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCustomersRes`](../modules/internal.mdx#storecustomersres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCustomersRes`](../internal/types/internal.StoreCustomersRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
@@ -197,7 +197,7 @@ medusa.customers.addresses
         "children": [
           {
             "name": "customer",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -391,7 +391,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCustomersRes`](../modules/internal.mdx#storecustomersres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCustomersRes`](../internal/types/internal.StoreCustomersRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
@@ -407,7 +407,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
         "children": [
           {
             "name": "customer",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -714,7 +714,7 @@ medusa.customers.addresses
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCustomersRes`](../modules/internal.mdx#storecustomersres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCustomersRes`](../internal/types/internal.StoreCustomersRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
@@ -730,7 +730,7 @@ medusa.customers.addresses
         "children": [
           {
             "name": "customer",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",

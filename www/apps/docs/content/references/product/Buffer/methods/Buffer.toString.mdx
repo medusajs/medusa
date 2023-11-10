@@ -19,7 +19,7 @@ The maximum length of a string instance (in UTF-16 code units) is available
 as constants.MAX_STRING_LENGTH.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf1 = Buffer.allocUnsafe(26);
 
@@ -52,6 +52,7 @@ console.log(buf2.toString(undefined, 0, 3));
     "description": "The character encoding to use.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -60,6 +61,7 @@ console.log(buf2.toString(undefined, 0, 3));
     "description": "The byte offset to start decoding at.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -68,6 +70,7 @@ console.log(buf2.toString(undefined, 0, 3));
     "description": "The byte offset to stop decoding at (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -83,6 +86,7 @@ console.log(buf2.toString(undefined, 0, 3));
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
