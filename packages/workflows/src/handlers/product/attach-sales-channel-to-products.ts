@@ -41,9 +41,7 @@ export async function attachSalesChannelToProducts({
   })
 
   if (
-    !featureFlagRouter.isFeatureEnabled(
-      IsolateSalesChannelDomainFeatureFlag.key
-    )
+    featureFlagRouter.isFeatureEnabled(IsolateSalesChannelDomainFeatureFlag.key)
   ) {
     const remoteLink = container.resolve("remoteLink")
     const links: any[] = []
