@@ -16,7 +16,7 @@ import {
   tempReorderRank,
   UpdateProductCategoryInput,
 } from "../types/product-category"
-import { buildQuery, nullableValue } from "../utils"
+import { buildQuery, nullableValue, setMetadata } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -228,6 +228,12 @@ class ProductCategoryService extends TransactionBaseService {
       const productCategoryRepo = manager.withRepository(
         this.productCategoryRepo_
       )
+
+      const { metadata, ...rest } = productCategoryInput
+
+      if (metadata) {
+        productCategory.metadata = setMetadata(productCategory, metadata)
+      }
 
       const conditions = this.fetchReorderConditions(
         productCategory,
