@@ -4,40 +4,48 @@ displayed_sidebar: productReference
 
 import ParameterTypes from "@site/src/components/ParameterTypes"
 
-# copyWithin
+# copyBytesFrom
 
-[Buffer](../../interfaces/Buffer.mdx).copyWithin
+[BufferConstructor](../../interfaces/BufferConstructor.mdx).copyBytesFrom
 
-**copyWithin**(`target`, `start`, `end?`): [`Buffer`](../../variables/Buffer-1.mdx)
+**copyBytesFrom**(`view`, `offset?`, `length?`): [`Buffer`](../../variables/Buffer-1.mdx)
 
-Returns the this object after copying a section of the array identified by start and end
-to the same array starting at position target
+Copies the underlying memory of `view` into a new `Buffer`.
+
+```js
+const u16 = new Uint16Array([0, 0xffff]);
+const buf = Buffer.copyBytesFrom(u16, 1, 1);
+u16[1] = 0;
+console.log(buf.length); // 2
+console.log(buf[0]); // 255
+console.log(buf[1]); // 255
+```
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "target",
-    "type": "`number`",
-    "description": "If target is negative, it is treated as length+target where length is the length of the array.",
+    "name": "view",
+    "type": "[`TypedArray`](../../types/TypedArray.mdx)",
+    "description": "The {TypedArray} to copy.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
     "children": []
   },
   {
-    "name": "start",
+    "name": "offset",
     "type": "`number`",
-    "description": "If start is negative, it is treated as length+start. If end is negative, it is treated as length+end.",
-    "optional": false,
+    "description": "The starting offset within `view`.",
+    "optional": true,
     "defaultValue": "",
     "expandable": false,
     "children": []
   },
   {
-    "name": "end",
+    "name": "length",
     "type": "`number`",
-    "description": "If not specified, length of the this object is used as its default value.",
+    "description": "The number of elements from `view` to copy.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -61,6 +69,6 @@ to the same array starting at position target
   }
 ]} />
 
-#### Inherited from
+#### Since
 
-Uint8Array.copyWithin
+v19.8.0

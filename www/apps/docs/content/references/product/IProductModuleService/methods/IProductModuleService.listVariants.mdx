@@ -115,6 +115,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
     "description": "The filters applied on the retrieved product variants.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "$and",
@@ -122,6 +123,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -130,6 +132,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -138,6 +141,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "The IDs to filter product variants by.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -146,7 +150,18 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "Filter product variants by their associated options.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "id",
+            "type": "`string`[]",
+            "description": "",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "product_id",
@@ -154,6 +169,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "Filter the product variants by their associated products' IDs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -162,6 +178,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "The SKUs to filter product variants by.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -172,6 +189,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
     "description": "The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product variant.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "order",
@@ -179,7 +197,18 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "__type",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "relations",
@@ -187,6 +216,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -195,6 +225,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -203,6 +234,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -211,6 +243,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -219,6 +252,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -229,6 +263,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -236,6 +271,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -244,6 +280,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -252,6 +289,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -260,6 +298,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -268,6 +307,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -283,6 +323,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
     "optional": false,
     "defaultValue": "",
     "description": "The list of product variants.",
+    "expandable": false,
     "children": [
       {
         "name": "ProductVariantDTO[]",
@@ -290,6 +331,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "allow_backorder",
@@ -297,6 +339,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "Whether the product variant can be ordered when it's out of stock.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -305,6 +348,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The barcode of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -313,6 +357,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "When the product variant was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -321,6 +366,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "When the product variant was deleted.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -329,6 +375,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The EAN of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -337,6 +384,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The height of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -345,6 +393,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The HS Code of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -353,6 +402,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The ID of the product variant.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -361,6 +411,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The inventory quantiy of the product variant.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -369,6 +420,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The length of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -377,6 +429,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "Whether the product variant's inventory should be managed by the core system.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -385,6 +438,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The material of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -393,6 +447,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -401,6 +456,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The MID Code of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -409,6 +465,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -417,6 +474,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The origin country of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -425,6 +483,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -433,6 +492,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The ID of the associated product.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -441,6 +501,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The SKU of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -449,6 +510,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The tile of the product variant.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -457,6 +519,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The UPC of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -465,6 +528,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "When the product variant was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -473,6 +537,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The ranking of the variant among other variants associated with the product. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -481,6 +546,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The weight of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -489,6 +555,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
             "description": "The width of the product variant. It can possibly be `null`.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

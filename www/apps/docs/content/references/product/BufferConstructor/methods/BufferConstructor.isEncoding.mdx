@@ -14,7 +14,7 @@ Returns `true` if `encoding` is the name of a supported character encoding,
 or `false` otherwise.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 console.log(Buffer.isEncoding('utf8'));
 // Prints: true
@@ -38,6 +38,7 @@ console.log(Buffer.isEncoding(''));
     "description": "A character encoding name to check.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -53,6 +54,7 @@ encoding is BufferEncoding
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

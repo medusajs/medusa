@@ -21,7 +21,18 @@ Returns the elements of an array that meet the condition specified in a callback
     "description": "A function that accepts up to three arguments. The filter method calls the predicate function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `any`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "thisArg",
@@ -29,6 +40,7 @@ Returns the elements of an array that meet the condition specified in a callback
     "description": "An object to which the this keyword can refer in the predicate function. If thisArg is omitted, undefined is used as the this value.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -44,6 +56,7 @@ Returns the elements of an array that meet the condition specified in a callback
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
