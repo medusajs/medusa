@@ -136,12 +136,9 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreateProducts,
-  })
-
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.CreateProducts} workflow without '@medusajs/product' installed`
     )
@@ -149,7 +146,7 @@ export default async (req, res) => {
 
   let product
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled && !!productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
     const input = {

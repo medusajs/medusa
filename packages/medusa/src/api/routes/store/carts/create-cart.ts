@@ -1,9 +1,4 @@
-import {
-  CartService,
-  LineItemService,
-  ProductVariantInventoryService,
-  RegionService,
-} from "../../../../services"
+import { createCart as createCartWorkflow } from "@medusajs/workflows"
 import {
   IsArray,
   IsInt,
@@ -13,22 +8,24 @@ import {
   ValidateNested,
 } from "class-validator"
 import { MedusaError, isDefined } from "medusa-core-utils"
-import {
-  Workflows,
-  createCart as createCartWorkflow,
-} from "@medusajs/workflows"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import {
+  CartService,
+  LineItemService,
+  ProductVariantInventoryService,
+  RegionService,
+} from "../../../../services"
 
-import { CartCreateProps } from "../../../../types/cart"
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { FlagRouter } from "@medusajs/utils"
-import { LineItem } from "../../../../models"
 import { MedusaContainer } from "@medusajs/modules-sdk"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
 import reqIp from "request-ip"
+import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { LineItem } from "../../../../models"
+import { CartCreateProps } from "../../../../types/cart"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
  * @oas [post] /store/carts
@@ -94,13 +91,11 @@ export default async (req, res) => {
     user_agent: req.get("user-agent"),
   }
 
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreateCart,
-  })
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
   let cart
 
-  if (isWorkflowEnabled) {
+  if (isMedusaV2Enabled) {
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
     const input = {
       ...validated,

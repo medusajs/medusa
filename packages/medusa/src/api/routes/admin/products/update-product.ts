@@ -1,5 +1,10 @@
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter, MedusaError, promiseAll } from "@medusajs/utils"
+import {
+  FlagRouter,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
 import { Workflows, updateProducts } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
@@ -46,7 +51,6 @@ import {
 } from "./transaction/create-product-variant"
 
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { MedusaV2Flag } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import { Logger } from "../../../../types/global"
@@ -140,17 +144,15 @@ export default async (req, res) => {
   const productModuleService = req.scope.resolve("productModuleService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.UpdateProducts,
-  })
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.UpdateProducts} workflow without '@medusajs/product' installed`
     )
   }
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled) {
     const updateProductWorkflow = updateProducts(req.scope)
 
     const input = {
