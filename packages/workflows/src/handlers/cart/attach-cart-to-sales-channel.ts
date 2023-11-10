@@ -20,8 +20,9 @@ export async function attachCartToSalesChannel({
   container,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<void> {
-  const salesChannelService = container.resolve("salesChannelService")
   const featureFlagRouter = container.resolve("featureFlagRouter")
+  const remoteLink = container.resolve("remoteLink")
+
   if (
     !featureFlagRouter.isFeatureEnabled(
       IsolateSalesChannelDomainFeatureFlag.key
@@ -33,7 +34,14 @@ export async function attachCartToSalesChannel({
   const cart = data[Aliases.Cart]
   const salesChannel = data[Aliases.SalesChannel]
 
-  await salesChannelService.addCarts(salesChannel.sales_channel_id, [cart.id])
+  await remoteLink.create({
+    salesChannelService: {
+      id: salesChannel.sales_channel_id,
+    },
+    cartService: {
+      id: cart.id,
+    },
+  })
 }
 
 attachCartToSalesChannel.aliases = Aliases
