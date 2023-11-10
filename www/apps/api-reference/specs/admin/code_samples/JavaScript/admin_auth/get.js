@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.auth.getSession()
 .then(({ user }) => {
   console.log(user.id);
-});
+})

@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
 .then(({ order }) => {
   console.log(order.id);
-});
+})

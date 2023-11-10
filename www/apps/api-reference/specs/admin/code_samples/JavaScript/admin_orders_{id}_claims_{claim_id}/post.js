@@ -6,4 +6,4 @@ medusa.admin.orders.updateClaim(orderId, claimId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

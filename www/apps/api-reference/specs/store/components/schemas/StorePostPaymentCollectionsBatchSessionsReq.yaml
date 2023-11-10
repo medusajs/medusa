@@ -4,8 +4,8 @@ required:
 properties:
   sessions:
     description: >-
-      An array of payment sessions related to the Payment Collection. Existing
-      sessions that are not added in this array will be deleted.
+      Payment sessions related to the Payment Collection. Existing sessions that
+      are not added in this array will be deleted.
     type: array
     items:
       type: object

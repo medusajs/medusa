@@ -11,4 +11,4 @@ medusa.admin.orders.createFulfillment(orderId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

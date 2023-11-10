@@ -1,7 +1,7 @@
 get:
   operationId: GetReservationsReservation
   summary: Get a Reservation
-  description: Retrieve a reservation's details.'
+  description: Retrieve a reservation's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -47,7 +47,7 @@ get:
 post:
   operationId: PostReservationsReservation
   summary: Update a Reservation
-  description: Update a Reservation's details.'
+  description: Update a Reservation's details.
   x-authenticated: true
   parameters:
     - in: path
