@@ -3,6 +3,7 @@ import {
   CreatePriceSetDTO,
   IPricingModuleService,
   PriceListType,
+  PricingTypes,
 } from "@medusajs/types"
 
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -21,31 +22,34 @@ const defaultRules = {
   region_id: ["DE", "DK"],
 }
 
+const defaultPriceListPrices = [
+  {
+    amount: 232,
+    currency_code: "PLN",
+    price_set_id: "price-set-PLN",
+  },
+  {
+    amount: 455,
+    currency_code: "EUR",
+    price_set_id: "price-set-EUR",
+  },
+]
 const createPriceLists = async (
   service,
-  type = PriceListType.SALE,
-  rules: object = defaultRules
+  priceListOverride: Partial<
+    Omit<PricingTypes.CreatePriceListDTO, "rules" | "prices">
+  > = {},
+  rules: object = defaultRules,
+  prices = defaultPriceListPrices
 ) => {
-  await service.createPriceLists([
+  return await service.createPriceLists([
     {
       title: "Test Price List",
       description: "test description",
-      starts_at: "10/01/2023" as unknown as Date,
-      ends_at: "10/30/2023" as unknown as Date,
-      type,
+      type: PriceListType.SALE,
       rules,
-      prices: [
-        {
-          amount: 232,
-          currency_code: "PLN",
-          price_set_id: "price-set-PLN",
-        },
-        {
-          amount: 455,
-          currency_code: "EUR",
-          price_set_id: "price-set-EUR",
-        },
-      ],
+      prices,
+      ...priceListOverride,
     },
   ])
 }
@@ -1186,7 +1190,7 @@ describe("PricingModule Service - Calculate Price", () => {
       })
 
       it("should return price list prices when price list dont have rules, but context is loaded", async () => {
-        await createPriceLists(service, PriceListType.SALE, {})
+        await createPriceLists(service, {}, {})
 
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-EUR", "price-set-PLN"] },
@@ -1249,7 +1253,7 @@ describe("PricingModule Service - Calculate Price", () => {
       })
 
       it("should return price list prices when price list dont have any rules", async () => {
-        await createPriceLists(service, PriceListType.SALE, {})
+        await createPriceLists(service, {}, {})
 
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-EUR", "price-set-PLN"] },
@@ -1309,7 +1313,7 @@ describe("PricingModule Service - Calculate Price", () => {
       })
 
       it("should return price list prices when price list conditions match for override", async () => {
-        await createPriceLists(service, PriceListType.OVERRIDE)
+        await createPriceLists(service, { type: PriceListType.OVERRIDE })
 
         const priceSetsResult = await service.calculatePrices(
           { id: ["price-set-EUR", "price-set-PLN"] },
@@ -1490,6 +1494,232 @@ describe("PricingModule Service - Calculate Price", () => {
               price_list_type: null,
               min_quantity: 1,
               max_quantity: 4,
+            },
+          },
+        ])
+      })
+
+      it("should return price list prices for pricelist with valid pricing interval", async () => {
+        const yesterday = ((today) =>
+          new Date(today.setDate(today.getDate() - 1)))(new Date())
+        const tomorrow = ((today) =>
+          new Date(today.setDate(today.getDate() + 1)))(new Date())
+
+        await createPriceLists(
+          service,
+          {
+            starts_at: yesterday.toISOString(),
+            ends_at: tomorrow.toISOString(),
+          },
+          {}
+        )
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+              region_id: "DE",
+              customer_group_id: "vip-customer-group-id",
+              company_id: "medusa-company-id",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
+            currency_code: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+          },
+          {
+            id: "price-set-PLN",
+            is_calculated_price_price_list: true,
+            calculated_amount: 232,
+            is_original_price_price_list: false,
+            original_amount: 400,
+            currency_code: "PLN",
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: expect.any(String),
+              price_list_type: "sale",
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: 1,
+              max_quantity: 5,
+            },
+          },
+        ])
+      })
+
+      it("should not return price list prices for upcoming pricelist", async () => {
+        const tomorrow = ((today) =>
+          new Date(today.setDate(today.getDate() + 1)))(new Date())
+
+        const tenDaysFromToday = ((today) =>
+          new Date(today.setDate(today.getDate() + 10)))(new Date())
+
+        await createPriceLists(
+          service,
+          {
+            starts_at: tomorrow.toISOString(),
+            ends_at: tenDaysFromToday.toISOString(),
+          },
+          {}
+        )
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+              region_id: "DE",
+              customer_group_id: "vip-customer-group-id",
+              company_id: "medusa-company-id",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
+            currency_code: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+          },
+          {
+            id: "price-set-PLN",
+            is_calculated_price_price_list: false,
+            calculated_amount: 400,
+            is_original_price_price_list: false,
+            original_amount: 400,
+            currency_code: "PLN",
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: 1,
+              max_quantity: 5,
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: 1,
+              max_quantity: 5,
+            },
+          },
+        ])
+      })
+
+      it("should not return price list prices for expired pricelist", async () => {
+        const yesterday = ((today) =>
+          new Date(today.setDate(today.getDate() - 1)))(new Date())
+        const tenDaysAgo = ((today) =>
+          new Date(today.setDate(today.getDate() - 10)))(new Date())
+
+        await createPriceLists(
+          service,
+          {
+            starts_at: tenDaysAgo.toISOString(),
+            ends_at: yesterday.toISOString(),
+          },
+          {}
+        )
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR", "price-set-PLN"] },
+          {
+            context: {
+              currency_code: "PLN",
+              region_id: "DE",
+              customer_group_id: "vip-customer-group-id",
+              company_id: "medusa-company-id",
+            },
+          }
+        )
+
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            is_calculated_price_price_list: false,
+            calculated_amount: null,
+            is_original_price_price_list: false,
+            original_amount: null,
+            currency_code: null,
+            calculated_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+          },
+          {
+            id: "price-set-PLN",
+            is_calculated_price_price_list: false,
+            calculated_amount: 400,
+            is_original_price_price_list: false,
+            original_amount: 400,
+            currency_code: "PLN",
+            calculated_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: 1,
+              max_quantity: 5,
+            },
+            original_price: {
+              money_amount_id: "price-set-PLN",
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: 1,
+              max_quantity: 5,
             },
           },
         ])
