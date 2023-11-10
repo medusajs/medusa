@@ -2,7 +2,11 @@ const path = require("path")
 
 const { getConfigFile } = require("medusa-core-utils")
 const { asValue } = require("awilix")
-const { isObject, createMedusaContainer } = require("@medusajs/utils")
+const {
+  isObject,
+  createMedusaContainer,
+  MedusaV2Flag,
+} = require("@medusajs/utils")
 const { dropDatabase } = require("pg-god")
 const { DataSource } = require("typeorm")
 const dbFactory = require("./use-template-db")
@@ -140,15 +144,7 @@ module.exports = {
 
     instance.setDb(dbDataSource)
 
-    const IsolateProductDomainFeatureFlag =
-      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-product-domain").default
-    const IsolatePricingDomainFeatureFlag =
-      require("@medusajs/medusa/dist/loaders/feature-flags/isolate-pricing-domain").default
-
-    if (
-      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-    ) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       const pgConnectionLoader =
         require("@medusajs/medusa/dist/loaders/pg-connection").default
 

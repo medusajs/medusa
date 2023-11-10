@@ -1,6 +1,6 @@
 import { DistributedTransaction } from "@medusajs/orchestration"
 import { FlagRouter, MedusaError, promiseAll } from "@medusajs/utils"
-import { updateProducts, Workflows } from "@medusajs/workflows"
+import { Workflows, updateProducts } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -46,12 +46,12 @@ import {
 } from "./transaction/create-product-variant"
 
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import { Logger } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -289,7 +289,7 @@ export default async (req, res) => {
 
   let rawProduct
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     rawProduct = await getProductWithIsolatedProductModule(req, id)
   } else {
     rawProduct = await productService.retrieve(id, {
