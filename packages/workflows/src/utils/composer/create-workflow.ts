@@ -30,12 +30,12 @@ export function createWorkflow(name: string, composer: Function) {
     },
   }
 
+  global[SymbolMedusaWorkflowComposerContext] = context
+
   const valueHolder = {
     value: {},
     __type: SymbolInputReference,
   }
-
-  global[SymbolMedusaWorkflowComposerContext] = context
 
   const returnedStep = composer.apply(context, [valueHolder])
 
