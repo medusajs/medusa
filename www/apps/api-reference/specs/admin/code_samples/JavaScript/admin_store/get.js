@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.store.retrieve()
 .then(({ store }) => {
   console.log(store.id);
-});
+})

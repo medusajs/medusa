@@ -31,7 +31,7 @@ tags:
       asynchronusly. For example, the Import Product feature is implemented
       using batch jobs.
 
-      Batch Job API Routes allows admins to manage the batch jobs and their
+      Batch Job API Routes allow admins to manage the batch jobs and their
       state.
     externalDocs:
       description: How to import products
@@ -289,7 +289,7 @@ tags:
       They are created by the admin and they're not associated with a
       fulfillment provider.
     externalDocs:
-      description: Shipping Option architecture
+      description: Shipping Profile architecture
       url: >-
         https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile
   - name: Stock Locations
@@ -462,7 +462,7 @@ paths:
 
             .then(({ user }) => {
               console.log(user.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -526,7 +526,7 @@ paths:
 
             .then(({ user }) => {
               console.log(user.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -637,7 +637,7 @@ paths:
 
             .then(({ access_token }) => {
               console.log(access_token);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -985,7 +985,7 @@ paths:
               dry_run: false
             }).then((({ batch_job }) => {
               console.log(batch_job.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1051,7 +1051,7 @@ paths:
 
             .then(({ batch_job }) => {
               console.log(batch_job.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1114,7 +1114,7 @@ paths:
 
             .then(({ batch_job }) => {
               console.log(batch_job.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1178,7 +1178,7 @@ paths:
 
             .then(({ batch_job }) => {
               console.log(batch_job.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1335,7 +1335,7 @@ paths:
 
             .then(({ collections, limit, offset, count }) => {
               console.log(collections.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1395,7 +1395,7 @@ paths:
 
             .then(({ collection }) => {
               console.log(collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1462,7 +1462,7 @@ paths:
 
             .then(({ collection }) => {
               console.log(collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1529,7 +1529,7 @@ paths:
 
             .then(({ collection }) => {
               console.log(collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1593,7 +1593,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1838,7 +1838,7 @@ paths:
 
             .then(({ currencies, count, offset, limit }) => {
               console.log(currencies.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1894,7 +1894,7 @@ paths:
 
             .then(({ currency }) => {
               console.log(currency.code);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2063,7 +2063,7 @@ paths:
 
             .then(({ customer_groups, limit, offset, count }) => {
               console.log(customer_groups.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2097,7 +2097,7 @@ paths:
     post:
       operationId: PostCustomerGroups
       summary: Create a Customer Group
-      description: Creates a Customer Group.
+      description: Create a Customer Group.
       x-authenticated: true
       requestBody:
         content:
@@ -2123,7 +2123,7 @@ paths:
 
             .then(({ customer_group }) => {
               console.log(customer_group.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2205,7 +2205,7 @@ paths:
 
             .then(({ customer_group }) => {
               console.log(customer_group.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2272,7 +2272,7 @@ paths:
 
             .then(({ customer_group }) => {
               console.log(customer_group.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2338,7 +2338,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2426,7 +2426,7 @@ paths:
 
             .then(({ customers }) => {
               console.log(customers.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2499,7 +2499,7 @@ paths:
 
             .then(({ customer_group }) => {
               console.log(customer_group.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -2586,7 +2586,7 @@ paths:
 
             .then(({ customer_group }) => {
               console.log(customer_group.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -2689,7 +2689,7 @@ paths:
 
             .then(({ customers, limit, offset, count }) => {
               console.log(customers.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2723,7 +2723,7 @@ paths:
     post:
       operationId: PostCustomers
       summary: Create a Customer
-      description: Allow admins to create a customer.
+      description: Create a customer as an admin.
       x-authenticated: true
       requestBody:
         content:
@@ -2752,7 +2752,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2834,7 +2834,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2915,7 +2915,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3030,7 +3030,7 @@ paths:
 
             .then(({ discounts, limit, offset, count }) => {
               console.log(discounts.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3118,7 +3118,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3204,7 +3204,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3289,12 +3289,13 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.discounts.createCondition(discountId, {
-              operator: DiscountConditionOperator.IN
+              operator: DiscountConditionOperator.IN,
+              products: [productId]
             })
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3380,7 +3381,7 @@ paths:
 
             .then(({ discount_condition }) => {
               console.log(discount_condition.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3478,7 +3479,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3523,7 +3524,7 @@ paths:
       operationId: DeleteDiscountsDiscountConditionsCondition
       summary: Delete a Condition
       description: >-
-        Deletes a Discount Condition. This does not delete resources associated
+        Delete a Discount Condition. This does not delete resources associated
         to the discount condition.
       x-authenticated: true
       parameters:
@@ -3571,7 +3572,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3668,7 +3669,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3714,7 +3715,7 @@ paths:
       description: >-
         Remove a batch of resources from a discount condition. This will only
         remove the association between the resource and the discount condition,
-        but not the resource itself.
+        not the resource itself.
       x-authenticated: true
       parameters:
         - in: path
@@ -3769,7 +3770,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3813,7 +3814,7 @@ paths:
     get:
       operationId: GetDiscountsDiscount
       summary: Get a Discount
-      description: Retrieves a Discount
+      description: Retrieve a Discount.
       x-authenticated: true
       parameters:
         - in: path
@@ -3854,7 +3855,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3938,7 +3939,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4004,7 +4005,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4076,7 +4077,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4147,7 +4148,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -4216,7 +4217,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -4287,7 +4288,7 @@ paths:
 
             .then(({ discount }) => {
               console.log(discount.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -4366,7 +4367,7 @@ paths:
 
             .then(({ draft_orders, limit, offset, count }) => {
               console.log(draft_orders.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4439,7 +4440,7 @@ paths:
 
             .then(({ draft_order }) => {
               console.log(draft_order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4515,7 +4516,7 @@ paths:
 
             .then(({ draft_order }) => {
               console.log(draft_order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4582,7 +4583,7 @@ paths:
 
             .then(({ draft_order }) => {
               console.log(draft_order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4620,7 +4621,7 @@ paths:
     delete:
       operationId: DeleteDraftOrdersDraftOrder
       summary: Delete a Draft Order
-      description: Delete a Draft Order
+      description: Delete a Draft Order.
       x-authenticated: true
       parameters:
         - in: path
@@ -4646,7 +4647,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4714,7 +4715,7 @@ paths:
 
             .then(({ draft_order }) => {
               console.log(draft_order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4753,7 +4754,7 @@ paths:
     post:
       operationId: PostDraftOrdersDraftOrderLineItemsItem
       summary: Update a Line Item
-      description: Update a Line Item in a Draft Order
+      description: Update a Line Item in a Draft Order.
       x-authenticated: true
       parameters:
         - in: path
@@ -4793,7 +4794,7 @@ paths:
 
             .then(({ draft_order }) => {
               console.log(draft_order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -4835,7 +4836,7 @@ paths:
     delete:
       operationId: DeleteDraftOrdersDraftOrderLineItemsItem
       summary: Delete a Line Item
-      description: Deletes a Line Item from a Draft Order.
+      description: Delete a Line Item from a Draft Order.
       x-authenticated: true
       parameters:
         - in: path
@@ -4867,7 +4868,7 @@ paths:
 
             .then(({ draft_order }) => {
               console.log(draft_order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -4935,7 +4936,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5011,7 +5012,7 @@ paths:
 
             .then(({ gift_cards, limit, offset, count }) => {
               console.log(gift_cards.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5073,7 +5074,7 @@ paths:
 
             .then(({ gift_card }) => {
               console.log(gift_card.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5138,7 +5139,7 @@ paths:
 
             .then(({ gift_card }) => {
               console.log(gift_card.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5205,7 +5206,7 @@ paths:
 
             .then(({ gift_card }) => {
               console.log(gift_card.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5269,7 +5270,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5433,7 +5434,7 @@ paths:
 
             .then(({ inventory_items, count, offset, limit }) => {
               console.log(inventory_items.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5510,7 +5511,7 @@ paths:
 
             .then(({ inventory_item }) => {
               console.log(inventory_item.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5590,7 +5591,7 @@ paths:
 
             .then(({ inventory_item }) => {
               console.log(inventory_item.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5672,7 +5673,7 @@ paths:
 
             .then(({ inventory_item }) => {
               console.log(inventory_item.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5735,9 +5736,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.inventoryItems.delete(inventoryItemId)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
+
+            .then(({ id, object, deleted }) => {
+              console.log(id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5764,8 +5766,7 @@ paths:
       summary: List Inventory Level
       description: >-
         Retrieve a list of inventory levels of an inventory item. The inventory
-        levels can be filtered by fields such as `location_id`. The inventory
-        levels can also be paginated.
+        levels can be filtered by fields such as `location_id`.
       x-authenticated: true
       parameters:
         - in: path
@@ -5815,7 +5816,7 @@ paths:
 
             .then(({ inventory_item }) => {
               console.log(inventory_item.location_levels);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5848,8 +5849,8 @@ paths:
           $ref: '#/components/responses/500_error'
     post:
       operationId: PostInventoryItemsInventoryItemLocationLevels
-      summary: Create an Location Level
-      description: Create an Location Level for a given Inventory Item.
+      summary: Create a Location Level
+      description: Create a Location Level for a given Inventory Item.
       x-authenticated: true
       parameters:
         - in: path
@@ -5899,7 +5900,7 @@ paths:
 
             .then(({ inventory_item }) => {
               console.log(inventory_item.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -5999,7 +6000,7 @@ paths:
 
             .then(({ inventory_item }) => {
               console.log(inventory_item.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -6075,7 +6076,7 @@ paths:
 
             .then(({ inventory_item }) => {
               console.log(inventory_item.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -6132,7 +6133,7 @@ paths:
 
             .then(({ invites }) => {
               console.log(invites.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6202,7 +6203,7 @@ paths:
 
             .catch(() => {
               // an error occurred
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6276,7 +6277,7 @@ paths:
 
             .catch(() => {
               // an error occurred
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6342,7 +6343,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6412,7 +6413,7 @@ paths:
 
             .catch(() => {
               // an error occurred
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6483,7 +6484,7 @@ paths:
 
             .then(({ notes, limit, offset, count }) => {
               console.log(notes.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6545,7 +6546,7 @@ paths:
 
             .then(({ note }) => {
               console.log(note.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6612,7 +6613,7 @@ paths:
 
             .then(({ note }) => {
               console.log(note.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6647,7 +6648,7 @@ paths:
       operationId: PostNotesNote
       summary: Update a Note
       x-authenticated: true
-      description: Update a Note's details.'
+      description: Update a Note's details.
       parameters:
         - in: path
           name: id
@@ -6679,7 +6680,7 @@ paths:
 
             .then(({ note }) => {
               console.log(note.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6743,7 +6744,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6862,7 +6863,7 @@ paths:
 
             .then(({ notifications }) => {
               console.log(notifications.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -6930,7 +6931,7 @@ paths:
 
             .then(({ notification }) => {
               console.log(notification.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -7021,9 +7022,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.list()
-              .then(({ order_edits, count, limit, offset }) => {
-                console.log(order_edits.length)
-              })
+
+            .then(({ order_edits, count, limit, offset }) => {
+              console.log(order_edits.length)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -7078,9 +7080,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.create({ orderId })
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -7159,9 +7162,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.retrieve(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -7195,7 +7199,7 @@ paths:
     post:
       operationId: PostOrderEditsOrderEdit
       summary: Update an Order Edit
-      description: Updates an Order Edit's details.
+      description: Update an Order Edit's details.
       x-authenticated: true
       parameters:
         - in: path
@@ -7225,9 +7229,10 @@ paths:
             medusa.admin.orderEdits.update(orderEditId, {
               internal_note: "internal reason XY"
             })
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -7290,9 +7295,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.delete(orderEditId)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
+
+            .then(({ id, object, deleted }) => {
+              console.log(id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -7317,7 +7323,7 @@ paths:
     post:
       operationId: PostOrderEditsOrderEditCancel
       summary: Cancel an Order Edit
-      description: Cancel an OrderEdit.
+      description: Cancel an Order Edit.
       x-authenticated: true
       parameters:
         - in: path
@@ -7340,9 +7346,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.cancel(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -7404,9 +7411,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.deleteItemChange(orderEdit_id, itemChangeId)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
+
+            .then(({ id, object, deleted }) => {
+              console.log(id)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -7458,9 +7466,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.confirm(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -7607,11 +7616,12 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.updateLineItem(orderEditId, lineItemId, {
-                quantity: 5
-              })
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+              quantity: 5
+            })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -7683,9 +7693,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.removeLineItem(orderEditId, lineItemId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -7748,9 +7759,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.orderEdits.requestConfirmation(orderEditId)
-              .then({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8017,7 +8029,7 @@ paths:
 
             .then(({ orders, limit, offset, count }) => {
               console.log(orders.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8093,7 +8105,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8175,7 +8187,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8255,7 +8267,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8334,7 +8346,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8412,7 +8424,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8507,7 +8519,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8606,7 +8618,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -8698,7 +8710,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -8735,7 +8747,11 @@ paths:
     post:
       operationId: PostOrdersOrderClaimsClaimFulfillments
       summary: Create a Claim Fulfillment
-      description: Create a Fulfillment for a Claim.
+      description: >-
+        Create a Fulfillment for a Claim, and change its fulfillment status to
+        `partially_fulfilled` or `fulfilled` depending on whether all the items
+        were fulfilled. It may also change the status to `requires_action` if
+        any actions are required.
       x-authenticated: true
       externalDocs:
         description: Fulfill a claim
@@ -8793,7 +8809,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -8830,7 +8846,9 @@ paths:
     post:
       operationId: PostOrdersClaimFulfillmentsCancel
       summary: Cancel Claim's Fulfillment
-      description: Cancel a claim's fulfillment and change its status.
+      description: >-
+        Cancel a claim's fulfillment and change its fulfillment status to
+        `canceled`.
       x-authenticated: true
       parameters:
         - in: path
@@ -8884,7 +8902,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -8923,9 +8941,10 @@ paths:
       operationId: PostOrdersOrderClaimsClaimShipments
       summary: Ship a Claim's Fulfillment
       description: >-
-        Mark a claim's fulfillment as shipped. This changes the claim's
-        fulfillment status to either `shipped` or `partially_shipped`, depending
-        on whether all the items were shipped.
+        Create a shipment for the claim and mark its fulfillment as shipped.
+        This changes the claim's fulfillment status to either
+        `partially_shipped` or `shipped`, depending on whether all the items
+        were shipped.
       x-authenticated: true
       externalDocs:
         description: Fulfill a claim
@@ -8982,7 +9001,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -9068,7 +9087,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -9103,7 +9122,10 @@ paths:
     post:
       operationId: PostOrdersOrderFulfillments
       summary: Create a Fulfillment
-      description: Create a Fulfillment of an Order using the fulfillment provider.
+      description: >-
+        Create a Fulfillment of an Order using the fulfillment provider, and
+        change the order's fulfillment status to either `partially_fulfilled` or
+        `fulfilled`, depending on whether all the items were fulfilled.
       x-authenticated: true
       externalDocs:
         description: Fulfillments of orders
@@ -9159,7 +9181,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -9203,7 +9225,9 @@ paths:
     post:
       operationId: PostOrdersOrderFulfillmentsCancel
       summary: Cancel a Fulfilmment
-      description: Cancel an order's fulfillment and change its status.
+      description: >-
+        Cancel an order's fulfillment and change its fulfillment status to
+        `canceled`.
       x-authenticated: true
       parameters:
         - in: path
@@ -9250,7 +9274,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -9405,7 +9429,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -9559,7 +9583,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -9604,9 +9628,9 @@ paths:
       operationId: PostOrdersOrderShipment
       summary: Ship a Fulfillment
       description: >-
-        Mark a fulfillment as shipped. This changes the order's fulfillment
-        status to either `shipped` or `partially_shipped`, depending on whether
-        all the items were shipped.
+        Create a shipment and mark a fulfillment as shipped. This changes the
+        order's fulfillment status to either `partially_shipped` or `shipped`,
+        depending on whether all the items were shipped.
       x-authenticated: true
       externalDocs:
         description: Fulfillments of orders
@@ -9657,7 +9681,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -9697,7 +9721,7 @@ paths:
       operationId: PostOrdersOrderShippingMethods
       summary: Add a Shipping Method
       description: >-
-        Adds a Shipping Method to an Order. If another Shipping Method exists
+        Add a Shipping Method to an Order. If another Shipping Method exists
         with the same Shipping Profile, the previous Shipping Method will be
         replaced.
       parameters:
@@ -9748,7 +9772,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -9846,7 +9870,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -9940,7 +9964,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -9977,7 +10001,10 @@ paths:
     post:
       operationId: PostOrdersOrderSwapsSwapFulfillments
       summary: Create a Swap Fulfillment
-      description: Create a Fulfillment for a Swap.
+      description: >-
+        Create a Fulfillment for a Swap and change its fulfillment status to
+        `fulfilled`. If it requires any additional actions, its fulfillment
+        status may change to `requires_action`.
       x-authenticated: true
       externalDocs:
         description: Handling a swap's fulfillment
@@ -10037,7 +10064,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -10074,7 +10101,9 @@ paths:
     post:
       operationId: PostOrdersSwapFulfillmentsCancel
       summary: Cancel Swap's Fulfilmment
-      description: Cancel a swap's fulfillment and change its status.
+      description: >-
+        Cancel a swap's fulfillment and change its fulfillment status to
+        `canceled`.
       x-authenticated: true
       parameters:
         - in: path
@@ -10128,7 +10157,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -10220,7 +10249,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -10258,9 +10287,9 @@ paths:
       operationId: PostOrdersOrderSwapsSwapShipments
       summary: Ship a Swap's Fulfillment
       description: >-
-        RMark a swap's fulfillment as shipped. This changes the swap's
-        fulfillment status to either `shipped` or `partially_shipped`, depending
-        on whether all the items were shipped.
+        Create a shipment for a swap and mark its fulfillment as shipped. This
+        changes the swap's fulfillment status to either `partially_shipped` or
+        `shipped`, depending on whether all the items were shipped.
       x-authenticated: true
       externalDocs:
         description: Handling swap fulfillments
@@ -10312,13 +10341,13 @@ paths:
 
             // must be previously logged in or use api token
 
-            medusa.admin.orders.createSwapShipment(order_id, swap_id, {
+            medusa.admin.orders.createSwapShipment(orderId, swapId, {
               fulfillment_id
             })
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -10399,9 +10428,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.paymentCollections.retrieve(paymentCollectionId)
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -10465,9 +10495,10 @@ paths:
             medusa.admin.paymentCollections.update(paymentCollectionId, {
               description
             })
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -10530,9 +10561,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.paymentCollections.delete(paymentCollectionId)
-              .then(({ id, object, deleted }) => {
-                console.log(id)
-              })
+
+            .then(({ id, object, deleted }) => {
+              console.log(id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -10584,9 +10616,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.paymentCollections.markAsAuthorized(paymentCollectionId)
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -10650,7 +10683,7 @@ paths:
 
             .then(({ payment }) => {
               console.log(payment.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -10711,7 +10744,7 @@ paths:
 
             .then(({ payment }) => {
               console.log(payment.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -10781,7 +10814,7 @@ paths:
 
             .then(({ payment }) => {
               console.log(payment.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -10993,7 +11026,7 @@ paths:
 
             .then(({ price_lists, limit, offset, count }) => {
               console.log(price_lists.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11064,7 +11097,7 @@ paths:
 
             .then(({ price_list }) => {
               console.log(price_list.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11138,7 +11171,7 @@ paths:
 
             .then(({ price_list }) => {
               console.log(price_list.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11205,7 +11238,7 @@ paths:
 
             .then(({ price_list }) => {
               console.log(price_list.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11269,7 +11302,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11304,7 +11337,7 @@ paths:
     post:
       operationId: PostPriceListsPriceListPricesBatch
       summary: Add or Update Prices
-      description: Add or update a list of prices in a Price List
+      description: Add or update a list of prices in a Price List.
       x-authenticated: true
       parameters:
         - in: path
@@ -11343,7 +11376,7 @@ paths:
 
             .then(({ price_list }) => {
               console.log(price_list.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11422,7 +11455,7 @@ paths:
 
             .then(({ ids, object, deleted }) => {
               console.log(ids.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11664,7 +11697,7 @@ paths:
 
             .then(({ products, limit, offset, count }) => {
               console.log(products.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -11730,7 +11763,7 @@ paths:
 
             .then(({ ids, object, deleted }) => {
               console.log(ids.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -11808,7 +11841,7 @@ paths:
 
             .then(({ ids, object, deleted }) => {
               console.log(ids.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -11846,7 +11879,7 @@ paths:
     delete:
       operationId: DeletePriceListsPriceListVariantsVariantPrices
       summary: Delete a Variant's Prices
-      description: Delete all the prices related to a specific variant in a price list
+      description: Delete all the prices related to a specific variant in a price list.
       x-authenticated: true
       parameters:
         - in: path
@@ -11878,7 +11911,7 @@ paths:
 
             .then(({ ids, object, deleted }) => {
               console.log(ids);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -12001,7 +12034,7 @@ paths:
 
             .then(({ product_categories, limit, offset, count }) => {
               console.log(product_categories.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -12078,7 +12111,7 @@ paths:
 
             .then(({ product_category }) => {
               console.log(product_category.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -12159,7 +12192,7 @@ paths:
 
             .then(({ product_category }) => {
               console.log(product_category.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -12242,7 +12275,7 @@ paths:
 
             .then(({ product_category }) => {
               console.log(product_category.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -12307,7 +12340,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -12396,7 +12429,7 @@ paths:
 
             .then(({ product_category }) => {
               console.log(product_category.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -12496,7 +12529,7 @@ paths:
 
             .then(({ product_category }) => {
               console.log(product_category.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -12658,7 +12691,7 @@ paths:
 
             .then(({ product_tags }) => {
               console.log(product_tags.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -12810,7 +12843,7 @@ paths:
 
             .then(({ product_types }) => {
               console.log(product_types.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13103,7 +13136,7 @@ paths:
 
             .then(({ products, limit, offset, count }) => {
               console.log(products.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13167,7 +13200,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13227,7 +13260,7 @@ paths:
 
             .then(({ tags }) => {
               console.log(tags.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13282,7 +13315,7 @@ paths:
 
             .then(({ types }) => {
               console.log(types.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13343,7 +13376,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13410,7 +13443,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13474,7 +13507,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13549,7 +13582,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13622,7 +13655,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -13700,7 +13733,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -13776,7 +13809,7 @@ paths:
 
             .then(({ option_id, object, deleted, product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -14045,7 +14078,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -14125,7 +14158,7 @@ paths:
 
             .then(({ variant_id, object, deleted, product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -14216,9 +14249,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.publishableApiKeys.list()
-              .then(({ publishable_api_keys, count, limit, offset }) => {
-                console.log(publishable_api_keys)
-              })
+
+            .then(({ publishable_api_keys, count, limit, offset }) => {
+              console.log(publishable_api_keys)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -14252,7 +14286,7 @@ paths:
     post:
       operationId: PostPublishableApiKeys
       summary: Create Publishable API Key
-      description: Creates a Publishable API Key.
+      description: Create a Publishable API Key.
       requestBody:
         content:
           application/json:
@@ -14527,9 +14561,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
-              .then(({ publishable_api_key }) => {
-                console.log(publishable_api_key.id)
-              })
+
+            .then(({ publishable_api_key }) => {
+              console.log(publishable_api_key.id)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -14597,9 +14632,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.admin.publishableApiKeys.listSalesChannels()
-              .then(({ sales_channels }) => {
-                console.log(sales_channels.length)
-              })
+
+            .then(({ sales_channels }) => {
+              console.log(sales_channels.length)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -14637,7 +14673,7 @@ paths:
     post:
       operationId: PostPublishableApiKeySalesChannelsChannelsBatch
       summary: Add Sales Channels
-      description: Assign a list of sales channels to a publishable API key.
+      description: Add a list of sales channels to a publishable API key.
       x-authenticated: true
       parameters:
         - in: path
@@ -14676,7 +14712,7 @@ paths:
 
             .then(({ publishable_api_key }) => {
               console.log(publishable_api_key.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -14764,7 +14800,7 @@ paths:
 
             .then(({ publishable_api_key }) => {
               console.log(publishable_api_key.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -14813,7 +14849,7 @@ paths:
       summary: List Regions
       description: >-
         Retrieve a list of Regions. The regions can be filtered by fields such
-        as `created_at`. The regions can also be paginated
+        as `created_at`. The regions can also be paginated.
       x-authenticated: true
       parameters:
         - in: query
@@ -14917,7 +14953,7 @@ paths:
 
             .then(({ regions, limit, offset, count }) => {
               console.log(regions.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -14988,7 +15024,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15064,7 +15100,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15131,7 +15167,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15197,7 +15233,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15232,7 +15268,7 @@ paths:
     post:
       operationId: PostRegionsRegionCountries
       summary: Add Country
-      description: Add a Country to the list of Countries in a Region
+      description: Add a Country to the list of Countries in a Region.
       x-authenticated: true
       parameters:
         - in: path
@@ -15265,7 +15301,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15342,7 +15378,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -15405,7 +15441,7 @@ paths:
 
             .then(({ fulfillment_options }) => {
               console.log(fulfillment_options.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15477,7 +15513,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -15554,7 +15590,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -15625,7 +15661,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15698,7 +15734,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -15943,7 +15979,7 @@ paths:
 
             .then(({ reservation }) => {
               console.log(reservation.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -15985,7 +16021,7 @@ paths:
     get:
       operationId: GetReservationsReservation
       summary: Get a Reservation
-      description: Retrieve a reservation's details.'
+      description: Retrieve a reservation's details.
       x-authenticated: true
       parameters:
         - in: path
@@ -16009,7 +16045,7 @@ paths:
 
             .then(({ reservation }) => {
               console.log(reservation.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16043,7 +16079,7 @@ paths:
     post:
       operationId: PostReservationsReservation
       summary: Update a Reservation
-      description: Update a Reservation's details.'
+      description: Update a Reservation's details.
       x-authenticated: true
       parameters:
         - in: path
@@ -16074,7 +16110,7 @@ paths:
 
             .then(({ reservation }) => {
               console.log(reservation.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16140,7 +16176,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16194,7 +16230,7 @@ paths:
 
             .then(({ return_reasons }) => {
               console.log(return_reasons.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16255,7 +16291,7 @@ paths:
 
             .then(({ return_reason }) => {
               console.log(return_reason.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16321,7 +16357,7 @@ paths:
 
             .then(({ return_reason }) => {
               console.log(return_reason.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16388,7 +16424,7 @@ paths:
 
             .then(({ return_reason }) => {
               console.log(return_reason.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16452,7 +16488,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16518,8 +16554,8 @@ paths:
             medusa.admin.returns.list()
 
             .then(({ returns, limit, offset, count }) => {
-              console.log(returns.length);
-            });
+              console.log(returns.length)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16580,8 +16616,8 @@ paths:
             medusa.admin.returns.cancel(returnId)
 
             .then(({ order }) => {
-              console.log(order.id);
-            });
+              console.log(order.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16655,7 +16691,7 @@ paths:
 
             .then((data) => {
               console.log(data.return.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16841,8 +16877,8 @@ paths:
             medusa.admin.salesChannels.list()
 
             .then(({ sales_channels, limit, offset, count }) => {
-              console.log(sales_channels.length);
-            });
+              console.log(sales_channels.length)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16903,7 +16939,7 @@ paths:
 
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -16968,7 +17004,7 @@ paths:
 
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17035,7 +17071,7 @@ paths:
 
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17100,8 +17136,8 @@ paths:
             medusa.admin.salesChannels.delete(salesChannelId)
 
             .then(({ id, object, deleted }) => {
-              console.log(id);
-            });
+              console.log(id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17174,7 +17210,7 @@ paths:
 
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -17260,8 +17296,8 @@ paths:
             })
 
             .then(({ sales_channel }) => {
-              console.log(sales_channel.id);
-            });
+              console.log(sales_channel.id)
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -17342,7 +17378,7 @@ paths:
 
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -17421,7 +17457,7 @@ paths:
 
             .then(({ sales_channel }) => {
               console.log(sales_channel.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -17502,7 +17538,7 @@ paths:
 
             .then(({ shipping_options, count }) => {
               console.log(shipping_options.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17567,7 +17603,7 @@ paths:
 
             .then(({ shipping_option }) => {
               console.log(shipping_option.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17636,7 +17672,7 @@ paths:
 
             .then(({ shipping_option }) => {
               console.log(shipping_option.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17710,7 +17746,7 @@ paths:
 
             .then(({ shipping_option }) => {
               console.log(shipping_option.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17781,7 +17817,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17835,7 +17871,7 @@ paths:
 
             .then(({ shipping_profiles }) => {
               console.log(shipping_profiles.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17895,7 +17931,7 @@ paths:
 
             .then(({ shipping_profile }) => {
               console.log(shipping_profile.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -17960,7 +17996,7 @@ paths:
 
             .then(({ shipping_profile }) => {
               console.log(shipping_profile.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18026,7 +18062,7 @@ paths:
 
             .then(({ shipping_profile }) => {
               console.log(shipping_profile.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18092,7 +18128,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18262,7 +18298,7 @@ paths:
 
             .then(({ stock_locations, limit, offset, count }) => {
               console.log(stock_locations.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18337,7 +18373,7 @@ paths:
 
             .then(({ stock_location }) => {
               console.log(stock_location.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18417,7 +18453,7 @@ paths:
 
             .then(({ stock_location }) => {
               console.log(stock_location.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18486,7 +18522,7 @@ paths:
 
             .then(({ stock_location }) => {
               console.log(stock_location.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18592,7 +18628,7 @@ paths:
 
             .then(({ store }) => {
               console.log(store.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18652,7 +18688,7 @@ paths:
 
             .then(({ store }) => {
               console.log(store.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18724,7 +18760,7 @@ paths:
 
             .then(({ store }) => {
               console.log(store.currencies);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -18792,7 +18828,7 @@ paths:
 
             .then(({ store }) => {
               console.log(store.currencies);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -18848,7 +18884,7 @@ paths:
 
             .then(({ payment_providers }) => {
               console.log(payment_providers.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18902,7 +18938,7 @@ paths:
 
             .then(({ tax_providers }) => {
               console.log(tax_providers.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -18970,7 +19006,7 @@ paths:
 
             .then(({ swaps }) => {
               console.log(swaps.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19031,7 +19067,7 @@ paths:
 
             .then(({ swap }) => {
               console.log(swap.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19166,7 +19202,7 @@ paths:
 
             .then(({ tax_rates, limit, offset, count }) => {
               console.log(tax_rates.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19252,7 +19288,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19342,7 +19378,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19432,7 +19468,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19498,7 +19534,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19533,7 +19569,7 @@ paths:
     post:
       operationId: PostTaxRatesTaxRateProductTypes
       summary: Add to Product Types
-      description: Associates a Tax Rate with a list of Product Types
+      description: Add Product Types to a Tax Rate.
       parameters:
         - in: path
           name: id
@@ -19591,7 +19627,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -19696,7 +19732,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -19741,7 +19777,7 @@ paths:
     post:
       operationId: PostTaxRatesTaxRateProducts
       summary: Add to Products
-      description: Associates a Tax Rate with a list of Products.
+      description: Add products to a tax rate.
       parameters:
         - in: path
           name: id
@@ -19799,7 +19835,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19899,7 +19935,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -19940,7 +19976,7 @@ paths:
     post:
       operationId: PostTaxRatesTaxRateShippingOptions
       summary: Add to Shipping Options
-      description: Associates a Tax Rate with a list of Shipping Options.
+      description: Add Shipping Options to a Tax Rate.
       parameters:
         - in: path
           name: id
@@ -19998,7 +20034,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -20104,7 +20140,7 @@ paths:
 
             .then(({ tax_rate }) => {
               console.log(tax_rate.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -20177,7 +20213,7 @@ paths:
 
             .then(({ uploads }) => {
               console.log(uploads.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20240,7 +20276,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20306,7 +20342,7 @@ paths:
 
             .then(({ download_url }) => {
               console.log(download_url);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20373,7 +20409,7 @@ paths:
 
             .then(({ uploads }) => {
               console.log(uploads.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20430,7 +20466,7 @@ paths:
 
             .then(({ users }) => {
               console.log(users.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20494,7 +20530,7 @@ paths:
 
             .then(({ user }) => {
               console.log(user.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20534,7 +20570,15 @@ paths:
     post:
       operationId: PostUsersUserPasswordToken
       summary: Request Password Reset
-      description: Generate a password token for an admin user with a given email.
+      description: >-
+        Generate a password token for an admin user with a given email. This
+        also triggers the `user.password_reset` event. So, if you have a
+        Notification Service installed that can handle this event, a
+        notification, such as an email, will be sent to the user. The token is
+        triggered as part of the `user.password_reset` event's payload. That
+        token must be used later to reset the password using the [Reset
+        Password](https://docs.medusajs.com/api/admin#users_postusersuserpassword)
+        API Route.
       externalDocs:
         description: How to reset a user's password
         url: >-
@@ -20567,7 +20611,7 @@ paths:
 
             .catch(() => {
               // error occurred
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20635,7 +20679,7 @@ paths:
 
             .then(({ user }) => {
               console.log(user.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20701,7 +20745,7 @@ paths:
 
             .then(({ user }) => {
               console.log(user.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20768,7 +20812,7 @@ paths:
 
             .then(({ user }) => {
               console.log(user.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -20834,7 +20878,7 @@ paths:
 
             .then(({ id, object, deleted }) => {
               console.log(id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -21015,7 +21059,7 @@ paths:
 
             .then(({ variants, limit, offset, count }) => {
               console.log(variants.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -21091,7 +21135,7 @@ paths:
 
             .then(({ variant }) => {
               console.log(variant.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -21530,6 +21574,7 @@ components:
           example: 16128234334802
         company:
           type: string
+          description: Company
         address_1:
           description: Address line 1
           type: string
@@ -21583,6 +21628,7 @@ components:
           $ref: '#/components/schemas/OAuth'
     AdminAuthRes:
       type: object
+      description: The user's details.
       required:
         - user
       properties:
@@ -21613,6 +21659,7 @@ components:
           description: The number of items per page
     AdminBatchJobRes:
       type: object
+      description: The batch job's details.
       required:
         - batch_job
       properties:
@@ -21621,6 +21668,7 @@ components:
           $ref: '#/components/schemas/BatchJob'
     AdminBearerAuthRes:
       type: object
+      description: The access token of the user, if they're authenticated successfully.
       properties:
         access_token:
           description: Access token that can be used to send authenticated requests.
@@ -21669,6 +21717,7 @@ components:
           description: The number of items per page
     AdminCollectionsRes:
       type: object
+      description: The collection's details.
       x-expanded-relations:
         field: collection
         relations:
@@ -21677,7 +21726,7 @@ components:
         - collection
       properties:
         collection:
-          type: Product Collection details.
+          description: Product Collection details.
           $ref: '#/components/schemas/ProductCollection'
     AdminCreateUserRequest:
       type: object
@@ -21710,6 +21759,7 @@ components:
           format: password
     AdminCurrenciesListRes:
       type: object
+      description: List of currencies with pagination fields.
       required:
         - currencies
         - count
@@ -21732,6 +21782,7 @@ components:
           description: The number of items per page
     AdminCurrenciesRes:
       type: object
+      description: A currency's details.
       required:
         - currency
       properties:
@@ -21782,6 +21833,7 @@ components:
           description: The number of items per page
     AdminCustomerGroupsRes:
       type: object
+      description: The customer group's details.
       required:
         - customer_group
       properties:
@@ -21789,6 +21841,7 @@ components:
           description: Customer group details.
           $ref: '#/components/schemas/CustomerGroup'
     AdminCustomersListRes:
+      description: The list of customers with pagination fields.
       type: object
       required:
         - customers
@@ -21812,6 +21865,7 @@ components:
           description: The number of items per page
     AdminCustomersRes:
       type: object
+      description: The customer's details.
       x-expanded-relations:
         field: customer
         relations:
@@ -21841,6 +21895,7 @@ components:
                 type: string
     AdminDeleteDiscountsDiscountConditionsConditionBatchReq:
       type: object
+      description: The resources to remove.
       required:
         - resources
       properties:
@@ -21900,6 +21955,7 @@ components:
             type: string
     AdminDeleteProductsFromCollectionRes:
       type: object
+      description: Deletion operation details
       required:
         - id
         - object
@@ -21978,6 +22034,7 @@ components:
           default: true
     AdminDeleteTaxRatesTaxRateProductTypesReq:
       type: object
+      description: Product types to remove from the tax rates.
       required:
         - product_types
       properties:
@@ -22112,6 +22169,7 @@ components:
           default: true
     AdminDiscountsListRes:
       type: object
+      description: The list of discounts with pagination fields.
       x-expanded-relations:
         field: discounts
         relations:
@@ -22127,6 +22185,7 @@ components:
       properties:
         discounts:
           type: array
+          description: The list of discounts.
           items:
             $ref: '#/components/schemas/Discount'
         count:
@@ -22140,6 +22199,7 @@ components:
           description: The number of items per page
     AdminDiscountsRes:
       type: object
+      description: The discount's details.
       x-expanded-relations:
         field: discount
         relations:
@@ -22175,6 +22235,7 @@ components:
           description: Whether the draft order was deleted successfully.
           default: true
     AdminDraftOrdersListRes:
+      description: The list of draft orders with pagination fields.
       type: object
       x-expanded-relations:
         field: draft_orders
@@ -22205,6 +22266,7 @@ components:
           description: The number of items per page
     AdminDraftOrdersRes:
       type: object
+      description: The list of draft orders.
       x-expanded-relations:
         field: draft_order
         relations:
@@ -22272,6 +22334,9 @@ components:
           $ref: '#/components/schemas/DraftOrder'
     AdminExtendedStoresRes:
       type: object
+      description: >-
+        The store's details with additional details like payment and tax
+        providers.
       x-expanded-relations:
         field: store
         relations:
@@ -22285,6 +22350,7 @@ components:
           $ref: '#/components/schemas/ExtendedStoreDTO'
     AdminGetRegionsRegionFulfillmentOptionsRes:
       type: object
+      description: The list of fulfillment options in a region.
       required:
         - fulfillment_options
       properties:
@@ -22311,10 +22377,11 @@ components:
                       is_return: true
     AdminGetVariantsVariantInventoryRes:
       type: object
+      description: The variant's inventory details.
       properties:
         variant:
           type: object
-          description: The product variant's.
+          description: The product variant's inventory details.
           $ref: '#/components/schemas/VariantInventory'
     AdminGiftCardsDeleteRes:
       type: object
@@ -22336,6 +22403,7 @@ components:
           default: true
     AdminGiftCardsListRes:
       type: object
+      description: The list of gift cards with pagination fields.
       x-expanded-relations:
         field: gift_cards
         relations:
@@ -22352,6 +22420,7 @@ components:
       properties:
         gift_cards:
           type: array
+          description: The list of gift cards.
           items:
             $ref: '#/components/schemas/GiftCard'
         count:
@@ -22365,6 +22434,7 @@ components:
           description: The number of items per page
     AdminGiftCardsRes:
       type: object
+      description: The gift card's details.
       x-expanded-relations:
         field: gift_card
         relations:
@@ -22447,17 +22517,20 @@ components:
           description: The number of items per page
     AdminInventoryItemsLocationLevelsRes:
       type: object
+      description: Details of inventory items and their associated location levels.
       required:
         - inventory_item
       properties:
         inventory_item:
           type: object
+          description: An inventory item's ID and associated location levels.
           required:
             - id
             - location_levels
           properties:
             id:
               description: The id of the location
+              type: string
             location_levels:
               description: List of stock levels at a given location
               type: array
@@ -22465,6 +22538,7 @@ components:
                 $ref: '#/components/schemas/InventoryLevelDTO'
     AdminInventoryItemsRes:
       type: object
+      description: The inventory item's details.
       required:
         - inventory_item
       properties:
@@ -22490,6 +22564,7 @@ components:
           description: Whether or not the invite was deleted.
           default: true
     AdminListInvitesRes:
+      description: The list of invites.
       type: object
       required:
         - invites
@@ -22519,6 +22594,7 @@ components:
           default: true
     AdminNotesListRes:
       type: object
+      description: The list of notes with pagination fields.
       required:
         - notes
         - count
@@ -22541,6 +22617,7 @@ components:
           description: The number of items per page
     AdminNotesRes:
       type: object
+      description: The note's details.
       required:
         - note
       properties:
@@ -22574,6 +22651,7 @@ components:
           description: The number of notifications per page
     AdminNotificationsRes:
       type: object
+      description: The notification's details.
       x-expanded-relations:
         field: notification
         relations:
@@ -22604,6 +22682,7 @@ components:
           default: true
     AdminOrderEditItemChangeDeleteRes:
       type: object
+      description: The details of deleting order edit item changes.
       required:
         - id
         - object
@@ -22622,6 +22701,7 @@ components:
           default: true
     AdminOrderEditsListRes:
       type: object
+      description: The list of order edits with pagination fields.
       x-expanded-relations:
         field: order_edits
         relations:
@@ -22679,6 +22759,7 @@ components:
           description: The number of items per page
     AdminOrderEditsRes:
       type: object
+      description: The order edit details.
       x-expanded-relations:
         field: order_edit
         relations:
@@ -22722,6 +22803,7 @@ components:
           $ref: '#/components/schemas/OrderEdit'
     AdminOrdersListRes:
       type: object
+      description: The list of orders with pagination fields.
       x-expanded-relations:
         field: orders
         relations:
@@ -22859,6 +22941,7 @@ components:
           type: number
     AdminOrdersRes:
       type: object
+      description: The order's details.
       x-expanded-relations:
         field: order
         relations:
@@ -22971,6 +23054,7 @@ components:
           $ref: '#/components/schemas/Order'
     AdminPaymentCollectionDeleteRes:
       type: object
+      description: The details of deleting a payment collection.
       required:
         - id
         - object
@@ -23006,6 +23090,7 @@ components:
           $ref: '#/components/schemas/PaymentCollection'
     AdminPaymentProvidersList:
       type: object
+      description: The list of payment providers in a store.
       required:
         - payment_providers
       properties:
@@ -23016,6 +23101,7 @@ components:
             $ref: '#/components/schemas/PaymentProvider'
     AdminPaymentRes:
       type: object
+      description: The payment's details.
       required:
         - payment
       properties:
@@ -23354,7 +23440,7 @@ components:
               - id
             properties:
               id:
-                description: The id of the item
+                description: The ID of the item
                 type: string
     AdminPostDiscountsDiscountDynamicCodesReq:
       type: object
@@ -23714,6 +23800,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminPostDraftOrdersDraftOrderRegisterPaymentRes:
       type: object
+      description: The order's details.
       required:
         - order
       properties:
@@ -23947,6 +24034,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminPostInventoryItemsInventoryItemReq:
       type: object
+      description: The attributes to update in an inventory item.
       properties:
         hs_code:
           description: >-
@@ -23992,6 +24080,15 @@ components:
             The length of the Inventory Item. May be used in shipping rate
             calculations.
           type: number
+        title:
+          description: The inventory item's title.
+          type: string
+        description:
+          description: The inventory item's description.
+          type: string
+        thumbnail:
+          description: The inventory item's thumbnail.
+          type: string
         requires_shipping:
           description: Whether the item requires shipping.
           type: boolean
@@ -24102,6 +24199,15 @@ components:
             be used by Fulfillment Providers to pass customs information to
             shipping carriers.
           type: string
+        title:
+          description: The inventory item's title.
+          type: string
+        description:
+          description: The inventory item's description.
+          type: string
+        thumbnail:
+          description: The inventory item's thumbnail.
+          type: string
         metadata:
           description: An optional set of key-value pairs with additional information.
           type: object
@@ -24113,6 +24219,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminPostInvitesInviteAcceptReq:
       type: object
+      description: The details of the invite to be accepted.
       required:
         - token
         - user
@@ -24261,6 +24368,9 @@ components:
             If set to `true`, no notification will be sent to the customer
             related to this Claim.
           type: boolean
+        location_id:
+          description: The ID of the fulfillment's location.
+          type: string
     AdminPostOrdersOrderClaimsClaimReq:
       type: object
       properties:
@@ -24376,6 +24486,7 @@ components:
             type: string
     AdminPostOrdersOrderClaimsReq:
       type: object
+      description: The details of the claim to be created.
       required:
         - type
         - claim_items
@@ -24492,6 +24603,9 @@ components:
         no_notification:
           description: If set to true no notification will be send related to this Claim.
           type: boolean
+        return_location_id:
+          description: The ID of the location used for the associated return.
+          type: string
         metadata:
           description: An optional set of key-value pairs to hold additional information.
           type: object
@@ -24503,6 +24617,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminPostOrdersOrderFulfillmentsReq:
       type: object
+      description: The details of the fulfillment to be created.
       required:
         - items
       properties:
@@ -24521,6 +24636,9 @@ components:
               quantity:
                 description: The quantity of the Line Item to fulfill.
                 type: integer
+        location_id:
+          type: string
+          description: The ID of the location where the items will be fulfilled from.
         no_notification:
           description: >-
             If set to `true`, no notification will be sent to the customer
@@ -24561,7 +24679,7 @@ components:
       type: object
       properties:
         email:
-          description: the email associated with the order
+          description: The email associated with the order
           type: string
         billing_address:
           description: The order's billing address
@@ -24676,6 +24794,9 @@ components:
         refund:
           description: The amount to refund.
           type: integer
+        location_id:
+          description: The ID of the location used for the return.
+          type: string
     AdminPostOrdersOrderShipmentReq:
       type: object
       required:
@@ -24696,6 +24817,7 @@ components:
           type: boolean
     AdminPostOrdersOrderShippingMethodsReq:
       type: object
+      description: The shipping method's details.
       required:
         - price
         - option_id
@@ -24708,7 +24830,7 @@ components:
         option_id:
           type: string
           description: The ID of the Shipping Option to create the Shipping Method from.
-        date:
+        data:
           type: object
           description: >-
             The data required for the Shipping Option to create a Shipping
@@ -24768,6 +24890,9 @@ components:
               quantity:
                 description: The quantity of the Product Variant.
                 type: integer
+        sales_channel_id:
+          type: string
+          description: The ID of the sales channel associated with the swap.
         custom_shipping_options:
           description: >-
             An array of custom shipping options to potentially create a Shipping
@@ -24790,6 +24915,9 @@ components:
             If set to `true`, no notification will be sent to the customer
             related to this Swap.
           type: boolean
+        return_location_id:
+          type: string
+          description: The ID of the location used for the associated return.
         allow_backorder:
           description: If set to `true`, swaps can be completed with items out of stock
           type: boolean
@@ -24811,6 +24939,9 @@ components:
             If set to `true`, no notification will be sent to the customer
             related to this swap.
           type: boolean
+        location_id:
+          description: The ID of the fulfillment's location.
+          type: string
     AdminPostOrdersOrderSwapsSwapShipmentsReq:
       type: object
       required:
@@ -25413,6 +25544,9 @@ components:
         width:
           description: The width of the Product.
           type: number
+        hs_code:
+          description: The Harmonized System code of the product variant.
+          type: string
         origin_country:
           description: The country of origin of the Product.
           type: string
@@ -26167,6 +26301,9 @@ components:
         quantity:
           description: The quantity to reserve.
           type: number
+        description:
+          description: The reservation's description.
+          type: string
         metadata:
           description: An optional set of key-value pairs with additional information.
           type: object
@@ -26185,6 +26322,9 @@ components:
         quantity:
           description: The quantity to reserve.
           type: number
+        description:
+          description: The reservation's description.
+          type: string
         metadata:
           description: An optional set of key-value pairs with additional information.
           type: object
@@ -26265,6 +26405,9 @@ components:
         refund:
           description: The amount to refund.
           type: number
+        location_id:
+          description: The ID of the location to return items from.
+          type: string
     AdminPostSalesChannelsChannelProductsBatchReq:
       type: object
       required:
@@ -26502,6 +26645,15 @@ components:
             - default
             - gift_card
             - custom
+        metadata:
+          description: An optional set of key-value pairs with additional information.
+          type: object
+          externalDocs:
+            description: >-
+              Learn about the metadata attribute, and how to delete and update
+              it.
+            url: >-
+              https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminPostStockLocationsLocationReq:
       type: object
       properties:
@@ -26523,6 +26675,7 @@ components:
             url: >-
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
         address:
+          description: The data of an associated address to create or update.
           $ref: '#/components/schemas/StockLocationAddressInput'
     AdminPostStockLocationsReq:
       type: object
@@ -26575,7 +26728,7 @@ components:
           description: Stock location address' city
           example: Mexico city
         country_code:
-          description: The 2 character ISO code for the country.
+          description: The two character ISO code for the country.
           type: string
           externalDocs:
             url: >-
@@ -26678,6 +26831,7 @@ components:
             type: string
     AdminPostTaxRatesTaxRateProductTypesReq:
       type: object
+      description: The product types to add to the tax rate.
       required:
         - product_types
       properties:
@@ -26749,6 +26903,7 @@ components:
           type: string
     AdminPriceListDeleteBatchRes:
       type: object
+      description: The details of deleting a price list.
       required:
         - ids
         - object
@@ -26756,9 +26911,10 @@ components:
       properties:
         ids:
           type: array
+          description: The IDs of the deleted prices.
           items:
             type: string
-            description: The IDs of the deleted prices.
+            description: The ID of a deleted price.
         object:
           type: string
           description: >-
@@ -26833,6 +26989,7 @@ components:
           default: true
     AdminPriceListRes:
       type: object
+      description: The price list's details.
       x-expanded-relations:
         field: price_list
         relations:
@@ -26846,6 +27003,7 @@ components:
           $ref: '#/components/schemas/PriceList'
     AdminPriceListsListRes:
       type: object
+      description: The list of price lists with pagination fields.
       required:
         - price_lists
         - count
@@ -26868,6 +27026,7 @@ components:
           description: The number of items per page
     AdminPriceListsProductsListRes:
       type: object
+      description: The list of products with pagination fields.
       x-expanded-relations:
         field: products
         relations:
@@ -26919,6 +27078,7 @@ components:
           default: true
     AdminProductCategoriesCategoryRes:
       type: object
+      description: The product category's details.
       x-expanded-relations:
         field: product_category
         relations:
@@ -26932,6 +27092,7 @@ components:
           $ref: '#/components/schemas/ProductCategory'
     AdminProductCategoriesListRes:
       type: object
+      description: The list of product categories with pagination fields.
       x-expanded-relations:
         field: product_categories
         relations:
@@ -26961,6 +27122,7 @@ components:
           description: The number of items per page
     AdminProductTagsListRes:
       type: object
+      description: The list of product tags with pagination fields.
       required:
         - product_tags
         - count
@@ -26983,6 +27145,7 @@ components:
           description: The number of items per page
     AdminProductTypesListRes:
       type: object
+      description: The list of product types with pagination fields.
       required:
         - product_types
         - count
@@ -27007,6 +27170,7 @@ components:
           description: The number of items per page
     AdminProductsDeleteOptionRes:
       type: object
+      description: The details of deleting a product's option.
       x-expanded-relations:
         field: product
         relations:
@@ -27040,6 +27204,7 @@ components:
           $ref: '#/components/schemas/PricedProduct'
     AdminProductsDeleteRes:
       type: object
+      description: The details of deleting a product.
       required:
         - id
         - object
@@ -27058,6 +27223,7 @@ components:
           default: true
     AdminProductsDeleteVariantRes:
       type: object
+      description: The details of deleting a product's variant.
       x-expanded-relations:
         field: product
         relations:
@@ -27091,6 +27257,7 @@ components:
           $ref: '#/components/schemas/PricedProduct'
     AdminProductsListRes:
       type: object
+      description: The list of products with pagination fields.
       x-expanded-relations:
         field: products
         relations:
@@ -27126,6 +27293,7 @@ components:
           description: The number of items per page
     AdminProductsListTagsRes:
       type: object
+      description: The usage details of product tags.
       required:
         - tags
       properties:
@@ -27184,6 +27352,7 @@ components:
           description: The number of items per page
     AdminProductsRes:
       type: object
+      description: The product's details.
       x-expanded-relations:
         field: product
         relations:
@@ -27221,6 +27390,7 @@ components:
           default: true
     AdminPublishableApiKeysListRes:
       type: object
+      description: The list of publishable API keys with pagination fields.
       required:
         - publishable_api_keys
         - count
@@ -27245,6 +27415,7 @@ components:
           description: The number of items per page
     AdminPublishableApiKeysListSalesChannelsRes:
       type: object
+      description: The list of sales channel.
       required:
         - sales_channels
       properties:
@@ -27255,6 +27426,7 @@ components:
             $ref: '#/components/schemas/SalesChannel'
     AdminPublishableApiKeysRes:
       type: object
+      description: The publishable API key's details.
       required:
         - publishable_api_key
       properties:
@@ -27263,11 +27435,12 @@ components:
           $ref: '#/components/schemas/PublishableApiKey'
     AdminRefundRes:
       type: object
+      description: The refund's details.
       required:
         - refund
       properties:
         refund:
-          description: Refund details
+          description: Refund details.
           $ref: '#/components/schemas/Refund'
     AdminRegionsDeleteRes:
       type: object
@@ -27289,6 +27462,7 @@ components:
           default: true
     AdminRegionsListRes:
       type: object
+      description: The list of regions with pagination fields.
       x-expanded-relations:
         field: regions
         relations:
@@ -27320,6 +27494,7 @@ components:
           description: The number of items per page
     AdminRegionsRes:
       type: object
+      description: The region's details.
       x-expanded-relations:
         field: region
         relations:
@@ -27355,6 +27530,7 @@ components:
           default: true
     AdminReservationsListRes:
       type: object
+      description: The list of reservations with pagination fields.
       required:
         - reservations
         - count
@@ -27377,6 +27553,7 @@ components:
           description: The number of items per page
     AdminReservationsRes:
       type: object
+      description: The reservation's details.
       required:
         - reservation
       properties:
@@ -27431,6 +27608,7 @@ components:
           default: true
     AdminReturnReasonsListRes:
       type: object
+      description: The list of return reasons.
       x-expanded-relations:
         field: return_reasons
         relations:
@@ -27441,10 +27619,12 @@ components:
       properties:
         return_reasons:
           type: array
+          description: The list of return reasons.
           items:
             $ref: '#/components/schemas/ReturnReason'
     AdminReturnReasonsRes:
       type: object
+      description: The return reason's details.
       x-expanded-relations:
         field: return_reason
         relations:
@@ -27454,9 +27634,11 @@ components:
         - return_reason
       properties:
         return_reason:
+          description: The return reason's details.
           $ref: '#/components/schemas/ReturnReason'
     AdminReturnsCancelRes:
       type: object
+      description: The associated order's details.
       x-expanded-relations:
         field: order
         relations:
@@ -27513,6 +27695,7 @@ components:
           $ref: '#/components/schemas/Order'
     AdminReturnsListRes:
       type: object
+      description: The list of returns with pagination fields.
       x-expanded-relation:
         field: returns
         relations:
@@ -27540,6 +27723,7 @@ components:
           description: The number of items per page
     AdminReturnsRes:
       type: object
+      description: The return's details.
       x-expanded-relation:
         field: return
         relations:
@@ -27588,6 +27772,7 @@ components:
           default: true
     AdminSalesChannelsListRes:
       type: object
+      description: The list of sales channels with pagination fields.
       required:
         - sales_channels
         - count
@@ -27610,6 +27795,7 @@ components:
           description: The number of items per page
     AdminSalesChannelsRes:
       type: object
+      description: The sales channel's details.
       required:
         - sales_channel
       properties:
@@ -27636,6 +27822,7 @@ components:
           default: true
     AdminShippingOptionsListRes:
       type: object
+      description: The list of shipping options with pagination fields.
       x-expanded-relations:
         field: shipping_options
         relations:
@@ -27669,6 +27856,7 @@ components:
           description: The number of items per page
     AdminShippingOptionsRes:
       type: object
+      description: The shipping option's details.
       x-expanded-relations:
         field: shipping_option
         relations:
@@ -27686,6 +27874,7 @@ components:
           $ref: '#/components/schemas/ShippingOption'
     AdminShippingProfilesListRes:
       type: object
+      description: The list of shipping profiles.
       required:
         - shipping_profiles
       properties:
@@ -27696,6 +27885,7 @@ components:
             $ref: '#/components/schemas/ShippingProfile'
     AdminShippingProfilesRes:
       type: object
+      description: The shipping profile's details.
       x-expanded-relations:
         field: shipping_profile
         relations:
@@ -27727,6 +27917,7 @@ components:
           default: true
     AdminStockLocationsListRes:
       type: object
+      description: The list of stock locations with pagination fields.
       required:
         - stock_locations
         - count
@@ -27750,6 +27941,7 @@ components:
           description: The number of items per page
     AdminStockLocationsRes:
       type: object
+      description: The stock location's details.
       required:
         - stock_location
       properties:
@@ -27758,6 +27950,7 @@ components:
           $ref: '#/components/schemas/StockLocationExpandedDTO'
     AdminStoresRes:
       type: object
+      description: The store's details.
       required:
         - store
       properties:
@@ -27766,6 +27959,7 @@ components:
           $ref: '#/components/schemas/Store'
     AdminSwapsListRes:
       type: object
+      description: The list of swaps with pagination fields.
       required:
         - swaps
         - count
@@ -27788,6 +27982,7 @@ components:
           description: The number of items per page
     AdminSwapsRes:
       type: object
+      description: The swap's details.
       x-expanded-relations:
         field: swap
         relations:
@@ -27814,6 +28009,7 @@ components:
           $ref: '#/components/schemas/Swap'
     AdminTaxProvidersList:
       type: object
+      description: The list of tax providers in a store.
       required:
         - tax_providers
       properties:
@@ -27842,6 +28038,7 @@ components:
           default: true
     AdminTaxRatesListRes:
       type: object
+      description: The list of tax rates with pagination fields.
       required:
         - tax_rates
         - count
@@ -27864,6 +28061,7 @@ components:
           description: The number of items per page
     AdminTaxRatesRes:
       type: object
+      description: The tax rate's details.
       required:
         - tax_rate
       properties:
@@ -27917,6 +28115,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     AdminUploadsDownloadUrlRes:
       type: object
+      description: The download URL details.
       required:
         - download_url
       properties:
@@ -27925,6 +28124,7 @@ components:
           type: string
     AdminUploadsRes:
       type: object
+      description: The list of uploaded files.
       required:
         - uploads
       properties:
@@ -27948,6 +28148,7 @@ components:
                 type: string
     AdminUserRes:
       type: object
+      description: The user's details.
       required:
         - user
       properties:
@@ -27956,6 +28157,7 @@ components:
           $ref: '#/components/schemas/User'
     AdminUsersListRes:
       type: object
+      description: The list of users.
       required:
         - users
       properties:
@@ -27966,6 +28168,7 @@ components:
             $ref: '#/components/schemas/User'
     AdminVariantsListRes:
       type: object
+      description: The list of variants with pagination fields.
       x-expanded-relations:
         field: variants
         relations:
@@ -27998,6 +28201,7 @@ components:
           description: The number of items per page
     AdminVariantsRes:
       type: object
+      description: The product variant's details.
       x-expanded-relations:
         field: variant
         relations:
@@ -29902,12 +30106,16 @@ components:
             - modules
           properties:
             payment_providers:
+              description: The store's payment providers.
               $ref: '#/components/schemas/PaymentProvider'
             fulfillment_providers:
+              description: The store's fulfillment providers.
               $ref: '#/components/schemas/FulfillmentProvider'
             feature_flags:
+              description: The feature flags enabled in the store's backend.
               $ref: '#/components/schemas/FeatureFlagsResponse'
             modules:
+              description: The modules installed in the store's backend.
               $ref: '#/components/schemas/ModulesResponse'
     FeatureFlagsResponse:
       type: array
@@ -30410,6 +30618,10 @@ components:
       required:
         - sku
       properties:
+        id:
+          description: The inventory item's ID.
+          type: string
+          example: iitem_12334
         sku:
           description: The Stock Keeping Unit (SKU) code of the Inventory Item.
           type: string
@@ -32128,8 +32340,8 @@ components:
           $ref: '#/components/schemas/Region'
         currency_code:
           description: >-
-            The 3 character ISO code for the currency this payment collection is
-            associated with.
+            The three character ISO code for the currency this payment
+            collection is associated with.
           type: string
           example: usd
           externalDocs:
@@ -32412,6 +32624,7 @@ components:
         - type: object
           properties:
             variants:
+              description: The product variants and their prices.
               type: array
               items:
                 $ref: '#/components/schemas/PricedVariant'
@@ -32775,6 +32988,10 @@ components:
           description: The product category's name
           type: string
           example: Regular Fit
+        description:
+          description: The product category's description.
+          type: string
+          default: ''
         handle:
           description: >-
             A unique string that identifies the Product Category - can for
@@ -33689,7 +33906,7 @@ components:
           type: string
           example: EU
         currency_code:
-          description: The 3 character currency code used in the region.
+          description: The three character currency code used in the region.
           type: string
           example: usd
           externalDocs:
@@ -34938,6 +35155,7 @@ components:
         - type: object
           properties:
             sales_channels:
+              description: The associated sales channels.
               $ref: '#/components/schemas/SalesChannel'
     Store:
       title: Store
@@ -34967,8 +35185,9 @@ components:
           description: The name of the Store - this may be displayed to the Customer.
           type: string
           example: Medusa Store
+          default: Medusa Store
         default_currency_code:
-          description: The 3 character currency code that is the default of the store.
+          description: The three character currency code that is the default of the store.
           type: string
           example: usd
           externalDocs:
@@ -34977,6 +35196,7 @@ components:
         default_currency:
           description: The details of the store's default currency.
           x-expandable: default_currency
+          default: usd
           nullable: true
           $ref: '#/components/schemas/Currency'
         currencies:
@@ -35583,8 +35803,8 @@ components:
         sales_channel_availability:
           type: array
           description: >-
-            An array of details about the variant's inventory availability in
-            sales channels.
+            Details about the variant's inventory availability in sales
+            channels.
           items:
             type: object
             required:

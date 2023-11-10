@@ -7,4 +7,4 @@ medusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {
 })
 .then(({ inventory_item }) => {
   console.log(inventory_item.id);
-});
+})

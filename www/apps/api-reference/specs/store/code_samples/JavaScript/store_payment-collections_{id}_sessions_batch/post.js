@@ -19,7 +19,7 @@ medusa.paymentCollections.managePaymentSessionsBatch(paymentId, {
 })
 .then(({ payment_collection }) => {
   console.log(payment_collection.id);
-});
+})
 
 // Example 2: Updating one session and removing the other
 medusa.paymentCollections.managePaymentSessionsBatch(paymentId, {
@@ -33,4 +33,4 @@ medusa.paymentCollections.managePaymentSessionsBatch(paymentId, {
 })
 .then(({ payment_collection }) => {
   console.log(payment_collection.id);
-});
+})

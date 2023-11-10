@@ -82,7 +82,7 @@ delete:
   summary: Remove Batch Resources
   description: >-
     Remove a batch of resources from a discount condition. This will only remove
-    the association between the resource and the discount condition, but not the
+    the association between the resource and the discount condition, not the
     resource itself.
   x-authenticated: true
   parameters:
