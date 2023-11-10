@@ -1,6 +1,7 @@
 import { DataSource, DataSourceOptions } from "typeorm"
 import {
   ProductCategoryService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
@@ -11,7 +12,6 @@ import {
   UserService,
 } from "../services"
 import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
-
 import { IPricingModuleService } from "@medusajs/types"
 import express from "express"
 import fs from "fs"
@@ -101,6 +101,9 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const storeService: StoreService = container.resolve("storeService")
   const userService: UserService = container.resolve("userService")
   const regionService: RegionService = container.resolve("regionService")
+  const productCollectionService: ProductCollectionService = container.resolve(
+    "productCollectionService"
+  )
   const productService: ProductService = container.resolve("productService")
   const productCategoryService: ProductCategoryService = container.resolve(
     "productCategoryService"
@@ -131,6 +134,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     const {
       store: seededStore,
       regions,
+      product_collections = [],
       products,
       categories = [],
       shipping_options,
@@ -210,6 +214,10 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
     for (const c of categories) {
       await createProductCategory(c)
+    }
+
+    for (const pc of product_collections) {
+      await productCollectionService.withTransaction(tx).create(pc)
     }
 
     for (const p of products) {
