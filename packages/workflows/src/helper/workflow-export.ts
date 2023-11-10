@@ -100,11 +100,11 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         if (Array.isArray(resultFrom)) {
           result = resultFrom.map((from) => {
             const res = transaction.getContext().invoke?.[from]
-            return res.__type === SymbolWorkflowStepReturn ? res.output : res
+            return res?.__type === SymbolWorkflowStepReturn ? res.output : res
           })
         } else {
           const res = transaction.getContext().invoke?.[resultFrom]
-          result = res.__type === SymbolWorkflowStepReturn ? res.output : res
+          result = res?.__type === SymbolWorkflowStepReturn ? res.output : res
         }
       }
 
