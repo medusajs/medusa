@@ -406,68 +406,6 @@ class SalesChannelService extends TransactionBaseService {
       return await this.retrieve(salesChannelId)
     })
   }
-
-  /**
-   * Add a batch of carts to a sales channel
-   * @param salesChannelId - The id of the sales channel on which to add the carts
-   * @param cartIds - The cart ids to attach to the sales channel
-   * @return the sales channel on which the carts have been added
-   */
-  async addCarts(
-    salesChannelId: string,
-    cartIds: string[]
-  ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.withRepository(
-        this.salesChannelRepository_
-      )
-
-      const isIsolatedSalesChannelDomainFlagOn =
-        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
-
-      if (!isIsolatedSalesChannelDomainFlagOn) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot use `addCarts` method if isolated sales channel module feature flag is not on"
-        )
-      }
-
-      await salesChannelRepo.addCarts(salesChannelId, cartIds)
-
-      return await this.retrieve(salesChannelId)
-    })
-  }
-
-  /**
-   * Remove carts from a sales channel in batch
-   * @param salesChannelId - The id of the sales channel from which carts are removed
-   * @param cartIds - The cart ids to remove from the sales channel
-   * @return the sales channel on which the carts have been removed
-   */
-  async removeCarts(
-    salesChannelId: string,
-    cartIds: string[]
-  ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.withRepository(
-        this.salesChannelRepository_
-      )
-
-      const isIsolatedSalesChannelDomainFlagOn =
-        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
-
-      if (!isIsolatedSalesChannelDomainFlagOn) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot use `removeCarts` method if isolated sales channel module feature flag is not on"
-        )
-      }
-
-      await salesChannelRepo.removeCarts(salesChannelId, cartIds)
-
-      return await this.retrieve(salesChannelId)
-    })
-  }
 }
 
 export default SalesChannelService
