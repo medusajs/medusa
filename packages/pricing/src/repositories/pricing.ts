@@ -115,10 +115,10 @@ export class PricingRepository
     psmaSubQueryKnex.orWhere((q) => {
       q.whereNotNull("psma1.price_list_id")
         .andWhere(function () {
-          this.orWhereNull("pl.starts_at").orWhere("pl.starts_at", "<=", date)
+          this.whereNull("pl.starts_at").orWhere("pl.starts_at", "<=", date)
         })
         .andWhere(function () {
-          this.orWhereNull("pl.ends_at").orWhere("pl.ends_at", ">=", date)
+          this.whereNull("pl.ends_at").orWhere("pl.ends_at", ">=", date)
         })
         .andWhere(function () {
           for (const [key, value] of Object.entries(context)) {
