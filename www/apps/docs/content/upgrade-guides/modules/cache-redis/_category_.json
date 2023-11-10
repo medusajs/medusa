@@ -1,0 +1,6 @@
+{
+  "label": "Redis Cache Module",
+  "customProps": {
+    "reverse": true
+  },
+}
