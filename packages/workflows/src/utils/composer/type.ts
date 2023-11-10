@@ -2,22 +2,31 @@ import { OrchestratorBuilder, WorkflowHandler } from "@medusajs/orchestration"
 
 export type StepFunction = Function & { __type: Symbol; __step__: string }
 
-export type WorkflowContext = {
+export type StepInput<T = unknown> = {
+  __type: Symbol
+  __step__?: string
+  value?: T
+}
+
+export type StepReturn<T = unknown> = {
+  __type: Symbol
+  __step__: string
+}
+
+export type CreateWorkflowComposerContext = {
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
-  step: (
-    fn: () => {
+  stepBinder: (
+    fn: (this: CreateWorkflowComposerContext) => {
       __type: Symbol
       __step__: string
     }
   ) => void
-  parallelize: (
-    fn: () => [
-      {
-        __type: Symbol
-        __step__: string
-      }
-    ]
+  parallelizeBinder: (
+    fn: (this: CreateWorkflowComposerContext) => {
+      __type: Symbol
+      __step__: string
+    }[]
   ) => void
 }

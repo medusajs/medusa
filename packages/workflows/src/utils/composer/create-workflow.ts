@@ -1,9 +1,13 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
-import { exportWorkflow } from "../../helper"
-import { WorkflowContext } from "./index"
-import { SymbolInputReferece } from "./symbol"
+import { exportWorkflow, FlowRunOptions } from "../../helper"
+import { CreateWorkflowComposerContext } from "./index"
+import {
+  SymbolInputReference,
+  SymbolMedusaWorkflowComposerContext,
+  SymbolWorkflowStep,
+} from "./symbol"
 
-global.MedusaWorkflowComposerContext = null
+global[SymbolMedusaWorkflowComposerContext] = null
 
 export function createWorkflow(name: string, composer: Function) {
   const handlers: WorkflowHandler = new Map()
@@ -14,28 +18,28 @@ export function createWorkflow(name: string, composer: Function) {
 
   WorkflowManager.register(name, undefined, handlers)
 
-  const context: WorkflowContext = {
+  const context: CreateWorkflowComposerContext = {
     workflowId: name,
     flow: WorkflowManager.getTransactionDefinition(name),
     handlers,
-    step: (fn) => {
+    stepBinder: (fn) => {
       return fn.bind(context)()
     },
-    parallelize: (fn) => {
+    parallelizeBinder: (fn) => {
       return fn.bind(context)()
     },
   }
 
   const valueHolder = {
     value: {},
-    __type: SymbolInputReferece,
+    __type: SymbolInputReference,
   }
 
-  global.MedusaWorkflowComposerContext = context
+  global[SymbolMedusaWorkflowComposerContext] = context
 
-  composer.apply(context, [valueHolder])
+  const returnedStep = composer.apply(context, [valueHolder])
 
-  delete global?.MedusaWorkflowComposerContext
+  delete global[SymbolMedusaWorkflowComposerContext]
 
   WorkflowManager.update(name, context.flow, handlers)
 
@@ -44,13 +48,26 @@ export function createWorkflow(name: string, composer: Function) {
   return (...args) => {
     const workflow_ = workflow(...args)
     const originalRun = workflow_.run
-    workflow_.run = async (input) => {
+
+    workflow_.run = (async <
+      TDataOverride = undefined,
+      TResultOverride = undefined
+    >(
+      input: FlowRunOptions<
+        TDataOverride extends undefined ? unknown : TDataOverride
+      >
+    ) => {
+      input.resultFrom =
+        returnedStep.__type === SymbolWorkflowStep
+          ? returnedStep?.__step__
+          : returnedStep.__type === SymbolInputReference
+          ? input?.input
+          : undefined
+
       // Forwards the input to the ref object on composer.apply
-      valueHolder.value = input as any
-      return originalRun({
-        input,
-      })
-    }
+      valueHolder.value = input?.input as any
+      return await originalRun(input)
+    }) as any
     return workflow_
   }
 }

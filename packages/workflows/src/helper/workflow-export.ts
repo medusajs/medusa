@@ -11,6 +11,7 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { EOL } from "os"
 import { ulid } from "ulid"
 import { Workflows } from "../definitions"
+import { SymbolWorkflowStepReturn } from "../utils/composer/symbol"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData
@@ -97,11 +98,13 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
 
       if (resultFrom) {
         if (Array.isArray(resultFrom)) {
-          result = resultFrom.map(
-            (from) => transaction.getContext().invoke?.[from]
-          )
+          result = resultFrom.map((from) => {
+            const res = transaction.getContext().invoke?.[from]
+            return res.__type === SymbolWorkflowStepReturn ? res.output : res
+          })
         } else {
-          result = transaction.getContext().invoke?.[resultFrom]
+          const res = transaction.getContext().invoke?.[resultFrom]
+          result = res.__type === SymbolWorkflowStepReturn ? res.output : res
         }
       }
 
