@@ -11,6 +11,7 @@
 "@medusajs/types": patch
 "@medusajs/utils": patch
 "@medusajs/workflows": patch
+"medusa-test-utils": patch
 ---
 
 feat(): Implement the search engine module
