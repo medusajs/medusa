@@ -1,0 +1,30 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ArrayOptions
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "concurrency",
+    "type": "`number`",
+    "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "signal",
+    "type": "`AbortSignal`",
+    "description": "allows destroying the stream if the signal is aborted.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
