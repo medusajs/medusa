@@ -8,11 +8,11 @@ info:
 tags:
   - name: Auth
     description: >
-      Authentication API Routes allow customers to manage their session, such as
-      login or log out.
+      Authentication API Routes allow you to manage a customer's session, such
+      as login or log out.
 
-      When a customer is logged in, the cookie header is set indicating the
-      customer's login session.
+      You can send authenticated requests for a customer either using the Cookie
+      header or using the JWT Token.
     externalDocs:
       description: How to implement customer profiles in your storefront
       url: >-
@@ -176,7 +176,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -237,7 +237,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -276,6 +276,19 @@ paths:
       x-codegen:
         method: deleteSession
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            medusa.auth.deleteSession()
+
+            .then(() => {
+              // customer logged out successfully
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -332,7 +345,7 @@ paths:
 
             .then(({ access_token }) => {
               console.log(access_token);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -424,8 +437,8 @@ paths:
         customer changes their region.
 
 
-        If a customer is logged in, the cart's customer ID and email will
-        automatically be set.
+        If a customer is logged in, make sure to pass its ID or email within the
+        cart's details so that the cart is attached to the customer.
       requestBody:
         content:
           application/json:
@@ -446,7 +459,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -497,7 +510,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -557,7 +570,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -590,9 +603,8 @@ paths:
       summary: Complete a Cart
       operationId: PostCartsCartComplete
       description: >
-        Complete a cart and place an order or create a swap, based on what the
-        cart is created for. This includes attempting to authorize the cart's
-        payment.
+        Complete a cart and place an order or create a swap, based on the cart's
+        type. This includes attempting to authorize the cart's payment.
 
         If authorizing the payment requires more action, the cart will not be
         completed and the order will not be placed or the swap will not be
@@ -633,7 +645,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -669,8 +681,9 @@ paths:
       summary: Remove Discount
       description: >-
         Remove a Discount from a Cart. This only removes the application of the
-        discount, and not completely delete it. The totals will be re-calculated
-        and the payment sessions will be refreshed after the removal.
+        discount, and not completely deletes it. The totals will be
+        re-calculated and the payment sessions will be refreshed after the
+        removal.
       parameters:
         - in: path
           name: id
@@ -699,7 +712,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -760,7 +773,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -829,7 +842,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -891,7 +904,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -952,7 +965,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -986,7 +999,7 @@ paths:
       summary: Create Payment Sessions
       description: >-
         Create Payment Sessions for each of the available Payment Providers in
-        the Cart's Region. If there only one payment session is created, it will
+        the Cart's Region. If there's only one payment session created, it will
         be selected by default. The creation of the payment session uses the
         payment provider and may require sending requests to third-party
         services.
@@ -1012,7 +1025,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1081,7 +1094,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -1148,7 +1161,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -1210,7 +1223,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -1271,7 +1284,7 @@ paths:
 
             .then(({ cart }) => {
               console.log(cart.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1436,7 +1449,7 @@ paths:
 
             .then(({ collections, limit, offset, count }) => {
               console.log(collections.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1487,7 +1500,7 @@ paths:
 
             .then(({ collection }) => {
               console.log(collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1546,7 +1559,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1620,7 +1633,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1679,7 +1692,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1753,7 +1766,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -1832,7 +1845,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -1899,7 +1912,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -2150,7 +2163,7 @@ paths:
 
             .then(({ orders, limit, offset, count }) => {
               console.log(orders);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2209,7 +2222,7 @@ paths:
 
             .then(({ payment_methods }) => {
               console.log(payment_methods.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2275,7 +2288,7 @@ paths:
 
             .then(({ customer }) => {
               console.log(customer.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2400,7 +2413,7 @@ paths:
 
             .then(({ gift_card }) => {
               console.log(gift_card.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2451,7 +2464,7 @@ paths:
 
             .then(({ order_edit }) => {
               console.log(order_edit.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2507,9 +2520,10 @@ paths:
             3 })
 
             medusa.orderEdits.complete(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id)
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2562,9 +2576,10 @@ paths:
             3 })
 
             medusa.orderEdits.decline(orderEditId)
-              .then(({ order_edit }) => {
-                console.log(order_edit.id);
-              })
+
+            .then(({ order_edit }) => {
+              console.log(order_edit.id);
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2653,7 +2668,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -2723,7 +2738,7 @@ paths:
 
             .catch(() => {
               // an error occurred
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2782,7 +2797,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2845,7 +2860,7 @@ paths:
 
             .catch(() => {
               // an error occurred
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2916,7 +2931,7 @@ paths:
 
             .then(({ order }) => {
               console.log(order.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -2982,9 +2997,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.paymentCollections.retrieve(paymentCollectionId)
-              .then(({ payment_collection }) => {
-                console.log(payment_collection.id)
-              })
+
+            .then(({ payment_collection }) => {
+              console.log(payment_collection.id)
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3049,7 +3065,7 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3098,7 +3114,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The ID of the Payment Collections.
+          description: The ID of the Payment Collection.
           schema:
             type: string
       requestBody:
@@ -3140,7 +3156,7 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
 
 
             // Example 2: Updating one session and removing the other
@@ -3157,7 +3173,7 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3238,7 +3254,7 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3305,7 +3321,7 @@ paths:
 
             .then(({ payment_session }) => {
               console.log(payment_session.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3343,7 +3359,7 @@ paths:
         - in: path
           name: id
           required: true
-          description: The ID of the Payment Collections.
+          description: The ID of the Payment Collection.
           schema:
             type: string
         - in: path
@@ -3369,7 +3385,7 @@ paths:
 
             .then(({ payment_collection }) => {
               console.log(payment_collection.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: >
@@ -3480,7 +3496,7 @@ paths:
 
             .then(({ product_categories, limit, offset, count }) => {
               console.log(product_categories.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3553,9 +3569,10 @@ paths:
             // must be previously logged in or use api token
 
             medusa.productCategories.retrieve(productCategoryId)
-              .then(({ product_category }) => {
-                console.log(product_category.id);
-              });
+
+            .then(({ product_category }) => {
+              console.log(product_category.id);
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3703,7 +3720,7 @@ paths:
 
             .then(({ product_tags }) => {
               console.log(product_tags.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -3850,7 +3867,7 @@ paths:
 
             .then(({ product_types }) => {
               console.log(product_types.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4130,7 +4147,7 @@ paths:
 
             .then(({ products, limit, offset, count }) => {
               console.log(products.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4184,7 +4201,7 @@ paths:
 
             .then(({ hits }) => {
               console.log(hits.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4303,7 +4320,7 @@ paths:
 
             .then(({ product }) => {
               console.log(product.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4410,9 +4427,9 @@ paths:
 
             medusa.regions.list()
 
-            .then(({ regions }) => {
+            .then(({ regions, count, limit, offset }) => {
               console.log(regions.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4463,7 +4480,7 @@ paths:
 
             .then(({ region }) => {
               console.log(region.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4509,7 +4526,7 @@ paths:
 
             .then(({ return_reasons }) => {
               console.log(return_reasons.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4560,7 +4577,7 @@ paths:
 
             .then(({ return_reason }) => {
               console.log(return_reason.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4622,7 +4639,7 @@ paths:
 
             .then((data) => {
               console.log(data.return.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4700,7 +4717,7 @@ paths:
 
             .then(({ shipping_options }) => {
               console.log(shipping_options.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4755,7 +4772,7 @@ paths:
 
             .then(({ shipping_options }) => {
               console.log(shipping_options.length);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4837,7 +4854,7 @@ paths:
 
             .then(({ swap }) => {
               console.log(swap.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -4904,7 +4921,7 @@ paths:
 
             .then(({ swap }) => {
               console.log(swap.id);
-            });
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5080,6 +5097,21 @@ paths:
         method: list
         queryParams: StoreGetVariantsParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.product.variants.list()
+
+            .then(({ variants }) => {
+              console.log(variants.length);
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5168,6 +5200,21 @@ paths:
         method: retrieve
         queryParams: StoreGetVariantsVariantParams
       x-codeSamples:
+        - lang: JavaScript
+          label: JS Client
+          source: >
+            import Medusa from "@medusajs/medusa-js"
+
+            const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries:
+            3 })
+
+            // must be previously logged in or use api token
+
+            medusa.product.variants.retrieve(productVariantId)
+
+            .then(({ variant }) => {
+              console.log(variant.id);
+            })
         - lang: Shell
           label: cURL
           source: |
@@ -5594,6 +5641,7 @@ components:
           example: 16128234334802
         company:
           type: string
+          description: Company
         address_1:
           description: Address line 1
           type: string
@@ -7482,12 +7530,16 @@ components:
             - modules
           properties:
             payment_providers:
+              description: The store's payment providers.
               $ref: '#/components/schemas/PaymentProvider'
             fulfillment_providers:
+              description: The store's fulfillment providers.
               $ref: '#/components/schemas/FulfillmentProvider'
             feature_flags:
+              description: The feature flags enabled in the store's backend.
               $ref: '#/components/schemas/FeatureFlagsResponse'
             modules:
+              description: The modules installed in the store's backend.
               $ref: '#/components/schemas/ModulesResponse'
     FeatureFlagsResponse:
       type: array
@@ -7990,6 +8042,10 @@ components:
       required:
         - sku
       properties:
+        id:
+          description: The inventory item's ID.
+          type: string
+          example: iitem_12334
         sku:
           description: The Stock Keeping Unit (SKU) code of the Inventory Item.
           type: string
@@ -9708,8 +9764,8 @@ components:
           $ref: '#/components/schemas/Region'
         currency_code:
           description: >-
-            The 3 character ISO code for the currency this payment collection is
-            associated with.
+            The three character ISO code for the currency this payment
+            collection is associated with.
           type: string
           example: usd
           externalDocs:
@@ -9992,6 +10048,7 @@ components:
         - type: object
           properties:
             variants:
+              description: The product variants and their prices.
               type: array
               items:
                 $ref: '#/components/schemas/PricedVariant'
@@ -10355,6 +10412,10 @@ components:
           description: The product category's name
           type: string
           example: Regular Fit
+        description:
+          description: The product category's description.
+          type: string
+          default: ''
         handle:
           description: >-
             A unique string that identifies the Product Category - can for
@@ -11269,7 +11330,7 @@ components:
           type: string
           example: EU
         currency_code:
-          description: The 3 character currency code used in the region.
+          description: The three character currency code used in the region.
           type: string
           example: usd
           externalDocs:
@@ -12500,6 +12561,7 @@ components:
         - type: object
           properties:
             sales_channels:
+              description: The associated sales channels.
               $ref: '#/components/schemas/SalesChannel'
     Store:
       title: Store
@@ -12529,8 +12591,9 @@ components:
           description: The name of the Store - this may be displayed to the Customer.
           type: string
           example: Medusa Store
+          default: Medusa Store
         default_currency_code:
-          description: The 3 character currency code that is the default of the store.
+          description: The three character currency code that is the default of the store.
           type: string
           example: usd
           externalDocs:
@@ -12539,6 +12602,7 @@ components:
         default_currency:
           description: The details of the store's default currency.
           x-expandable: default_currency
+          default: usd
           nullable: true
           $ref: '#/components/schemas/Currency'
         currencies:
@@ -12603,6 +12667,7 @@ components:
               https://docs.medusajs.com/development/entities/overview#metadata-attribute
     StoreAuthRes:
       type: object
+      description: The customer's details.
       x-expanded-relations:
         field: customer
         relations:
@@ -12617,6 +12682,7 @@ components:
           $ref: '#/components/schemas/Customer'
     StoreBearerAuthRes:
       type: object
+      description: The access token details.
       properties:
         access_token:
           description: Access token that can be used to send authenticated requests.
@@ -12638,6 +12704,7 @@ components:
             $ref: '#/components/schemas/PricedShippingOption'
     StoreCartsRes:
       type: object
+      description: The cart's details.
       x-expanded-relations:
         field: cart
         relations:
@@ -12702,6 +12769,7 @@ components:
           $ref: '#/components/schemas/Cart'
     StoreCollectionsListRes:
       type: object
+      description: The list of product collections with pagination fields.
       required:
         - collections
         - count
@@ -12726,6 +12794,7 @@ components:
           description: The number of items per page
     StoreCollectionsRes:
       type: object
+      description: The details of the product collection.
       required:
         - collection
       properties:
@@ -12734,6 +12803,10 @@ components:
           $ref: '#/components/schemas/ProductCollection'
     StoreCompleteCartRes:
       type: object
+      description: >-
+        If the cart is completed successfully, this will have the created order
+        or the swap's details, based on the cart's type. Otherwise, it'll be the
+        cart's details.
       required:
         - type
         - data
@@ -12776,6 +12849,7 @@ components:
                 - $ref: '#/components/schemas/Swap'
     StoreCustomersListOrdersRes:
       type: object
+      description: The list of the customer's orders with pagination fields.
       x-expanded-relations:
         field: orders
         relations:
@@ -12880,12 +12954,13 @@ components:
           type: integer
     StoreCustomersListPaymentMethodsRes:
       type: object
+      description: The payment method's details.
       required:
         - payment_methods
       properties:
         payment_methods:
           type: array
-          description: An array of saved payment method details.
+          description: The details of the saved payment methods.
           items:
             type: object
             required:
@@ -12904,6 +12979,7 @@ components:
                 type: object
     StoreCustomersRes:
       type: object
+      description: The customer's details.
       x-expanded-relations:
         field: customer
         relations:
@@ -12925,6 +13001,7 @@ components:
           $ref: '#/components/schemas/Customer'
     StoreGetAuthEmailRes:
       type: object
+      description: Details on whether the email exists.
       required:
         - exists
       properties:
@@ -12933,6 +13010,7 @@ components:
           type: boolean
     StoreGetProductCategoriesCategoryRes:
       type: object
+      description: The product category's details.
       x-expanded-relations:
         field: product_category
         relations:
@@ -12946,6 +13024,7 @@ components:
           $ref: '#/components/schemas/ProductCategory'
     StoreGetProductCategoriesRes:
       type: object
+      description: The list of product categories with pagination fields.
       x-expanded-relations:
         field: product_categories
         relations:
@@ -12974,6 +13053,7 @@ components:
           type: integer
           description: The number of items per page
     StoreGiftCardsRes:
+      description: The gift card's details.
       type: object
       required:
         - gift_card
@@ -12983,6 +13063,7 @@ components:
           $ref: '#/components/schemas/GiftCard'
     StoreOrderEditsRes:
       type: object
+      description: The order edit's details.
       x-expanded-relations:
         field: order_edit
         relations:
@@ -13026,6 +13107,7 @@ components:
           $ref: '#/components/schemas/OrderEdit'
     StoreOrdersRes:
       type: object
+      description: The order's details.
       required:
         - order
       x-expanded-relations:
@@ -13123,6 +13205,7 @@ components:
           description: The ID of the Payment Provider.
     StorePaymentCollectionsRes:
       type: object
+      description: The payment collection's details.
       x-expanded-relations:
         field: payment_collection
         relations:
@@ -13159,6 +13242,7 @@ components:
           description: The Customer's password.
     StorePostCartReq:
       type: object
+      description: The details of the cart to be created.
       properties:
         region_id:
           type: string
@@ -13186,8 +13270,8 @@ components:
         country_code:
           type: string
           description: >-
-            The 2 character ISO country code to create the Cart in. Setting this
-            parameter will set the country code of the shipping address.
+            The two character ISO country code to create the Cart in. Setting
+            this parameter will set the country code of the shipping address.
           externalDocs:
             url: >-
               https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
@@ -13506,8 +13590,8 @@ components:
       properties:
         sessions:
           description: >-
-            An array of payment sessions related to the Payment Collection.
-            Existing sessions that are not added in this array will be deleted.
+            Payment sessions related to the Payment Collection. Existing
+            sessions that are not added in this array will be deleted.
           type: array
           items:
             type: object
@@ -13586,6 +13670,7 @@ components:
         filter:
           description: Pass filters based on the search service.
     StorePostSearchRes:
+      description: The list of search results.
       allOf:
         - type: object
           required:
@@ -13650,6 +13735,7 @@ components:
                 type: integer
     StoreProductTagsListRes:
       type: object
+      description: The list of product tags with pagination fields.
       required:
         - product_tags
         - count
@@ -13696,6 +13782,7 @@ components:
           description: The number of items per page
     StoreProductsListRes:
       type: object
+      description: The list of products with pagination fields.
       x-expanded-relations:
         field: products
         relations:
@@ -13754,6 +13841,7 @@ components:
           $ref: '#/components/schemas/PricedProduct'
     StoreRegionsListRes:
       type: object
+      description: The list of regions with pagination fields.
       x-expanded-relations:
         field: regions
         relations:
@@ -13782,6 +13870,7 @@ components:
           description: The number of items per page
     StoreRegionsRes:
       type: object
+      description: The region's details.
       x-expanded-relations:
         field: region
         relations:
@@ -13799,6 +13888,7 @@ components:
           $ref: '#/components/schemas/Region'
     StoreReturnReasonsListRes:
       type: object
+      description: The list of return reasons.
       x-expanded-relations:
         field: return_reasons
         relations:
@@ -13814,6 +13904,7 @@ components:
             $ref: '#/components/schemas/ReturnReason'
     StoreReturnReasonsRes:
       type: object
+      description: The return reason's details.
       x-expanded-relations:
         field: return_reason
         relations:
@@ -13827,6 +13918,7 @@ components:
           $ref: '#/components/schemas/ReturnReason'
     StoreReturnsRes:
       type: object
+      description: The return's details.
       x-expanded-relations:
         field: return
         relations:
@@ -13842,6 +13934,7 @@ components:
           $ref: '#/components/schemas/Return'
     StoreShippingOptionsListRes:
       type: object
+      description: The list of shipping options.
       x-expanded-relations:
         field: shipping_options
         relations:
@@ -13856,6 +13949,7 @@ components:
             $ref: '#/components/schemas/PricedShippingOption'
     StoreSwapsRes:
       type: object
+      description: The swap's details.
       x-expanded-relations:
         field: swap
         relations:
@@ -13879,6 +13973,7 @@ components:
           $ref: '#/components/schemas/Swap'
     StoreVariantsListRes:
       type: object
+      description: The list of product variants.
       x-expanded-relations:
         field: variants
         relations:
@@ -13897,6 +13992,7 @@ components:
             $ref: '#/components/schemas/PricedVariant'
     StoreVariantsRes:
       type: object
+      description: The product variant's details.
       x-expanded-relations:
         field: variant
         relations:

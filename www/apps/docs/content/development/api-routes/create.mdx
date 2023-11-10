@@ -115,7 +115,7 @@ For example, if your API route accepts an author ID and a post ID, the path to y
 
 ## CORS Configuration
 
-CORS configurations are automatically added to custom API Routes defined under the `/store` or `/admin` path prefixes based on the [store_cors and admin_cors configurations](../backend/configurations.md#admin_cors-and-store_cors) respectively.
+The `cors` middleware, which enables Cross-Origin Resource Sharing (CORS), is automatically applied on custom API Routes defined under the `/store` or `/admin` path prefixes based on the respective [store_cors and admin_cors configurations](../backend/configurations.md#admin_cors-and-store_cors).
 
 To add CORS configurations to custom API routes under other path prefixes, or override the CORS configurations added by default, define a [middleware](./add-middleware.mdx) on your API routes and pass it the `cors` middleware. For example:
 
@@ -138,6 +138,30 @@ export const config: MiddlewaresConfig = {
     },
   ],
 }
+```
+
+### CORS Opt-Out
+
+To disable the `cors` middleware for an API Route, export a `CORS` variable in the route file with its value set to `false`.
+
+For example:
+
+```ts title=src/api/store/custom/route.ts
+import type { 
+  MedusaRequest, 
+  MedusaResponse,
+} from "@medusajs/medusa"
+
+export const GET = (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  res.json({
+    message: "[GET] Hello world!",
+  })
+}
+
+export const CORS = false
 ```
 
 ---
@@ -191,6 +215,72 @@ export const config: MiddlewaresConfig = {
 ```
 
 Note that the `urlencoded` middleware imported from the [body-parser package](https://www.npmjs.com/package/body-parser) attaches the parsed data to the `MedusaRequest` object's `body` property as well.
+
+### Parse Webhook Body Parameters
+
+For webhook API Routes, you may need to use the `raw` body parser middleware rather than the default `json`.
+
+You can opt out of the default body parser by setting the `bodyParser` property of a [middleware route object](./add-middleware.mdx) to `false`, and passing the preferred body-parser middleware in the `middlewares` property.
+
+For example:
+
+```ts title=src/api/middlewares.ts
+import { MiddlewaresConfig } from "@medusajs/medusa"
+import { raw } from "body-parser"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      matcher: "/webhooks/*",
+      bodyParser: false,
+      middlewares: [raw({ type: "application/json" })],
+    },
+  ],
+}
+```
+
+You can also disable the default `json` body parser for specific HTTP methods using the `method` property for a middleware route object. Its value can either be a string or an array of strings, each being an HTTP method name.
+
+For example:
+
+```ts title=src/api/middlewares.ts
+import { MiddlewaresConfig } from "@medusajs/medusa"
+import { raw } from "body-parser"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      method: ["POST", "PUT"],
+      matcher: "/webhooks/*",
+      bodyParser: false,
+      middlewares: [raw({ type: "application/json" })],
+    },
+  ],
+}
+```
+
+This disables the default JSON body parser for the POST and PUT HTTP methods on API Routes matching the `/webhooks/*` matcher, and applies the `raw` body-parser middleware on them instead.
+
+### Configure Request Body Size Limit
+
+By default, the maximum request body size allowed is `1000` bytes. If a request body's size is greater than that, an error is thrown.
+
+If you expect the request body of an API Route to be larger than the default, you can set the `bodyParser` property of a [middleware route object](./add-middleware.mdx) to a configuration object with the property `sizeLimit`. Its value is a number indicating the maximum allowed size limit in bytes.
+
+For example:
+
+```ts title=src/api/middlewares.ts
+import { MiddlewaresConfig } from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  routes: [
+    {
+      bodyParser: { sizeLimit: 2000 }, // in bytes
+      // ...
+    },
+  ],
+}
+```
 
 ---
 
@@ -390,63 +480,19 @@ export const GET = (
 
 ## Handle Errors
 
-Medusa provides an `errorHandler` middleware that you can use on your custom API Routes so that your error handling is consistent with the Medusa backend. You can also create custom [middlewares](./add-middleware.mdx) to handle errors.
+Medusa automatically applies an error-handler middleware on your custom API routes, which returns errors as a JSON response whose format is consistent with the Medusa backend.
 
-To handle errors using Medusa's middlewares, first, import the `errorHandler` middleware from `@medusajs/medusa` and apply it on your routes.
+:::tip
 
-For example:
+When an error is thrown, the response status code is set to `500` by default. However, that changes based on the `MedusaError` type thrown as explained in the next section.
 
-```ts title=src/api/middlewares.ts
-import { 
-  errorHandler, 
-  type MiddlewaresConfig,
-} from "@medusajs/medusa"
+:::
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/store/custom*",
-      middlewares: [errorHandler()],
-    },
-  ],
-}
-```
+### Medusa Error Types
 
-Make sure it's applied after all other middlewares.
+You must throw errors of type `MedusaError` to ensure the error message is returned in the response. Otherwise, the returned error message will be `Unknown Error`.
 
-Then, wrap the method handler function of every API route method with the `wrapHandler` function imported from `@medusajs/medusa`. For example:
-
-```ts title=src/api/store/custom/route.ts
-import { 
-  MedusaRequest, 
-  MedusaResponse,
-  wrapHandler,
-} from "@medusajs/medusa"
-
-export const GET = wrapHandler(async (
-  req: MedusaRequest,
-  res: MedusaResponse
-) => {
-  res.json({
-    message: "[GET] Hello world!",
-  })
-})
-
-export const POST = wrapHandler(async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  res.json({
-    message: "[POST] Hello world!",
-  })
-})
-```
-
-Now all errors thrown in your custom API Routes, or in resources you use within your API Route such as services, are caught and returned to the user.
-
-### Using MedusaError
-
-If you throw errors like this:
+For example, if you throw an error like this:
 
 ```ts
 throw new Error ("Post was not found")
@@ -462,7 +508,7 @@ The API Route returns the following object error in the response:
 }
 ```
 
-To ensure your error message is relayed in the response, it's recommended to use `MedusaError` imported from `@medusajs/utils` as the thrown error instead.
+To ensure your error message is relayed in the response, use `MedusaError` imported from `@medusajs/utils` as the thrown error type instead.
 
 For example:
 
@@ -490,6 +536,78 @@ After using `MedusaError`, the returned error in the response provides a clearer
   "type": "not_found",
   "message": "Post was not found"
 }
+```
+
+<details>
+<summary>
+Available MedusaError Types and their respective status codes
+</summary>
+
+The default response code is `500` unless mentioned otherwise.
+
+- `MedusaError.Types.DB_ERROR`: Sets the response code to `500`.
+- `MedusaError.Types.DUPLICATE_ERROR`: Sets the response code to `422`.
+- `MedusaError.Types.INVALID_ARGUMENT`
+- `MedusaError.Types.INVALID_DATA`: Sets the resposne code to `400`.
+- `MedusaError.Types.UNAUTHORIZED`: Sets the resposne code to `401`.
+- `MedusaError.Types.NOT_FOUND`: Sets the response code to `404`.
+- `MedusaError.Types.NOT_ALLOWED`: Sets the resposne code to `400`.
+- `MedusaError.Types.UNEXPECTED_STATE`
+- `MedusaError.Types.CONFLICT`: Sets the resposne code to `409`.
+- `MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR`: Sets the resposne code to `422`.
+
+</details>
+
+### Override Error Handler
+
+To override the default error handler, pass the `errorHandler` property to the [exported middleware configurations](./add-middleware.mdx) with the custom error-handler middleware as its value.
+
+For example:
+
+```ts title=src/api/middlewares.ts
+import { MiddlewaresConfig } from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  errorHandler: (err, req, res, next) => {
+    // custom error handling logic...
+  },
+}
+```
+
+### Disable Default Error Handler
+
+To disable the default error handler, set the `errorHandler` property of the [exported middleware configurations](./add-middleware.mdx) to `false`.
+
+For example:
+
+```ts title=src/api/middlewares.ts
+import { MiddlewaresConfig } from "@medusajs/medusa"
+
+export const config: MiddlewaresConfig = {
+  errorHandler: false,
+}
+```
+
+However, when you disable the default error handler, errors thrown in an `async` function or method are not handled and requests goes on indefinitely with no response.
+
+To ensure that errors are still returned in the response when the default error handler is disabled, either create a custom error handler or wrap your API Route with the `wrapHandler` imported from `@medusajs/medusa`.
+
+For example:
+
+```ts title=src/api/middlewares.ts
+import { 
+  MedusaRequest, 
+  MedusaResponse, 
+  wrapHandler,
+} from "@medusajs/medusa"
+
+export const GET = wrapHandler(async (
+  req: MedusaRequest,
+  res: MedusaResponse
+): Promise<void> => {
+  throw new Error("An error occured")
+})
+
 ```
 
 ---

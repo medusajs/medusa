@@ -185,7 +185,7 @@ function addComments(schema: Schema, reflection: Reflection) {
 
   Object.entries(schema.properties).forEach(([key, value]) => {
     const childItem =
-      children.find((child) => child.name === key) ||
+      children.find((child: DeclarationReflection) => child.name === key) ||
       reflection.getChildByName(key)
 
     if (childItem) {

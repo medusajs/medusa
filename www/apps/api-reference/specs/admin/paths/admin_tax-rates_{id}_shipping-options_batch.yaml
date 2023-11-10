@@ -1,7 +1,7 @@
 post:
   operationId: PostTaxRatesTaxRateShippingOptions
   summary: Add to Shipping Options
-  description: Associates a Tax Rate with a list of Shipping Options.
+  description: Add Shipping Options to a Tax Rate.
   parameters:
     - in: path
       name: id

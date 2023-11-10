@@ -1,4 +1,5 @@
 type: object
+description: The product category's details.
 x-expanded-relations:
   field: product_category
   relations:

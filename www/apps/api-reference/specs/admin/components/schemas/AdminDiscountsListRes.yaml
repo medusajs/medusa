@@ -1,4 +1,5 @@
 type: object
+description: The list of discounts with pagination fields.
 x-expanded-relations:
   field: discounts
   relations:
@@ -14,6 +15,7 @@ required:
 properties:
   discounts:
     type: array
+    description: The list of discounts.
     items:
       $ref: ./Discount.yaml
   count:

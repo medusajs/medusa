@@ -13,6 +13,7 @@ const defaultFormattingOptions = {
     member_signature_sources: false,
     member_signature_title: false,
     member_signature_returns: false,
+    title_reflectionPath: false,
   },
   parameterStyle: "component",
   parameterComponent: "ParameterTypes",

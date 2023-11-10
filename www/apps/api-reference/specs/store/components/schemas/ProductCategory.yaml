@@ -25,6 +25,10 @@ properties:
     description: The product category's name
     type: string
     example: Regular Fit
+  description:
+    description: The product category's description.
+    type: string
+    default: ''
   handle:
     description: >-
       A unique string that identifies the Product Category - can for example be

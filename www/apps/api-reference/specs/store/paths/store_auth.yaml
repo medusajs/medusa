@@ -91,6 +91,10 @@ delete:
   x-codegen:
     method: deleteSession
   x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_auth/delete.js
     - lang: Shell
       label: cURL
       source:
