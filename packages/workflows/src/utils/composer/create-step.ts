@@ -7,7 +7,12 @@ import {
   SymbolWorkflowStepReturn,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
-import { CreateWorkflowComposerContext, StepInput, StepReturn } from "./type"
+import {
+  CreateWorkflowComposerContext,
+  StepFunction,
+  StepFunctionResult,
+  StepInput,
+} from "./type"
 
 interface ApplyStepOptions {
   stepName: string
@@ -21,7 +26,7 @@ function applyStep({
   stepInputs,
   invokeFn,
   compensateFn,
-}: ApplyStepOptions): (this: CreateWorkflowComposerContext) => StepReturn {
+}: ApplyStepOptions): StepFunctionResult {
   return function (this: CreateWorkflowComposerContext) {
     if (!this.workflowId) {
       throw new Error(
@@ -99,7 +104,7 @@ export function createStep(
   name: string,
   invokeFn: Function,
   compensateFn?: Function
-) {
+): StepFunction {
   const stepName = name ?? invokeFn.name
 
   const returnFn = function (...stepInputs: StepInput[]) {

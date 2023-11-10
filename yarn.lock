@@ -7933,6 +7933,9 @@ __metadata:
   dependencies:
     "@medusajs/admin": ^7.1.3
     "@medusajs/medusa": ^1.17.0
+    "@medusajs/modules-sdk": "workspace:^"
+    "@medusajs/types": "workspace:^"
+    "@medusajs/utils": "workspace:^"
     "@tanstack/react-table": ^8.7.9
     awilix: ^8.0.1
     body-parser: ^1.19.0
