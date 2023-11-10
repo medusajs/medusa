@@ -13,11 +13,8 @@ export default (fn: handler): RequestHandler => {
     }
 
     try {
-      return await fn(req, res)?.catch(next)
+      return await fn(req, res)
     } catch (err) {
-      /**
-       * If the fn is not async, we need to catch the error here instead.
-       */
       next(err)
     }
   }
