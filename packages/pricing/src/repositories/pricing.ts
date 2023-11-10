@@ -100,39 +100,37 @@ export class PricingRepository
           "count(DISTINCT plrt.rule_attribute) = pl.number_rules AND psma1.price_list_id IS NOT NULL"
         )
       )
-      .andWhere(function () {
-        this.whereNull("psma1.price_list_id")
-          .orWhereNull("pl.starts_at")
-          .orWhere("pl.starts_at", "<=", date)
-      })
-      .andWhere(function () {
-        this.whereNull("psma1.price_list_id")
-          .orWhereNull("pl.ends_at")
-          .orWhere("pl.ends_at", ">=", date)
-      })
-      .andWhere(function () {
-        this.orWhere((q) => {
-          for (const [key, value] of Object.entries(context)) {
-            q.orWhere({
-              "rt.rule_attribute": key,
-              "pr.value": value,
-            })
-          }
+    psmaSubQueryKnex.orWhere((q) => {
+      for (const [key, value] of Object.entries(context)) {
+        q.orWhere({
+          "rt.rule_attribute": key,
+          "pr.value": value,
+        })
+      }
 
-          q.orWhere("psma1.number_rules", "=", 0)
-          q.whereNull("psma1.price_list_id")
-        }).orWhere((q) => {
+      q.orWhere("psma1.number_rules", "=", 0)
+      q.whereNull("psma1.price_list_id")
+    })
+
+    psmaSubQueryKnex.orWhere((q) => {
+      q.whereNotNull("psma1.price_list_id")
+        .andWhere(function () {
+          this.orWhereNull("pl.starts_at").orWhere("pl.starts_at", "<=", date)
+        })
+        .andWhere(function () {
+          this.orWhereNull("pl.ends_at").orWhere("pl.ends_at", ">=", date)
+        })
+        .andWhere(function () {
           for (const [key, value] of Object.entries(context)) {
-            q.orWhere({
+            this.orWhere({
               "plrt.rule_attribute": key,
             })
-            q.whereIn("plrv.value", [value])
+            this.whereIn("plrv.value", [value])
           }
 
-          q.orWhere("pl.number_rules", "=", 0)
-          q.whereNotNull("psma1.price_list_id")
+          this.orWhere("pl.number_rules", "=", 0)
         })
-      })
+    })
 
     const priceSetQueryKnex = knex({
       ps: "price_set",
