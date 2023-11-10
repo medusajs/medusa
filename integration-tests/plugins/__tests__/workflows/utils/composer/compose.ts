@@ -672,57 +672,88 @@ describe("Workflow composer", function () {
   })
 
   it("should transform the values before forward them to the next step", async () => {
-    const step1 = createStep("step1", (context, obj) => {
+    const mockStep1Fn = jest.fn((context, obj) => {
       const ret = {
         property: "property",
       }
-      console.log(ret)
       return ret
     })
 
-    const step2 = createStep("step2", (context, obj) => {
+    const mockStep2Fn = jest.fn((context, obj) => {
       const ret = {
         sum: "sum = " + obj.sum,
         ...obj,
       }
-      console.log(ret)
       return ret
     })
 
-    const step3 = createStep("step3", (context, param) => {
+    const mockStep3Fn = jest.fn((context, param) => {
       const ret = {
         avg: "avg = " + param.avg,
         ...param,
       }
-      console.log(ret)
       return ret
     })
+
+    const transform1Fn = jest.fn((context, input, step1Res) => {
+      const newObj = {
+        ...step1Res,
+        ...input,
+        sum: input.a + input.b,
+      }
+      return newObj
+    })
+
+    const transform2Fn = jest.fn(async (context, input) => {
+      input.another_prop = "another_prop"
+      return input
+    })
+
+    const transform3Fn = jest.fn((context, obj) => {
+      obj.avg = (obj.a + obj.b) / 2
+      return obj
+    })
+
+    const step1 = createStep("step1", mockStep1Fn)
+    const step2 = createStep("step2", mockStep2Fn)
+    const step3 = createStep("step3", mockStep3Fn)
 
     const mainFlow = createWorkflow("test_", function (input) {
       const step1Result = step1(input)
 
-      const sum = transform(
-        [input, step1Result],
-        (context, input, step1Res) => {
-          const newObj = {
-            ...step1Res,
-            ...input,
-            sum: input.a + input.b,
-          }
-          return newObj
-        }
-      )
+      const sum = transform([input, step1Result], transform1Fn, transform2Fn)
 
       const ret2 = step2(sum)
 
-      const avg = transform(ret2, (context, obj) => {
-        obj.avg = (obj.a + obj.b) / 2
-        return obj
-      })
+      const avg = transform(ret2, transform1Fn, transform3Fn)
 
       return step3(avg)
     })
 
-    await mainFlow().run({ input: { a: 1, b: 2 } })
+    const workflowInput = { a: 1, b: 2 }
+    await mainFlow().run({ input: workflowInput })
+
+    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+
+    expect(mockStep2Fn.mock.calls[0][1]).toEqual({
+      property: "property",
+      a: 1,
+      b: 2,
+      sum: 3,
+      another_prop: "another_prop",
+    })
+
+    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+      sum: 3,
+      property: "property",
+      a: 1,
+      b: 2,
+      another_prop: "another_prop",
+      avg: 1.5,
+    })
+
+    expect(transform1Fn).toHaveBeenCalledTimes(2)
+    expect(transform2Fn).toHaveBeenCalledTimes(1)
+    expect(transform3Fn).toHaveBeenCalledTimes(1)
   })
 })

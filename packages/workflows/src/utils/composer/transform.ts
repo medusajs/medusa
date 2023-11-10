@@ -3,11 +3,12 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
+import { StepTransformer } from "./type"
 
 export function transform(
   values: unknown | unknown[],
   ...functions: Function[]
-): any {
+): StepTransformer {
   const returnFn = async function (context: any): Promise<any> {
     const { invoke } = context
 
