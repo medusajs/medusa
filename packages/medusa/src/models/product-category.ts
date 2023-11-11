@@ -19,7 +19,13 @@ import {
 @Tree("materialized-path")
 @Index(["parent_category_id", "rank"], { unique: true })
 export class ProductCategory extends BaseEntity {
+  /**
+   * @apiIgnore
+   */
   static productCategoryProductJoinTable = "product_category_product"
+  /**
+   * @apiIgnore
+   */
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
@@ -72,6 +78,9 @@ export class ProductCategory extends BaseEntity {
   })
   products: Product[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "pcat")
@@ -109,6 +118,10 @@ export class ProductCategory extends BaseEntity {
  *     description: The product category's name
  *     type: string
  *     example: Regular Fit
+ *   description:
+ *     description: The product category's description.
+ *     type: string
+ *     default: ""
  *   handle:
  *     description: A unique string that identifies the Product Category - can for example be used in slug structures.
  *     type: string

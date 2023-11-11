@@ -6,4 +6,4 @@ medusa.admin.regions.addPaymentProvider(regionId, {
 })
 .then(({ region }) => {
   console.log(region.id);
-});
+})

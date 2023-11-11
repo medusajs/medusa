@@ -1,5 +1,20 @@
 # Change Log
 
+## 1.3.13
+
+### Patch Changes
+
+- [#5543](https://github.com/medusajs/medusa/pull/5543) [`f90ba0208`](https://github.com/medusajs/medusa/commit/f90ba02087778d8131aed3a59a6dc9c8ca3c95f4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Introduce promiseAll util
+
+- Updated dependencies [[`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/utils@1.10.5
+
+## 1.3.12
+
+### Patch Changes
+
+- [#5390](https://github.com/medusajs/medusa/pull/5390) [`04e9dd6a6`](https://github.com/medusajs/medusa/commit/04e9dd6a6a00bb67a1ce55bf575e7c13fb9db223) Thanks [@josipmatichr](https://github.com/josipmatichr)! - fix(medusa-plugin-brightpearl): Missing discounts rule relation
+
 ## 1.3.11
 
 ### Patch Changes

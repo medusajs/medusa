@@ -28,7 +28,7 @@ You can instead follow this recipe that will guide you through implementing feat
 The storefront connects to the backend to retrieve and process data. You can use different tools or libraries when connecting your storefront to the backend.
 
 - **For React-based storefronts:** you can use [Medusa React](../medusa-react/overview.mdx). It provides you with the necessary hooks to retrieve or manipulate data on your backend.
-- **For JavaScript frameworks:** you can use [Medusa’s JavaScript Client](../js-client/overview.md) in any JavaScript framework. This NPM package facilitates interacting with the backend’s REST APIs.
+- **For JavaScript frameworks:** you can use [Medusa’s JavaScript Client](../js-client/overview.mdx) in any JavaScript framework. This NPM package facilitates interacting with the backend’s REST APIs.
 - **For other frontend technologies:** you can interact directly with the Medusa backend by sending requests to its [Store REST APIs](https://docs.medusajs.com/api/store).
 
 :::tip
@@ -59,7 +59,7 @@ Publishable API Keys are used to scope API requests to defined resources, such a
 
 Also, when you're using Medusa's JS or React clients, you can pass the publishable API key when you first initialize the clients and it will be appended to all requests you send.
 
-For example, you can create a publishable API key and associate it with one or more sales channels. Then, when you pass the publishable API key in the header of the request to the List Products endpoint, only products associated with that sales channel will be retrieved. The alternative would be to pass the sales channels as query parameters to the request.
+For example, you can create a publishable API key and associate it with one or more sales channels. Then, when you pass the publishable API key in the header of the request to the List Products API Route, only products associated with that sales channel will be retrieved. The alternative would be to pass the sales channels as query parameters to the request.
 
 There are two ways to create a publishable API Key: either using the admin dashboard, which requires the admin plugin to be installed on your Medusa backend, or using the Admin REST APIs.
 
@@ -84,7 +84,7 @@ There are two ways to create a publishable API Key: either using the admin dashb
   },
 ]} />
 
-After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API endpoints.
+After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API Routes.
 
 <DocCard item={{
   type: 'link',
@@ -191,7 +191,7 @@ Medusa’s backend provides much more functionalities, such as allowing customer
     label: 'Store API reference',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn about available REST API endpoints that you can use in your storefront.'
+      description: 'Learn about available REST API routes that you can use in your storefront.'
     }
   },
 ]} />

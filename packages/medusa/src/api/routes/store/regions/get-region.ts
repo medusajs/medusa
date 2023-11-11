@@ -19,7 +19,7 @@ import { defaultRelations } from "."
  *       medusa.regions.retrieve(regionId)
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

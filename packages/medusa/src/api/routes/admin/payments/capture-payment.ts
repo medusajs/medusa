@@ -20,7 +20,7 @@ import { PaymentService } from "../../../../services"
  *       medusa.admin.payments.capturePayment(paymentId)
  *       .then(({ payment }) => {
  *         console.log(payment.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

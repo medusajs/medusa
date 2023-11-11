@@ -129,6 +129,61 @@ module.exports = {
       },
     },
     {
+      files: ["packages/design-system/ui/**/*.{ts,tsx}"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:storybook/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/recommended",
+      ],
+      plugins: ["@typescript-eslint"],
+      rules: {
+        "react/no-children-prop": "off",
+        "react-hooks/exhaustive-deps": "warn",
+        "react/prop-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_" },
+        ],
+      },
+      settings: {
+        react: {
+          version: "detect",
+        },
+      },
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/design-system/ui/tsconfig.json",
+      },
+    },
+    {
+      files: ["packages/design-system/icons/**/*.{ts,tsx}"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+      ],
+      plugins: ["@typescript-eslint"],
+      rules: {
+        "react/no-children-prop": "off",
+        "react/prop-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { argsIgnorePattern: "^_" },
+        ],
+      },
+      settings: {
+        react: {
+          version: "detect",
+        },
+      },
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./packages/design-system/icons/tsconfig.json",
+      },
+    },
+    {
       files: ["packages/admin-ui/ui/**/*.ts", "packages/admin-ui/ui/**/*.tsx"],
       plugins: ["unused-imports"],
       extends: [

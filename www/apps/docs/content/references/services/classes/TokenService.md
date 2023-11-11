@@ -1,51 +1,51 @@
-# Class: TokenService
+# TokenService
 
 ## Constructors
 
 ### constructor
 
-• **new TokenService**(`«destructured»`)
+**new TokenService**(`«destructured»`)
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `«destructured»` | `InjectedDependencies` |
 
 #### Defined in
 
-[medusa/src/services/token.ts:16](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/token.ts#L16)
+[medusa/src/services/token.ts:16](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/token.ts#L16)
 
 ## Properties
 
 ### configModule\_
 
-• `Protected` `Readonly` **configModule\_**: `ConfigModule`
+ `Protected` `Readonly` **configModule\_**: `ConfigModule`
 
 #### Defined in
 
-[medusa/src/services/token.ts:14](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/token.ts#L14)
+[medusa/src/services/token.ts:14](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/token.ts#L14)
 
 ___
 
 ### RESOLUTION\_KEY
 
-▪ `Static` **RESOLUTION\_KEY**: `string`
+ `Static` **RESOLUTION\_KEY**: `string`
 
 #### Defined in
 
-[medusa/src/services/token.ts:12](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/token.ts#L12)
+[medusa/src/services/token.ts:12](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/token.ts#L12)
 
 ## Methods
 
 ### signToken
 
-▸ **signToken**(`data`, `options?`): `string`
+**signToken**(`data`, `options?`): `string`
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `data` | `string` \| `object` \| `Buffer` |
 | `options?` | `SignOptions` |
 
@@ -53,20 +53,22 @@ ___
 
 `string`
 
+-`string`: (optional) 
+
 #### Defined in
 
-[medusa/src/services/token.ts:34](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/token.ts#L34)
+[medusa/src/services/token.ts:34](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/token.ts#L34)
 
 ___
 
 ### verifyToken
 
-▸ **verifyToken**(`token`, `options?`): `string` \| `Jwt` \| `JwtPayload`
+**verifyToken**(`token`, `options?`): `string` \| `Jwt` \| `JwtPayload`
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
+| Name |
+| :------ |
 | `token` | `string` |
 | `options?` | `VerifyOptions` |
 
@@ -74,6 +76,8 @@ ___
 
 `string` \| `Jwt` \| `JwtPayload`
 
+-`string \| Jwt \| JwtPayload`: (optional) 
+
 #### Defined in
 
-[medusa/src/services/token.ts:20](https://github.com/medusajs/medusa/blob/418ff2a33/packages/medusa/src/services/token.ts#L20)
+[medusa/src/services/token.ts:20](https://github.com/medusajs/medusa/blob/0af6e5534/packages/medusa/src/services/token.ts#L20)

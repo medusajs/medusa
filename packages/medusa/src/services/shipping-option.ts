@@ -1,4 +1,4 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -715,7 +715,7 @@ class ShippingOptionService extends TransactionBaseService {
           const toRemove = option.requirements.filter(
             (r) => !accReqs.includes(r.id)
           )
-          await Promise.all(
+          await promiseAll(
             toRemove.map(async (req) => {
               await this.removeRequirement(req.id)
             })

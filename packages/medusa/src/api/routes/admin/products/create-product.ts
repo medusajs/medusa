@@ -1,3 +1,5 @@
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { createProducts, Workflows } from "@medusajs/workflows"
 import {
   IsArray,
   IsBoolean,
@@ -37,24 +39,22 @@ import {
 } from "./transaction/create-product-variant"
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
-import { createProducts, Workflows } from "@medusajs/workflows"
+import { FlagRouter, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
 import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 
 /**
  * @oas [post] /admin/products
  * operationId: "PostProducts"
  * summary: "Create a Product"
  * x-authenticated: true
- * description: "Create a new Product. This endpoint can also be used to create a gift card if the `is_giftcard` field is set to `true`."
+ * description: "Create a new Product. This API Route can also be used to create a gift card if the `is_giftcard` field is set to `true`."
  * requestBody:
  *   content:
  *     application/json:
@@ -76,7 +76,7 @@ import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/i
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -242,7 +242,7 @@ export default async (req, res) => {
           )
           allVariantTransactions.push(varTransaction)
         } catch (e) {
-          await Promise.all(
+          await promiseAll(
             allVariantTransactions.map(async (transaction) => {
               await revertVariantTransaction(
                 transactionDependencies,
@@ -269,7 +269,9 @@ export default async (req, res) => {
     })
   }
 
-  const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
+  const [pricedProduct] = await pricingService.setAdminProductPricing([
+    rawProduct,
+  ])
 
   res.json({ product: pricedProduct })
 }
@@ -408,12 +410,12 @@ class ProductVariantReq {
  *     type: boolean
  *     default: true
  *   images:
- *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
+ *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload API Routes to upload the image and obtain a URL.
  *     type: array
  *     items:
  *       type: string
  *   thumbnail:
- *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
+ *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload API Routes to upload the thumbnail and obtain a URL.
  *     type: string
  *   handle:
  *     description: A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.

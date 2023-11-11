@@ -1,0 +1,101 @@
+---
+displayed_sidebar: productReference
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# alloc
+
+[BufferConstructor](../../interfaces/BufferConstructor.mdx).alloc
+
+**alloc**(`size`, `fill?`, `encoding?`): [`Buffer`](../../variables/Buffer-1.mdx)
+
+Allocates a new `Buffer` of `size` bytes. If `fill` is `undefined`, the`Buffer` will be zero-filled.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.alloc(5);
+
+console.log(buf);
+// Prints: <Buffer 00 00 00 00 00>
+```
+
+If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_INVALID_ARG_VALUE` is thrown.
+
+If `fill` is specified, the allocated `Buffer` will be initialized by calling `buf.fill(fill)`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.alloc(5, 'a');
+
+console.log(buf);
+// Prints: <Buffer 61 61 61 61 61>
+```
+
+If both `fill` and `encoding` are specified, the allocated `Buffer` will be
+initialized by calling `buf.fill(fill, encoding)`.
+
+```js
+import { Buffer } from 'buffer';
+
+const buf = Buffer.alloc(11, 'aGVsbG8gd29ybGQ=', 'base64');
+
+console.log(buf);
+// Prints: <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
+```
+
+Calling `Buffer.alloc()` can be measurably slower than the alternative `Buffer.allocUnsafe()` but ensures that the newly created `Buffer` instance
+contents will never contain sensitive data from previous allocations, including
+data that might not have been allocated for `Buffer`s.
+
+A `TypeError` will be thrown if `size` is not a number.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "size",
+    "type": "`number`",
+    "description": "The desired length of the new `Buffer`.",
+    "optional": false,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "fill",
+    "type": "`string` \\| `number` \\| [`Buffer`](../../variables/Buffer-1.mdx)",
+    "description": "A value to pre-fill the new `Buffer` with.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  },
+  {
+    "name": "encoding",
+    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "description": "If `fill` is a string, this is its encoding.",
+    "optional": true,
+    "defaultValue": "",
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`Buffer`](../../variables/Buffer-1.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "Buffer",
+    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "children": []
+  }
+]} />
+
+#### Since
+
+v5.10.0

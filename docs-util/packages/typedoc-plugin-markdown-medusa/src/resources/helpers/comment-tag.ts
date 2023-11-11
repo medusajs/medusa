@@ -9,6 +9,11 @@ export default function (theme: MarkdownTheme) {
     function (tag: CommentTag, commentLevel = 4, parent = null) {
       const { showCommentsAsHeader, showCommentsAsDetails } =
         theme.getFormattingOptionsForLocation()
+      if (tag.tag === "@schema") {
+        tag.content.forEach((content, index) => {
+          tag.content[index].text = getDescriptionFromSchema(content.text)
+        })
+      }
       const tagTitle = camelToTitleCase(tag.tag.substring(1)),
         tagContent = Handlebars.helpers.comment(tag.content)
 
@@ -24,4 +29,12 @@ export default function (theme: MarkdownTheme) {
       return `**${tagTitle}**\n\n${tagContent}`
     }
   )
+
+  function getDescriptionFromSchema(content: string) {
+    const regex = new RegExp(/description: "(?<description>.*)"/)
+
+    const matchDescription = content.match(regex)
+
+    return matchDescription?.groups?.description || content
+  }
 }

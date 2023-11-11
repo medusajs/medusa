@@ -10,8 +10,8 @@ post:
     changes their region.
 
 
-    If a customer is logged in, the cart's customer ID and email will
-    automatically be set.
+    If a customer is logged in, make sure to pass its ID or email within the
+    cart's details so that the cart is attached to the customer.
   requestBody:
     content:
       application/json:

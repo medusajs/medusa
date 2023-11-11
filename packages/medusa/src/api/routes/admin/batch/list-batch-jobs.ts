@@ -276,40 +276,70 @@ export default async (req: Request, res) => {
   })
 }
 
+/**
+ * Request parameters used to configure and paginate retrieved batch jobs.
+ */
 export class AdminGetBatchPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 }
 
+/**
+ * Parameters used to filter and configure pagination of the retrieved batch jobs.
+ */
 export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
+  /**
+   * IDs to filter batch jobs by.
+   */
   @IsOptional()
   @IsArray()
   @IsType([String, [String]])
   id?: string | string[]
 
+  /**
+   * Types to filter batch jobs by.
+   */
   @IsArray()
   @IsOptional()
   type?: string[]
 
+  /**
+   * Date filters to apply on the batch jobs' `confirmed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -317,6 +347,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   confirmed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `pre_processed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -324,6 +357,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   pre_processed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `completed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -331,6 +367,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   completed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `failed_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -338,6 +377,9 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   failed_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `canceled_at` date.
+   */
   @IsOptional()
   @Transform(({ value }) => {
     return value === "null" ? null : value
@@ -345,10 +387,16 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @Type(() => DateComparisonOperator)
   canceled_at?: DateComparisonOperator | null
 
+  /**
+   * Date filters to apply on the batch jobs' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the batch jobs' `updated_at` date.
+   */
   @IsOptional()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator

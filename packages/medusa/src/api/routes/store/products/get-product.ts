@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -5,13 +6,12 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
-import { IsOptional, IsString } from "class-validator"
 
+import { MedusaError, promiseAll } from "@medusajs/utils"
+import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import { MedusaError } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/products/{id}
@@ -55,7 +55,7 @@ import { MedusaError } from "@medusajs/utils"
  *       medusa.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -156,7 +156,7 @@ export default async (req, res) => {
 
   // We can run them concurrently as the new properties are assigned to the references
   // of the appropriate entity
-  await Promise.all(decoratePromises)
+  await promiseAll(decoratePromises)
 
   res.json({
     product: cleanResponseData(decoratedProduct, req.allowedProperties || []),

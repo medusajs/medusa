@@ -1,0 +1,113 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# WritableStream
+
+This Streams API interface provides a standard abstraction for writing streaming data to a destination, known as a sink. This object comes with built-in backpressure and queuing.
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/WritableStream)
+
+## Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "W",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "locked",
+    "type": "`boolean`",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/WritableStream/locked)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### abort
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/WritableStream/abort)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "reason",
+    "type": "`any`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### close
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/WritableStream/close)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getWriter
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/WritableStream/getWriter)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "WritableStreamDefaultWriter",
+    "type": "[`WritableStreamDefaultWriter`](../../modules/internal.mdx#writablestreamdefaultwriter)<`W`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

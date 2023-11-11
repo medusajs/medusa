@@ -29,7 +29,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.draftOrders.retrieve(draftOrderId)
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

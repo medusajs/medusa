@@ -640,6 +640,18 @@ module.exports = {
         },
         {
           type: "html",
+          value: "References",
+          customProps: {
+            sidebar_is_group_divider: true,
+          },
+        },
+        {
+          type: "ref",
+          id: "references/product/interfaces/IProductModuleService",
+          label: "Product Module Interface Reference",
+        },
+        {
+          type: "html",
           value: "How-to",
           customProps: {
             sidebar_is_group_divider: true,
@@ -1141,7 +1153,7 @@ module.exports = {
         {
           type: "ref",
           id: "references/pricing/interfaces/IPricingModuleService",
-          label: "Pricing Module Service Reference",
+          label: "Pricing Module Interface Reference",
         },
         {
           type: "html",
@@ -1403,11 +1415,11 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Endpoint",
+          label: "API Routes",
           items: [
             {
               type: "doc",
-              id: "development/endpoints/overview",
+              id: "development/api-routes/overview",
               label: "Overview",
             },
             {
@@ -1418,23 +1430,45 @@ module.exports = {
               },
             },
             {
-              type: "doc",
-              id: "development/endpoints/create",
-              label: "Create an Endpoint",
+              type: "category",
+              label: "Create an API Route",
+              link: {
+                type: "doc",
+                id: "development/api-routes/create",
+              },
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "development/api-routes/create-express-route",
+                  label: "Express-Router Approach",
+                },
+              ],
+            },
+            {
+              type: "category",
+              label: "Create a Middleware",
+              link: {
+                type: "doc",
+                id: "development/api-routes/add-middleware",
+              },
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "development/api-routes/add-middleware-express-route",
+                  label: "Express-Router Approach",
+                },
+              ],
             },
             {
               type: "doc",
-              id: "development/endpoints/add-middleware",
-              label: "Middleware",
-            },
-            {
-              type: "doc",
-              id: "development/endpoints/extend-validator",
+              id: "development/api-routes/extend-validator",
               label: "Extend Validator",
             },
             {
               type: "doc",
-              id: "development/endpoints/example-logged-in-user",
+              id: "development/api-routes/example-logged-in-user",
               label: "Example: Logged-In User",
             },
           ],
@@ -1572,6 +1606,11 @@ module.exports = {
               label: "Create a Scheduled Job",
             },
           ],
+        },
+        {
+          type: "doc",
+          id: "development/logging/index",
+          label: "Logging",
         },
         {
           type: "category",
@@ -2058,6 +2097,11 @@ module.exports = {
           type: "doc",
           id: "troubleshooting/database-error",
           label: "Database Errors",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/promise-all-rollback",
+          label: "Database Transactions and Promise.all",
         },
         {
           type: "doc",
@@ -2633,6 +2677,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminCustomResource",
+              label: "custom",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminCustomerGroupsResource",
               label: "customerGroups",
             },
@@ -2658,6 +2707,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminInventoryItemsResource",
+              label: "inventoryItems",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminInvitesResource",
               label: "invites",
             },
@@ -2673,13 +2727,23 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminOrderEditsResource",
+              label: "orderEdits",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminOrdersResource",
               label: "orders",
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminOrderEditsResource",
-              label: "orderEdits",
+              id: "references/js-client/classes/AdminPaymentCollectionsResource",
+              label: "paymentCollections",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminPaymentsResource",
+              label: "payments",
             },
             {
               type: "doc",
@@ -2688,8 +2752,8 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "references/js-client/classes/AdminProductsResource",
-              label: "products",
+              id: "references/js-client/classes/AdminProductCategoriesResource",
+              label: "productCategories",
             },
             {
               type: "doc",
@@ -2703,8 +2767,23 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "references/js-client/classes/AdminProductsResource",
+              label: "products",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminPublishableApiKeyResource",
+              label: "publishableApiKeys",
+            },
+            {
+              type: "doc",
               id: "references/js-client/classes/AdminRegionsResource",
               label: "regions",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminReservationsResource",
+              label: "reservations",
             },
             {
               type: "doc",
@@ -2730,6 +2809,11 @@ module.exports = {
               type: "doc",
               id: "references/js-client/classes/AdminShippingProfilesResource",
               label: "shippingProfiles",
+            },
+            {
+              type: "doc",
+              id: "references/js-client/classes/AdminStockLocationsResource",
+              label: "stockLocations",
             },
             {
               type: "doc",
@@ -2795,7 +2879,7 @@ module.exports = {
           collapsed: true,
           link: {
             type: "doc",
-            id: "references/js-client/classes/CustomerResource",
+            id: "references/js-client/classes/CustomersResource",
           },
           items: [
             {
@@ -2817,18 +2901,43 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "references/js-client/classes/OrdersResource",
-          label: "orders",
-        },
-        {
-          type: "doc",
           id: "references/js-client/classes/OrderEditsResource",
           label: "orderEdits",
         },
         {
           type: "doc",
+          id: "references/js-client/classes/OrdersResource",
+          label: "orders",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/PaymentCollectionsResource",
+          label: "paymentCollections",
+        },
+        {
+          type: "doc",
           id: "references/js-client/classes/PaymentMethodsResource",
           label: "paymentMethods",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ProductCategoriesResource",
+          label: "productCategories",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ProductTagsResource",
+          label: "productTags",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ProductTypesResource",
+          label: "productTypes",
+        },
+        {
+          type: "doc",
+          id: "references/js-client/classes/ProductTypesResource",
+          label: "productTypes",
         },
         {
           type: "category",
@@ -2910,7 +3019,7 @@ module.exports = {
     {
       type: "doc",
       id: "references/pricing/interfaces/IPricingModuleService",
-      label: "Pricing Module Service Reference",
+      label: "Pricing Module Interface Reference",
       customProps: {
         sidebar_is_title: true,
         sidebar_icon: "folder-open",
@@ -2927,6 +3036,40 @@ module.exports = {
         {
           type: "autogenerated",
           dirName: "references/pricing/IPricingModuleService/methods",
+        },
+      ],
+    },
+  ],
+  productReference: [
+    {
+      type: "ref",
+      id: "modules/overview",
+      label: "Back to Commerce Modules",
+      customProps: {
+        sidebar_is_back_link: true,
+        sidebar_icon: "back-arrow",
+      },
+    },
+    {
+      type: "doc",
+      id: "references/product/interfaces/IProductModuleService",
+      label: "Product Module Interface Reference",
+      customProps: {
+        sidebar_is_title: true,
+        sidebar_icon: "folder-open",
+      },
+    },
+    {
+      type: "category",
+      label: "Methods",
+      collapsible: false,
+      customProps: {
+        sidebar_is_group_headline: true,
+      },
+      items: [
+        {
+          type: "autogenerated",
+          dirName: "references/product/IProductModuleService/methods",
         },
       ],
     },

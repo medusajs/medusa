@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.taxRates.retrieve(taxRateId)
 .then(({ tax_rate }) => {
   console.log(tax_rate.id);
-});
+})

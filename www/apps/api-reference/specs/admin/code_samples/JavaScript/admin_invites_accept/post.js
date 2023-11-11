@@ -14,4 +14,4 @@ medusa.admin.invites.accept({
 })
 .catch(() => {
   // an error occurred
-});
+})

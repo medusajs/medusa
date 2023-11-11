@@ -18,7 +18,7 @@ import InviteService from "../../../../services/invite"
  *       medusa.admin.invites.list()
  *       .then(({ invites }) => {
  *         console.log(invites.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

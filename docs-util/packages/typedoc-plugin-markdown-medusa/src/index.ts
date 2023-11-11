@@ -71,7 +71,7 @@ export function load(app: Application) {
     help: "[Markdown Plugin] Do not add special symbols for class members.",
     name: "hideMembersSymbol",
     type: ParameterType.Boolean,
-    defaultValue: false,
+    defaultValue: true,
   })
 
   app.options.addDeclaration({
@@ -108,6 +108,13 @@ export function load(app: Application) {
     name: "mdxOutput",
     type: ParameterType.Boolean,
     defaultValue: false,
+  })
+
+  app.options.addDeclaration({
+    help: "[Markdown Plugin] The maximum level to expand when retrieving reflection types.",
+    name: "maxLevel",
+    type: ParameterType.Number,
+    defaultValue: 3,
   })
 }
 export { MarkdownTheme }

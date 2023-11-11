@@ -1,3 +1,4 @@
+import { promiseAll } from "@medusajs/utils"
 import fs from "fs"
 
 /**
@@ -25,7 +26,7 @@ import fs from "fs"
  *       medusa.admin.uploads.create(file)
  *       .then(({ uploads }) => {
  *         console.log(uploads.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -63,7 +64,7 @@ import fs from "fs"
 export default async (req, res) => {
   const fileService = req.scope.resolve("fileService")
 
-  const result = await Promise.all(
+  const result = await promiseAll(
     req.files.map(async (f) => {
       return fileService.upload(f).then((result) => {
         fs.unlinkSync(f.path)

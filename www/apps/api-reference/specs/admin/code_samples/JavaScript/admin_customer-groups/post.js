@@ -6,4 +6,4 @@ medusa.admin.customerGroups.create({
 })
 .then(({ customer_group }) => {
   console.log(customer_group.id);
-});
+})

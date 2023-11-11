@@ -24,8 +24,9 @@ properties:
     description: The name of the Store - this may be displayed to the Customer.
     type: string
     example: Medusa Store
+    default: Medusa Store
   default_currency_code:
-    description: The 3 character currency code that is the default of the store.
+    description: The three character currency code that is the default of the store.
     type: string
     example: usd
     externalDocs:
@@ -34,6 +35,7 @@ properties:
   default_currency:
     description: The details of the store's default currency.
     x-expandable: default_currency
+    default: usd
     nullable: true
     $ref: ./Currency.yaml
   currencies:

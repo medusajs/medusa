@@ -1,10 +1,8 @@
 import {
-  Constructor,
   InternalModuleDeclaration,
   Logger,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
   MedusaContainer,
+  MODULE_RESOURCE_TYPE,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
@@ -62,18 +60,6 @@ export async function loadInternalModule(
       error: new Error(
         "No service found in module. Make sure your module exports a service."
       ),
-    }
-  }
-
-  if (
-    scope === MODULE_SCOPE.INTERNAL &&
-    resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    const moduleModels = loadedModule?.models || null
-    if (moduleModels) {
-      moduleModels.map((val: Constructor<unknown>) => {
-        container.registerAdd("db_entities", asValue(val))
-      })
     }
   }
 
@@ -139,7 +125,8 @@ export async function loadModuleMigrations(
 ): Promise<[Function | undefined, Function | undefined]> {
   let loadedModule: ModuleExports
   try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
+    loadedModule = await import(resolution.resolutionPath as string)
+
     return [loadedModule.runMigrations, loadedModule.revertMigration]
   } catch {
     return [undefined, undefined]

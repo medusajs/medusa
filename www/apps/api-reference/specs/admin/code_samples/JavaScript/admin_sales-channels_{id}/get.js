@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.salesChannels.retrieve(salesChannelId)
 .then(({ sales_channel }) => {
   console.log(sales_channel.id);
-});
+})

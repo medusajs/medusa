@@ -4,6 +4,6 @@ medusa.admin.auth.getToken({
   email: 'user@example.com',
   password: 'supersecret'
 })
-.then(({ accessToken }) => {
-  console.log(accessToekn);
-});
+.then(({ access_token }) => {
+  console.log(access_token);
+})

@@ -1,5 +1,6 @@
 import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+import { promiseAll } from "@medusajs/utils"
 
 type Result = {
   tag: string
@@ -23,7 +24,7 @@ export async function createInventoryItems({
     return void 0
   }
 
-  const result = await Promise.all(
+  return await promiseAll(
     data.inventoryItems.map(async (item) => {
       const inventoryItem = await inventoryService!.createInventoryItem({
         sku: item.sku!,
@@ -40,8 +41,6 @@ export async function createInventoryItems({
       return { tag: item._associationTag ?? inventoryItem.id, inventoryItem }
     })
   )
-
-  return result
 }
 
 createInventoryItems.aliases = {

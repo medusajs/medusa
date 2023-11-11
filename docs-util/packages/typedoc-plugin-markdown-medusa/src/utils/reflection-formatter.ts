@@ -1,17 +1,21 @@
-import {
-  Comment,
-  DeclarationReflection,
-  ReflectionKind,
-  ProjectReflection,
-  ReflectionType,
-  SomeType,
-} from "typedoc"
+import { Comment, ReflectionKind, ReflectionType } from "typedoc"
 import * as Handlebars from "handlebars"
-import { stripLineBreaks } from "../utils"
+import { stripCode, stripLineBreaks } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
 import getType, { getReflectionType } from "./type-utils"
+import { getTypeChildren } from "utils"
+import { MarkdownTheme } from "../theme"
 
-const MAX_LEVEL = 3
+const ALLOWED_KINDS: ReflectionKind[] = [
+  ReflectionKind.EnumMember,
+  ReflectionKind.TypeParameter,
+  ReflectionKind.Property,
+  ReflectionKind.Parameter,
+  ReflectionKind.TypeAlias,
+  ReflectionKind.TypeLiteral,
+  ReflectionKind.Variable,
+  ReflectionKind.Reference,
+]
 
 export default function reflectionFormatter(
   reflection: ReflectionParameterType,
@@ -57,7 +61,10 @@ export function reflectionListFormatter(
 
   const hasChildren = "children" in reflection && reflection.children?.length
 
-  if ((reflection.type || hasChildren) && level + 1 <= MAX_LEVEL) {
+  if (
+    (reflection.type || hasChildren) &&
+    level + 1 <= MarkdownTheme.MAX_LEVEL
+  ) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
@@ -85,7 +92,8 @@ export function reflectionComponentFormatter(
   level = 1
 ): Parameter {
   const defaultValue = getDefaultValue(reflection) || ""
-  const optional = reflection.flags.isOptional
+  const optional =
+    reflection.flags.isOptional || reflection.kind === ReflectionKind.EnumMember
   const comments = getComments(reflection)
   const componentItem: Parameter = {
     name: reflection.name,
@@ -93,24 +101,32 @@ export function reflectionComponentFormatter(
       ? getType(reflection.type, "object")
       : getReflectionType(reflection, "object"),
     description: comments
-      ? stripLineBreaks(Handlebars.helpers.comments(comments))
+      ? stripLineBreaks(Handlebars.helpers.comments(comments, true, false))
       : "",
     optional,
     defaultValue,
+    expandable: reflection.comment?.hasModifier(`@expandable`) || false,
+    featureFlag: Handlebars.helpers.featureFlag(reflection.comment),
     children: [],
   }
 
   const hasChildren = "children" in reflection && reflection.children?.length
 
-  if ((reflection.type || hasChildren) && level + 1 <= MAX_LEVEL) {
+  if (
+    (reflection.type || hasChildren) &&
+    level + 1 <= MarkdownTheme.MAX_LEVEL
+  ) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
-    children?.forEach((childItem) => {
-      componentItem.children?.push(
-        reflectionComponentFormatter(childItem, level + 1)
-      )
-    })
+
+    children
+      ?.filter((childItem) => childItem.kindOf(ALLOWED_KINDS))
+      .forEach((childItem) => {
+        componentItem.children?.push(
+          reflectionComponentFormatter(childItem, level + 1)
+        )
+      })
   }
 
   return componentItem
@@ -194,11 +210,17 @@ export function getTableHeaders(
 export function getDefaultValue(
   parameter: ReflectionParameterType
 ): string | null {
-  if (!("defaultValue" in parameter)) {
+  const defaultComment = parameter.comment?.getTag(`@defaultValue`)
+  if (!("defaultValue" in parameter) && !defaultComment) {
     return null
   }
-  return parameter.defaultValue && parameter.defaultValue !== "..."
-    ? `\`${parameter.defaultValue}\``
+
+  return "defaultValue" in parameter &&
+    parameter.defaultValue !== undefined &&
+    parameter.defaultValue !== "..."
+    ? `${parameter.defaultValue}`
+    : defaultComment
+    ? defaultComment.content.map((content) => stripCode(content.text)).join()
     : null
 }
 
@@ -244,29 +266,4 @@ function getItemExpandText(
     default:
       return "It accepts the following properties"
   }
-}
-
-export function getTypeChildren(
-  reflectionType: SomeType,
-  project: ProjectReflection
-) {
-  let children: DeclarationReflection[] = []
-
-  switch (reflectionType.type) {
-    case "reference":
-      // eslint-disable-next-line no-case-declarations
-      const referencedReflection = project.getChildByName(reflectionType.name)
-
-      if (
-        referencedReflection instanceof DeclarationReflection &&
-        referencedReflection.children
-      ) {
-        children = referencedReflection.children
-      }
-      break
-    case "array":
-      children = getTypeChildren(reflectionType.elementType, project)
-  }
-
-  return children
 }

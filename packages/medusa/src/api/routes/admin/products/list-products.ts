@@ -9,11 +9,12 @@ import {
 
 import { FilterableProductProps } from "../../../../types/product"
 import { IInventoryService } from "@medusajs/types"
+import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product } from "../../../../models"
 import { Type } from "class-transformer"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { defaultAdminProductRemoteQueryObject } from "./index"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/products
@@ -198,7 +199,7 @@ import { defaultAdminProductRemoteQueryObject } from "./index"
  *       medusa.admin.products.list()
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -275,7 +276,7 @@ export default async (req, res) => {
   )
 
   if (shouldSetPricing) {
-    products = await pricingService.setProductPrices(rawProducts)
+    products = await pricingService.setAdminProductPricing(rawProducts)
   }
 
   // We only set availability if variants are requested
@@ -377,7 +378,7 @@ async function listAndCountProductWithIsolatedProductModule(
     // TODO implement later
   }
 
-  await Promise.all(promises)
+  await promiseAll(promises)
 
   if (productIdsFilter.size > 0) {
     filterableFields.id = Array.from(productIdsFilter)
@@ -413,25 +414,45 @@ async function listAndCountProductWithIsolatedProductModule(
   return [products, count]
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved products.
+ */
 export class AdminGetProductsParams extends FilterableProductProps {
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsString()
   @IsOptional()
   fields?: string
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string

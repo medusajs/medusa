@@ -7,4 +7,4 @@ medusa.admin.returnReasons.create({
 })
 .then(({ return_reason }) => {
   console.log(return_reason.id);
-});
+})

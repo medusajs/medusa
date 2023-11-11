@@ -1,7 +1,7 @@
 import {
   AdminPublishableApiKeysListRes,
+  AdminPublishableApiKeysListSalesChannelsRes,
   AdminPublishableApiKeysRes,
-  AdminSalesChannelsListRes,
   GetPublishableApiKeySalesChannelsParams,
   GetPublishableApiKeysParams,
 } from "@medusajs/medusa"
@@ -67,7 +67,7 @@ export const useAdminPublishableApiKeySalesChannels = (
   id: string,
   query?: GetPublishableApiKeySalesChannelsParams,
   options?: UseQueryOptionsWrapper<
-    Response<AdminSalesChannelsListRes>,
+    Response<AdminPublishableApiKeysListSalesChannelsRes>,
     Error,
     ReturnType<PublishableApiKeyQueryKeys["detailSalesChannels"]>
   >

@@ -33,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

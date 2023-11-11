@@ -127,17 +127,29 @@ The line item tax line object has the following properties:
 
 - `rate`: a number indicating the tax rate.
 - `name`: a string indicating the name of the tax rate.
-- `code`: an optional string indicating the tax code.
+- `code`: a string indicating the tax code.
 - `item_id`: the ID of the line item.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the line item tax lines.
+
+:::note
+
+Tax lines for line item must have a unique `code` and `item_id` combination. Otherwise, the tax lines will be applied multiple times.
+
+:::
 
 The shipping method tax line object has the following properties:
 
 - `rate`: a number indicating the tax rate.
 - `name`: a string indicating the name of the tax rate.
-- `code`: an optional string indicating the tax code.
+- `code`: a string indicating the tax code.
 - `shipping_method_id`: the ID of the shipping method.
 - `metadata`: an optional object that can hold any necessary additional data to be added to the shipping method tax lines.
+
+:::note
+
+Tax lines for a shipping method must have a unique `code` and `shipping_method_id` combination. Otherwise, the tax lines will be applied multiple times.
+
+:::
 
 The returned array would be a combination of both the line item tax lines and shipping method tax lines.
 
@@ -205,7 +217,7 @@ Run your backend to test it out:
 npx medusa develop
 ```
 
-Before you can test out your tax provider, you must enable it in a region. You can do that either using the [Medusa Admin dashboard](../../../user-guide/taxes/manage.md#change-tax-provider) or using the [Update Region admin endpoint](../admin/manage-tax-settings.mdx#change-tax-provider-of-a-region).
+Before you can test out your tax provider, you must enable it in a region. You can do that either using the [Medusa Admin dashboard](../../../user-guide/taxes/manage.md#change-tax-provider) or using the [Update Region admin API Route](../admin/manage-tax-settings.mdx#change-tax-provider-of-a-region).
 
 Then, you can test out the tax provider by simulating a checkout process in that region. You should see the line item tax lines in the cart’s `items`, as each item object has a `tax_lines` array which are the tax lines that you return in the `getTaxLines` method for line items.
 

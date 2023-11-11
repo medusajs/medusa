@@ -18,7 +18,7 @@ import { ShippingProfileService } from "../../../../services"
  *       medusa.admin.shippingProfiles.list()
  *       .then(({ shipping_profiles }) => {
  *         console.log(shipping_profiles.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

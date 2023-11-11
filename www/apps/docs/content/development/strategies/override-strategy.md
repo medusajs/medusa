@@ -11,7 +11,7 @@ In this document, you’ll learn how to override a strategy in a Medusa backend 
 
 The Medusa core defines and uses strategies for certain functionalities, which allows developers to override these functionalities and implement them as fits for their use case.
 
-For example, the cart completion process is implemented within a `CartCompletionStrategy` that is used inside the Complete Cart endpoint. If you need to change the cart completion process, you can override the `CartCompletionStrategy` and implement your own strategy. The Medusa backend will then use your strategy instead of the one defined in the core.
+For example, the cart completion process is implemented within a `CartCompletionStrategy` that is used inside the Complete Cart API Route. If you need to change the cart completion process, you can override the `CartCompletionStrategy` and implement your own strategy. The Medusa backend will then use your strategy instead of the one defined in the core.
 
 ### Hierarchy of Strategy Resolution
 
@@ -37,7 +37,7 @@ There are other resources that provide steps specific to a strategy type:
 
 - [How to override the Cart Completion Strategy](../../modules/carts-and-checkout/backend/cart-completion-strategy.md)
 - [How to override the Tax Calculation Strategy](../../modules/taxes/backend/tax-calculation-strategy.md)
-- [How to override the Price Selection Strategy](../../modules/price-lists/backend/override-price-selection-strategy.md)
+- [How to override the Price Selection Strategy](../../modules/price-lists/backend/override-price-selection-strategy.mdx)
 - [How to override a Batch Job Strategy](../batch-jobs/customize-import.md)
 
 ---

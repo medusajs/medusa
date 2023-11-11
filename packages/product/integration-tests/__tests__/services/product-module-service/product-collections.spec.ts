@@ -69,11 +69,6 @@ describe("ProductModuleService product collections", () => {
 
     productCollectionOne = productCollections[0]
     productCollectionTwo = productCollections[1]
-
-    await testManager.persistAndFlush([
-      productCollectionOne,
-      productCollectionTwo,
-    ])
   })
 
   afterEach(async () => {
@@ -339,16 +334,17 @@ describe("ProductModuleService product collections", () => {
         relations: ["products"],
       })
 
+      expect(productCollection.products).toHaveLength(2)
       expect(productCollection).toEqual(
         expect.objectContaining({
-          products: [
+          products: expect.arrayContaining([
             expect.objectContaining({
               id: productOne.id,
             }),
             expect.objectContaining({
               id: productTwo.id,
             }),
-          ],
+          ]),
         })
       )
     })

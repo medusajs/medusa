@@ -284,11 +284,11 @@ npx medusa develop
 
 You must also use an authenticated user to send batch job requests. You can refer to the [authentication guide in the API reference](https://docs.medusajs.com/api/admin#authentication) for more details.
 
-If you follow along with the JS Client code snippets, make sure to [install and set it up first](../../js-client/overview.md).
+If you follow along with the JS Client code snippets, make sure to [install and set it up first](../../js-client/overview.mdx).
 
 ### Create Batch Job
 
-The first step is to create a batch job using the [Create Batch Job endpoint](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs). In the body of the request, you must set the `type` to the value of `batchType` in the batch job strategy you created.
+The first step is to create a batch job using the [Create Batch Job API Route](https://docs.medusajs.com/api/admin#batch-jobs_postbatchjobs). In the body of the request, you must set the `type` to the value of `batchType` in the batch job strategy you created.
 
 For example, this creates a batch job of the type `publish-products`:
 

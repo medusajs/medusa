@@ -8,7 +8,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  * @oas [post] /admin/publishable-api-keys
  * operationId: "PostPublishableApiKeys"
  * summary: "Create Publishable API Key"
- * description: "Creates a Publishable API Key."
+ * description: "Create a Publishable API Key."
  * requestBody:
  *   content:
  *     application/json:

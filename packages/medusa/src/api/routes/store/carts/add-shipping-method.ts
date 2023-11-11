@@ -1,10 +1,13 @@
 import { IsOptional, IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 
 import { FlagRouter } from "@medusajs/utils"
 import { Workflows, addShippingMethod } from "@medusajs/workflows"
 import { EntityManager } from "typeorm"
-import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
@@ -32,7 +35,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -68,6 +71,8 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
@@ -115,6 +120,11 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+
+  await productVariantInventoryService.setVariantAvailability(
+    data.items.map((i) => i.variant),
+    data.sales_channel_id!
+  )
 
   res.status(200).json({ cart: cleanResponseData(data, []) })
 }

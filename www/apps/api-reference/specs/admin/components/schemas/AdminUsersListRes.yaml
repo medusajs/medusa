@@ -1,4 +1,5 @@
 type: object
+description: The list of users.
 required:
   - users
 properties:

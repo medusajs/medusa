@@ -53,9 +53,7 @@ export type ConfigModule = {
   featureFlags: Record<string, boolean | string>
   modules?: Record<
     string,
-    | false
-    | string
-    | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
+    boolean | Partial<InternalModuleDeclaration | ExternalModuleDeclaration>
   >
   plugins: (
     | {

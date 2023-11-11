@@ -1,0 +1,195 @@
+---
+displayed_sidebar: productReference
+badge:
+  variant: orange
+  text: Beta
+slug: /references/product/updateOptions
+sidebar_label: updateOptions
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# updateOptions - Product Module Reference
+
+This documentation provides a reference to the updateOptions method. This belongs to the Product Module.
+
+This method is used to update existing product options.
+
+## Example
+
+```ts
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+async function updateProductOption (id: string, title: string) {
+  const productModule = await initializeProductModule()
+
+  const productOptions = await productModule.updateOptions([
+    {
+      id,
+      title
+    }
+  ])
+
+  // do something with the product options or return them
+}
+```
+
+## Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`UpdateProductOptionDTO`](../../interfaces/UpdateProductOptionDTO.mdx)[]",
+    "description": "The product options to be updated, each holding the attributes that should be updated in the product option.",
+    "optional": false,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "product_id",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
+    "optional": true,
+    "defaultValue": "",
+    "children": [
+      {
+        "name": "enableNestedTransactions",
+        "type": "`boolean`",
+        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "isolationLevel",
+        "type": "`string`",
+        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "manager",
+        "type": "`TManager`",
+        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionId",
+        "type": "`string`",
+        "description": "a string indicating the ID of the current transaction.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      },
+      {
+        "name": "transactionManager",
+        "type": "`TManager`",
+        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
+        "optional": true,
+        "defaultValue": "",
+        "children": []
+      }
+    ]
+  }
+]} />
+
+## Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "The list of updated product options.",
+    "children": [
+      {
+        "name": "ProductOptionDTO[]",
+        "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "children": [
+          {
+            "name": "deleted_at",
+            "type": "`string` \\| `Date`",
+            "description": "When the product option was deleted.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the product option.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "metadata",
+            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "description": "Holds custom data in key-value pairs.",
+            "optional": true,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "product",
+            "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)",
+            "description": "The associated product. It may only be available if the `product` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The title of the product option.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          },
+          {
+            "name": "values",
+            "type": "[`ProductOptionValueDTO`](../../interfaces/ProductOptionValueDTO.mdx)[]",
+            "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
+            "optional": false,
+            "defaultValue": "",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

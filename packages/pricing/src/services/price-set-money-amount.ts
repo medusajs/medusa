@@ -1,12 +1,11 @@
 import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
 import {
+  doNotForceTransaction,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  doNotForceTransaction,
   retrieveEntity,
-  shouldForceTransaction,
 } from "@medusajs/utils"
 import { PriceSet, PriceSetMoneyAmount } from "@models"
 import { PriceSetMoneyAmountRepository } from "@repositories"
@@ -79,36 +78,29 @@ export default class PriceSetMoneyAmountService<
     return queryOptions
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "priceSetMoneyAmountRepository_"
-  )
+  @InjectTransactionManager("priceSetMoneyAmountRepository_")
   async create(
     data: PricingTypes.CreatePriceSetMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (
-      this.priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
+      this
+        .priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
     ).create(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(
-    shouldForceTransaction,
-    "priceSetMoneyAmountRepository_"
-  )
+  @InjectTransactionManager("priceSetMoneyAmountRepository_")
   async update(
     data: PricingTypes.UpdatePriceSetMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (
-      this.priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
+      this
+        .priceSetMoneyAmountRepository_ as unknown as PriceSetMoneyAmountRepository
     ).update(data, sharedContext)) as TEntity[]
   }
 
-  @InjectTransactionManager(
-    doNotForceTransaction,
-    "priceSetMoneyAmountRepository_"
-  )
+  @InjectTransactionManager("priceSetMoneyAmountRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}

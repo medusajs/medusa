@@ -1,7 +1,7 @@
 post:
   operationId: PostOrderEditsOrderEditCancel
   summary: Cancel an Order Edit
-  description: Cancel an OrderEdit.
+  description: Cancel an Order Edit.
   x-authenticated: true
   parameters:
     - in: path
