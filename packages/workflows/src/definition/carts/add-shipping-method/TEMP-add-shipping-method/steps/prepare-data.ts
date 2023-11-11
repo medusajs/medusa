@@ -1,25 +1,28 @@
 import { CartDTO, ShippingOptionDTO, WorkflowTypes } from "@medusajs/types"
-import { WorkflowDataPreparationArguments } from "../../../helper"
+import { WorkflowDataPreparationArguments } from "../../../../../helper"
+import { createStep } from "../../../../../utils/composer"
 
-type HandlerInput =
-  WorkflowTypes.CartWorkflow.AddShippingMethodToCartWorkflowDTO
+type InvokeInput = WorkflowTypes.CartWorkflow.AddShippingMethodToCartWorkflowDTO
 
-type HandlerOutput = {
-  shippingMethodConfig: {
-    cart_id?: string
-    cart?: CartDTO
-    price?: number
-  }
+// TODO: move to @medusajs/types
+type MethodConfig = {
+  cart_id?: string
+  cart?: CartDTO
+  price?: number
+}
+
+type InvokeOutput = {
+  shippingMethodConfig: MethodConfig
   cart: CartDTO
   shippingOption: ShippingOptionDTO
   shippingMethodData: Record<string, unknown>
 }
 
-export async function prepareAddShippingMethodToCartWorkflowData({
+async function prepareAddShippingMethodToCartWorkflowData({
   container,
   context,
   data,
-}: WorkflowDataPreparationArguments<HandlerInput>): Promise<HandlerOutput> {
+}: WorkflowDataPreparationArguments<InvokeInput>): Promise<InvokeOutput> {
   const { manager } = context
 
   const data_ = data
@@ -73,9 +76,7 @@ export async function prepareAddShippingMethodToCartWorkflowData({
   }
 }
 
-prepareAddShippingMethodToCartWorkflowData.aliases = {
-  shippingMethodConfig: "shippingMethodConfig",
-  cart: "cart",
-  shippingOption: "shippingOption",
-  shippingMethodData: "shippingMethodData",
-}
+export const prepareAddShippingMethodData = createStep(
+  "prepareAddShippingMethodToCartData",
+  prepareAddShippingMethodToCartWorkflowData
+)

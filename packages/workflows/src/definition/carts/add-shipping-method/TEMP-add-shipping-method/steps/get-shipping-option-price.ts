@@ -1,21 +1,22 @@
 import { ShippingOptionDTO } from "@medusajs/types"
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../../../../helper"
+import { createStep } from "../../../../../utils/composer"
 
-type HandlerInput = {
+type InvokeInput = {
   shippingOption: ShippingOptionDTO
   shippingMethodData: Record<string, unknown>
   shippingMethodConfig: Record<string, unknown>
 }
 
-type HandlerOutput = {
-  shippingOptionPrice: number
+type InvokeOutput = {
+  price: number
 }
 
-export async function getShippingOptionPrice({
+async function invoke({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
+}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
   const { manager } = context
 
   const { shippingOption, shippingMethodConfig, shippingMethodData } = data
@@ -30,11 +31,10 @@ export async function getShippingOptionPrice({
     shippingMethodConfig
   )
 
-  return { shippingOptionPrice: methodPrice }
+  return { price: methodPrice }
 }
 
-getShippingOptionPrice.aliases = {
-  shippingMethodData: "shippingMethodData",
-  shippingMethodConfig: "shippingMethodConfig",
-  shippingOption: "shippingOption",
-}
+export const getShippingOptionPriceStep = createStep(
+  "getShippingOptionPrice",
+  invoke
+)

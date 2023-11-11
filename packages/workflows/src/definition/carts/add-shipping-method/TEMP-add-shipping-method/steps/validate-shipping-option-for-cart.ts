@@ -1,22 +1,23 @@
 import { CartDTO, ShippingOptionDTO } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../../../../helper"
+import { createStep } from "../../../../../utils/composer"
 
-type HandlerInput = {
+type InvokeInput = {
   shippingOption: ShippingOptionDTO
   shippingMethodData: Record<string, unknown>
   cart: CartDTO
 }
 
-type HandlerOutput = {
+type InvokeOutput = {
   validatedData: Record<string, unknown>
 }
 
-export async function validateShippingOptionForCart({
+async function invoke({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
+}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
   const { manager } = context
 
   const fulfillmentProvider = container.resolve("fulfillmentProviderService")
@@ -43,8 +44,7 @@ export async function validateShippingOptionForCart({
   }
 }
 
-validateShippingOptionForCart.aliases = {
-  shippingOption: "shippingOption",
-  shippingMethodData: "shippingMethodData",
-  cart: "cart",
-}
+export const validateShippingOptionDataStep = createStep(
+  "validateShippingOptionData",
+  invoke
+)

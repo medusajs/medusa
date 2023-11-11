@@ -1,335 +1,68 @@
+import { createWorkflow, transform } from "../../../utils/composer"
+import * as steps from "./TEMP-add-shipping-method/steps"
 import {
-  TransactionStepsDefinition,
-  WorkflowManager,
-} from "@medusajs/orchestration"
-import { CartDTO, WorkflowTypes } from "@medusajs/types"
-import {
-  defaultStoreCartFields,
-  defaultStoreCartRelations,
-} from "@medusajs/utils"
-import {
-  CartHandlers,
-  ShippingMethodHandlers,
-  ShippingOptionHandlers,
-} from "../../../handlers"
-import { exportWorkflow, pipe } from "../../../helper"
-import { Workflows } from "../../../definitions"
-import { prepareAddShippingMethodToCartWorkflowData } from "./prepare-add-shipping-method-to-cart-data"
-import { prepareDeleteShippingMethodsData } from "./prepare-delete-shipping-methods-data"
-import { setRetrieveConfig } from "./set-retrieve-config"
-import { compensateUpsertPaymentSessions } from "./compensate-upsert-payment-sessions"
+  createMethodsDataTransformer,
+  originalAndNewCartTransformer,
+  prepareDeleteMethodsDataTransformer,
+} from "./TEMP-add-shipping-method/transformers"
 
-export enum AddShippingMethodWorkflowActions {
-  prepare = "prepare",
-  validateFulfillmentData = "validateFulfillmentData",
-  validateLineItemShipping = "validateLineItemShipping",
-  getOptionPrice = "getOptionPrice",
-  createShippingMethods = "createShippingMethods",
-  cleanUpShippingMethods = "cleanUpShippingMethods",
-  adjustFreeShipping = "adjustFreeShipping",
-  upsertPaymentSessions = "upsertPaymentSessions",
-  result = "result",
-}
+export const addShippingMethodToCartWorkflow = createWorkflow(
+  "AddShippingMethod",
+  async function (input) {
+    /** Preparation */
+    const preparedData = steps.prepareAddShippingMethodData(input)
 
-export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
-  next: [
-    {
-      action: AddShippingMethodWorkflowActions.validateFulfillmentData,
-      noCompensation: true,
-    },
-    {
-      action: AddShippingMethodWorkflowActions.getOptionPrice,
-      noCompensation: true,
-      next: {
-        action: AddShippingMethodWorkflowActions.createShippingMethods,
-        next: {
-          action: AddShippingMethodWorkflowActions.validateLineItemShipping,
-          noCompensation: true,
-          saveResponse: false,
-          next: {
-            action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
-            next: {
-              action: AddShippingMethodWorkflowActions.adjustFreeShipping,
-              saveResponse: false,
-              next: {
-                action: AddShippingMethodWorkflowActions.upsertPaymentSessions,
-                saveResponse: false,
-                next: {
-                  action: AddShippingMethodWorkflowActions.result,
-                  noCompensation: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  ],
-}
+    /** Validate ShippingOption for Cart */
+    const validatedData = steps.validateShippingOptionDataStep(preparedData)
 
-const handlers = new Map([
-  [
-    AddShippingMethodWorkflowActions.validateFulfillmentData,
-    {
-      invoke: pipe(
-        {
-          inputAlias: AddShippingMethodWorkflowActions.prepare,
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-          },
-          merge: true,
-        },
-        CartHandlers.validateShippingOptionForCart
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.getOptionPrice,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.prepare,
-            },
-            {
-              from: AddShippingMethodWorkflowActions.validateFulfillmentData,
-              alias: "shippingMethodData",
-            },
-          ],
-          merge: true,
-        },
-        ShippingOptionHandlers.getShippingOptionPrice
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.createShippingMethods,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.prepare,
-            },
-            {
-              from: AddShippingMethodWorkflowActions.validateFulfillmentData,
-            },
-            {
-              from: AddShippingMethodWorkflowActions.getOptionPrice,
-            },
-          ],
-          merge: true,
-        },
-        ShippingMethodHandlers.createShippingMethods
-      ),
-      compensate: pipe(
-        {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.createShippingMethods,
-              alias: "shippingMethodsToDelete",
-            },
-          ],
-          merge: true,
-        },
-        async function ({ data }) {
-          return {
-            alias: "shippingMethodsToDelete",
-            value: {
-              shippingMethodsToDelete: data.shippingMethodsToDelete,
-              softDelete: false,
-            },
-          }
-        },
-        ShippingMethodHandlers.deleteShippingMethods
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.validateLineItemShipping,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-            alias: "input",
-          },
-          merge: true,
-        },
-        async function ({ data }) {
-          return {
-            alias: "cart",
-            value: data.input.cart,
-          }
-        },
-        setRetrieveConfig({
-          relations: ["items", "items.variant", "items.variant.product"],
-        }),
-        CartHandlers.retrieveCart,
-        CartHandlers.ensureCorrectLineItemShipping
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.cleanUpShippingMethods,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.prepare,
-              alias: "input",
-            },
-            {
-              from: AddShippingMethodWorkflowActions.createShippingMethods,
-              alias: "shippingMethods",
-            },
-          ],
-          merge: true,
-        },
-        async function ({ data }) {
-          return {
-            alias: "cart",
-            value: data.input.cart,
-          }
-        },
-        prepareDeleteShippingMethodsData,
-        ShippingMethodHandlers.deleteShippingMethods
-      ),
-      compensate: pipe(
-        {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.prepare,
-            },
-            {
-              from: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
-              alias: "deletedShippingMethods",
-            },
-          ],
-          merge: true,
-        },
-        ShippingMethodHandlers.restoreShippingMethods
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.adjustFreeShipping,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-            alias: "input",
-          },
-          merge: true,
-        },
-        setRetrieveConfig({
-          relations: [
-            "discounts",
-            "discounts.rule",
-            "shipping_methods.shipping_option",
-          ],
-        }),
-        async function ({ data }) {
-          return {
-            alias: "cart",
-            value: data.input.cart,
-          }
-        },
-        CartHandlers.retrieveCart,
-        CartHandlers.adjustFreeShippingOnCart
-      ),
-      compensate: pipe(
-        {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.prepare,
-            },
-          ],
-          merge: true,
-        },
-        CartHandlers.adjustFreeShippingOnCart
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.upsertPaymentSessions,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: AddShippingMethodWorkflowActions.prepare,
-            },
-            {
-              from: AddShippingMethodWorkflowActions.createShippingMethods,
-              alias: "shippingMethods",
-            },
-          ],
-          merge: true,
-        },
-        async function ({ data }) {
-          return {
-            alias: "cart",
-            value: {
-              ...data.cart,
-              shipping_methods: data.shippingMethods,
-            },
-          }
-        },
-        CartHandlers.upsertPaymentSessions
-      ),
-      compensate: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-            alias: "input",
-          },
-          merge: true,
-        },
-        async function ({ data }) {
-          return {
-            alias: "cart",
-            value: data.input.cart,
-          }
-        },
-        compensateUpsertPaymentSessions
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.result,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-          },
-          merge: true,
-        },
-        setRetrieveConfig({
-          relations: defaultStoreCartRelations,
-          select: defaultStoreCartFields,
-        }),
-        CartHandlers.retrieveCart
-      ),
-    },
-  ],
-])
+    /** Get ShippingOptionPrice */
+    const price = steps.getShippingOptionPriceStep(preparedData, validatedData)
 
-WorkflowManager.register(
-  Workflows.AddShippingMethod,
-  addShippingMethodWorkflowSteps,
-  handlers
-)
+    /** Prepare data for creating ShippingMethods */
+    const createMethodsData = transform(
+      [preparedData, validatedData, price],
+      createMethodsDataTransformer
+    )
 
-export const addShippingMethod = exportWorkflow<
-  WorkflowTypes.CartWorkflow.AddShippingMethodToCartWorkflowDTO,
-  CartDTO
->(
-  Workflows.AddShippingMethod,
-  AddShippingMethodWorkflowActions.result,
-  prepareAddShippingMethodToCartWorkflowData
+    /** Create ShippingMethods */
+    const shippingMethods = await steps.createShippingMethodsStep(
+      createMethodsData
+    )
+
+    /** Validate LineItem shipping */
+    await steps.validateLineItemShippingStep(preparedData)
+
+    /** Prepare data for deleting old unused ShippingMethods */
+    const shippingMethodsToDelete = transform(
+      [preparedData, shippingMethods],
+      prepareDeleteMethodsDataTransformer
+    )
+
+    /** Delete ShippingMethods */
+    await steps.deleteShippingMethodsStep(shippingMethodsToDelete)
+
+    /** Retrieve updated Cart */
+    let cart = await steps.retrieveCartStep(preparedData)
+
+    /** Prepare data with new and original Cart */
+    const adjustFreeShippingData = transform(
+      [preparedData, cart],
+      originalAndNewCartTransformer
+    )
+
+    /** Adjust shipping on Cart */
+    await steps.adjustFreeShippingStep(adjustFreeShippingData)
+
+    /** Retrieve updated Cart */
+    cart = await steps.retrieveCartStep(preparedData)
+
+    /** Prepare data with new and original Cart */
+    const upsertPaymentSessionsData = transform(
+      [preparedData, cart],
+      originalAndNewCartTransformer
+    )
+
+    /** Upsert PaymentSessions */
+    await steps.upsertPaymentSessionsStep(upsertPaymentSessionsData)
+  }
 )

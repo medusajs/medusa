@@ -1,8 +1,6 @@
-export * from "./adjust-free-shipping"
 export * from "./attach-line-items-to-cart"
 export * from "./create-cart"
 export * from "./remove-cart"
 export * from "./retrieve-cart"
-export * from "./update-line-item-shipping"
 export * from "./upsert-payment-sessions"
-export * from "./validate-shipping-option-for-cart"
+

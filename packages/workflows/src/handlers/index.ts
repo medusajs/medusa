@@ -7,5 +7,4 @@ export * as MiddlewaresHandlers from "./middlewares"
 export * as ProductHandlers from "./product"
 export * as RegionHandlers from "./region"
 export * as SalesChannelHandlers from "./sales-channel"
-export * as ShippingMethodHandlers from "./shipping-methods"
-export * as ShippingOptionHandlers from "./shipping-options"
+

@@ -1,8 +1,8 @@
-import { Workflows } from "../../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
+import { Workflows } from "../../definitions"
 import { exportWorkflow, pipe } from "../../helper"
 
 import { InventoryTypes, WorkflowTypes } from "@medusajs/types"
@@ -59,6 +59,5 @@ export const createInventoryItems = exportWorkflow<
   { tag: string; inventoryItem: InventoryTypes.InventoryItemDTO }[]
 >(
   Workflows.CreateInventoryItems,
-  CreateInventoryItemActions.createInventoryItems,
-  async ({ data }) => data
+  CreateInventoryItemActions.createInventoryItems
 )
