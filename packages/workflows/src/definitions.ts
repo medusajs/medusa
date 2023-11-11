@@ -28,15 +28,4 @@ export enum InputAlias {
   DetachedInventoryItems = "detachedInventoryItems",
 
   InventoryItemsInputData = "inventoryItemsInputData",
-
-  Cart = "cart",
-
-  AddShippingMethodInputData = "addShippingMethodInputData",
-
-  LineItems = "lineItems",
-  ShippingOptionToValidate = "shippingOptionToValidate",
-  ValidatedShippingOptionData = "validatedShippingOptionData",
-  ShippingOptionPrice = "shippingOptionPrice",
-  CreatedShippingMethods = "CreatedShippingMethods",
-  PreparedAddShippingMethodToCartData = "preparedAddShippingMethodToCartData",
 }
