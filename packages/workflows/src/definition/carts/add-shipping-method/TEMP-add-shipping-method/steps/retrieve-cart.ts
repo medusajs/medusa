@@ -1,7 +1,6 @@
 import { CartDTO, FindConfig } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
 import { Cart } from "../../../../../../../medusa/dist"
-import { WorkflowArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
@@ -9,12 +8,8 @@ type InvokeInput = {
   config: FindConfig<Cart>
 }
 
-async function invoke({
-  container,
-  context,
-  data,
-}: WorkflowArguments<InvokeInput>) {
-  const { manager } = context
+async function invoke(input, data) {
+  const { manager, container } = input
 
   const cartService = container.resolve("cartService")
   const cartServiceTx = cartService.withTransaction(manager)

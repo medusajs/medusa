@@ -19,12 +19,8 @@ type CompensateInput = {
 
 type CompensateOutput = void
 
-async function invoke({
-  container,
-  context,
-  data,
-}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
-  const { manager } = context
+async function invoke(input, data): Promise<InvokeOutput> {
+  const { manager, container } = input
   const { shippingMethodsToDelete } = data
 
   const shippingOptionServiceTx = container

@@ -1,5 +1,4 @@
 import { CartDTO } from "@medusajs/types"
-import { WorkflowArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
@@ -17,12 +16,8 @@ type CompensateInput = {
 
 type CompensateOutput = void
 
-async function invoke({
-  container,
-  context,
-  data,
-}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
-  const { manager } = context
+async function invoke(input, data): Promise<InvokeOutput> {
+  const { manager, container } = input
 
   const { cart, originalCart } = data
 
@@ -37,12 +32,11 @@ async function invoke({
   return { compensationData: { cart: originalCart } }
 }
 
-async function compensate({
-  container,
-  context,
-  data, // compensationData
-}: WorkflowArguments<CompensateInput>): Promise<CompensateOutput> {
-  const { manager } = context
+async function compensate(
+  input,
+  data // compensationData
+): Promise<CompensateOutput> {
+  const { manager, container } = input
 
   const cartService = container.resolve("cartService").withTransaction(manager)
 
@@ -60,7 +54,7 @@ async function compensate({
 }
 
 export const upsertPaymentSessionsStep = createStep(
-  "deleteShippingMethodsStep",
+  "upsertPaymentSessionsStep",
   invoke,
   compensate
 )

@@ -1,5 +1,4 @@
 import { ShippingOptionDTO } from "@medusajs/types"
-import { WorkflowArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
@@ -12,12 +11,8 @@ type InvokeOutput = {
   price: number
 }
 
-async function invoke({
-  container,
-  context,
-  data,
-}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
-  const { manager } = context
+async function invoke(input, data): Promise<InvokeOutput> {
+  const { manager, container } = input
 
   const { shippingOption, shippingMethodConfig, shippingMethodData } = data
 

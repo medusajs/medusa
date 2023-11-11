@@ -15,7 +15,7 @@ export const createMethodsDataTransformer = (
     option: preparedData.shippingOption,
     data: validatedData,
     config: preparedData.shippingMethodConfig,
-    price,
+    price: price.price,
   }
 }
 
@@ -34,7 +34,7 @@ export const prepareDeleteMethodsDataTransformer = (
 
   for (const method of cart.shipping_methods) {
     if (
-      shippingMethods.some(
+      shippingMethods.shippingMethods.some(
         (m) =>
           m.shipping_option.profile_id === method.shipping_option.profile_id
       )

@@ -1,6 +1,5 @@
 import { CartDTO, ShippingOptionDTO } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
-import { WorkflowArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
@@ -13,12 +12,8 @@ type InvokeOutput = {
   validatedData: Record<string, unknown>
 }
 
-async function invoke({
-  container,
-  context,
-  data,
-}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
-  const { manager } = context
+async function invoke(input, data): Promise<InvokeOutput> {
+  const { manager, container } = input
 
   const fulfillmentProvider = container.resolve("fulfillmentProviderService")
 

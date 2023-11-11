@@ -25,12 +25,12 @@ async function adjustFreeShipping_({ context, cart, container }) {
   await cartService.adjustFreeShipping(cart, true)
 }
 
-async function invoke({
-  container,
-  context,
-  data,
-}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
-  await adjustFreeShipping_({ context, cart: data.cart, container })
+async function invoke(input, data): Promise<InvokeOutput> {
+  await adjustFreeShipping_({
+    context: input.context,
+    cart: data.cart,
+    container: input.container,
+  })
 
   // return original cart for compensation
   return { compensationData: { cart: data.originalCart } }
@@ -45,7 +45,7 @@ async function compensate({
 }
 
 export const adjustFreeShippingStep = createStep(
-  "deleteShippingMethodsStep",
+  "adjustFreeShippingStep",
   invoke,
   compensate
 )

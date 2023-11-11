@@ -1,5 +1,4 @@
 import { CartDTO, ShippingMethodDTO } from "@medusajs/types"
-import { WorkflowArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
@@ -28,12 +27,8 @@ function validateLineItemShipping_(
   return false
 }
 
-async function invoke({
-  container,
-  context,
-  data,
-}: WorkflowArguments<InvokeInput>): Promise<InvokeOutput> {
-  const { manager } = context
+async function invoke(input, data): Promise<InvokeOutput> {
+  const { manager, container } = input
 
   const { cart } = data
 
@@ -67,6 +62,6 @@ async function invoke({
 }
 
 export const validateLineItemShippingStep = createStep(
-  "createShippingMethods",
+  "validateLineItemShipping",
   invoke
 )

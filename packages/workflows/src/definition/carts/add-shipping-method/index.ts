@@ -8,7 +8,7 @@ import {
 
 export const addShippingMethodToCartWorkflow = createWorkflow(
   "AddShippingMethod",
-  async function (input) {
+  function (input) {
     /** Preparation */
     const preparedData = steps.prepareAddShippingMethodData(input)
 
@@ -25,12 +25,10 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
     )
 
     /** Create ShippingMethods */
-    const shippingMethods = await steps.createShippingMethodsStep(
-      createMethodsData
-    )
+    const shippingMethods = steps.createShippingMethodsStep(createMethodsData)
 
     /** Validate LineItem shipping */
-    await steps.validateLineItemShippingStep(preparedData)
+    steps.validateLineItemShippingStep(preparedData)
 
     /** Prepare data for deleting old unused ShippingMethods */
     const shippingMethodsToDelete = transform(
@@ -39,10 +37,10 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
     )
 
     /** Delete ShippingMethods */
-    await steps.deleteShippingMethodsStep(shippingMethodsToDelete)
+    steps.deleteShippingMethodsStep(shippingMethodsToDelete)
 
     /** Retrieve updated Cart */
-    let cart = await steps.retrieveCartStep(preparedData)
+    const cart = steps.retrieveCartStep(preparedData)
 
     /** Prepare data with new and original Cart */
     const adjustFreeShippingData = transform(
@@ -51,10 +49,10 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
     )
 
     /** Adjust shipping on Cart */
-    await steps.adjustFreeShippingStep(adjustFreeShippingData)
+    steps.adjustFreeShippingStep(adjustFreeShippingData)
 
     /** Retrieve updated Cart */
-    cart = await steps.retrieveCartStep(preparedData)
+    // cart = steps.retrieveCartStep(preparedData)
 
     /** Prepare data with new and original Cart */
     const upsertPaymentSessionsData = transform(
@@ -63,6 +61,8 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
     )
 
     /** Upsert PaymentSessions */
-    await steps.upsertPaymentSessionsStep(upsertPaymentSessionsData)
+    steps.upsertPaymentSessionsStep(upsertPaymentSessionsData)
+
+    return cart
   }
 )

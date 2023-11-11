@@ -1,5 +1,4 @@
 import { CartDTO, ShippingOptionDTO, WorkflowTypes } from "@medusajs/types"
-import { WorkflowDataPreparationArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = WorkflowTypes.CartWorkflow.AddShippingMethodToCartWorkflowDTO
@@ -18,12 +17,11 @@ type InvokeOutput = {
   shippingMethodData: Record<string, unknown>
 }
 
-async function prepareAddShippingMethodToCartWorkflowData({
-  container,
-  context,
-  data,
-}: WorkflowDataPreparationArguments<InvokeInput>): Promise<InvokeOutput> {
-  const { manager } = context
+async function prepareAddShippingMethodToCartWorkflowData(
+  input,
+  data
+): Promise<InvokeOutput> {
+  const { manager, container } = input
 
   const data_ = data
 
