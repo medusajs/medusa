@@ -1,5 +1,4 @@
 import { ShippingMethodDTO, ShippingOptionDTO } from "@medusajs/types"
-import { WorkflowArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
@@ -34,11 +33,8 @@ async function invoke(input, data): Promise<InvokeOutput> {
   return { shippingMethods, compensationData: { shippingMethods } }
 }
 
-async function compensate({
-  container,
-  context,
-  data,
-}: WorkflowArguments<CompensateInput>): Promise<CompensateOutput> {
+async function compensate(input, data): Promise<CompensateOutput> {
+  const { container, context } = input
   const { manager } = context
   const { shippingMethods } = data
 

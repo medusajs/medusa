@@ -1,5 +1,4 @@
 import { CartDTO } from "@medusajs/types"
-import { WorkflowArguments } from "../../../../../helper"
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
@@ -12,7 +11,7 @@ type InvokeOutput = {
 }
 
 type CompensateInput = {
-  cart: CartDTO
+  compensationData: { cart: CartDTO }
 }
 
 type CompensateOutput = void
@@ -36,12 +35,16 @@ async function invoke(input, data): Promise<InvokeOutput> {
   return { compensationData: { cart: data.originalCart } }
 }
 
-async function compensate({
-  container,
-  context,
-  data, // compensationData
-}: WorkflowArguments<CompensateInput>): Promise<CompensateOutput> {
-  await adjustFreeShipping_({ context, cart: data.cart, container })
+async function compensate(
+  input,
+  data // compensationData
+): Promise<CompensateOutput> {
+  console.log(">>>> seems to be undefined", data)
+  // await adjustFreeShipping_({
+  //   context,
+  //   cart: data.compensationData.cart,
+  //   container,
+  // })
 }
 
 export const adjustFreeShippingStep = createStep(

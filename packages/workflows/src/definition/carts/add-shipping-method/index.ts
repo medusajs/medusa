@@ -52,6 +52,7 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
     steps.adjustFreeShippingStep(adjustFreeShippingData)
 
     /** Retrieve updated Cart */
+    // TODO: Add when we allow duplicate steps in a workflow
     // cart = steps.retrieveCartStep(preparedData)
 
     /** Prepare data with new and original Cart */

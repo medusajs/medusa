@@ -36,9 +36,11 @@ async function compensate(
   input,
   data // compensationData
 ): Promise<CompensateOutput> {
-  const { manager, container } = input
+  const { context, container } = input
 
-  const cartService = container.resolve("cartService").withTransaction(manager)
+  const cartService = container
+    .resolve("cartService")
+    .withTransaction(context.manager)
 
   const { cart } = data // original cart data
 
