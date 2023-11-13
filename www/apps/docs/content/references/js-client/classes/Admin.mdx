@@ -1,0 +1,358 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/Admin
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Admin
+
+This class includes properties used to send requests to the [Admin API Routes](https://docs.medusajs.com/api/admin). All its properties
+are available in the JS Client under the `medusa.admin` property.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "auth",
+    "type": "[`AdminAuthResource`](AdminAuthResource.mdx)",
+    "description": "An instance of [AdminAuthResource](AdminAuthResource.mdx) used to send requests to [Admin Auth API Routes](https://docs.medusajs.com/api/admin#auth).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "batchJobs",
+    "type": "[`AdminBatchJobsResource`](AdminBatchJobsResource.mdx)",
+    "description": "An instance of [AdminBatchJobsResource](AdminBatchJobsResource.mdx) used to send requests to [Admin Batch Job API Routes](https://docs.medusajs.com/api/admin#batch-jobs).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "collections",
+    "type": "[`AdminCollectionsResource`](AdminCollectionsResource.mdx)",
+    "description": "An instance of [AdminCollectionsResource](AdminCollectionsResource.mdx) used to send requests to [Admin Product Collection API Routes](https://docs.medusajs.com/api/admin#product-collections).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "currencies",
+    "type": "[`AdminCurrenciesResource`](AdminCurrenciesResource.mdx)",
+    "description": "An instance of [AdminCurrenciesResource](AdminCurrenciesResource.mdx) used to send requests to [Admin Currency API Routes](https://docs.medusajs.com/api/admin#currencies_getcurrencies).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "custom",
+    "type": "[`AdminCustomResource`](AdminCustomResource.mdx)",
+    "description": "An instance of [AdminCustomResource](AdminCustomResource.mdx) used to send requests to custom API Routes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerGroups",
+    "type": "[`AdminCustomerGroupsResource`](AdminCustomerGroupsResource.mdx)",
+    "description": "An instance of [AdminCustomerGroupsResource](AdminCustomerGroupsResource.mdx) used to send requests to [Admin Customer Group API Routes](https://docs.medusajs.com/api/admin#customer-groups).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customers",
+    "type": "[`AdminCustomersResource`](AdminCustomersResource.mdx)",
+    "description": "An instance of [AdminCustomersResource](AdminCustomersResource.mdx) used to send requests to [Admin Customer API Routes](https://docs.medusajs.com/api/admin#customers).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discounts",
+    "type": "[`AdminDiscountsResource`](AdminDiscountsResource.mdx)",
+    "description": "An instance of [AdminDiscountsResource](AdminDiscountsResource.mdx) used to send requests to [Admin Discount API Routes](https://docs.medusajs.com/api/admin#discounts).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "draftOrders",
+    "type": "[`AdminDraftOrdersResource`](AdminDraftOrdersResource.mdx)",
+    "description": "An instance of [AdminDraftOrdersResource](AdminDraftOrdersResource.mdx) used to send requests to [Admin Draft Order API Routes](https://docs.medusajs.com/api/admin#draft-orders).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "giftCards",
+    "type": "[`AdminGiftCardsResource`](AdminGiftCardsResource.mdx)",
+    "description": "An instance of [AdminGiftCardsResource](AdminGiftCardsResource.mdx) used to send requests to [Admin Gift Card API Routes](https://docs.medusajs.com/api/admin#gift-cards).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventoryItems",
+    "type": "[`AdminInventoryItemsResource`](AdminInventoryItemsResource.mdx)",
+    "description": "An instance of [AdminInventoryItemsResource](AdminInventoryItemsResource.mdx) used to send requests to [Admin Inventory Item API Routes](https://docs.medusajs.com/api/admin#inventory-items).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "invites",
+    "type": "[`AdminInvitesResource`](AdminInvitesResource.mdx)",
+    "description": "An instance of [AdminInvitesResource](AdminInvitesResource.mdx) used to send requests to [Admin Invite API Routes](https://docs.medusajs.com/api/admin#invites).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "notes",
+    "type": "[`AdminNotesResource`](AdminNotesResource.mdx)",
+    "description": "An instance of [AdminNotesResource](AdminNotesResource.mdx) used to send requests to [Admin Note API Routes](https://docs.medusajs.com/api/admin#notes).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "notifications",
+    "type": "[`AdminNotificationsResource`](AdminNotificationsResource.mdx)",
+    "description": "An instance of [AdminNotificationsResource](AdminNotificationsResource.mdx) used to send requests to [Admin Notification API Routes](https://docs.medusajs.com/api/admin#notifications).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "orderEdits",
+    "type": "[`AdminOrderEditsResource`](AdminOrderEditsResource.mdx)",
+    "description": "An instance of [AdminOrderEditsResource](AdminOrderEditsResource.mdx) used to send requests to [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "orders",
+    "type": "[`AdminOrdersResource`](AdminOrdersResource.mdx)",
+    "description": "An instance of [AdminOrdersResource](AdminOrdersResource.mdx) used to send requests to [Admin Order API Routes](https://docs.medusajs.com/api/admin#orders).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "paymentCollections",
+    "type": "[`AdminPaymentCollectionsResource`](AdminPaymentCollectionsResource.mdx)",
+    "description": "An instance of [AdminPaymentCollectionsResource](AdminPaymentCollectionsResource.mdx) used to send requests to [Admin Payment Collection API Routes](https://docs.medusajs.com/api/admin#payment-collections).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payments",
+    "type": "[`AdminPaymentsResource`](AdminPaymentsResource.mdx)",
+    "description": "An instance of [AdminPaymentsResource](AdminPaymentsResource.mdx) used to send requests to [Admin Payment API Routes](https://docs.medusajs.com/api/admin#payments).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceLists",
+    "type": "[`AdminPriceListResource`](AdminPriceListResource.mdx)",
+    "description": "An instance of [AdminPriceListResource](AdminPriceListResource.mdx) used to send requests to [Admin Price List API Routes](https://docs.medusajs.com/api/admin#price-lists).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productCategories",
+    "type": "[`AdminProductCategoriesResource`](AdminProductCategoriesResource.mdx)",
+    "description": "An instance of [AdminProductCategoriesResource](AdminProductCategoriesResource.mdx) used to send requests to [Admin Product Category API Routes](https://docs.medusajs.com/api/admin#product-categories).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productTags",
+    "type": "[`AdminProductTagsResource`](AdminProductTagsResource.mdx)",
+    "description": "An instance of [AdminProductTagsResource](AdminProductTagsResource.mdx) used to send requests to [Admin Product Tag API Routes](https://docs.medusajs.com/api/admin#product-tags).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productTypes",
+    "type": "[`AdminProductTypesResource`](AdminProductTypesResource.mdx)",
+    "description": "An instance of [AdminProductTypesResource](AdminProductTypesResource.mdx) used to send requests to [Admin Product Type API Routes](https://docs.medusajs.com/api/admin#product-types).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "products",
+    "type": "[`AdminProductsResource`](AdminProductsResource.mdx)",
+    "description": "An instance of [AdminProductsResource](AdminProductsResource.mdx) used to send requests to [Admin Product API Routes](https://docs.medusajs.com/api/admin#products).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "publishableApiKeys",
+    "type": "[`AdminPublishableApiKeyResource`](AdminPublishableApiKeyResource.mdx)",
+    "description": "An instance of [AdminPublishableApiKeyResource](AdminPublishableApiKeyResource.mdx) used to send requests to [Admin Publishable API Key API Routes](https://docs.medusajs.com/api/admin#publishable-api-keys).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regions",
+    "type": "[`AdminRegionsResource`](AdminRegionsResource.mdx)",
+    "description": "An instance of [AdminRegionsResource](AdminRegionsResource.mdx) used to send requests to [Admin Region API Routes](https://docs.medusajs.com/api/admin#regions).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "reservations",
+    "type": "[`AdminReservationsResource`](AdminReservationsResource.mdx)",
+    "description": "An instance of [AdminReservationsResource](AdminReservationsResource.mdx) used to send requests to [Admin Reservation API Routes](https://docs.medusajs.com/api/admin#reservations).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "returnReasons",
+    "type": "[`AdminReturnReasonsResource`](AdminReturnReasonsResource.mdx)",
+    "description": "An instance of [AdminReturnReasonsResource](AdminReturnReasonsResource.mdx) used to send requests to [Admin Return Reason API Routes](https://docs.medusajs.com/api/admin#return-reasons).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "returns",
+    "type": "[`AdminReturnsResource`](AdminReturnsResource.mdx)",
+    "description": "An instance of [AdminReturnsResource](AdminReturnsResource.mdx) used to send requests to [Admin Return API Routes](https://docs.medusajs.com/api/admin#returns).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "salesChannels",
+    "type": "[`AdminSalesChannelsResource`](AdminSalesChannelsResource.mdx)",
+    "description": "An instance of [AdminSalesChannelsResource](AdminSalesChannelsResource.mdx) used to send requests to [Admin Sales Channel API Routes](https://docs.medusajs.com/api/admin#sales-channels).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingOptions",
+    "type": "[`AdminShippingOptionsResource`](AdminShippingOptionsResource.mdx)",
+    "description": "An instance of [AdminShippingOptionsResource](AdminShippingOptionsResource.mdx) used to send requests to [Admin Shipping Option API Routes](https://docs.medusajs.com/api/admin#shipping-options).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingProfiles",
+    "type": "[`AdminShippingProfilesResource`](AdminShippingProfilesResource.mdx)",
+    "description": "An instance of [AdminShippingProfilesResource](AdminShippingProfilesResource.mdx) used to send requests to [Admin Shipping Profile API Routes](https://docs.medusajs.com/api/admin#shipping-profiles).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "stockLocations",
+    "type": "[`AdminStockLocationsResource`](AdminStockLocationsResource.mdx)",
+    "description": "An instance of [AdminStockLocationsResource](AdminStockLocationsResource.mdx) used to send requests to [Admin Stock Location API Routes](https://docs.medusajs.com/api/admin#stock-locations).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "store",
+    "type": "[`AdminStoresResource`](AdminStoresResource.mdx)",
+    "description": "An instance of [AdminStoresResource](AdminStoresResource.mdx) used to send requests to [Admin Store API Routes](https://docs.medusajs.com/api/admin#store).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "swaps",
+    "type": "[`AdminSwapsResource`](AdminSwapsResource.mdx)",
+    "description": "An instance of [AdminSwapsResource](AdminSwapsResource.mdx) used to send requests to [Admin Swap API Routes](https://docs.medusajs.com/api/admin#swaps).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxRates",
+    "type": "[`AdminTaxRatesResource`](AdminTaxRatesResource.mdx)",
+    "description": "An instance of [AdminTaxRatesResource](AdminTaxRatesResource.mdx) used to send requests to [Admin Tax Rate API Routes](https://docs.medusajs.com/api/admin#tax-rates).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "uploads",
+    "type": "[`AdminUploadsResource`](AdminUploadsResource.mdx)",
+    "description": "An instance of [AdminUploadsResource](AdminUploadsResource.mdx) used to send requests to [Admin Upload API Routes](https://docs.medusajs.com/api/admin#uploads).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "users",
+    "type": "[`AdminUsersResource`](AdminUsersResource.mdx)",
+    "description": "An instance of [AdminUsersResource](AdminUsersResource.mdx) used to send requests to [Admin User API Routes](https://docs.medusajs.com/api/admin#users).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variants",
+    "type": "[`AdminVariantsResource`](AdminVariantsResource.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

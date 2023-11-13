@@ -1,0 +1,353 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Client
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "axiosClient",
+    "type": "[`AxiosInstance`](../interfaces/internal.AxiosInstance.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`Config`](../interfaces/internal.Config.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### createClient
+
+Creates the axios client used for requests
+As part of the creation, we configure the retry conditions
+and the exponential backoff approach.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "config",
+    "type": "[`Config`](../interfaces/internal.Config.mdx)",
+    "description": "user supplied configurations",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "AxiosInstance",
+    "type": "[`AxiosInstance`](../interfaces/internal.AxiosInstance.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### normalizeHeader
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "header",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### normalizeHeaders
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "obj",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Record",
+    "type": "Record<`string`, `any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### request
+
+Axios request
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "method",
+    "type": "[`RequestMethod`](../types/internal.RequestMethod.mdx)",
+    "description": "request method",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "path",
+    "type": "`string`",
+    "description": "request path",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "Record<`string`, `any`\\>",
+    "description": "request payload",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`RequestOptions`](../interfaces/internal.RequestOptions.mdx)",
+    "description": "axios configuration",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "custom request headers",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### requiresAuthentication
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "path",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "method",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setHeaders
+
+Creates all the initial headers.
+We add the idempotency key, if the request is configured to retry.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userHeaders",
+    "type": "[`RequestOptions`](../interfaces/internal.RequestOptions.mdx)",
+    "description": "user supplied headers",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "method",
+    "type": "[`RequestMethod`](../types/internal.RequestMethod.mdx)",
+    "description": "request method",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "path",
+    "type": "`string`",
+    "description": "request path",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "user supplied headers",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "AxiosRequestHeaders",
+    "type": "Record<`string`, `string`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryCondition
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "[`AxiosError`](../interfaces/internal.AxiosError.mdx)<`any`, `any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "numRetries",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maxRetries",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

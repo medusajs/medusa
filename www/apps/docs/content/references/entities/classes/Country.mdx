@@ -6,427 +6,243 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Country
 
+Country details
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "display_name",
     "type": "`string`",
-    "description": "",
+    "description": "The country name appropriate for display.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "id",
     "type": "`number`",
-    "description": "",
+    "description": "The country's ID",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "iso_2",
     "type": "`string`",
-    "description": "",
+    "description": "The 2 character ISO code of the country in lower case",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "iso_3",
     "type": "`string`",
-    "description": "",
+    "description": "The 2 character ISO code of the country in lower case",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "name",
     "type": "`string`",
-    "description": "",
+    "description": "The normalized country name in upper case.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "num_code",
     "type": "`number`",
-    "description": "",
+    "description": "The numerical ISO code for the country.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "region",
     "type": "[`Region`](Region.mdx)",
-    "description": "",
+    "description": "The details of the region the country is associated with.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`Region`](Region.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "automatic_taxes",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether taxes should be automated in this region.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "countries",
         "type": "[`Country`](Country.mdx)[]",
-        "description": "",
+        "description": "The details of the countries included in this region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Country`](Country.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "display_name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "iso_2",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "iso_3",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "num_code",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "currency",
         "type": "[`Currency`](Currency.mdx)",
-        "description": "",
+        "description": "The details of the currency used in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Currency`](Currency.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "includes_tax",
-            "type": "`boolean`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "symbol",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "symbol_native",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "currency_code",
         "type": "`string`",
-        "description": "",
+        "description": "The three character currency code used in the region.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "fulfillment_providers",
         "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
-        "description": "",
+        "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`FulfillmentProvider`](FulfillmentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "gift_cards_taxable",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the gift cards are taxable or not in this region.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The region's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the prices for the region include tax",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "name",
         "type": "`string`",
-        "description": "",
+        "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "payment_providers",
         "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
-        "description": "",
+        "description": "The details of the payment providers that can be used to process payments in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`PaymentProvider`](PaymentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "tax_code",
         "type": "`string`",
-        "description": "",
+        "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_provider",
         "type": "[`TaxProvider`](TaxProvider.mdx)",
-        "description": "",
+        "description": "The details of the tax provider used in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`TaxProvider`](TaxProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "tax_provider_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the tax provider used in this region",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_rate",
         "type": "`number`",
-        "description": "",
+        "description": "The tax rate that should be charged on purchases in the Region.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_rates",
         "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
-        "description": "",
+        "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",
+        "expandable": true,
         "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -434,9 +250,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "region_id",
     "type": "``null`` \\| `string`",
-    "description": "",
+    "description": "The region ID this country is associated with.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

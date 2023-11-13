@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * operationId: "PostNotesNote"
  * summary: "Update a Note"
  * x-authenticated: true
- * description: "Update a Note's details.'"
+ * description: "Update a Note's details."
  * parameters:
  *   - (path) id=* {string} The ID of the Note
  * requestBody:
@@ -30,7 +30,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ note }) => {
  *         console.log(note.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

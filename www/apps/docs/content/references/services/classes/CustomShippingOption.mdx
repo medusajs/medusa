@@ -1,0 +1,134 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# CustomShippingOption
+
+Custom Shipping Options are overridden Shipping Options. Admins can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option.
+
+## Constructors
+
+### constructor
+
+**new CustomShippingOption**()
+
+Custom Shipping Options are overridden Shipping Options. Admins can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "[`Cart`](Cart.mdx)",
+    "description": "The details of the cart this shipping option belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The ID of the Cart that the custom shipping option is attached to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "``null`` \\| `Date`",
+    "description": "The date with timezone at which the resource was deleted.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The custom shipping option's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price",
+    "type": "`number`",
+    "description": "The custom price set that will override the shipping option's original price",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_option",
+    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "description": "The details of the overridden shipping options.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "shipping_option_id",
+    "type": "`string`",
+    "description": "The ID of the Shipping Option that the custom shipping option overrides",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

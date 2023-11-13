@@ -1,0 +1,80 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# StagedJob
+
+A staged job resource
+
+## Constructors
+
+### constructor
+
+**new StagedJob**()
+
+A staged job resource
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "Data necessary for the job",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "event_name",
+    "type": "`string`",
+    "description": "The name of the event",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The staged job's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

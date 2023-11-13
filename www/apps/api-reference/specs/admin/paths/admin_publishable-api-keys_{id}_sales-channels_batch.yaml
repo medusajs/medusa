@@ -1,7 +1,7 @@
 post:
   operationId: PostPublishableApiKeySalesChannelsChannelsBatch
   summary: Add Sales Channels
-  description: Assign a list of sales channels to a publishable API key.
+  description: Add a list of sales channels to a publishable API key.
   x-authenticated: true
   parameters:
     - in: path

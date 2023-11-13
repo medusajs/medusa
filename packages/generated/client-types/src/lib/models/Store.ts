@@ -19,7 +19,7 @@ export interface Store {
    */
   name: string
   /**
-   * The 3 character currency code that is the default of the store.
+   * The three character currency code that is the default of the store.
    */
   default_currency_code: string
   /**

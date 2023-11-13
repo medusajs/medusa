@@ -57,7 +57,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -344,11 +344,15 @@ type ReturnObj = {
  *     type: boolean
  *     default: false
  *   no_notification:
- *     description: If set to `true`, no notification will be sent to the customer related to this Return.
+ *     description: >-
+ *       If set to `true`, no notification will be sent to the customer related to this Return.
  *     type: boolean
  *   refund:
  *     description: The amount to refund.
  *     type: integer
+ *   location_id:
+ *     description: "The ID of the location used for the return."
+ *     type: string
  */
 export class AdminPostOrdersOrderReturnsReq {
   @IsArray()
@@ -382,11 +386,20 @@ export class AdminPostOrdersOrderReturnsReq {
   location_id?: string
 }
 
+/**
+ * The return's shipping method details.
+ */
 class ReturnShipping {
+  /**
+   * The ID of the shipping option used for the return.
+   */
   @IsString()
   @IsOptional()
   option_id?: string
 
+  /**
+   * The shipping method's price.
+   */
   @IsInt()
   @IsOptional()
   price?: number

@@ -15,8 +15,6 @@ import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
-
-import { MedusaError } from "medusa-core-utils"
 import { ProductVariantPrice } from "../types/product-variant"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
@@ -24,6 +22,7 @@ import { groupBy } from "lodash"
 import { isString } from "../utils"
 import partition from "lodash/partition"
 import { ulid } from "ulid"
+import { promiseAll } from "@medusajs/utils"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -182,7 +181,7 @@ export const MoneyAmountRepository = dataSource
         return
       }
 
-      await Promise.all([
+      await promiseAll([
         this.delete(deleteAmounts.map((mav) => mav.id)),
         mavDeleteQueryBuilder
           .where(
@@ -558,7 +557,7 @@ export const MoneyAmountRepository = dataSource
         [[], []] as [MoneyAmount[], ProductVariantMoneyAmount[]]
       )
 
-      const [prices] = await Promise.all([
+      const [prices] = await promiseAll([
         this.save([...existingPrices, ...newPriceEntities]),
         await this.manager.save(joinTableValues),
       ])

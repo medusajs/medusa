@@ -39,10 +39,9 @@ import {
 } from "./transaction/create-product-variant"
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
@@ -76,7 +75,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -137,12 +136,9 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.CreateProducts,
-  })
-
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.CreateProducts} workflow without '@medusajs/product' installed`
     )
@@ -150,7 +146,7 @@ export default async (req, res) => {
 
   let product
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled && !!productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
     const input = {
@@ -242,7 +238,7 @@ export default async (req, res) => {
           )
           allVariantTransactions.push(varTransaction)
         } catch (e) {
-          await Promise.all(
+          await promiseAll(
             allVariantTransactions.map(async (transaction) => {
               await revertVariantTransaction(
                 transactionDependencies,
@@ -260,7 +256,7 @@ export default async (req, res) => {
   }
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (isMedusaV2Enabled) {
     rawProduct = await getProductWithIsolatedProductModule(req, product.id)
   } else {
     rawProduct = await productService.retrieve(product.id, {

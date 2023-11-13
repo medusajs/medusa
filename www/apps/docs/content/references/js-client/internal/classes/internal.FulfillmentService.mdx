@@ -1,0 +1,584 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FulfillmentService
+
+Handles Fulfillments
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentProviderService_",
+    "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentRepository_",
+    "type": "`Repository`<[`Fulfillment`](internal.Fulfillment.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemRepository_",
+    "type": "`Repository`<[`LineItem`](internal.LineItem.mdx)\\> & { `findByReturn`: Method findByReturn  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemService_",
+    "type": "[`LineItemService`](internal.internal.LineItemService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantInventoryService_",
+    "type": "[`ProductVariantInventoryService`](internal.internal.ProductVariantInventoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingProfileService_",
+    "type": "[`ShippingProfileService`](internal.internal.ShippingProfileService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalsService_",
+    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "trackingLinkRepository_",
+    "type": "`Repository`<[`TrackingLink`](internal.internal.TrackingLink.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancelFulfillment
+
+Cancels a fulfillment with the fulfillment provider. Will decrement the
+fulfillment_quantity on the line items associated with the fulfillment.
+Throws if the fulfillment has already been shipped.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentOrId",
+    "type": "`string` \\| [`Fulfillment`](internal.Fulfillment.mdx)",
+    "description": "the fulfillment object or id.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Fulfillment`](internal.Fulfillment.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the save operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createFulfillment
+
+Creates an order fulfillment
+If items needs to be fulfilled by different provider, we make
+sure to partition those items, and create fulfillment for
+those partitions.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`CreateFulfillmentOrder`](../types/internal.CreateFulfillmentOrder.mdx)",
+    "description": "order to create fulfillment for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemsToFulfill",
+    "type": "[`FulFillmentItemType`](../types/internal.FulFillmentItemType.mdx)[]",
+    "description": "the items in the order to fulfill",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "custom",
+    "type": "[`Partial`](../types/internal.Partial.mdx)<[`Fulfillment`](internal.Fulfillment.mdx)\\>",
+    "description": "potential custom values to add",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Fulfillment`](internal.Fulfillment.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the created fulfillments",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createShipment
+
+Creates a shipment by marking a fulfillment as shipped. Adds
+tracking links and potentially more metadata.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the fulfillment to ship",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "trackingLinks",
+    "type": "{ `tracking_number`: `string`  }[]",
+    "description": "tracking links for the shipment",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`CreateShipmentConfig`](../types/internal.CreateShipmentConfig.mdx)",
+    "description": "potential configuration settings, such as no_notification and metadata",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Fulfillment`](internal.Fulfillment.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the shipped fulfillment",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFulfillmentItems\_
+
+Retrieves the order line items, given an array of items.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`CreateFulfillmentOrder`](../types/internal.CreateFulfillmentOrder.mdx)",
+    "description": "the order to get line items from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`FulFillmentItemType`](../types/internal.FulFillmentItemType.mdx)[]",
+    "description": "the items to get",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<(``null`` \\| [`LineItem`](internal.LineItem.mdx))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the line items generated by the transformer.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### partitionItems\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingMethods",
+    "type": "[`ShippingMethod`](internal.ShippingMethod-4.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "FulfillmentItemPartition[]",
+    "type": "[`FulfillmentItemPartition`](../types/internal.FulfillmentItemPartition.mdx)[]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieves a fulfillment by its id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the id of the fulfillment to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Fulfillment`](internal.Fulfillment.mdx)\\>",
+    "description": "optional values to include with fulfillmentRepository query",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Fulfillment`](internal.Fulfillment.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the fulfillment",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateFulfillmentLineItem\_
+
+Checks that a given quantity of a line item can be fulfilled. Fails if the
+fulfillable quantity is lower than the requested fulfillment quantity.
+Fulfillable quantity is calculated by subtracting the already fulfilled
+quantity from the quantity that was originally purchased.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "item",
+    "type": "`undefined` \\| [`LineItem`](internal.LineItem.mdx)",
+    "description": "the line item to check has sufficient fulfillable quantity.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "the quantity that is requested to be fulfilled.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "``null`` \\| LineItem",
+    "type": "``null`` \\| [`LineItem`](internal.LineItem.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "a line item that has the requested fulfillment quantity\n  set.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "FulfillmentService",
+    "type": "[`FulfillmentService`](internal.FulfillmentService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -15,4 +15,4 @@ medusa.admin.discounts.create({
 })
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})

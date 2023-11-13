@@ -20,6 +20,14 @@ export interface Config {
   customHeaders?: Record<string, any>
 }
 
+/**
+ * @interface
+ * 
+ * Options to pass to requests sent to custom API Routes
+ * 
+ * @prop timeout - The number of milliseconds before the request times out.
+ * @prop numberOfRetries - The number of times to retry a request before failing.
+ */
 export interface RequestOptions {
   timeout?: number
   numberOfRetries?: number

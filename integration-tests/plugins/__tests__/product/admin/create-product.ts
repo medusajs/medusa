@@ -18,11 +18,10 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe.skip("[Product & Pricing Module] POST /admin/products", () => {
+describe("[Product & Pricing Module] POST /admin/products", () => {
   let dbConnection
   let appContainer
   let shutdownServer

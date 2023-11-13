@@ -59,6 +59,7 @@ export const defaultAdminGiftCardRelations = ["region", "order"]
 /**
  * @schema AdminGiftCardsRes
  * type: object
+ * description: "The gift card's details."
  * x-expanded-relations:
  *   field: gift_card
  *   relations:
@@ -103,6 +104,7 @@ export type AdminGiftCardsDeleteRes = DeleteResponse
 /**
  * @schema AdminGiftCardsListRes
  * type: object
+ * description: "The list of gift cards with pagination fields."
  * x-expanded-relations:
  *   field: gift_cards
  *   relations:
@@ -119,6 +121,7 @@ export type AdminGiftCardsDeleteRes = DeleteResponse
  * properties:
  *   gift_cards:
  *     type: array
+ *     description: "The list of gift cards."
  *     items:
  *       $ref: "#/components/schemas/GiftCard"
  *   count:

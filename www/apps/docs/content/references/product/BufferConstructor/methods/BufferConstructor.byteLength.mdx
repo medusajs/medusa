@@ -20,7 +20,7 @@ return value might be greater than the length of a `Buffer` created from the
 string.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const str = '\u00bd + \u00bc = \u00be';
 
@@ -43,6 +43,7 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuf
     "description": "A value to calculate the length of.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -51,6 +52,7 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuf
     "description": "If `string` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -66,6 +68,7 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuf
     "optional": true,
     "defaultValue": "",
     "description": "The number of bytes contained within `string`.",
+    "expandable": false,
     "children": []
   }
 ]} />

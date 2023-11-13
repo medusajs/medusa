@@ -1,0 +1,670 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# EventBusService
+
+Can keep track of multiple subscribers to different events and run the
+subscribers when events happen. Events will run asynchronously.
+
+## Implements
+
+- [`IEventBusService`](../interfaces/IEventBusService.mdx)
+
+## Constructors
+
+### constructor
+
+**new EventBusService**(`«destructured»`, `config`, `isSingleton?`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-10.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isSingleton",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "true",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config_",
+    "type": "[`ConfigModule`](../types/ConfigModule.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "enqueue_",
+    "type": "`Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "logger_",
+    "type": "[`Logger`](../interfaces/Logger.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shouldEnqueuerRun",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "stagedJobService_",
+    "type": "[`StagedJobService`](StagedJobService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### eventBusModuleService\_
+
+`Protected` `get` **eventBusModuleService_**(): [`IEventBusModuleService`](../interfaces/IEventBusModuleService.mdx)
+
+#### Returns
+
+[`IEventBusModuleService`](../interfaces/IEventBusModuleService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "IEventBusModuleService",
+    "type": "[`IEventBusModuleService`](../interfaces/IEventBusModuleService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### emit
+
+**emit**<`T`\>(`data`): `Promise`<`void` \| [`StagedJob`](StagedJob.mdx)[]\>
+
+Calls all subscribers when an event occurs.
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`EmitData`](../types/EmitData.mdx)<`T`\\>[]",
+    "description": "The data to use to process the events",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void` \| [`StagedJob`](StagedJob.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| [`StagedJob`](StagedJob.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the jobs from our queue",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**emit**<`T`\>(`eventName`, `data`, `options?`): `Promise`<`void` \| [`StagedJob`](StagedJob.mdx)\>
+
+Calls all subscribers when an event occurs.
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "eventName",
+    "type": "`string`",
+    "description": "the name of the event to be process.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "`T`",
+    "description": "the data to send to the subscriber.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "options to add the job with",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void` \| [`StagedJob`](StagedJob.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| [`StagedJob`](StagedJob.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the job from our queue",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### enqueuer\_
+
+**enqueuer_**(): `Promise`<`void`\>
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listJobs
+
+`Protected` **listJobs**(`listConfig`): `Promise`<`never`[] \| [`StagedJob`](StagedJob.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "listConfig",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`StagedJob`](StagedJob.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`never`[] \| [`StagedJob`](StagedJob.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`never`[] \\| [`StagedJob`](StagedJob.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### startEnqueuer
+
+**startEnqueuer**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### stopEnqueuer
+
+**stopEnqueuer**(): `Promise`<`void`\>
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### subscribe
+
+**subscribe**(`event`, `subscriber`, `context?`): [`EventBusService`](EventBusService.mdx)
+
+Adds a function to a list of event subscribers.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "event",
+    "type": "`string` \\| `symbol`",
+    "description": "the event that the subscriber will listen for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subscriber",
+    "type": "[`Subscriber`](../types/Subscriber.mdx)<`unknown`\\>",
+    "description": "the function to be called when a certain event happens. Subscribers must return a Promise.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SubscriberContext`](../types/SubscriberContext.mdx)",
+    "description": "subscriber context",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`EventBusService`](EventBusService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "default",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "this",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### unsubscribe
+
+**unsubscribe**(`event`, `subscriber`, `context`): [`EventBusService`](EventBusService.mdx)
+
+Removes function from the list of event subscribers.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "event",
+    "type": "`string` \\| `symbol`",
+    "description": "the event of the subcriber.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subscriber",
+    "type": "[`Subscriber`](../types/Subscriber.mdx)<`unknown`\\>",
+    "description": "the function to be removed",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SubscriberContext`](../types/SubscriberContext.mdx)",
+    "description": "subscriber context",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`EventBusService`](EventBusService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "default",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "this",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`EventBusService`](EventBusService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`EventBusService`](EventBusService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "default",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

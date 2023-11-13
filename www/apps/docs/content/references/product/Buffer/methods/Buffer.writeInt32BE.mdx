@@ -16,7 +16,7 @@ anything other than a signed 32-bit integer.
 The `value` is interpreted and written as a two's complement signed integer.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -35,6 +35,7 @@ console.log(buf);
     "description": "Number to be written to `buf`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -43,6 +44,7 @@ console.log(buf);
     "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - 4`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -58,6 +60,7 @@ console.log(buf);
     "optional": true,
     "defaultValue": "",
     "description": "`offset` plus the number of bytes written.",
+    "expandable": false,
     "children": []
   }
 ]} />

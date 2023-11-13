@@ -1,0 +1,41 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterableCurrencyProps
+
+Filters to apply on a currency.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "([`FilterableCurrencyProps`](internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableCurrencyProps`](internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "([`FilterableCurrencyProps`](internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableCurrencyProps`](internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "code",
+    "type": "`string`[]",
+    "description": "The codes to filter the currencies by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

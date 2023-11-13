@@ -84,7 +84,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.taxRates.list()
  *       .then(({ tax_rates, limit, offset, count }) => {
  *         console.log(tax_rates.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -141,37 +141,66 @@ export default async (req, res) => {
   res.json({ tax_rates: data, count, offset: value.offset, limit: value.limit })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved tax rates.
+ */
 export class AdminGetTaxRatesParams {
+  /**
+   * Filter tax rates by the IDs of their associates region.
+   */
   @IsOptional()
   @IsType([String, [String]])
   region_id?: string | string[]
 
+  /**
+   * Name to filter tax rates by.
+   */
   @IsString()
   @IsOptional()
   name?: string
 
+  /**
+   * Code to filter tax rates by.
+   */
   @IsString()
   @IsOptional()
   code?: string
 
+  /**
+   * Number filters to filter tax rates' `rate` field.
+   */
   @IsType([NumericalComparisonOperator, Number])
   @IsOptional()
   rate?: number | NumericalComparisonOperator
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset? = 0
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit? = 50
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

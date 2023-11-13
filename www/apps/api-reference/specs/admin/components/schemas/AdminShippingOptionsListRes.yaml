@@ -1,4 +1,5 @@
 type: object
+description: The list of shipping options with pagination fields.
 x-expanded-relations:
   field: shipping_options
   relations:

@@ -1,0 +1,41 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# VariantInventory
+
+ **VariantInventory**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the ID of the variant",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventory",
+    "type": "[`ResponseInventoryItem`](internal.internal.ResponseInventoryItem.mdx)[]",
+    "description": "The inventory details.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sales_channel_availability",
+    "type": "{ `available_quantity`: `number` ; `channel_id`: `string` ; `channel_name`: `string`  }[]",
+    "description": "Details about the variant's inventory availability in sales channels.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

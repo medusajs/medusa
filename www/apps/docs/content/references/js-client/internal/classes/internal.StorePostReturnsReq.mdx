@@ -1,0 +1,39 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# StorePostReturnsReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "items",
+    "type": "[`Item`](internal.Item-1.mdx)[]",
+    "description": "The items to include in the return.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order_id",
+    "type": "`string`",
+    "description": "The ID of the Order to create the return for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "return_shipping",
+    "type": "[`ReturnShipping`](internal.ReturnShipping.mdx)",
+    "description": "The return shipping method used to return the items. If provided, a fulfillment is automatically created for the return.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

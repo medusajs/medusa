@@ -1,6 +1,21 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPricingModuleService } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
+import express from "express"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import { getConfigFile } from "medusa-core-utils"
+import { track } from "medusa-telemetry"
+import path from "path"
 import { DataSource, DataSourceOptions } from "typeorm"
+import loaders from "../loaders"
+import { handleConfigError } from "../loaders/config"
+import featureFlagLoader from "../loaders/feature-flags"
+import Logger from "../loaders/logger"
+import { SalesChannel } from "../models"
 import {
   ProductCategoryService,
+  ProductCollectionService,
   ProductService,
   ProductVariantService,
   RegionService,
@@ -10,26 +25,11 @@ import {
   StoreService,
   UserService,
 } from "../services"
-import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
-
-import { IPricingModuleService } from "@medusajs/types"
-import express from "express"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import { getConfigFile } from "medusa-core-utils"
-import { track } from "medusa-telemetry"
-import path from "path"
-import loaders from "../loaders"
-import { handleConfigError } from "../loaders/config"
-import featureFlagLoader from "../loaders/feature-flags"
-import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
-import Logger from "../loaders/logger"
-import { SalesChannel } from "../models"
 import PublishableApiKeyService from "../services/publishable-api-key"
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import { CreateProductCategoryInput } from "../types/product-category"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
 
 type SeedOptions = {
   directory: string
@@ -101,6 +101,9 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const storeService: StoreService = container.resolve("storeService")
   const userService: UserService = container.resolve("userService")
   const regionService: RegionService = container.resolve("regionService")
+  const productCollectionService: ProductCollectionService = container.resolve(
+    "productCollectionService"
+  )
   const productService: ProductService = container.resolve("productService")
   const productCategoryService: ProductCategoryService = container.resolve(
     "productCategoryService"
@@ -131,6 +134,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     const {
       store: seededStore,
       regions,
+      product_collections = [],
       products,
       categories = [],
       shipping_options,
@@ -212,6 +216,10 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       await createProductCategory(c)
     }
 
+    for (const pc of product_collections) {
+      await productCollectionService.withTransaction(tx).create(pc)
+    }
+
     for (const p of products) {
       const variants = p.variants
       delete p.variants
@@ -276,9 +284,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       }
     }
 
-    if (
-      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-    ) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       for (const ruleType of rule_types) {
         await pricingModuleService.createRuleTypes(ruleType)
       }

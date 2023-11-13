@@ -14,11 +14,15 @@ Allocates a new `Buffer` using an `array` of bytes in the range `0` – `255`.
 Array entries outside that range will be truncated to fit into it.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Creates a new Buffer containing the UTF-8 bytes of the string 'buffer'.
 const buf = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
 ```
+
+If `array` is an `Array`\-like object (that is, one with a `length` property of
+type `number`), it is treated as if it is an array, unless it is a `Buffer` or
+a `Uint8Array`. This means all other `TypedArray` variants get treated as an`Array`. To create a `Buffer` from the bytes backing a `TypedArray`, use `Buffer.copyBytesFrom()`.
 
 A `TypeError` will be thrown if `array` is not an `Array` or another type
 appropriate for `Buffer.from()` variants.
@@ -34,6 +38,7 @@ appropriate for `Buffer.from()` variants.
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -42,6 +47,7 @@ appropriate for `Buffer.from()` variants.
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -50,6 +56,7 @@ appropriate for `Buffer.from()` variants.
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -65,6 +72,7 @@ appropriate for `Buffer.from()` variants.
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -86,6 +94,7 @@ Creates a new Buffer using the passed {data}
     "description": "data to create a new Buffer",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -101,6 +110,7 @@ Creates a new Buffer using the passed {data}
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -116,6 +126,7 @@ Creates a new Buffer using the passed {data}
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -131,6 +142,7 @@ Creates a new Buffer using the passed {data}
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -150,6 +162,7 @@ If not provided, {encoding} defaults to 'utf8'.
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -158,6 +171,7 @@ If not provided, {encoding} defaults to 'utf8'.
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -173,6 +187,7 @@ If not provided, {encoding} defaults to 'utf8'.
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

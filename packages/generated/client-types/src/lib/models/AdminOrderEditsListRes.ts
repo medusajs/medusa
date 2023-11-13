@@ -7,6 +7,9 @@ import type { LineItem } from "./LineItem"
 import type { OrderEdit } from "./OrderEdit"
 import type { OrderItemChange } from "./OrderItemChange"
 
+/**
+ * The list of order edits with pagination fields.
+ */
 export interface AdminOrderEditsListRes {
   /**
    * An array of order edit details

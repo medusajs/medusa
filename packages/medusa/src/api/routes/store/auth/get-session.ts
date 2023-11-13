@@ -19,7 +19,7 @@ import { defaultRelations } from "."
  *       medusa.auth.getSession()
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

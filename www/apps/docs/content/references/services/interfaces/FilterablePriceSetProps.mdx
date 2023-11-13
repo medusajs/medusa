@@ -1,0 +1,50 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterablePriceSetProps
+
+Filters to apply on price sets.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "$and",
+    "type": "([`FilterablePriceSetProps`](FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterablePriceSetProps`](FilterablePriceSetProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "$or",
+    "type": "([`FilterablePriceSetProps`](FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterablePriceSetProps`](FilterablePriceSetProps.mdx)\\>)[]",
+    "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`[]",
+    "description": "IDs to filter price sets by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "money_amounts",
+    "type": "[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)",
+    "description": "Filters to apply on a price set's associated money amounts.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

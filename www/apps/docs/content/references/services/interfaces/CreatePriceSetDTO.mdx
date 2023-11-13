@@ -1,0 +1,32 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# CreatePriceSetDTO
+
+A price set to create.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "prices",
+    "type": "[`CreatePricesDTO`](CreatePricesDTO.mdx)[]",
+    "description": "The prices to create and add to this price set.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rules",
+    "type": "{ `rule_attribute`: `string`  }[]",
+    "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

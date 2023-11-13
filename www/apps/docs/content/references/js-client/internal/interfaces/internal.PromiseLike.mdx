@@ -1,0 +1,64 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PromiseLike
+
+## Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### then
+
+Attaches callbacks for the resolution and/or rejection of the Promise.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "onfulfilled",
+    "type": "``null`` \\| (`value`: `T`) => `TResult1` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult1`\\>",
+    "description": "The callback to execute when the Promise is resolved.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "onrejected",
+    "type": "``null`` \\| (`reason`: `any`) => `TResult2` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult2`\\>",
+    "description": "The callback to execute when the Promise is rejected.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "PromiseLike",
+    "type": "[`PromiseLike`](internal.PromiseLike.mdx)<`TResult1` \\| `TResult2`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A Promise for the completion of which ever callback is executed.",
+    "expandable": false,
+    "children": []
+  }
+]} />

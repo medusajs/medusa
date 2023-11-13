@@ -1,0 +1,86 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# CalculationContextData
+
+ **CalculationContextData**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "claims",
+    "type": "[`ClaimOrder`](../classes/ClaimOrder.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customer",
+    "type": "[`Customer`](../classes/Customer.mdx)",
+    "description": "A customer can make purchases in your store and manage their profile.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discounts",
+    "type": "[`Discount`](../classes/Discount.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`LineItem`](../classes/LineItem.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region",
+    "type": "[`Region`](../classes/Region.mdx)",
+    "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_address",
+    "type": "[`Address`](../classes/Address.mdx) \\| ``null``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_methods",
+    "type": "[`ShippingMethod`](../classes/ShippingMethod.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "swaps",
+    "type": "[`Swap`](../classes/Swap.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

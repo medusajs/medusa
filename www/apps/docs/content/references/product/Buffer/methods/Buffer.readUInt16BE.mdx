@@ -15,7 +15,7 @@ Reads an unsigned, big-endian 16-bit integer from `buf` at the specified`offset`
 This function is also available under the `readUint16BE` alias.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from([0x12, 0x34, 0x56]);
 
@@ -34,6 +34,7 @@ console.log(buf.readUInt16BE(1).toString(16));
     "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - 2`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -49,6 +50,7 @@ console.log(buf.readUInt16BE(1).toString(16));
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -1,0 +1,57 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostShippingProfilesProfileReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional set of key-value pairs with additional information.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "The name of the Shipping Profile",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "products",
+    "type": "`string`[]",
+    "description": "product IDs to associate with the Shipping Profile",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_options",
+    "type": "`string`[]",
+    "description": "Shipping option IDs to associate with the Shipping Profile",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "[`ShippingProfileType`](../enums/internal.ShippingProfileType.mdx)",
+    "description": "The type of the Shipping Profile",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

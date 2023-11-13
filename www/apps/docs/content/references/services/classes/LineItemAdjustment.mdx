@@ -1,0 +1,116 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# LineItemAdjustment
+
+A Line Item Adjustment includes details on discounts applied on a line item.
+
+## Constructors
+
+### constructor
+
+**new LineItemAdjustment**()
+
+A Line Item Adjustment includes details on discounts applied on a line item.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "amount",
+    "type": "`number`",
+    "description": "The adjustment amount",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "description",
+    "type": "`string`",
+    "description": "The line item's adjustment description",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discount",
+    "type": "[`Discount`](Discount.mdx)",
+    "description": "The details of the discount associated with the adjustment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "discount_id",
+    "type": "`string`",
+    "description": "The ID of the discount associated with the adjustment",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The Line Item Adjustment's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "item",
+    "type": "[`LineItem`](LineItem.mdx)",
+    "description": "The details of the line item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "item_id",
+    "type": "`string`",
+    "description": "The ID of the line item",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

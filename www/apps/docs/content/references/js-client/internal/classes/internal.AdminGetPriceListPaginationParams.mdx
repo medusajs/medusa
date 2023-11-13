@@ -1,0 +1,140 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminGetPriceListPaginationParams
+
+Parameters used to filter and configure the pagination of the retrieved price lists.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the price lists' `created_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customer_groups",
+    "type": "`string`[]",
+    "description": "Filter price lists by their associated customer groups.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the price lists' `deleted_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "description",
+    "type": "`string`",
+    "description": "Description to filter price lists by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "expand",
+    "type": "`string`",
+    "description": "Comma-separated relations that should be expanded in the returned data.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "IDs to filter price lists by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "limit",
+    "type": "`number`",
+    "description": "Limit the number of items returned in the list.",
+    "optional": true,
+    "defaultValue": "10",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "Name to filter price lists by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "The number of items to skip when retrieving a list.",
+    "optional": true,
+    "defaultValue": "0",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "`string`",
+    "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "q",
+    "type": "`string`",
+    "description": "Search terms to search price lists' description, name, and customer group's name.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "[`PriceListStatus`](../enums/internal.PriceListStatus.mdx)[]",
+    "description": "Statuses to filter price lists by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "[`PriceListType`](../enums/internal.PriceListType.mdx)[]",
+    "description": "Types to filter price lists by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the price lists' `updated_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

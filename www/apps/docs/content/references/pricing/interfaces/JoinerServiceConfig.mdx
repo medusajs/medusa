@@ -15,6 +15,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "Property name to use as entrypoint to the service",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -23,6 +24,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "Extra arguments to pass to the remoteFetchData callback",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -31,7 +33,100 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "",
     "optional": true,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "relationship",
+        "type": "[`JoinerRelationship`](../types/JoinerRelationship.mdx)",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "alias",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "args",
+            "type": "Record<`string`, `any`\\>",
+            "description": "Extra arguments to pass to the remoteFetchData callback",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "foreignKey",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "inverse",
+            "type": "`boolean`",
+            "description": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "isInternalService",
+            "type": "`boolean`",
+            "description": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "isList",
+            "type": "`boolean`",
+            "description": "Force the relationship to return a list",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "primaryKey",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "serviceName",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "serviceName",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "fieldAlias",
@@ -39,6 +134,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -47,6 +143,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -55,7 +152,81 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "",
     "optional": true,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "alias",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "args",
+        "type": "Record<`string`, `any`\\>",
+        "description": "Extra arguments to pass to the remoteFetchData callback",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "foreignKey",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "inverse",
+        "type": "`boolean`",
+        "description": "In an inverted relationship the foreign key is on the other service and the primary key is on the current service",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "isInternalService",
+        "type": "`boolean`",
+        "description": "If true, the relationship is an internal service from the medusa core TODO: Remove when there are no more \"internal\" services",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "isList",
+        "type": "`boolean`",
+        "description": "Force the relationship to return a list",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "primaryKey",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "serviceName",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "serviceName",
@@ -63,6 +234,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

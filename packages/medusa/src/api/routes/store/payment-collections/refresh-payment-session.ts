@@ -21,7 +21,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       medusa.paymentCollections.refreshPaymentSession(paymentCollectionId, sessionId)
  *       .then(({ payment_session }) => {
  *         console.log(payment_session.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

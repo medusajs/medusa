@@ -18,15 +18,12 @@ This method is used to delete currencies based on their currency code.
 ## Example
 
 ```ts
-import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+import { initialize as initializePricingModule } from "@medusajs/pricing"
 
-async function deleteCurrencies () {
+async function deleteCurrencies() {
   const pricingService = await initializePricingModule()
 
   await pricingService.deleteCurrencies(["USD"])
-
 }
 ```
 
@@ -39,6 +36,7 @@ async function deleteCurrencies () {
     "description": "Currency codes of the currencies to delete.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -47,6 +45,7 @@ async function deleteCurrencies () {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -54,6 +53,7 @@ async function deleteCurrencies () {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -62,6 +62,7 @@ async function deleteCurrencies () {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -70,6 +71,7 @@ async function deleteCurrencies () {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -78,6 +80,7 @@ async function deleteCurrencies () {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -86,6 +89,7 @@ async function deleteCurrencies () {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -101,6 +105,7 @@ async function deleteCurrencies () {
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the currencies are deleted.",
+    "expandable": false,
     "children": []
   }
 ]} />

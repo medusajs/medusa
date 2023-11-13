@@ -1,8 +1,4 @@
 import {
-  CartService,
-  ProductVariantInventoryService,
-} from "../../../../services"
-import {
   IsArray,
   IsEmail,
   IsOptional,
@@ -10,15 +6,19 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import {
+  CartService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 
-import { AddressPayload } from "../../../../types/common"
+import { MedusaV2Flag } from "@medusajs/utils"
+import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { AddressPayload } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { Type } from "class-transformer"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -45,7 +45,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -90,7 +90,7 @@ export default async (req, res) => {
   }
 
   let cart
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     cart = await retrieveCartWithIsolatedProductModule(req, id)
   }
 
@@ -247,7 +247,8 @@ class Discount {
  *     description: "The ID of the Customer to associate the Cart with."
  *     type: string
  *   context:
- *     description: "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     description: >-
+ *       An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
  *     type: object
  *     example:
  *       ip: "::1"

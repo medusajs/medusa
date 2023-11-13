@@ -59,7 +59,7 @@ properties:
     $ref: ./Region.yaml
   currency_code:
     description: >-
-      The 3 character ISO code for the currency this payment collection is
+      The three character ISO code for the currency this payment collection is
       associated with.
     type: string
     example: usd

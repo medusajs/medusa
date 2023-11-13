@@ -1,0 +1,131 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PaymentSession
+
+A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "amount",
+    "type": "`number`",
+    "description": "The amount that the Payment Session has been authorized for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "The details of the cart that the payment session was created for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "cart_id",
+    "type": "``null`` \\| `string`",
+    "description": "The ID of the cart that the payment session was created for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "The data required for the Payment Provider to identify, modify and process the Payment Session. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The payment session's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "idempotency_key",
+    "type": "`string`",
+    "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "is_initiated",
+    "type": "`boolean`",
+    "description": "A flag to indicate if a communication with the third party provider has been initiated.",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "is_selected",
+    "type": "``null`` \\| `boolean`",
+    "description": "A flag to indicate if the Payment Session has been selected as the method that will be used to complete the purchase.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payment_authorized_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the Payment Session was authorized.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the Payment Provider that is responsible for the Payment Session",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "`string`",
+    "description": "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires_more` to indicate that further actions are to be completed by the Customer.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

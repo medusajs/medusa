@@ -112,6 +112,7 @@ export type AdminStockLocationsDeleteRes = DeleteResponse
 /**
  * @schema AdminStockLocationsRes
  * type: object
+ * description: "The stock location's details."
  * required:
  *   - stock_location
  * properties:
@@ -126,6 +127,7 @@ export type AdminStockLocationsRes = {
 /**
  * @schema AdminStockLocationsListRes
  * type: object
+ * description: "The list of stock locations with pagination fields."
  * required:
  *   - stock_locations
  *   - count

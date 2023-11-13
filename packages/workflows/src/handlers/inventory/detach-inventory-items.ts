@@ -1,5 +1,6 @@
 import { InventoryItemDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+import { promiseAll } from "@medusajs/utils"
 
 export async function detachInventoryItems({
   container,
@@ -21,7 +22,7 @@ export async function detachInventoryItems({
     return []
   }
 
-  await Promise.all(
+  await promiseAll(
     data.inventoryItems.map(async ({ tag, inventoryItem }) => {
       return await productVariantInventoryService.detachInventoryItem(
         inventoryItem.id,

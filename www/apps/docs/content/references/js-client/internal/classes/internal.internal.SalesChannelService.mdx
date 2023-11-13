@@ -1,0 +1,703 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# SalesChannelService
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBusService_",
+    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "salesChannelRepository_",
+    "type": "`Repository`<[`SalesChannel`](internal.SalesChannel.mdx)\\> & { `addProducts`: Method addProducts ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `listProductIdsBySalesChannelIds`: Method listProductIdsBySalesChannelIds ; `removeProducts`: Method removeProducts  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "storeService_",
+    "type": "[`StoreService`](internal.internal.StoreService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addProducts
+
+Add a batch of product to a sales channel
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "salesChannelId",
+    "type": "`string`",
+    "description": "The id of the sales channel on which to add the products",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "The products ids to attach to the sales channel",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the sales channel on which the products have been added",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+Creates a SalesChannel
+
+ This feature is under development and may change in the future.
+To use this feature please enable the corresponding feature flag in your medusa backend project.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`CreateSalesChannelInput`](../types/internal.CreateSalesChannelInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the created channel",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createDefault
+
+Creates a default sales channel, if this does not already exist.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the sales channel",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+Deletes a sales channel from
+ This feature is under development and may change in the future.
+To use this feature please enable the corresponding feature flag in your medusa backend project.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "salesChannelId",
+    "type": "`string`",
+    "description": "the id of the sales channel to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+Lists sales channels based on the provided parameters and includes the count of
+sales channels that match the query.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`QuerySelector`](../types/internal.internal.QuerySelector.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`SalesChannel`](internal.SalesChannel.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "an array containing the sales channels as\n  the first element and the total count of sales channels that matches the query\n  as the second element.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listProductIdsBySalesChannelIds
+
+List all product ids that belongs to the sales channels ids
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "salesChannelIds",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<{ `[salesChannelId: string]`: `string`[];  }\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removeProducts
+
+Remove a batch of product from a sales channel
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "salesChannelId",
+    "type": "`string`",
+    "description": "The id of the sales channel on which to remove the products",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "The products ids to remove from the sales channel",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the sales channel on which the products have been removed",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a SalesChannel by id
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "salesChannelId",
+    "type": "`string`",
+    "description": "id of the channel to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "description": "SC config This feature is under development and may change in the future. To use this feature please enable the corresponding feature flag in your medusa backend project.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a sales channel",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByName
+
+Find a sales channel by name.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "of the sales channel",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "description": "find config",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`unknown`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a sales channel with matching name",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveDefault
+
+Retrieves the default sales channel.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the sales channel",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve\_
+
+A generic retrieve used to find a sales channel by different attributes.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "description": "SC selector",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "description": "find config",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a single SC matching the query or throws",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "salesChannelId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`Partial`](../types/internal.Partial.mdx)<[`CreateSalesChannelInput`](../types/internal.CreateSalesChannelInput.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "SalesChannelService",
+    "type": "[`SalesChannelService`](internal.internal.SalesChannelService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

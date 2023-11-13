@@ -63,7 +63,7 @@ The invitation process typically follows these steps in the Medusa backend:
 
 1. A user creates an invite either using the [Create Invite API Route](https://docs.medusajs.com/api/admin#invites_postinvites) or the `InviteService`'s `create` method. Part of creating an invite includes generating the token and setting the expiry date. By default, the expiry date is set to a week after the date of invitation creation.
 2. The new user receives the invite, typically through their email (although this is not implemented by default within the Medusa backend). The new user has to provide their details and password. The invite can be accepted either using the [Accept Invite API Route](https://docs.medusajs.com/api/admin#invites_postinvitesinviteaccept) or using the `InviteService`'s `accept` method.
-3. When the new user accepts the invite, the invitation is validated first to ensure it’s not expired. If it’s not expired, a new user is created using the `UserService`'s [create method](../../references/services/classes/UserService.md#create).
+3. When the new user accepts the invite, the invitation is validated first to ensure it’s not expired. If it’s not expired, a new user is created using the `UserService`'s [create method](../../references/services/classes/UserService.mdx#create).
 
 If an invitation is expired, an existing user can resend the invite either using the Resend Invite API Route or using the `InviteService`'s resend method. This would generate a new token and reset the expiry date.
 

@@ -1,17 +1,18 @@
-import { FlagRouter, MedusaError } from "@medusajs/utils"
 import { IPricingModuleService, MedusaContainer } from "@medusajs/types"
-
-import { AwilixContainer } from "awilix"
+import {
+  FlagRouter,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
+import dotenv from "dotenv"
+import express from "express"
 import { EntityManager } from "typeorm"
-import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
-import { Modules } from "@medusajs/modules-sdk"
+import loaders from "../loaders"
+import loadMedusaApp from "../loaders/medusa-app"
 import { ProductVariant } from "../models"
 import { ProductVariantService } from "../services"
 import { createDefaultRuleTypes } from "./create-default-rule-types"
-import dotenv from "dotenv"
-import express from "express"
-import loadMedusaApp from "../loaders/medusa-app"
-import loaders from "../loaders"
 
 dotenv.config()
 
@@ -69,7 +70,7 @@ const processBatch = async (
 ) => {
   const manager = container.resolve("manager")
   return await manager.transaction(async (transactionManager) => {
-    await Promise.all(
+    await promiseAll(
       variants.map(async (variant) => {
         await migrateProductVariant(variant, {
           container,
@@ -95,10 +96,7 @@ const migrate = async function ({ directory }) {
     "featureFlagRouter"
   )
 
-  if (
-    !featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key) &&
-    !featureFlagRouter.isFeatureEnabled(Modules.PRICING)
-  ) {
+  if (!featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     throw new MedusaError(
       MedusaError.Types.NOT_ALLOWED,
       "Pricing module not enabled"

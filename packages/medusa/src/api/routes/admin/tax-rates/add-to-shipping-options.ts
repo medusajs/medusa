@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/tax-rates/{id}/shipping-options/batch
  * operationId: "PostTaxRatesTaxRateShippingOptions"
  * summary: "Add to Shipping Options"
- * description: "Associates a Tax Rate with a list of Shipping Options."
+ * description: "Add Shipping Options to a Tax Rate."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
@@ -54,7 +54,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -138,11 +138,20 @@ export class AdminPostTaxRatesTaxRateShippingOptionsReq {
   shipping_options: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostTaxRatesTaxRateShippingOptionsParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

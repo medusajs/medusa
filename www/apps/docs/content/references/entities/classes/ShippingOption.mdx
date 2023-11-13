@@ -6,110 +6,126 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ShippingOption
 
+A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "admin_only",
     "type": "`boolean`",
-    "description": "",
+    "description": "Flag to indicate if the Shipping Option usage is restricted to admin users.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "false",
+    "expandable": false,
     "children": []
   },
   {
     "name": "amount",
     "type": "``null`` \\| `number`",
-    "description": "",
+    "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "created_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "data",
     "type": "Record<`string`, `unknown`\\>",
-    "description": "",
+    "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "deleted_at",
     "type": "``null`` \\| `Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The shipping option's ID",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "includes_tax",
     "type": "`boolean`",
-    "description": "",
+    "description": "Whether the shipping option price include tax",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "false",
+    "expandable": false,
+    "featureFlag": "tax_inclusive_pricing",
     "children": []
   },
   {
     "name": "is_return",
     "type": "`boolean`",
-    "description": "",
+    "description": "Flag to indicate if the Shipping Option can be used for Return shipments.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "false",
+    "expandable": false,
     "children": []
   },
   {
     "name": "metadata",
     "type": "Record<`string`, `unknown`\\>",
-    "description": "",
+    "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "name",
     "type": "`string`",
-    "description": "",
+    "description": "The name given to the Shipping Option - this may be displayed to the Customer.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "price_type",
     "type": "[`ShippingOptionPriceType`](../enums/ShippingOptionPriceType.mdx)",
-    "description": "",
+    "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "CALCULATED",
         "type": "``\"calculated\"``",
-        "description": "",
+        "description": "The shipping option's price is calculated. In this case, the `amount` field is typically `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "FLAT_RATE",
         "type": "``\"flat_rate\"``",
-        "description": "",
+        "description": "The shipping option's price is a flat rate.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -117,603 +133,90 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "profile",
     "type": "[`ShippingProfile`](ShippingProfile.mdx)",
-    "description": "",
+    "description": "The details of the shipping profile that the shipping option belongs to.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`ShippingProfile`](ShippingProfile.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The shipping profile's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "name",
         "type": "`string`",
-        "description": "",
+        "description": "The name given to the Shipping profile - this may be displayed to the Customer.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "products",
         "type": "[`Product`](Product.mdx)[]",
-        "description": "",
+        "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Product`](Product.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "categories",
-            "type": "[`ProductCategory`](ProductCategory.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "collection",
-            "type": "[`ProductCollection`](ProductCollection.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "collection_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "description",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discountable",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "external_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "handle",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "height",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "hs_code",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "images",
-            "type": "[`Image`](Image.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_giftcard",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "length",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "material",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "mid_code",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "options",
-            "type": "[`ProductOption`](ProductOption.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "origin_country",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "profile",
-            "type": "[`ShippingProfile`](ShippingProfile.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "profile_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "profiles",
-            "type": "[`ShippingProfile`](ShippingProfile.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channels",
-            "type": "[`SalesChannel`](SalesChannel.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "status",
-            "type": "[`ProductStatus`](../enums/ProductStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "subtitle",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tags",
-            "type": "[`ProductTag`](ProductTag.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "thumbnail",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "title",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "[`ProductType`](ProductType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "type_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "variants",
-            "type": "[`ProductVariant`](ProductVariant.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "weight",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "width",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "afterLoad",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeUpdate",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "shipping_options",
         "type": "[`ShippingOption`](ShippingOption.mdx)[]",
-        "description": "",
+        "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ShippingOption`](ShippingOption.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "admin_only",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "amount",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "data",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "includes_tax",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_return",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "price_type",
-            "type": "[`ShippingOptionPriceType`](../enums/ShippingOptionPriceType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "profile",
-            "type": "[`ShippingProfile`](ShippingProfile.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "profile_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "provider",
-            "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "provider_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "requirements",
-            "type": "[`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "type",
         "type": "[`ShippingProfileType`](../enums/ShippingProfileType.mdx)",
-        "description": "",
+        "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "CUSTOM",
-            "type": "``\"custom\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "DEFAULT",
-            "type": "``\"default\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "GIFT_CARD",
-            "type": "``\"gift_card\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": false,
+        "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -721,40 +224,36 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "profile_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the Shipping Profile that the shipping option belongs to.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "provider",
     "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
-    "description": "",
+    "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`FulfillmentProvider`](FulfillmentProvider.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The ID of the fulfillment provider as given by the fulfillment service.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "is_installed",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the fulfillment service is installed in the current version. If a fulfillment service is no longer installed, the `is_installed` attribute is set to `false`.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       }
     ]
@@ -762,381 +261,190 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "provider_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "region",
     "type": "[`Region`](Region.mdx)",
-    "description": "",
+    "description": "The details of the region this shipping option can be used in.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`Region`](Region.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "automatic_taxes",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether taxes should be automated in this region.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "countries",
         "type": "[`Country`](Country.mdx)[]",
-        "description": "",
+        "description": "The details of the countries included in this region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Country`](Country.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "display_name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "iso_2",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "iso_3",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "num_code",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "currency",
         "type": "[`Currency`](Currency.mdx)",
-        "description": "",
+        "description": "The details of the currency used in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Currency`](Currency.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "includes_tax",
-            "type": "`boolean`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "symbol",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "symbol_native",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "currency_code",
         "type": "`string`",
-        "description": "",
+        "description": "The three character currency code used in the region.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "fulfillment_providers",
         "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
-        "description": "",
+        "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`FulfillmentProvider`](FulfillmentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "gift_cards_taxable",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the gift cards are taxable or not in this region.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The region's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the prices for the region include tax",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "name",
         "type": "`string`",
-        "description": "",
+        "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "payment_providers",
         "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
-        "description": "",
+        "description": "The details of the payment providers that can be used to process payments in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`PaymentProvider`](PaymentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "tax_code",
         "type": "`string`",
-        "description": "",
+        "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_provider",
         "type": "[`TaxProvider`](TaxProvider.mdx)",
-        "description": "",
+        "description": "The details of the tax provider used in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`TaxProvider`](TaxProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "tax_provider_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the tax provider used in this region",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_rate",
         "type": "`number`",
-        "description": "",
+        "description": "The tax rate that should be charged on purchases in the Region.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_rates",
         "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
-        "description": "",
+        "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",
+        "expandable": true,
         "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -1144,266 +452,72 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "region_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the region this shipping option can be used in.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "requirements",
     "type": "[`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)[]",
-    "description": "",
+    "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "amount",
         "type": "`number`",
-        "description": "",
+        "description": "The amount to compare the Cart subtotal to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The shipping option requirement's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "shipping_option",
         "type": "[`ShippingOption`](ShippingOption.mdx)",
-        "description": "",
+        "description": "The details of the shipping option that the requirements belong to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ShippingOption`](ShippingOption.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "admin_only",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "amount",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "data",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "includes_tax",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_return",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "price_type",
-            "type": "[`ShippingOptionPriceType`](../enums/ShippingOptionPriceType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "profile",
-            "type": "[`ShippingProfile`](ShippingProfile.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "profile_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "provider",
-            "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "provider_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "requirements",
-            "type": "[`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "shipping_option_id",
         "type": "`string`",
-        "description": "",
+        "description": "The ID of the shipping option that the requirements belong to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "type",
         "type": "[`RequirementType`](../enums/RequirementType.mdx)",
-        "description": "",
+        "description": "The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "MAX_SUBTOTAL",
-            "type": "``\"max_subtotal\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "MIN_SUBTOTAL",
-            "type": "``\"min_subtotal\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -1411,9 +525,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "updated_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was updated.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

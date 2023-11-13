@@ -24,7 +24,7 @@ function getReturnFromType(
   theme: MarkdownTheme,
   reflection: SignatureReflection
 ) {
-  const { parameterStyle, parameterComponent } =
+  const { parameterStyle, parameterComponent, maxLevel } =
     theme.getFormattingOptionsForLocation()
 
   if (!reflection.type) {
@@ -35,7 +35,8 @@ function getReturnFromType(
     reflection.type,
     reflection.project || theme.project,
     reflection.comment,
-    1
+    1,
+    maxLevel
   )
 
   if (parameterStyle === "component") {
@@ -73,7 +74,7 @@ function formatReturnAsList(componentItems: Parameter[], level = 1): string {
 
 function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
   const md: string[] = []
-  const { parameterStyle, parameterComponent } =
+  const { parameterStyle, parameterComponent, maxLevel } =
     theme.getFormattingOptionsForLocation()
 
   if (comment.blockTags?.length) {
@@ -87,7 +88,7 @@ function getReturnFromComment(theme: MarkdownTheme, comment: Comment) {
             commentPart.target instanceof DeclarationReflection
           ) {
             const content = commentPart.target.children?.map((childItem) =>
-              reflectionFormatter(childItem, parameterStyle, 1)
+              reflectionFormatter(childItem, parameterStyle, 1, maxLevel)
             )
             result +=
               parameterStyle === "component"

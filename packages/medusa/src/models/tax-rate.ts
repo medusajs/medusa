@@ -84,6 +84,9 @@ export class TaxRate extends BaseEntity {
   product_type_count?: number
   shipping_option_count?: number
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "txr")

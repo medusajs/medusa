@@ -4,7 +4,13 @@ import {
   PriceSetMoneyAmountDTO,
   RemoteQueryFunction,
 } from "@medusajs/types"
-import { FlagRouter, removeNullish } from "@medusajs/utils"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  promiseAll,
+  removeNullish,
+} from "@medusajs/utils"
+import { ProductVariantService, RegionService, TaxProviderService } from "."
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -24,15 +30,12 @@ import {
   ProductVariantPricing,
   TaxedPricing,
 } from "../types/pricing"
-import { ProductVariantService, RegionService, TaxProviderService } from "."
 
-import { EntityManager } from "typeorm"
-import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
-import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
 
 type InjectedDependencies = {
@@ -275,14 +278,7 @@ class PricingService extends TransactionBaseService {
     }[],
     context: PricingContext
   ): Promise<Map<string, ProductVariantPricing>> {
-    if (
-      this.featureFlagRouter.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      ) &&
-      this.featureFlagRouter.isFeatureEnabled(
-        IsolatePricingDomainFeatureFlag.key
-      )
-    ) {
+    if (this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       return await this.getProductVariantPricingModulePricing_(data, context)
     }
 
@@ -501,7 +497,7 @@ class PricingService extends TransactionBaseService {
       Record<string, ProductVariantPricing>
     >()
 
-    await Promise.all(
+    await promiseAll(
       data.map(async ({ productId, variants }) => {
         const pricingData = variants.map((variant) => {
           return { variantId: variant.id }
@@ -718,11 +714,7 @@ class PricingService extends TransactionBaseService {
     variants: ProductVariant[],
     context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
-    if (
-      !this.featureFlagRouter.isFeatureEnabled(
-        IsolatePricingDomainFeatureFlag.key
-      )
-    ) {
+    if (!this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       return await this.setVariantPrices(variants, context)
     }
 
@@ -754,11 +746,7 @@ class PricingService extends TransactionBaseService {
   async setAdminProductPricing(
     products: Product[]
   ): Promise<(Product | PricedProduct)[]> {
-    if (
-      !this.featureFlagRouter.isFeatureEnabled(
-        IsolatePricingDomainFeatureFlag.key
-      )
-    ) {
+    if (!this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       return await this.setProductPrices(products)
     }
 
@@ -876,7 +864,7 @@ class PricingService extends TransactionBaseService {
       regions.add(shippingOption.region_id)
     }
 
-    const contexts = await Promise.all(
+    const contexts = await promiseAll(
       [...regions].map(async (regionId) => {
         return {
           context: await this.collectPricingContext({
@@ -907,7 +895,7 @@ class PricingService extends TransactionBaseService {
       )
     })
 
-    return await Promise.all(shippingOptionPricingPromises)
+    return await promiseAll(shippingOptionPricingPromises)
   }
 }
 

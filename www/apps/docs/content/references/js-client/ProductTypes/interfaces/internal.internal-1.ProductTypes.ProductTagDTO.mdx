@@ -1,0 +1,50 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductTagDTO
+
+A product tag's data.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the product tag.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "description": "Holds custom data in key-value pairs.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "products",
+    "type": "[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)[]",
+    "description": "The associated products. It may only be available if the `products` relation is expanded.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`string`",
+    "description": "The value of the product tag.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
