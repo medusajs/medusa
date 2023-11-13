@@ -119,19 +119,21 @@ describe("[Product & Pricing Module] DELETE /admin/price-lists/:id", () => {
     const result = await api.post(`admin/price-lists`, data, adminHeaders)
     const priceListId = result.data.price_list.id
 
-    const deletePrice =
-      result.data.price_list.price_set_money_amounts[0].money_amount
+    let psmas = await pricingModuleService.listPriceSetMoneyAmounts(
+      {
+        price_list_id: [priceListId],
+      },
+      { relations: ["money_amount"] }
+    )
 
-    let psmas = await pricingModuleService.listPriceSetMoneyAmounts({
-      price_list_id: [priceListId],
-    })
     expect(psmas.length).toEqual(2)
 
+    const deletePrice = psmas[0].money_amount
     const deleteRes = await api.delete(
       `/admin/price-lists/${priceListId}/prices/batch`,
       {
         data: {
-          price_ids: [deletePrice.id],
+          price_ids: [deletePrice?.id],
         },
         ...adminHeaders,
       }
