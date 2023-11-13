@@ -12,7 +12,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
 
 ### constructor
 
-**new Return**()
+`**new Return**()`
 
 A Return holds information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can also be used as part of a Swap or a Claim.
 
@@ -21,7 +21,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
 <ParameterTypes parameters={[
   {
     "name": "claim_order",
-    "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+    "type": "[ClaimOrder](ClaimOrder.mdx)",
     "description": "The details of the claim that the return may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
   },
   {
     "name": "items",
-    "type": "[`ReturnItem`](ReturnItem.mdx)[]",
+    "type": "[ReturnItem](ReturnItem.mdx)[]",
     "description": "The details of the items that the customer is returning.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
   },
   {
     "name": "metadata",
-    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "type": "``null`` \\| `Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +102,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that the return was created for.",
     "optional": false,
     "defaultValue": "",
@@ -138,7 +138,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
   },
   {
     "name": "shipping_data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
     "optional": false,
     "defaultValue": "",
@@ -147,7 +147,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
   },
   {
     "name": "shipping_method",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+    "type": "[ShippingMethod](ShippingMethod.mdx)",
     "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
     "optional": false,
     "defaultValue": "",
@@ -156,7 +156,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
   },
   {
     "name": "status",
-    "type": "[`ReturnStatus`](../enums/ReturnStatus.mdx)",
+    "type": "[ReturnStatus](../enums/ReturnStatus.mdx)",
     "description": "Status of the Return.",
     "optional": false,
     "defaultValue": "requested",
@@ -165,7 +165,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
   },
   {
     "name": "swap",
-    "type": "[`Swap`](Swap.mdx)",
+    "type": "[Swap](Swap.mdx)",
     "description": "The details of the swap that the return may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -196,7 +196,7 @@ A Return holds information about Line Items that a Customer wishes to send back,
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

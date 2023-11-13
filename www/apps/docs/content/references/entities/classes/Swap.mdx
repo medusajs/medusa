@@ -13,7 +13,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
 <ParameterTypes parameters={[
   {
     "name": "additional_items",
-    "type": "[`LineItem`](LineItem.mdx)[]",
+    "type": "[LineItem](LineItem.mdx)[]",
     "description": "The details of the new products to send to the customer, represented as line items.",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +40,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart that the customer uses to complete the swap.",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "fulfillment_status",
-    "type": "[`SwapFulfillmentStatus`](../enums/SwapFulfillmentStatus.mdx)",
+    "type": "[SwapFulfillmentStatus](../enums/SwapFulfillmentStatus.mdx)",
     "description": "The status of the Fulfillment of the Swap.",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "fulfillments",
-    "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+    "type": "[Fulfillment](Fulfillment.mdx)[]",
     "description": "The details of the fulfillments that are used to send the new items to the customer.",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that the swap belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -166,8 +166,8 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "payment",
-    "type": "[`Payment`](Payment.mdx)",
-    "description": "The details of the additional payment authorized by the customer when `difference_due` is positive.",
+    "type": "[Payment](Payment.mdx)",
+    "description": "The details of the additional payment authorized by the customer when \\`difference\\_due\\` is positive.",
     "optional": false,
     "defaultValue": "",
     "expandable": true,
@@ -175,7 +175,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "payment_status",
-    "type": "[`SwapPaymentStatus`](../enums/SwapPaymentStatus.mdx)",
+    "type": "[SwapPaymentStatus](../enums/SwapPaymentStatus.mdx)",
     "description": "The status of the Payment of the Swap. The payment may either refer to the refund of an amount or the authorization of a new amount.",
     "optional": false,
     "defaultValue": "",
@@ -184,7 +184,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "return_order",
-    "type": "[`Return`](Return.mdx)",
+    "type": "[Return](Return.mdx)",
     "description": "The details of the return that belongs to the swap, which holds the details on the items being returned.",
     "optional": false,
     "defaultValue": "",
@@ -193,7 +193,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "shipping_address",
-    "type": "[`Address`](Address.mdx)",
+    "type": "[Address](Address.mdx)",
     "description": "The details of the shipping address that the new items should be sent to.",
     "optional": false,
     "defaultValue": "",
@@ -211,7 +211,7 @@ A swap can be created when a Customer wishes to exchange Products that they have
   },
   {
     "name": "shipping_methods",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](ShippingMethod.mdx)[]",
     "description": "The details of the shipping methods used to fulfill the additional items purchased.",
     "optional": false,
     "defaultValue": "",

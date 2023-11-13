@@ -18,7 +18,7 @@ tax conditions and calculation contexts.
 <ParameterTypes parameters={[
   {
     "name": "items",
-    "type": "[`LineItem`](../classes/internal.LineItem.mdx)[]",
+    "type": "[LineItem](../classes/internal.LineItem.mdx)[]",
     "description": "the line items to calculate the tax total for",
     "optional": false,
     "defaultValue": "",
@@ -27,7 +27,7 @@ tax conditions and calculation contexts.
   },
   {
     "name": "taxLines",
-    "type": "([`LineItemTaxLine`](../classes/internal.internal.LineItemTaxLine.mdx) \\| [`ShippingMethodTaxLine`](../classes/internal.internal.ShippingMethodTaxLine.mdx))[]",
+    "type": "([LineItemTaxLine](../classes/internal.internal.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](../classes/internal.internal.ShippingMethodTaxLine.mdx))[]",
     "description": "the tax lines that applies to the calculation",
     "optional": false,
     "defaultValue": "",
@@ -36,7 +36,7 @@ tax conditions and calculation contexts.
   },
   {
     "name": "calculationContext",
-    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/internal.internal.TaxCalculationContext.mdx)",
     "description": "other details relevant for the calculation",
     "optional": false,
     "defaultValue": "",
@@ -50,7 +50,7 @@ tax conditions and calculation contexts.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise\\&#60;number\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax total",

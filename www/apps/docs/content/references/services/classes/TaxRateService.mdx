@@ -10,7 +10,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new TaxRateService**(`«destructured»`)
+`**new TaxRateService**(«destructured»)`
 
 #### Parameters
 
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productService_",
-    "type": "[`ProductService`](ProductService.mdx)",
+    "type": "[ProductService](ProductService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productTypeService_",
-    "type": "[`ProductTypeService`](ProductTypeService.mdx)",
+    "type": "[ProductTypeService](ProductTypeService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingOptionService_",
-    "type": "[`ShippingOptionService`](ShippingOptionService.mdx)",
+    "type": "[ShippingOptionService](ShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxRateRepository_",
-    "type": "`Repository`<[`TaxRate`](TaxRate.mdx)\\> & { `addToProduct`: Method addToProduct ; `addToProductType`: Method addToProductType ; `addToShippingOption`: Method addToShippingOption ; `applyResolutionsToQueryBuilder`: Method applyResolutionsToQueryBuilder ; `findAndCountWithResolution`: Method findAndCountWithResolution ; `findOneWithResolution`: Method findOneWithResolution ; `findWithResolution`: Method findWithResolution ; `getFindQueryBuilder`: Method getFindQueryBuilder ; `listByProduct`: Method listByProduct ; `listByShippingOption`: Method listByShippingOption ; `removeFromProduct`: Method removeFromProduct ; `removeFromProductType`: Method removeFromProductType ; `removeFromShippingOption`: Method removeFromShippingOption  }",
+    "type": "Repository\\&#60;TaxRate\\&#62; & `\\&#123; addToProduct: Method addToProduct ; addToProductType: Method addToProductType ; addToShippingOption: Method addToShippingOption ; applyResolutionsToQueryBuilder: Method applyResolutionsToQueryBuilder ; findAndCountWithResolution: Method findAndCountWithResolution ; findOneWithResolution: Method findOneWithResolution ; findWithResolution: Method findWithResolution ; getFindQueryBuilder: Method getFindQueryBuilder ; listByProduct: Method listByProduct ; listByShippingOption: Method listByShippingOption ; removeFromProduct: Method removeFromProduct ; removeFromProductType: Method removeFromProductType ; removeFromShippingOption: Method removeFromShippingOption  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -116,16 +116,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -138,7 +138,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### addToProduct
 
-**addToProduct**(`id`, `productIds`, `replace?`): `Promise`<[`ProductTaxRate`](ProductTaxRate.mdx) \| [`ProductTaxRate`](ProductTaxRate.mdx)[]\>
+`**addToProduct**(id, productIds, replace?): Promise\&#60;ProductTaxRate \| ProductTaxRate[]\&#62;`
 
 #### Parameters
 
@@ -174,12 +174,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 #### Returns
 
-`Promise`<[`ProductTaxRate`](ProductTaxRate.mdx) \| [`ProductTaxRate`](ProductTaxRate.mdx)[]\>
+Promise\&#60;ProductTaxRate \| ProductTaxRate[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTaxRate`](ProductTaxRate.mdx) \\| [`ProductTaxRate`](ProductTaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductTaxRate \\| ProductTaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -192,7 +192,7 @@ ___
 
 ### addToProductType
 
-**addToProductType**(`id`, `productTypeIds`, `replace?`): `Promise`<[`ProductTypeTaxRate`](ProductTypeTaxRate.mdx)[]\>
+`**addToProductType**(id, productTypeIds, replace?): Promise\&#60;ProductTypeTaxRate[]\&#62;`
 
 #### Parameters
 
@@ -228,12 +228,12 @@ ___
 
 #### Returns
 
-`Promise`<[`ProductTypeTaxRate`](ProductTypeTaxRate.mdx)[]\>
+Promise\&#60;ProductTypeTaxRate[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeTaxRate`](ProductTypeTaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductTypeTaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -246,7 +246,7 @@ ___
 
 ### addToShippingOption
 
-**addToShippingOption**(`id`, `optionIds`, `replace?`): `Promise`<[`ShippingTaxRate`](ShippingTaxRate.mdx)[]\>
+`**addToShippingOption**(id, optionIds, replace?): Promise\&#60;ShippingTaxRate[]\&#62;`
 
 #### Parameters
 
@@ -282,12 +282,12 @@ ___
 
 #### Returns
 
-`Promise`<[`ShippingTaxRate`](ShippingTaxRate.mdx)[]\>
+Promise\&#60;ShippingTaxRate[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ShippingTaxRate`](ShippingTaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;ShippingTaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -300,7 +300,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -332,7 +332,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -341,7 +341,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -350,7 +350,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -361,12 +361,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -379,14 +379,14 @@ ___
 
 ### create
 
-**create**(`data`): `Promise`<[`TaxRate`](TaxRate.mdx)\>
+`**create**(data): Promise\&#60;TaxRate\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateTaxRateInput`](../types/CreateTaxRateInput.mdx)",
+    "type": "[CreateTaxRateInput](../types/CreateTaxRateInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -397,12 +397,12 @@ ___
 
 #### Returns
 
-`Promise`<[`TaxRate`](TaxRate.mdx)\>
+Promise\&#60;TaxRate\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](TaxRate.mdx)\\>",
+    "type": "Promise\\&#60;TaxRate\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -415,7 +415,7 @@ ___
 
 ### delete
 
-**delete**(`id`): `Promise`<`void`\>
+`**delete**(id): Promise\&#60;void\&#62;`
 
 #### Parameters
 
@@ -433,12 +433,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -451,14 +451,14 @@ ___
 
 ### list
 
-**list**(`selector`, `config?`): `Promise`<[`TaxRate`](TaxRate.mdx)[]\>
+`**list**(selector, config?): Promise\&#60;TaxRate[]\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableTaxRateProps`](../types/FilterableTaxRateProps.mdx)",
+    "type": "[FilterableTaxRateProps](../types/FilterableTaxRateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -467,7 +467,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`TaxRate`](TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;TaxRate\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -478,12 +478,12 @@ ___
 
 #### Returns
 
-`Promise`<[`TaxRate`](TaxRate.mdx)[]\>
+Promise\&#60;TaxRate[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](TaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;TaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -496,14 +496,14 @@ ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`): `Promise`<[[`TaxRate`](TaxRate.mdx)[], `number`]\>
+`**listAndCount**(selector, config?): Promise\&#60;[TaxRate[], number]\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableTaxRateProps`](../types/FilterableTaxRateProps.mdx)",
+    "type": "[FilterableTaxRateProps](../types/FilterableTaxRateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -512,7 +512,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`TaxRate`](TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;TaxRate\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -523,12 +523,12 @@ ___
 
 #### Returns
 
-`Promise`<[[`TaxRate`](TaxRate.mdx)[], `number`]\>
+Promise\&#60;[TaxRate[], number]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`TaxRate`](TaxRate.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[TaxRate[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -541,7 +541,7 @@ ___
 
 ### listByProduct
 
-**listByProduct**(`productId`, `config`): `Promise`<[`TaxRate`](TaxRate.mdx)[]\>
+`**listByProduct**(productId, config): Promise\&#60;TaxRate[]\&#62;`
 
 #### Parameters
 
@@ -557,7 +557,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`TaxRateListByConfig`](../types/TaxRateListByConfig.mdx)",
+    "type": "[TaxRateListByConfig](../types/TaxRateListByConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -568,12 +568,12 @@ ___
 
 #### Returns
 
-`Promise`<[`TaxRate`](TaxRate.mdx)[]\>
+Promise\&#60;TaxRate[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](TaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;TaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -586,7 +586,7 @@ ___
 
 ### listByShippingOption
 
-**listByShippingOption**(`shippingOptionId`): `Promise`<[`TaxRate`](TaxRate.mdx)[]\>
+`**listByShippingOption**(shippingOptionId): Promise\&#60;TaxRate[]\&#62;`
 
 #### Parameters
 
@@ -604,12 +604,12 @@ ___
 
 #### Returns
 
-`Promise`<[`TaxRate`](TaxRate.mdx)[]\>
+Promise\&#60;TaxRate[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](TaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;TaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -622,7 +622,7 @@ ___
 
 ### removeFromProduct
 
-**removeFromProduct**(`id`, `productIds`): `Promise`<`void`\>
+`**removeFromProduct**(id, productIds): Promise\&#60;void\&#62;`
 
 #### Parameters
 
@@ -649,12 +649,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -667,7 +667,7 @@ ___
 
 ### removeFromProductType
 
-**removeFromProductType**(`id`, `typeIds`): `Promise`<`void`\>
+`**removeFromProductType**(id, typeIds): Promise\&#60;void\&#62;`
 
 #### Parameters
 
@@ -694,12 +694,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -712,7 +712,7 @@ ___
 
 ### removeFromShippingOption
 
-**removeFromShippingOption**(`id`, `optionIds`): `Promise`<`void`\>
+`**removeFromShippingOption**(id, optionIds): Promise\&#60;void\&#62;`
 
 #### Parameters
 
@@ -739,12 +739,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -757,7 +757,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`taxRateId`, `config?`): `Promise`<[`TaxRate`](TaxRate.mdx)\>
+`**retrieve**(taxRateId, config?): Promise\&#60;TaxRate\&#62;`
 
 #### Parameters
 
@@ -773,7 +773,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`TaxRate`](TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;TaxRate\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -784,12 +784,12 @@ ___
 
 #### Returns
 
-`Promise`<[`TaxRate`](TaxRate.mdx)\>
+Promise\&#60;TaxRate\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](TaxRate.mdx)\\>",
+    "type": "Promise\\&#60;TaxRate\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -802,14 +802,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -838,7 +838,7 @@ ___
 
 ### update
 
-**update**(`id`, `data`): `Promise`<[`TaxRate`](TaxRate.mdx)\>
+`**update**(id, data): Promise\&#60;TaxRate\&#62;`
 
 #### Parameters
 
@@ -854,7 +854,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[`UpdateTaxRateInput`](../types/UpdateTaxRateInput.mdx)",
+    "type": "[UpdateTaxRateInput](../types/UpdateTaxRateInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -865,12 +865,12 @@ ___
 
 #### Returns
 
-`Promise`<[`TaxRate`](TaxRate.mdx)\>
+Promise\&#60;TaxRate\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](TaxRate.mdx)\\>",
+    "type": "Promise\\&#60;TaxRate\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -883,14 +883,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`TaxRateService`](TaxRateService.mdx)
+`**withTransaction**(transactionManager?): TaxRateService`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -901,12 +901,12 @@ ___
 
 #### Returns
 
-[`TaxRateService`](TaxRateService.mdx)
+[TaxRateService](TaxRateService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "TaxRateService",
-    "type": "[`TaxRateService`](TaxRateService.mdx)",
+    "type": "[TaxRateService](TaxRateService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -14,13 +14,13 @@ in the near future use the AbstractPaymentProcessor instead
 
 ## Implements
 
-- [`"medusa-interfaces"`](../modules/medusa_interfaces_.mdx)
+- ["medusa-interfaces"](../modules/medusa_interfaces_.mdx)
 
 ## Constructors
 
 ### constructor
 
-`Protected` **new AbstractPaymentService**(`container`, `config?`)
+`Protected **new AbstractPaymentService**(container, config?)`
 
 #### Parameters
 
@@ -36,7 +36,7 @@ in the near future use the AbstractPaymentProcessor instead
   },
   {
     "name": "config",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -50,7 +50,7 @@ in the near future use the AbstractPaymentProcessor instead
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -68,7 +68,7 @@ in the near future use the AbstractPaymentProcessor instead
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -77,7 +77,7 @@ in the near future use the AbstractPaymentProcessor instead
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -86,7 +86,7 @@ in the near future use the AbstractPaymentProcessor instead
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -108,16 +108,16 @@ in the near future use the AbstractPaymentProcessor instead
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -130,7 +130,7 @@ in the near future use the AbstractPaymentProcessor instead
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -162,7 +162,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -171,7 +171,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -180,7 +180,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -191,12 +191,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -209,14 +209,14 @@ ___
 
 ### authorizePayment
 
-`Abstract` **authorizePayment**(`paymentSession`, `context`): `Promise`<{ `data`: [`Data`](../types/Data.mdx) ; `status`: [`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)  }\>
+`Abstract **authorizePayment**(paymentSession, context): Promise\&#60;\&#123; data: Data ; status: PaymentSessionStatus  \&#125;\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "paymentSession",
-    "type": "[`PaymentSession`](PaymentSession.mdx)",
+    "type": "[PaymentSession](PaymentSession.mdx)",
     "description": "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.",
     "optional": false,
     "defaultValue": "",
@@ -225,7 +225,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`Data`](../types/Data.mdx)",
+    "type": "[Data](../types/Data.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -236,12 +236,12 @@ ___
 
 #### Returns
 
-`Promise`<{ `data`: [`Data`](../types/Data.mdx) ; `status`: [`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)  }\>
+Promise\&#60;\&#123; data: Data ; status: PaymentSessionStatus  \&#125;\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `data`: [`Data`](../types/Data.mdx) ; `status`: [`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)  }\\>",
+    "type": "Promise\\&#60;\\&#123; data: Data ; status: PaymentSessionStatus  \\&#125;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -256,7 +256,7 @@ ___
 
 ### cancelPayment
 
-`Abstract` **cancelPayment**(`payment`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **cancelPayment**(payment): Promise\&#60;Data\&#62;`
 
 This will be
 
@@ -265,7 +265,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "payment",
-    "type": "[`Payment`](Payment.mdx)",
+    "type": "[Payment](Payment.mdx)",
     "description": "A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.",
     "optional": false,
     "defaultValue": "",
@@ -276,12 +276,12 @@ This will be
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -298,7 +298,7 @@ ___
 
 ### capturePayment
 
-`Abstract` **capturePayment**(`payment`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **capturePayment**(payment): Promise\&#60;Data\&#62;`
 
 This will be
 
@@ -307,7 +307,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "payment",
-    "type": "[`Payment`](Payment.mdx)",
+    "type": "[Payment](Payment.mdx)",
     "description": "A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.",
     "optional": false,
     "defaultValue": "",
@@ -318,12 +318,12 @@ This will be
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -340,14 +340,14 @@ ___
 
 ### createPayment
 
-`Abstract` **createPayment**(`context`): `Promise`<[`PaymentSessionResponse`](../types/PaymentSessionResponse.mdx)\>
+`Abstract **createPayment**(context): Promise\&#60;PaymentSessionResponse\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "[`Cart`](Cart.mdx) & [`PaymentContext`](../types/PaymentContext.mdx)",
+    "type": "[Cart](Cart.mdx) & [PaymentContext](../types/PaymentContext.mdx)",
     "description": "The type of this argument is meant to be temporary and once the previous method signature will be removed, the type will only be PaymentContext instead of Cart & PaymentContext",
     "optional": false,
     "defaultValue": "",
@@ -358,12 +358,12 @@ ___
 
 #### Returns
 
-`Promise`<[`PaymentSessionResponse`](../types/PaymentSessionResponse.mdx)\>
+Promise\&#60;PaymentSessionResponse\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentSessionResponse`](../types/PaymentSessionResponse.mdx)\\>",
+    "type": "Promise\\&#60;PaymentSessionResponse\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -372,7 +372,7 @@ ___
   }
 ]} />
 
-`Abstract` **createPayment**(`cart`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **createPayment**(cart): Promise\&#60;Data\&#62;`
 
 This will be
 
@@ -381,7 +381,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -392,12 +392,12 @@ This will be
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -414,7 +414,7 @@ ___
 
 ### deletePayment
 
-`Abstract` **deletePayment**(`paymentSession`): `Promise`<`void`\>
+`Abstract **deletePayment**(paymentSession): Promise\&#60;void\&#62;`
 
 This will be
 
@@ -423,7 +423,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "paymentSession",
-    "type": "[`PaymentSession`](PaymentSession.mdx)",
+    "type": "[PaymentSession](PaymentSession.mdx)",
     "description": "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.",
     "optional": false,
     "defaultValue": "",
@@ -434,12 +434,12 @@ This will be
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -456,7 +456,7 @@ ___
 
 ### getIdentifier
 
-**getIdentifier**(): `string`
+`**getIdentifier**(): string`
 
 #### Returns
 
@@ -478,14 +478,14 @@ ___
 
 ### getPaymentData
 
-`Abstract` **getPaymentData**(`paymentSession`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **getPaymentData**(paymentSession): Promise\&#60;Data\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "paymentSession",
-    "type": "[`PaymentSession`](PaymentSession.mdx)",
+    "type": "[PaymentSession](PaymentSession.mdx)",
     "description": "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.",
     "optional": false,
     "defaultValue": "",
@@ -496,12 +496,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -516,7 +516,7 @@ ___
 
 ### getStatus
 
-`Abstract` **getStatus**(`data`): `Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)\>
+`Abstract **getStatus**(data): Promise\&#60;PaymentSessionStatus\&#62;`
 
 This will be
 
@@ -525,7 +525,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`Data`](../types/Data.mdx)",
+    "type": "[Data](../types/Data.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -536,12 +536,12 @@ This will be
 
 #### Returns
 
-`Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)\>
+Promise\&#60;PaymentSessionStatus\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)\\>",
+    "type": "Promise\\&#60;PaymentSessionStatus\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -558,7 +558,7 @@ ___
 
 ### refundPayment
 
-`Abstract` **refundPayment**(`payment`, `refundAmount`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **refundPayment**(payment, refundAmount): Promise\&#60;Data\&#62;`
 
 This will be
 
@@ -567,7 +567,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "payment",
-    "type": "[`Payment`](Payment.mdx)",
+    "type": "[Payment](Payment.mdx)",
     "description": "A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.",
     "optional": false,
     "defaultValue": "",
@@ -587,12 +587,12 @@ This will be
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -609,14 +609,14 @@ ___
 
 ### retrievePayment
 
-`Abstract` **retrievePayment**(`paymentData`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **retrievePayment**(paymentData): Promise\&#60;Data\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "paymentData",
-    "type": "[`Data`](../types/Data.mdx)",
+    "type": "[Data](../types/Data.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -627,12 +627,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -647,7 +647,7 @@ ___
 
 ### retrieveSavedMethods
 
-**retrieveSavedMethods**(`customer`): `Promise`<[`Data`](../types/Data.mdx)[]\>
+`**retrieveSavedMethods**(customer): Promise\&#60;Data[]\&#62;`
 
 This will be
 
@@ -656,7 +656,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[`Customer`](Customer.mdx)",
+    "type": "[Customer](Customer.mdx)",
     "description": "A customer can make purchases in your store and manage their profile.",
     "optional": false,
     "defaultValue": "",
@@ -667,12 +667,12 @@ This will be
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)[]\>
+Promise\&#60;Data[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)[]\\>",
+    "type": "Promise\\&#60;Data[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -689,14 +689,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -725,14 +725,14 @@ ___
 
 ### updatePayment
 
-`Abstract` **updatePayment**(`paymentSessionData`, `context`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentSessionResponse`](../types/PaymentSessionResponse.mdx)\>
+`Abstract **updatePayment**(paymentSessionData, context): Promise\&#60;Record\&#60;string, unknown\&#62; \| PaymentSessionResponse\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "[`Data`](../types/Data.mdx)",
+    "type": "[Data](../types/Data.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -741,7 +741,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`Cart`](Cart.mdx) & [`PaymentContext`](../types/PaymentContext.mdx)",
+    "type": "[Cart](Cart.mdx) & [PaymentContext](../types/PaymentContext.mdx)",
     "description": "The type of this argument is meant to be temporary and once the previous method signature will be removed, the type will only be PaymentContext instead of Cart & PaymentContext",
     "optional": false,
     "defaultValue": "",
@@ -752,21 +752,21 @@ ___
 
 #### Returns
 
-`Promise`<Record<`string`, `unknown`\> \| [`PaymentSessionResponse`](../types/PaymentSessionResponse.mdx)\>
+Promise\&#60;Record\&#60;string, unknown\&#62; \| PaymentSessionResponse\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentSessionResponse`](../types/PaymentSessionResponse.mdx)\\>",
+    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62; \\| PaymentSessionResponse\\&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "it return either a PaymentSessionResponse or PaymentSessionResponse[\"session_data\"] to maintain backward compatibility",
+    "description": "it return either a PaymentSessionResponse or PaymentSessionResponse[\"session\\_data\"] to maintain backward compatibility",
     "expandable": false,
     "children": []
   }
 ]} />
 
-`Abstract` **updatePayment**(`paymentSessionData`, `cart`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **updatePayment**(paymentSessionData, cart): Promise\&#60;Data\&#62;`
 
 This will be
 
@@ -775,7 +775,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "[`Data`](../types/Data.mdx)",
+    "type": "[Data](../types/Data.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -784,7 +784,7 @@ This will be
   },
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -795,12 +795,12 @@ This will be
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -817,14 +817,14 @@ ___
 
 ### updatePaymentData
 
-`Abstract` **updatePaymentData**(`paymentSessionData`, `data`): `Promise`<[`Data`](../types/Data.mdx)\>
+`Abstract **updatePaymentData**(paymentSessionData, data): Promise\&#60;Data\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "[`Data`](../types/Data.mdx)",
+    "type": "[Data](../types/Data.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -833,7 +833,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[`Data`](../types/Data.mdx)",
+    "type": "[Data](../types/Data.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -844,12 +844,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Data`](../types/Data.mdx)\>
+Promise\&#60;Data\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Data`](../types/Data.mdx)\\>",
+    "type": "Promise\\&#60;Data\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -864,14 +864,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`AbstractPaymentService`](AbstractPaymentService.mdx)
+`**withTransaction**(transactionManager?): AbstractPaymentService`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -882,12 +882,12 @@ ___
 
 #### Returns
 
-[`AbstractPaymentService`](AbstractPaymentService.mdx)
+[AbstractPaymentService](AbstractPaymentService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "AbstractPaymentService",
-    "type": "[`AbstractPaymentService`](AbstractPaymentService.mdx)",
+    "type": "[AbstractPaymentService](AbstractPaymentService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

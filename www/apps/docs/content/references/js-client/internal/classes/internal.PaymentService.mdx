@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "paymentProviderService_",
-    "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
+    "type": "[PaymentProviderService](internal.internal.PaymentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "paymentRepository_",
-    "type": "`Repository`<[`Payment`](internal.Payment.mdx)\\>",
+    "type": "Repository\\&#60;Payment\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -155,7 +155,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -177,7 +177,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -186,7 +186,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -195,7 +195,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -209,7 +209,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -229,7 +229,7 @@ Captures a payment.
 <ParameterTypes parameters={[
   {
     "name": "paymentOrId",
-    "type": "`string` \\| [`Payment`](internal.Payment.mdx)",
+    "type": "`string` \\| [Payment](internal.Payment.mdx)",
     "description": "the id or the class instance of the payment",
     "optional": false,
     "defaultValue": "",
@@ -243,7 +243,7 @@ Captures a payment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Payment`](internal.Payment.mdx)\\>",
+    "type": "Promise\\&#60;Payment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment captured.",
@@ -263,7 +263,7 @@ Created a new payment.
 <ParameterTypes parameters={[
   {
     "name": "paymentInput",
-    "type": "[`PaymentDataInput`](../types/internal.PaymentDataInput.mdx)",
+    "type": "[PaymentDataInput](../types/internal.PaymentDataInput.mdx)",
     "description": "info to create the payment",
     "optional": false,
     "defaultValue": "",
@@ -277,7 +277,7 @@ Created a new payment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Payment`](internal.Payment.mdx)\\>",
+    "type": "Promise\\&#60;Payment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment created.",
@@ -297,7 +297,7 @@ refunds a payment.
 <ParameterTypes parameters={[
   {
     "name": "paymentOrId",
-    "type": "`string` \\| [`Payment`](internal.Payment.mdx)",
+    "type": "`string` \\| [Payment](internal.Payment.mdx)",
     "description": "the id or the class instance of the payment",
     "optional": false,
     "defaultValue": "",
@@ -338,7 +338,7 @@ refunds a payment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Refund`](internal.Refund.mdx)\\>",
+    "type": "Promise\\&#60;Refund\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the refund created.",
@@ -367,7 +367,7 @@ Retrieves a payment by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Payment`](internal.Payment.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Payment\\&#62;",
     "description": "the config to retrieve the payment",
     "optional": true,
     "defaultValue": "",
@@ -381,7 +381,7 @@ Retrieves a payment by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Payment`](internal.Payment.mdx)\\>",
+    "type": "Promise\\&#60;Payment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment.",
@@ -399,7 +399,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -443,7 +443,7 @@ Updates a payment in order to link it to an order or a swap.
   {
     "name": "data",
     "type": "`object`",
-    "description": "order_id or swap_id to link the payment",
+    "description": "order\\_id or swap\\_id to link the payment",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -474,7 +474,7 @@ Updates a payment in order to link it to an order or a swap.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Payment`](internal.Payment.mdx)\\>",
+    "type": "Promise\\&#60;Payment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment updated.",
@@ -492,7 +492,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -506,7 +506,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "default",
-    "type": "[`PaymentService`](internal.PaymentService.mdx)",
+    "type": "[PaymentService](internal.PaymentService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

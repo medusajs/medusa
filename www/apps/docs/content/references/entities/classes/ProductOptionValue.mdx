@@ -40,7 +40,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   },
   {
     "name": "option",
-    "type": "[`ProductOption`](ProductOption.mdx)",
+    "type": "[ProductOption](ProductOption.mdx)",
     "description": "The details of the product option that the Product Option Value belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -93,7 +93,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "product",
-        "type": "[`Product`](Product.mdx)",
+        "type": "[Product](Product.mdx)",
         "description": "The details of the product that this product option belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -112,7 +112,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       {
         "name": "title",
         "type": "`string`",
-        "description": "The title that the Product Option is defined by (e.g. `Size`).",
+        "description": "The title that the Product Option is defined by (e.g. \\`Size\\`).",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -129,7 +129,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "values",
-        "type": "[`ProductOptionValue`](ProductOptionValue.mdx)[]",
+        "type": "[ProductOptionValue](ProductOptionValue.mdx)[]",
         "description": "The details of the values of the product option.",
         "optional": false,
         "defaultValue": "",
@@ -159,7 +159,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   {
     "name": "value",
     "type": "`string`",
-    "description": "The value that the Product Variant has defined for the specific Product Option (e.g. if the Product Option is \"Size\" this value could be `Small`, `Medium` or `Large`).",
+    "description": "The value that the Product Variant has defined for the specific Product Option (e.g. if the Product Option is \"Size\" this value could be \\`Small\\`, \\`Medium\\` or \\`Large\\`).",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -167,7 +167,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   },
   {
     "name": "variant",
-    "type": "[`ProductVariant`](ProductVariant.mdx)",
+    "type": "[ProductVariant](ProductVariant.mdx)",
     "description": "The details of the product variant that uses this product option value.",
     "optional": false,
     "defaultValue": "",
@@ -176,7 +176,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       {
         "name": "allow_backorder",
         "type": "`boolean`",
-        "description": "Whether the Product Variant should be purchasable when `inventory_quantity` is 0.",
+        "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
         "optional": false,
         "defaultValue": "false",
         "expandable": false,
@@ -247,7 +247,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "inventory_items",
-        "type": "[`ProductVariantInventoryItem`](ProductVariantInventoryItem.mdx)[]",
+        "type": "[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]",
         "description": "The details inventory items of the product variant.",
         "optional": false,
         "defaultValue": "",
@@ -292,7 +292,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "type": "``null`` \\| `Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -310,7 +310,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "options",
-        "type": "[`ProductOptionValue`](ProductOptionValue.mdx)[]",
+        "type": "[ProductOptionValue](ProductOptionValue.mdx)[]",
         "description": "The details of the product options that this product variant defines values for.",
         "optional": false,
         "defaultValue": "",
@@ -328,7 +328,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "prices",
-        "type": "[`MoneyAmount`](MoneyAmount.mdx)[]",
+        "type": "[MoneyAmount](MoneyAmount.mdx)[]",
         "description": "The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.",
         "optional": false,
         "defaultValue": "",
@@ -337,7 +337,7 @@ An option value is one of the possible values of a Product Option. Product Varia
       },
       {
         "name": "product",
-        "type": "[`Product`](Product.mdx)",
+        "type": "[Product](Product.mdx)",
         "description": "The details of the product that the product variant belongs to.",
         "optional": false,
         "defaultValue": "",

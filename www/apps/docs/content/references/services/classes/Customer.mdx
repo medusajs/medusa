@@ -12,7 +12,7 @@ A customer can make purchases in your store and manage their profile.
 
 ### constructor
 
-**new Customer**()
+`**new Customer**()`
 
 A customer can make purchases in your store and manage their profile.
 
@@ -21,7 +21,7 @@ A customer can make purchases in your store and manage their profile.
 <ParameterTypes parameters={[
   {
     "name": "billing_address",
-    "type": "[`Address`](Address.mdx)",
+    "type": "[Address](Address.mdx)",
     "description": "The details of the billing address associated with the customer.",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A customer can make purchases in your store and manage their profile.
   },
   {
     "name": "groups",
-    "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
+    "type": "[CustomerGroup](CustomerGroup.mdx)[]",
     "description": "The customer groups the customer belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -111,7 +111,7 @@ A customer can make purchases in your store and manage their profile.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -120,7 +120,7 @@ A customer can make purchases in your store and manage their profile.
   },
   {
     "name": "orders",
-    "type": "[`Order`](Order.mdx)[]",
+    "type": "[Order](Order.mdx)[]",
     "description": "The details of the orders this customer placed.",
     "optional": false,
     "defaultValue": "",
@@ -147,7 +147,7 @@ A customer can make purchases in your store and manage their profile.
   },
   {
     "name": "shipping_addresses",
-    "type": "[`Address`](Address.mdx)[]",
+    "type": "[Address](Address.mdx)[]",
     "description": "The details of the shipping addresses associated with the customer.",
     "optional": false,
     "defaultValue": "",
@@ -169,7 +169,7 @@ A customer can make purchases in your store and manage their profile.
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

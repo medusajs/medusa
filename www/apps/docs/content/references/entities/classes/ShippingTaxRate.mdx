@@ -22,7 +22,7 @@ This represents the tax rates applied on a shipping option.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +40,7 @@ This represents the tax rates applied on a shipping option.
   },
   {
     "name": "shipping_option",
-    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "type": "[ShippingOption](ShippingOption.mdx)",
     "description": "The details of the shipping option.",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ This represents the tax rates applied on a shipping option.
       {
         "name": "amount",
         "type": "``null`` \\| `number`",
-        "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+        "description": "The amount to charge for shipping when the Shipping Option price type is \\`flat\\_rate\\`.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -75,7 +75,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
         "optional": false,
         "defaultValue": "",
@@ -121,7 +121,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -139,8 +139,8 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "price_type",
-        "type": "[`ShippingOptionPriceType`](../enums/ShippingOptionPriceType.mdx)",
-        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+        "type": "[ShippingOptionPriceType](../enums/ShippingOptionPriceType.mdx)",
+        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be \\`flat\\_rate\\` for fixed prices or \\`calculated\\` if the Fulfillment Provider can provide price calulations.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -148,7 +148,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "profile",
-        "type": "[`ShippingProfile`](ShippingProfile.mdx)",
+        "type": "[ShippingProfile](ShippingProfile.mdx)",
         "description": "The details of the shipping profile that the shipping option belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -166,7 +166,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "provider",
-        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
+        "type": "[FulfillmentProvider](FulfillmentProvider.mdx)",
         "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
         "optional": false,
         "defaultValue": "",
@@ -184,7 +184,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this shipping option can be used in.",
         "optional": false,
         "defaultValue": "",
@@ -202,7 +202,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "requirements",
-        "type": "[`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)[]",
+        "type": "[ShippingOptionRequirement](ShippingOptionRequirement.mdx)[]",
         "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
         "optional": false,
         "defaultValue": "",
@@ -231,7 +231,7 @@ This represents the tax rates applied on a shipping option.
   },
   {
     "name": "tax_rate",
-    "type": "[`TaxRate`](TaxRate.mdx)",
+    "type": "[TaxRate](TaxRate.mdx)",
     "description": "The details of the associated tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -266,7 +266,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -302,7 +302,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "product_types",
-        "type": "[`ProductType`](ProductType.mdx)[]",
+        "type": "[ProductType](ProductType.mdx)[]",
         "description": "The details of the product types that belong to this tax rate.",
         "optional": false,
         "defaultValue": "",
@@ -311,7 +311,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "products",
-        "type": "[`Product`](Product.mdx)[]",
+        "type": "[Product](Product.mdx)[]",
         "description": "The details of the products that belong to this tax rate.",
         "optional": false,
         "defaultValue": "",
@@ -329,7 +329,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region that the rate belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -356,7 +356,7 @@ This represents the tax rates applied on a shipping option.
       },
       {
         "name": "shipping_options",
-        "type": "[`ShippingOption`](ShippingOption.mdx)[]",
+        "type": "[ShippingOption](ShippingOption.mdx)[]",
         "description": "The details of the shipping options that belong to this tax rate.",
         "optional": false,
         "defaultValue": "",

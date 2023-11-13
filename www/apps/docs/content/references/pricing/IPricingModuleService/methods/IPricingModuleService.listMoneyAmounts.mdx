@@ -122,7 +122,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)",
+    "type": "[FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx)",
     "description": "The filtes to apply on the retrieved money amounts.",
     "optional": true,
     "defaultValue": "",
@@ -130,7 +130,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
     "children": [
       {
         "name": "$and",
-        "type": "([`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)\\>)[]",
+        "type": "([FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableMoneyAmountProps\\&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -139,7 +139,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
       },
       {
         "name": "$or",
-        "type": "([`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)\\>)[]",
+        "type": "([FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableMoneyAmountProps\\&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -168,7 +168,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;MoneyAmountDTO\\&#62;",
     "description": "The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
@@ -242,7 +242,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -302,7 +302,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]\\>",
+    "type": "Promise\\&#60;MoneyAmountDTO[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of money amounts.",
@@ -310,7 +310,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
     "children": [
       {
         "name": "MoneyAmountDTO[]",
-        "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]",
+        "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -327,7 +327,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
           },
           {
             "name": "currency",
-            "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)",
+            "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",

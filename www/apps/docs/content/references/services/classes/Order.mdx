@@ -12,7 +12,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
 
 ### constructor
 
-**new Order**()
+`**new Order**()`
 
 An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.
 
@@ -21,7 +21,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
 <ParameterTypes parameters={[
   {
     "name": "billing_address",
-    "type": "[`Address`](Address.mdx)",
+    "type": "[Address](Address.mdx)",
     "description": "The details of the billing address associated with the order.",
     "optional": false,
     "defaultValue": "",
@@ -48,7 +48,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart associated with the order.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "claims",
-    "type": "[`ClaimOrder`](ClaimOrder.mdx)[]",
+    "type": "[ClaimOrder](ClaimOrder.mdx)[]",
     "description": "The details of the claims created for the order.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "currency",
-    "type": "[`Currency`](Currency.mdx)",
+    "type": "[Currency](Currency.mdx)",
     "description": "The details of the currency used in the order.",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +102,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "customer",
-    "type": "[`Customer`](Customer.mdx)",
+    "type": "[Customer](Customer.mdx)",
     "description": "The details of the customer associated with the order.",
     "optional": false,
     "defaultValue": "",
@@ -129,7 +129,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "discounts",
-    "type": "[`Discount`](Discount.mdx)[]",
+    "type": "[Discount](Discount.mdx)[]",
     "description": "The details of the discounts applied on the order.",
     "optional": false,
     "defaultValue": "",
@@ -147,7 +147,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "draft_order",
-    "type": "[`DraftOrder`](DraftOrder.mdx)",
+    "type": "[DraftOrder](DraftOrder.mdx)",
     "description": "The details of the draft order this order was created from.",
     "optional": false,
     "defaultValue": "",
@@ -165,7 +165,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "edits",
-    "type": "[`OrderEdit`](OrderEdit.mdx)[]",
+    "type": "[OrderEdit](OrderEdit.mdx)[]",
     "description": "The details of the order edits done on the order.",
     "optional": false,
     "defaultValue": "",
@@ -192,7 +192,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "fulfillment_status",
-    "type": "[`FulfillmentStatus`](../enums/FulfillmentStatus.mdx)",
+    "type": "[FulfillmentStatus](../enums/FulfillmentStatus.mdx)",
     "description": "The order's fulfillment status",
     "optional": false,
     "defaultValue": "not_fulfilled",
@@ -201,7 +201,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "fulfillments",
-    "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+    "type": "[Fulfillment](Fulfillment.mdx)[]",
     "description": "The details of the fulfillments created for the order.",
     "optional": false,
     "defaultValue": "",
@@ -228,7 +228,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "gift_card_transactions",
-    "type": "[`GiftCardTransaction`](GiftCardTransaction.mdx)[]",
+    "type": "[GiftCardTransaction](GiftCardTransaction.mdx)[]",
     "description": "The gift card transactions made in the order.",
     "optional": false,
     "defaultValue": "",
@@ -237,7 +237,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "gift_cards",
-    "type": "[`GiftCard`](GiftCard.mdx)[]",
+    "type": "[GiftCard](GiftCard.mdx)[]",
     "description": "The details of the gift card used in the order.",
     "optional": false,
     "defaultValue": "",
@@ -273,7 +273,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "items",
-    "type": "[`LineItem`](LineItem.mdx)[]",
+    "type": "[LineItem](LineItem.mdx)[]",
     "description": "The details of the line items that belong to the order.",
     "optional": false,
     "defaultValue": "",
@@ -282,7 +282,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -318,7 +318,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "payment_status",
-    "type": "[`PaymentStatus`](../enums/PaymentStatus.mdx)",
+    "type": "[PaymentStatus](../enums/PaymentStatus.mdx)",
     "description": "The order's payment status",
     "optional": false,
     "defaultValue": "not_paid",
@@ -327,7 +327,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "payments",
-    "type": "[`Payment`](Payment.mdx)[]",
+    "type": "[Payment](Payment.mdx)[]",
     "description": "The details of the payments used in the order.",
     "optional": false,
     "defaultValue": "",
@@ -363,7 +363,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "refunds",
-    "type": "[`Refund`](Refund.mdx)[]",
+    "type": "[Refund](Refund.mdx)[]",
     "description": "The details of the refunds created for the order.",
     "optional": false,
     "defaultValue": "",
@@ -372,7 +372,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "region",
-    "type": "[`Region`](Region.mdx)",
+    "type": "[Region](Region.mdx)",
     "description": "The details of the region this order was created in.",
     "optional": false,
     "defaultValue": "",
@@ -390,7 +390,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "returnable_items",
-    "type": "[`LineItem`](LineItem.mdx)[]",
+    "type": "[LineItem](LineItem.mdx)[]",
     "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
     "optional": true,
     "defaultValue": "",
@@ -399,7 +399,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "returns",
-    "type": "[`Return`](Return.mdx)[]",
+    "type": "[Return](Return.mdx)[]",
     "description": "The details of the returns created for the order.",
     "optional": false,
     "defaultValue": "",
@@ -408,7 +408,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "sales_channel",
-    "type": "[`SalesChannel`](SalesChannel.mdx)",
+    "type": "[SalesChannel](SalesChannel.mdx)",
     "description": "The details of the sales channel this order belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -426,7 +426,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "shipping_address",
-    "type": "[`Address`](Address.mdx)",
+    "type": "[Address](Address.mdx)",
     "description": "The details of the shipping address associated with the order.",
     "optional": false,
     "defaultValue": "",
@@ -444,7 +444,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "shipping_methods",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](ShippingMethod.mdx)[]",
     "description": "The details of the shipping methods used in the order.",
     "optional": false,
     "defaultValue": "",
@@ -471,7 +471,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "status",
-    "type": "[`OrderStatus`](../enums/OrderStatus.mdx)",
+    "type": "[OrderStatus](../enums/OrderStatus.mdx)",
     "description": "The order's status",
     "optional": false,
     "defaultValue": "pending",
@@ -489,7 +489,7 @@ An order is a purchase made by a customer. It holds details about payment and fu
   },
   {
     "name": "swaps",
-    "type": "[`Swap`](Swap.mdx)[]",
+    "type": "[Swap](Swap.mdx)[]",
     "description": "The details of the swaps created for the order.",
     "optional": false,
     "defaultValue": "",
@@ -538,16 +538,16 @@ An order is a purchase made by a customer. It holds details about payment and fu
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `Promise`<`void`\>
+`Private **beforeInsert**(): Promise\&#60;void\&#62;`
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

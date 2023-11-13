@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).lastIndexOf
 
-**lastIndexOf**(`value`, `byteOffset?`, `encoding?`): `number`
+`**lastIndexOf**(value, byteOffset?, encoding?): number`
 
 Identical to `buf.indexOf()`, except the last occurrence of `value` is found
 rather than the first occurrence.
@@ -46,7 +46,7 @@ an integer between 0 and 255.
 
 If `byteOffset` is not a number, it will be coerced to a number. Any arguments
 that coerce to `NaN`, like `{}` or `undefined`, will search the whole buffer.
-This behavior matches [`String.prototype.lastIndexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/lastIndexOf).
+This behavior matches [`String.prototype.lastIndexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/String/lastIndexOf).
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -76,7 +76,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "What to search for.",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`.",
     "optional": true,
     "defaultValue": "",

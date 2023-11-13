@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Implements
 
-- [`IFlagRouter`](../../FeatureFlagTypes/interfaces/internal.internal-1.FeatureFlagTypes.IFlagRouter.mdx)
+- [IFlagRouter](../../FeatureFlagTypes/interfaces/internal.internal-1.FeatureFlagTypes.IFlagRouter.mdx)
 
 ## Properties
 
@@ -41,7 +41,7 @@ An example of a nested flag is workflows. To use it, you would do:
 <ParameterTypes parameters={[
   {
     "name": "flag",
-    "type": "`string` \\| Record<`string`, `string`\\>",
+    "type": "`string` \\| `Record<string, string>`",
     "description": "The flag to check",
     "optional": false,
     "defaultValue": "",
@@ -73,7 +73,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "FeatureFlagsResponse",
-    "type": "{ `key`: `string` ; `value`: `boolean` \\| Record<`string`, `boolean`\\>  }[]",
+    "type": "`\\&#123; key: string ; value: boolean \\| Record\\&#60;string, boolean\\&#62;  \\&#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -88,8 +88,8 @@ ___
 
 Sets a feature flag.
 Flags take two shapes:
-setFlag("myFeatureFlag", true)
-setFlag("myFeatureFlag", { nestedFlag: true })
+`setFlag("myFeatureFlag", true)`
+`setFlag("myFeatureFlag", { nestedFlag: true })`
 These shapes are used for top-level and nested flags respectively, as explained in isFeatureEnabled.
 
 #### Parameters
@@ -106,7 +106,7 @@ These shapes are used for top-level and nested flags respectively, as explained 
   },
   {
     "name": "value",
-    "type": "`boolean` \\| { `[key: string]`: `boolean`;  }",
+    "type": "`boolean` \\| `\\&#123; [key: string]: boolean;  \\&#125;`",
     "description": "The value of the flag to set.",
     "optional": false,
     "defaultValue": "",

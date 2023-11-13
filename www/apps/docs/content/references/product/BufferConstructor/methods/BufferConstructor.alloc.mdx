@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [BufferConstructor](../../interfaces/BufferConstructor.mdx).alloc
 
-**alloc**(`size`, `fill?`, `encoding?`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**alloc**(size, fill?, encoding?): Buffer`
 
 Allocates a new `Buffer` of `size` bytes. If `fill` is `undefined`, the`Buffer` will be zero-filled.
 
@@ -66,7 +66,7 @@ A `TypeError` will be thrown if `size` is not a number.
   },
   {
     "name": "fill",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "A value to pre-fill the new `Buffer` with.",
     "optional": true,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A `TypeError` will be thrown if `size` is not a number.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "If `fill` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",
@@ -86,12 +86,12 @@ A `TypeError` will be thrown if `size` is not a number.
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

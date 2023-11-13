@@ -12,7 +12,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "admin_only",
     "type": "`boolean`",
-    "description": "If set to `true`, the shipping option can only be used when creating draft orders.",
+    "description": "If set to \\`true\\`, the shipping option can only be used when creating draft orders.",
     "optional": true,
     "defaultValue": "false",
     "expandable": false,
@@ -21,7 +21,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "amount",
     "type": "`number`",
-    "description": "The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used.",
+    "description": "The amount to charge for the Shipping Option. If the \\`price\\_type\\` is set to \\`calculated\\`, this amount will not actually be used.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -57,7 +57,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs with additional information.",
     "optional": true,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "price_type",
     "type": "`string`",
-    "description": "The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.",
+    "description": "The type of the Shipping Option price. \\`flat\\_rate\\` indicates fixed pricing, whereas \\`calculated\\` indicates that the price will be calculated each time by the fulfillment provider.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -111,7 +111,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "requirements",
-    "type": "[`OptionRequirement`](internal.OptionRequirement.mdx)[]",
+    "type": "[OptionRequirement](internal.OptionRequirement.mdx)[]",
     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
     "optional": true,
     "defaultValue": "",

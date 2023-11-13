@@ -13,7 +13,7 @@ To use this resource, make sure to [enable its feature flag: product_categories]
 
 :::
 
-This class is used to send requests to [Store Product Category API Routes](https://docs.medusajs.com/api/store#product-categories_getproductcategories). All its method
+This class is used to send requests to [Store Product Category API Routes](https://docs.medusajs.com/api/store#product-categories\_getproductcategories). All its method
 are available in the JS Client under the `medusa.productCategories` property.
 
 Products can be categoriezed into categories. A product can be associated more than one category.
@@ -94,7 +94,7 @@ medusa.productCategories
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`StoreGetProductCategoriesParams`](../internal/classes/internal.StoreGetProductCategoriesParams.mdx)",
+    "type": "[StoreGetProductCategoriesParams](../internal/classes/internal.StoreGetProductCategoriesParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved product categories.",
     "optional": true,
     "defaultValue": "",
@@ -176,7 +176,7 @@ medusa.productCategories
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -190,7 +190,7 @@ medusa.productCategories
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreGetProductCategoriesRes`](../internal/types/internal.StoreGetProductCategoriesRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreGetProductCategoriesRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product categories with pagination fields.",
@@ -198,7 +198,7 @@ medusa.productCategories
     "children": [
       {
         "name": "StoreGetProductCategoriesRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `product_categories`: [`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; product_categories: ProductCategory[]  \\&#125;`",
         "description": "The list of product categories with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -233,7 +233,7 @@ medusa.productCategories
           },
           {
             "name": "product_categories",
-            "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+            "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
             "description": "An array of product categories details.",
             "optional": false,
             "defaultValue": "",
@@ -241,7 +241,7 @@ medusa.productCategories
             "children": [
               {
                 "name": "category_children",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the category's children.",
                 "optional": false,
                 "defaultValue": "",
@@ -286,7 +286,7 @@ medusa.productCategories
               },
               {
                 "name": "is_active",
-                "type": "[`Boolean`](../modules/internal.mdx#boolean)",
+                "type": "[Boolean](../modules/internal.mdx#boolean)",
                 "description": "A flag to make product category visible/hidden in the store front",
                 "optional": false,
                 "defaultValue": "false",
@@ -295,7 +295,7 @@ medusa.productCategories
               },
               {
                 "name": "is_internal",
-                "type": "[`Boolean`](../modules/internal.mdx#boolean)",
+                "type": "[Boolean](../modules/internal.mdx#boolean)",
                 "description": "A flag to make product category an internal category for admins",
                 "optional": false,
                 "defaultValue": "false",
@@ -313,7 +313,7 @@ medusa.productCategories
               },
               {
                 "name": "parent_category",
-                "type": "``null`` \\| [`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)",
+                "type": "``null`` \\| [ProductCategory](../internal/classes/internal.ProductCategory.mdx)",
                 "description": "The details of the parent of this category.",
                 "optional": false,
                 "defaultValue": "",
@@ -331,7 +331,7 @@ medusa.productCategories
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this category.",
                 "optional": false,
                 "defaultValue": "",
@@ -414,7 +414,7 @@ medusa.productCategories
   },
   {
     "name": "query",
-    "type": "[`StoreGetProductCategoriesCategoryParams`](../internal/classes/internal.StoreGetProductCategoriesCategoryParams.mdx)",
+    "type": "[StoreGetProductCategoriesCategoryParams](../internal/classes/internal.StoreGetProductCategoriesCategoryParams.mdx)",
     "description": "Configurations to apply on the retrieved product categories.",
     "optional": true,
     "defaultValue": "",
@@ -442,7 +442,7 @@ medusa.productCategories
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -456,7 +456,7 @@ medusa.productCategories
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreGetProductCategoriesCategoryRes`](../internal/types/internal.StoreGetProductCategoriesCategoryRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreGetProductCategoriesCategoryRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product category's details.",
@@ -472,7 +472,7 @@ medusa.productCategories
         "children": [
           {
             "name": "product_category",
-            "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)",
+            "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)",
             "description": "Product category details.",
             "optional": false,
             "defaultValue": "",
@@ -480,7 +480,7 @@ medusa.productCategories
             "children": [
               {
                 "name": "category_children",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the category's children.",
                 "optional": false,
                 "defaultValue": "",
@@ -525,7 +525,7 @@ medusa.productCategories
               },
               {
                 "name": "is_active",
-                "type": "[`Boolean`](../modules/internal.mdx#boolean)",
+                "type": "[Boolean](../modules/internal.mdx#boolean)",
                 "description": "A flag to make product category visible/hidden in the store front",
                 "optional": false,
                 "defaultValue": "false",
@@ -534,7 +534,7 @@ medusa.productCategories
               },
               {
                 "name": "is_internal",
-                "type": "[`Boolean`](../modules/internal.mdx#boolean)",
+                "type": "[Boolean](../modules/internal.mdx#boolean)",
                 "description": "A flag to make product category an internal category for admins",
                 "optional": false,
                 "defaultValue": "false",
@@ -552,7 +552,7 @@ medusa.productCategories
               },
               {
                 "name": "parent_category",
-                "type": "``null`` \\| [`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)",
+                "type": "``null`` \\| [ProductCategory](../internal/classes/internal.ProductCategory.mdx)",
                 "description": "The details of the parent of this category.",
                 "optional": false,
                 "defaultValue": "",
@@ -570,7 +570,7 @@ medusa.productCategories
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this category.",
                 "optional": false,
                 "defaultValue": "",

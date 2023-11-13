@@ -22,7 +22,7 @@ This represents the association between a tax rate and a product type to indicat
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ This represents the association between a tax rate and a product type to indicat
   },
   {
     "name": "product_type",
-    "type": "[`ProductType`](ProductType.mdx)",
+    "type": "[ProductType](ProductType.mdx)",
     "description": "The details of the product type.",
     "optional": true,
     "defaultValue": "",
@@ -66,7 +66,7 @@ This represents the association between a tax rate and a product type to indicat
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -113,7 +113,7 @@ This represents the association between a tax rate and a product type to indicat
   },
   {
     "name": "tax_rate",
-    "type": "[`TaxRate`](TaxRate.mdx)",
+    "type": "[TaxRate](TaxRate.mdx)",
     "description": "The details of the tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -148,7 +148,7 @@ This represents the association between a tax rate and a product type to indicat
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -184,7 +184,7 @@ This represents the association between a tax rate and a product type to indicat
       },
       {
         "name": "product_types",
-        "type": "[`ProductType`](ProductType.mdx)[]",
+        "type": "[ProductType](ProductType.mdx)[]",
         "description": "The details of the product types that belong to this tax rate.",
         "optional": false,
         "defaultValue": "",
@@ -193,7 +193,7 @@ This represents the association between a tax rate and a product type to indicat
       },
       {
         "name": "products",
-        "type": "[`Product`](Product.mdx)[]",
+        "type": "[Product](Product.mdx)[]",
         "description": "The details of the products that belong to this tax rate.",
         "optional": false,
         "defaultValue": "",
@@ -211,7 +211,7 @@ This represents the association between a tax rate and a product type to indicat
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region that the rate belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -238,7 +238,7 @@ This represents the association between a tax rate and a product type to indicat
       },
       {
         "name": "shipping_options",
-        "type": "[`ShippingOption`](ShippingOption.mdx)[]",
+        "type": "[ShippingOption](ShippingOption.mdx)[]",
         "description": "The details of the shipping options that belong to this tax rate.",
         "optional": false,
         "defaultValue": "",

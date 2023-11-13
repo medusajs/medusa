@@ -111,7 +111,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductCategoryProps`](../../interfaces/FilterableProductCategoryProps.mdx)",
+    "type": "[FilterableProductCategoryProps](../../interfaces/FilterableProductCategoryProps.mdx)",
     "description": "The filters to apply on the retrieved product categories.",
     "optional": true,
     "defaultValue": "",
@@ -119,7 +119,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
     "children": [
       {
         "name": "$and",
-        "type": "([`FilterableProductCategoryProps`](../../interfaces/FilterableProductCategoryProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableProductCategoryProps`](../../interfaces/FilterableProductCategoryProps.mdx)\\>)[]",
+        "type": "([FilterableProductCategoryProps](../../interfaces/FilterableProductCategoryProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableProductCategoryProps\\&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -128,7 +128,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
       },
       {
         "name": "$or",
-        "type": "([`FilterableProductCategoryProps`](../../interfaces/FilterableProductCategoryProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableProductCategoryProps`](../../interfaces/FilterableProductCategoryProps.mdx)\\>)[]",
+        "type": "([FilterableProductCategoryProps](../../interfaces/FilterableProductCategoryProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableProductCategoryProps\\&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -202,7 +202,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;ProductCategoryDTO\\&#62;",
     "description": "The configurations determining how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -276,7 +276,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -336,7 +336,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[ProductCategoryDTO[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product categories along with their total count.",
@@ -344,7 +344,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
     "children": [
       {
         "name": "ProductCategoryDTO[]",
-        "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+        "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",

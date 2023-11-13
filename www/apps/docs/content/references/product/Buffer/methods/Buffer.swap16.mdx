@@ -8,10 +8,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).swap16
 
-**swap16**(): [`Buffer`](../../variables/Buffer-1.mdx)
+`**swap16**(): Buffer`
 
 Interprets `buf` as an array of unsigned 16-bit integers and swaps the
-byte order _in-place_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 2.
+byte order \_in-place\_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 2.
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -44,12 +44,12 @@ buf.swap16(); // Convert to big-endian UTF-16 text.
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",

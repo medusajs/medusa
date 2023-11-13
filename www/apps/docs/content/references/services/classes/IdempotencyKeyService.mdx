@@ -10,14 +10,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new IdempotencyKeyService**(`«destructured»`)
+`**new IdempotencyKeyService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-13.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-13.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "idempotencyKeyRepository_",
-    "type": "`Repository`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "Repository\\&#60;IdempotencyKey\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -89,16 +89,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -111,7 +111,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -143,7 +143,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -152,7 +152,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -161,7 +161,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -172,12 +172,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -190,7 +190,7 @@ ___
 
 ### create
 
-**create**(`payload`): `Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+`**create**(payload): Promise\&#60;IdempotencyKey\&#62;`
 
 Creates an idempotency key for a request.
 If no idempotency key is provided in request, we will create a unique
@@ -201,7 +201,7 @@ identifier.
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`CreateIdempotencyKeyInput`](../types/CreateIdempotencyKeyInput.mdx)",
+    "type": "[CreateIdempotencyKeyInput](../types/CreateIdempotencyKeyInput.mdx)",
     "description": "payload of request to create idempotency key for",
     "optional": false,
     "defaultValue": "",
@@ -212,12 +212,12 @@ identifier.
 
 #### Returns
 
-`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+Promise\&#60;IdempotencyKey\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "Promise\\&#60;IdempotencyKey\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created idempotency key",
@@ -230,7 +230,7 @@ ___
 
 ### initializeRequest
 
-**initializeRequest**(`headerKey`, `reqMethod`, `reqParams`, `reqPath`): `Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+`**initializeRequest**(headerKey, reqMethod, reqParams, reqPath): Promise\&#60;IdempotencyKey\&#62;`
 
 Execute the initial steps in a idempotent request.
 
@@ -257,7 +257,7 @@ Execute the initial steps in a idempotent request.
   },
   {
     "name": "reqParams",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "params of request",
     "optional": false,
     "defaultValue": "",
@@ -277,12 +277,12 @@ Execute the initial steps in a idempotent request.
 
 #### Returns
 
-`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+Promise\&#60;IdempotencyKey\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "Promise\\&#60;IdempotencyKey\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the existing or created idempotency key",
@@ -295,7 +295,7 @@ ___
 
 ### lock
 
-**lock**(`idempotencyKey`): `Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+`**lock**(idempotencyKey): Promise\&#60;IdempotencyKey\&#62;`
 
 Locks an idempotency.
 
@@ -315,12 +315,12 @@ Locks an idempotency.
 
 #### Returns
 
-`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+Promise\&#60;IdempotencyKey\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "Promise\\&#60;IdempotencyKey\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation",
@@ -333,7 +333,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`idempotencyKeyOrSelector`): `Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+`**retrieve**(idempotencyKeyOrSelector): Promise\&#60;IdempotencyKey\&#62;`
 
 Retrieves an idempotency key
 
@@ -342,7 +342,7 @@ Retrieves an idempotency key
 <ParameterTypes parameters={[
   {
     "name": "idempotencyKeyOrSelector",
-    "type": "`string` \\| [`Selector`](../types/Selector.mdx)<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "`string` \\| [Selector](../types/Selector.mdx)\\&#60;IdempotencyKey\\&#62;",
     "description": "key or selector to retrieve",
     "optional": false,
     "defaultValue": "",
@@ -353,12 +353,12 @@ Retrieves an idempotency key
 
 #### Returns
 
-`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+Promise\&#60;IdempotencyKey\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "Promise\\&#60;IdempotencyKey\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "idempotency key",
@@ -371,14 +371,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -407,7 +407,7 @@ ___
 
 ### update
 
-**update**(`idempotencyKey`, `update`): `Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+`**update**(idempotencyKey, update): Promise\&#60;IdempotencyKey\&#62;`
 
 Locks an idempotency.
 
@@ -425,7 +425,7 @@ Locks an idempotency.
   },
   {
     "name": "update",
-    "type": "`DeepPartial`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "DeepPartial\\&#60;IdempotencyKey\\&#62;",
     "description": "update object",
     "optional": false,
     "defaultValue": "",
@@ -436,12 +436,12 @@ Locks an idempotency.
 
 #### Returns
 
-`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+Promise\&#60;IdempotencyKey\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "Promise\\&#60;IdempotencyKey\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation",
@@ -454,14 +454,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`IdempotencyKeyService`](IdempotencyKeyService.mdx)
+`**withTransaction**(transactionManager?): IdempotencyKeyService`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -472,12 +472,12 @@ ___
 
 #### Returns
 
-[`IdempotencyKeyService`](IdempotencyKeyService.mdx)
+[IdempotencyKeyService](IdempotencyKeyService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "IdempotencyKeyService",
-    "type": "[`IdempotencyKeyService`](IdempotencyKeyService.mdx)",
+    "type": "[IdempotencyKeyService](IdempotencyKeyService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -490,7 +490,7 @@ ___
 
 ### workStage
 
-**workStage**(`idempotencyKey`, `callback`): `Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+`**workStage**(idempotencyKey, callback): Promise\&#60;IdempotencyKey\&#62;`
 
 Performs an atomic work stage.
 An atomic work stage contains some related functionality, that needs to be
@@ -512,7 +512,7 @@ always consist of 2 or more of these phases. The required phases are
   },
   {
     "name": "callback",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<[`IdempotencyCallbackResult`](../types/IdempotencyCallbackResult.mdx)\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;IdempotencyCallbackResult\\&#62;",
     "description": "functionality to execute within the phase",
     "optional": false,
     "defaultValue": "",
@@ -523,12 +523,12 @@ always consist of 2 or more of these phases. The required phases are
 
 #### Returns
 
-`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\>
+Promise\&#60;IdempotencyKey\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`IdempotencyKey`](IdempotencyKey.mdx)\\>",
+    "type": "Promise\\&#60;IdempotencyKey\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "new updated idempotency key",

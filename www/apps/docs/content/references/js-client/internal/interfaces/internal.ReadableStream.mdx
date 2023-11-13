@@ -63,7 +63,7 @@ This Streams API interface represents a readable stream of byte data. The Fetch 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -76,7 +76,7 @@ ___
 
 ### getReader
 
-**getReader**(`options`): [`ReadableStreamBYOBReader`](../../modules/internal.mdx#readablestreambyobreader)
+`**getReader**(options): ReadableStreamBYOBReader`
 
 [MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/getReader)
 
@@ -108,7 +108,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamBYOBReader",
-    "type": "(`stream`: [`ReadableStream`](../../modules/internal.mdx#readablestream)<`any`\\>) => [`ReadableStreamBYOBReader`](../../modules/internal.mdx#readablestreambyobreader)",
+    "type": "(`stream`: [ReadableStream](../../modules/internal.mdx#readablestream)\\&#60;any\\&#62;) => [ReadableStreamBYOBReader](../../modules/internal.mdx#readablestreambyobreader)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -117,14 +117,14 @@ ___
   }
 ]} />
 
-**getReader**(): [`ReadableStreamDefaultReader`](../../modules/internal.mdx#readablestreamdefaultreader)<`R`\>
+`**getReader**(): ReadableStreamDefaultReader\&#60;R\&#62;`
 
 #### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamDefaultReader",
-    "type": "[`ReadableStreamDefaultReader`](../../modules/internal.mdx#readablestreamdefaultreader)<`R`\\>",
+    "type": "[ReadableStreamDefaultReader](../../modules/internal.mdx#readablestreamdefaultreader)\\&#60;R\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -133,14 +133,14 @@ ___
   }
 ]} />
 
-**getReader**(`options?`): [`ReadableStreamReader`](../types/internal.ReadableStreamReader.mdx)<`R`\>
+`**getReader**(options?): ReadableStreamReader\&#60;R\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`ReadableStreamGetReaderOptions`](internal.ReadableStreamGetReaderOptions.mdx)",
+    "type": "[ReadableStreamGetReaderOptions](internal.ReadableStreamGetReaderOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -154,7 +154,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamReader",
-    "type": "[`ReadableStreamReader`](../types/internal.ReadableStreamReader.mdx)<`R`\\>",
+    "type": "[ReadableStreamReader](../types/internal.ReadableStreamReader.mdx)\\&#60;R\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -174,7 +174,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transform",
-    "type": "[`ReadableWritablePair`](internal.ReadableWritablePair.mdx)<`T`, `R`\\>",
+    "type": "[ReadableWritablePair](internal.ReadableWritablePair.mdx)\\&#60;T, R\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -183,7 +183,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[`StreamPipeOptions`](internal.StreamPipeOptions.mdx)",
+    "type": "[StreamPipeOptions](internal.StreamPipeOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -197,7 +197,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStream",
-    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream)<`T`\\>",
+    "type": "[ReadableStream](../../modules/internal.mdx#readablestream)\\&#60;T\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -217,7 +217,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "destination",
-    "type": "[`WritableStream`](../../modules/internal.mdx#writablestream)<`R`\\>",
+    "type": "[WritableStream](../../modules/internal.mdx#writablestream)\\&#60;R\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -226,7 +226,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[`StreamPipeOptions`](internal.StreamPipeOptions.mdx)",
+    "type": "[StreamPipeOptions](internal.StreamPipeOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -240,7 +240,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -259,8 +259,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "[[`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>, [`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>]",
-    "type": "[[`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>, [`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>]",
+    "name": "[ReadableStream\\&#60;R\\&#62;, ReadableStream\\&#60;R\\&#62;]",
+    "type": "[[ReadableStream](../../modules/internal.mdx#readablestream)\\&#60;R\\&#62;, [ReadableStream](../../modules/internal.mdx#readablestream)\\&#60;R\\&#62;]",
     "optional": false,
     "defaultValue": "",
     "description": "",

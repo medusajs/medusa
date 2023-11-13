@@ -13,7 +13,7 @@ A product is a saleable item that holds general information such as name or desc
 <ParameterTypes parameters={[
   {
     "name": "categories",
-    "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
+    "type": "[ProductCategory](internal.ProductCategory.mdx)[]",
     "description": "The details of the product categories that this product belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -23,7 +23,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "collection",
-    "type": "[`ProductCollection`](internal.ProductCollection.mdx)",
+    "type": "[ProductCollection](internal.ProductCollection.mdx)",
     "description": "The details of the product collection that the product belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -69,7 +69,7 @@ A product is a saleable item that holds general information such as name or desc
   {
     "name": "discountable",
     "type": "`boolean`",
-    "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+    "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
     "optional": false,
     "defaultValue": "true",
     "expandable": false,
@@ -122,7 +122,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "images",
-    "type": "[`Image`](internal.internal.Image.mdx)[]",
+    "type": "[Image](internal.internal.Image.mdx)[]",
     "description": "The details of the product's images.",
     "optional": false,
     "defaultValue": "",
@@ -158,7 +158,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "metadata",
-    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "type": "``null`` \\| `Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -176,7 +176,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "options",
-    "type": "[`ProductOption`](internal.internal.ProductOption.mdx)[]",
+    "type": "[ProductOption](internal.internal.ProductOption.mdx)[]",
     "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
     "optional": false,
     "defaultValue": "",
@@ -194,7 +194,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "profile",
-    "type": "[`ShippingProfile`](internal.ShippingProfile.mdx)",
+    "type": "[ShippingProfile](internal.ShippingProfile.mdx)",
     "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
     "optional": false,
     "defaultValue": "",
@@ -212,8 +212,8 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "profiles",
-    "type": "[`ShippingProfile`](internal.ShippingProfile.mdx)[]",
-    "description": "Available if the relation `profiles` is expanded.",
+    "type": "[ShippingProfile](internal.ShippingProfile.mdx)[]",
+    "description": "Available if the relation \\`profiles\\` is expanded.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -221,7 +221,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "sales_channels",
-    "type": "[`SalesChannel`](internal.SalesChannel.mdx)[]",
+    "type": "[SalesChannel](internal.SalesChannel.mdx)[]",
     "description": "The details of the sales channels this product is available in.",
     "optional": false,
     "defaultValue": "",
@@ -230,7 +230,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "status",
-    "type": "[`ProductStatus`](../enums/internal.ProductStatus.mdx)",
+    "type": "[ProductStatus](../enums/internal.ProductStatus.mdx)",
     "description": "The status of the product",
     "optional": false,
     "defaultValue": "draft",
@@ -248,7 +248,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "tags",
-    "type": "[`ProductTag`](internal.ProductTag.mdx)[]",
+    "type": "[ProductTag](internal.ProductTag.mdx)[]",
     "description": "The details of the product tags used in this product.",
     "optional": false,
     "defaultValue": "",
@@ -275,7 +275,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "type",
-    "type": "[`ProductType`](internal.ProductType.mdx)",
+    "type": "[ProductType](internal.ProductType.mdx)",
     "description": "The details of the product type that the product belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -302,7 +302,7 @@ A product is a saleable item that holds general information such as name or desc
   },
   {
     "name": "variants",
-    "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)[]",
+    "type": "[ProductVariant](internal.internal.ProductVariant.mdx)[]",
     "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
     "optional": false,
     "defaultValue": "",

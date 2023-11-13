@@ -39,7 +39,7 @@ async function updateCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateCurrencyDTO`](../../interfaces/UpdateCurrencyDTO.mdx)[]",
+    "type": "[UpdateCurrencyDTO](../../interfaces/UpdateCurrencyDTO.mdx)[]",
     "description": "The currencies to update, each having the attributes that should be updated in a currency.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ async function updateCurrencies() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -145,7 +145,7 @@ async function updateCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]\\>",
+    "type": "Promise\\&#60;CurrencyDTO[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated currencies.",
@@ -153,7 +153,7 @@ async function updateCurrencies() {
     "children": [
       {
         "name": "CurrencyDTO[]",
-        "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]",
+        "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",

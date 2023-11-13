@@ -14,7 +14,7 @@ A Product Variant represents a Product with a specific set of Product Option con
   {
     "name": "allow_backorder",
     "type": "`boolean`",
-    "description": "Whether the Product Variant should be purchasable when `inventory_quantity` is 0.",
+    "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
     "optional": false,
     "defaultValue": "false",
     "expandable": false,
@@ -85,7 +85,7 @@ A Product Variant represents a Product with a specific set of Product Option con
   },
   {
     "name": "inventory_items",
-    "type": "[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]",
+    "type": "[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]",
     "description": "The details inventory items of the product variant.",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ A Product Variant represents a Product with a specific set of Product Option con
   },
   {
     "name": "metadata",
-    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "type": "``null`` \\| `Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ A Product Variant represents a Product with a specific set of Product Option con
   },
   {
     "name": "options",
-    "type": "[`ProductOptionValue`](internal.internal.ProductOptionValue.mdx)[]",
+    "type": "[ProductOptionValue](internal.internal.ProductOptionValue.mdx)[]",
     "description": "The details of the product options that this product variant defines values for.",
     "optional": false,
     "defaultValue": "",
@@ -166,7 +166,7 @@ A Product Variant represents a Product with a specific set of Product Option con
   },
   {
     "name": "prices",
-    "type": "[`MoneyAmount`](internal.internal.MoneyAmount.mdx)[]",
+    "type": "[MoneyAmount](internal.internal.MoneyAmount.mdx)[]",
     "description": "The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ A Product Variant represents a Product with a specific set of Product Option con
   },
   {
     "name": "product",
-    "type": "[`Product`](internal.Product.mdx)",
+    "type": "[Product](internal.Product.mdx)",
     "description": "The details of the product that the product variant belongs to.",
     "optional": false,
     "defaultValue": "",

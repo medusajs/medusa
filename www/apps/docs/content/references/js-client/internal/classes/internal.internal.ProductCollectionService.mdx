@@ -13,7 +13,7 @@ Provides layer to manipulate product collections.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "eventBus_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "productCollectionRepository_",
-    "type": "`Repository`<[`ProductCollection`](internal.ProductCollection.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId  }",
+    "type": "Repository\\&#60;ProductCollection\\&#62; & `\\&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "productRepository_",
-    "type": "`Repository`<[`Product`](internal.Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
+    "type": "Repository\\&#60;Product\\&#62; & `\\&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ Provides layer to manipulate product collections.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ Provides layer to manipulate product collections.
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -189,7 +189,7 @@ Provides layer to manipulate product collections.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "Promise\\&#60;ProductCollection\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -211,7 +211,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -220,7 +220,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -229,7 +229,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -243,7 +243,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -263,7 +263,7 @@ Creates a product collection
 <ParameterTypes parameters={[
   {
     "name": "collection",
-    "type": "[`CreateProductCollection`](../types/internal.CreateProductCollection.mdx)",
+    "type": "[CreateProductCollection](../types/internal.CreateProductCollection.mdx)",
     "description": "the collection to create",
     "optional": false,
     "defaultValue": "",
@@ -277,7 +277,7 @@ Creates a product collection
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "Promise\\&#60;ProductCollection\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created collection",
@@ -311,7 +311,7 @@ Deletes a product collection idempotently
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "empty promise",
@@ -331,7 +331,7 @@ Lists product collections
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`ProductCollection`](internal.ProductCollection.mdx)\\> & { `discount_condition_id?`: `string` ; `q?`: `string`  }",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;ProductCollection\\&#62; & `\\&#123; discount_condition_id?: string ; q?: string  \\&#125;`",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -372,7 +372,7 @@ Lists product collections
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollection`](internal.ProductCollection.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductCollection[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -392,7 +392,7 @@ Lists product collections and add count.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`ListAndCountSelector`](../types/internal.ListAndCountSelector.mdx)",
+    "type": "[ListAndCountSelector](../types/internal.ListAndCountSelector.mdx)",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -401,7 +401,7 @@ Lists product collections and add count.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ProductCollection\\&#62;",
     "description": "the config to be used for find",
     "optional": true,
     "defaultValue": "",
@@ -415,7 +415,7 @@ Lists product collections and add count.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductCollection`](internal.ProductCollection.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[ProductCollection[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -456,7 +456,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -485,7 +485,7 @@ Retrieves a product collection by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ProductCollection\\&#62;",
     "description": "the config of the collection to retrieve.",
     "optional": true,
     "defaultValue": "",
@@ -499,7 +499,7 @@ Retrieves a product collection by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "Promise\\&#60;ProductCollection\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the collection.",
@@ -528,7 +528,7 @@ Retrieves a product collection by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ProductCollection\\&#62;",
     "description": "query config for request",
     "optional": true,
     "defaultValue": "",
@@ -542,7 +542,7 @@ Retrieves a product collection by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "Promise\\&#60;ProductCollection\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the collection.",
@@ -560,7 +560,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -603,7 +603,7 @@ Updates a product collection
   },
   {
     "name": "update",
-    "type": "[`UpdateProductCollection`](../types/internal.UpdateProductCollection.mdx)",
+    "type": "[UpdateProductCollection](../types/internal.UpdateProductCollection.mdx)",
     "description": "update object",
     "optional": false,
     "defaultValue": "",
@@ -617,7 +617,7 @@ Updates a product collection
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollection`](internal.ProductCollection.mdx)\\>",
+    "type": "Promise\\&#60;ProductCollection\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "update collection",
@@ -635,7 +635,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -649,7 +649,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ProductCollectionService",
-    "type": "[`ProductCollectionService`](internal.internal.ProductCollectionService.mdx)",
+    "type": "[ProductCollectionService](internal.internal.ProductCollectionService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

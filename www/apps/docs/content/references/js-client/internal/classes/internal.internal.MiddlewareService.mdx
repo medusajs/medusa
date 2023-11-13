@@ -13,7 +13,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 <ParameterTypes parameters={[
   {
     "name": "postAuthentication_",
-    "type": "[`middlewareType`](../types/internal.middlewareType.mdx)[]",
+    "type": "[middlewareType](../types/internal.middlewareType.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -22,7 +22,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
   },
   {
     "name": "preAuthentication_",
-    "type": "[`middlewareType`](../types/internal.middlewareType.mdx)[]",
+    "type": "[middlewareType](../types/internal.middlewareType.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
   },
   {
     "name": "preCartCreation_",
-    "type": "`RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\\>\\>[]",
+    "type": "RequestHandler\\&#60;ParamsDictionary, any, any, ParsedQs, Record\\&#60;string, any\\&#62;\\&#62;[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
   },
   {
     "name": "routers",
-    "type": "Record<`string`, `Router`[]\\>",
+    "type": "`Record<string, Router[]>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -60,7 +60,7 @@ Adds a middleware function to be called after authentication is completed.
 <ParameterTypes parameters={[
   {
     "name": "middleware",
-    "type": "[`middlewareHandlerType`](../types/internal.middlewareHandlerType.mdx)",
+    "type": "[middlewareHandlerType](../types/internal.middlewareHandlerType.mdx)",
     "description": "the middleware function. Should return a middleware function.",
     "optional": false,
     "defaultValue": "",
@@ -69,7 +69,7 @@ Adds a middleware function to be called after authentication is completed.
   },
   {
     "name": "options",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the arguments that will be passed to the middleware",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ Adds a middleware function to be called before authentication is completed.
 <ParameterTypes parameters={[
   {
     "name": "middleware",
-    "type": "[`middlewareHandlerType`](../types/internal.middlewareHandlerType.mdx)",
+    "type": "[middlewareHandlerType](../types/internal.middlewareHandlerType.mdx)",
     "description": "the middleware function. Should return a middleware function.",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ Adds a middleware function to be called before authentication is completed.
   },
   {
     "name": "options",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the arguments that will be passed to the middleware",
     "optional": false,
     "defaultValue": "",
@@ -146,7 +146,7 @@ Adds a middleware function to be called before cart creation
 <ParameterTypes parameters={[
   {
     "name": "middleware",
-    "type": "`RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\\>\\>",
+    "type": "RequestHandler\\&#60;ParamsDictionary, any, any, ParsedQs, Record\\&#60;string, any\\&#62;\\&#62;",
     "description": "the middleware function. Should return a middleware function.",
     "optional": false,
     "defaultValue": "",
@@ -187,7 +187,7 @@ ___
   },
   {
     "name": "router",
-    "type": "`Router`",
+    "type": "Router",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -233,7 +233,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Router[]",
-    "type": "`Router`[]",
+    "type": "Router[]",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -253,7 +253,7 @@ Adds post authentication middleware to an express app.
 <ParameterTypes parameters={[
   {
     "name": "app",
-    "type": "`Router`",
+    "type": "Router",
     "description": "the express app to add the middleware to",
     "optional": false,
     "defaultValue": "",
@@ -287,7 +287,7 @@ Adds pre authentication middleware to an express app.
 <ParameterTypes parameters={[
   {
     "name": "app",
-    "type": "`Router`",
+    "type": "Router",
     "description": "the express app to add the middleware to",
     "optional": false,
     "defaultValue": "",
@@ -318,8 +318,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "RequestHandler<ParamsDictionary, any, any, ParsedQs, Record<string, any\\>\\>[]",
-    "type": "`RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\\>\\>[]",
+    "name": "RequestHandler\\&#60;ParamsDictionary, any, any, ParsedQs, Record\\&#60;string, any\\&#62;\\&#62;[]",
+    "type": "RequestHandler\\&#60;ParamsDictionary, any, any, ParsedQs, Record\\&#60;string, any\\&#62;\\&#62;[]",
     "optional": false,
     "defaultValue": "",
     "description": "",

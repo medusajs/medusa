@@ -12,14 +12,14 @@ Provides layer to manipulate product tags.
 
 ### constructor
 
-**new PriceListService**(`«destructured»`)
+`**new PriceListService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`PriceListConstructorProps`](../types/PriceListConstructorProps.mdx)",
+    "type": "[PriceListConstructorProps](../types/PriceListConstructorProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -33,7 +33,7 @@ Provides layer to manipulate product tags.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -51,7 +51,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -60,7 +60,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "customerGroupService_",
-    "type": "[`CustomerGroupService`](CustomerGroupService.mdx)",
+    "type": "[CustomerGroupService](CustomerGroupService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -69,7 +69,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "type": "[FlagRouter](FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -78,7 +78,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -87,7 +87,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "moneyAmountRepo_",
-    "type": "`Repository`<[`MoneyAmount`](MoneyAmount.mdx)\\> & { `addPriceListPrices`: Method addPriceListPrices ; `createProductVariantMoneyAmounts`: Method createProductVariantMoneyAmounts ; `deletePriceListPrices`: Method deletePriceListPrices ; `deleteVariantPricesNotIn`: Method deleteVariantPricesNotIn ; `findCurrencyMoneyAmounts`: Method findCurrencyMoneyAmounts ; `findManyForVariantInPriceList`: Method findManyForVariantInPriceList ; `findManyForVariantInRegion`: Method findManyForVariantInRegion ; `findManyForVariantsInRegion`: Method findManyForVariantsInRegion ; `findRegionMoneyAmounts`: Method findRegionMoneyAmounts ; `findVariantPricesNotIn`: Method findVariantPricesNotIn ; `getPricesForVariantInRegion`: Method getPricesForVariantInRegion ; `insertBulk`: Method insertBulk ; `updatePriceListPrices`: Method updatePriceListPrices ; `upsertVariantCurrencyPrice`: Method upsertVariantCurrencyPrice  }",
+    "type": "Repository\\&#60;MoneyAmount\\&#62; & `\\&#123; addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -96,7 +96,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "priceListRepo_",
-    "type": "`Repository`<[`PriceList`](PriceList.mdx)\\> & { `listAndCount`: Method listAndCount ; `listPriceListsVariantIdsMap`: Method listPriceListsVariantIdsMap  }",
+    "type": "Repository\\&#60;PriceList\\&#62; & `\\&#123; listAndCount: Method listAndCount ; listPriceListsVariantIdsMap: Method listPriceListsVariantIdsMap  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -105,7 +105,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "productService_",
-    "type": "[`ProductService`](ProductService.mdx)",
+    "type": "[ProductService](ProductService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -114,7 +114,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "productVariantRepo_",
-    "type": "`Repository`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "type": "Repository\\&#60;ProductVariant\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -123,7 +123,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "regionService_",
-    "type": "[`RegionService`](RegionService.mdx)",
+    "type": "[RegionService](RegionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -132,7 +132,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -141,7 +141,7 @@ Provides layer to manipulate product tags.
   },
   {
     "name": "variantService_",
-    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "type": "[ProductVariantService](ProductVariantService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -154,16 +154,16 @@ Provides layer to manipulate product tags.
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -176,14 +176,14 @@ Provides layer to manipulate product tags.
 
 ### addCurrencyFromRegion
 
-`Protected` **addCurrencyFromRegion**<`T`\>(`prices`): `Promise`<`T`[]\>
+`Protected **addCurrencyFromRegion**<TypeParameter T>(prices): Promise\&#60;T[]\&#62;`
 
 Add `currency_code` to an MA record if `region_id`is passed.
 
 <ParameterTypes parameters={[
   {
     "name": "T",
-    "type": "[`PriceListPriceUpdateInput`](../types/PriceListPriceUpdateInput.mdx) \\| [`PriceListPriceCreateInput`](../types/PriceListPriceCreateInput.mdx)",
+    "type": "[PriceListPriceUpdateInput](../types/PriceListPriceUpdateInput.mdx) \\| [PriceListPriceCreateInput](../types/PriceListPriceCreateInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -208,12 +208,12 @@ Add `currency_code` to an MA record if `region_id`is passed.
 
 #### Returns
 
-`Promise`<`T`[]\>
+Promise\&#60;T[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`[]\\>",
+    "type": "Promise\\&#60;T[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated `prices` list",
@@ -226,7 +226,7 @@ ___
 
 ### addPrices
 
-**addPrices**(`id`, `prices`, `replace?`): `Promise`<[`PriceList`](PriceList.mdx)\>
+`**addPrices**(id, prices, replace?): Promise\&#60;PriceList\&#62;`
 
 Adds prices to a price list in bulk, optionally replacing all existing prices
 
@@ -244,7 +244,7 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
   },
   {
     "name": "prices",
-    "type": "[`PriceListPriceCreateInput`](../types/PriceListPriceCreateInput.mdx)[]",
+    "type": "[PriceListPriceCreateInput](../types/PriceListPriceCreateInput.mdx)[]",
     "description": "prices to add",
     "optional": false,
     "defaultValue": "",
@@ -264,12 +264,12 @@ Adds prices to a price list in bulk, optionally replacing all existing prices
 
 #### Returns
 
-`Promise`<[`PriceList`](PriceList.mdx)\>
+Promise\&#60;PriceList\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "type": "Promise\\&#60;PriceList\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated Price List",
@@ -282,7 +282,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -314,7 +314,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -323,7 +323,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -332,7 +332,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -343,12 +343,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -361,7 +361,7 @@ ___
 
 ### clearPrices
 
-**clearPrices**(`id`): `Promise`<`void`\>
+`**clearPrices**(id): Promise\&#60;void\&#62;`
 
 Removes all prices from a price list and deletes the removed prices in bulk
 
@@ -381,12 +381,12 @@ Removes all prices from a price list and deletes the removed prices in bulk
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated Price List",
@@ -399,7 +399,7 @@ ___
 
 ### create
 
-**create**(`priceListObject`): `Promise`<[`PriceList`](PriceList.mdx)\>
+`**create**(priceListObject): Promise\&#60;PriceList\&#62;`
 
 Creates a Price List
 
@@ -408,7 +408,7 @@ Creates a Price List
 <ParameterTypes parameters={[
   {
     "name": "priceListObject",
-    "type": "[`CreatePriceListInput`](../types/CreatePriceListInput.mdx)",
+    "type": "[CreatePriceListInput](../types/CreatePriceListInput.mdx)",
     "description": "the Price List to create",
     "optional": false,
     "defaultValue": "",
@@ -419,12 +419,12 @@ Creates a Price List
 
 #### Returns
 
-`Promise`<[`PriceList`](PriceList.mdx)\>
+Promise\&#60;PriceList\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "type": "Promise\\&#60;PriceList\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created Price List",
@@ -437,7 +437,7 @@ ___
 
 ### delete
 
-**delete**(`id`): `Promise`<`void`\>
+`**delete**(id): Promise\&#60;void\&#62;`
 
 Deletes a Price List
 Will never fail due to delete being idempotent.
@@ -458,12 +458,12 @@ Will never fail due to delete being idempotent.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "empty promise",
@@ -476,7 +476,7 @@ ___
 
 ### deletePrices
 
-**deletePrices**(`id`, `priceIds`): `Promise`<`void`\>
+`**deletePrices**(id, priceIds): Promise\&#60;void\&#62;`
 
 Removes prices from a price list and deletes the removed prices in bulk
 
@@ -505,12 +505,12 @@ Removes prices from a price list and deletes the removed prices in bulk
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated Price List",
@@ -523,7 +523,7 @@ ___
 
 ### deleteProductPrices
 
-**deleteProductPrices**(`priceListId`, `productIds`): `Promise`<[`string`[], `number`]\>
+`**deleteProductPrices**(priceListId, productIds): Promise\&#60;[string[], number]\&#62;`
 
 #### Parameters
 
@@ -550,12 +550,12 @@ ___
 
 #### Returns
 
-`Promise`<[`string`[], `number`]\>
+Promise\&#60;[string[], number]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`string`[], `number`]\\>",
+    "type": "Promise\\&#60;[string[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -568,7 +568,7 @@ ___
 
 ### deleteVariantPrices
 
-**deleteVariantPrices**(`priceListId`, `variantIds`): `Promise`<[`string`[], `number`]\>
+`**deleteVariantPrices**(priceListId, variantIds): Promise\&#60;[string[], number]\&#62;`
 
 #### Parameters
 
@@ -595,12 +595,12 @@ ___
 
 #### Returns
 
-`Promise`<[`string`[], `number`]\>
+Promise\&#60;[string[], number]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`string`[], `number`]\\>",
+    "type": "Promise\\&#60;[string[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -613,7 +613,7 @@ ___
 
 ### list
 
-**list**(`selector?`, `config?`): `Promise`<[`PriceList`](PriceList.mdx)[]\>
+`**list**(selector?, config?): Promise\&#60;PriceList[]\&#62;`
 
 Lists Price Lists
 
@@ -622,7 +622,7 @@ Lists Price Lists
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterablePriceListProps`](FilterablePriceListProps.mdx)",
+    "type": "[FilterablePriceListProps](FilterablePriceListProps.mdx)",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -631,7 +631,7 @@ Lists Price Lists
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`PriceList`](PriceList.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;PriceList\\&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -642,12 +642,12 @@ Lists Price Lists
 
 #### Returns
 
-`Promise`<[`PriceList`](PriceList.mdx)[]\>
+Promise\&#60;PriceList[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceList`](PriceList.mdx)[]\\>",
+    "type": "Promise\\&#60;PriceList[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -660,7 +660,7 @@ ___
 
 ### listAndCount
 
-**listAndCount**(`selector?`, `config?`): `Promise`<[[`PriceList`](PriceList.mdx)[], `number`]\>
+`**listAndCount**(selector?, config?): Promise\&#60;[PriceList[], number]\&#62;`
 
 Lists Price Lists and adds count
 
@@ -669,7 +669,7 @@ Lists Price Lists and adds count
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterablePriceListProps`](FilterablePriceListProps.mdx)",
+    "type": "[FilterablePriceListProps](FilterablePriceListProps.mdx)",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -678,7 +678,7 @@ Lists Price Lists and adds count
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`PriceList`](PriceList.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;PriceList\\&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -689,12 +689,12 @@ Lists Price Lists and adds count
 
 #### Returns
 
-`Promise`<[[`PriceList`](PriceList.mdx)[], `number`]\>
+Promise\&#60;[PriceList[], number]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`PriceList`](PriceList.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[PriceList[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -707,7 +707,7 @@ ___
 
 ### listPriceListsVariantIdsMap
 
-**listPriceListsVariantIdsMap**(`priceListIds`): `Promise`<{ `[priceListId: string]`: `string`[];  }\>
+`**listPriceListsVariantIdsMap**(priceListIds): Promise\&#60;\&#123; [priceListId: string]: string[];  \&#125;\&#62;`
 
 #### Parameters
 
@@ -725,12 +725,12 @@ ___
 
 #### Returns
 
-`Promise`<{ `[priceListId: string]`: `string`[];  }\>
+Promise\&#60;\&#123; [priceListId: string]: string[];  \&#125;\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `[priceListId: string]`: `string`[];  }\\>",
+    "type": "Promise\\&#60;\\&#123; [priceListId: string]: string[];  \\&#125;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -743,7 +743,7 @@ ___
 
 ### listProducts
 
-**listProducts**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`Product`](Product.mdx)[], `number`]\>
+`**listProducts**(priceListId, selector?, config?, requiresPriceList?): Promise\&#60;[Product[], number]\&#62;`
 
 #### Parameters
 
@@ -759,7 +759,7 @@ ___
   },
   {
     "name": "selector",
-    "type": "[`FilterableProductProps`](FilterableProductProps.mdx) \\| [`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "type": "[FilterableProductProps](FilterableProductProps.mdx) \\| [Selector](../types/Selector.mdx)\\&#60;Product\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -768,7 +768,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Product`](Product.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Product\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -788,12 +788,12 @@ ___
 
 #### Returns
 
-`Promise`<[[`Product`](Product.mdx)[], `number`]\>
+Promise\&#60;[Product[], number]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Product`](Product.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[Product[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -806,7 +806,7 @@ ___
 
 ### listVariants
 
-**listVariants**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\>
+`**listVariants**(priceListId, selector?, config?, requiresPriceList?): Promise\&#60;[ProductVariant[], number]\&#62;`
 
 #### Parameters
 
@@ -822,7 +822,7 @@ ___
   },
   {
     "name": "selector",
-    "type": "[`FilterableProductVariantProps`](FilterableProductVariantProps.mdx)",
+    "type": "[FilterableProductVariantProps](FilterableProductVariantProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -831,7 +831,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;ProductVariant\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -851,12 +851,12 @@ ___
 
 #### Returns
 
-`Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\>
+Promise\&#60;[ProductVariant[], number]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[ProductVariant[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -869,7 +869,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`priceListId`, `config?`): `Promise`<[`PriceList`](PriceList.mdx)\>
+`**retrieve**(priceListId, config?): Promise\&#60;PriceList\&#62;`
 
 Retrieves a product tag by id.
 
@@ -887,7 +887,7 @@ Retrieves a product tag by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`PriceList`](PriceList.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;PriceList\\&#62;",
     "description": "the config to retrieve the tag by",
     "optional": false,
     "defaultValue": "{}",
@@ -898,12 +898,12 @@ Retrieves a product tag by id.
 
 #### Returns
 
-`Promise`<[`PriceList`](PriceList.mdx)\>
+Promise\&#60;PriceList\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "type": "Promise\\&#60;PriceList\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the collection.",
@@ -916,14 +916,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -952,7 +952,7 @@ ___
 
 ### update
 
-**update**(`id`, `update`): `Promise`<[`PriceList`](PriceList.mdx)\>
+`**update**(id, update): Promise\&#60;PriceList\&#62;`
 
 Updates a Price List
 
@@ -970,7 +970,7 @@ Updates a Price List
   },
   {
     "name": "update",
-    "type": "[`UpdatePriceListInput`](../types/UpdatePriceListInput.mdx)",
+    "type": "[UpdatePriceListInput](../types/UpdatePriceListInput.mdx)",
     "description": "the update to apply",
     "optional": false,
     "defaultValue": "",
@@ -981,12 +981,12 @@ Updates a Price List
 
 #### Returns
 
-`Promise`<[`PriceList`](PriceList.mdx)\>
+Promise\&#60;PriceList\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "type": "Promise\\&#60;PriceList\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated Price List",
@@ -999,7 +999,7 @@ ___
 
 ### upsertCustomerGroups\_
 
-`Protected` **upsertCustomerGroups_**(`priceListId`, `customerGroups`): `Promise`<`void`\>
+`Protected **upsertCustomerGroups_**(priceListId, customerGroups): Promise\&#60;void\&#62;`
 
 #### Parameters
 
@@ -1015,7 +1015,7 @@ ___
   },
   {
     "name": "customerGroups",
-    "type": "{ `id`: `string`  }[]",
+    "type": "`\\&#123; id: string  \\&#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1026,12 +1026,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1044,14 +1044,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`PriceListService`](PriceListService.mdx)
+`**withTransaction**(transactionManager?): PriceListService`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1062,12 +1062,12 @@ ___
 
 #### Returns
 
-[`PriceListService`](PriceListService.mdx)
+[PriceListService](PriceListService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "PriceListService",
-    "type": "[`PriceListService`](PriceListService.mdx)",
+    "type": "[PriceListService](PriceListService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

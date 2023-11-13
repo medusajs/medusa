@@ -12,7 +12,7 @@ An option value is one of the possible values of a Product Option. Product Varia
 
 ### constructor
 
-**new ProductOptionValue**()
+`**new ProductOptionValue**()`
 
 An option value is one of the possible values of a Product Option. Product Variants specify a unique combination of product option values.
 
@@ -48,7 +48,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +57,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   },
   {
     "name": "option",
-    "type": "[`ProductOption`](ProductOption.mdx)",
+    "type": "[ProductOption](ProductOption.mdx)",
     "description": "The details of the product option that the Product Option Value belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   {
     "name": "value",
     "type": "`string`",
-    "description": "The value that the Product Variant has defined for the specific Product Option (e.g. if the Product Option is \"Size\" this value could be `Small`, `Medium` or `Large`).",
+    "description": "The value that the Product Variant has defined for the specific Product Option (e.g. if the Product Option is \"Size\" this value could be \\`Small\\`, \\`Medium\\` or \\`Large\\`).",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -93,7 +93,7 @@ An option value is one of the possible values of a Product Option. Product Varia
   },
   {
     "name": "variant",
-    "type": "[`ProductVariant`](ProductVariant.mdx)",
+    "type": "[ProductVariant](ProductVariant.mdx)",
     "description": "The details of the product variant that uses this product option value.",
     "optional": false,
     "defaultValue": "",
@@ -115,7 +115,7 @@ An option value is one of the possible values of a Product Option. Product Varia
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

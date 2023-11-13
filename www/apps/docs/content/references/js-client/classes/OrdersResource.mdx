@@ -42,7 +42,7 @@ medusa.orders
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`StorePostCustomersCustomerAcceptClaimReq`](../internal/classes/internal.StorePostCustomersCustomerAcceptClaimReq.mdx)",
+    "type": "[StorePostCustomersCustomerAcceptClaimReq](../internal/classes/internal.StorePostCustomersCustomerAcceptClaimReq.mdx)",
     "description": "The claim order to verify.",
     "optional": false,
     "defaultValue": "",
@@ -61,7 +61,7 @@ medusa.orders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -75,7 +75,7 @@ medusa.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the claim order is verified successfully.",
@@ -110,7 +110,7 @@ medusa.orders
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`StoreGetOrdersParams`](../internal/classes/internal.StoreGetOrdersParams.mdx)",
+    "type": "[StoreGetOrdersParams](../internal/classes/internal.StoreGetOrdersParams.mdx)",
     "description": "Filters used to retrieve the order.",
     "optional": false,
     "defaultValue": "",
@@ -154,7 +154,7 @@ medusa.orders
       },
       {
         "name": "shipping_address",
-        "type": "[`ShippingAddressPayload`](../internal/classes/internal.ShippingAddressPayload.mdx)",
+        "type": "[ShippingAddressPayload](../internal/classes/internal.ShippingAddressPayload.mdx)",
         "description": "Filter the retrieved order by its shipping address details.",
         "optional": true,
         "defaultValue": "",
@@ -175,7 +175,7 @@ medusa.orders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -189,7 +189,7 @@ medusa.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreOrdersRes`](../internal/types/internal.StoreOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the order.",
@@ -205,7 +205,7 @@ medusa.orders
         "children": [
           {
             "name": "order",
-            "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+            "type": "[Order](../internal/classes/internal.Order.mdx)",
             "description": "Order details.",
             "optional": false,
             "defaultValue": "",
@@ -213,7 +213,7 @@ medusa.orders
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -240,7 +240,7 @@ medusa.orders
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -258,7 +258,7 @@ medusa.orders
               },
               {
                 "name": "claims",
-                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)[]",
+                "type": "[ClaimOrder](../internal/classes/internal.ClaimOrder.mdx)[]",
                 "description": "The details of the claims created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -276,7 +276,7 @@ medusa.orders
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -294,7 +294,7 @@ medusa.orders
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -321,7 +321,7 @@ medusa.orders
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "The details of the discounts applied on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -339,7 +339,7 @@ medusa.orders
               },
               {
                 "name": "draft_order",
-                "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+                "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
                 "description": "The details of the draft order this order was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -357,7 +357,7 @@ medusa.orders
               },
               {
                 "name": "edits",
-                "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+                "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)[]",
                 "description": "The details of the order edits done on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -384,7 +384,7 @@ medusa.orders
               },
               {
                 "name": "fulfillment_status",
-                "type": "[`FulfillmentStatus`](../internal/enums/internal.FulfillmentStatus.mdx)",
+                "type": "[FulfillmentStatus](../internal/enums/internal.FulfillmentStatus.mdx)",
                 "description": "The order's fulfillment status",
                 "optional": false,
                 "defaultValue": "not_fulfilled",
@@ -393,7 +393,7 @@ medusa.orders
               },
               {
                 "name": "fulfillments",
-                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "type": "[Fulfillment](../internal/classes/internal.Fulfillment.mdx)[]",
                 "description": "The details of the fulfillments created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -420,7 +420,7 @@ medusa.orders
               },
               {
                 "name": "gift_card_transactions",
-                "type": "[`GiftCardTransaction`](../internal/classes/internal.GiftCardTransaction.mdx)[]",
+                "type": "[GiftCardTransaction](../internal/classes/internal.GiftCardTransaction.mdx)[]",
                 "description": "The gift card transactions made in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -429,7 +429,7 @@ medusa.orders
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "The details of the gift card used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -465,7 +465,7 @@ medusa.orders
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that belong to the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -474,7 +474,7 @@ medusa.orders
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -501,7 +501,7 @@ medusa.orders
               },
               {
                 "name": "payment_status",
-                "type": "[`PaymentStatus`](../internal/enums/internal.PaymentStatus.mdx)",
+                "type": "[PaymentStatus](../internal/enums/internal.PaymentStatus.mdx)",
                 "description": "The order's payment status",
                 "optional": false,
                 "defaultValue": "not_paid",
@@ -510,7 +510,7 @@ medusa.orders
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -546,7 +546,7 @@ medusa.orders
               },
               {
                 "name": "refunds",
-                "type": "[`Refund`](../internal/classes/internal.Refund.mdx)[]",
+                "type": "[Refund](../internal/classes/internal.Refund.mdx)[]",
                 "description": "The details of the refunds created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -555,7 +555,7 @@ medusa.orders
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this order was created in.",
                 "optional": false,
                 "defaultValue": "",
@@ -573,7 +573,7 @@ medusa.orders
               },
               {
                 "name": "returnable_items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
                 "optional": true,
                 "defaultValue": "",
@@ -582,7 +582,7 @@ medusa.orders
               },
               {
                 "name": "returns",
-                "type": "[`Return`](../internal/classes/internal.Return.mdx)[]",
+                "type": "[Return](../internal/classes/internal.Return.mdx)[]",
                 "description": "The details of the returns created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -591,7 +591,7 @@ medusa.orders
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel this order belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -609,7 +609,7 @@ medusa.orders
               },
               {
                 "name": "shipping_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -627,7 +627,7 @@ medusa.orders
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -654,7 +654,7 @@ medusa.orders
               },
               {
                 "name": "status",
-                "type": "[`OrderStatus`](../internal/enums/internal.OrderStatus.mdx)",
+                "type": "[OrderStatus](../internal/enums/internal.OrderStatus.mdx)",
                 "description": "The order's status",
                 "optional": false,
                 "defaultValue": "pending",
@@ -672,7 +672,7 @@ medusa.orders
               },
               {
                 "name": "swaps",
-                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)[]",
+                "type": "[Swap](../internal/classes/internal.Swap.mdx)[]",
                 "description": "The details of the swaps created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -754,7 +754,7 @@ medusa.orders
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`StorePostCustomersCustomerOrderClaimReq`](../internal/classes/internal.StorePostCustomersCustomerOrderClaimReq.mdx)",
+    "type": "[StorePostCustomersCustomerOrderClaimReq](../internal/classes/internal.StorePostCustomersCustomerOrderClaimReq.mdx)",
     "description": "The orders to claim.",
     "optional": false,
     "defaultValue": "",
@@ -773,7 +773,7 @@ medusa.orders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -787,7 +787,7 @@ medusa.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the request is created successfully.",
@@ -826,7 +826,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -840,7 +840,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreOrdersRes`](../internal/types/internal.StoreOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the order.",
@@ -856,7 +856,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
         "children": [
           {
             "name": "order",
-            "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+            "type": "[Order](../internal/classes/internal.Order.mdx)",
             "description": "Order details.",
             "optional": false,
             "defaultValue": "",
@@ -864,7 +864,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -891,7 +891,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -909,7 +909,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "claims",
-                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)[]",
+                "type": "[ClaimOrder](../internal/classes/internal.ClaimOrder.mdx)[]",
                 "description": "The details of the claims created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -927,7 +927,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -945,7 +945,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -972,7 +972,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "The details of the discounts applied on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -990,7 +990,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "draft_order",
-                "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+                "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
                 "description": "The details of the draft order this order was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -1008,7 +1008,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "edits",
-                "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+                "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)[]",
                 "description": "The details of the order edits done on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1035,7 +1035,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "fulfillment_status",
-                "type": "[`FulfillmentStatus`](../internal/enums/internal.FulfillmentStatus.mdx)",
+                "type": "[FulfillmentStatus](../internal/enums/internal.FulfillmentStatus.mdx)",
                 "description": "The order's fulfillment status",
                 "optional": false,
                 "defaultValue": "not_fulfilled",
@@ -1044,7 +1044,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "fulfillments",
-                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "type": "[Fulfillment](../internal/classes/internal.Fulfillment.mdx)[]",
                 "description": "The details of the fulfillments created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1071,7 +1071,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "gift_card_transactions",
-                "type": "[`GiftCardTransaction`](../internal/classes/internal.GiftCardTransaction.mdx)[]",
+                "type": "[GiftCardTransaction](../internal/classes/internal.GiftCardTransaction.mdx)[]",
                 "description": "The gift card transactions made in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1080,7 +1080,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "The details of the gift card used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1116,7 +1116,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that belong to the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1125,7 +1125,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1152,7 +1152,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "payment_status",
-                "type": "[`PaymentStatus`](../internal/enums/internal.PaymentStatus.mdx)",
+                "type": "[PaymentStatus](../internal/enums/internal.PaymentStatus.mdx)",
                 "description": "The order's payment status",
                 "optional": false,
                 "defaultValue": "not_paid",
@@ -1161,7 +1161,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1197,7 +1197,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "refunds",
-                "type": "[`Refund`](../internal/classes/internal.Refund.mdx)[]",
+                "type": "[Refund](../internal/classes/internal.Refund.mdx)[]",
                 "description": "The details of the refunds created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1206,7 +1206,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this order was created in.",
                 "optional": false,
                 "defaultValue": "",
@@ -1224,7 +1224,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "returnable_items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
                 "optional": true,
                 "defaultValue": "",
@@ -1233,7 +1233,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "returns",
-                "type": "[`Return`](../internal/classes/internal.Return.mdx)[]",
+                "type": "[Return](../internal/classes/internal.Return.mdx)[]",
                 "description": "The details of the returns created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1242,7 +1242,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel this order belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1260,7 +1260,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1278,7 +1278,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1305,7 +1305,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "status",
-                "type": "[`OrderStatus`](../internal/enums/internal.OrderStatus.mdx)",
+                "type": "[OrderStatus](../internal/enums/internal.OrderStatus.mdx)",
                 "description": "The order's status",
                 "optional": false,
                 "defaultValue": "pending",
@@ -1323,7 +1323,7 @@ medusa.orders.retrieve(orderId).then(({ order }) => {
               },
               {
                 "name": "swaps",
-                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)[]",
+                "type": "[Swap](../internal/classes/internal.Swap.mdx)[]",
                 "description": "The details of the swaps created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1404,7 +1404,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1418,7 +1418,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreOrdersRes`](../internal/types/internal.StoreOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the order.",
@@ -1434,7 +1434,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
         "children": [
           {
             "name": "order",
-            "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+            "type": "[Order](../internal/classes/internal.Order.mdx)",
             "description": "Order details.",
             "optional": false,
             "defaultValue": "",
@@ -1442,7 +1442,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1469,7 +1469,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1487,7 +1487,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "claims",
-                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)[]",
+                "type": "[ClaimOrder](../internal/classes/internal.ClaimOrder.mdx)[]",
                 "description": "The details of the claims created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1505,7 +1505,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1523,7 +1523,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1550,7 +1550,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "The details of the discounts applied on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1568,7 +1568,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "draft_order",
-                "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+                "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
                 "description": "The details of the draft order this order was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -1586,7 +1586,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "edits",
-                "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+                "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)[]",
                 "description": "The details of the order edits done on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1613,7 +1613,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "fulfillment_status",
-                "type": "[`FulfillmentStatus`](../internal/enums/internal.FulfillmentStatus.mdx)",
+                "type": "[FulfillmentStatus](../internal/enums/internal.FulfillmentStatus.mdx)",
                 "description": "The order's fulfillment status",
                 "optional": false,
                 "defaultValue": "not_fulfilled",
@@ -1622,7 +1622,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "fulfillments",
-                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "type": "[Fulfillment](../internal/classes/internal.Fulfillment.mdx)[]",
                 "description": "The details of the fulfillments created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1649,7 +1649,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "gift_card_transactions",
-                "type": "[`GiftCardTransaction`](../internal/classes/internal.GiftCardTransaction.mdx)[]",
+                "type": "[GiftCardTransaction](../internal/classes/internal.GiftCardTransaction.mdx)[]",
                 "description": "The gift card transactions made in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1658,7 +1658,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "The details of the gift card used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1694,7 +1694,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that belong to the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1703,7 +1703,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1730,7 +1730,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "payment_status",
-                "type": "[`PaymentStatus`](../internal/enums/internal.PaymentStatus.mdx)",
+                "type": "[PaymentStatus](../internal/enums/internal.PaymentStatus.mdx)",
                 "description": "The order's payment status",
                 "optional": false,
                 "defaultValue": "not_paid",
@@ -1739,7 +1739,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1775,7 +1775,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "refunds",
-                "type": "[`Refund`](../internal/classes/internal.Refund.mdx)[]",
+                "type": "[Refund](../internal/classes/internal.Refund.mdx)[]",
                 "description": "The details of the refunds created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1784,7 +1784,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this order was created in.",
                 "optional": false,
                 "defaultValue": "",
@@ -1802,7 +1802,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "returnable_items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
                 "optional": true,
                 "defaultValue": "",
@@ -1811,7 +1811,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "returns",
-                "type": "[`Return`](../internal/classes/internal.Return.mdx)[]",
+                "type": "[Return](../internal/classes/internal.Return.mdx)[]",
                 "description": "The details of the returns created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1820,7 +1820,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel this order belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1838,7 +1838,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1856,7 +1856,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1883,7 +1883,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "status",
-                "type": "[`OrderStatus`](../internal/enums/internal.OrderStatus.mdx)",
+                "type": "[OrderStatus](../internal/enums/internal.OrderStatus.mdx)",
                 "description": "The order's status",
                 "optional": false,
                 "defaultValue": "pending",
@@ -1901,7 +1901,7 @@ medusa.orders.retrieveByCartId(cartId).then(({ order }) => {
               },
               {
                 "name": "swaps",
-                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)[]",
+                "type": "[Swap](../internal/classes/internal.Swap.mdx)[]",
                 "description": "The details of the swaps created for the order.",
                 "optional": false,
                 "defaultValue": "",

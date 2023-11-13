@@ -41,7 +41,7 @@ async function updateCollection (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductCollectionDTO`](../../interfaces/UpdateProductCollectionDTO.mdx)[]",
+    "type": "[UpdateProductCollectionDTO](../../interfaces/UpdateProductCollectionDTO.mdx)[]",
     "description": "The product collections to be updated, each holding the attributes that should be updated in the product collection.",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ async function updateCollection (id: string, title: string) {
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -105,7 +105,7 @@ async function updateCollection (id: string, title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -165,7 +165,7 @@ async function updateCollection (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollectionDTO`](../../interfaces/ProductCollectionDTO.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductCollectionDTO[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product collections.",
@@ -173,7 +173,7 @@ async function updateCollection (id: string, title: string) {
     "children": [
       {
         "name": "ProductCollectionDTO[]",
-        "type": "[`ProductCollectionDTO`](../../interfaces/ProductCollectionDTO.mdx)[]",
+        "type": "[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -208,7 +208,7 @@ async function updateCollection (id: string, title: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -217,7 +217,7 @@ async function updateCollection (id: string, title: string) {
           },
           {
             "name": "products",
-            "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)[]",
+            "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)[]",
             "description": "The associated products. It may only be available if the `products` relation is expanded.",
             "optional": true,
             "defaultValue": "",

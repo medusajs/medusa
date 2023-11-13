@@ -111,7 +111,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductProps`](../../interfaces/FilterableProductProps.mdx)",
+    "type": "[FilterableProductProps](../../interfaces/FilterableProductProps.mdx)",
     "description": "The filters to apply on the retrieved products.",
     "optional": true,
     "defaultValue": "",
@@ -119,7 +119,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
     "children": [
       {
         "name": "$and",
-        "type": "([`FilterableProductProps`](../../interfaces/FilterableProductProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableProductProps`](../../interfaces/FilterableProductProps.mdx)\\>)[]",
+        "type": "([FilterableProductProps](../../interfaces/FilterableProductProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableProductProps\\&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -128,7 +128,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
       },
       {
         "name": "$or",
-        "type": "([`FilterableProductProps`](../../interfaces/FilterableProductProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableProductProps`](../../interfaces/FilterableProductProps.mdx)\\>)[]",
+        "type": "([FilterableProductProps](../../interfaces/FilterableProductProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableProductProps\\&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -145,7 +145,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
         "children": [
           {
             "name": "id",
-            "type": "`string` \\| `string`[] \\| [`OperatorMap`](../../types/OperatorMap.mdx)<`string`\\>",
+            "type": "`string` \\| `string`[] \\| [OperatorMap](../../types/OperatorMap.mdx)\\&#60;string\\&#62;",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -174,7 +174,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
       },
       {
         "name": "category_id",
-        "type": "`string` \\| `string`[] \\| [`OperatorMap`](../../types/OperatorMap.mdx)<`string`\\>",
+        "type": "`string` \\| `string`[] \\| [OperatorMap](../../types/OperatorMap.mdx)\\&#60;string\\&#62;",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -183,7 +183,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
       },
       {
         "name": "collection_id",
-        "type": "`string` \\| `string`[] \\| [`OperatorMap`](../../types/OperatorMap.mdx)<`string`\\>",
+        "type": "`string` \\| `string`[] \\| [OperatorMap](../../types/OperatorMap.mdx)\\&#60;string\\&#62;",
         "description": "Filters a product by its associated collections.",
         "optional": true,
         "defaultValue": "",
@@ -240,7 +240,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`ProductDTO`](../../interfaces/ProductDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;ProductDTO\\&#62;",
     "description": "The configurations determining how the products are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -314,7 +314,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -374,7 +374,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductDTO`](../../interfaces/ProductDTO.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductDTO[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of products.",
@@ -382,7 +382,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
     "children": [
       {
         "name": "ProductDTO[]",
-        "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)[]",
+        "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -390,7 +390,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
         "children": [
           {
             "name": "categories",
-            "type": "``null`` \\| [`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "``null`` \\| [ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -399,7 +399,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "collection",
-            "type": "[`ProductCollectionDTO`](../../interfaces/ProductCollectionDTO.mdx)",
+            "type": "[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)",
             "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -489,7 +489,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "images",
-            "type": "[`ProductImageDTO`](../../interfaces/ProductImageDTO.mdx)[]",
+            "type": "[ProductImageDTO](../../interfaces/ProductImageDTO.mdx)[]",
             "description": "The associated product images. It may only be available if the `images` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -525,7 +525,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -543,7 +543,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "options",
-            "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]",
+            "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]",
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -561,7 +561,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "status",
-            "type": "[`ProductStatus`](../../enums/ProductStatus.mdx)",
+            "type": "[ProductStatus](../../enums/ProductStatus.mdx)",
             "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
             "optional": false,
             "defaultValue": "",
@@ -579,7 +579,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "tags",
-            "type": "[`ProductTagDTO`](../../interfaces/ProductTagDTO.mdx)[]",
+            "type": "[ProductTagDTO](../../interfaces/ProductTagDTO.mdx)[]",
             "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -606,7 +606,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "type",
-            "type": "[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]",
+            "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
             "description": "The associated product type. It may only be available if the `type` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -624,7 +624,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
           },
           {
             "name": "variants",
-            "type": "[`ProductVariantDTO`](../../interfaces/ProductVariantDTO.mdx)[]",
+            "type": "[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)[]",
             "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
             "optional": false,
             "defaultValue": "",

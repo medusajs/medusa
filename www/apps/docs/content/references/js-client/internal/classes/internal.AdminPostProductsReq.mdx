@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "categories",
-    "type": "[`ProductProductCategoryReq`](internal.ProductProductCategoryReq.mdx)[]",
+    "type": "[ProductProductCategoryReq](internal.ProductProductCategoryReq.mdx)[]",
     "description": "Product categories to add the Product to.",
     "optional": true,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "is_giftcard",
     "type": "`boolean`",
-    "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.",
+    "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to \\`true\\` will result in a Gift Card being created.",
     "optional": false,
     "defaultValue": "false",
     "expandable": false,
@@ -111,7 +111,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs with additional information.",
     "optional": true,
     "defaultValue": "",
@@ -129,7 +129,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "options",
-    "type": "[`ProductOptionReq`](internal.ProductOptionReq.mdx)[]",
+    "type": "[ProductOptionReq](internal.ProductOptionReq.mdx)[]",
     "description": "The Options that the Product should have. A new product option will be created for every item in the array.",
     "optional": true,
     "defaultValue": "",
@@ -147,7 +147,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "sales_channels",
-    "type": "[`ProductSalesChannelReq`](internal.ProductSalesChannelReq.mdx)[]",
+    "type": "[ProductSalesChannelReq](internal.ProductSalesChannelReq.mdx)[]",
     "description": "Sales channels to associate the Product with.",
     "optional": true,
     "defaultValue": "",
@@ -156,8 +156,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "status",
-    "type": "[`ProductStatus`](../enums/internal.ProductStatus.mdx)",
-    "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
+    "type": "[ProductStatus](../enums/internal.ProductStatus.mdx)",
+    "description": "The status of the product. The product is shown to the customer only if its status is \\`published\\`.",
     "optional": true,
     "defaultValue": "draft",
     "expandable": false,
@@ -174,7 +174,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "tags",
-    "type": "[`ProductTagReq`](internal.ProductTagReq.mdx)[]",
+    "type": "[ProductTagReq](internal.ProductTagReq.mdx)[]",
     "description": "Product Tags to associate the Product with.",
     "optional": true,
     "defaultValue": "",
@@ -201,7 +201,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "type",
-    "type": "[`ProductTypeReq`](internal.ProductTypeReq.mdx)",
+    "type": "[ProductTypeReq](internal.ProductTypeReq.mdx)",
     "description": "The Product Type to associate the Product with.",
     "optional": true,
     "defaultValue": "",
@@ -210,7 +210,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "variants",
-    "type": "[`ProductVariantReq`](internal.ProductVariantReq.mdx)[]",
+    "type": "[ProductVariantReq](internal.ProductVariantReq.mdx)[]",
     "description": "An array of Product Variants to create with the Product. Each product variant must have a unique combination of Product Option values.",
     "optional": true,
     "defaultValue": "",

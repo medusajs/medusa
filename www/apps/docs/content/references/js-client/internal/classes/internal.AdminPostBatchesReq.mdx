@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Additional infomration regarding the batch to be used for processing.",
     "optional": false,
     "defaultValue": "",
@@ -21,7 +21,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "dry_run",
     "type": "`boolean`",
-    "description": "Set a batch job in dry_run mode, which would delay executing the batch job until it's confirmed.",
+    "description": "Set a batch job in dry\\_run mode, which would delay executing the batch job until it's confirmed.",
     "optional": false,
     "defaultValue": "false",
     "expandable": false,
@@ -30,7 +30,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "type",
     "type": "`string`",
-    "description": "The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.",
+    "description": "The type of batch job to start, which is defined by the \\`batchType\\` property of the associated batch job strategy.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

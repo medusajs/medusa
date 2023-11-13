@@ -10,14 +10,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new SearchService**(`«destructured»`, `options`)
+`**new SearchService**(«destructured», options)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-36.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-36.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "logger_",
-    "type": "[`Logger`](../types/Logger-1.mdx)",
+    "type": "[Logger](../types/Logger-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "options_",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -71,16 +71,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### options
 
-`get` **options**(): Record<`string`, `unknown`\>
+`get**options**(): Record\&#60;string, unknown\&#62;`
 
 #### Returns
 
-Record<`string`, `unknown`\>
+`Record<string, unknown>`
 
 <ParameterTypes parameters={[
   {
     "name": "Record",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -93,7 +93,7 @@ Record<`string`, `unknown`\>
 
 ### addDocuments
 
-**addDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
+`**addDocuments**(indexName, documents, type): Promise\&#60;void\&#62;`
 
 Used to index documents by the search engine provider
 
@@ -131,12 +131,12 @@ Used to index documents by the search engine provider
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -149,7 +149,7 @@ ___
 
 ### createIndex
 
-**createIndex**(`indexName`, `options`): `Promise`<`void`\>
+`**createIndex**(indexName, options): Promise\&#60;void\&#62;`
 
 Used to create an index
 
@@ -178,12 +178,12 @@ Used to create an index
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -196,7 +196,7 @@ ___
 
 ### deleteAllDocuments
 
-**deleteAllDocuments**(`indexName`): `Promise`<`void`\>
+`**deleteAllDocuments**(indexName): Promise\&#60;void\&#62;`
 
 Used to delete all documents
 
@@ -216,12 +216,12 @@ Used to delete all documents
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -234,7 +234,7 @@ ___
 
 ### deleteDocument
 
-**deleteDocument**(`indexName`, `document_id`): `Promise`<`void`\>
+`**deleteDocument**(indexName, document_id): Promise\&#60;void\&#62;`
 
 Used to delete document
 
@@ -263,12 +263,12 @@ Used to delete document
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -281,7 +281,7 @@ ___
 
 ### getIndex
 
-**getIndex**(`indexName`): `Promise`<`void`\>
+`**getIndex**(indexName): Promise\&#60;void\&#62;`
 
 Used to get an index
 
@@ -301,12 +301,12 @@ Used to get an index
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -319,7 +319,7 @@ ___
 
 ### replaceDocuments
 
-**replaceDocuments**(`indexName`, `documents`, `type`): `Promise`<`void`\>
+`**replaceDocuments**(indexName, documents, type): Promise\&#60;void\&#62;`
 
 Used to replace documents
 
@@ -357,12 +357,12 @@ Used to replace documents
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -375,7 +375,7 @@ ___
 
 ### search
 
-**search**(`indexName`, `query`, `options`): `Promise`<{ `hits`: `unknown`[]  }\>
+`**search**(indexName, query, options): Promise\&#60;\&#123; hits: unknown[]  \&#125;\&#62;`
 
 Used to search for a document in an index
 
@@ -413,12 +413,12 @@ Used to search for a document in an index
 
 #### Returns
 
-`Promise`<{ `hits`: `unknown`[]  }\>
+Promise\&#60;\&#123; hits: unknown[]  \&#125;\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `hits`: `unknown`[]  }\\>",
+    "type": "Promise\\&#60;\\&#123; hits: unknown[]  \\&#125;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -431,7 +431,7 @@ ___
 
 ### updateSettings
 
-**updateSettings**(`indexName`, `settings`): `Promise`<`void`\>
+`**updateSettings**(indexName, settings): Promise\&#60;void\&#62;`
 
 Used to update the settings of an index
 
@@ -460,12 +460,12 @@ Used to update the settings of an index
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",

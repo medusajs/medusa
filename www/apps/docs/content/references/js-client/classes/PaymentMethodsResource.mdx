@@ -7,7 +7,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PaymentMethodsResource
 
-This class is used to send requests to Payment Method API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers). All its method
+This class is used to send requests to Payment Method API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers\_postcustomers). All its method
 are available in the JS Client under the `medusa.customers.paymentMethods` property.
 
 All methods in this class require [customer authentication](AuthResource.mdx#authenticate).
@@ -35,7 +35,7 @@ medusa.customers.paymentMethods.list().then(({ payment_methods }) => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -49,7 +49,7 @@ medusa.customers.paymentMethods.list().then(({ payment_methods }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCustomersListPaymentMethodsRes`](../internal/types/internal.StoreCustomersListPaymentMethodsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCustomersListPaymentMethodsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's payment methods.",
@@ -65,7 +65,7 @@ medusa.customers.paymentMethods.list().then(({ payment_methods }) => {
         "children": [
           {
             "name": "payment_methods",
-            "type": "{ `data`: `object` ; `provider_id`: `string`  }[]",
+            "type": "`\\&#123; data: object ; provider_id: string  \\&#125;`[]",
             "description": "The details of the saved payment methods.",
             "optional": false,
             "defaultValue": "",

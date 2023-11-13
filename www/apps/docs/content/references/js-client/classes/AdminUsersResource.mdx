@@ -43,7 +43,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminCreateUserPayload`](../internal/types/internal.AdminCreateUserPayload.mdx)",
+    "type": "[AdminCreateUserPayload](../internal/types/internal.AdminCreateUserPayload.mdx)",
     "description": "The user to create.",
     "optional": false,
     "defaultValue": "",
@@ -52,7 +52,7 @@ medusa.admin.users
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -66,7 +66,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminUserRes`](../internal/types/internal.AdminUserRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -82,7 +82,7 @@ medusa.admin.users
         "children": [
           {
             "name": "user",
-            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -153,7 +153,7 @@ medusa.admin.users
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -162,7 +162,7 @@ medusa.admin.users
               },
               {
                 "name": "role",
-                "type": "[`UserRoles`](../internal/enums/internal.internal.UserRoles.mdx)",
+                "type": "[UserRoles](../internal/enums/internal.internal.UserRoles.mdx)",
                 "description": "The user's role. These roles don't provide any different privileges.",
                 "optional": false,
                 "defaultValue": "member",
@@ -217,7 +217,7 @@ medusa.admin.users.delete(userId).then(({ id, object, deleted }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -231,7 +231,7 @@ medusa.admin.users.delete(userId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -290,7 +290,7 @@ medusa.admin.users.list().then(({ users }) => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -304,7 +304,7 @@ medusa.admin.users.list().then(({ users }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminUsersListRes`](../internal/types/internal.AdminUsersListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUsersListRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of users.",
@@ -320,7 +320,7 @@ medusa.admin.users.list().then(({ users }) => {
         "children": [
           {
             "name": "users",
-            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>[]",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;[]",
             "description": "An array of users details.",
             "optional": false,
             "defaultValue": "",
@@ -391,7 +391,7 @@ medusa.admin.users.list().then(({ users }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -400,7 +400,7 @@ medusa.admin.users.list().then(({ users }) => {
               },
               {
                 "name": "role",
-                "type": "[`UserRoles`](../internal/enums/internal.internal.UserRoles.mdx)",
+                "type": "[UserRoles](../internal/enums/internal.internal.UserRoles.mdx)",
                 "description": "The user's role. These roles don't provide any different privileges.",
                 "optional": false,
                 "defaultValue": "member",
@@ -452,7 +452,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminResetPasswordRequest`](../internal/classes/internal.AdminResetPasswordRequest.mdx)",
+    "type": "[AdminResetPasswordRequest](../internal/classes/internal.AdminResetPasswordRequest.mdx)",
     "description": "The reset details.",
     "optional": false,
     "defaultValue": "",
@@ -489,7 +489,7 @@ medusa.admin.users
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -503,7 +503,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminUserRes`](../internal/types/internal.AdminUserRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -519,7 +519,7 @@ medusa.admin.users
         "children": [
           {
             "name": "user",
-            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -590,7 +590,7 @@ medusa.admin.users
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -599,7 +599,7 @@ medusa.admin.users
               },
               {
                 "name": "role",
-                "type": "[`UserRoles`](../internal/enums/internal.internal.UserRoles.mdx)",
+                "type": "[UserRoles](../internal/enums/internal.internal.UserRoles.mdx)",
                 "description": "The user's role. These roles don't provide any different privileges.",
                 "optional": false,
                 "defaultValue": "member",
@@ -654,7 +654,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -668,7 +668,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminUserRes`](../internal/types/internal.AdminUserRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -684,7 +684,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
         "children": [
           {
             "name": "user",
-            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -755,7 +755,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -764,7 +764,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
               },
               {
                 "name": "role",
-                "type": "[`UserRoles`](../internal/enums/internal.internal.UserRoles.mdx)",
+                "type": "[UserRoles](../internal/enums/internal.internal.UserRoles.mdx)",
                 "description": "The user's role. These roles don't provide any different privileges.",
                 "optional": false,
                 "defaultValue": "member",
@@ -819,7 +819,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminResetPasswordTokenRequest`](../internal/classes/internal.AdminResetPasswordTokenRequest.mdx)",
+    "type": "[AdminResetPasswordTokenRequest](../internal/classes/internal.AdminResetPasswordTokenRequest.mdx)",
     "description": "The user's reset details.",
     "optional": false,
     "defaultValue": "",
@@ -838,7 +838,7 @@ medusa.admin.users
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -852,7 +852,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`void`\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the token is generated successfully.",
@@ -896,7 +896,7 @@ medusa.admin.users
   },
   {
     "name": "payload",
-    "type": "[`AdminUpdateUserPayload`](../internal/types/internal.AdminUpdateUserPayload.mdx)",
+    "type": "[AdminUpdateUserPayload](../internal/types/internal.AdminUpdateUserPayload.mdx)",
     "description": "The attributes to update in the user.",
     "optional": false,
     "defaultValue": "",
@@ -931,7 +931,7 @@ medusa.admin.users
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -940,7 +940,7 @@ medusa.admin.users
       },
       {
         "name": "role",
-        "type": "[`UpdateUserRoles`](../internal/types/internal.UpdateUserRoles.mdx)",
+        "type": "[UpdateUserRoles](../internal/types/internal.UpdateUserRoles.mdx)",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -951,7 +951,7 @@ medusa.admin.users
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -965,7 +965,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminUserRes`](../internal/types/internal.AdminUserRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -981,7 +981,7 @@ medusa.admin.users
         "children": [
           {
             "name": "user",
-            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -1052,7 +1052,7 @@ medusa.admin.users
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1061,7 +1061,7 @@ medusa.admin.users
               },
               {
                 "name": "role",
-                "type": "[`UserRoles`](../internal/enums/internal.internal.UserRoles.mdx)",
+                "type": "[UserRoles](../internal/enums/internal.internal.UserRoles.mdx)",
                 "description": "The user's role. These roles don't provide any different privileges.",
                 "optional": false,
                 "defaultValue": "member",

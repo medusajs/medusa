@@ -51,7 +51,7 @@ medusa.admin.products
   },
   {
     "name": "payload",
-    "type": "[`AdminPostProductsProductOptionsReq`](../internal/classes/internal.AdminPostProductsProductOptionsReq.mdx)",
+    "type": "[AdminPostProductsProductOptionsReq](../internal/classes/internal.AdminPostProductsProductOptionsReq.mdx)",
     "description": "The option to add.",
     "optional": false,
     "defaultValue": "",
@@ -70,7 +70,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -84,7 +84,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `options` property.",
@@ -100,7 +100,7 @@ medusa.admin.products
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -108,7 +108,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -118,7 +118,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -164,7 +164,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -217,7 +217,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -253,7 +253,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -271,7 +271,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -289,7 +289,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -307,8 +307,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -316,7 +316,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -325,7 +325,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -343,7 +343,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -370,7 +370,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -397,7 +397,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -458,7 +458,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostProductsReq`](../internal/classes/internal.AdminPostProductsReq.mdx)",
+    "type": "[AdminPostProductsReq](../internal/classes/internal.AdminPostProductsReq.mdx)",
     "description": "The product to create.",
     "optional": false,
     "defaultValue": "",
@@ -466,7 +466,7 @@ medusa.admin.products
     "children": [
       {
         "name": "categories",
-        "type": "[`ProductProductCategoryReq`](../internal/classes/internal.ProductProductCategoryReq.mdx)[]",
+        "type": "[ProductProductCategoryReq](../internal/classes/internal.ProductProductCategoryReq.mdx)[]",
         "description": "Product categories to add the Product to.",
         "optional": true,
         "defaultValue": "",
@@ -550,7 +550,7 @@ medusa.admin.products
       {
         "name": "is_giftcard",
         "type": "`boolean`",
-        "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.",
+        "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to \\`true\\` will result in a Gift Card being created.",
         "optional": false,
         "defaultValue": "false",
         "expandable": false,
@@ -576,7 +576,7 @@ medusa.admin.products
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -594,7 +594,7 @@ medusa.admin.products
       },
       {
         "name": "options",
-        "type": "[`ProductOptionReq`](../internal/classes/internal.ProductOptionReq.mdx)[]",
+        "type": "[ProductOptionReq](../internal/classes/internal.ProductOptionReq.mdx)[]",
         "description": "The Options that the Product should have. A new product option will be created for every item in the array.",
         "optional": true,
         "defaultValue": "",
@@ -622,7 +622,7 @@ medusa.admin.products
       },
       {
         "name": "sales_channels",
-        "type": "[`ProductSalesChannelReq`](../internal/classes/internal.ProductSalesChannelReq.mdx)[]",
+        "type": "[ProductSalesChannelReq](../internal/classes/internal.ProductSalesChannelReq.mdx)[]",
         "description": "Sales channels to associate the Product with.",
         "optional": true,
         "defaultValue": "",
@@ -641,8 +641,8 @@ medusa.admin.products
       },
       {
         "name": "status",
-        "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
-        "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
+        "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
+        "description": "The status of the product. The product is shown to the customer only if its status is \\`published\\`.",
         "optional": true,
         "defaultValue": "draft",
         "expandable": false,
@@ -696,7 +696,7 @@ medusa.admin.products
       },
       {
         "name": "tags",
-        "type": "[`ProductTagReq`](../internal/classes/internal.ProductTagReq.mdx)[]",
+        "type": "[ProductTagReq](../internal/classes/internal.ProductTagReq.mdx)[]",
         "description": "Product Tags to associate the Product with.",
         "optional": true,
         "defaultValue": "",
@@ -714,7 +714,7 @@ medusa.admin.products
           {
             "name": "value",
             "type": "`string`",
-            "description": "The value of the Tag. If the `id` is provided, the value of the existing tag will be updated.",
+            "description": "The value of the Tag. If the \\`id\\` is provided, the value of the existing tag will be updated.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -742,7 +742,7 @@ medusa.admin.products
       },
       {
         "name": "type",
-        "type": "[`ProductTypeReq`](../internal/classes/internal.ProductTypeReq.mdx)",
+        "type": "[ProductTypeReq](../internal/classes/internal.ProductTypeReq.mdx)",
         "description": "The Product Type to associate the Product with.",
         "optional": true,
         "defaultValue": "",
@@ -770,7 +770,7 @@ medusa.admin.products
       },
       {
         "name": "variants",
-        "type": "[`ProductVariantReq`](../internal/classes/internal.ProductVariantReq.mdx)[]",
+        "type": "[ProductVariantReq](../internal/classes/internal.ProductVariantReq.mdx)[]",
         "description": "An array of Product Variants to create with the Product. Each product variant must have a unique combination of Product Option values.",
         "optional": true,
         "defaultValue": "",
@@ -859,7 +859,7 @@ medusa.admin.products
           },
           {
             "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "An optional set of key-value pairs with additional information.",
             "optional": true,
             "defaultValue": "",
@@ -877,8 +877,8 @@ medusa.admin.products
           },
           {
             "name": "options",
-            "type": "[`ProductVariantOptionReq`](../internal/classes/internal.ProductVariantOptionReq-2.mdx)[]",
-            "description": "An array of Product Option values that the variant corresponds to. The option values should be added into the array in the same index as in the `options` field of the product.",
+            "type": "[ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq-2.mdx)[]",
+            "description": "An array of Product Option values that the variant corresponds to. The option values should be added into the array in the same index as in the \\`options\\` field of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -886,7 +886,7 @@ medusa.admin.products
               {
                 "name": "value",
                 "type": "`string`",
-                "description": "The value to give for the Product Option at the same index in the Product's `options` field.",
+                "description": "The value to give for the Product Option at the same index in the Product's \\`options\\` field.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -905,7 +905,7 @@ medusa.admin.products
           },
           {
             "name": "prices",
-            "type": "[`ProductVariantPricesCreateReq`](../internal/classes/internal.ProductVariantPricesCreateReq.mdx)[]",
+            "type": "[ProductVariantPricesCreateReq](../internal/classes/internal.ProductVariantPricesCreateReq.mdx)[]",
             "description": "An array of product variant prices. A product variant can have different prices for each region or currency code.",
             "optional": false,
             "defaultValue": "",
@@ -923,7 +923,7 @@ medusa.admin.products
               {
                 "name": "currency_code",
                 "type": "`string`",
-                "description": "The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.",
+                "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -950,7 +950,7 @@ medusa.admin.products
               {
                 "name": "region_id",
                 "type": "`string`",
-                "description": "The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.",
+                "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -1027,7 +1027,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1041,7 +1041,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -1057,7 +1057,7 @@ medusa.admin.products
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -1065,7 +1065,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1075,7 +1075,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1121,7 +1121,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -1174,7 +1174,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -1210,7 +1210,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1228,7 +1228,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -1246,7 +1246,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1264,8 +1264,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1273,7 +1273,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -1282,7 +1282,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -1300,7 +1300,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1327,7 +1327,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1354,7 +1354,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -1435,7 +1435,7 @@ medusa.admin.products
   },
   {
     "name": "payload",
-    "type": "[`AdminPostProductsProductVariantsReq`](../internal/classes/internal.AdminPostProductsProductVariantsReq.mdx)",
+    "type": "[AdminPostProductsProductVariantsReq](../internal/classes/internal.AdminPostProductsProductVariantsReq.mdx)",
     "description": "The product variant to create.",
     "optional": false,
     "defaultValue": "",
@@ -1524,7 +1524,7 @@ medusa.admin.products
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -1542,7 +1542,7 @@ medusa.admin.products
       },
       {
         "name": "options",
-        "type": "[`ProductVariantOptionReq`](../internal/classes/internal.ProductVariantOptionReq.mdx)[]",
+        "type": "[ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq.mdx)[]",
         "description": "An array of Product Option values that the variant corresponds to.",
         "optional": true,
         "defaultValue": "",
@@ -1579,7 +1579,7 @@ medusa.admin.products
       },
       {
         "name": "prices",
-        "type": "[`ProductVariantPricesCreateReq`](../internal/classes/internal.ProductVariantPricesCreateReq.mdx)[]",
+        "type": "[ProductVariantPricesCreateReq](../internal/classes/internal.ProductVariantPricesCreateReq.mdx)[]",
         "description": "An array of product variant prices. A product variant can have different prices for each region or currency code.",
         "optional": false,
         "defaultValue": "",
@@ -1597,7 +1597,7 @@ medusa.admin.products
           {
             "name": "currency_code",
             "type": "`string`",
-            "description": "The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.",
+            "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -1624,7 +1624,7 @@ medusa.admin.products
           {
             "name": "region_id",
             "type": "`string`",
-            "description": "The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.",
+            "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -1681,7 +1681,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1695,7 +1695,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `variants` property.",
@@ -1711,7 +1711,7 @@ medusa.admin.products
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -1719,7 +1719,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1729,7 +1729,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1775,7 +1775,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -1828,7 +1828,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -1864,7 +1864,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1882,7 +1882,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -1900,7 +1900,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1918,8 +1918,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1927,7 +1927,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -1936,7 +1936,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -1954,7 +1954,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -1981,7 +1981,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2008,7 +2008,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -2072,7 +2072,7 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2086,7 +2086,7 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsDeleteRes`](../internal/types/internal.AdminProductsDeleteRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsDeleteRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2162,7 +2162,7 @@ Delete a product option. If there are product variants that use this product opt
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2176,7 +2176,7 @@ Delete a product option. If there are product variants that use this product opt
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsDeleteOptionRes`](../internal/types/internal.AdminProductsDeleteOptionRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsDeleteOptionRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2219,7 +2219,7 @@ Delete a product option. If there are product variants that use this product opt
           },
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -2227,7 +2227,7 @@ Delete a product option. If there are product variants that use this product opt
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2237,7 +2237,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2283,7 +2283,7 @@ Delete a product option. If there are product variants that use this product opt
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -2336,7 +2336,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -2372,7 +2372,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2390,7 +2390,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -2408,7 +2408,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2426,8 +2426,8 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2435,7 +2435,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -2444,7 +2444,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -2462,7 +2462,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2489,7 +2489,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2516,7 +2516,7 @@ Delete a product option. If there are product variants that use this product opt
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -2591,7 +2591,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2605,7 +2605,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsDeleteVariantRes`](../internal/types/internal.AdminProductsDeleteVariantRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsDeleteVariantRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2639,7 +2639,7 @@ medusa.admin.products
           },
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -2647,7 +2647,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2657,7 +2657,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2703,7 +2703,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -2756,7 +2756,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -2792,7 +2792,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2810,7 +2810,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -2828,7 +2828,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2846,8 +2846,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2855,7 +2855,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -2864,7 +2864,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -2882,7 +2882,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -2909,7 +2909,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2936,7 +2936,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -3034,7 +3034,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetProductsParams`](../internal/classes/internal.AdminGetProductsParams.mdx)",
+    "type": "[AdminGetProductsParams](../internal/classes/internal.AdminGetProductsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved products.",
     "optional": true,
     "defaultValue": "",
@@ -3060,7 +3060,7 @@ medusa.admin.products
       },
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the products' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -3106,7 +3106,7 @@ medusa.admin.products
       },
       {
         "name": "deleted_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the products' `deleted_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -3279,7 +3279,7 @@ medusa.admin.products
       },
       {
         "name": "status",
-        "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)[]",
+        "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)[]",
         "description": "Statuses to filter products by.",
         "optional": true,
         "defaultValue": "",
@@ -3352,7 +3352,7 @@ medusa.admin.products
       },
       {
         "name": "updated_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the products' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -3400,7 +3400,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3414,7 +3414,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsListRes`](../internal/types/internal.AdminProductsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsListRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
@@ -3422,7 +3422,7 @@ medusa.admin.products
     "children": [
       {
         "name": "AdminProductsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `products`: ([`PricedProduct`](../internal/types/internal.PricedProduct.mdx) \\| [`Product`](../internal/classes/internal.Product.mdx))[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; products: (PricedProduct \\| Product)[]  \\&#125;`",
         "description": "The list of products with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -3457,7 +3457,7 @@ medusa.admin.products
           },
           {
             "name": "products",
-            "type": "([`PricedProduct`](../internal/types/internal.PricedProduct.mdx) \\| [`Product`](../internal/classes/internal.Product.mdx))[]",
+            "type": "([PricedProduct](../internal/types/internal.PricedProduct.mdx) \\| [Product](../internal/classes/internal.Product.mdx))[]",
             "description": "An array of products details.",
             "optional": false,
             "defaultValue": "",
@@ -3492,7 +3492,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3506,7 +3506,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsListTagsRes`](../internal/types/internal.AdminProductsListTagsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsListTagsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of tags.",
@@ -3522,7 +3522,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
         "children": [
           {
             "name": "tags",
-            "type": "[`Pick`](../internal/types/internal.Pick.mdx)<[`ProductTag`](../internal/classes/internal.ProductTag.mdx), ``\"id\"`` \\| ``\"value\"``\\> & { `usage_count`: `number`  }[]",
+            "type": "[Pick](../internal/types/internal.Pick.mdx)\\&#60;ProductTag, `\"id\"` \\| `\"value\"`\\&#62; & `\\&#123; usage_count: number  \\&#125;`[]",
             "description": "An array of product tags details.",
             "optional": false,
             "defaultValue": "",
@@ -3557,7 +3557,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3630,7 +3630,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3644,7 +3644,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -3660,7 +3660,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -3668,7 +3668,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -3678,7 +3678,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -3724,7 +3724,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -3777,7 +3777,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -3813,7 +3813,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3831,7 +3831,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -3849,7 +3849,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -3867,8 +3867,8 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -3876,7 +3876,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -3885,7 +3885,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -3903,7 +3903,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -3930,7 +3930,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -3957,7 +3957,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -4027,7 +4027,7 @@ medusa.admin.products
   },
   {
     "name": "payload",
-    "type": "[`AdminPostProductsProductMetadataReq`](../internal/classes/internal.AdminPostProductsProductMetadataReq.mdx)",
+    "type": "[AdminPostProductsProductMetadataReq](../internal/classes/internal.AdminPostProductsProductMetadataReq.mdx)",
     "description": "The metadata details to add, update, or delete.",
     "optional": false,
     "defaultValue": "",
@@ -4055,7 +4055,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -4069,7 +4069,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -4085,7 +4085,7 @@ medusa.admin.products
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -4093,7 +4093,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -4103,7 +4103,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -4149,7 +4149,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -4202,7 +4202,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -4238,7 +4238,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -4256,7 +4256,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -4274,7 +4274,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -4292,8 +4292,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -4301,7 +4301,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -4310,7 +4310,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -4328,7 +4328,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -4355,7 +4355,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -4382,7 +4382,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -4450,7 +4450,7 @@ medusa.admin.products
   },
   {
     "name": "payload",
-    "type": "[`AdminPostProductsProductReq`](../internal/classes/internal.AdminPostProductsProductReq.mdx)",
+    "type": "[AdminPostProductsProductReq](../internal/classes/internal.AdminPostProductsProductReq.mdx)",
     "description": "The attributes to update in a product.",
     "optional": false,
     "defaultValue": "",
@@ -4458,7 +4458,7 @@ medusa.admin.products
     "children": [
       {
         "name": "categories",
-        "type": "[`ProductProductCategoryReq`](../internal/classes/internal.ProductProductCategoryReq.mdx)[]",
+        "type": "[ProductProductCategoryReq](../internal/classes/internal.ProductProductCategoryReq.mdx)[]",
         "description": "Product categories to add the Product to.",
         "optional": true,
         "defaultValue": "",
@@ -4559,7 +4559,7 @@ medusa.admin.products
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -4586,7 +4586,7 @@ medusa.admin.products
       },
       {
         "name": "sales_channels",
-        "type": "``null`` \\| [`ProductSalesChannelReq`](../internal/classes/internal.ProductSalesChannelReq.mdx)[]",
+        "type": "``null`` \\| [ProductSalesChannelReq](../internal/classes/internal.ProductSalesChannelReq.mdx)[]",
         "description": "Sales channels to associate the Product with.",
         "optional": true,
         "defaultValue": "",
@@ -4595,8 +4595,8 @@ medusa.admin.products
       },
       {
         "name": "status",
-        "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
-        "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
+        "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
+        "description": "The status of the product. The product is shown to the customer only if its status is \\`published\\`.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -4650,7 +4650,7 @@ medusa.admin.products
       },
       {
         "name": "tags",
-        "type": "[`ProductTagReq`](../internal/classes/internal.ProductTagReq.mdx)[]",
+        "type": "[ProductTagReq](../internal/classes/internal.ProductTagReq.mdx)[]",
         "description": "Product Tags to associate the Product with.",
         "optional": true,
         "defaultValue": "",
@@ -4668,7 +4668,7 @@ medusa.admin.products
           {
             "name": "value",
             "type": "`string`",
-            "description": "The value of the Tag. If the `id` is provided, the value of the existing tag will be updated.",
+            "description": "The value of the Tag. If the \\`id\\` is provided, the value of the existing tag will be updated.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -4696,7 +4696,7 @@ medusa.admin.products
       },
       {
         "name": "type",
-        "type": "[`ProductTypeReq`](../internal/classes/internal.ProductTypeReq.mdx)",
+        "type": "[ProductTypeReq](../internal/classes/internal.ProductTypeReq.mdx)",
         "description": "The Product Type to associate the Product with.",
         "optional": true,
         "defaultValue": "",
@@ -4724,7 +4724,7 @@ medusa.admin.products
       },
       {
         "name": "variants",
-        "type": "[`ProductVariantReq`](../internal/classes/internal.ProductVariantReq-1.mdx)[]",
+        "type": "[ProductVariantReq](../internal/classes/internal.ProductVariantReq-1.mdx)[]",
         "description": "An array of Product Variants to create with the Product. Each product variant must have a unique combination of Product Option values.",
         "optional": true,
         "defaultValue": "",
@@ -4822,7 +4822,7 @@ medusa.admin.products
           },
           {
             "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "An optional set of key-value pairs with additional information.",
             "optional": true,
             "defaultValue": "",
@@ -4840,7 +4840,7 @@ medusa.admin.products
           },
           {
             "name": "options",
-            "type": "[`ProductVariantOptionReq`](../internal/classes/internal.ProductVariantOptionReq-3.mdx)[]",
+            "type": "[ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq-3.mdx)[]",
             "description": "An array of Product Option values that the variant corresponds to.",
             "optional": true,
             "defaultValue": "",
@@ -4877,7 +4877,7 @@ medusa.admin.products
           },
           {
             "name": "prices",
-            "type": "[`ProductVariantPricesUpdateReq`](../internal/classes/internal.ProductVariantPricesUpdateReq.mdx)[]",
+            "type": "[ProductVariantPricesUpdateReq](../internal/classes/internal.ProductVariantPricesUpdateReq.mdx)[]",
             "description": "An array of product variant prices. A product variant can have different prices for each region or currency code.",
             "optional": true,
             "defaultValue": "",
@@ -4895,7 +4895,7 @@ medusa.admin.products
               {
                 "name": "currency_code",
                 "type": "`string`",
-                "description": "The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.",
+                "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -4931,7 +4931,7 @@ medusa.admin.products
               {
                 "name": "region_id",
                 "type": "`string`",
-                "description": "The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.",
+                "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -5008,7 +5008,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -5022,7 +5022,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -5038,7 +5038,7 @@ medusa.admin.products
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -5046,7 +5046,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5056,7 +5056,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5102,7 +5102,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -5155,7 +5155,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -5191,7 +5191,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -5209,7 +5209,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -5227,7 +5227,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5245,8 +5245,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -5254,7 +5254,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -5263,7 +5263,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -5281,7 +5281,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5308,7 +5308,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5335,7 +5335,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -5412,7 +5412,7 @@ medusa.admin.products
   },
   {
     "name": "payload",
-    "type": "[`AdminPostProductsProductOptionsOption`](../internal/classes/internal.AdminPostProductsProductOptionsOption.mdx)",
+    "type": "[AdminPostProductsProductOptionsOption](../internal/classes/internal.AdminPostProductsProductOptionsOption.mdx)",
     "description": "The attributes to update in the product option.",
     "optional": false,
     "defaultValue": "",
@@ -5431,7 +5431,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -5445,7 +5445,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `options` property.",
@@ -5461,7 +5461,7 @@ medusa.admin.products
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -5469,7 +5469,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5479,7 +5479,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5525,7 +5525,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -5578,7 +5578,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -5614,7 +5614,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -5632,7 +5632,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -5650,7 +5650,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5668,8 +5668,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -5677,7 +5677,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -5686,7 +5686,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -5704,7 +5704,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -5731,7 +5731,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -5758,7 +5758,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -5848,7 +5848,7 @@ medusa.admin.products
   },
   {
     "name": "payload",
-    "type": "[`AdminPostProductsProductVariantsVariantReq`](../internal/classes/internal.AdminPostProductsProductVariantsVariantReq.mdx)",
+    "type": "[AdminPostProductsProductVariantsVariantReq](../internal/classes/internal.AdminPostProductsProductVariantsVariantReq.mdx)",
     "description": "The attributes to update in the product variant.",
     "optional": false,
     "defaultValue": "",
@@ -5937,7 +5937,7 @@ medusa.admin.products
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -5955,7 +5955,7 @@ medusa.admin.products
       },
       {
         "name": "options",
-        "type": "[`ProductVariantOptionReq`](../internal/classes/internal.ProductVariantOptionReq-1.mdx)[]",
+        "type": "[ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq-1.mdx)[]",
         "description": "An array of Product Option values that the variant corresponds to.",
         "optional": true,
         "defaultValue": "",
@@ -5992,7 +5992,7 @@ medusa.admin.products
       },
       {
         "name": "prices",
-        "type": "[`ProductVariantPricesUpdateReq`](../internal/classes/internal.ProductVariantPricesUpdateReq.mdx)[]",
+        "type": "[ProductVariantPricesUpdateReq](../internal/classes/internal.ProductVariantPricesUpdateReq.mdx)[]",
         "description": "An array of product variant prices. A product variant can have different prices for each region or currency code.",
         "optional": true,
         "defaultValue": "",
@@ -6010,7 +6010,7 @@ medusa.admin.products
           {
             "name": "currency_code",
             "type": "`string`",
-            "description": "The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.",
+            "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -6046,7 +6046,7 @@ medusa.admin.products
           {
             "name": "region_id",
             "type": "`string`",
-            "description": "The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.",
+            "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -6103,7 +6103,7 @@ medusa.admin.products
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -6117,7 +6117,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminProductsRes`](../internal/types/internal.AdminProductsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `variants` property.",
@@ -6133,7 +6133,7 @@ medusa.admin.products
         "children": [
           {
             "name": "product",
-            "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+            "type": "[Product](../internal/classes/internal.Product.mdx)",
             "description": "Product details.",
             "optional": false,
             "defaultValue": "",
@@ -6141,7 +6141,7 @@ medusa.admin.products
             "children": [
               {
                 "name": "categories",
-                "type": "[`ProductCategory`](../internal/classes/internal.ProductCategory.mdx)[]",
+                "type": "[ProductCategory](../internal/classes/internal.ProductCategory.mdx)[]",
                 "description": "The details of the product categories that this product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -6151,7 +6151,7 @@ medusa.admin.products
               },
               {
                 "name": "collection",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
                 "description": "The details of the product collection that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -6197,7 +6197,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -6250,7 +6250,7 @@ medusa.admin.products
               },
               {
                 "name": "images",
-                "type": "[`Image`](../internal/classes/internal.internal.Image.mdx)[]",
+                "type": "[Image](../internal/classes/internal.internal.Image.mdx)[]",
                 "description": "The details of the product's images.",
                 "optional": false,
                 "defaultValue": "",
@@ -6286,7 +6286,7 @@ medusa.admin.products
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -6304,7 +6304,7 @@ medusa.admin.products
               },
               {
                 "name": "options",
-                "type": "[`ProductOption`](../internal/classes/internal.internal.ProductOption.mdx)[]",
+                "type": "[ProductOption](../internal/classes/internal.internal.ProductOption.mdx)[]",
                 "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",
@@ -6322,7 +6322,7 @@ medusa.admin.products
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
                 "optional": false,
                 "defaultValue": "",
@@ -6340,8 +6340,8 @@ medusa.admin.products
               },
               {
                 "name": "profiles",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
+                "description": "Available if the relation \\`profiles\\` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -6349,7 +6349,7 @@ medusa.admin.products
               },
               {
                 "name": "sales_channels",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
                 "description": "The details of the sales channels this product is available in.",
                 "optional": false,
                 "defaultValue": "",
@@ -6358,7 +6358,7 @@ medusa.admin.products
               },
               {
                 "name": "status",
-                "type": "[`ProductStatus`](../internal/enums/internal.ProductStatus.mdx)",
+                "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
                 "description": "The status of the product",
                 "optional": false,
                 "defaultValue": "draft",
@@ -6376,7 +6376,7 @@ medusa.admin.products
               },
               {
                 "name": "tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
                 "description": "The details of the product tags used in this product.",
                 "optional": false,
                 "defaultValue": "",
@@ -6403,7 +6403,7 @@ medusa.admin.products
               },
               {
                 "name": "type",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)",
                 "description": "The details of the product type that the product belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -6430,7 +6430,7 @@ medusa.admin.products
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
                 "optional": false,
                 "defaultValue": "",

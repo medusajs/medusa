@@ -41,7 +41,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateMoneyAmountDTO`](../../interfaces/UpdateMoneyAmountDTO.mdx)[]",
+    "type": "[UpdateMoneyAmountDTO](../../interfaces/UpdateMoneyAmountDTO.mdx)[]",
     "description": "The money amounts to update, each having the attributes that should be updated in a money amount.",
     "optional": false,
     "defaultValue": "",
@@ -96,7 +96,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -156,7 +156,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]\\>",
+    "type": "Promise\\&#60;MoneyAmountDTO[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated money amounts.",
@@ -164,7 +164,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
     "children": [
       {
         "name": "MoneyAmountDTO[]",
-        "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]",
+        "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -181,7 +181,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
           },
           {
             "name": "currency",
-            "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)",
+            "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",

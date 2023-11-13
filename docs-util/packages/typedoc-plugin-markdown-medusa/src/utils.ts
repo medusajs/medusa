@@ -16,11 +16,16 @@ export function formatContents(contents: string) {
   )
 }
 
-export function escapeChars(str: string) {
+export function getHTMLChar(str: string) {
   return str
-    .replace(/</g, "\\<")
-    .replace(/>/g, "\\>")
-    .replace(/>/g, "\\>")
+    .replace(/</g, "\\&#60;")
+    .replace(/{/g, "\\&#123;")
+    .replace(/}/g, "\\&#125;")
+    .replace(/>/g, "\\&#62;")
+}
+
+export function escapeChars(str: string) {
+  return getHTMLChar(str)
     .replace(/_/g, "\\_")
     .replace(/`/g, "\\`")
     .replace(/\|/g, "\\|")

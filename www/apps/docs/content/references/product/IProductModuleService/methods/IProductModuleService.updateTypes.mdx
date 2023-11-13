@@ -41,7 +41,7 @@ async function updateProductType (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductTypeDTO`](../../interfaces/UpdateProductTypeDTO.mdx)[]",
+    "type": "[UpdateProductTypeDTO](../../interfaces/UpdateProductTypeDTO.mdx)[]",
     "description": "The product types to be updated, each having the attributes that should be updated in the product type.",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ async function updateProductType (id: string, value: string) {
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -78,7 +78,7 @@ async function updateProductType (id: string, value: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -138,7 +138,7 @@ async function updateProductType (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductTypeDTO[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product types.",
@@ -146,7 +146,7 @@ async function updateProductType (id: string, value: string) {
     "children": [
       {
         "name": "ProductTypeDTO[]",
-        "type": "[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]",
+        "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -172,7 +172,7 @@ async function updateProductType (id: string, value: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",

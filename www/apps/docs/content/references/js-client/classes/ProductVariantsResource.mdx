@@ -74,7 +74,7 @@ medusa.product.variants
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`StoreGetVariantsParams`](../internal/classes/internal.StoreGetVariantsParams.mdx)",
+    "type": "[StoreGetVariantsParams](../internal/classes/internal.StoreGetVariantsParams.mdx)",
     "description": "Filters and pagination configurations applied on the retrieved product variants.",
     "optional": true,
     "defaultValue": "",
@@ -136,7 +136,7 @@ medusa.product.variants
       },
       {
         "name": "inventory_quantity",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply on the product variants' `inventory_quantity` field.",
         "optional": true,
         "defaultValue": "",
@@ -192,7 +192,7 @@ medusa.product.variants
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -206,7 +206,7 @@ medusa.product.variants
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreVariantsListRes`](../internal/types/internal.StoreVariantsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreVariantsListRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product variants.",
@@ -222,7 +222,7 @@ medusa.product.variants
         "children": [
           {
             "name": "variants",
-            "type": "[`PricedVariant`](../internal/types/internal.PricedVariant.mdx)[]",
+            "type": "[PricedVariant](../internal/types/internal.PricedVariant.mdx)[]",
             "description": "An array of product variant descriptions.",
             "optional": false,
             "defaultValue": "",
@@ -231,7 +231,7 @@ medusa.product.variants
               {
                 "name": "allow_backorder",
                 "type": "`boolean`",
-                "description": "Whether the Product Variant should be purchasable when `inventory_quantity` is 0.",
+                "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
                 "optional": false,
                 "defaultValue": "false",
                 "expandable": false,
@@ -302,7 +302,7 @@ medusa.product.variants
               },
               {
                 "name": "inventory_items",
-                "type": "[`ProductVariantInventoryItem`](../internal/classes/internal.internal.ProductVariantInventoryItem.mdx)[]",
+                "type": "[ProductVariantInventoryItem](../internal/classes/internal.internal.ProductVariantInventoryItem.mdx)[]",
                 "description": "The details inventory items of the product variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -347,7 +347,7 @@ medusa.product.variants
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -365,7 +365,7 @@ medusa.product.variants
               },
               {
                 "name": "options",
-                "type": "[`ProductOptionValue`](../internal/classes/internal.internal.ProductOptionValue.mdx)[]",
+                "type": "[ProductOptionValue](../internal/classes/internal.internal.ProductOptionValue.mdx)[]",
                 "description": "The details of the product options that this product variant defines values for.",
                 "optional": false,
                 "defaultValue": "",
@@ -383,7 +383,7 @@ medusa.product.variants
               },
               {
                 "name": "prices",
-                "type": "[`MoneyAmount`](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
+                "type": "[MoneyAmount](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
                 "description": "The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.",
                 "optional": false,
                 "defaultValue": "",
@@ -392,7 +392,7 @@ medusa.product.variants
               },
               {
                 "name": "product",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+                "type": "[Product](../internal/classes/internal.Product.mdx)",
                 "description": "The details of the product that the product variant belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -529,7 +529,7 @@ medusa.product.variants
               },
               {
                 "name": "prices",
-                "type": "[`MoneyAmount`](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
+                "type": "[MoneyAmount](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
                 "description": "The list of prices.",
                 "optional": false,
                 "defaultValue": "",
@@ -574,7 +574,7 @@ medusa.product.variants
               },
               {
                 "name": "tax_rates",
-                "type": "[`TaxServiceRate`](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
+                "type": "[TaxServiceRate](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
                 "description": "The list of tax rates.",
                 "optional": false,
                 "defaultValue": "",
@@ -624,7 +624,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -638,7 +638,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreVariantsRes`](../internal/types/internal.StoreVariantsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreVariantsRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product variant's details.",
@@ -654,7 +654,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
         "children": [
           {
             "name": "variant",
-            "type": "[`PricedVariant`](../internal/types/internal.PricedVariant.mdx)",
+            "type": "[PricedVariant](../internal/types/internal.PricedVariant.mdx)",
             "description": "Product variant description.",
             "optional": false,
             "defaultValue": "",
@@ -663,7 +663,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               {
                 "name": "allow_backorder",
                 "type": "`boolean`",
-                "description": "Whether the Product Variant should be purchasable when `inventory_quantity` is 0.",
+                "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
                 "optional": false,
                 "defaultValue": "false",
                 "expandable": false,
@@ -734,7 +734,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "inventory_items",
-                "type": "[`ProductVariantInventoryItem`](../internal/classes/internal.internal.ProductVariantInventoryItem.mdx)[]",
+                "type": "[ProductVariantInventoryItem](../internal/classes/internal.internal.ProductVariantInventoryItem.mdx)[]",
                 "description": "The details inventory items of the product variant.",
                 "optional": false,
                 "defaultValue": "",
@@ -779,7 +779,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -797,7 +797,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "options",
-                "type": "[`ProductOptionValue`](../internal/classes/internal.internal.ProductOptionValue.mdx)[]",
+                "type": "[ProductOptionValue](../internal/classes/internal.internal.ProductOptionValue.mdx)[]",
                 "description": "The details of the product options that this product variant defines values for.",
                 "optional": false,
                 "defaultValue": "",
@@ -815,7 +815,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "prices",
-                "type": "[`MoneyAmount`](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
+                "type": "[MoneyAmount](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
                 "description": "The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.",
                 "optional": false,
                 "defaultValue": "",
@@ -824,7 +824,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "product",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)",
+                "type": "[Product](../internal/classes/internal.Product.mdx)",
                 "description": "The details of the product that the product variant belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -961,7 +961,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "prices",
-                "type": "[`MoneyAmount`](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
+                "type": "[MoneyAmount](../internal/classes/internal.internal.MoneyAmount.mdx)[]",
                 "description": "The list of prices.",
                 "optional": false,
                 "defaultValue": "",
@@ -1006,7 +1006,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "[`TaxServiceRate`](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
+                "type": "[TaxServiceRate](../internal/types/internal.TaxServiceRate.mdx)[] \\| ``null``",
                 "description": "The list of tax rates.",
                 "optional": false,
                 "defaultValue": "",

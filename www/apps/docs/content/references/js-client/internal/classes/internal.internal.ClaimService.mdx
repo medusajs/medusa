@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "addressRepository_",
-    "type": "`Repository`<[`Address`](internal.Address.mdx)\\>",
+    "type": "Repository\\&#60;Address\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "claimItemService_",
-    "type": "[`ClaimItemService`](internal.internal.ClaimItemService.mdx)",
+    "type": "[ClaimItemService](internal.internal.ClaimItemService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "claimRepository_",
-    "type": "`Repository`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Repository\\&#60;ClaimOrder\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBus_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "fulfillmentProviderService_",
-    "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
+    "type": "[FulfillmentProviderService](internal.internal.FulfillmentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "fulfillmentService_",
-    "type": "[`FulfillmentService`](internal.FulfillmentService.mdx)",
+    "type": "[FulfillmentService](internal.FulfillmentService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "`Repository`<[`LineItem`](internal.LineItem.mdx)\\> & { `findByReturn`: Method findByReturn  }",
+    "type": "Repository\\&#60;LineItem\\&#62; & `\\&#123; findByReturn: Method findByReturn  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemService_",
-    "type": "[`LineItemService`](internal.internal.LineItemService.mdx)",
+    "type": "[LineItemService](internal.internal.LineItemService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -119,7 +119,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "paymentProviderService_",
-    "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
+    "type": "[PaymentProviderService](internal.internal.PaymentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -128,7 +128,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantInventoryService_",
-    "type": "[`ProductVariantInventoryService`](internal.internal.ProductVariantInventoryService.mdx)",
+    "type": "[ProductVariantInventoryService](internal.internal.ProductVariantInventoryService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -137,7 +137,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "regionService_",
-    "type": "[`RegionService`](internal.internal.RegionService.mdx)",
+    "type": "[RegionService](internal.internal.RegionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -146,7 +146,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "returnService_",
-    "type": "[`ReturnService`](internal.internal.ReturnService.mdx)",
+    "type": "[ReturnService](internal.internal.ReturnService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -155,7 +155,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingMethodRepository_",
-    "type": "`Repository`<[`ShippingMethod`](internal.ShippingMethod-4.mdx)\\>",
+    "type": "Repository\\&#60;ShippingMethod\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -164,7 +164,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingOptionService_",
-    "type": "[`ShippingOptionService`](internal.internal.ShippingOptionService.mdx)",
+    "type": "[ShippingOptionService](internal.internal.ShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -173,7 +173,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxProviderService_",
-    "type": "[`TaxProviderService`](internal.internal.TaxProviderService.mdx)",
+    "type": "[TaxProviderService](internal.internal.TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -182,7 +182,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "totalsService_",
-    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "type": "[TotalsService](internal.internal.TotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -191,7 +191,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -272,7 +272,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -294,7 +294,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -303,7 +303,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -312,7 +312,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -326,7 +326,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -358,7 +358,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -390,7 +390,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -412,7 +412,7 @@ shipping address that the new items will be shipped to
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateClaimInput`](../types/internal.CreateClaimInput.mdx)",
+    "type": "[CreateClaimInput](../types/internal.CreateClaimInput.mdx)",
     "description": "the object containing all data required to create a claim",
     "optional": false,
     "defaultValue": "",
@@ -426,7 +426,7 @@ shipping address that the new items will be shipped to
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created claim",
@@ -471,7 +471,7 @@ ___
   },
   {
     "name": "config.metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "config metadata",
     "optional": true,
     "defaultValue": "",
@@ -494,7 +494,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created claim",
@@ -530,7 +530,7 @@ ___
   },
   {
     "name": "trackingLinks",
-    "type": "{ `tracking_number`: `string`  }[]",
+    "type": "`\\&#123; tracking_number: string  \\&#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -571,7 +571,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -596,7 +596,7 @@ Note, it will attempt to return early from each of these places to avoid having 
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "the order to find claim lines on",
     "optional": false,
     "defaultValue": "",
@@ -605,7 +605,7 @@ Note, it will attempt to return early from each of these places to avoid having 
   },
   {
     "name": "claimItems",
-    "type": "[`CreateClaimItemInput`](../types/internal.CreateClaimItemInput.mdx)[]",
+    "type": "[CreateClaimItemInput](../types/internal.CreateClaimItemInput.mdx)[]",
     "description": "the claim items to match against",
     "optional": false,
     "defaultValue": "",
@@ -619,7 +619,7 @@ Note, it will attempt to return early from each of these places to avoid having 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise\\&#60;number\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the refund amount",
@@ -646,7 +646,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ClaimOrder\\&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -660,7 +660,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)[]\\>",
+    "type": "Promise\\&#60;ClaimOrder[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -692,7 +692,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -721,7 +721,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ClaimOrder\\&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -735,7 +735,7 @@ Gets an order by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -753,7 +753,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -794,7 +794,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[`UpdateClaimInput`](../types/internal.UpdateClaimInput.mdx)",
+    "type": "[UpdateClaimInput](../types/internal.UpdateClaimInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -808,7 +808,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ClaimOrder`](internal.ClaimOrder.mdx)\\>",
+    "type": "Promise\\&#60;ClaimOrder\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -826,7 +826,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateClaimInput`](../types/internal.CreateClaimInput.mdx)",
+    "type": "[CreateClaimInput](../types/internal.CreateClaimInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -840,7 +840,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -858,7 +858,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -872,7 +872,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "default",
-    "type": "[`ClaimService`](internal.internal.ClaimService.mdx)",
+    "type": "[ClaimService](internal.internal.ClaimService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

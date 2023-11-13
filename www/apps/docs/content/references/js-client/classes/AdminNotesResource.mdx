@@ -42,7 +42,7 @@ medusa.admin.notes
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostNotesReq`](../internal/classes/internal.AdminPostNotesReq.mdx)",
+    "type": "[AdminPostNotesReq](../internal/classes/internal.AdminPostNotesReq.mdx)",
     "description": "The note to be created.",
     "optional": false,
     "defaultValue": "",
@@ -60,7 +60,7 @@ medusa.admin.notes
       {
         "name": "resource_type",
         "type": "`string`",
-        "description": "The type of resource which the Note relates to. For example, `order`.",
+        "description": "The type of resource which the Note relates to. For example, \\`order\\`.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -79,7 +79,7 @@ medusa.admin.notes
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -93,7 +93,7 @@ medusa.admin.notes
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminNotesRes`](../internal/types/internal.AdminNotesRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminNotesRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the note's details.",
@@ -109,7 +109,7 @@ medusa.admin.notes
         "children": [
           {
             "name": "note",
-            "type": "[`Note`](../internal/classes/internal.Note.mdx)",
+            "type": "[Note](../internal/classes/internal.Note.mdx)",
             "description": "Note details.",
             "optional": false,
             "defaultValue": "",
@@ -117,7 +117,7 @@ medusa.admin.notes
             "children": [
               {
                 "name": "author",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the note.",
                 "optional": false,
                 "defaultValue": "",
@@ -162,7 +162,7 @@ medusa.admin.notes
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -244,7 +244,7 @@ medusa.admin.notes.delete(noteId).then(({ id, object, deleted }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -258,7 +258,7 @@ medusa.admin.notes.delete(noteId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -335,7 +335,7 @@ medusa.admin.notes
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetNotesParams`](../internal/classes/internal.AdminGetNotesParams.mdx)",
+    "type": "[AdminGetNotesParams](../internal/classes/internal.AdminGetNotesParams.mdx)",
     "description": "Filters and pagination configurations applied on retrieved notes.",
     "optional": true,
     "defaultValue": "",
@@ -372,7 +372,7 @@ medusa.admin.notes
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -386,7 +386,7 @@ medusa.admin.notes
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminNotesListRes`](../internal/types/internal.AdminNotesListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminNotesListRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of notes with pagination fields.",
@@ -394,7 +394,7 @@ medusa.admin.notes
     "children": [
       {
         "name": "AdminNotesListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `notes`: [`Note`](../internal/classes/internal.Note.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; notes: Note[]  \\&#125;`",
         "description": "The list of notes with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -429,7 +429,7 @@ medusa.admin.notes
           },
           {
             "name": "notes",
-            "type": "[`Note`](../internal/classes/internal.Note.mdx)[]",
+            "type": "[Note](../internal/classes/internal.Note.mdx)[]",
             "description": "An array of notes",
             "optional": false,
             "defaultValue": "",
@@ -437,7 +437,7 @@ medusa.admin.notes
             "children": [
               {
                 "name": "author",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the note.",
                 "optional": false,
                 "defaultValue": "",
@@ -482,7 +482,7 @@ medusa.admin.notes
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -564,7 +564,7 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -578,7 +578,7 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminNotesRes`](../internal/types/internal.AdminNotesRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminNotesRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the note's details.",
@@ -594,7 +594,7 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
         "children": [
           {
             "name": "note",
-            "type": "[`Note`](../internal/classes/internal.Note.mdx)",
+            "type": "[Note](../internal/classes/internal.Note.mdx)",
             "description": "Note details.",
             "optional": false,
             "defaultValue": "",
@@ -602,7 +602,7 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
             "children": [
               {
                 "name": "author",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the note.",
                 "optional": false,
                 "defaultValue": "",
@@ -647,7 +647,7 @@ medusa.admin.notes.retrieve(noteId).then(({ note }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -733,7 +733,7 @@ medusa.admin.notes
   },
   {
     "name": "payload",
-    "type": "[`AdminPostNotesNoteReq`](../internal/classes/internal.AdminPostNotesNoteReq.mdx)",
+    "type": "[AdminPostNotesNoteReq](../internal/classes/internal.AdminPostNotesNoteReq.mdx)",
     "description": "The attributes to update in the note.",
     "optional": false,
     "defaultValue": "",
@@ -752,7 +752,7 @@ medusa.admin.notes
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -766,7 +766,7 @@ medusa.admin.notes
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminNotesRes`](../internal/types/internal.AdminNotesRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminNotesRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the note's details.",
@@ -782,7 +782,7 @@ medusa.admin.notes
         "children": [
           {
             "name": "note",
-            "type": "[`Note`](../internal/classes/internal.Note.mdx)",
+            "type": "[Note](../internal/classes/internal.Note.mdx)",
             "description": "Note details.",
             "optional": false,
             "defaultValue": "",
@@ -790,7 +790,7 @@ medusa.admin.notes
             "children": [
               {
                 "name": "author",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the note.",
                 "optional": false,
                 "defaultValue": "",
@@ -835,7 +835,7 @@ medusa.admin.notes
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",

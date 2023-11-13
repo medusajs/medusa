@@ -11,8 +11,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "address",
-    "type": "[`StockLocationAddress`](internal.StockLocationAddress.mdx)",
-    "description": "A new stock location address to create and associate with the stock location. Only required if `address_id` is not provided.",
+    "type": "[StockLocationAddress](internal.StockLocationAddress.mdx)",
+    "description": "A new stock location address to create and associate with the stock location. Only required if \\`address\\_id\\` is not provided.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -21,7 +21,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "address_id",
     "type": "`string`",
-    "description": "the ID of an existing stock location address to associate with the stock location. Only required if `address` is not provided.",
+    "description": "the ID of an existing stock location address to associate with the stock location. Only required if \\`address\\` is not provided.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": true,
     "defaultValue": "",

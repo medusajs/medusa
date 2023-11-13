@@ -47,7 +47,7 @@ async function deleteProducts (ids: string[]) {
   },
   {
     "name": "config",
-    "type": "[`SoftDeleteReturn`](../../interfaces/SoftDeleteReturn.mdx)<`TReturnableLinkableKeys`\\>",
+    "type": "[SoftDeleteReturn](../../interfaces/SoftDeleteReturn.mdx)\\&#60;TReturnableLinkableKeys\\&#62;",
     "description": "Configurations determining which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys` property any of the product's relation attribute names, such as `variant_id`.",
     "optional": true,
     "defaultValue": "",
@@ -66,7 +66,7 @@ async function deleteProducts (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -126,15 +126,15 @@ async function deleteProducts (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| Record<`string`, `string`[]\\>\\>",
+    "type": "Promise\\&#60;void \\| Record\\&#60;string, string[]\\&#62;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.\n\nIf there are no related records, the promise resolved to `void`.",
     "expandable": false,
     "children": [
       {
-        "name": "void \\| Record<string, string[]\\>",
-        "type": "`void` \\| Record<`string`, `string`[]\\>",
+        "name": "void \\| Record\\&#60;string, string[]\\&#62;",
+        "type": "`void` \\| `Record<string, string[]>`",
         "optional": true,
         "defaultValue": "",
         "description": "",

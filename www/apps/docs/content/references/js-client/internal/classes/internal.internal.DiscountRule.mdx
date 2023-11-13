@@ -13,7 +13,7 @@ A discount rule defines how a Discount is calculated when applied to a Cart.
 <ParameterTypes parameters={[
   {
     "name": "allocation",
-    "type": "[`AllocationType`](../enums/internal.internal.AllocationType.mdx)",
+    "type": "[AllocationType](../enums/internal.internal.AllocationType.mdx)",
     "description": "The scope that the discount should apply to.",
     "optional": false,
     "defaultValue": "",
@@ -22,7 +22,7 @@ A discount rule defines how a Discount is calculated when applied to a Cart.
   },
   {
     "name": "conditions",
-    "type": "[`DiscountCondition`](internal.DiscountCondition.mdx)[]",
+    "type": "[DiscountCondition](internal.DiscountCondition.mdx)[]",
     "description": "The details of the discount conditions associated with the rule. They can be used to limit when the discount can be used.",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A discount rule defines how a Discount is calculated when applied to a Cart.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -76,8 +76,8 @@ A discount rule defines how a Discount is calculated when applied to a Cart.
   },
   {
     "name": "type",
-    "type": "[`DiscountRuleType`](../enums/internal.internal.DiscountRuleType.mdx)",
-    "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.",
+    "type": "[DiscountRuleType](../enums/internal.internal.DiscountRuleType.mdx)",
+    "description": "The type of the Discount, can be \\`fixed\\` for discounts that reduce the price by a fixed amount, \\`percentage\\` for percentage reductions or \\`free\\_shipping\\` for shipping vouchers.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

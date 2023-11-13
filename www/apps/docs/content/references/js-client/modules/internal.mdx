@@ -970,13 +970,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### DEFAULT
 
- **DEFAULT**: ``"default"``
-
 ___
 
 ### ORDER\_EDIT
-
- **ORDER\_EDIT**: ``"order_edit"``
 
 The payment collection is used for an order edit.
 
@@ -984,136 +980,94 @@ The payment collection is used for an order edit.
 
 ### AddressRepository
 
- `Const` **AddressRepository**: `Repository`
-
 ___
 
 ### AdminGetDiscountsParams\_base
-
- `Const` **AdminGetDiscountsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
 
 ___
 
 ### AdminGetInventoryItemsParams\_base
 
- `Const` **AdminGetInventoryItemsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
-
 ___
 
 ### AdminGetPriceListsPriceListProductsParams\_base
-
- `Const` **AdminGetPriceListsPriceListProductsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
 
 ___
 
 ### AdminGetProductCategoriesParams\_base
 
- `Const` **AdminGetProductCategoriesParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
-
 ___
 
 ### AdminGetReservationsParams\_base
-
- `Const` **AdminGetReservationsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
 
 ___
 
 ### AdminGetSalesChannelsParams\_base
 
- `Const` **AdminGetSalesChannelsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
-
 ___
 
 ### AdminGetStockLocationsParams\_base
-
- `Const` **AdminGetStockLocationsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
 
 ___
 
 ### AnalyticsConfigRepository
 
- `Const` **AnalyticsConfigRepository**: `Repository`
-
 ___
 
 ### BatchJobRepository
-
- `Const` **BatchJobRepository**: `Repository`
 
 ___
 
 ### Buffer
 
- **Buffer**: [`BufferConstructor`](../internal/interfaces/internal.BufferConstructor.mdx)
-
 ___
 
 ### CartRepository
-
- `Const` **CartRepository**: `Repository` & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }
 
 ___
 
 ### ClaimRepository
 
- `Const` **ClaimRepository**: `Repository`
-
 ___
 
 ### CountryRepository
-
- `Const` **CountryRepository**: `Repository`
 
 ___
 
 ### CurrencyRepository
 
- `Const` **CurrencyRepository**: `Repository`
-
 ___
 
 ### CustomShippingOptionRepository
-
- `Const` **CustomShippingOptionRepository**: `Repository`
 
 ___
 
 ### CustomerGroupRepository
 
- `Const` **CustomerGroupRepository**: `Repository` & { `addCustomers`: Method addCustomers ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `removeCustomers`: Method removeCustomers  }
-
 ___
 
 ### CustomerRepository
-
- `Const` **CustomerRepository**: `Repository` & { `listAndCount`: Method listAndCount  }
 
 ___
 
 ### DiscountConditionRepository
 
- `Const` **DiscountConditionRepository**: `Repository` & { `addConditionResources`: Method addConditionResources ; `canApplyForCustomer`: Method canApplyForCustomer ; `findOneWithDiscount`: Method findOneWithDiscount ; `getJoinTableResourceIdentifiers`: Method getJoinTableResourceIdentifiers ; `isValidForProduct`: Method isValidForProduct ; `queryConditionTable`: Method queryConditionTable ; `removeConditionResources`: Method removeConditionResources  }
-
 ___
 
 ### DraftOrderRepository
-
- `Const` **DraftOrderRepository**: `Repository`
 
 ___
 
 ### File
 
- **File**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fileBits",
-    "type": "[`BlobPart`](../internal/types/internal.BlobPart.mdx)[]",
+    "type": "[BlobPart](../internal/types/internal.BlobPart.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1131,7 +1085,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[`FilePropertyBag`](../internal/interfaces/internal.FilePropertyBag.mdx)",
+    "type": "[FilePropertyBag](../internal/interfaces/internal.FilePropertyBag.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1145,7 +1099,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "File",
-    "type": "[`File`](internal.mdx#file)",
+    "type": "[File](internal.mdx#file)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1154,12 +1108,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`File`](internal.mdx#file)",
+    "type": "[File](internal.mdx#file)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1172,49 +1126,33 @@ ___
 
 ### FulfillmentProviderRepository
 
- `Const` **FulfillmentProviderRepository**: `Repository`
-
 ___
 
 ### FulfillmentRepository
-
- `Const` **FulfillmentRepository**: `Repository`
 
 ___
 
 ### GetOrderEditsParams\_base
 
- `Const` **GetOrderEditsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
-
 ___
 
 ### GetPublishableApiKeySalesChannelsParams\_base
-
- `Const` **GetPublishableApiKeySalesChannelsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
 
 ___
 
 ### GetPublishableApiKeysParams\_base
 
- `Const` **GetPublishableApiKeysParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
-
 ___
 
 ### GiftCardRepository
-
- `Const` **GiftCardRepository**: `Repository` & { `listGiftCardsAndCount`: Method listGiftCardsAndCount  }
 
 ___
 
 ### GiftCardTransactionRepository
 
- `Const` **GiftCardTransactionRepository**: `Repository`
-
 ___
 
 ### HTTP\_METHODS
-
- `Const` **HTTP\_METHODS**: readonly [``"GET"``, ``"POST"``, ``"PUT"``, ``"PATCH"``, ``"DELETE"``, ``"OPTIONS"``, ``"HEAD"``]
 
 List of all the supported HTTP methods
 
@@ -1222,166 +1160,114 @@ ___
 
 ### IdempotencyKeyRepository
 
- `Const` **IdempotencyKeyRepository**: `Repository`
-
 ___
 
 ### ImageRepository
-
- `Const` **ImageRepository**: `Repository` & { `insertBulk`: Method insertBulk ; `upsertImages`: Method upsertImages  }
 
 ___
 
 ### LineItemAdjustmentRepository
 
- `Const` **LineItemAdjustmentRepository**: `Repository`
-
 ___
 
 ### LineItemRepository
-
- `Const` **LineItemRepository**: `Repository` & { `findByReturn`: Method findByReturn  }
 
 ___
 
 ### LineItemTaxLineRepository
 
- `Const` **LineItemTaxLineRepository**: `Repository` & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }
-
 ___
 
 ### MoneyAmountRepository
-
- `Const` **MoneyAmountRepository**: `Repository` & { `addPriceListPrices`: Method addPriceListPrices ; `createProductVariantMoneyAmounts`: Method createProductVariantMoneyAmounts ; `deletePriceListPrices`: Method deletePriceListPrices ; `deleteVariantPricesNotIn`: Method deleteVariantPricesNotIn ; `findCurrencyMoneyAmounts`: Method findCurrencyMoneyAmounts ; `findManyForVariantInPriceList`: Method findManyForVariantInPriceList ; `findManyForVariantInRegion`: Method findManyForVariantInRegion ; `findManyForVariantsInRegion`: Method findManyForVariantsInRegion ; `findRegionMoneyAmounts`: Method findRegionMoneyAmounts ; `findVariantPricesNotIn`: Method findVariantPricesNotIn ; `getPricesForVariantInRegion`: Method getPricesForVariantInRegion ; `insertBulk`: Method insertBulk ; `updatePriceListPrices`: Method updatePriceListPrices ; `upsertVariantCurrencyPrice`: Method upsertVariantCurrencyPrice  }
 
 ___
 
 ### NoteRepository
 
- `Const` **NoteRepository**: `Repository`
-
 ___
 
 ### NotificationProviderRepository
-
- `Const` **NotificationProviderRepository**: `Repository`
 
 ___
 
 ### NotificationRepository
 
- `Const` **NotificationRepository**: `Repository`
-
 ___
 
 ### OauthRepository
-
- `Const` **OauthRepository**: `Repository`
 
 ___
 
 ### OrderEditRepository
 
- `Const` **OrderEditRepository**: `Repository`
-
 ___
 
 ### OrderItemChangeRepository
-
- `Const` **OrderItemChangeRepository**: `Repository`
 
 ___
 
 ### OrderRepository
 
- `Const` **OrderRepository**: `Repository` & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }
-
 ___
 
 ### PaymentCollectionRepository
-
- `Const` **PaymentCollectionRepository**: `Repository` & { `getPaymentCollectionIdByPaymentId`: Method getPaymentCollectionIdByPaymentId ; `getPaymentCollectionIdBySessionId`: Method getPaymentCollectionIdBySessionId  }
 
 ___
 
 ### PaymentProviderRepository
 
- `Const` **PaymentProviderRepository**: `Repository`
-
 ___
 
 ### PaymentRepository
-
- `Const` **PaymentRepository**: `Repository`
 
 ___
 
 ### PaymentSessionRepository
 
- `Const` **PaymentSessionRepository**: `Repository`
-
 ___
 
 ### PriceListRepository
-
- `Const` **PriceListRepository**: `Repository` & { `listAndCount`: Method listAndCount ; `listPriceListsVariantIdsMap`: Method listPriceListsVariantIdsMap  }
 
 ___
 
 ### ProductCategoryRepository
 
- `Const` **ProductCategoryRepository**: `TreeRepository` & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }
-
 ___
 
 ### ProductCollectionRepository
-
- `Const` **ProductCollectionRepository**: `Repository` & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId  }
 
 ___
 
 ### ProductOptionRepository
 
- `Const` **ProductOptionRepository**: `Repository`
-
 ___
 
 ### ProductRepository
-
- `Const` **ProductRepository**: `Repository` & { `_applyCategoriesQuery`: Method \_applyCategoriesQuery ; `_findWithRelations`: Method \_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }
 
 ___
 
 ### ProductTagRepository
 
- `Const` **ProductTagRepository**: `Repository` & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `insertBulk`: Method insertBulk ; `listTagsByUsage`: Method listTagsByUsage ; `upsertTags`: Method upsertTags  }
-
 ___
 
 ### ProductTypeRepository
-
- `Const` **ProductTypeRepository**: `Repository` & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }
 
 ___
 
 ### ProductVariantRepository
 
- `Const` **ProductVariantRepository**: `Repository`
-
 ___
 
 ### ReadableByteStreamController
 
- **ReadableByteStreamController**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "ReadableByteStreamController",
-    "type": "() => [`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller)",
+    "type": "() => [ReadableByteStreamController](internal.mdx#readablebytestreamcontroller)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1390,12 +1276,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller)",
+    "type": "[ReadableByteStreamController](internal.mdx#readablebytestreamcontroller)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1408,16 +1294,14 @@ ___
 
 ### ReadableByteStreamController
 
- **ReadableByteStreamController**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "ReadableByteStreamController",
-    "type": "() => [`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller-1)",
+    "type": "() => [ReadableByteStreamController](internal.mdx#readablebytestreamcontroller-1)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1426,12 +1310,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller-1)",
+    "type": "[ReadableByteStreamController](internal.mdx#readablebytestreamcontroller-1)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1444,18 +1328,16 @@ ___
 
 ### ReadableStream
 
- **ReadableStream**: `Object`
+### Call signature
 
-#### Call signature
-
-**new ReadableStream**(`underlyingSource`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream)<`Uint8Array`\>
+`**new ReadableStream**(underlyingSource, strategy?): ReadableStream\&#60;Uint8Array\&#62;`
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "underlyingSource",
-    "type": "[`UnderlyingByteSource`](../internal/interfaces/internal.UnderlyingByteSource.mdx)",
+    "type": "[UnderlyingByteSource](../internal/interfaces/internal.UnderlyingByteSource.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1487,7 +1369,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream)<`Uint8Array`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream)\\&#60;Uint8Array\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1496,14 +1378,14 @@ ___
   }
 ]} />
 
-**new ReadableStream**<`R`\>(`underlyingSource`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream)<`R`\>
+`**new ReadableStream**<TypeParameter R>(underlyingSource, strategy?): ReadableStream\&#60;R\&#62;`
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "underlyingSource",
-    "type": "[`UnderlyingDefaultSource`](../internal/interfaces/internal.UnderlyingDefaultSource.mdx)<`R`\\>",
+    "type": "[UnderlyingDefaultSource](../internal/interfaces/internal.UnderlyingDefaultSource.mdx)\\&#60;R\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1512,7 +1394,7 @@ ___
   },
   {
     "name": "strategy",
-    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy.mdx)<`R`\\>",
+    "type": "[QueuingStrategy](../internal/interfaces/internal.QueuingStrategy.mdx)\\&#60;R\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1526,7 +1408,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream)<`R`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream)\\&#60;R\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1535,14 +1417,14 @@ ___
   }
 ]} />
 
-**new ReadableStream**<`R`\>(`underlyingSource?`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream)<`R`\>
+`**new ReadableStream**<TypeParameter R>(underlyingSource?, strategy?): ReadableStream\&#60;R\&#62;`
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "underlyingSource",
-    "type": "[`UnderlyingSource`](../internal/interfaces/internal.UnderlyingSource.mdx)<`R`\\>",
+    "type": "[UnderlyingSource](../internal/interfaces/internal.UnderlyingSource.mdx)\\&#60;R\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1551,7 +1433,7 @@ ___
   },
   {
     "name": "strategy",
-    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy.mdx)<`R`\\>",
+    "type": "[QueuingStrategy](../internal/interfaces/internal.QueuingStrategy.mdx)\\&#60;R\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1565,7 +1447,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream)<`R`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream)\\&#60;R\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1574,12 +1456,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStream`](internal.mdx#readablestream)<`any`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1592,18 +1474,16 @@ ___
 
 ### ReadableStream
 
- **ReadableStream**: `Object`
+### Call signature
 
-#### Call signature
-
-**new ReadableStream**(`underlyingSource`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream-1)<`Uint8Array`\>
+`**new ReadableStream**(underlyingSource, strategy?): ReadableStream\&#60;Uint8Array\&#62;`
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "underlyingSource",
-    "type": "[`UnderlyingByteSource`](../internal/interfaces/internal.UnderlyingByteSource-1.mdx)",
+    "type": "[UnderlyingByteSource](../internal/interfaces/internal.UnderlyingByteSource-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1612,7 +1492,7 @@ ___
   },
   {
     "name": "strategy",
-    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy-1.mdx)<`Uint8Array`\\>",
+    "type": "[QueuingStrategy](../internal/interfaces/internal.QueuingStrategy-1.mdx)\\&#60;Uint8Array\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1626,7 +1506,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`Uint8Array`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream-1)\\&#60;Uint8Array\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1635,14 +1515,14 @@ ___
   }
 ]} />
 
-**new ReadableStream**<`R`\>(`underlyingSource?`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream-1)<`R`\>
+`**new ReadableStream**<TypeParameter R>(underlyingSource?, strategy?): ReadableStream\&#60;R\&#62;`
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "underlyingSource",
-    "type": "[`UnderlyingSource`](../internal/interfaces/internal.UnderlyingSource-1.mdx)<`R`\\>",
+    "type": "[UnderlyingSource](../internal/interfaces/internal.UnderlyingSource-1.mdx)\\&#60;R\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1651,7 +1531,7 @@ ___
   },
   {
     "name": "strategy",
-    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy-1.mdx)<`R`\\>",
+    "type": "[QueuingStrategy](../internal/interfaces/internal.QueuingStrategy-1.mdx)\\&#60;R\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1665,7 +1545,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`R`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream-1)\\&#60;R\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1674,12 +1554,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`any`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream-1)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1692,16 +1572,14 @@ ___
 
 ### ReadableStreamBYOBReader
 
- **ReadableStreamBYOBReader**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream)<`any`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1715,7 +1593,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamBYOBReader",
-    "type": "(`stream`: [`ReadableStream`](internal.mdx#readablestream)<`any`\\>) => [`ReadableStreamBYOBReader`](internal.mdx#readablestreambyobreader)",
+    "type": "(`stream`: [ReadableStream](internal.mdx#readablestream)\\&#60;any\\&#62;) => [ReadableStreamBYOBReader](internal.mdx#readablestreambyobreader)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1724,12 +1602,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStreamBYOBReader`](internal.mdx#readablestreambyobreader)",
+    "type": "[ReadableStreamBYOBReader](internal.mdx#readablestreambyobreader)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1742,22 +1620,18 @@ ___
 
 ### ReadableStreamBYOBReader
 
- **ReadableStreamBYOBReader**: `any`
-
 ___
 
 ### ReadableStreamBYOBRequest
 
- **ReadableStreamBYOBRequest**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamBYOBRequest",
-    "type": "() => [`ReadableStreamBYOBRequest`](internal.mdx#readablestreambyobrequest)",
+    "type": "() => [ReadableStreamBYOBRequest](internal.mdx#readablestreambyobrequest)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1766,12 +1640,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStreamBYOBRequest`](internal.mdx#readablestreambyobrequest)",
+    "type": "[ReadableStreamBYOBRequest](internal.mdx#readablestreambyobrequest)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1784,16 +1658,14 @@ ___
 
 ### ReadableStreamDefaultController
 
- **ReadableStreamDefaultController**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamDefaultController",
-    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller)<`any`\\>",
+    "type": "[ReadableStreamDefaultController](internal.mdx#readablestreamdefaultcontroller)\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1802,12 +1674,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller)<`any`\\>",
+    "type": "[ReadableStreamDefaultController](internal.mdx#readablestreamdefaultcontroller)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1820,16 +1692,14 @@ ___
 
 ### ReadableStreamDefaultController
 
- **ReadableStreamDefaultController**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamDefaultController",
-    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller-1)<`any`\\>",
+    "type": "[ReadableStreamDefaultController](internal.mdx#readablestreamdefaultcontroller-1)\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1838,12 +1708,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller-1)<`any`\\>",
+    "type": "[ReadableStreamDefaultController](internal.mdx#readablestreamdefaultcontroller-1)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1856,16 +1726,14 @@ ___
 
 ### ReadableStreamDefaultReader
 
- **ReadableStreamDefaultReader**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream)<`R`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream)\\&#60;R\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1879,7 +1747,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamDefaultReader",
-    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader)<`R`\\>",
+    "type": "[ReadableStreamDefaultReader](internal.mdx#readablestreamdefaultreader)\\&#60;R\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1888,12 +1756,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader)<`any`\\>",
+    "type": "[ReadableStreamDefaultReader](internal.mdx#readablestreamdefaultreader)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1906,16 +1774,14 @@ ___
 
 ### ReadableStreamDefaultReader
 
- **ReadableStreamDefaultReader**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`R`\\>",
+    "type": "[ReadableStream](internal.mdx#readablestream-1)\\&#60;R\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1929,7 +1795,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStreamDefaultReader",
-    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader-1)<`R`\\>",
+    "type": "[ReadableStreamDefaultReader](internal.mdx#readablestreamdefaultreader-1)\\&#60;R\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1938,12 +1804,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader-1)<`any`\\>",
+    "type": "[ReadableStreamDefaultReader](internal.mdx#readablestreamdefaultreader-1)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1956,124 +1822,86 @@ ___
 
 ### RefundRepository
 
- `Const` **RefundRepository**: `Repository`
-
 ___
 
 ### RegionRepository
-
- `Const` **RegionRepository**: `Repository`
 
 ___
 
 ### ReturnItemRepository
 
- `Const` **ReturnItemRepository**: `Repository`
-
 ___
 
 ### ReturnReasonRepository
-
- `Const` **ReturnReasonRepository**: `Repository`
 
 ___
 
 ### ReturnRepository
 
- `Const` **ReturnRepository**: `Repository`
-
 ___
 
 ### SalesChannelRepository
-
- `Const` **SalesChannelRepository**: `Repository` & { `addProducts`: Method addProducts ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `listProductIdsBySalesChannelIds`: Method listProductIdsBySalesChannelIds ; `removeProducts`: Method removeProducts  }
 
 ___
 
 ### SharedArrayBuffer
 
- **SharedArrayBuffer**: [`SharedArrayBufferConstructor`](../internal/interfaces/internal.SharedArrayBufferConstructor.mdx)
-
 ___
 
 ### ShippingMethodRepository
-
- `Const` **ShippingMethodRepository**: `Repository`
 
 ___
 
 ### ShippingOptionRepository
 
- `Const` **ShippingOptionRepository**: `Repository` & { `upsertShippingProfile`: Method upsertShippingProfile  }
-
 ___
 
 ### ShippingOptionRequirementRepository
-
- `Const` **ShippingOptionRequirementRepository**: `Repository`
 
 ___
 
 ### ShippingProfileRepository
 
- `Const` **ShippingProfileRepository**: `Repository` & { `findByProducts`: Method findByProducts  }
-
 ___
 
 ### StagedJobRepository
-
- `Const` **StagedJobRepository**: `Repository` & { `insertBulk`: Method insertBulk  }
 
 ___
 
 ### StoreGetProductCategoriesParams\_base
 
- `Const` **StoreGetProductCategoriesParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
-
 ___
 
 ### StoreRepository
-
- `Const` **StoreRepository**: `Repository`
 
 ___
 
 ### SwapRepository
 
- `Const` **SwapRepository**: `Repository`
-
 ___
 
 ### TaxProviderRepository
-
- `Const` **TaxProviderRepository**: `Repository`
 
 ___
 
 ### TrackingLinkRepository
 
- `Const` **TrackingLinkRepository**: `Repository`
-
 ___
 
 ### UserRepository
 
- `Const` **UserRepository**: `Repository`
-
 ___
 
 ### WritableStream
 
- **WritableStream**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "underlyingSink",
-    "type": "[`UnderlyingSink`](../internal/interfaces/internal.UnderlyingSink.mdx)<`W`\\>",
+    "type": "[UnderlyingSink](../internal/interfaces/internal.UnderlyingSink.mdx)\\&#60;W\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2082,7 +1910,7 @@ ___
   },
   {
     "name": "strategy",
-    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy.mdx)<`W`\\>",
+    "type": "[QueuingStrategy](../internal/interfaces/internal.QueuingStrategy.mdx)\\&#60;W\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2096,7 +1924,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.mdx#writablestream)<`W`\\>",
+    "type": "[WritableStream](internal.mdx#writablestream)\\&#60;W\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2105,12 +1933,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`WritableStream`](internal.mdx#writablestream)<`any`\\>",
+    "type": "[WritableStream](internal.mdx#writablestream)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2123,16 +1951,14 @@ ___
 
 ### WritableStream
 
- **WritableStream**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "underlyingSink",
-    "type": "[`UnderlyingSink`](../internal/interfaces/internal.UnderlyingSink-1.mdx)<`W`\\>",
+    "type": "[UnderlyingSink](../internal/interfaces/internal.UnderlyingSink-1.mdx)\\&#60;W\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2141,7 +1967,7 @@ ___
   },
   {
     "name": "strategy",
-    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy-1.mdx)<`W`\\>",
+    "type": "[QueuingStrategy](../internal/interfaces/internal.QueuingStrategy-1.mdx)\\&#60;W\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2155,7 +1981,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.mdx#writablestream-1)<`W`\\>",
+    "type": "[WritableStream](internal.mdx#writablestream-1)\\&#60;W\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2164,12 +1990,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`WritableStream`](internal.mdx#writablestream-1)<`any`\\>",
+    "type": "[WritableStream](internal.mdx#writablestream-1)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2182,16 +2008,14 @@ ___
 
 ### WritableStreamDefaultController
 
- **WritableStreamDefaultController**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "WritableStreamDefaultController",
-    "type": "() => [`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller)",
+    "type": "() => [WritableStreamDefaultController](internal.mdx#writablestreamdefaultcontroller)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2200,12 +2024,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller)",
+    "type": "[WritableStreamDefaultController](internal.mdx#writablestreamdefaultcontroller)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2218,16 +2042,14 @@ ___
 
 ### WritableStreamDefaultController
 
- **WritableStreamDefaultController**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Returns
 
 <ParameterTypes parameters={[
   {
     "name": "WritableStreamDefaultController",
-    "type": "() => [`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller-1)",
+    "type": "() => [WritableStreamDefaultController](internal.mdx#writablestreamdefaultcontroller-1)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2236,12 +2058,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller-1)",
+    "type": "[WritableStreamDefaultController](internal.mdx#writablestreamdefaultcontroller-1)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2254,16 +2076,14 @@ ___
 
 ### WritableStreamDefaultWriter
 
- **WritableStreamDefaultWriter**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`WritableStream`](internal.mdx#writablestream)<`W`\\>",
+    "type": "[WritableStream](internal.mdx#writablestream)\\&#60;W\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2277,7 +2097,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "WritableStreamDefaultWriter",
-    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter)<`W`\\>",
+    "type": "[WritableStreamDefaultWriter](internal.mdx#writablestreamdefaultwriter)\\&#60;W\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2286,12 +2106,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter)<`any`\\>",
+    "type": "[WritableStreamDefaultWriter](internal.mdx#writablestreamdefaultwriter)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2304,16 +2124,14 @@ ___
 
 ### WritableStreamDefaultWriter
 
- **WritableStreamDefaultWriter**: `Object`
-
-#### Call signature
+### Call signature
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`WritableStream`](internal.mdx#writablestream-1)<`W`\\>",
+    "type": "[WritableStream](internal.mdx#writablestream-1)\\&#60;W\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2327,7 +2145,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "WritableStreamDefaultWriter",
-    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter-1)<`W`\\>",
+    "type": "[WritableStreamDefaultWriter](internal.mdx#writablestreamdefaultwriter-1)\\&#60;W\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2336,12 +2154,12 @@ ___
   }
 ]} />
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "prototype",
-    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter-1)<`any`\\>",
+    "type": "[WritableStreamDefaultWriter](internal.mdx#writablestreamdefaultwriter-1)\\&#60;any\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2405,7 +2223,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Error",
-    "type": "(`message?`: `string`) => [`Error`](internal.mdx#error)",
+    "type": "(`message?`: `string`) => [Error](internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",

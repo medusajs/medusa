@@ -13,7 +13,7 @@ Helps retrieve fulfillment providers
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Helps retrieve fulfillment providers
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Helps retrieve fulfillment providers
   },
   {
     "name": "container_",
-    "type": "[`FulfillmentProviderContainer`](../types/internal.FulfillmentProviderContainer.mdx)",
+    "type": "[FulfillmentProviderContainer](../types/internal.FulfillmentProviderContainer.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ Helps retrieve fulfillment providers
   },
   {
     "name": "fulfillmentProviderRepository_",
-    "type": "`Repository`<[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)\\>",
+    "type": "Repository\\&#60;FulfillmentProvider\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ Helps retrieve fulfillment providers
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ Helps retrieve fulfillment providers
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ Helps retrieve fulfillment providers
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -107,7 +107,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -116,7 +116,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -125,7 +125,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +139,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -157,7 +157,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[`ShippingOption`](internal.ShippingOption.mdx)",
+    "type": "[ShippingOption](internal.ShippingOption.mdx)",
     "description": "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
     "optional": false,
     "defaultValue": "",
@@ -166,7 +166,7 @@ ___
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ ___
   },
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -189,7 +189,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise\\&#60;number\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -207,7 +207,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[`CalculateOptionPriceInput`](../types/internal.CalculateOptionPriceInput.mdx)",
+    "type": "[CalculateOptionPriceInput](../types/internal.CalculateOptionPriceInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -221,7 +221,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise\\&#60;boolean\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -239,7 +239,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "fulfillment",
-    "type": "[`Fulfillment`](internal.Fulfillment.mdx)",
+    "type": "[Fulfillment](internal.Fulfillment.mdx)",
     "description": "A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.",
     "optional": false,
     "defaultValue": "",
@@ -253,7 +253,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Fulfillment`](internal.Fulfillment.mdx)\\>",
+    "type": "Promise\\&#60;Fulfillment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -271,7 +271,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "method",
-    "type": "[`ShippingMethod`](internal.ShippingMethod-4.mdx)",
+    "type": "[ShippingMethod](internal.ShippingMethod-4.mdx)",
     "description": "A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of.",
     "optional": false,
     "defaultValue": "",
@@ -280,7 +280,7 @@ ___
   },
   {
     "name": "items",
-    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "type": "[LineItem](internal.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -289,7 +289,7 @@ ___
   },
   {
     "name": "order",
-    "type": "[`CreateFulfillmentOrder`](../types/internal.CreateFulfillmentOrder.mdx)",
+    "type": "[CreateFulfillmentOrder](../types/internal.CreateFulfillmentOrder.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -298,7 +298,7 @@ ___
   },
   {
     "name": "fulfillment",
-    "type": "[`Omit`](../types/internal.Omit.mdx)<[`Fulfillment`](internal.Fulfillment.mdx), ``\"beforeInsert\"``\\>",
+    "type": "[Omit](../types/internal.Omit.mdx)\\&#60;Fulfillment, `\"beforeInsert\"`\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -312,7 +312,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -330,7 +330,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "returnOrder",
-    "type": "[`CreateReturnType`](../types/internal.CreateReturnType.mdx)",
+    "type": "[CreateReturnType](../types/internal.CreateReturnType.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -344,7 +344,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -362,7 +362,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)[]\\>",
+    "type": "Promise\\&#60;FulfillmentProvider[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -394,7 +394,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`FulfillmentOptions`](../types/internal.FulfillmentOptions.mdx)[]\\>",
+    "type": "Promise\\&#60;FulfillmentOptions[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -426,7 +426,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -455,7 +455,7 @@ Fetches documents from the fulfillment provider
   },
   {
     "name": "fulfillmentData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the data relating to the fulfillment",
     "optional": false,
     "defaultValue": "",
@@ -478,7 +478,7 @@ Fetches documents from the fulfillment provider
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "document to fetch",
@@ -528,7 +528,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -560,7 +560,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[`ShippingOption`](internal.ShippingOption.mdx)",
+    "type": "[ShippingOption](internal.ShippingOption.mdx)",
     "description": "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
     "optional": false,
     "defaultValue": "",
@@ -569,7 +569,7 @@ ___
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -578,7 +578,7 @@ ___
   },
   {
     "name": "cart",
-    "type": "Record<`string`, `unknown`\\> \\| [`Cart`](internal.Cart.mdx)",
+    "type": "`Record<string, unknown>` \\| [Cart](internal.Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -592,7 +592,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -610,7 +610,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "option",
-    "type": "[`ShippingOption`](internal.ShippingOption.mdx)",
+    "type": "[ShippingOption](internal.ShippingOption.mdx)",
     "description": "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
     "optional": false,
     "defaultValue": "",
@@ -624,7 +624,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise\\&#60;boolean\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -642,7 +642,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -656,7 +656,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "FulfillmentProviderService",
-    "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
+    "type": "[FulfillmentProviderService](internal.internal.FulfillmentProviderService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

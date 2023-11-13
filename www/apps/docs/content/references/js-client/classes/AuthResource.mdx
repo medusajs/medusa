@@ -43,7 +43,7 @@ medusa.auth
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`StorePostAuthReq`](../internal/classes/internal.StorePostAuthReq.mdx)",
+    "type": "[StorePostAuthReq](../internal/classes/internal.StorePostAuthReq.mdx)",
     "description": "The credentials of the customer to authenticate.",
     "optional": false,
     "defaultValue": "",
@@ -71,7 +71,7 @@ medusa.auth
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -85,7 +85,7 @@ medusa.auth
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreAuthRes`](../internal/types/internal.StoreAuthRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreAuthRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
@@ -101,7 +101,7 @@ medusa.auth
         "children": [
           {
             "name": "customer",
-            "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+            "type": "[Customer](../internal/classes/internal.Customer.mdx)",
             "description": "Customer's details.",
             "optional": false,
             "defaultValue": "",
@@ -109,7 +109,7 @@ medusa.auth
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -163,7 +163,7 @@ medusa.auth
               },
               {
                 "name": "groups",
-                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
                 "description": "The customer groups the customer belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -199,7 +199,7 @@ medusa.auth
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -208,7 +208,7 @@ medusa.auth
               },
               {
                 "name": "orders",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "type": "[Order](../internal/classes/internal.Order.mdx)[]",
                 "description": "The details of the orders this customer placed.",
                 "optional": false,
                 "defaultValue": "",
@@ -226,7 +226,7 @@ medusa.auth
               },
               {
                 "name": "shipping_addresses",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "type": "[Address](../internal/classes/internal.Address.mdx)[]",
                 "description": "The details of the shipping addresses associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -271,7 +271,7 @@ medusa.auth.deleteSession().then(() => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -285,7 +285,7 @@ medusa.auth.deleteSession().then(() => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`void`\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when customer is logged out successfully.",
@@ -322,7 +322,7 @@ medusa.auth.exists("user@example.com")
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -336,7 +336,7 @@ medusa.auth.exists("user@example.com")
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreGetAuthEmailRes`](../internal/types/internal.StoreGetAuthEmailRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreGetAuthEmailRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the result of the check.",
@@ -388,7 +388,7 @@ medusa.auth.getSession().then(({ customer }) => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -402,7 +402,7 @@ medusa.auth.getSession().then(({ customer }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreAuthRes`](../internal/types/internal.StoreAuthRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreAuthRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
@@ -418,7 +418,7 @@ medusa.auth.getSession().then(({ customer }) => {
         "children": [
           {
             "name": "customer",
-            "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+            "type": "[Customer](../internal/classes/internal.Customer.mdx)",
             "description": "Customer's details.",
             "optional": false,
             "defaultValue": "",
@@ -426,7 +426,7 @@ medusa.auth.getSession().then(({ customer }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -480,7 +480,7 @@ medusa.auth.getSession().then(({ customer }) => {
               },
               {
                 "name": "groups",
-                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
                 "description": "The customer groups the customer belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -516,7 +516,7 @@ medusa.auth.getSession().then(({ customer }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -525,7 +525,7 @@ medusa.auth.getSession().then(({ customer }) => {
               },
               {
                 "name": "orders",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "type": "[Order](../internal/classes/internal.Order.mdx)[]",
                 "description": "The details of the orders this customer placed.",
                 "optional": false,
                 "defaultValue": "",
@@ -543,7 +543,7 @@ medusa.auth.getSession().then(({ customer }) => {
               },
               {
                 "name": "shipping_addresses",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "type": "[Address](../internal/classes/internal.Address.mdx)[]",
                 "description": "The details of the shipping addresses associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -593,7 +593,7 @@ medusa.auth
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`StorePostAuthReq`](../internal/classes/internal.StorePostAuthReq.mdx)",
+    "type": "[StorePostAuthReq](../internal/classes/internal.StorePostAuthReq.mdx)",
     "description": "The credentials of the customer to authenticate.",
     "optional": false,
     "defaultValue": "",
@@ -621,7 +621,7 @@ medusa.auth
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -635,7 +635,7 @@ medusa.auth
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreBearerAuthRes`](../internal/types/internal.StoreBearerAuthRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreBearerAuthRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the access token of the customer, if they're authenticated successfully.",

@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).subarray
 
-**subarray**(`start?`, `end?`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**subarray**(start?, end?): Buffer`
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -16,7 +16,7 @@ offset and cropped by the `start` and `end` indices.
 Specifying `end` greater than `buf.length` will return the same result as
 that of `end` equal to `buf.length`.
 
-This method is inherited from [`TypedArray.prototype.subarray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/subarray).
+This method is inherited from [`TypedArray.prototype.subarray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/TypedArray/subarray).
 
 Modifying the new `Buffer` slice will modify the memory in the original `Buffer`because the allocated memory of the two objects overlap.
 
@@ -90,12 +90,12 @@ console.log(buf.subarray(-5, -2).toString());
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

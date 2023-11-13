@@ -13,7 +13,7 @@ A product to create.
 <ParameterTypes parameters={[
   {
     "name": "categories",
-    "type": "{ `id`: `string`  }[]",
+    "type": "`\\&#123; id: string  \\&#125;`[]",
     "description": "The product categories to associate with the product.",
     "optional": true,
     "defaultValue": "",
@@ -86,7 +86,7 @@ A product to create.
   },
   {
     "name": "images",
-    "type": "`string`[] \\| { `id?`: `string` ; `url`: `string`  }[]",
+    "type": "`string`[] \\| `\\&#123; id?: string ; url: string  \\&#125;`[]",
     "description": "The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created and associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.",
     "optional": true,
     "defaultValue": "",
@@ -122,7 +122,7 @@ A product to create.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Holds custom data in key-value pairs.",
     "optional": true,
     "defaultValue": "",
@@ -140,7 +140,7 @@ A product to create.
   },
   {
     "name": "options",
-    "type": "[`CreateProductOptionDTO`](CreateProductOptionDTO.mdx)[]",
+    "type": "[CreateProductOptionDTO](CreateProductOptionDTO.mdx)[]",
     "description": "The product options to be created and associated with the product.",
     "optional": true,
     "defaultValue": "",
@@ -177,7 +177,7 @@ A product to create.
   },
   {
     "name": "status",
-    "type": "[`ProductStatus`](../enums/ProductStatus.mdx)",
+    "type": "[ProductStatus](../enums/ProductStatus.mdx)",
     "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
     "optional": true,
     "defaultValue": "",
@@ -232,7 +232,7 @@ A product to create.
   },
   {
     "name": "tags",
-    "type": "[`CreateProductTagDTO`](CreateProductTagDTO.mdx)[]",
+    "type": "[CreateProductTagDTO](CreateProductTagDTO.mdx)[]",
     "description": "The product tags to be created and associated with the product.",
     "optional": true,
     "defaultValue": "",
@@ -269,7 +269,7 @@ A product to create.
   },
   {
     "name": "type",
-    "type": "[`CreateProductTypeDTO`](CreateProductTypeDTO.mdx)",
+    "type": "[CreateProductTypeDTO](CreateProductTypeDTO.mdx)",
     "description": "The product type to create and associate with the product.",
     "optional": true,
     "defaultValue": "",
@@ -286,7 +286,7 @@ A product to create.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -315,7 +315,7 @@ A product to create.
   },
   {
     "name": "variants",
-    "type": "[`CreateProductVariantDTO`](CreateProductVariantDTO.mdx)[]",
+    "type": "[CreateProductVariantDTO](CreateProductVariantDTO.mdx)[]",
     "description": "The product variants to be created and associated with the product.",
     "optional": true,
     "defaultValue": "",
@@ -404,7 +404,7 @@ A product to create.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -422,7 +422,7 @@ A product to create.
       },
       {
         "name": "options",
-        "type": "[`CreateProductVariantOptionDTO`](CreateProductVariantOptionDTO.mdx)[]",
+        "type": "[CreateProductVariantOptionDTO](CreateProductVariantOptionDTO.mdx)[]",
         "description": "The product variant options to create and associate with the product variant.",
         "optional": true,
         "defaultValue": "",

@@ -11,14 +11,14 @@ Fullfillment provider plugin services should extend the AbstractFulfillmentServi
 
 ## Implements
 
-- [`FulfillmentService`](../interfaces/internal.internal.FulfillmentService.mdx)
+- [FulfillmentService](../interfaces/internal.internal.FulfillmentService.mdx)
 
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -27,7 +27,7 @@ Fullfillment provider plugin services should extend the AbstractFulfillmentServi
   },
   {
     "name": "container",
-    "type": "[`MedusaContainer`](../types/internal.MedusaContainer.mdx)",
+    "type": "[MedusaContainer](../types/internal.MedusaContainer.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ Used to calculate a price for a given shipping option.
 <ParameterTypes parameters={[
   {
     "name": "optionData",
-    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../types/internal.ShippingOptionData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ Used to calculate a price for a given shipping option.
   },
   {
     "name": "data",
-    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../types/internal.FulfillmentProviderData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ Used to calculate a price for a given shipping option.
   },
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
     "optional": false,
     "defaultValue": "",
@@ -88,7 +88,7 @@ Used to calculate a price for a given shipping option.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise\\&#60;number\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -108,7 +108,7 @@ Used to determine if a shipping option can have a calculated price
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../types/internal.ShippingOptionData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -122,7 +122,7 @@ Used to determine if a shipping option can have a calculated price
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise\\&#60;boolean\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -142,7 +142,7 @@ Cancel a fulfillment using data from the fulfillment
 <ParameterTypes parameters={[
   {
     "name": "fulfillment",
-    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../types/internal.FulfillmentProviderData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -156,7 +156,7 @@ Cancel a fulfillment using data from the fulfillment
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -177,7 +177,7 @@ The returned value of this method will populate the `fulfillment.data` field.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`ShippingMethodData`](../types/internal.ShippingMethodData.mdx)",
+    "type": "[ShippingMethodData](../types/internal.ShippingMethodData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -186,7 +186,7 @@ The returned value of this method will populate the `fulfillment.data` field.
   },
   {
     "name": "items",
-    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "type": "[LineItem](internal.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -195,7 +195,7 @@ The returned value of this method will populate the `fulfillment.data` field.
   },
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
     "optional": false,
     "defaultValue": "",
@@ -204,7 +204,7 @@ The returned value of this method will populate the `fulfillment.data` field.
   },
   {
     "name": "fulfillment",
-    "type": "[`Fulfillment`](internal.Fulfillment.mdx)",
+    "type": "[Fulfillment](internal.Fulfillment.mdx)",
     "description": "A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.",
     "optional": false,
     "defaultValue": "",
@@ -218,7 +218,7 @@ The returned value of this method will populate the `fulfillment.data` field.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)\\>",
+    "type": "Promise\\&#60;FulfillmentProviderData\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -240,7 +240,7 @@ documents attached to the return.
 <ParameterTypes parameters={[
   {
     "name": "returnOrder",
-    "type": "[`CreateReturnType`](../types/internal.CreateReturnType.mdx)",
+    "type": "[CreateReturnType](../types/internal.CreateReturnType.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -254,7 +254,7 @@ documents attached to the return.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -274,7 +274,7 @@ Used to retrieve documents associated with a fulfillment.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../types/internal.FulfillmentProviderData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -288,7 +288,7 @@ Used to retrieve documents associated with a fulfillment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -313,7 +313,7 @@ to create shipping options in Medusa that are offered to the customer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise\\&#60;any[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -353,7 +353,7 @@ Used to retrieve documents related to a return order.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -367,7 +367,7 @@ Used to retrieve documents related to a return order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -387,7 +387,7 @@ Used to retrieve documents related to a shipment.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -401,7 +401,7 @@ Used to retrieve documents related to a shipment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -419,7 +419,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "fulfillmentData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -442,7 +442,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -466,7 +466,7 @@ through.
 <ParameterTypes parameters={[
   {
     "name": "optionData",
-    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../types/internal.ShippingOptionData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -475,7 +475,7 @@ through.
   },
   {
     "name": "data",
-    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "type": "[FulfillmentProviderData](../types/internal.FulfillmentProviderData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -484,7 +484,7 @@ through.
   },
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
     "optional": false,
     "defaultValue": "",
@@ -498,7 +498,7 @@ through.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the data to populate `cart.shipping_methods.$.data` this\n   is usually important for future actions like generating shipping labels",
@@ -519,7 +519,7 @@ that a fulfillment option does in fact exist.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "type": "[ShippingOptionData](../types/internal.ShippingOptionData.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -533,7 +533,7 @@ that a fulfillment option does in fact exist.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise\\&#60;boolean\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -10,7 +10,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### emit
 
-**emit**<`T`\>(`event`, `data`, `options?`): `Promise`<`unknown`\>
+`**emit**<TypeParameter T>(event, data, options?): Promise\&#60;unknown\&#62;`
 
 <ParameterTypes parameters={[
   {
@@ -58,12 +58,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 #### Returns
 
-`Promise`<`unknown`\>
+Promise\&#60;unknown\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`unknown`\\>",
+    "type": "Promise\\&#60;unknown\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -76,7 +76,7 @@ ___
 
 ### subscribe
 
-**subscribe**(`eventName`, `subscriber`, `context?`): [`IEventBusService`](IEventBusService.mdx)
+`**subscribe**(eventName, subscriber, context?): IEventBusService`
 
 #### Parameters
 
@@ -92,7 +92,7 @@ ___
   },
   {
     "name": "subscriber",
-    "type": "[`Subscriber`](../types/Subscriber.mdx)",
+    "type": "[Subscriber](../types/Subscriber.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SubscriberContext`](../types/SubscriberContext.mdx)",
+    "type": "[SubscriberContext](../types/SubscriberContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -112,12 +112,12 @@ ___
 
 #### Returns
 
-[`IEventBusService`](IEventBusService.mdx)
+[IEventBusService](IEventBusService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "IEventBusService",
-    "type": "[`IEventBusService`](IEventBusService.mdx)",
+    "type": "[IEventBusService](IEventBusService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -130,7 +130,7 @@ ___
 
 ### unsubscribe
 
-**unsubscribe**(`eventName`, `subscriber`, `context?`): [`IEventBusService`](IEventBusService.mdx)
+`**unsubscribe**(eventName, subscriber, context?): IEventBusService`
 
 #### Parameters
 
@@ -146,7 +146,7 @@ ___
   },
   {
     "name": "subscriber",
-    "type": "[`Subscriber`](../types/Subscriber.mdx)",
+    "type": "[Subscriber](../types/Subscriber.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -155,7 +155,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SubscriberContext`](../types/SubscriberContext.mdx)",
+    "type": "[SubscriberContext](../types/SubscriberContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -166,12 +166,12 @@ ___
 
 #### Returns
 
-[`IEventBusService`](IEventBusService.mdx)
+[IEventBusService](IEventBusService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "IEventBusService",
-    "type": "[`IEventBusService`](IEventBusService.mdx)",
+    "type": "[IEventBusService](IEventBusService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -184,14 +184,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`IEventBusService`](IEventBusService.mdx)
+`**withTransaction**(transactionManager?): IEventBusService`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -202,12 +202,12 @@ ___
 
 #### Returns
 
-[`IEventBusService`](IEventBusService.mdx)
+[IEventBusService](IEventBusService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "IEventBusService",
-    "type": "[`IEventBusService`](IEventBusService.mdx)",
+    "type": "[IEventBusService](IEventBusService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

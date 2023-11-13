@@ -6,18 +6,18 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Transformer
 
- **Transformer**: (`item?`: [`LineItem`](../classes/LineItem.mdx), `quantity?`: `number`, `additional?`: [`OrdersReturnItem`](../classes/OrdersReturnItem.mdx)) => `Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>\> \| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>
+ **Transformer**: (item?: LineItem, quantity?: number, additional?: OrdersReturnItem) => Promise\&#60;DeepPartial\&#60;LineItem\&#62;\&#62; \| DeepPartial\&#60;LineItem\&#62;
 
-#### Type declaration
+### Type declaration
 
-(`item?`, `quantity?`, `additional?`): `Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>\> \| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>
+`(item?, quantity?, additional?): Promise\&#60;DeepPartial\&#60;LineItem\&#62;\&#62; \| DeepPartial\&#60;LineItem\&#62;`
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "item",
-    "type": "[`LineItem`](../classes/LineItem.mdx)",
+    "type": "[LineItem](../classes/LineItem.mdx)",
     "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
     "optional": true,
     "defaultValue": "",
@@ -35,7 +35,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "additional",
-    "type": "[`OrdersReturnItem`](../classes/OrdersReturnItem.mdx)",
+    "type": "[OrdersReturnItem](../classes/OrdersReturnItem.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -46,12 +46,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ##### Returns
 
-`Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>\> \| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\>
+Promise\&#60;DeepPartial\&#60;LineItem\&#62;\&#62; \| DeepPartial\&#60;LineItem\&#62;
 
 <ParameterTypes parameters={[
   {
-    "name": "Promise<DeepPartial<LineItem\\>\\> \\| DeepPartial<LineItem\\>",
-    "type": "`Promise`<`DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\\>\\> \\| `DeepPartial`<[`LineItem`](../classes/LineItem.mdx)\\>",
+    "name": "Promise\\&#60;DeepPartial\\&#60;LineItem\\&#62;\\&#62; \\| DeepPartial\\&#60;LineItem\\&#62;",
+    "type": "Promise\\&#60;DeepPartial\\&#60;LineItem\\&#62;\\&#62; \\| DeepPartial\\&#60;LineItem\\&#62;",
     "optional": true,
     "defaultValue": "",
     "description": "",

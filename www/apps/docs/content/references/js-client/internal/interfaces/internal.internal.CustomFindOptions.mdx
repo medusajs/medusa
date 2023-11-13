@@ -43,7 +43,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "select",
-    "type": "`FindOptionsSelect`<`TModel`\\> \\| `FindOptionsSelectByString`<`TModel`\\>",
+    "type": "FindOptionsSelect\\&#60;TModel\\&#62; \\| FindOptionsSelectByString\\&#60;TModel\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -70,7 +70,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "where",
-    "type": "`FindOptionsWhere`<`TModel`\\> & { [P in string \\| number \\| symbol]?: TModel[P][] } \\| `FindOptionsWhere`<`TModel`\\>[] & { [P in string \\| number \\| symbol]?: TModel[P][] }",
+    "type": "FindOptionsWhere\\&#60;TModel\\&#62; & \\&#123; [P in string \\| number \\| symbol]?: TModel[P][] \\&#125; \\| FindOptionsWhere\\&#60;TModel\\&#62;[] & \\&#123; [P in string \\| number \\| symbol]?: TModel[P][] \\&#125;",
     "description": "",
     "optional": true,
     "defaultValue": "",

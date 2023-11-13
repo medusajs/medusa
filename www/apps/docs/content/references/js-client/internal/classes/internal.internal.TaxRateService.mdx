@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productService_",
-    "type": "[`ProductService`](internal.internal.ProductService.mdx)",
+    "type": "[ProductService](internal.internal.ProductService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productTypeService_",
-    "type": "[`ProductTypeService`](internal.internal.ProductTypeService.mdx)",
+    "type": "[ProductTypeService](internal.internal.ProductTypeService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingOptionService_",
-    "type": "[`ShippingOptionService`](internal.internal.ShippingOptionService.mdx)",
+    "type": "[ShippingOptionService](internal.internal.ShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxRateRepository_",
-    "type": "`Repository`<[`TaxRate`](internal.TaxRate.mdx)\\> & { `addToProduct`: Method addToProduct ; `addToProductType`: Method addToProductType ; `addToShippingOption`: Method addToShippingOption ; `applyResolutionsToQueryBuilder`: Method applyResolutionsToQueryBuilder ; `findAndCountWithResolution`: Method findAndCountWithResolution ; `findOneWithResolution`: Method findOneWithResolution ; `findWithResolution`: Method findWithResolution ; `getFindQueryBuilder`: Method getFindQueryBuilder ; `listByProduct`: Method listByProduct ; `listByShippingOption`: Method listByShippingOption ; `removeFromProduct`: Method removeFromProduct ; `removeFromProductType`: Method removeFromProductType ; `removeFromShippingOption`: Method removeFromShippingOption  }",
+    "type": "Repository\\&#60;TaxRate\\&#62; & `\\&#123; addToProduct: Method addToProduct ; addToProductType: Method addToProductType ; addToShippingOption: Method addToShippingOption ; applyResolutionsToQueryBuilder: Method applyResolutionsToQueryBuilder ; findAndCountWithResolution: Method findAndCountWithResolution ; findOneWithResolution: Method findOneWithResolution ; findWithResolution: Method findWithResolution ; getFindQueryBuilder: Method getFindQueryBuilder ; listByProduct: Method listByProduct ; listByShippingOption: Method listByShippingOption ; removeFromProduct: Method removeFromProduct ; removeFromProductType: Method removeFromProductType ; removeFromShippingOption: Method removeFromShippingOption  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -151,7 +151,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTaxRate`](internal.internal.ProductTaxRate.mdx) \\| [`ProductTaxRate`](internal.internal.ProductTaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductTaxRate \\| ProductTaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -201,7 +201,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeTaxRate`](internal.internal.ProductTypeTaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;ProductTypeTaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -251,7 +251,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ShippingTaxRate`](internal.internal.ShippingTaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;ShippingTaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -273,7 +273,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -282,7 +282,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -291,7 +291,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -305,7 +305,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -323,7 +323,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateTaxRateInput`](../types/internal.CreateTaxRateInput.mdx)",
+    "type": "[CreateTaxRateInput](../types/internal.CreateTaxRateInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -337,7 +337,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "Promise\\&#60;TaxRate\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -369,7 +369,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -387,7 +387,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableTaxRateProps`](../types/internal.FilterableTaxRateProps.mdx)",
+    "type": "[FilterableTaxRateProps](../types/internal.FilterableTaxRateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -396,7 +396,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;TaxRate\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -410,7 +410,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;TaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -428,7 +428,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableTaxRateProps`](../types/internal.FilterableTaxRateProps.mdx)",
+    "type": "[FilterableTaxRateProps](../types/internal.FilterableTaxRateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -437,7 +437,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;TaxRate\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -451,7 +451,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`TaxRate`](internal.TaxRate.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[TaxRate[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -478,7 +478,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`TaxRateListByConfig`](../types/internal.TaxRateListByConfig.mdx)",
+    "type": "[TaxRateListByConfig](../types/internal.TaxRateListByConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -492,7 +492,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;TaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -524,7 +524,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)[]\\>",
+    "type": "Promise\\&#60;TaxRate[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -565,7 +565,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -606,7 +606,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -647,7 +647,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -674,7 +674,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;TaxRate\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -688,7 +688,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "Promise\\&#60;TaxRate\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -706,7 +706,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -747,7 +747,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[`UpdateTaxRateInput`](../types/internal.UpdateTaxRateInput.mdx)",
+    "type": "[UpdateTaxRateInput](../types/internal.UpdateTaxRateInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -761,7 +761,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "Promise\\&#60;TaxRate\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -779,7 +779,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -793,7 +793,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "TaxRateService",
-    "type": "[`TaxRateService`](internal.internal.TaxRateService.mdx)",
+    "type": "[TaxRateService](internal.internal.TaxRateService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

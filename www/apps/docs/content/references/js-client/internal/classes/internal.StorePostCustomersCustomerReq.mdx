@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "billing_address",
-    "type": "`string` \\| [`AddressPayload`](internal.AddressPayload.mdx)",
+    "type": "`string` \\| [AddressPayload](internal.AddressPayload.mdx)",
     "description": "The address to be used for billing purposes.",
     "optional": true,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Additional custom data about the customer.",
     "optional": true,
     "defaultValue": "",

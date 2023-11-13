@@ -10,14 +10,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new LineItemService**(`«destructured»`)
+`**new LineItemService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-14.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-14.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "cartRepository_",
-    "type": "`Repository`<[`Cart`](Cart.mdx)\\> & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }",
+    "type": "Repository\\&#60;Cart\\&#62; & `\\&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "type": "[FlagRouter](FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "itemTaxLineRepo_",
-    "type": "`Repository`<[`LineItemTaxLine`](LineItemTaxLine.mdx)\\> & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }",
+    "type": "Repository\\&#60;LineItemTaxLine\\&#62; & `\\&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemAdjustmentService_",
-    "type": "[`LineItemAdjustmentService`](LineItemAdjustmentService.mdx)",
+    "type": "[LineItemAdjustmentService](LineItemAdjustmentService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "`Repository`<[`LineItem`](LineItem.mdx)\\> & { `findByReturn`: Method findByReturn  }",
+    "type": "Repository\\&#60;LineItem\\&#62; & `\\&#123; findByReturn: Method findByReturn  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "pricingService_",
-    "type": "[`PricingService`](PricingService.mdx)",
+    "type": "[PricingService](PricingService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productService_",
-    "type": "[`ProductService`](ProductService.mdx)",
+    "type": "[ProductService](ProductService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantService_",
-    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "type": "[ProductVariantService](ProductVariantService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "regionService_",
-    "type": "[`RegionService`](RegionService.mdx)",
+    "type": "[RegionService](RegionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxProviderService_",
-    "type": "[`TaxProviderService`](TaxProviderService.mdx)",
+    "type": "[TaxProviderService](TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -170,16 +170,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -192,7 +192,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -224,7 +224,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -233,7 +233,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -242,7 +242,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -253,12 +253,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -271,7 +271,7 @@ ___
 
 ### cloneTo
 
-**cloneTo**(`ids`, `data?`, `options?`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+`**cloneTo**(ids, data?, options?): Promise\&#60;LineItem[]\&#62;`
 
 #### Parameters
 
@@ -287,7 +287,7 @@ ___
   },
   {
     "name": "data",
-    "type": "`DeepPartial`<[`LineItem`](LineItem.mdx)\\>",
+    "type": "DeepPartial\\&#60;LineItem\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -316,12 +316,12 @@ ___
 
 #### Returns
 
-`Promise`<[`LineItem`](LineItem.mdx)[]\>
+Promise\&#60;LineItem[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "type": "Promise\\&#60;LineItem[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -334,7 +334,7 @@ ___
 
 ### create
 
-**create**<`T`, `TResult`\>(`data`): `Promise`<`TResult`\>
+`**create**<TypeParameter T, TypeParameter TResult>(data): Promise\&#60;TResult\&#62;`
 
 Create a line item
 
@@ -375,12 +375,12 @@ Create a line item
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created line item",
@@ -393,7 +393,7 @@ ___
 
 ### createReturnLines
 
-**createReturnLines**(`returnId`, `cartId`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+`**createReturnLines**(returnId, cartId): Promise\&#60;LineItem[]\&#62;`
 
 Creates return line items for a given cart based on the return items in a
 return.
@@ -423,12 +423,12 @@ return.
 
 #### Returns
 
-`Promise`<[`LineItem`](LineItem.mdx)[]\>
+Promise\&#60;LineItem[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "type": "Promise\\&#60;LineItem[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created line items",
@@ -441,7 +441,7 @@ ___
 
 ### createTaxLine
 
-**createTaxLine**(`args`): [`LineItemTaxLine`](LineItemTaxLine.mdx)
+`**createTaxLine**(args): LineItemTaxLine`
 
 Create a line item tax line.
 
@@ -450,7 +450,7 @@ Create a line item tax line.
 <ParameterTypes parameters={[
   {
     "name": "args",
-    "type": "`DeepPartial`<[`LineItemTaxLine`](LineItemTaxLine.mdx)\\>",
+    "type": "DeepPartial\\&#60;LineItemTaxLine\\&#62;",
     "description": "tax line partial passed to the repo create method",
     "optional": false,
     "defaultValue": "",
@@ -461,12 +461,12 @@ Create a line item tax line.
 
 #### Returns
 
-[`LineItemTaxLine`](LineItemTaxLine.mdx)
+[LineItemTaxLine](LineItemTaxLine.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "LineItemTaxLine",
-    "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)",
+    "type": "[LineItemTaxLine](LineItemTaxLine.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a new line item tax line",
@@ -479,7 +479,7 @@ ___
 
 ### delete
 
-**delete**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+`**delete**(id): Promise\&#60;undefined \| `null` \| LineItem\&#62;`
 
 Deletes a line item.
 
@@ -499,12 +499,12 @@ Deletes a line item.
 
 #### Returns
 
-`Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+Promise\&#60;undefined \| `null` \| LineItem\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| ``null`` \\| [`LineItem`](LineItem.mdx)\\>",
+    "type": "Promise\\&#60;undefined \\| `null` \\| LineItem\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -517,7 +517,7 @@ ___
 
 ### deleteWithTaxLines
 
-**deleteWithTaxLines**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+`**deleteWithTaxLines**(id): Promise\&#60;undefined \| `null` \| LineItem\&#62;`
 
 #### Parameters
 
@@ -535,12 +535,12 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+Promise\&#60;undefined \| `null` \| LineItem\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| ``null`` \\| [`LineItem`](LineItem.mdx)\\>",
+    "type": "Promise\\&#60;undefined \\| `null` \\| LineItem\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -558,7 +558,7 @@ ___
 
 ### generate
 
-**generate**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`, `context?`): `Promise`<`TResult`\>
+`**generate**<TypeParameter T, TypeParameter TResult>(variantIdOrData, regionIdOrContext, quantity?, context?): Promise\&#60;TResult\&#62;`
 
 Generate a single or multiple line item without persisting the data into the db
 
@@ -597,7 +597,7 @@ Generate a single or multiple line item without persisting the data into the db
   },
   {
     "name": "regionIdOrContext",
-    "type": "`T` extends `string` ? `string` : [`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx)",
+    "type": "`T` extends `string` ? `string` : [GenerateLineItemContext](../types/GenerateLineItemContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -615,7 +615,7 @@ Generate a single or multiple line item without persisting the data into the db
   },
   {
     "name": "context",
-    "type": "[`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx)",
+    "type": "[GenerateLineItemContext](../types/GenerateLineItemContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -626,12 +626,12 @@ Generate a single or multiple line item without persisting the data into the db
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -644,7 +644,7 @@ ___
 
 ### generateLineItem
 
-`Protected` **generateLineItem**(`variant`, `quantity`, `context`): `Promise`<[`LineItem`](LineItem.mdx)\>
+`Protected **generateLineItem**(variant, quantity, context): Promise\&#60;LineItem\&#62;`
 
 #### Parameters
 
@@ -741,7 +741,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx) & { `variantPricing`: [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)  }",
+    "type": "[GenerateLineItemContext](../types/GenerateLineItemContext.mdx) & `\\&#123; variantPricing: ProductVariantPricing  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -752,12 +752,12 @@ ___
 
 #### Returns
 
-`Promise`<[`LineItem`](LineItem.mdx)\>
+Promise\&#60;LineItem\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItem`](LineItem.mdx)\\>",
+    "type": "Promise\\&#60;LineItem\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -770,14 +770,14 @@ ___
 
 ### list
 
-**list**(`selector`, `config?`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+`**list**(selector, config?): Promise\&#60;LineItem[]\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)\\&#60;LineItem\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -786,7 +786,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;LineItem\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -797,12 +797,12 @@ ___
 
 #### Returns
 
-`Promise`<[`LineItem`](LineItem.mdx)[]\>
+Promise\&#60;LineItem[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "type": "Promise\\&#60;LineItem[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -815,7 +815,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`id`, `config?`): `Promise`<[`LineItem`](LineItem.mdx)\>
+`**retrieve**(id, config?): Promise\&#60;LineItem\&#62;`
 
 Retrieves a line item by its id.
 
@@ -844,12 +844,12 @@ Retrieves a line item by its id.
 
 #### Returns
 
-`Promise`<[`LineItem`](LineItem.mdx)\>
+Promise\&#60;LineItem\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItem`](LineItem.mdx)\\>",
+    "type": "Promise\\&#60;LineItem\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item",
@@ -862,14 +862,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -898,7 +898,7 @@ ___
 
 ### update
 
-**update**(`idOrSelector`, `data`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+`**update**(idOrSelector, data): Promise\&#60;LineItem[]\&#62;`
 
 Updates a line item
 
@@ -907,7 +907,7 @@ Updates a line item
 <ParameterTypes parameters={[
   {
     "name": "idOrSelector",
-    "type": "`string` \\| [`Selector`](../types/Selector.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "type": "`string` \\| [Selector](../types/Selector.mdx)\\&#60;LineItem\\&#62;",
     "description": "the id or selector of the line item(s) to update",
     "optional": false,
     "defaultValue": "",
@@ -916,7 +916,7 @@ Updates a line item
   },
   {
     "name": "data",
-    "type": "[`Partial`](../types/Partial.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "type": "[Partial](../types/Partial.mdx)\\&#60;LineItem\\&#62;",
     "description": "the properties to update the line item(s)",
     "optional": false,
     "defaultValue": "",
@@ -927,12 +927,12 @@ Updates a line item
 
 #### Returns
 
-`Promise`<[`LineItem`](LineItem.mdx)[]\>
+Promise\&#60;LineItem[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "type": "Promise\\&#60;LineItem[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated line item(s)",
@@ -945,7 +945,7 @@ ___
 
 ### validateGenerateArguments
 
-`Protected` **validateGenerateArguments**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`): `void`
+`Protected **validateGenerateArguments**<TypeParameter T, TypeParameter TResult>(variantIdOrData, regionIdOrContext, quantity?): void`
 
 <ParameterTypes parameters={[
   {
@@ -982,7 +982,7 @@ ___
   },
   {
     "name": "regionIdOrContext",
-    "type": "`T` extends `string` ? `string` : [`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx)",
+    "type": "`T` extends `string` ? `string` : [GenerateLineItemContext](../types/GenerateLineItemContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1020,14 +1020,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`LineItemService`](LineItemService.mdx)
+`**withTransaction**(transactionManager?): LineItemService`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1038,12 +1038,12 @@ ___
 
 #### Returns
 
-[`LineItemService`](LineItemService.mdx)
+[LineItemService](LineItemService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "LineItemService",
-    "type": "[`LineItemService`](LineItemService.mdx)",
+    "type": "[LineItemService](LineItemService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

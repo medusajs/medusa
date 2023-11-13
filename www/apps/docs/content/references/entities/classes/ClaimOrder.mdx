@@ -13,8 +13,8 @@ A Claim represents a group of faulty or missing items. It consists of claim item
 <ParameterTypes parameters={[
   {
     "name": "additional_items",
-    "type": "[`LineItem`](LineItem.mdx)[]",
-    "description": "The details of the new items to be shipped when the claim's type is `replace`",
+    "type": "[LineItem](LineItem.mdx)[]",
+    "description": "The details of the new items to be shipped when the claim's type is \\`replace\\`",
     "optional": false,
     "defaultValue": "",
     "expandable": true,
@@ -31,7 +31,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "claim_items",
-    "type": "[`ClaimItem`](ClaimItem.mdx)[]",
+    "type": "[ClaimItem](ClaimItem.mdx)[]",
     "description": "The details of the items that should be replaced or refunded.",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "fulfillment_status",
-    "type": "[`ClaimFulfillmentStatus`](../enums/ClaimFulfillmentStatus.mdx)",
+    "type": "[ClaimFulfillmentStatus](../enums/ClaimFulfillmentStatus.mdx)",
     "description": "The claim's fulfillment status",
     "optional": false,
     "defaultValue": "not_fulfilled",
@@ -67,7 +67,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "fulfillments",
-    "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+    "type": "[Fulfillment](Fulfillment.mdx)[]",
     "description": "The fulfillments of the new items to be shipped",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that this claim was created for.",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "payment_status",
-    "type": "[`ClaimPaymentStatus`](../enums/ClaimPaymentStatus.mdx)",
+    "type": "[ClaimPaymentStatus](../enums/ClaimPaymentStatus.mdx)",
     "description": "The status of the claim's payment",
     "optional": false,
     "defaultValue": "na",
@@ -148,8 +148,8 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "return_order",
-    "type": "[`Return`](Return.mdx)",
-    "description": "The details of the return associated with the claim if the claim's type is `replace`.",
+    "type": "[Return](Return.mdx)",
+    "description": "The details of the return associated with the claim if the claim's type is \\`replace\\`.",
     "optional": false,
     "defaultValue": "",
     "expandable": true,
@@ -157,7 +157,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "shipping_address",
-    "type": "[`Address`](Address.mdx)",
+    "type": "[Address](Address.mdx)",
     "description": "The details of the address that new items should be shipped to.",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "shipping_methods",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](ShippingMethod.mdx)[]",
     "description": "The details of the shipping methods that the claim order will be shipped with.",
     "optional": false,
     "defaultValue": "",
@@ -184,7 +184,7 @@ A Claim represents a group of faulty or missing items. It consists of claim item
   },
   {
     "name": "type",
-    "type": "[`ClaimType`](../enums/ClaimType.mdx)",
+    "type": "[ClaimType](../enums/ClaimType.mdx)",
     "description": "The claim's type",
     "optional": false,
     "defaultValue": "",

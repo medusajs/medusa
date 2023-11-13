@@ -12,14 +12,14 @@ Provides layer to manipulate customers.
 
 ### constructor
 
-**new CustomerService**(`«destructured»`)
+`**new CustomerService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-7.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-7.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -33,7 +33,7 @@ Provides layer to manipulate customers.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -51,7 +51,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -60,7 +60,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "addressRepository_",
-    "type": "`Repository`<[`Address`](Address.mdx)\\>",
+    "type": "Repository\\&#60;Address\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -69,7 +69,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "customerRepository_",
-    "type": "`Repository`<[`Customer`](Customer.mdx)\\> & { `listAndCount`: Method listAndCount  }",
+    "type": "Repository\\&#60;Customer\\&#62; & `\\&#123; listAndCount: Method listAndCount  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -78,7 +78,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](EventBusService.mdx)",
+    "type": "[EventBusService](EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -87,7 +87,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -96,7 +96,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -145,16 +145,16 @@ Provides layer to manipulate customers.
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -167,7 +167,7 @@ Provides layer to manipulate customers.
 
 ### addAddress
 
-**addAddress**(`customerId`, `address`): `Promise`<[`Customer`](Customer.mdx) \| [`Address`](Address.mdx)\>
+`**addAddress**(customerId, address): Promise\&#60;Customer \| Address\&#62;`
 
 #### Parameters
 
@@ -183,7 +183,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "address",
-    "type": "[`AddressCreatePayload`](AddressCreatePayload.mdx)",
+    "type": "[AddressCreatePayload](AddressCreatePayload.mdx)",
     "description": "Address fields used when creating an address.",
     "optional": false,
     "defaultValue": "",
@@ -194,12 +194,12 @@ Provides layer to manipulate customers.
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx) \| [`Address`](Address.mdx)\>
+Promise\&#60;Customer \| Address\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx) \\| [`Address`](Address.mdx)\\>",
+    "type": "Promise\\&#60;Customer \\| Address\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -212,7 +212,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -244,7 +244,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -253,7 +253,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -262,7 +262,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -273,12 +273,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise\&#60;TResult\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -291,18 +291,18 @@ ___
 
 ### count
 
-**count**(): `Promise`<`number`\>
+`**count**(): Promise\&#60;number\&#62;`
 
 Return the total number of documents in database
 
 #### Returns
 
-`Promise`<`number`\>
+Promise\&#60;number\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise\\&#60;number\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the count operation",
@@ -315,7 +315,7 @@ ___
 
 ### create
 
-**create**(`customer`): `Promise`<[`Customer`](Customer.mdx)\>
+`**create**(customer): Promise\&#60;Customer\&#62;`
 
 Creates a customer from an email - customers can have accounts associated,
 e.g. to login and view order history, etc. If a password is provided the
@@ -327,7 +327,7 @@ used to hold details of customers.
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[`CreateCustomerInput`](../types/CreateCustomerInput.mdx)",
+    "type": "[CreateCustomerInput](../types/CreateCustomerInput.mdx)",
     "description": "the customer to create",
     "optional": false,
     "defaultValue": "",
@@ -338,12 +338,12 @@ used to hold details of customers.
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of create",
@@ -356,7 +356,7 @@ ___
 
 ### delete
 
-**delete**(`customerId`): `Promise`<`void` \| [`Customer`](Customer.mdx)\>
+`**delete**(customerId): Promise\&#60;void \| Customer\&#62;`
 
 Deletes a customer from a given customer id.
 
@@ -376,12 +376,12 @@ Deletes a customer from a given customer id.
 
 #### Returns
 
-`Promise`<`void` \| [`Customer`](Customer.mdx)\>
+Promise\&#60;void \| Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| [`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;void \\| Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation.",
@@ -394,7 +394,7 @@ ___
 
 ### generateResetPasswordToken
 
-**generateResetPasswordToken**(`customerId`): `Promise`<`string`\>
+`**generateResetPasswordToken**(customerId): Promise\&#60;string\&#62;`
 
 Generate a JSON Web token, that will be sent to a customer, that wishes to
 reset password.
@@ -418,12 +418,12 @@ which is always 15 minutes.
 
 #### Returns
 
-`Promise`<`string`\>
+Promise\&#60;string\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`string`\\>",
+    "type": "Promise\\&#60;string\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the generated JSON web token",
@@ -436,7 +436,7 @@ ___
 
 ### hashPassword\_
 
-**hashPassword_**(`password`): `Promise`<`string`\>
+`**hashPassword_**(password): Promise\&#60;string\&#62;`
 
 Hashes a password
 
@@ -456,12 +456,12 @@ Hashes a password
 
 #### Returns
 
-`Promise`<`string`\>
+Promise\&#60;string\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`string`\\>",
+    "type": "Promise\\&#60;string\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "hashed password",
@@ -474,14 +474,14 @@ ___
 
 ### list
 
-**list**(`selector?`, `config?`): `Promise`<[`Customer`](Customer.mdx)[]\>
+`**list**(selector?, config?): Promise\&#60;Customer[]\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`Customer`](Customer.mdx)\\> & { `groups?`: `string`[] ; `q?`: `string`  }",
+    "type": "[Selector](../types/Selector.mdx)\\&#60;Customer\\&#62; & `\\&#123; groups?: string[] ; q?: string  \\&#125;`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -490,7 +490,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "",
@@ -501,12 +501,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)[]\>
+Promise\&#60;Customer[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)[]\\>",
+    "type": "Promise\\&#60;Customer[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -519,14 +519,14 @@ ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`): `Promise`<[[`Customer`](Customer.mdx)[], `number`]\>
+`**listAndCount**(selector, config?): Promise\&#60;[Customer[], number]\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`Customer`](Customer.mdx)\\> & { `groups?`: `string`[] ; `q?`: `string`  }",
+    "type": "[Selector](../types/Selector.mdx)\\&#60;Customer\\&#62; & `\\&#123; groups?: string[] ; q?: string  \\&#125;`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -535,7 +535,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "",
@@ -546,12 +546,12 @@ ___
 
 #### Returns
 
-`Promise`<[[`Customer`](Customer.mdx)[], `number`]\>
+Promise\&#60;[Customer[], number]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Customer`](Customer.mdx)[], `number`]\\>",
+    "type": "Promise\\&#60;[Customer[], number]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -564,7 +564,7 @@ ___
 
 ### listByEmail
 
-**listByEmail**(`email`, `config?`): `Promise`<[`Customer`](Customer.mdx)[]\>
+`**listByEmail**(email, config?): Promise\&#60;Customer[]\&#62;`
 
 #### Parameters
 
@@ -580,7 +580,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -591,12 +591,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)[]\>
+Promise\&#60;Customer[]\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)[]\\>",
+    "type": "Promise\\&#60;Customer[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -609,7 +609,7 @@ ___
 
 ### removeAddress
 
-**removeAddress**(`customerId`, `addressId`): `Promise`<`void`\>
+`**removeAddress**(customerId, addressId): Promise\&#60;void\&#62;`
 
 #### Parameters
 
@@ -636,12 +636,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -654,7 +654,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`customerId`, `config?`): `Promise`<[`Customer`](Customer.mdx)\>
+`**retrieve**(customerId, config?): Promise\&#60;Customer\&#62;`
 
 Gets a customer by id.
 
@@ -672,7 +672,7 @@ Gets a customer by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "{}",
@@ -683,12 +683,12 @@ Gets a customer by id.
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -701,7 +701,7 @@ ___
 
 ### retrieveByEmail
 
-**retrieveByEmail**(`email`, `config?`): `Promise`<[`Customer`](Customer.mdx)\>
+`**retrieveByEmail**(email, config?): Promise\&#60;Customer\&#62;`
 
 Gets a registered customer by email.
 
@@ -719,7 +719,7 @@ Gets a registered customer by email.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "{}",
@@ -730,12 +730,12 @@ Gets a registered customer by email.
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -750,7 +750,7 @@ ___
 
 ### retrieveByPhone
 
-**retrieveByPhone**(`phone`, `config?`): `Promise`<[`Customer`](Customer.mdx)\>
+`**retrieveByPhone**(phone, config?): Promise\&#60;Customer\&#62;`
 
 Gets a customer by phone.
 
@@ -768,7 +768,7 @@ Gets a customer by phone.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "{}",
@@ -779,12 +779,12 @@ Gets a customer by phone.
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -797,7 +797,7 @@ ___
 
 ### retrieveRegisteredByEmail
 
-**retrieveRegisteredByEmail**(`email`, `config?`): `Promise`<[`Customer`](Customer.mdx)\>
+`**retrieveRegisteredByEmail**(email, config?): Promise\&#60;Customer\&#62;`
 
 #### Parameters
 
@@ -813,7 +813,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -824,12 +824,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -842,7 +842,7 @@ ___
 
 ### retrieveUnregisteredByEmail
 
-**retrieveUnregisteredByEmail**(`email`, `config?`): `Promise`<[`Customer`](Customer.mdx)\>
+`**retrieveUnregisteredByEmail**(email, config?): Promise\&#60;Customer\&#62;`
 
 #### Parameters
 
@@ -858,7 +858,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -869,12 +869,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -887,14 +887,14 @@ ___
 
 ### retrieve\_
 
-`Private` **retrieve_**(`selector`, `config?`): `Promise`<[`Customer`](Customer.mdx)\>
+`Private **retrieve_**(selector, config?): Promise\&#60;Customer\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)\\&#60;Customer\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -903,7 +903,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Customer`](Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Customer\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -914,12 +914,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -932,14 +932,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -968,7 +968,7 @@ ___
 
 ### update
 
-**update**(`customerId`, `update`): `Promise`<[`Customer`](Customer.mdx)\>
+`**update**(customerId, update): Promise\&#60;Customer\&#62;`
 
 Updates a customer.
 
@@ -986,7 +986,7 @@ Updates a customer.
   },
   {
     "name": "update",
-    "type": "[`UpdateCustomerInput`](../types/UpdateCustomerInput.mdx)",
+    "type": "[UpdateCustomerInput](../types/UpdateCustomerInput.mdx)",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -997,12 +997,12 @@ Updates a customer.
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise\&#60;Customer\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise\\&#60;Customer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -1015,7 +1015,7 @@ ___
 
 ### updateAddress
 
-**updateAddress**(`customerId`, `addressId`, `address`): `Promise`<[`Address`](Address.mdx)\>
+`**updateAddress**(customerId, addressId, address): Promise\&#60;Address\&#62;`
 
 #### Parameters
 
@@ -1040,7 +1040,7 @@ ___
   },
   {
     "name": "address",
-    "type": "[`StorePostCustomersCustomerAddressesAddressReq`](StorePostCustomersCustomerAddressesAddressReq.mdx)",
+    "type": "[StorePostCustomersCustomerAddressesAddressReq](StorePostCustomersCustomerAddressesAddressReq.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1051,12 +1051,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Address`](Address.mdx)\>
+Promise\&#60;Address\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Address`](Address.mdx)\\>",
+    "type": "Promise\\&#60;Address\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1069,7 +1069,7 @@ ___
 
 ### updateBillingAddress\_
 
-**updateBillingAddress_**(`customer`, `addressOrId`): `Promise`<`void`\>
+`**updateBillingAddress_**(customer, addressOrId): Promise\&#60;void\&#62;`
 
 Updates the customers' billing address.
 
@@ -1078,7 +1078,7 @@ Updates the customers' billing address.
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[`Customer`](Customer.mdx)",
+    "type": "[Customer](Customer.mdx)",
     "description": "the Customer to update",
     "optional": false,
     "defaultValue": "",
@@ -1087,7 +1087,7 @@ Updates the customers' billing address.
   },
   {
     "name": "addressOrId",
-    "type": "`undefined` \\| `string` \\| `DeepPartial`<[`Address`](Address.mdx)\\>",
+    "type": "`undefined` \\| `string` \\| DeepPartial\\&#60;Address\\&#62;",
     "description": "the value to set the billing address to",
     "optional": false,
     "defaultValue": "",
@@ -1098,12 +1098,12 @@ Updates the customers' billing address.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise\&#60;void\&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1116,14 +1116,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`CustomerService`](CustomerService.mdx)
+`**withTransaction**(transactionManager?): CustomerService`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1134,12 +1134,12 @@ ___
 
 #### Returns
 
-[`CustomerService`](CustomerService.mdx)
+[CustomerService](CustomerService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "CustomerService",
-    "type": "[`CustomerService`](CustomerService.mdx)",
+    "type": "[CustomerService](CustomerService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

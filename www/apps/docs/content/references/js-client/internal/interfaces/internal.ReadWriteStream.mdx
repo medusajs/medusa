@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](internal.AsyncIterableIterator.mdx)<`string` \\| [`Buffer`](../../modules/internal.mdx#buffer)\\>",
+    "type": "[AsyncIterableIterator](internal.AsyncIterableIterator.mdx)\\&#60;string \\| Buffer\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -56,7 +56,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -131,7 +131,7 @@ Alias for `emitter.on(eventName, listener)`.
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -231,7 +231,7 @@ ___
 
 ### end
 
-**end**(`cb?`): [`ReadWriteStream`](internal.ReadWriteStream.mdx)
+`**end**(cb?): ReadWriteStream`
 
 #### Parameters
 
@@ -252,7 +252,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -261,14 +261,14 @@ ___
   }
 ]} />
 
-**end**(`data`, `cb?`): [`ReadWriteStream`](internal.ReadWriteStream.mdx)
+`**end**(data, cb?): ReadWriteStream`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -291,7 +291,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -300,7 +300,7 @@ ___
   }
 ]} />
 
-**end**(`str`, `encoding?`, `cb?`): [`ReadWriteStream`](internal.ReadWriteStream.mdx)
+`**end**(str, encoding?, cb?): ReadWriteStream`
 
 #### Parameters
 
@@ -316,7 +316,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -339,7 +339,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -559,7 +559,7 @@ Alias for `emitter.removeListener()`.
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -631,7 +631,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -701,7 +701,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -723,7 +723,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -776,7 +776,7 @@ ___
 
 ### prependListener
 
-Adds the `listener` function to the _beginning_ of the listeners array for the
+Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
 already been added. Multiple calls passing the same combination of `eventName`and `listener` will result in the `listener` being added, and called, multiple
 times.
@@ -817,7 +817,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -834,7 +834,7 @@ ___
 
 ### prependOnceListener
 
-Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
+Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
 
 ```js
@@ -873,7 +873,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -973,7 +973,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "string \\| Buffer",
-    "type": "`string` \\| [`Buffer`](../../modules/internal.mdx#buffer)",
+    "type": "`string` \\| [Buffer](../../modules/internal.mdx#buffer)",
     "optional": true,
     "defaultValue": "",
     "description": "",
@@ -1013,7 +1013,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1047,7 +1047,7 @@ listener array for the specified `eventName`, then `removeListener()` must be
 called multiple times to remove each instance.
 
 Once an event is emitted, all listeners attached to it at the
-time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls _after_ emitting and _before_ the last listener finishes execution
+time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls \_after\_ emitting and \_before\_ the last listener finishes execution
 will not remove them from`emit()` in progress. Subsequent events behave as expected.
 
 ```js
@@ -1083,7 +1083,7 @@ myEmitter.emit('event');
 ```
 
 Because listeners are managed using an internal array, calling this will
-change the position indices of any listener registered _after_ the listener
+change the position indices of any listener registered \_after\_ the listener
 being removed. This will not impact the order in which listeners are called,
 but it means that any copies of the listener array as returned by
 the `emitter.listeners()` method will need to be recreated.
@@ -1138,7 +1138,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1160,7 +1160,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1178,7 +1178,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1192,7 +1192,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1231,7 +1231,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1253,7 +1253,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "destination",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1267,7 +1267,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1285,7 +1285,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "chunk",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1294,7 +1294,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1326,7 +1326,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "oldStream",
-    "type": "[`ReadableStream`](internal.ReadableStream-1.mdx)",
+    "type": "[ReadableStream](internal.ReadableStream-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1340,7 +1340,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadWriteStream",
-    "type": "[`ReadWriteStream`](internal.ReadWriteStream.mdx)",
+    "type": "[ReadWriteStream](internal.ReadWriteStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1353,14 +1353,14 @@ ___
 
 ### write
 
-**write**(`buffer`, `cb?`): `boolean`
+`**write**(buffer, cb?): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "buffer",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1369,7 +1369,7 @@ ___
   },
   {
     "name": "cb",
-    "type": "(`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1392,7 +1392,7 @@ ___
   }
 ]} />
 
-**write**(`str`, `encoding?`, `cb?`): `boolean`
+`**write**(str, encoding?, cb?): boolean`
 
 #### Parameters
 
@@ -1408,7 +1408,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1417,7 +1417,7 @@ ___
   },
   {
     "name": "cb",
-    "type": "(`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": true,
     "defaultValue": "",

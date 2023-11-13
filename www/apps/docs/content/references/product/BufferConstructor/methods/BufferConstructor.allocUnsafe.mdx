@@ -8,12 +8,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [BufferConstructor](../../interfaces/BufferConstructor.mdx).allocUnsafe
 
-**allocUnsafe**(`size`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**allocUnsafe**(size): Buffer`
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown.
 
-The underlying memory for `Buffer` instances created in this way is _not_
-_initialized_. The contents of the newly created `Buffer` are unknown and _may contain sensitive data_. Use `Buffer.alloc()` instead to initialize`Buffer` instances with zeroes.
+The underlying memory for `Buffer` instances created in this way is \_not\_
+\_initialized\_. The contents of the newly created `Buffer` are unknown and \_may contain sensitive data\_. Use `Buffer.alloc()` instead to initialize`Buffer` instances with zeroes.
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -37,7 +37,7 @@ and `Buffer.concat()` only when `size` is less than or equal to`Buffer.poolSize 
 
 Use of this pre-allocated internal memory pool is a key difference between
 calling `Buffer.alloc(size, fill)` vs. `Buffer.allocUnsafe(size).fill(fill)`.
-Specifically, `Buffer.alloc(size, fill)` will _never_ use the internal `Buffer`pool, while `Buffer.allocUnsafe(size).fill(fill)`_will_ use the internal`Buffer` pool if `size` is less
+Specifically, `Buffer.alloc(size, fill)` will \_never\_ use the internal `Buffer`pool, while `Buffer.allocUnsafe(size).fill(fill)`\_will\_ use the internal`Buffer` pool if `size` is less
 than or equal to half `Buffer.poolSize`. The
 difference is subtle but can be important when an application requires the
 additional performance that `Buffer.allocUnsafe()` provides.
@@ -58,12 +58,12 @@ additional performance that `Buffer.allocUnsafe()` provides.
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

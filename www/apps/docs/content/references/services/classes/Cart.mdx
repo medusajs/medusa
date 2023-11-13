@@ -12,7 +12,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
 
 ### constructor
 
-**new Cart**()
+`**new Cart**()`
 
 A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.
 
@@ -21,7 +21,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
 <ParameterTypes parameters={[
   {
     "name": "billing_address",
-    "type": "[`Address`](Address.mdx)",
+    "type": "[Address](Address.mdx)",
     "description": "The details of the billing address associated with the cart.",
     "optional": false,
     "defaultValue": "",
@@ -48,7 +48,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "context",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The context of the cart which can include info like IP or user agent.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "customer",
-    "type": "[`Customer`](Customer.mdx)",
+    "type": "[Customer](Customer.mdx)",
     "description": "The details of the customer the cart belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +102,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "discounts",
-    "type": "[`Discount`](Discount.mdx)[]",
+    "type": "[Discount](Discount.mdx)[]",
     "description": "An array of details of all discounts applied to the cart.",
     "optional": false,
     "defaultValue": "",
@@ -138,7 +138,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "gift_cards",
-    "type": "[`GiftCard`](GiftCard.mdx)[]",
+    "type": "[GiftCard](GiftCard.mdx)[]",
     "description": "An array of details of all gift cards applied to the cart.",
     "optional": false,
     "defaultValue": "",
@@ -174,7 +174,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "items",
-    "type": "[`LineItem`](LineItem.mdx)[]",
+    "type": "[LineItem](LineItem.mdx)[]",
     "description": "The line items added to the cart.",
     "optional": false,
     "defaultValue": "",
@@ -183,7 +183,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -201,7 +201,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "payment",
-    "type": "[`Payment`](Payment.mdx)",
+    "type": "[Payment](Payment.mdx)",
     "description": "The details of the payment associated with the cart.",
     "optional": false,
     "defaultValue": "",
@@ -228,7 +228,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "payment_session",
-    "type": "``null`` \\| [`PaymentSession`](PaymentSession.mdx)",
+    "type": "``null`` \\| [PaymentSession](PaymentSession.mdx)",
     "description": "The details of the selected payment session in the cart.",
     "optional": false,
     "defaultValue": "",
@@ -237,7 +237,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "payment_sessions",
-    "type": "[`PaymentSession`](PaymentSession.mdx)[]",
+    "type": "[PaymentSession](PaymentSession.mdx)[]",
     "description": "The details of all payment sessions created on the cart.",
     "optional": false,
     "defaultValue": "",
@@ -273,7 +273,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "region",
-    "type": "[`Region`](Region.mdx)",
+    "type": "[Region](Region.mdx)",
     "description": "The details of the region associated with the cart.",
     "optional": false,
     "defaultValue": "",
@@ -291,7 +291,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "sales_channel",
-    "type": "[`SalesChannel`](SalesChannel.mdx)",
+    "type": "[SalesChannel](SalesChannel.mdx)",
     "description": "The details of the sales channel associated with the cart.",
     "optional": false,
     "defaultValue": "",
@@ -309,7 +309,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "shipping_address",
-    "type": "``null`` \\| [`Address`](Address.mdx)",
+    "type": "``null`` \\| [Address](Address.mdx)",
     "description": "The details of the shipping address associated with the cart.",
     "optional": false,
     "defaultValue": "",
@@ -327,7 +327,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "shipping_methods",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](ShippingMethod.mdx)[]",
     "description": "The details of the shipping methods added to the cart.",
     "optional": false,
     "defaultValue": "",
@@ -381,7 +381,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
   },
   {
     "name": "type",
-    "type": "[`CartType`](../enums/CartType.mdx)",
+    "type": "[CartType](../enums/CartType.mdx)",
     "description": "The cart's type.",
     "optional": false,
     "defaultValue": "default",
@@ -403,7 +403,7 @@ A cart represents a virtual shopping bag. It can be used to complete an order, a
 
 ### afterLoad
 
-`Private` **afterLoad**(): `void`
+`Private **afterLoad**(): void`
 
 #### Returns
 
@@ -425,7 +425,7 @@ ___
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

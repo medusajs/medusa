@@ -22,7 +22,7 @@ A draft order is created by an admin without direct involvement of the customer.
   },
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart associated with the draft order.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ A draft order is created by an admin without direct involvement of the customer.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ A draft order is created by an admin without direct involvement of the customer.
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order created from the draft order when its payment is captured.",
     "optional": false,
     "defaultValue": "",
@@ -121,8 +121,8 @@ A draft order is created by an admin without direct involvement of the customer.
   },
   {
     "name": "status",
-    "type": "[`DraftOrderStatus`](../enums/DraftOrderStatus.mdx)",
-    "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+    "type": "[DraftOrderStatus](../enums/DraftOrderStatus.mdx)",
+    "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
     "optional": false,
     "defaultValue": "open",
     "expandable": false,

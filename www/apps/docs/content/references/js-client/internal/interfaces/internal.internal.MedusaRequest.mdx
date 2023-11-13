@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "connection",
-    "type": "[`Socket`](../classes/internal.Socket.mdx)",
+    "type": "[Socket](../classes/internal.Socket.mdx)",
     "description": "Alias for `message.socket`.",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "errored",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "Returns error if the stream has been destroyed with an error.",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "filterableFields",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "headers",
-    "type": "[`IncomingHttpHeaders`](internal.IncomingHttpHeaders.mdx)",
+    "type": "[IncomingHttpHeaders](internal.IncomingHttpHeaders.mdx)",
     "description": "The request/response headers object. Key-value pairs of header names and values. Header names are lower-cased. ```js // Prints something like: // // { 'user-agent': 'curl/7.22.0', // host: '127.0.0.1:8000', // accept: '*' } console.log(request.headers); ``` Duplicates in raw headers are handled in the following ways, depending on the header name: * Duplicates of `age`, `authorization`, `content-length`, `content-type`,`etag`, `expires`, `from`, `host`, `if-modified-since`, `if-unmodified-since`,`last-modified`, `location`, `max-forwards`, `proxy-authorization`, `referer`,`retry-after`, `server`, or `user-agent` are discarded. To allow duplicate values of the headers listed above to be joined, use the option `joinDuplicateHeaders` in request and createServer. See RFC 9110 Section 5.3 for more information. * `set-cookie` is always an array. Duplicates are added to the array. * For duplicate `cookie` headers, the values are joined together with `; `. * For all other headers, the values are joined together with `, `.",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "headersDistinct",
-    "type": "[`Dict`](internal.Dict.mdx)<`string`[]\\>",
+    "type": "[Dict](internal.Dict.mdx)\\&#60;string[]\\&#62;",
     "description": "Similar to `message.headers`, but there is no join logic and the values are always arrays of strings, even for headers received just once. ```js // Prints something like: // // { 'user-agent': ['curl/7.22.0'], // host: ['127.0.0.1:8000'], // accept: ['*'] } console.log(request.headersDistinct); ```",
     "optional": false,
     "defaultValue": "",
@@ -137,7 +137,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "includes",
-    "type": "Record<`string`, `boolean`\\>",
+    "type": "`Record<string, boolean>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -146,7 +146,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "listConfig",
-    "type": "[`FindConfig`](internal.internal.FindConfig.mdx)<`unknown`\\>",
+    "type": "[FindConfig](internal.internal.FindConfig.mdx)\\&#60;unknown\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -156,7 +156,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "rawHeaders",
     "type": "`string`[]",
-    "description": "The raw request/response headers list exactly as they were received. The keys and values are in the same list. It is _not_ a list of tuples. So, the even-numbered offsets are key values, and the odd-numbered offsets are the associated values. Header names are not lowercased, and duplicates are not merged. ```js // Prints something like: // // [ 'user-agent', // 'this is invalid because there can be only one', // 'User-Agent', // 'curl/7.22.0', // 'Host', // '127.0.0.1:8000', // 'ACCEPT', // '*' ] console.log(request.rawHeaders); ```",
+    "description": "The raw request/response headers list exactly as they were received. The keys and values are in the same list. It is \\_not\\_ a list of tuples. So, the even-numbered offsets are key values, and the odd-numbered offsets are the associated values. Header names are not lowercased, and duplicates are not merged. ```js // Prints something like: // // [ 'user-agent', // 'this is invalid because there can be only one', // 'User-Agent', // 'curl/7.22.0', // 'Host', // '127.0.0.1:8000', // 'ACCEPT', // '*' ] console.log(request.rawHeaders); ```",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -200,7 +200,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "readableEncoding",
-    "type": "``null`` \\| [`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "``null`` \\| [BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
     "optional": false,
     "defaultValue": "",
@@ -254,7 +254,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "retrieveConfig",
-    "type": "[`FindConfig`](internal.internal.FindConfig.mdx)<`unknown`\\>",
+    "type": "[FindConfig](internal.internal.FindConfig.mdx)\\&#60;unknown\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -263,7 +263,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "scope",
-    "type": "[`MedusaContainer`](../types/internal.MedusaContainer-1.mdx)",
+    "type": "[MedusaContainer](../types/internal.MedusaContainer-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -272,7 +272,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "socket",
-    "type": "[`Socket`](../classes/internal.Socket.mdx)",
+    "type": "[Socket](../classes/internal.Socket.mdx)",
     "description": "The `net.Socket` object associated with the connection. With HTTPS support, use `request.socket.getPeerCertificate()` to obtain the client's authentication details. This property is guaranteed to be an instance of the `net.Socket` class, a subclass of `stream.Duplex`, unless the user specified a socket type other than `net.Socket` or internally nulled.",
     "optional": false,
     "defaultValue": "",
@@ -299,7 +299,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "trailers",
-    "type": "[`Dict`](internal.Dict.mdx)<`string`\\>",
+    "type": "[Dict](internal.Dict.mdx)\\&#60;string\\&#62;",
     "description": "The request/response trailers object. Only populated at the `'end'` event.",
     "optional": false,
     "defaultValue": "",
@@ -308,7 +308,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "trailersDistinct",
-    "type": "[`Dict`](internal.Dict.mdx)<`string`[]\\>",
+    "type": "[Dict](internal.Dict.mdx)\\&#60;string[]\\&#62;",
     "description": "Similar to `message.trailers`, but there is no join logic and the values are always arrays of strings, even for headers received just once. Only populated at the `'end'` event.",
     "optional": false,
     "defaultValue": "",
@@ -335,7 +335,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "validatedQuery",
-    "type": "[`RequestQueryFields`](internal.internal.RequestQueryFields.mdx) & Record<`string`, `unknown`\\>",
+    "type": "[RequestQueryFields](internal.internal.RequestQueryFields.mdx) & `Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -355,7 +355,7 @@ Calls `readable.destroy()` with an `AbortError` and returns a promise that fulfi
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -377,7 +377,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -395,7 +395,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -445,7 +445,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -477,7 +477,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -486,7 +486,7 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -545,7 +545,7 @@ ___
 
 ### addListener
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 Event emitter
 The defined events on documents including:
@@ -585,7 +585,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -594,7 +594,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -624,7 +624,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -633,7 +633,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -663,7 +663,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -672,7 +672,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -688,7 +688,7 @@ The defined events on documents including:
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -702,7 +702,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -711,7 +711,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -741,7 +741,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -750,7 +750,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -780,7 +780,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -789,7 +789,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -819,7 +819,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -828,7 +828,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**addListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -858,7 +858,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -879,7 +879,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -893,7 +893,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](../classes/internal.Readable.mdx)",
+    "type": "[Readable](../classes/internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream of indexed pairs.",
@@ -915,7 +915,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "`T` \\| [`ComposeFnParam`](../types/internal.ComposeFnParam.mdx) \\| [`Iterable`](internal.Iterable.mdx)<`T`\\> \\| [`AsyncIterable`](internal.AsyncIterable.mdx)<`T`\\>",
+    "type": "`T` \\| [ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| [Iterable](internal.Iterable.mdx)\\&#60;T\\&#62; \\| [AsyncIterable](internal.AsyncIterable.mdx)\\&#60;T\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -933,7 +933,7 @@ ___
   },
   {
     "name": "options.signal",
-    "type": "`AbortSignal`",
+    "type": "AbortSignal",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -958,7 +958,7 @@ as an argument to any listeners on the event.
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -972,7 +972,7 @@ as an argument to any listeners on the event.
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1005,7 +1005,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1019,7 +1019,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](../classes/internal.Readable.mdx)",
+    "type": "[Readable](../classes/internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream with *limit* chunks dropped from the start.",
@@ -1036,7 +1036,7 @@ ___
 
 ### emit
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1066,7 +1066,7 @@ ___
   }
 ]} />
 
-**emit**(`event`, `chunk`): `boolean`
+`**emit**(event, chunk): boolean`
 
 #### Parameters
 
@@ -1105,7 +1105,7 @@ ___
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1135,7 +1135,7 @@ ___
   }
 ]} />
 
-**emit**(`event`, `err`): `boolean`
+`**emit**(event, err): boolean`
 
 #### Parameters
 
@@ -1151,7 +1151,7 @@ ___
   },
   {
     "name": "err",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1174,7 +1174,7 @@ ___
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1204,7 +1204,7 @@ ___
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1234,7 +1234,7 @@ ___
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1264,7 +1264,7 @@ ___
   }
 ]} />
 
-**emit**(`event`, `...args`): `boolean`
+`**emit**(event, ...args): boolean`
 
 #### Parameters
 
@@ -1356,7 +1356,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1365,7 +1365,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1379,7 +1379,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise\\&#60;boolean\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for every one of the chunks.",
@@ -1405,7 +1405,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
     "description": "a function to filter chunks from the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1414,7 +1414,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1428,7 +1428,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](../classes/internal.Readable.mdx)",
+    "type": "[Readable](../classes/internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream filtered with the predicate *fn*.",
@@ -1445,7 +1445,7 @@ ___
 
 ### find
 
-**find**<`T`\>(`fn`, `options?`): `Promise`<`undefined` \| `T`\>
+`**find**<TypeParameter T>(fn, options?): Promise\&#60;undefined \| T\&#62;`
 
 This method is similar to `Array.prototype.find` and calls *fn* on each chunk in the stream
 to find a chunk with a truthy value for *fn*. Once an *fn* call's awaited return value is truthy,
@@ -1457,7 +1457,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => data is T",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => data is T",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1466,7 +1466,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1480,7 +1480,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| `T`\\>",
+    "type": "Promise\\&#60;undefined \\| T\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to the first chunk for which *fn* evaluated with a truthy value,\nor `undefined` if no element was found.",
@@ -1493,14 +1493,14 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 
 v17.5.0
 
-**find**(`fn`, `options?`): `Promise`<`any`\>
+`**find**(fn, options?): Promise\&#60;any\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1509,7 +1509,7 @@ v17.5.0
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1523,7 +1523,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1547,7 +1547,7 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. May be async. May be a stream or generator.",
     "optional": false,
     "defaultValue": "",
@@ -1556,7 +1556,7 @@ will be merged (flattened) into the returned stream.
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1570,7 +1570,7 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](../classes/internal.Readable.mdx)",
+    "type": "[Readable](../classes/internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream flat-mapped with the function *fn*.",
@@ -1603,7 +1603,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `void` \\| `Promise`<`void`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `void` \\| Promise\\&#60;void\\&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1612,7 +1612,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1626,7 +1626,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for when the stream has finished.",
@@ -1736,7 +1736,7 @@ or if the iterator should destroy the stream if the stream emitted an error duri
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1856,7 +1856,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1865,7 +1865,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1879,7 +1879,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](../classes/internal.Readable.mdx)",
+    "type": "[Readable](../classes/internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream mapped with the function *fn*.",
@@ -1926,7 +1926,7 @@ Alias for `emitter.removeListener()`.
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1943,7 +1943,7 @@ ___
 
 ### on
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -1973,7 +1973,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1982,7 +1982,7 @@ ___
   }
 ]} />
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2012,7 +2012,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2021,7 +2021,7 @@ ___
   }
 ]} />
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2051,7 +2051,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2060,7 +2060,7 @@ ___
   }
 ]} />
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2076,7 +2076,7 @@ ___
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2090,7 +2090,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2099,7 +2099,7 @@ ___
   }
 ]} />
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2129,7 +2129,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2138,7 +2138,7 @@ ___
   }
 ]} />
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2168,7 +2168,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2177,7 +2177,7 @@ ___
   }
 ]} />
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2207,7 +2207,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2216,7 +2216,7 @@ ___
   }
 ]} />
 
-**on**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**on**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2246,7 +2246,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2259,7 +2259,7 @@ ___
 
 ### once
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2289,7 +2289,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2298,7 +2298,7 @@ ___
   }
 ]} />
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2328,7 +2328,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2337,7 +2337,7 @@ ___
   }
 ]} />
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2367,7 +2367,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2376,7 +2376,7 @@ ___
   }
 ]} />
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2392,7 +2392,7 @@ ___
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2406,7 +2406,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2415,7 +2415,7 @@ ___
   }
 ]} />
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2445,7 +2445,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2454,7 +2454,7 @@ ___
   }
 ]} />
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2484,7 +2484,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2493,7 +2493,7 @@ ___
   }
 ]} />
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2523,7 +2523,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2532,7 +2532,7 @@ ___
   }
 ]} />
 
-**once**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**once**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2562,7 +2562,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2599,7 +2599,7 @@ The `readable.pause()` method has no effect if there is a `'readable'`event list
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2656,7 +2656,7 @@ ___
 
 ### prependListener
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2686,7 +2686,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2695,7 +2695,7 @@ ___
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2725,7 +2725,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2734,7 +2734,7 @@ ___
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2764,7 +2764,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2773,7 +2773,7 @@ ___
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2789,7 +2789,7 @@ ___
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2803,7 +2803,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2812,7 +2812,7 @@ ___
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2842,7 +2842,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2851,7 +2851,7 @@ ___
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2881,7 +2881,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2890,7 +2890,7 @@ ___
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2920,7 +2920,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2929,7 +2929,7 @@ ___
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -2959,7 +2959,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2972,7 +2972,7 @@ ___
 
 ### prependOnceListener
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3002,7 +3002,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3011,7 +3011,7 @@ ___
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3041,7 +3041,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3050,7 +3050,7 @@ ___
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3080,7 +3080,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3089,7 +3089,7 @@ ___
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3105,7 +3105,7 @@ ___
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3119,7 +3119,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3128,7 +3128,7 @@ ___
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3158,7 +3158,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3167,7 +3167,7 @@ ___
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3197,7 +3197,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3206,7 +3206,7 @@ ___
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3236,7 +3236,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3245,7 +3245,7 @@ ___
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**prependOnceListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3275,7 +3275,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3302,7 +3302,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3399,7 +3399,7 @@ the data is returned as a `Buffer` object unless an encoding has been
 specified using the `readable.setEncoding()` method or the stream is operating
 in object mode.
 
-The optional `size` argument specifies a specific number of bytes to read. If`size` bytes are not available to be read, `null` will be returned _unless_the stream has ended, in which
+The optional `size` argument specifies a specific number of bytes to read. If`size` bytes are not available to be read, `null` will be returned \_unless\_the stream has ended, in which
 case all of the data remaining in the internal
 buffer will be returned.
 
@@ -3502,7 +3502,7 @@ ___
 
 ### reduce
 
-**reduce**<`T`\>(`fn`, `initial?`, `options?`): `Promise`<`T`\>
+`**reduce**<TypeParameter T>(fn, initial?, options?): Promise\&#60;T\&#62;`
 
 This method calls *fn* on each chunk of the stream in order, passing it the result from the calculation
 on the previous element. It returns a promise for the final value of the reduction.
@@ -3518,7 +3518,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `any`, `data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
+    "type": "(`previous`: `any`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `T`",
     "description": "a reducer function to call over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -3536,7 +3536,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3550,7 +3550,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`\\>",
+    "type": "Promise\\&#60;T\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for the final value of the reduction.",
@@ -3563,14 +3563,14 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 
 v17.5.0
 
-**reduce**<`T`\>(`fn`, `initial`, `options?`): `Promise`<`T`\>
+`**reduce**<TypeParameter T>(fn, initial, options?): Promise\&#60;T\&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `T`, `data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
+    "type": "(`previous`: `T`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `T`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3588,7 +3588,7 @@ v17.5.0
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3602,7 +3602,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`\\>",
+    "type": "Promise\\&#60;T\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3642,7 +3642,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3659,7 +3659,7 @@ ___
 
 ### removeListener
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3689,7 +3689,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3698,7 +3698,7 @@ ___
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3728,7 +3728,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3737,7 +3737,7 @@ ___
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3767,7 +3767,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3776,7 +3776,7 @@ ___
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3792,7 +3792,7 @@ ___
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3806,7 +3806,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3815,7 +3815,7 @@ ___
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3845,7 +3845,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3854,7 +3854,7 @@ ___
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3884,7 +3884,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3893,7 +3893,7 @@ ___
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3923,7 +3923,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3932,7 +3932,7 @@ ___
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`MedusaRequest`](internal.internal.MedusaRequest.mdx)
+`**removeListener**(event, listener): MedusaRequest`
 
 #### Parameters
 
@@ -3962,7 +3962,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3996,7 +3996,7 @@ The `readable.resume()` method has no effect if there is a `'readable'`event lis
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4039,7 +4039,7 @@ readable.on('data', (chunk) => {
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "The encoding to use.",
     "optional": false,
     "defaultValue": "",
@@ -4053,7 +4053,7 @@ readable.on('data', (chunk) => {
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4096,7 +4096,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4143,7 +4143,7 @@ Calls `message.socket.setTimeout(msecs, callback)`.
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4170,7 +4170,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -4179,7 +4179,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4193,7 +4193,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise\\&#60;boolean\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for at least one of the chunks.",
@@ -4226,7 +4226,7 @@ This method returns a new stream with the first *limit* chunks.
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4240,7 +4240,7 @@ This method returns a new stream with the first *limit* chunks.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](../classes/internal.Readable.mdx)",
+    "type": "[Readable](../classes/internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream with *limit* chunks taken.",
@@ -4267,7 +4267,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4281,7 +4281,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise\\&#60;any[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise containing an array with the contents of the stream.",
@@ -4301,7 +4301,7 @@ ___
 The `readable.unpipe()` method detaches a `Writable` stream previously attached
 using the [pipe](internal.internal.MedusaRequest.mdx#pipe) method.
 
-If the `destination` is not specified, then _all_ pipes are detached.
+If the `destination` is not specified, then \_all\_ pipes are detached.
 
 If the `destination` is specified, but no pipe is set up for it, then
 the method does nothing.
@@ -4326,7 +4326,7 @@ setTimeout(() => {
 <ParameterTypes parameters={[
   {
     "name": "destination",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "description": "Optional specific stream to unpipe",
     "optional": true,
     "defaultValue": "",
@@ -4340,7 +4340,7 @@ setTimeout(() => {
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4431,7 +4431,7 @@ process of performing a read.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "Encoding of string chunks. Must be a valid `Buffer` encoding, such as `'utf8'` or `'ascii'`.",
     "optional": true,
     "defaultValue": "",
@@ -4489,7 +4489,7 @@ myReader.on('readable', () => {
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](internal.ReadableStream-1.mdx)",
+    "type": "[ReadableStream](internal.ReadableStream-1.mdx)",
     "description": "An \"old style\" readable stream",
     "optional": false,
     "defaultValue": "",
@@ -4503,7 +4503,7 @@ myReader.on('readable', () => {
 <ParameterTypes parameters={[
   {
     "name": "MedusaRequest",
-    "type": "[`MedusaRequest`](internal.internal.MedusaRequest.mdx)",
+    "type": "[MedusaRequest](internal.internal.MedusaRequest.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

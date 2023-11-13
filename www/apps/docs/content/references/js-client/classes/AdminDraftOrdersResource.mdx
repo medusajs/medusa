@@ -51,7 +51,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDraftOrdersDraftOrderLineItemsReq`](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsReq.mdx)",
+    "type": "[AdminPostDraftOrdersDraftOrderLineItemsReq](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsReq.mdx)",
     "description": "The line item to create.",
     "optional": false,
     "defaultValue": "",
@@ -59,7 +59,7 @@ medusa.admin.draftOrders
     "children": [
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The optional key-value map with additional details about the Line Item.",
         "optional": true,
         "defaultValue": "",
@@ -78,7 +78,7 @@ medusa.admin.draftOrders
       {
         "name": "title",
         "type": "`string`",
-        "description": "The title of the line item if `variant_id` is not provided.",
+        "description": "The title of the line item if \\`variant\\_id\\` is not provided.",
         "optional": true,
         "defaultValue": "Custom item",
         "expandable": false,
@@ -87,7 +87,7 @@ medusa.admin.draftOrders
       {
         "name": "unit_price",
         "type": "`number`",
-        "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
+        "description": "The custom price of the line item. If a \\`variant\\_id\\` is supplied, the price provided here will override the variant's price.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -96,7 +96,7 @@ medusa.admin.draftOrders
       {
         "name": "variant_id",
         "type": "`string`",
-        "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.",
+        "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the \\`variant\\_id\\` should be omitted.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -106,7 +106,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -120,7 +120,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details",
@@ -136,7 +136,7 @@ medusa.admin.draftOrders
         "children": [
           {
             "name": "draft_order",
-            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
             "description": "Draft order's details.",
             "optional": false,
             "defaultValue": "",
@@ -153,7 +153,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the draft order.",
                 "optional": false,
                 "defaultValue": "",
@@ -216,7 +216,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -234,7 +234,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order created from the draft order when its payment is captured.",
                 "optional": false,
                 "defaultValue": "",
@@ -252,8 +252,8 @@ medusa.admin.draftOrders
               },
               {
                 "name": "status",
-                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -313,7 +313,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostDraftOrdersReq`](../internal/classes/internal.AdminPostDraftOrdersReq.mdx)",
+    "type": "[AdminPostDraftOrdersReq](../internal/classes/internal.AdminPostDraftOrdersReq.mdx)",
     "description": "The draft order to create.",
     "optional": false,
     "defaultValue": "",
@@ -321,7 +321,7 @@ medusa.admin.draftOrders
     "children": [
       {
         "name": "billing_address",
-        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "type": "`string` \\| [AddressPayload](../internal/classes/internal.AddressPayload.mdx)",
         "description": "The Address to be used for billing purposes.",
         "optional": true,
         "defaultValue": "",
@@ -339,7 +339,7 @@ medusa.admin.draftOrders
       },
       {
         "name": "discounts",
-        "type": "[`Discount`](../internal/classes/internal.Discount-2.mdx)[]",
+        "type": "[Discount](../internal/classes/internal.Discount-2.mdx)[]",
         "description": "The discounts to add to the draft order",
         "optional": true,
         "defaultValue": "",
@@ -367,7 +367,7 @@ medusa.admin.draftOrders
       },
       {
         "name": "items",
-        "type": "[`Item`](../internal/classes/internal.Item-3.mdx)[]",
+        "type": "[Item](../internal/classes/internal.Item-3.mdx)[]",
         "description": "The draft order's line items.",
         "optional": true,
         "defaultValue": "",
@@ -375,7 +375,7 @@ medusa.admin.draftOrders
         "children": [
           {
             "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "The optional key-value map with additional details about the line item.",
             "optional": true,
             "defaultValue": "",
@@ -394,7 +394,7 @@ medusa.admin.draftOrders
           {
             "name": "title",
             "type": "`string`",
-            "description": "The title of the line item if `variant_id` is not provided.",
+            "description": "The title of the line item if \\`variant\\_id\\` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -403,7 +403,7 @@ medusa.admin.draftOrders
           {
             "name": "unit_price",
             "type": "`number`",
-            "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
+            "description": "The custom price of the line item. If a \\`variant\\_id\\` is supplied, the price provided here will override the variant's price.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -412,7 +412,7 @@ medusa.admin.draftOrders
           {
             "name": "variant_id",
             "type": "`string`",
-            "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.",
+            "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the \\`variant\\_id\\` should be omitted.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -422,7 +422,7 @@ medusa.admin.draftOrders
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The optional key-value map with additional details about the Draft Order.",
         "optional": true,
         "defaultValue": "",
@@ -449,7 +449,7 @@ medusa.admin.draftOrders
       },
       {
         "name": "shipping_address",
-        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "type": "`string` \\| [AddressPayload](../internal/classes/internal.AddressPayload.mdx)",
         "description": "The Address to be used for shipping purposes.",
         "optional": true,
         "defaultValue": "",
@@ -458,7 +458,7 @@ medusa.admin.draftOrders
       },
       {
         "name": "shipping_methods",
-        "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod.mdx)[]",
         "description": "The shipping methods for the draft order",
         "optional": false,
         "defaultValue": "",
@@ -466,7 +466,7 @@ medusa.admin.draftOrders
         "children": [
           {
             "name": "data",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "The optional additional data needed for the shipping method",
             "optional": true,
             "defaultValue": "",
@@ -496,7 +496,7 @@ medusa.admin.draftOrders
       {
         "name": "status",
         "type": "`string`",
-        "description": "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.",
+        "description": "The status of the draft order. The draft order's default status is \\`open\\`. It's changed to \\`completed\\` when its payment is marked as paid.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -506,7 +506,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -520,7 +520,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details",
@@ -536,7 +536,7 @@ medusa.admin.draftOrders
         "children": [
           {
             "name": "draft_order",
-            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
             "description": "Draft order's details.",
             "optional": false,
             "defaultValue": "",
@@ -553,7 +553,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the draft order.",
                 "optional": false,
                 "defaultValue": "",
@@ -616,7 +616,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -634,7 +634,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order created from the draft order when its payment is captured.",
                 "optional": false,
                 "defaultValue": "",
@@ -652,8 +652,8 @@ medusa.admin.draftOrders
               },
               {
                 "name": "status",
-                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -709,7 +709,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -723,7 +723,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
@@ -802,7 +802,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetDraftOrdersParams`](../internal/classes/internal.AdminGetDraftOrdersParams.mdx)",
+    "type": "[AdminGetDraftOrdersParams](../internal/classes/internal.AdminGetDraftOrdersParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved draft orders.",
     "optional": true,
     "defaultValue": "",
@@ -839,7 +839,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -853,7 +853,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersListRes`](../internal/types/internal.AdminDraftOrdersListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersListRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of draft orders with pagination fields.",
@@ -861,7 +861,7 @@ medusa.admin.draftOrders
     "children": [
       {
         "name": "AdminDraftOrdersListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `draft_orders`: [`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; draft_orders: DraftOrder[]  \\&#125;`",
         "description": "The list of draft orders with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -896,7 +896,7 @@ medusa.admin.draftOrders
           },
           {
             "name": "draft_orders",
-            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)[]",
+            "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)[]",
             "description": "An array of draft order's details.",
             "optional": false,
             "defaultValue": "",
@@ -913,7 +913,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the draft order.",
                 "optional": false,
                 "defaultValue": "",
@@ -976,7 +976,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -994,7 +994,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order created from the draft order when its payment is captured.",
                 "optional": false,
                 "defaultValue": "",
@@ -1012,8 +1012,8 @@ medusa.admin.draftOrders
               },
               {
                 "name": "status",
-                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -1068,7 +1068,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1082,7 +1082,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`](../internal/types/internal.AdminPostDraftOrdersDraftOrderRegisterPaymentRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPostDraftOrdersDraftOrderRegisterPaymentRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the created order's details.",
@@ -1098,7 +1098,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
         "children": [
           {
             "name": "order",
-            "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+            "type": "[Order](../internal/classes/internal.Order.mdx)",
             "description": "Order's details.",
             "optional": false,
             "defaultValue": "",
@@ -1106,7 +1106,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1133,7 +1133,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1151,7 +1151,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "claims",
-                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)[]",
+                "type": "[ClaimOrder](../internal/classes/internal.ClaimOrder.mdx)[]",
                 "description": "The details of the claims created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1169,7 +1169,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1187,7 +1187,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1214,7 +1214,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "The details of the discounts applied on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1232,7 +1232,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "draft_order",
-                "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+                "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
                 "description": "The details of the draft order this order was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -1250,7 +1250,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "edits",
-                "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+                "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)[]",
                 "description": "The details of the order edits done on the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1277,7 +1277,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "fulfillment_status",
-                "type": "[`FulfillmentStatus`](../internal/enums/internal.FulfillmentStatus.mdx)",
+                "type": "[FulfillmentStatus](../internal/enums/internal.FulfillmentStatus.mdx)",
                 "description": "The order's fulfillment status",
                 "optional": false,
                 "defaultValue": "not_fulfilled",
@@ -1286,7 +1286,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "fulfillments",
-                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "type": "[Fulfillment](../internal/classes/internal.Fulfillment.mdx)[]",
                 "description": "The details of the fulfillments created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1313,7 +1313,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "gift_card_transactions",
-                "type": "[`GiftCardTransaction`](../internal/classes/internal.GiftCardTransaction.mdx)[]",
+                "type": "[GiftCardTransaction](../internal/classes/internal.GiftCardTransaction.mdx)[]",
                 "description": "The gift card transactions made in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1322,7 +1322,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "The details of the gift card used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1358,7 +1358,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that belong to the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1367,7 +1367,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1394,7 +1394,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "payment_status",
-                "type": "[`PaymentStatus`](../internal/enums/internal.PaymentStatus.mdx)",
+                "type": "[PaymentStatus](../internal/enums/internal.PaymentStatus.mdx)",
                 "description": "The order's payment status",
                 "optional": false,
                 "defaultValue": "not_paid",
@@ -1403,7 +1403,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1439,7 +1439,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "refunds",
-                "type": "[`Refund`](../internal/classes/internal.Refund.mdx)[]",
+                "type": "[Refund](../internal/classes/internal.Refund.mdx)[]",
                 "description": "The details of the refunds created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1448,7 +1448,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this order was created in.",
                 "optional": false,
                 "defaultValue": "",
@@ -1466,7 +1466,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "returnable_items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
                 "optional": true,
                 "defaultValue": "",
@@ -1475,7 +1475,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "returns",
-                "type": "[`Return`](../internal/classes/internal.Return.mdx)[]",
+                "type": "[Return](../internal/classes/internal.Return.mdx)[]",
                 "description": "The details of the returns created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1484,7 +1484,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel this order belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1502,7 +1502,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1520,7 +1520,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods used in the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1547,7 +1547,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "status",
-                "type": "[`OrderStatus`](../internal/enums/internal.OrderStatus.mdx)",
+                "type": "[OrderStatus](../internal/enums/internal.OrderStatus.mdx)",
                 "description": "The order's status",
                 "optional": false,
                 "defaultValue": "pending",
@@ -1565,7 +1565,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
               },
               {
                 "name": "swaps",
-                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)[]",
+                "type": "[Swap](../internal/classes/internal.Swap.mdx)[]",
                 "description": "The details of the swaps created for the order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1658,7 +1658,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1672,7 +1672,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details",
@@ -1688,7 +1688,7 @@ medusa.admin.draftOrders
         "children": [
           {
             "name": "draft_order",
-            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
             "description": "Draft order's details.",
             "optional": false,
             "defaultValue": "",
@@ -1705,7 +1705,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the draft order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1768,7 +1768,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1786,7 +1786,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order created from the draft order when its payment is captured.",
                 "optional": false,
                 "defaultValue": "",
@@ -1804,8 +1804,8 @@ medusa.admin.draftOrders
               },
               {
                 "name": "status",
-                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -1859,7 +1859,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1873,7 +1873,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details.",
@@ -1889,7 +1889,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
         "children": [
           {
             "name": "draft_order",
-            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
             "description": "Draft order's details.",
             "optional": false,
             "defaultValue": "",
@@ -1906,7 +1906,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the draft order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1969,7 +1969,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1987,7 +1987,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order created from the draft order when its payment is captured.",
                 "optional": false,
                 "defaultValue": "",
@@ -2005,8 +2005,8 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
               },
               {
                 "name": "status",
-                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -2064,7 +2064,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDraftOrdersDraftOrderReq`](../internal/classes/internal.AdminPostDraftOrdersDraftOrderReq.mdx)",
+    "type": "[AdminPostDraftOrdersDraftOrderReq](../internal/classes/internal.AdminPostDraftOrdersDraftOrderReq.mdx)",
     "description": "The attributes to update in the draft order.",
     "optional": false,
     "defaultValue": "",
@@ -2072,7 +2072,7 @@ medusa.admin.draftOrders
     "children": [
       {
         "name": "billing_address",
-        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "type": "`string` \\| [AddressPayload](../internal/classes/internal.AddressPayload.mdx)",
         "description": "The Address to be used for billing purposes.",
         "optional": true,
         "defaultValue": "",
@@ -2099,7 +2099,7 @@ medusa.admin.draftOrders
       },
       {
         "name": "discounts",
-        "type": "[`Discount`](../internal/classes/internal.Discount-3.mdx)[]",
+        "type": "[Discount](../internal/classes/internal.Discount-3.mdx)[]",
         "description": "An array of Discount codes to add to the Draft Order.",
         "optional": true,
         "defaultValue": "",
@@ -2145,7 +2145,7 @@ medusa.admin.draftOrders
       },
       {
         "name": "shipping_address",
-        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "type": "`string` \\| [AddressPayload](../internal/classes/internal.AddressPayload.mdx)",
         "description": "The Address to be used for shipping purposes.",
         "optional": true,
         "defaultValue": "",
@@ -2156,7 +2156,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2170,7 +2170,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details.",
@@ -2186,7 +2186,7 @@ medusa.admin.draftOrders
         "children": [
           {
             "name": "draft_order",
-            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
             "description": "Draft order's details.",
             "optional": false,
             "defaultValue": "",
@@ -2203,7 +2203,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the draft order.",
                 "optional": false,
                 "defaultValue": "",
@@ -2266,7 +2266,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2284,7 +2284,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order created from the draft order when its payment is captured.",
                 "optional": false,
                 "defaultValue": "",
@@ -2302,8 +2302,8 @@ medusa.admin.draftOrders
               },
               {
                 "name": "status",
-                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -2370,7 +2370,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDraftOrdersDraftOrderLineItemsItemReq`](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsItemReq.mdx)",
+    "type": "[AdminPostDraftOrdersDraftOrderLineItemsItemReq](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsItemReq.mdx)",
     "description": "The attributes to update in the line item.",
     "optional": false,
     "defaultValue": "",
@@ -2378,7 +2378,7 @@ medusa.admin.draftOrders
     "children": [
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The optional key-value map with additional details about the Line Item.",
         "optional": true,
         "defaultValue": "",
@@ -2397,7 +2397,7 @@ medusa.admin.draftOrders
       {
         "name": "title",
         "type": "`string`",
-        "description": "The title of the line item if `variant_id` is not provided.",
+        "description": "The title of the line item if \\`variant\\_id\\` is not provided.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2406,7 +2406,7 @@ medusa.admin.draftOrders
       {
         "name": "unit_price",
         "type": "`number`",
-        "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
+        "description": "The custom price of the line item. If a \\`variant\\_id\\` is supplied, the price provided here will override the variant's price.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2416,7 +2416,7 @@ medusa.admin.draftOrders
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2430,7 +2430,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details.",
@@ -2446,7 +2446,7 @@ medusa.admin.draftOrders
         "children": [
           {
             "name": "draft_order",
-            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "type": "[DraftOrder](../internal/classes/internal.DraftOrder.mdx)",
             "description": "Draft order's details.",
             "optional": false,
             "defaultValue": "",
@@ -2463,7 +2463,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart associated with the draft order.",
                 "optional": false,
                 "defaultValue": "",
@@ -2526,7 +2526,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2544,7 +2544,7 @@ medusa.admin.draftOrders
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order created from the draft order when its payment is captured.",
                 "optional": false,
                 "defaultValue": "",
@@ -2562,8 +2562,8 @@ medusa.admin.draftOrders
               },
               {
                 "name": "status",
-                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,

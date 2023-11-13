@@ -13,7 +13,7 @@ Provides layer to manipulate line item adjustments.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Provides layer to manipulate line item adjustments.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ Provides layer to manipulate line item adjustments.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ Provides layer to manipulate line item adjustments.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ Provides layer to manipulate line item adjustments.
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -107,7 +107,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -116,7 +116,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -125,7 +125,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +139,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise\\&#60;TResult\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -159,7 +159,7 @@ Creates a line item adjustment
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`Partial`](../types/internal.Partial.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "type": "[Partial](../types/internal.Partial.mdx)\\&#60;LineItemAdjustment\\&#62;",
     "description": "the line item adjustment to create",
     "optional": false,
     "defaultValue": "",
@@ -173,7 +173,7 @@ Creates a line item adjustment
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "type": "Promise\\&#60;LineItemAdjustment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "line item adjustment",
@@ -193,7 +193,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "the cart object holding discounts",
     "optional": false,
     "defaultValue": "",
@@ -202,7 +202,7 @@ Creates adjustment for a line item
   },
   {
     "name": "lineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": false,
     "defaultValue": "",
@@ -216,7 +216,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[]\\>",
+    "type": "Promise\\&#60;LineItemAdjustment[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a line item adjustment or undefined if no adjustment was created",
@@ -236,7 +236,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "the cart object holding discounts",
     "optional": false,
     "defaultValue": "",
@@ -245,7 +245,7 @@ Creates adjustment for a line item
   },
   {
     "name": "lineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": true,
     "defaultValue": "",
@@ -259,7 +259,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[] \\| [`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[][]\\>",
+    "type": "Promise\\&#60;LineItemAdjustment[] \\| LineItemAdjustment[][]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created\notherwise returns an array of line item adjustments for each line item in the cart",
@@ -279,7 +279,7 @@ Deletes line item adjustments matching a selector
 <ParameterTypes parameters={[
   {
     "name": "selectorOrIds",
-    "type": "`string` \\| `string`[] \\| [`FilterableLineItemAdjustmentProps`](internal.FilterableLineItemAdjustmentProps.mdx) & { `discount_id?`: `FindOperator`<``null`` \\| `string`\\>  }",
+    "type": "`string` \\| `string`[] \\| [FilterableLineItemAdjustmentProps](internal.FilterableLineItemAdjustmentProps.mdx) & `\\&#123; discount_id?: FindOperator\\&#60;`null` \\| string\\&#62;  \\&#125;`",
     "description": "the query object for find or the line item adjustment id",
     "optional": false,
     "defaultValue": "",
@@ -293,7 +293,7 @@ Deletes line item adjustments matching a selector
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise\\&#60;void\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -313,7 +313,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "calculationContextData",
-    "type": "[`CalculationContextData`](../types/internal.CalculationContextData.mdx)",
+    "type": "[CalculationContextData](../types/internal.CalculationContextData.mdx)",
     "description": "the calculationContextData object holding discounts",
     "optional": false,
     "defaultValue": "",
@@ -322,7 +322,7 @@ Creates adjustment for a line item
   },
   {
     "name": "generatedLineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": false,
     "defaultValue": "",
@@ -331,7 +331,7 @@ Creates adjustment for a line item
   },
   {
     "name": "context",
-    "type": "[`AdjustmentContext`](../types/internal.AdjustmentContext.mdx)",
+    "type": "[AdjustmentContext](../types/internal.AdjustmentContext.mdx)",
     "description": "the line item for which a line item adjustment might be created",
     "optional": false,
     "defaultValue": "",
@@ -345,7 +345,7 @@ Creates adjustment for a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`GeneratedAdjustment`](../types/internal.GeneratedAdjustment.mdx)[]\\>",
+    "type": "Promise\\&#60;GeneratedAdjustment[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a line item adjustment or undefined if no adjustment was created",
@@ -365,7 +365,7 @@ Lists line item adjustments
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableLineItemAdjustmentProps`](internal.FilterableLineItemAdjustmentProps.mdx)",
+    "type": "[FilterableLineItemAdjustmentProps](internal.FilterableLineItemAdjustmentProps.mdx)",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -374,7 +374,7 @@ Lists line item adjustments
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;LineItemAdjustment\\&#62;",
     "description": "the config to be used for find",
     "optional": true,
     "defaultValue": "",
@@ -388,7 +388,7 @@ Lists line item adjustments
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[]\\>",
+    "type": "Promise\\&#60;LineItemAdjustment[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -417,7 +417,7 @@ Retrieves a line item adjustment by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;LineItemAdjustment\\&#62;",
     "description": "the config to retrieve the line item adjustment by",
     "optional": true,
     "defaultValue": "",
@@ -431,7 +431,7 @@ Retrieves a line item adjustment by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "type": "Promise\\&#60;LineItemAdjustment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item adjustment.",
@@ -449,7 +449,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -492,7 +492,7 @@ Creates a line item adjustment
   },
   {
     "name": "data",
-    "type": "[`Partial`](../types/internal.Partial.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "type": "[Partial](../types/internal.Partial.mdx)\\&#60;LineItemAdjustment\\&#62;",
     "description": "the line item adjustment to create",
     "optional": false,
     "defaultValue": "",
@@ -506,7 +506,7 @@ Creates a line item adjustment
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "type": "Promise\\&#60;LineItemAdjustment\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "line item adjustment",
@@ -524,7 +524,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -538,7 +538,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "LineItemAdjustmentService",
-    "type": "[`LineItemAdjustmentService`](internal.internal.LineItemAdjustmentService.mdx)",
+    "type": "[LineItemAdjustmentService](internal.internal.LineItemAdjustmentService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

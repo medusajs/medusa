@@ -107,7 +107,7 @@ export function reflectionComponentFormatter(
     name: reflection.name,
     type: reflection.type
       ? getType(reflection.type, "object")
-      : getReflectionType(reflection, "object"),
+      : getReflectionType(reflection, "object", true),
     description: comments
       ? stripLineBreaks(Handlebars.helpers.comments(comments, true, false))
       : "",
@@ -170,7 +170,7 @@ export function reflectionTableFormatter(
   row.push(
     parameter.type
       ? Handlebars.helpers.type.call(parameter.type, "object")
-      : getReflectionType(parameter, "object")
+      : getReflectionType(parameter, "object", true)
   )
 
   if (showDefaults) {

@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the `create` method. This belongs to the Pricing Module.
 
-## create(data, sharedContext?): Promise<PriceSetDTO\>
+## create(data, sharedContext?): Promise\&#60;PriceSetDTO\&#62;
 
 This method is used to create a new price set.
 
@@ -96,7 +96,7 @@ async function createPriceSet() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreatePriceSetDTO`](../../interfaces/CreatePriceSetDTO.mdx)",
+    "type": "[CreatePriceSetDTO](../../interfaces/CreatePriceSetDTO.mdx)",
     "description": "The attributes of the price set to create.",
     "optional": false,
     "defaultValue": "",
@@ -104,7 +104,7 @@ async function createPriceSet() {
     "children": [
       {
         "name": "prices",
-        "type": "[`CreatePricesDTO`](../../interfaces/CreatePricesDTO.mdx)[]",
+        "type": "[CreatePricesDTO](../../interfaces/CreatePricesDTO.mdx)[]",
         "description": "The prices to create and add to this price set.",
         "optional": true,
         "defaultValue": "",
@@ -121,7 +121,7 @@ async function createPriceSet() {
           },
           {
             "name": "currency",
-            "type": "[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)",
+            "type": "[CreateCurrencyDTO](../../interfaces/CreateCurrencyDTO.mdx)",
             "description": "The currency of this money amount.",
             "optional": true,
             "defaultValue": "",
@@ -166,7 +166,7 @@ async function createPriceSet() {
           },
           {
             "name": "rules",
-            "type": "Record<`string`, `string`\\>",
+            "type": "`Record<string, string>`",
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
             "optional": false,
             "defaultValue": "",
@@ -177,7 +177,7 @@ async function createPriceSet() {
       },
       {
         "name": "rules",
-        "type": "{ `rule_attribute`: `string`  }[]",
+        "type": "`\\&#123; rule_attribute: string  \\&#125;`[]",
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
@@ -198,7 +198,7 @@ async function createPriceSet() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -258,7 +258,7 @@ async function createPriceSet() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>",
+    "type": "Promise\\&#60;PriceSetDTO\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created price set.",
@@ -275,7 +275,7 @@ async function createPriceSet() {
       },
       {
         "name": "money_amounts",
-        "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]",
+        "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)[]",
         "description": "The prices that belong to this price set.",
         "optional": true,
         "defaultValue": "",
@@ -292,7 +292,7 @@ async function createPriceSet() {
           },
           {
             "name": "currency",
-            "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)",
+            "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",
@@ -339,7 +339,7 @@ async function createPriceSet() {
       },
       {
         "name": "rule_types",
-        "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]",
+        "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)[]",
         "description": "The rule types applied on this price set.",
         "optional": true,
         "defaultValue": "",
@@ -375,7 +375,7 @@ async function createPriceSet() {
           {
             "name": "rule_attribute",
             "type": "`string`",
-            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -387,7 +387,7 @@ async function createPriceSet() {
   }
 ]} />
 
-## create(data, sharedContext?): Promise<PriceSetDTO[]\>
+## create(data, sharedContext?): Promise\&#60;PriceSetDTO[]\&#62;
 
 This method is used to create multiple price sets.
 
@@ -467,7 +467,7 @@ async function createPriceSets() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreatePriceSetDTO`](../../interfaces/CreatePriceSetDTO.mdx)[]",
+    "type": "[CreatePriceSetDTO](../../interfaces/CreatePriceSetDTO.mdx)[]",
     "description": "The price sets to create.",
     "optional": false,
     "defaultValue": "",
@@ -475,7 +475,7 @@ async function createPriceSets() {
     "children": [
       {
         "name": "prices",
-        "type": "[`CreatePricesDTO`](../../interfaces/CreatePricesDTO.mdx)[]",
+        "type": "[CreatePricesDTO](../../interfaces/CreatePricesDTO.mdx)[]",
         "description": "The prices to create and add to this price set.",
         "optional": true,
         "defaultValue": "",
@@ -492,7 +492,7 @@ async function createPriceSets() {
           },
           {
             "name": "currency",
-            "type": "[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)",
+            "type": "[CreateCurrencyDTO](../../interfaces/CreateCurrencyDTO.mdx)",
             "description": "The currency of this money amount.",
             "optional": true,
             "defaultValue": "",
@@ -537,7 +537,7 @@ async function createPriceSets() {
           },
           {
             "name": "rules",
-            "type": "Record<`string`, `string`\\>",
+            "type": "`Record<string, string>`",
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
             "optional": false,
             "defaultValue": "",
@@ -548,7 +548,7 @@ async function createPriceSets() {
       },
       {
         "name": "rules",
-        "type": "{ `rule_attribute`: `string`  }[]",
+        "type": "`\\&#123; rule_attribute: string  \\&#125;`[]",
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
@@ -569,7 +569,7 @@ async function createPriceSets() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -629,7 +629,7 @@ async function createPriceSets() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]\\>",
+    "type": "Promise\\&#60;PriceSetDTO[]\\&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price sets.",
@@ -637,7 +637,7 @@ async function createPriceSets() {
     "children": [
       {
         "name": "PriceSetDTO[]",
-        "type": "[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]",
+        "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -654,7 +654,7 @@ async function createPriceSets() {
           },
           {
             "name": "money_amounts",
-            "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]",
+            "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)[]",
             "description": "The prices that belong to this price set.",
             "optional": true,
             "defaultValue": "",
@@ -663,7 +663,7 @@ async function createPriceSets() {
           },
           {
             "name": "rule_types",
-            "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]",
+            "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)[]",
             "description": "The rule types applied on this price set.",
             "optional": true,
             "defaultValue": "",

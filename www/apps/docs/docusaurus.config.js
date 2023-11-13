@@ -33,10 +33,10 @@ const config = {
     async function tailwindPlugin() {
       return {
         name: "docusaurus-tailwindcss",
-        configurePostCss(postcssOptions) {
+        configurePostCss: async (postcssOptions) => {
           // Appends TailwindCSS and AutoPrefixer.
-          postcssOptions.plugins.push(import("tailwindcss"))
-          postcssOptions.plugins.push(import("autoprefixer"))
+          postcssOptions.plugins.push(await import("tailwindcss"))
+          postcssOptions.plugins.push(await import("autoprefixer"))
           return postcssOptions
         },
       }

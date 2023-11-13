@@ -13,7 +13,7 @@ The filters to apply on retrieved product options.
 <ParameterTypes parameters={[
   {
     "name": "$and",
-    "type": "([`FilterableProductOptionProps`](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableProductOptionProps`](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx)\\>)[]",
+    "type": "([FilterableProductOptionProps](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)\\&#60;FilterableProductOptionProps\\&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
     "optional": true,
     "defaultValue": "",
@@ -22,7 +22,7 @@ The filters to apply on retrieved product options.
   },
   {
     "name": "$or",
-    "type": "([`FilterableProductOptionProps`](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableProductOptionProps`](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx)\\>)[]",
+    "type": "([FilterableProductOptionProps](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)\\&#60;FilterableProductOptionProps\\&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
     "optional": true,
     "defaultValue": "",

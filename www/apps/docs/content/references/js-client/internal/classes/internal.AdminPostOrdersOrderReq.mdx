@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "billing_address",
-    "type": "[`AddressPayload`](internal.AddressPayload.mdx)",
+    "type": "[AddressPayload](internal.AddressPayload.mdx)",
     "description": "The order's billing address",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "discounts",
-    "type": "Record<`string`, `unknown`\\>[]",
+    "type": "`Record<string, unknown>`[]",
     "description": "The discounts applied to the order",
     "optional": true,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "items",
-    "type": "Record<`string`, `unknown`\\>[]",
+    "type": "`Record<string, unknown>`[]",
     "description": "The line items of the order",
     "optional": true,
     "defaultValue": "",
@@ -57,7 +57,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "no_notification",
     "type": "`boolean`",
-    "description": "If set to `true`, no notification will be sent to the customer related to this order.",
+    "description": "If set to \\`true\\`, no notification will be sent to the customer related to this order.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "payment_method",
-    "type": "[`PaymentMethod`](internal.PaymentMethod.mdx)",
+    "type": "[PaymentMethod](internal.PaymentMethod.mdx)",
     "description": "The payment method chosen for the order.",
     "optional": true,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_address",
-    "type": "[`AddressPayload`](internal.AddressPayload.mdx)",
+    "type": "[AddressPayload](internal.AddressPayload.mdx)",
     "description": "The order's shipping address",
     "optional": true,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_method",
-    "type": "[`ShippingMethod`](internal.ShippingMethod-1.mdx)[]",
+    "type": "[ShippingMethod](internal.ShippingMethod-1.mdx)[]",
     "description": "The Shipping Method used for shipping the order.",
     "optional": true,
     "defaultValue": "",
