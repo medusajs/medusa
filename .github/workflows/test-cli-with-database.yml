@@ -8,6 +8,7 @@ jobs:
       NODE_ENV: CI
       REDIS_URL: redis://localhost:6379
       DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
+      MEDUSA_FF_MEDUSA_V2: false
     services:
       redis:
         image: redis
