@@ -1,6 +1,7 @@
 import { WorkflowArguments } from "../../helper"
 import {
   IsolateSalesChannelDomainFeatureFlag,
+  MedusaV2Flag,
   promiseAll,
 } from "@medusajs/utils"
 
@@ -40,9 +41,7 @@ export async function attachSalesChannelToProducts({
     }
   })
 
-  if (
-    featureFlagRouter.isFeatureEnabled(IsolateSalesChannelDomainFeatureFlag.key)
-  ) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const remoteLink = container.resolve("remoteLink")
     const links: any[] = []
 
