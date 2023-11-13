@@ -97,6 +97,7 @@ The rest of this section includes the field names you can customize using this o
 
 <Details>
   <Summary>product</Summary>
+
   - `title`
   - `subtitle`
   - `description`
@@ -107,36 +108,45 @@ The rest of this section includes the field names you can customize using this o
   - `collection`
   - `tags`
   - `handle`
+
 </Details>
 
 <Details>
   <Summary>variant</Summary>
+
   - `title`
   - `sku`
   - `prices`
   - `options`
   - `medusaId`
+
 </Details>
 
 <Details>
   <Summary>region</Summary>
+
   - `name`
   - `countries`
   - `paymentProviders`
   - `fulfillmentProviders`
   - `medusaId`
+
 </Details>
 
 <Details>
   <Summary>collection</Summary>
+
   - `title`
   - `medusaId`
+
 </Details>
 
 <Details>
   <Summary>type</Summary>
+
   - `name`
   - `medusaId`
+
 </Details>
 
 ### Migrate Content Models
@@ -155,6 +165,7 @@ npm install --save-dev contentful-migration
 
 <Details>
   <Summary>product Content Model</Summary>
+
   Create the file `src/loaders/contentful-migrations/product.ts` with the following content:
 
   ```ts title=src/loaders/contentful-migrations/product.ts
@@ -233,6 +244,7 @@ npm install --save-dev contentful-migration
 
 <Details>
   <Summary>productVariant Content Model</Summary>
+
   Create the file `src/loaders/contentful-migrations/product-variant.ts` with the following content:
 
   ```ts title=src/loaders/contentful-migrations/product-variant.ts
@@ -277,6 +289,7 @@ npm install --save-dev contentful-migration
 
 <Details>
   <Summary>collection Content Model</Summary>
+
   Create the file `src/loaders/contentful-migrations/product-collection.ts` with the following content:
 
   ```ts title=src/loaders/contentful-migrations/product-collection.ts
@@ -309,6 +322,7 @@ npm install --save-dev contentful-migration
 
 <Details>
   <Summary>productType Content Model</Summary>
+
   Create the file `src/loaders/contentful-migrations/product-type.ts` with the following content:
 
   ```ts title=src/loaders/contentful-migrations/product-type.ts
@@ -341,6 +355,7 @@ npm install --save-dev contentful-migration
     
 <Details>
   <Summary>region Content Model</Summary>
+
   Create the file `src/loaders/contentful-migrations/region.ts` with the following content:
 
   ```ts title=src/loaders/contentful-migrations/region.ts

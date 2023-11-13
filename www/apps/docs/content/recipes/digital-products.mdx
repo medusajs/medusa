@@ -137,6 +137,7 @@ For example, if you're selling the Harry Potter movies, you would have a `Produc
 
 <Details>
   <Summary>Example: Create ProductMedia Entity</Summary>
+
   In this example, you’ll create a `ProductMedia` entity that is associated with the `ProductVariant` entity in a one-to-many relation.
 
   To do that, create the file `src/models/product-media.ts` with the following content:
@@ -266,6 +267,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 
 <Details>
   <Summary>Example: List and Create API Routes</Summary>
+
   This example showcases how you can create the list and create API Routes for digital products. These API Routes are chosen in particular as they’re used in later parts of this recipe. You may follow the same instructions to create other necessary API Routes.
 
   Before creating the API Routes, you’ll create the `ProductMediaService`. Create the file `src/services/product-media.ts` with the following content:
@@ -516,6 +518,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 
   - a `GET` API Route at `/admin/product-media` that retrieves a list of product media records that have the type `main`. It also retrieves the relations `variant` and `variant.product` to access the product media’s variant and main product.
   - a `POST` API Route at `/admin/product-media` that accepts the necessary data to create a product media, then returns the created product media.
+
 </Details>
     
 
@@ -559,6 +562,7 @@ To add an interface that allows the admin user to upload digital products, you c
 
 <Details>
   <Summary>Example: Digital Products Page in Admin</Summary>
+
   In this example, you’ll add a single page that lists the digital products and allows you to create a new one. The implementation will be minimal for the purpose of simplicity, so you can elaborate on it based on your use case.
       
   Before starting off, make sure to install the necessary dependencies in your Medusa backend project:
@@ -908,6 +912,7 @@ To add an interface that allows the admin user to upload digital products, you c
   ```
 
   If you open the admin now, you’ll find a new Digital Products item in the sidebar. You can try adding Digital Products and viewing them.
+
 </Details>
 
 ---
@@ -938,6 +943,7 @@ Finally, you can send a notification, such as an email, to the customer using th
 
 <Details>
   <Summary>Example: Using SendGrid</Summary>
+
   :::note
 
   An alternative solution is to create a store download API Route that allows authenticated customers to download products they've purchased, then add the link to the API Route or a storefront page that calls the API Route in the email. Learn how to implement the download API Route [here](#download-product-after-purchase).
@@ -1035,6 +1041,7 @@ Finally, you can send a notification, such as an email, to the customer using th
   Notice that regardless of what file service you have installed, you can access it using dependency injection under the name `fileService`.
 
   The `handleOrderPlaced` method retrieves the order, loops over its items to find digital products and retrieve their download links, then uses SendGrid to send the email, passing it the urls as a data payload. You can customize the sent data based on your SendGrid template and your use case.
+
 </Details>
 
 ---
@@ -1057,6 +1064,7 @@ To implement this, create a storefront API Route that allows you to fetch the di
 
 <Details>
   <Summary>Example</Summary>
+
   Before you customize the Next.js storefront, you need to add a store API Route in your backend.
 
   Create the file `src/api/store/product-media/route.ts` with the following content:
@@ -1304,6 +1312,7 @@ You can change this section to show information relevant to the product. For exa
 
 <Details>
   <Summary>Example</Summary>
+
   In this example, you'll change the content of the Product Information and Shipping & Returns tabs to show information relevant to the digital product. The Product Information tab will include custom information relevant to digital products, and the Shipping & Returns tab will be changed to "E-book delivery" and will hold details about how the e-book will be delivered to the customer.
 
   One way to store custom information relevant to the digital product is using the `metadata` field. For example, to store the number of pages of an e-book, set the `metadata` field to the following:
@@ -1417,6 +1426,7 @@ You can change this section to show information relevant to the product. For exa
   ```
 
   This changes the titles of the tabs and their content.
+
 </Details>
 
 ### Change Shipping Form in Checkout
@@ -1425,6 +1435,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 
 <Details>
   <Summary>Example</Summary>
+
   The checkout flow is managed by a checkout context defined in `src/lib/context/checkout-context.tsx`. Change the content of the file to the following:
 
 <!-- eslint-skip -->
@@ -2009,6 +2020,7 @@ After the customer purchases the digital product you can show a download button 
 
 <Details>
   <Summary>Example</Summary>
+
   Before you implement the storefront changes, you need to create a new API Route in the backend that ensures that the currently logged-in customer has purchased the digital product and, if so, returns a presigned URL to download it.
 
   Create the file `src/api/store/product-media/download/[variant_id]/route.ts` with the following content:

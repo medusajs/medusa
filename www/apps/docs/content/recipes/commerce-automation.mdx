@@ -102,6 +102,7 @@ Medusa also provides official notification plugins that integrate with third-par
 
 <Details>
   <Summary>Example: Sending an email for new notes</Summary>
+
   Here’s an example of a subscriber that uses the SendGrid plugin to send an email to the customer when the order has a new note:
 
   ```ts title=src/subscribers/new-note.ts
@@ -197,6 +198,7 @@ You can implement automatic synchronization in Medusa using scheduled jobs. A sc
 
 <Details>
   <Summary>Example: Synchronizing products with a third-party service</Summary>
+
   Here’s an example of synchronizing products with a third party service using a [loader](../development/loaders/create.md):
 
   ```ts title=src/loaders/sync-products.ts
@@ -259,6 +261,7 @@ You can implement automatic synchronization in Medusa using scheduled jobs. A sc
 
   1. The last update date is stored in the `Store`'s metadata object. You can instead use a custom entity to handle this.
   2. The connection to the third-party service is assumed to be available and handled within the `client` variable.
+
 </Details>
 
 ---
@@ -414,6 +417,7 @@ For example, if you're grouping customers with over twenty orders, you can use a
 
 <Details>
   <Summary>Example: Add customer to VIP group</Summary>
+
   Here’s an example of a subscriber that listens to the `order.placed` event and checks if the customer should be added to the VIP customer group based on their number of orders:
 
   ```ts title=src/subscribers/add-custom-to-vip.ts
@@ -535,6 +539,7 @@ You can alternatively have a Scheduled Job that checks if the number of new prod
 
 <Details>
   <Summary>Example: Sending a newsletter email after adding ten products</Summary>
+
   Here’s an example of listening to the `product.created` event in a subscriber and send a newsletter if the condition is met:
 
   ```ts title=src/subscribers/send-products-newsletter.ts

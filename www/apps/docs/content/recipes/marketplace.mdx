@@ -43,6 +43,7 @@ To associate these entities with the `Store` entity, you need to extend and cust
 
 <Details>
   <Summary>Example: Associate User with Store</Summary>
+
   For example, to associate the `User` entity with the `Store` entity, create the file `src/models/user.ts` with the following content:
 
   ```ts title=src/models/user.ts
@@ -137,6 +138,7 @@ To associate these entities with the `Store` entity, you need to extend and cust
   ```
 
   You can extend other entities in a similar manner to associate them with a store.
+
 </Details>
 
 ---
@@ -179,6 +181,7 @@ You can also extend services if you need to customize a functionality implemente
 
 <Details>
   <Summary>Example: Extend User Service</Summary>
+
   You can extend the user service to change how the `create` method is implemented.
 
   To extend the user service, create the file `src/services/user.ts` with the following content:
@@ -267,6 +270,7 @@ To listen to events, you need to create Subscribers that subscribe a handler met
 
 <Details>
   <Summary>Example: Listen to Order Created Event</Summary>
+
   To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
 
   ```ts title=src/subscribers/orderNotifier.ts

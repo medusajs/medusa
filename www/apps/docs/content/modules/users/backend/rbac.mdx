@@ -49,6 +49,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
 
 <Details>
   <Summary>Example Implementation</Summary>
+
   This is an example implementation of how you can create the Role and Permission entities, and extend the `User` and `Store` entities.
 
   Creating an entity requires creating an entity class, a repository, and a migration. You can learn more [here](../../../development/entities/create.mdx). You’ll be creating the migration at the end of this example section.
@@ -323,6 +324,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
   ```
 
   This will reflect the entity changes in your database.
+
 </Details>
 
 ---
@@ -345,6 +347,7 @@ Since the Medusa backend uses Express, you can create a middleware and attach it
 
 <Details>
   <Summary>Example Implementation</Summary>
+
   In this example, you’ll create a middleware that runs on all admin-authenticated routes and checks the logged-in user’s permissions before giving them access to an API Route.
 
   Create the file `src/api/middlewares.ts` with the following content:
@@ -433,6 +436,7 @@ Since the Medusa backend uses Express, you can create a middleware and attach it
   :::
 
   After defining the middleware, you apply it on all API Routes starting with `/admin/`.
+
 </Details>
 
 ---
@@ -477,6 +481,7 @@ Furthermore, you may need to extend core services if you need to perform actions
 
 <Details>
   <Summary>Example Implementation</Summary>
+
   In this example, you’ll only implement two API Routes for simplicity: create role API Route that create a new role with permissions, and associate user API Route that associates a user with a role.
 
   You’ll also create basic services for `Role` and `Permission` to perform the functionalities of each of these API Routes and extend the core `UserService` to allow associating roles with users.
@@ -756,6 +761,7 @@ Furthermore, you may need to extend core services if you need to perform actions
   Next, create a new user using the [Create User API Route](https://docs.medusajs.com/api/admin#users_postusers). Then, send a `POST` request to `localhost:9000/admin/roles/<role_id>/user/<user_id>`, where `<role_id>` is the ID of the role you created, and `<user_id>` is the ID of the user you created. This will associate the user with the role you created.
 
   Finally, login with the user you created, then try to access any API Route other than `/admin/products`. You’ll receive a `401` unauthorized response. Then, try to access the [List Products API Route](https://docs.medusajs.com/api/admin#products_getproducts), and the user should be able to access it as expected.
+
 </Details>
 
 ---
