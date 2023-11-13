@@ -6,6 +6,48 @@ import { NestedForm } from "../../../../utils/nested-form"
 import InputHeader from "../../../fundamentals/input-header"
 import InputField from "../../../molecules/input"
 
+const modules = {
+  toolbar: [
+    [{ header: '1' }, { header: '2' }, { font: [] }],
+    [{ size: [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' },
+    ],
+    ['link', 'image', 'video'],
+    [{ color: [] }, { background: [] }], // Add color and background color buttons to toolbar
+    [{ direction: 'rtl' }, { direction: 'ltr' }], // Add direction changer to toolbar
+    ['clean'],
+  ],
+  clipboard: {
+    // toggle to add extra line breaks when pasting HTML:
+    matchVisual: false,
+  },
+}
+const formats = [
+  'header',
+  'font',
+  'size',
+  'color',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'link',
+  'image',
+  'video',
+]
+
+
+
+
 export type GeneralFormType = {
   title: string
   title_ar: string
@@ -156,6 +198,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           defaultValue=""
           render={({ field }) => (
             <ReactQuill
+              modules={modules} 
               theme="snow"
               value={form.getValues(path("description"))}
               onChange={(value) => {
@@ -173,6 +216,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           defaultValue=""
           render={({ field }) => (
             <ReactQuill
+              modules={modules}
               theme="snow"
               value={form.getValues(path("description_ar"))}
               onChange={(value) => {
