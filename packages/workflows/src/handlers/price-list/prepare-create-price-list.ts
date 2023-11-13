@@ -86,7 +86,7 @@ export async function prepareCreatePriceLists({
       }) ?? []
 
     if (customer_groups.length) {
-      priceList.rules["customer_groups"] = customer_groups.map(
+      priceList.rules["customer_group_id"] = customer_groups.map(
         (group) => group.id
       )
     }
