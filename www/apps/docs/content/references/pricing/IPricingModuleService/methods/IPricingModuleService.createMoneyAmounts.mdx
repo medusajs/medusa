@@ -45,7 +45,7 @@ async function retrieveMoneyAmounts() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateMoneyAmountDTO`](../../interfaces/CreateMoneyAmountDTO.mdx)[]",
+    "type": "[CreateMoneyAmountDTO](../../interfaces/CreateMoneyAmountDTO.mdx)[]",
     "description": "The money amounts to create.",
     "optional": false,
     "defaultValue": "",
@@ -62,7 +62,7 @@ async function retrieveMoneyAmounts() {
       },
       {
         "name": "currency",
-        "type": "[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)",
+        "type": "[CreateCurrencyDTO](../../interfaces/CreateCurrencyDTO.mdx)",
         "description": "The currency of this money amount.",
         "optional": true,
         "defaultValue": "",
@@ -146,7 +146,7 @@ async function retrieveMoneyAmounts() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -206,7 +206,7 @@ async function retrieveMoneyAmounts() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]\\>",
+    "type": "Promise&#60;[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created money amounts.",
@@ -214,7 +214,7 @@ async function retrieveMoneyAmounts() {
     "children": [
       {
         "name": "MoneyAmountDTO[]",
-        "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]",
+        "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -231,7 +231,7 @@ async function retrieveMoneyAmounts() {
           },
           {
             "name": "currency",
-            "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)",
+            "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)",
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",

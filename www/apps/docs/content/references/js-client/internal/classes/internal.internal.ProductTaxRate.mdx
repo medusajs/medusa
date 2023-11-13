@@ -20,7 +20,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "product",
-    "type": "[`Product`](internal.Product.mdx)",
+    "type": "[Product](internal.Product.mdx)",
     "description": "A product is a saleable item that holds general information such as name or description. It must include at least one Product Variant, where each product variant defines different options to purchase the product with (for example, different sizes or colors). The prices and inventory of the product are defined on the variant level.",
     "optional": true,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "tax_rate",
-    "type": "[`TaxRate`](internal.TaxRate.mdx)",
+    "type": "[TaxRate](internal.TaxRate.mdx)",
     "description": "A Tax Rate can be used to define a custom rate to charge on specified products, product types, and shipping options within a given region.",
     "optional": true,
     "defaultValue": "",

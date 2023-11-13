@@ -41,7 +41,7 @@ medusa.admin.custom.delete(`/blog/posts/${postId}`).then(() => {
   },
   {
     "name": "options",
-    "type": "[`RequestOptions`](../internal/interfaces/internal.RequestOptions.mdx)",
+    "type": "[RequestOptions](../internal/interfaces/internal.RequestOptions.mdx)",
     "description": "Configurations to apply on the request.",
     "optional": true,
     "defaultValue": "",
@@ -69,7 +69,7 @@ medusa.admin.custom.delete(`/blog/posts/${postId}`).then(() => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": true,
     "defaultValue": "",
@@ -83,7 +83,7 @@ medusa.admin.custom.delete(`/blog/posts/${postId}`).then(() => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`TResponse`\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;TResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The response data.",
@@ -139,7 +139,7 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
   },
   {
     "name": "options",
-    "type": "[`RequestOptions`](../internal/interfaces/internal.RequestOptions.mdx)",
+    "type": "[RequestOptions](../internal/interfaces/internal.RequestOptions.mdx)",
     "description": "Configurations to apply on the request.",
     "optional": true,
     "defaultValue": "",
@@ -167,7 +167,7 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": true,
     "defaultValue": "",
@@ -181,7 +181,7 @@ medusa.admin.custom.get<Record<string, any>, PostsResponse>(
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`TResponse`\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;TResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The response data.",
@@ -243,7 +243,7 @@ medusa.admin.custom.post<PostRequest, PostResponse>(
   },
   {
     "name": "options",
-    "type": "[`RequestOptions`](../internal/interfaces/internal.RequestOptions.mdx)",
+    "type": "[RequestOptions](../internal/interfaces/internal.RequestOptions.mdx)",
     "description": "Configurations to apply on the request.",
     "optional": true,
     "defaultValue": "",
@@ -271,7 +271,7 @@ medusa.admin.custom.post<PostRequest, PostResponse>(
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": true,
     "defaultValue": "",
@@ -285,7 +285,7 @@ medusa.admin.custom.post<PostRequest, PostResponse>(
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`TResponse`\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;TResponse&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The response data.",

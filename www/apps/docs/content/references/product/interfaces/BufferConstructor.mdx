@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Raw data is stored in instances of the Buffer class.
 A Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.  A Buffer cannot be resized.
-Valid string encodings: 'ascii'|'utf8'|'utf16le'|'ucs2'(alias of 'utf16le')|'base64'|'base64url'|'binary'(deprecated)|'hex'
+Valid string encodings: 'ascii'\|'utf8'\|'utf16le'\|'ucs2'(alias of 'utf16le')\|'base64'\|'base64url'\|'binary'(deprecated)\|'hex'
 
 ## Methods
 
@@ -28,9 +28,9 @@ Valid string encodings: 'ascii'|'utf8'|'utf16le'|'ucs2'(alias of 'utf16le')|'bas
 
 ### constructor
 
-**new BufferConstructor**(`str`, `encoding?`)
+`**new BufferConstructor**(str, encoding?)`
 
-Allocates a new buffer containing the given {str}.
+Allocates a new buffer containing the given &#123;str&#125;.
 
 #### Parameters
 
@@ -46,7 +46,7 @@ Allocates a new buffer containing the given {str}.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "encoding to use, optional. Default is 'utf8'",
     "optional": true,
     "defaultValue": "",
@@ -59,9 +59,9 @@ Allocates a new buffer containing the given {str}.
 
 since v10.0.0 - Use `Buffer.from(string[, encoding])` instead.
 
-**new BufferConstructor**(`size`)
+`**new BufferConstructor**(size)`
 
-Allocates a new buffer of {size} octets.
+Allocates a new buffer of &#123;size&#125; octets.
 
 #### Parameters
 
@@ -81,16 +81,16 @@ Allocates a new buffer of {size} octets.
 
 since v10.0.0 - Use `Buffer.alloc()` instead (also see `Buffer.allocUnsafe()`).
 
-**new BufferConstructor**(`array`)
+`**new BufferConstructor**(array)`
 
-Allocates a new buffer containing the given {array} of octets.
+Allocates a new buffer containing the given &#123;array&#125; of octets.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "The octets to store.",
     "optional": false,
     "defaultValue": "",
@@ -103,17 +103,17 @@ Allocates a new buffer containing the given {array} of octets.
 
 since v10.0.0 - Use `Buffer.from(array)` instead.
 
-**new BufferConstructor**(`arrayBuffer`)
+`**new BufferConstructor**(arrayBuffer)`
 
 Produces a Buffer backed by the same allocated memory as
-the given {ArrayBuffer}/{SharedArrayBuffer}.
+the given &#123;ArrayBuffer&#125;/&#123;SharedArrayBuffer&#125;.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "arrayBuffer",
-    "type": "`ArrayBuffer` \\| [`SharedArrayBuffer`](../variables/SharedArrayBuffer-1.mdx)",
+    "type": "`ArrayBuffer` \\| [SharedArrayBuffer](../variables/SharedArrayBuffer-1.mdx)",
     "description": "The ArrayBuffer with which to share memory.",
     "optional": false,
     "defaultValue": "",
@@ -126,9 +126,9 @@ the given {ArrayBuffer}/{SharedArrayBuffer}.
 
 since v10.0.0 - Use `Buffer.from(arrayBuffer[, byteOffset[, length]])` instead.
 
-**new BufferConstructor**(`array`)
+`**new BufferConstructor**(array)`
 
-Allocates a new buffer containing the given {array} of octets.
+Allocates a new buffer containing the given &#123;array&#125; of octets.
 
 #### Parameters
 
@@ -148,16 +148,16 @@ Allocates a new buffer containing the given {array} of octets.
 
 since v10.0.0 - Use `Buffer.from(array)` instead.
 
-**new BufferConstructor**(`buffer`)
+`**new BufferConstructor**(buffer)`
 
-Copies the passed {buffer} data onto a new {Buffer} instance.
+Copies the passed &#123;buffer&#125; data onto a new &#123;Buffer&#125; instance.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "buffer",
-    "type": "[`Buffer`](../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../variables/Buffer-1.mdx)",
     "description": "The buffer to copy.",
     "optional": false,
     "defaultValue": "",
@@ -183,7 +183,7 @@ Copies the passed {buffer} data onto a new {Buffer} instance.
       },
       {
         "name": "buffer",
-        "type": "[`ArrayBufferLike`](../types/ArrayBufferLike.mdx)",
+        "type": "[ArrayBufferLike](../types/ArrayBufferLike.mdx)",
         "description": "The ArrayBuffer instance referenced by the array.",
         "optional": false,
         "defaultValue": "",

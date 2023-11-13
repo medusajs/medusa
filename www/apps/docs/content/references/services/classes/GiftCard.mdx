@@ -12,7 +12,7 @@ Gift Cards are redeemable and represent a value that can be used towards the pay
 
 ### constructor
 
-**new GiftCard**()
+`**new GiftCard**()`
 
 Gift Cards are redeemable and represent a value that can be used towards the payment of an Order.
 
@@ -84,7 +84,7 @@ Gift Cards are redeemable and represent a value that can be used towards the pay
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ Gift Cards are redeemable and represent a value that can be used towards the pay
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that the gift card was purchased in.",
     "optional": false,
     "defaultValue": "",
@@ -111,7 +111,7 @@ Gift Cards are redeemable and represent a value that can be used towards the pay
   },
   {
     "name": "region",
-    "type": "[`Region`](Region.mdx)",
+    "type": "[Region](Region.mdx)",
     "description": "The details of the region this gift card is available in.",
     "optional": false,
     "defaultValue": "",
@@ -160,7 +160,7 @@ Gift Cards are redeemable and represent a value that can be used towards the pay
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

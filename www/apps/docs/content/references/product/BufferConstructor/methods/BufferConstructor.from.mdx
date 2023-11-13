@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [BufferConstructor](../../interfaces/BufferConstructor.mdx).from
 
-**from**(`arrayBuffer`, `byteOffset?`, `length?`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**from**(arrayBuffer, byteOffset?, length?): [Buffer](../../variables/Buffer-1.mdx)`
 
 Allocates a new `Buffer` using an `array` of bytes in the range `0` – `255`.
 Array entries outside that range will be truncated to fit into it.
@@ -34,7 +34,7 @@ appropriate for `Buffer.from()` variants.
 <ParameterTypes parameters={[
   {
     "name": "arrayBuffer",
-    "type": "[`WithImplicitCoercion`](../../types/WithImplicitCoercion.mdx)<`ArrayBuffer` \\| [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)\\>",
+    "type": "[WithImplicitCoercion](../../types/WithImplicitCoercion.mdx)&#60;ArrayBuffer \\| [SharedArrayBuffer](../../variables/SharedArrayBuffer-1.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -63,12 +63,12 @@ appropriate for `Buffer.from()` variants.
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -81,16 +81,16 @@ appropriate for `Buffer.from()` variants.
 
 v5.10.0
 
-**from**(`data`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**from**(data): [Buffer](../../variables/Buffer-1.mdx)`
 
-Creates a new Buffer using the passed {data}
+Creates a new Buffer using the passed &#123;data&#125;
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`Uint8Array` \\| readonly `number`[]",
+    "type": "Uint8Array \\| readonly `number`[]",
     "description": "data to create a new Buffer",
     "optional": false,
     "defaultValue": "",
@@ -101,12 +101,12 @@ Creates a new Buffer using the passed {data}
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -115,14 +115,14 @@ Creates a new Buffer using the passed {data}
   }
 ]} />
 
-**from**(`data`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**from**(data): [Buffer](../../variables/Buffer-1.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`WithImplicitCoercion`](../../types/WithImplicitCoercion.mdx)<`string` \\| `Uint8Array` \\| readonly `number`[]\\>",
+    "type": "[WithImplicitCoercion](../../types/WithImplicitCoercion.mdx)&#60;string \\| Uint8Array \\| readonly number[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -133,12 +133,12 @@ Creates a new Buffer using the passed {data}
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -147,18 +147,18 @@ Creates a new Buffer using the passed {data}
   }
 ]} />
 
-**from**(`str`, `encoding?`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**from**(str, encoding?): [Buffer](../../variables/Buffer-1.mdx)`
 
-Creates a new Buffer containing the given JavaScript string {str}.
-If provided, the {encoding} parameter identifies the character encoding.
-If not provided, {encoding} defaults to 'utf8'.
+Creates a new Buffer containing the given JavaScript string &#123;str&#125;.
+If provided, the &#123;encoding&#125; parameter identifies the character encoding.
+If not provided, &#123;encoding&#125; defaults to 'utf8'.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "str",
-    "type": "[`WithImplicitCoercion`](../../types/WithImplicitCoercion.mdx)<`string`\\> \\| { `[toPrimitive]`: Method [toPrimitive]  }",
+    "type": "[WithImplicitCoercion](../../types/WithImplicitCoercion.mdx)&#60;string&#62; \\| `&#123; [toPrimitive]: Method [toPrimitive]  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -167,7 +167,7 @@ If not provided, {encoding} defaults to 'utf8'.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -178,12 +178,12 @@ If not provided, {encoding} defaults to 'utf8'.
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -12,7 +12,7 @@ This represents the association between a tax rate and a product type to indicat
 
 ### constructor
 
-**new ProductTypeTaxRate**()
+`**new ProductTypeTaxRate**()`
 
 This represents the association between a tax rate and a product type to indicate that the product type is taxed in a different way than the default.
 
@@ -30,7 +30,7 @@ This represents the association between a tax rate and a product type to indicat
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -39,7 +39,7 @@ This represents the association between a tax rate and a product type to indicat
   },
   {
     "name": "product_type",
-    "type": "[`ProductType`](ProductType.mdx)",
+    "type": "[ProductType](ProductType.mdx)",
     "description": "The details of the product type.",
     "optional": true,
     "defaultValue": "",
@@ -66,7 +66,7 @@ This represents the association between a tax rate and a product type to indicat
   },
   {
     "name": "tax_rate",
-    "type": "[`TaxRate`](TaxRate.mdx)",
+    "type": "[TaxRate](TaxRate.mdx)",
     "description": "The details of the tax rate.",
     "optional": true,
     "defaultValue": "",
