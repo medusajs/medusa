@@ -13,7 +13,7 @@ type ScheduledJobModule = {
   handler: ScheduledJobHandler
 }
 
-export default class ScheduledJobsRegistrar {
+export default class ScheduledJobsLoader {
   protected container_: MedusaContainer
   protected pluginOptions_: Record<string, unknown>
   protected rootDir_: string

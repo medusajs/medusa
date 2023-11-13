@@ -38,9 +38,9 @@ import path from "path"
 import { EntitySchema } from "typeorm"
 import { MiddlewareService } from "../services"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
-import ScheduledJobsRegistrar from "./helpers/jobs"
+import ScheduledJobsLoader from "./helpers/jobs"
 import { RoutesLoader } from "./helpers/routing"
-import { SubscriberRegistrar } from "./helpers/subscribers"
+import { SubscriberLoader } from "./helpers/subscribers"
 import logger from "./logger"
 
 type Options = {
@@ -195,7 +195,7 @@ async function registerScheduledJobs(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): Promise<void> {
-  await new ScheduledJobsRegistrar(
+  await new ScheduledJobsLoader(
     path.join(pluginDetails.resolve, "jobs"),
     container,
     pluginDetails.options
@@ -562,19 +562,17 @@ async function registerSubscribers(
 ): Promise<void> {
   const exclude: string[] = []
 
-  const loadedFiles = await new SubscriberRegistrar(
+  const loadedFiles = await new SubscriberLoader(
     path.join(pluginDetails.resolve, "subscribers"),
     container,
     pluginDetails.options,
     activityId
-  ).register()
+  ).load()
 
   /**
-   * Exclude any files that have already been loaded by the registrar
+   * Exclude any files that have already been loaded by the subscriber loader
    */
   exclude.push(...(loadedFiles ?? []))
-
-  console.log("exclude", exclude, "loadedFiles", loadedFiles, "loadedFiles")
 
   const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
   files

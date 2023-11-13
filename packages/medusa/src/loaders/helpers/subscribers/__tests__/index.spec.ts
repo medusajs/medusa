@@ -6,9 +6,9 @@ import {
   ProductVariantService,
 } from "../../../../services"
 import { containerMock, eventBusServiceMock } from "../__mocks__"
-import { SubscriberRegistrar } from "../index"
+import { SubscriberLoader } from "../index"
 
-describe("SubscriberRegistrar", () => {
+describe("SubscriberLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "subscribers")
 
   const pluginOptions = {
@@ -22,12 +22,12 @@ describe("SubscriberRegistrar", () => {
   beforeAll(async () => {
     jest.clearAllMocks()
 
-    const paths = await new SubscriberRegistrar(
+    const paths = await new SubscriberLoader(
       rootDir,
       containerMock as unknown as MedusaContainer,
       pluginOptions,
       "id-load-subscribers"
-    ).register()
+    ).load()
 
     if (paths) {
       registeredPaths = [...registeredPaths, ...paths]

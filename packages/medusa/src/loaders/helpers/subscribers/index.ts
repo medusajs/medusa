@@ -14,7 +14,7 @@ type SubscriberModule<T> = {
   handler: SubscriberHandler<T>
 }
 
-export class SubscriberRegistrar {
+export class SubscriberLoader {
   protected container_: MedusaContainer
   protected pluginOptions_: Record<string, unknown>
   protected activityId_: string
@@ -203,7 +203,7 @@ export class SubscriberRegistrar {
     }
   }
 
-  async register() {
+  async load() {
     let hasSubscriberDir = false
 
     try {

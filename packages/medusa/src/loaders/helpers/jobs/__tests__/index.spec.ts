@@ -1,9 +1,9 @@
 import { MedusaContainer } from "@medusajs/types"
 import { join } from "path"
 import { containerMock, jobSchedulerServiceMock } from "../__mocks__"
-import ScheduledJobsRegistrar from "../index"
+import ScheduledJobsLoader from "../index"
 
-describe("ScheduledJobsRegistrar", () => {
+describe("ScheduledJobsLoader", () => {
   const rootDir = join(__dirname, "../__fixtures__", "jobs")
 
   const pluginOptions = {
@@ -15,7 +15,7 @@ describe("ScheduledJobsRegistrar", () => {
   beforeAll(async () => {
     jest.clearAllMocks()
 
-    await new ScheduledJobsRegistrar(
+    await new ScheduledJobsLoader(
       rootDir,
       containerMock as unknown as MedusaContainer,
       pluginOptions
