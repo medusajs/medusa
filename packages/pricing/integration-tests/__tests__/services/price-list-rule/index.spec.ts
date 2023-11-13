@@ -51,7 +51,7 @@ describe("PriceListRule Service", () => {
       ])
     })
 
-    it("list priceListRules by pricelist id", async () => {
+    it("list priceListRules by priceListRule id", async () => {
       const priceListRuleResult = await service.list({
         id: ["price-list-rule-1"],
       })
