@@ -1,6 +1,7 @@
 import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount"
 
 import { BaseFilterable } from "../../dal"
+import { PriceListRuleDTO } from "./price-list-rule"
 import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
 
@@ -65,14 +66,6 @@ export interface FilterablePriceListProps
   number_rules?: number[]
 }
 
-export interface FilterablePriceListRuleProps
-  extends BaseFilterable<FilterablePriceListRuleProps> {
-  id?: string[]
-  value?: string[]
-  rule_type?: string[]
-  price_list_id?: string[]
-}
-
 export interface FilterablePriceListRuleValueProps
   extends BaseFilterable<FilterablePriceListRuleValueProps> {
   id?: string[]
@@ -80,44 +73,44 @@ export interface FilterablePriceListRuleValueProps
   price_list_rule_id?: string[]
 }
 
-export interface PriceListRuleDTO {
-  id: string
-  value: string
-  rule_type: RuleTypeDTO
-  price_list: PriceListDTO
-  price_list_rule_values?: PriceListRuleValueDTO[]
-}
+// export interface PriceListRuleDTO {
+//   id: string
+//   value: string
+//   rule_type: RuleTypeDTO
+//   price_list: PriceListDTO
+//   price_list_rule_values?: PriceListRuleValueDTO[]
+// }
 
-export interface CreatePriceListRuleDTO {
-  rule_type_id?: string
-  rule_type?: string | RuleTypeDTO
-  price_list_id?: string
-  price_list?: string | PriceListDTO
-}
+// export interface CreatePriceListRuleDTO {
+//   rule_type_id?: string
+//   rule_type?: string | RuleTypeDTO
+//   price_list_id?: string
+//   price_list?: string | PriceListDTO
+// }
 
-export interface UpdatePriceListRuleDTO {
-  id: string
-  price_list_id?: string
-  rule_type_id?: string
-}
+// export interface UpdatePriceListRuleDTO {
+//   id: string
+//   price_list_id?: string
+//   rule_type_id?: string
+// }
 
-export interface PriceListRuleValueDTO {
-  id: string
-  value: string
-  price_list_rule: PriceListRuleDTO
-}
+// export interface PriceListRuleValueDTO {
+//   id: string
+//   value: string
+//   price_list_rule: PriceListRuleDTO
+// }
 
-export interface CreatePriceListRuleValueDTO {
-  value: string
-  price_list_rule_id?: string
-  price_list_rule?: PriceListRuleDTO | string
-}
+// export interface CreatePriceListRuleValueDTO {
+//   value: string
+//   price_list_rule_id?: string
+//   price_list_rule?: PriceListRuleDTO | string
+// }
 
-export interface UpdatePriceListRuleValueDTO {
-  id: string
-  value: string
-  price_list_rule_id: string
-}
+// export interface UpdatePriceListRuleValueDTO {
+//   id: string
+//   value: string
+//   price_list_rule_id: string
+// }
 
 export interface AddPriceListPricesDTO {
   priceListId: string
