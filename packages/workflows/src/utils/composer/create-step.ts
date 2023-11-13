@@ -13,6 +13,7 @@ import {
   StepFunctionResult,
   StepReturn,
 } from "./type"
+import { transform } from "./transform"
 
 interface ApplyStepOptions<TStepInput extends StepReturn[]> {
   stepName: string
@@ -38,11 +39,11 @@ function applyStep<TStepInput extends StepReturn[], TResult extends unknown>({
       invoke: async (transactionContext) => {
         const { invoke: invokeRes } = transactionContext
 
-        // Garb all previous invoke results by step name
+        // Garb all previous invoke results by step name and or transformers
         let previousResultResults = await promiseAll(
           stepInputs.map(async (stepInput) => {
             if (stepInput?.__type === SymbolInputReference) {
-              return stepInput.value
+              return stepInput.__value
             }
 
             const stepInputs_ = Array.isArray(stepInput)
@@ -52,20 +53,15 @@ function applyStep<TStepInput extends StepReturn[], TResult extends unknown>({
             return await promiseAll(
               stepInputs_.map(async (st) => {
                 if (st?.__type === SymbolWorkflowStepTransformer) {
-                  if (isDefined(st.__result)) {
-                    return st.__result
+                  if (isDefined(st.__value)) {
+                    return st.__value
                   }
                   return await st(transactionContext)
                 }
 
-                const toReturn =
-                  st?.__type === SymbolWorkflowStep
-                    ? invokeRes[st.__step__]?.output
-                    : st
-
-                if (st.__returnProperties) {
-                  return toReturn[st.__returnProperties]
-                }
+                return st?.__type === SymbolWorkflowStep
+                  ? invokeRes[st.__step__]?.output
+                  : st
               })
             )
           })
@@ -97,45 +93,26 @@ function applyStep<TStepInput extends StepReturn[], TResult extends unknown>({
       noCompensation: !compensateFn,
     })
     this.handlers.set(stepName, handler)
-    /*
+
     const ret = {
       __type: SymbolWorkflowStep,
       __step__: stepName,
-    } as StepBinderReturn
+      __returnProperties: [],
+    }
 
-    const proxy = new Proxy(ret, {
-      get: function (target, prop: string, receiver) {
+    return new Proxy(ret, {
+      get(target: any, prop: string | symbol, receiver: any): any {
         if (target[prop]) {
           return target[prop]
         }
 
+        // @ts-ignore
         return transform(target[prop], (context) => {
           const { invoke } = context
           return invoke[ret.__step__]?.output?.[prop]
         })
       },
     })
-     */
-
-    return new Proxy(
-      {
-        __type: SymbolWorkflowStep,
-        __step__: stepName,
-        __returnProperties: [],
-      },
-      {
-        get(target: any, p: string | symbol, receiver: any): any {
-          if (p === "__type") {
-            return target.__type
-          }
-          if (p === "__step__") {
-            return target.__step__
-          }
-          target.__returnProperties = p
-          return target
-        },
-      }
-    )
   }
 }
 

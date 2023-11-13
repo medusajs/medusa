@@ -1,6 +1,6 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
 import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
-import { CreateWorkflowComposerContext } from "./index"
+import { CreateWorkflowComposerContext, StepReturn } from "./index"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
@@ -35,9 +35,10 @@ export function createWorkflow<TData = unknown, TResult = unknown>(
 
   global[SymbolMedusaWorkflowComposerContext] = context
 
-  const valueHolder = {
-    value: {},
+  const valueHolder: StepReturn = {
+    __value: {},
     __type: SymbolInputReference,
+    __step__: "",
   }
 
   const returnedStep = composer.apply(context, [valueHolder])
@@ -61,12 +62,10 @@ export function createWorkflow<TData = unknown, TResult = unknown>(
       args.resultFrom ??=
         returnedStep?.__type === SymbolWorkflowStep
           ? returnedStep.__step__
-          : returnedStep?.__type === SymbolInputReference
-          ? args?.input
           : undefined
 
       // Forwards the input to the ref object on composer.apply
-      valueHolder.value = args?.input as any
+      valueHolder.__value = args?.input as any
       return (await originalRun(args)) as unknown as WorkflowResult<TResult>
     }) as any
     return workflow_

@@ -3,18 +3,25 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
-import { StepTransformer } from "./type"
+import { StepFunction, StepReturn } from "./type"
 
-export function transform(
-  values: unknown | unknown[],
-  ...functions: Function[]
-): StepTransformer {
+export function transform<
+  TTransformerInput extends unknown[] = unknown[],
+  TStepReturnInput extends [...StepReturn<TTransformerInput[number][]>] = [
+    ...StepReturn<TTransformerInput[number]>[]
+  ],
+  TOutput extends unknown = unknown
+>(
+  values: [...TStepReturnInput],
+  ...functions: ((
+    context: any,
+    ...stepInputs: TTransformerInput
+  ) => Promise<TOutput>)[]
+): StepReturn<TOutput> {
   const returnFn = async function (context: any): Promise<any> {
     const { invoke } = context
 
-    let stepValues = Array.isArray(values) ? values : [values]
-
-    stepValues = stepValues.map((value: any) => {
+    const stepValues = values.map((value: any) => {
       let returnVal
       if (value?.__type === SymbolInputReference) {
         returnVal = value.value
@@ -36,11 +43,12 @@ export function transform(
       finalResult = await fn.apply(fn, [context, ...fnInput])
     }
 
-    returnFn.__result = finalResult
+    returnFn.__value = finalResult
     return finalResult
   }
-  returnFn.__type = SymbolWorkflowStepTransformer
-  returnFn.__result = undefined
 
-  return returnFn
+  returnFn.__type = SymbolWorkflowStepTransformer
+  returnFn.__value = undefined
+
+  return returnFn as unknown as StepFunction<TStepReturnInput, TOutput>
 }

@@ -1,21 +1,22 @@
 import { OrchestratorBuilder, WorkflowHandler } from "@medusajs/orchestration"
 
-export type StepFunctionResult<T extends unknown | unknown[] = unknown> = (
-  this: CreateWorkflowComposerContext
-) => T extends [] ? [...StepReturn<T[number]>[]] : StepReturn
+export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
+  (
+    this: CreateWorkflowComposerContext
+  ) => TOutput extends [] ? [...StepReturn<TOutput[number]>[]] : StepReturn
 
 export type StepFunction<
   TInput extends unknown[] = unknown[],
-  TResult extends unknown = unknown
+  TOutput extends unknown = unknown
 > = {
-  (...inputs: StepReturn<TInput[number]>[]): StepReturn<TResult>
-} & StepReturn<TResult>
+  (...inputs: StepReturn<TInput[number]>[]): StepReturn<TOutput>
+} & StepReturn<TOutput>
 
 export type StepReturnProperties<T = unknown> = {
   __type: Symbol
   __step__: string
-  __returnProperties: string
-  value?: T
+  __returnProperties?: string
+  __value?: T
 }
 
 export type StepReturn<T = unknown> = T extends object
@@ -24,24 +25,14 @@ export type StepReturn<T = unknown> = T extends object
     } & StepReturnProperties<T>
   : StepReturnProperties<T>
 
-export type StepTransformer<T = unknown> = {
-  __type: Symbol
-  __result: T
-}
-
-export type StepBinderReturn = {
-  __type: Symbol
-  __step__: string
-}
-
 export type CreateWorkflowComposerContext = {
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
-  stepBinder: <TResult extends unknown = unknown>(
+  stepBinder: <TOutput extends unknown = unknown>(
     fn: StepFunctionResult
-  ) => StepReturn<TResult>
-  parallelizeBinder: <TResult extends StepReturn[] = StepReturn[]>(
-    fn: (this: CreateWorkflowComposerContext) => TResult
-  ) => TResult
+  ) => StepReturn<TOutput>
+  parallelizeBinder: <TOutput extends StepReturn[] = StepReturn[]>(
+    fn: (this: CreateWorkflowComposerContext) => TOutput
+  ) => TOutput
 }
