@@ -1,8 +1,7 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Request } from "express"
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import PriceListService from "../../../../services/price-list"
 import { FilterablePriceListProps } from "../../../../types/price-list"
 import { listAndCountPriceListPricingModule } from "./get-price-list"
@@ -167,7 +166,7 @@ export default async (req: Request, res) => {
 
   const validated = req.validatedQuery
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const [priceLists, count] = await listAndCountPriceListPricingModule({
       req,
       list: true,

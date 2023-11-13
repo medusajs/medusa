@@ -1,5 +1,5 @@
 import { WorkflowTypes } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { CreateProductVariants } from "@medusajs/workflows"
 import {
   IsArray,
@@ -11,7 +11,6 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import {
   PricingService,
   ProductService,
@@ -138,7 +137,7 @@ export default async (req, res) => {
   )
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const createVariantsWorkflow = CreateProductVariants.createProductVariants(
       req.scope
     )

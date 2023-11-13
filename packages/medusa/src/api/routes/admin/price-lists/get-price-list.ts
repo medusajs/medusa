@@ -5,11 +5,10 @@ import {
   PriceListDTO,
   ProductVariantDTO,
 } from "@medusajs/types"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import { CustomerGroupService } from "../../../../services"
 import PriceListService from "../../../../services/price-list"
 import { defaultAdminProductRemoteQueryObject } from "../products"
@@ -88,7 +87,7 @@ export default async (req, res) => {
 
   let priceList
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const [priceLists, _] = await listAndCountPriceListPricingModule({ req })
     priceList = priceLists[0]
   } else {

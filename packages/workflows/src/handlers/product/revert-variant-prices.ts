@@ -1,4 +1,5 @@
 import { PricingTypes } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInput = {
@@ -20,7 +21,7 @@ export async function revertVariantPrices({
 
   const featureFlagRouter = container.resolve("featureFlagRouter")
   const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
-    "isolate_pricing_domain"
+    MedusaV2Flag.key
   )
 
   if (!isPricingDomainEnabled) {

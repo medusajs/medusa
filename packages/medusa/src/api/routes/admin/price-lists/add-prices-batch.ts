@@ -1,10 +1,10 @@
+import { MedusaV2Flag } from "@medusajs/utils"
 import { UpdatePriceLists } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import PriceListService from "../../../../services/price-list"
 import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
@@ -95,7 +95,7 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const updateVariantsWorkflow = UpdatePriceLists.updatePriceLists(req.scope)
 
     const input = {

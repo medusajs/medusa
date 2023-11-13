@@ -12,7 +12,9 @@ import {
   OneToMany,
 } from "typeorm"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { BaseEntity } from "../interfaces"
+import { featureFlagRouter } from "../loaders/feature-flags"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import {
@@ -27,8 +29,6 @@ import { Order } from "./order"
 import { OrderEdit } from "./order-edit"
 import { ProductVariant } from "./product-variant"
 import { Swap } from "./swap"
-import IsolateProductDomain from "../loaders/feature-flags/isolate-product-domain"
-import { featureFlagRouter } from "../loaders/feature-flags"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
@@ -131,7 +131,7 @@ export class LineItem extends BaseEntity {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
-  @FeatureFlagColumn(IsolateProductDomain.key, { nullable: true, type: "text" })
+  @FeatureFlagColumn(MedusaV2Flag.key, { nullable: true, type: "text" })
   product_id: string | null
 
   @Column({ type: "int" })
@@ -170,7 +170,7 @@ export class LineItem extends BaseEntity {
     this.id = generateEntityId(this.id, "item")
 
     // This is to maintain compatibility while isolating the product domain
-    if (featureFlagRouter.isFeatureEnabled(IsolateProductDomain.key)) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       if (
         this.variant &&
         Object.keys(this.variant).length === 1 &&
@@ -184,7 +184,7 @@ export class LineItem extends BaseEntity {
   /**
    * @apiIgnore
    */
-  @FeatureFlagDecorators(IsolateProductDomain.key, [BeforeUpdate()])
+  @FeatureFlagDecorators(MedusaV2Flag.key, [BeforeUpdate()])
   beforeUpdate(): void {
     if (
       this.variant &&
@@ -198,7 +198,7 @@ export class LineItem extends BaseEntity {
   /**
    * @apiIgnore
    */
-  @FeatureFlagDecorators(IsolateProductDomain.key, [AfterLoad(), AfterUpdate()])
+  @FeatureFlagDecorators(MedusaV2Flag.key, [AfterLoad(), AfterUpdate()])
   afterUpdateOrLoad(): void {
     if (this.variant) {
       return

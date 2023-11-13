@@ -12,11 +12,10 @@ import {
   extendedFindParamsMixin,
 } from "../../../../types/common"
 
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Request } from "express"
 import { pickBy } from "lodash"
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import { ProductStatus } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FilterableProductProps } from "../../../../types/product"
@@ -196,7 +195,7 @@ export default async (req: Request, res) => {
     price_list_id: [id],
   }
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     ;[products, count] = await listAndCountProductWithIsolatedProductModule(
       req,
       filterableFields,

@@ -12,10 +12,8 @@ import {
   IPricingModuleService,
   IProductModuleService,
 } from "@medusajs/types"
-import { promiseAll } from "@medusajs/utils"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { Product } from "../../../../models"
 import { PricedProduct } from "../../../../types/pricing"
 import { FilterableProductProps } from "../../../../types/product"
@@ -253,7 +251,7 @@ export default async (req, res) => {
   let rawProducts
   let count
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const [products, count_] =
       await listAndCountProductWithIsolatedProductModule(
         req,
@@ -405,9 +403,7 @@ export async function listAndCountProductWithIsolatedProductModule(
   delete filterableFields.price_list_id
 
   if (priceListId) {
-    if (
-      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-    ) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       const variants = await getVariantsFromPriceList(req, priceListId)
 
       variants.forEach((pv) => variantIdsFilter.add(pv.id))

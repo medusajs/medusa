@@ -1,19 +1,23 @@
 import {
+  MODULE_PACKAGE_NAMES,
+  MedusaApp,
+  MedusaAppOutput,
+  MedusaModule,
+  Modules,
+  ModulesDefinition,
+} from "@medusajs/modules-sdk"
+import {
   CommonTypes,
   InternalModuleDeclaration,
   MedusaContainer,
   ModuleDefinition,
 } from "@medusajs/types"
-import {
-  MedusaApp,
-  MedusaAppOutput,
-  ModulesDefinition,
-} from "@medusajs/modules-sdk"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 
 import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 import { asValue } from "awilix"
-import { joinerConfig } from "../joiner-config"
 import { remoteQueryFetchData } from ".."
+import { joinerConfig } from "../joiner-config"
 
 export function mergeDefaultModules(
   modulesConfig: CommonTypes.ConfigModule["modules"]
@@ -46,6 +50,8 @@ export const loadMedusaApp = async (
   },
   config = { registerInContainer: true }
 ): Promise<MedusaAppOutput> => {
+  const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -93,6 +99,30 @@ export const loadMedusaApp = async (
     sharedResourcesConfig,
     injectedDependencies,
   })
+
+  const requiredModuleKeys = [Modules.PRODUCT, Modules.PRICING]
+
+  const missingPackages: string[] = []
+
+  if (isMedusaV2Enabled) {
+    for (const requiredModuleKey of requiredModuleKeys) {
+      const isModuleInstalled = MedusaModule.isInstalled(requiredModuleKey)
+
+      if (!isModuleInstalled) {
+        missingPackages.push(
+          MODULE_PACKAGE_NAMES[requiredModuleKey] || requiredModuleKey
+        )
+      }
+    }
+
+    if (missingPackages.length) {
+      throw new Error(
+        `FeatureFlag medusa_v2 (MEDUSA_FF_MEDUSA_V2) requires the following packages/module registration: (${missingPackages.join(
+          ", "
+        )})`
+      )
+    }
+  }
 
   if (!config.registerInContainer) {
     return medusaApp

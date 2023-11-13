@@ -33,7 +33,7 @@ describe("PriceList Service", () => {
   })
 
   describe("list", () => {
-    it("list priceLists", async () => {
+    it("should return list priceLists", async () => {
       const priceListResult = await service.list()
 
       expect(priceListResult).toEqual([
@@ -46,7 +46,7 @@ describe("PriceList Service", () => {
       ])
     })
 
-    it("list pricelists by id", async () => {
+    it("should list pricelists by id", async () => {
       const priceListResult = await service.list({
         id: ["price-list-1"],
       })

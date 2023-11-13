@@ -5,7 +5,12 @@ import {
   RemoteQueryFunction,
 } from "@medusajs/types"
 
-import { FlagRouter, promiseAll, removeNullish } from "@medusajs/utils"
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  promiseAll,
+  removeNullish,
+} from "@medusajs/utils"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
 
 import {
@@ -31,8 +36,6 @@ import {
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
 import { calculatePriceTaxAmount } from "../utils"
@@ -292,12 +295,8 @@ class PricingService extends TransactionBaseService {
     context: PricingContext
   ): Promise<Map<string, ProductVariantPricing>> {
     if (
-      this.featureFlagRouter.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      ) &&
-      this.featureFlagRouter.isFeatureEnabled(
-        IsolatePricingDomainFeatureFlag.key
-      )
+      this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key) &&
+      this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
     ) {
       return await this.getProductVariantPricingModulePricing_(data, context)
     }
@@ -736,11 +735,7 @@ class PricingService extends TransactionBaseService {
     variants: ProductVariant[],
     context: PriceSelectionContext = {}
   ): Promise<PricedVariant[]> {
-    if (
-      !this.featureFlagRouter.isFeatureEnabled(
-        IsolatePricingDomainFeatureFlag.key
-      )
-    ) {
+    if (!this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       return await this.setVariantPrices(variants, context)
     }
 
@@ -772,11 +767,7 @@ class PricingService extends TransactionBaseService {
   async setAdminProductPricing(
     products: Product[]
   ): Promise<(Product | PricedProduct)[]> {
-    if (
-      !this.featureFlagRouter.isFeatureEnabled(
-        IsolatePricingDomainFeatureFlag.key
-      )
-    ) {
+    if (!this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       return await this.setProductPrices(products)
     }
 

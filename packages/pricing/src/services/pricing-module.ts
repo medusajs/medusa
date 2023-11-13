@@ -1510,11 +1510,7 @@ export default class PricingModuleService<
     )
 
     const priceListRuleIds = existingPriceLists
-      .map((pl) =>
-        (pl.price_list_rules as PricingTypes.PriceListRuleDTO[]).map(
-          (plr) => plr.id
-        )
-      )
+      .map((pl) => (pl.price_list_rules || []).map((plr) => plr.id))
       .flat()
 
     const existingPriceListRules = await this.listPriceListRules(

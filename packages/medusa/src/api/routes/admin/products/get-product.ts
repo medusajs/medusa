@@ -5,8 +5,7 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import { MedusaError, promiseAll } from "@medusajs/utils"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
+import { MedusaError, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { FindParams } from "../../../../types/common"
 import { defaultAdminProductRemoteQueryObject } from "./index"
 
@@ -76,7 +75,7 @@ export default async (req, res) => {
   )
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     rawProduct = await getProductWithIsolatedProductModule(
       req,
       id,

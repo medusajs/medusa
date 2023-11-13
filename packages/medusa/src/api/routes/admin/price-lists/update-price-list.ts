@@ -1,4 +1,5 @@
 import { WorkflowTypes } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { UpdatePriceLists } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
@@ -12,7 +13,6 @@ import {
 import { EntityManager } from "typeorm"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import PriceListService from "../../../../services/price-list"
 import {
@@ -100,7 +100,7 @@ export default async (req, res) => {
     req.body
   )
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const updateVariantsWorkflow = UpdatePriceLists.updatePriceLists(req.scope)
 
     const input = {
