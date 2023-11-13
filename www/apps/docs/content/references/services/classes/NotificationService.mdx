@@ -1,0 +1,762 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# NotificationService
+
+## Constructors
+
+### constructor
+
+**new NotificationService**(`container`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "container",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-17.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "attachmentGenerator_",
+    "type": "`unknown`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "null",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "container_",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-17.mdx) & {}",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "logger_",
+    "type": "[`Logger`](../types/Logger-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "notificationProviderRepository_",
+    "type": "`Repository`<[`NotificationProvider`](NotificationProvider.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "notificationRepository_",
+    "type": "`Repository`<[`Notification`](Notification.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subscribers_",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### handleEvent
+
+**handleEvent**(`eventName`, `data`): `Promise`<`undefined` \| `void` \| [`Notification`](Notification.mdx)[]\>
+
+Handles an event by relaying the event data to the subscribing providers.
+The result of the notification send will be persisted in the database in
+order to allow for resends. Will log any errors that are encountered.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "eventName",
+    "type": "`string`",
+    "description": "the event to handle",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "the data the event was sent with",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`undefined` \| `void` \| [`Notification`](Notification.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`undefined` \\| `void` \\| [`Notification`](Notification.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of notification subscribed",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector`, `config?`): `Promise`<[`Notification`](Notification.mdx)[]\>
+
+Retrieves a list of notifications.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`Notification`](Notification.mdx)\\>",
+    "description": "the params to select the notifications by.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Notification`](Notification.mdx)\\>",
+    "description": "the configuration to apply to the query",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Notification`](Notification.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Notification`](Notification.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the notifications that satisfy the query.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Notification`](Notification.mdx)[], `number`]\>
+
+Retrieves a list of notifications and total count.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`Notification`](Notification.mdx)\\>",
+    "description": "the params to select the notifications by.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Notification`](Notification.mdx)\\>",
+    "description": "the configuration to apply to the query",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`Notification`](Notification.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`Notification`](Notification.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the notifications that satisfy the query as well as the count.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### registerAttachmentGenerator
+
+**registerAttachmentGenerator**(`service`): `void`
+
+Registers an attachment generator to the service. The generator can be
+used to generate on demand invoices or other documents.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "service",
+    "type": "`unknown`",
+    "description": "the service to assign to the attachmentGenerator",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### registerInstalledProviders
+
+**registerInstalledProviders**(`providerIds`): `Promise`<`void`\>
+
+Takes a list of notification provider ids and persists them in the database.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "providerIds",
+    "type": "`string`[]",
+    "description": "a list of provider ids",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### resend
+
+**resend**(`id`, `config?`): `Promise`<[`Notification`](Notification.mdx)\>
+
+Resends a notification by retrieving a prior notification and calling the
+underlying provider's resendNotification method.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the id of the notification",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Notification`](Notification.mdx)\\>",
+    "description": "any configuration that might override the previous send",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Notification`](Notification.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Notification`](Notification.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the newly created notification",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`id`, `config?`): `Promise`<[`Notification`](Notification.mdx)\>
+
+Retrieves a notification with a given id
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the id of the notification",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Notification`](Notification.mdx)\\>",
+    "description": "the configuration to apply to the query",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Notification`](Notification.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Notification`](Notification.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the notification",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveProvider\_
+
+`Protected` **retrieveProvider_**(`id`): [`AbstractNotificationService`](AbstractNotificationService.mdx)
+
+Finds a provider with a given id. Will throw a NOT_FOUND error if the
+resolution fails.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the id of the provider",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`AbstractNotificationService`](AbstractNotificationService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "AbstractNotificationService",
+    "type": "[`AbstractNotificationService`](AbstractNotificationService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the notification provider",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### send
+
+**send**(`event`, `eventData`, `providerId`): `Promise`<`undefined` \| [`Notification`](Notification.mdx)\>
+
+Sends a notification, by calling the given provider's sendNotification
+method. Persists the Notification in the database.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "event",
+    "type": "`string`",
+    "description": "the name of the event",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "the data the event was sent with",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "providerId",
+    "type": "`string`",
+    "description": "the provider that should handle the event.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`undefined` \| [`Notification`](Notification.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`undefined` \\| [`Notification`](Notification.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the created notification",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### subscribe
+
+**subscribe**(`eventName`, `providerId`): `void`
+
+Subscribes a given provider to an event.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "eventName",
+    "type": "`string`",
+    "description": "the event to subscribe to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "providerId",
+    "type": "`string`",
+    "description": "the provider that the event will be sent to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`NotificationService`](NotificationService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`NotificationService`](NotificationService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "NotificationService",
+    "type": "[`NotificationService`](NotificationService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

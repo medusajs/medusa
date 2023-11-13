@@ -57,7 +57,7 @@ Retrieves the numerical tax lines for a calculation context.
 <ParameterTypes parameters={[
   {
     "name": "itemLines",
-    "type": "[`ItemTaxCalculationLine`](../modules/internal.internal.mdx#itemtaxcalculationline)[]",
+    "type": "[`ItemTaxCalculationLine`](../types/internal.internal.ItemTaxCalculationLine.mdx)[]",
     "description": "the line item calculation lines",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ Retrieves the numerical tax lines for a calculation context.
   },
   {
     "name": "shippingLines",
-    "type": "[`ShippingTaxCalculationLine`](../modules/internal.internal.mdx#shippingtaxcalculationline)[]",
+    "type": "[`ShippingTaxCalculationLine`](../types/internal.internal.ShippingTaxCalculationLine.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ Retrieves the numerical tax lines for a calculation context.
   },
   {
     "name": "context",
-    "type": "[`TaxCalculationContext`](../modules/internal.internal.mdx#taxcalculationcontext)",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
     "description": "other details relevant to the tax determination",
     "optional": false,
     "defaultValue": "",
@@ -89,31 +89,11 @@ Retrieves the numerical tax lines for a calculation context.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProviderTaxLine`](../../modules/internal.mdx#providertaxline)[]\\>",
+    "type": "`Promise`<[`ProviderTaxLine`](../types/internal.ProviderTaxLine.mdx)[]\\>",
     "optional": false,
     "defaultValue": "",
     "description": "numerical tax rates that should apply to the provided calculation\n  lines",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProviderTaxLine[]",
-        "type": "[`ProviderTaxLine`](../../modules/internal.mdx#providertaxline)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "ProviderTaxLine",
-            "type": "[`ProviderLineItemTaxLine`](../../modules/internal.mdx#providerlineitemtaxline) \\| [`ProviderShippingMethodTaxLine`](../../modules/internal.mdx#providershippingmethodtaxline)",
-            "description": "A union type of the possible provider tax lines.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />

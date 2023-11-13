@@ -20,13 +20,14 @@ const ALLOWED_KINDS: ReflectionKind[] = [
 export default function reflectionFormatter(
   reflection: ReflectionParameterType,
   type: ParameterStyle = "table",
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): string | Parameter {
   switch (type) {
     case "list":
       return reflectionListFormatter(reflection, level)
     case "component":
-      return reflectionComponentFormatter(reflection, level)
+      return reflectionComponentFormatter(reflection, level, maxLevel)
     case "table":
       return reflectionTableFormatter(reflection)
     default:
@@ -36,7 +37,8 @@ export default function reflectionFormatter(
 
 export function reflectionListFormatter(
   reflection: ReflectionParameterType,
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): string {
   const prefix = `${Array(level - 1)
     .fill("\t")
@@ -63,7 +65,7 @@ export function reflectionListFormatter(
 
   if (
     (reflection.type || hasChildren) &&
-    level + 1 <= MarkdownTheme.MAX_LEVEL
+    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
     const children = hasChildren
       ? reflection.children
@@ -89,7 +91,8 @@ export function reflectionListFormatter(
 
 export function reflectionComponentFormatter(
   reflection: ReflectionParameterType,
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): Parameter {
   const defaultValue = getDefaultValue(reflection) || ""
   const optional =
@@ -114,7 +117,7 @@ export function reflectionComponentFormatter(
 
   if (
     (reflection.type || hasChildren) &&
-    level + 1 <= MarkdownTheme.MAX_LEVEL
+    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
     const children = hasChildren
       ? reflection.children
@@ -124,7 +127,7 @@ export function reflectionComponentFormatter(
       ?.filter((childItem) => childItem.kindOf(ALLOWED_KINDS))
       .forEach((childItem) => {
         componentItem.children?.push(
-          reflectionComponentFormatter(childItem, level + 1)
+          reflectionComponentFormatter(childItem, level + 1, maxLevel)
         )
       })
   }

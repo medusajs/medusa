@@ -1,0 +1,949 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductCategoryService
+
+Provides layer to manipulate product categories.
+
+## Constructors
+
+### constructor
+
+**new ProductCategoryService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-27.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBusService_",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productCategoryRepo_",
+    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-category.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-category.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-category.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addProducts
+
+**addProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
+
+Add a batch of product to a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "The id of the product category on which to add the products",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "The products ids to attach to the product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category on which the products have been added",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`productCategoryInput`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+Creates a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryInput",
+    "type": "[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx)",
+    "description": "parameters to create a product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "created product category",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`productCategoryId`): `Promise`<`void`\>
+
+Deletes a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "is the id of the product category to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### fetchReorderConditions
+
+`Protected` **fetchReorderConditions**(`productCategory`, `input`, `shouldDeleteElement?`): [`ReorderConditions`](../types/ReorderConditions.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategory",
+    "type": "[`ProductCategory`](ProductCategory.mdx)",
+    "description": "A product category can be used to categorize products into a hierarchy of categories.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "input",
+    "type": "[`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shouldDeleteElement",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ReorderConditions`](../types/ReorderConditions.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReorderConditions",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+**listAndCount**(`selector`, `config?`, `treeSelector?`): `Promise`<[[`ProductCategory`](ProductCategory.mdx)[], `number`]\>
+
+Lists product category based on the provided parameters and includes the count of
+product category that match the query.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`TreeQuerySelector`](../types/TreeQuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "Filter options for product category.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "Configuration for query.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "treeSelector",
+    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "Filter options for product category tree relations",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`ProductCategory`](ProductCategory.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`ProductCategory`](ProductCategory.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "an array containing the product category as\n  the first element and the total count of product category that matches the query\n  as the second element.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### performReordering
+
+`Protected` **performReordering**(`repository`, `conditions`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "repository",
+    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "conditions",
+    "type": "[`ReorderConditions`](../types/ReorderConditions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removeProducts
+
+**removeProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
+
+Remove a batch of product from a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "The id of the product category on which to remove the products",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "The products ids to remove from the product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category on which the products have been removed",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`productCategoryId`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+Retrieves a product category by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "the id of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "the config of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "treeSelector",
+    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByHandle
+
+**retrieveByHandle**(`handle`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+Retrieves a product category by handle.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "handle",
+    "type": "`string`",
+    "description": "the handle of the category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "the config of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "treeSelector",
+    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve\_
+
+`Protected` **retrieve_**(`config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+A generic retrieve for fining product categories by different attributes.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "the config of the product category to retrieve.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "treeSelector",
+    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product category.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shiftSiblings
+
+`Protected` **shiftSiblings**(`repository`, `conditions`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "repository",
+    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "conditions",
+    "type": "[`ReorderConditions`](../types/ReorderConditions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### transformParentIdToEntity
+
+`Protected` **transformParentIdToEntity**(`productCategoryInput`): `Promise`<[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)\>
+
+Accepts an input object and transforms product_category_id
+into product_category entity.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryInput",
+    "type": "[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \\| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)",
+    "description": "params used to create/update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \\| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "transformed productCategoryInput",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`productCategoryId`, `productCategoryInput`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+Updates a product category
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productCategoryId",
+    "type": "`string`",
+    "description": "id of product category to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productCategoryInput",
+    "type": "[`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)",
+    "description": "parameters to update in product category",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated product category",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`ProductCategoryService`](ProductCategoryService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ProductCategoryService`](ProductCategoryService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "ProductCategoryService",
+    "type": "[`ProductCategoryService`](ProductCategoryService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

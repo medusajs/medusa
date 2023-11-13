@@ -83,7 +83,7 @@ medusa.admin.AdminAuthResource.createSession({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminAuthRes`](../modules/internal.mdx#adminauthres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminAuthRes`](../internal/types/internal.AdminAuthRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -99,7 +99,7 @@ medusa.admin.AdminAuthResource.createSession({
         "children": [
           {
             "name": "user",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -238,7 +238,7 @@ medusa.admin.auth.deleteSession()
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<`void`\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`void`\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when user is logged out successfully.",
@@ -283,7 +283,7 @@ medusa.admin.auth.getSession().then(({ user }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminAuthRes`](../modules/internal.mdx#adminauthres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminAuthRes`](../internal/types/internal.AdminAuthRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the logged-in user's details.",
@@ -299,7 +299,7 @@ medusa.admin.auth.getSession().then(({ user }) => {
         "children": [
           {
             "name": "user",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`User`](../internal/classes/internal.User.mdx), ``\"password_hash\"``\\>",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -471,7 +471,7 @@ medusa.admin.auth
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminBearerAuthRes`](../modules/internal.mdx#adminbearerauthres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminBearerAuthRes`](../internal/types/internal.AdminBearerAuthRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the access token of the user, if they're authenticated successfully.",

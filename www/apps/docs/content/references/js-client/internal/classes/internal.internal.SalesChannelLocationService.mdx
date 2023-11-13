@@ -63,582 +63,7 @@ Service for managing the stock locations of sales channels
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__configModule__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__container__",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__moduleDeclaration__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "eventBusService_",
-        "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "config_",
-            "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "featureFlags",
-                "type": "Record<`string`, `boolean` \\| `string`\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "modules",
-                "type": "Record<`string`, `boolean` \\| [`Partial`](../../modules/internal.mdx#partial)<[`InternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)\\>\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "plugins",
-                "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "projectConfig",
-                "type": "[`ProjectConfigOptions`](../../internal-1/modules/internal.internal-1.CommonTypes.mdx#projectconfigoptions)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "enqueue_",
-            "type": "`Promise`<`void`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "logger_",
-            "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "activity",
-                "type": "(`message`: `string`, `config?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "debug",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "error",
-                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failure",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "info",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "log",
-                "type": "(...`args`: `any`[]) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "panic",
-                "type": "(`data`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "progress",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "setLogLevel",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shouldLog",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "success",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "unsetLogLevel",
-                "type": "() => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "warn",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "shouldEnqueuerRun",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "stagedJobService_",
-            "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "stagedJobRepository_",
-                "type": "`Repository`<[`StagedJob`](internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "manager_",
-        "type": "`EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "salesChannelRepository_",
-        "type": "`Repository`<[`SalesChannel`](internal.SalesChannel.mdx)\\> & { `addProducts`: Method addProducts ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `listProductIdsBySalesChannelIds`: Method listProductIdsBySalesChannelIds ; `removeProducts`: Method removeProducts  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "storeService_",
-        "type": "[`StoreService`](internal.internal.StoreService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "currencyRepository_",
-            "type": "`Repository`<[`Currency`](internal.Currency.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "eventBus_",
-            "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "config_",
-                "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "enqueue_",
-                "type": "`Promise`<`void`\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "logger_",
-                "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shouldEnqueuerRun",
-                "type": "`boolean`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "stagedJobService_",
-                "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "storeRepository_",
-            "type": "`Repository`<[`Store`](internal.Store.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "transactionManager_",
-        "type": "`undefined` \\| `EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "Events",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "CREATED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "DELETED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "UPDATED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   },
   {
     "name": "transactionManager_",
@@ -678,7 +103,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "__joinerConfig",
-    "type": "() => [`ModuleJoinerConfig`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#modulejoinerconfig)",
+    "type": "() => [`ModuleJoinerConfig`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -687,7 +112,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`input`: [`CreateStockLocationInput`](../../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#createstocklocationinput), `context?`: [`SharedContext`](../modules/internal.internal-1.mdx#sharedcontext)) => `Promise`<[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)\\>",
+    "type": "(`input`: [`CreateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -696,7 +121,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`id`: `string`, `context?`: [`SharedContext`](../modules/internal.internal-1.mdx#sharedcontext)) => `Promise`<`void`\\>",
+    "type": "(`id`: `string`, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -705,7 +130,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [`FilterableStockLocationProps`](../../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#filterablestocklocationprops), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)\\>, `context?`: [`SharedContext`](../modules/internal.internal-1.mdx#sharedcontext)) => `Promise`<[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)[]\\>",
+    "type": "(`selector`: [`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[]\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -714,7 +139,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [`FilterableStockLocationProps`](../../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#filterablestocklocationprops), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)\\>, `context?`: [`SharedContext`](../modules/internal.internal-1.mdx#sharedcontext)) => `Promise`<[[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)[], `number`]\\>",
+    "type": "(`selector`: [`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[], `number`]\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -723,7 +148,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)\\>, `context?`: [`SharedContext`](../modules/internal.internal-1.mdx#sharedcontext)) => `Promise`<[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)\\>",
+    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -732,7 +157,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `string`, `input`: [`UpdateStockLocationInput`](../../internal-1/modules/internal.internal-1.StockLocationTypes.mdx#updatestocklocationinput), `context?`: [`SharedContext`](../modules/internal.internal-1.mdx#sharedcontext)) => `Promise`<[`StockLocationDTO`](../../modules/internal.mdx#stocklocationdto)\\>",
+    "type": "(`id`: `string`, `input`: [`UpdateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -802,17 +227,7 @@ transaction manager is created.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
@@ -830,17 +245,7 @@ transaction manager is created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -888,27 +293,7 @@ Lists the stock locations associated with a sales channel.
     "defaultValue": "",
     "description": "A promise that resolves with an array of location IDs.",
     "expandable": false,
-    "children": [
-      {
-        "name": "string[]",
-        "type": "`string`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "string",
-            "type": "`string`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -942,27 +327,7 @@ Lists the sales channels associated with a stock location.
     "defaultValue": "",
     "description": "A promise that resolves with an array of sales channel IDs.",
     "expandable": false,
-    "children": [
-      {
-        "name": "string[]",
-        "type": "`string`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "string",
-            "type": "`string`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 

@@ -1,0 +1,233 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Fulfillment
+
+A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.
+
+## Constructors
+
+### constructor
+
+**new Fulfillment**()
+
+A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "canceled_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the Fulfillment was canceled.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "claim_order",
+    "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+    "description": "The details of the claim that the fulfillment may belong to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "claim_order_id",
+    "type": "`string`",
+    "description": "The ID of the Claim that the Fulfillment belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "This contains all the data necessary for the Fulfillment provider to handle the fulfillment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The fulfillment's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "idempotency_key",
+    "type": "`string`",
+    "description": "Randomly generated key used to continue the completion of the fulfillment in case of failure.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`FulfillmentItem`](FulfillmentItem.mdx)[]",
+    "description": "The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "``null`` \\| `string`",
+    "description": "The ID of the stock location the fulfillment will be shipped from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "no_notification",
+    "type": "`boolean`",
+    "description": "Flag for describing whether or not notifications related to this should be sent.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "[`Order`](Order.mdx)",
+    "description": "The details of the order that the fulfillment may belong to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "order_id",
+    "type": "`string`",
+    "description": "The ID of the Order that the Fulfillment belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider",
+    "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
+    "description": "The details of the fulfillment provider responsible for handling the fulfillment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the Fulfillment Provider responsible for handling the fulfillment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipped_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the Fulfillment was shipped.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "swap",
+    "type": "[`Swap`](Swap.mdx)",
+    "description": "The details of the swap that the fulfillment may belong to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "swap_id",
+    "type": "`string`",
+    "description": "The ID of the Swap that the Fulfillment belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tracking_links",
+    "type": "[`TrackingLink`](TrackingLink.mdx)[]",
+    "description": "The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "tracking_numbers",
+    "type": "`string`[]",
+    "description": "The tracking numbers that can be used to track the status of the fulfillment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

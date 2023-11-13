@@ -92,22 +92,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lookup",
-    "type": "[`LookupFunction`](../../modules/internal.mdx#lookupfunction)",
+    "type": "[`LookupFunction`](../types/internal.LookupFunction.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`hostname`: `string`, `options`: [`LookupAllOptions`](internal.LookupAllOptions.mdx), `callback`: (`err`: [`ErrnoException`](internal.ErrnoException.mdx) \\| ``null``, `addresses`: [`LookupAddress`](internal.LookupAddress.mdx)[]) => `void`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "noDelay",
@@ -125,17 +115,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "buffer",
-        "type": "`Uint8Array` \\| () => `Uint8Array`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "port",

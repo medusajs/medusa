@@ -1,0 +1,441 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PaymentProcessor
+
+The new payment service plugin interface
+This work is still experimental and can be changed until it becomes stable
+
+## Methods
+
+### authorizePayment
+
+**authorizePayment**(`paymentSessionData`, `context`): `Promise`<[`PaymentProcessorError`](PaymentProcessorError.mdx) \| { `data`: Record<`string`, `unknown`\> ; `status`: [`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)  }\>
+
+Authorize an existing session if it is not already authorized
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentProcessorError`](PaymentProcessorError.mdx) \| { `data`: Record<`string`, `unknown`\> ; `status`: [`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)  }\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentProcessorError`](PaymentProcessorError.mdx) \\| { `data`: Record<`string`, `unknown`\\> ; `status`: [`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)  }\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancelPayment
+
+**cancelPayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+Cancel an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](PaymentProcessorError.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### capturePayment
+
+**capturePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+Capture an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](PaymentProcessorError.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deletePayment
+
+**deletePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+Delete an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](PaymentProcessorError.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getIdentifier
+
+**getIdentifier**(): `string`
+
+Return a unique identifier to retrieve the payment plugin provider
+
+#### Returns
+
+`string`
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getPaymentStatus
+
+**getPaymentStatus**(`paymentSessionData`): `Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)\>
+
+Return the status of the session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentSessionStatus`](../enums/PaymentSessionStatus.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### initiatePayment
+
+**initiatePayment**(`context`): `Promise`<[`PaymentProcessorError`](PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.mdx)\>
+
+Initiate a payment session with the external provider
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "[`PaymentProcessorContext`](../types/PaymentProcessorContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentProcessorError`](PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentProcessorError`](PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### refundPayment
+
+**refundPayment**(`paymentSessionData`, `refundAmount`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+Refund an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refundAmount",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](PaymentProcessorError.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrievePayment
+
+**retrievePayment**(`paymentSessionData`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+Retrieve an existing session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](PaymentProcessorError.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updatePayment
+
+**updatePayment**(`context`): `Promise`<`void` \| [`PaymentProcessorError`](PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.mdx)\>
+
+Update an existing payment session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "[`PaymentProcessorContext`](../types/PaymentProcessorContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void` \| [`PaymentProcessorError`](PaymentProcessorError.mdx) \| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| [`PaymentProcessorError`](PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../types/PaymentProcessorSessionResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updatePaymentData
+
+**updatePaymentData**(`sessionId`, `data`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+Update the session data for a payment session
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "sessionId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<Record<`string`, `unknown`\> \| [`PaymentProcessorError`](PaymentProcessorError.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](PaymentProcessorError.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

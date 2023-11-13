@@ -6,665 +6,251 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Discount
 
+A discount can be applied to a cart for promotional purposes.
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "code",
     "type": "`string`",
-    "description": "",
+    "description": "A unique code for the discount - this will be used by the customer to apply the discount",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "created_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "deleted_at",
     "type": "``null`` \\| `Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "ends_at",
     "type": "``null`` \\| `Date`",
-    "description": "",
+    "description": "The time at which the discount can no longer be used.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The discount's ID",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "is_disabled",
     "type": "`boolean`",
-    "description": "",
+    "description": "Whether the Discount has been disabled. Disabled discounts cannot be applied to carts",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "is_dynamic",
     "type": "`boolean`",
-    "description": "",
+    "description": "A flag to indicate if multiple instances of the discount can be generated. I.e. for newsletter discounts",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "metadata",
     "type": "Record<`string`, `unknown`\\>",
-    "description": "",
+    "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "parent_discount",
     "type": "[`Discount`](Discount.mdx)",
-    "description": "",
+    "description": "The details of the parent discount that this discount was created from.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`Discount`](Discount.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "code",
         "type": "`string`",
-        "description": "",
+        "description": "A unique code for the discount - this will be used by the customer to apply the discount",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "ends_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The time at which the discount can no longer be used.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The discount's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "is_disabled",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the Discount has been disabled. Disabled discounts cannot be applied to carts",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "is_dynamic",
         "type": "`boolean`",
-        "description": "",
+        "description": "A flag to indicate if multiple instances of the discount can be generated. I.e. for newsletter discounts",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "parent_discount",
         "type": "[`Discount`](Discount.mdx)",
-        "description": "",
+        "description": "The details of the parent discount that this discount was created from.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Discount`](Discount.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "ends_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_disabled",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_dynamic",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "parent_discount",
-            "type": "[`Discount`](Discount.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "parent_discount_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "regions",
-            "type": "[`Region`](Region.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "rule",
-            "type": "[`DiscountRule`](DiscountRule.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "rule_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "starts_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "usage_count",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "usage_limit",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "valid_duration",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "upperCaseCodeAndTrim",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "parent_discount_id",
         "type": "`string`",
-        "description": "",
+        "description": "The Discount that the discount was created from. This will always be a dynamic discount",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "regions",
         "type": "[`Region`](Region.mdx)[]",
-        "description": "",
+        "description": "The details of the regions in which the Discount can be used.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "automatic_taxes",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "countries",
-            "type": "[`Country`](Country.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "currency",
-            "type": "[`Currency`](Currency.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "currency_code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillment_providers",
-            "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_cards_taxable",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "includes_tax",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_providers",
-            "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_provider",
-            "type": "[`TaxProvider`](TaxProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_provider_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_rate",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_rates",
-            "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "rule",
         "type": "[`DiscountRule`](DiscountRule.mdx)",
-        "description": "",
+        "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`DiscountRule`](DiscountRule.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "allocation",
-            "type": "[`AllocationType`](../enums/AllocationType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "conditions",
-            "type": "[`DiscountCondition`](DiscountCondition.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "description",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "[`DiscountRuleType`](../enums/DiscountRuleType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "value",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "rule_id",
         "type": "`string`",
-        "description": "",
+        "description": "The ID of the discount rule that defines how the discount will be applied to a cart.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "starts_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The time at which the discount can be used.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "usage_count",
         "type": "`number`",
-        "description": "",
+        "description": "The number of times a discount has been used.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "0",
+        "expandable": false,
         "children": []
       },
       {
         "name": "usage_limit",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The maximum number of times that a discount can be used.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "valid_duration",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "Duration the discount runs between",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "upperCaseCodeAndTrim",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -672,381 +258,190 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "parent_discount_id",
     "type": "`string`",
-    "description": "",
+    "description": "The Discount that the discount was created from. This will always be a dynamic discount",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "regions",
     "type": "[`Region`](Region.mdx)[]",
-    "description": "",
+    "description": "The details of the regions in which the Discount can be used.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`Region`](Region.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "automatic_taxes",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether taxes should be automated in this region.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "countries",
         "type": "[`Country`](Country.mdx)[]",
-        "description": "",
+        "description": "The details of the countries included in this region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Country`](Country.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "display_name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "iso_2",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "iso_3",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "num_code",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "currency",
         "type": "[`Currency`](Currency.mdx)",
-        "description": "",
+        "description": "The details of the currency used in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Currency`](Currency.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "includes_tax",
-            "type": "`boolean`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "symbol",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "symbol_native",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "currency_code",
         "type": "`string`",
-        "description": "",
+        "description": "The three character currency code used in the region.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "fulfillment_providers",
         "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
-        "description": "",
+        "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`FulfillmentProvider`](FulfillmentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "gift_cards_taxable",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the gift cards are taxable or not in this region.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The region's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the prices for the region include tax",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "name",
         "type": "`string`",
-        "description": "",
+        "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "payment_providers",
         "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
-        "description": "",
+        "description": "The details of the payment providers that can be used to process payments in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`PaymentProvider`](PaymentProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "tax_code",
         "type": "`string`",
-        "description": "",
+        "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_provider",
         "type": "[`TaxProvider`](TaxProvider.mdx)",
-        "description": "",
+        "description": "The details of the tax provider used in the region.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`TaxProvider`](TaxProvider.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_installed",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "tax_provider_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the tax provider used in this region",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_rate",
         "type": "`number`",
-        "description": "",
+        "description": "The tax rate that should be charged on purchases in the Region.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_rates",
         "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
-        "description": "",
+        "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",
+        "expandable": true,
         "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -1054,275 +449,99 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "rule",
     "type": "[`DiscountRule`](DiscountRule.mdx)",
-    "description": "",
+    "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`DiscountRule`](DiscountRule.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "allocation",
         "type": "[`AllocationType`](../enums/AllocationType.mdx)",
-        "description": "",
+        "description": "The scope that the discount should apply to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "ITEM",
-            "type": "``\"item\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "TOTAL",
-            "type": "``\"total\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": false,
+        "children": []
       },
       {
         "name": "conditions",
         "type": "[`DiscountCondition`](DiscountCondition.mdx)[]",
-        "description": "",
+        "description": "The details of the discount conditions associated with the rule. They can be used to limit when the discount can be used.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`DiscountCondition`](DiscountCondition.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "customer_groups",
-            "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discount_rule",
-            "type": "[`DiscountRule`](DiscountRule.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discount_rule_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "operator",
-            "type": "[`DiscountConditionOperator`](../enums/DiscountConditionOperator.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "product_collections",
-            "type": "[`ProductCollection`](ProductCollection.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "product_tags",
-            "type": "[`ProductTag`](ProductTag.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "product_types",
-            "type": "[`ProductType`](ProductType.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "products",
-            "type": "[`Product`](Product.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "[`DiscountConditionType`](../enums/DiscountConditionType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "description",
         "type": "`string`",
-        "description": "",
+        "description": "A short description of the discount",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The discount rule's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "type",
         "type": "[`DiscountRuleType`](../enums/DiscountRuleType.mdx)",
-        "description": "",
+        "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "FIXED",
-            "type": "``\"fixed\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "FREE_SHIPPING",
-            "type": "``\"free_shipping\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "PERCENTAGE",
-            "type": "``\"percentage\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": false,
+        "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "value",
         "type": "`number`",
-        "description": "",
+        "description": "The value that the discount represents; this will depend on the type of the discount",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -1330,49 +549,55 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "rule_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the discount rule that defines how the discount will be applied to a cart.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "starts_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The time at which the discount can be used.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "updated_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was updated.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "usage_count",
     "type": "`number`",
-    "description": "",
+    "description": "The number of times a discount has been used.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "0",
+    "expandable": false,
     "children": []
   },
   {
     "name": "usage_limit",
     "type": "``null`` \\| `number`",
-    "description": "",
+    "description": "The maximum number of times that a discount can be used.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "valid_duration",
     "type": "``null`` \\| `string`",
-    "description": "",
+    "description": "Duration the discount runs between",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

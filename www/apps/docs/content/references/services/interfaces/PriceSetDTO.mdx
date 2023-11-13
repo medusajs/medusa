@@ -1,0 +1,41 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PriceSetDTO
+
+A price set's data.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the price set.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "money_amounts",
+    "type": "[`MoneyAmountDTO`](MoneyAmountDTO.mdx)[]",
+    "description": "The prices that belong to this price set.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rule_types",
+    "type": "[`RuleTypeDTO`](RuleTypeDTO.mdx)[]",
+    "description": "The rule types applied on this price set.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

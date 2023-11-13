@@ -48,6 +48,8 @@ export class MarkdownTheme extends Theme {
   objectLiteralTypeDeclarationStyle: ObjectLiteralDeclarationStyle
   formattingOptions: FormattingOptionsType
   mdxOutput: boolean
+  outputNamespace: boolean
+  outputModules: boolean
 
   project?: ProjectReflection
   reflection?: DeclarationReflection
@@ -87,6 +89,8 @@ export class MarkdownTheme extends Theme {
       "formatting"
     ) as FormattingOptionsType
     this.mdxOutput = this.getOption("mdxOutput") as boolean
+    this.outputNamespace = this.getOption("outputNamespace") as boolean
+    this.outputModules = this.getOption("outputModules") as boolean
     MarkdownTheme.MAX_LEVEL = this.getOption("maxLevel") as number
 
     this.listenTo(this.owner, {
@@ -306,14 +310,14 @@ export class MarkdownTheme extends Theme {
         directory: path.join(directoryPrefix || "", "interfaces"),
         template: this.getReflectionTemplate(),
       },
+      {
+        kind: [ReflectionKind.TypeAlias],
+        isLeaf: true,
+        directory: path.join(directoryPrefix || "", "types"),
+        template: this.getReflectionMemberTemplate(),
+      },
       ...(this.allReflectionsHaveOwnDocument
         ? [
-            {
-              kind: [ReflectionKind.TypeAlias],
-              isLeaf: true,
-              directory: path.join(directoryPrefix || "", "types"),
-              template: this.getReflectionMemberTemplate(),
-            },
             {
               kind: [ReflectionKind.Variable],
               isLeaf: true,
@@ -382,20 +386,14 @@ export class MarkdownTheme extends Theme {
       return {}
     }
 
-    const optionKey =
-      Object.keys(this.formattingOptions).find((key) => {
-        if (key === "*") {
-          return false
-        }
+    const applicableOptions: FormattingOptionType[] = []
 
-        const keyPattern = new RegExp(key)
-        if (keyPattern.test(this.location)) {
-          return true
-        }
-      }) || "*"
+    Object.keys(this.formattingOptions).forEach((key) => {
+      if (key === "*" || new RegExp(key).test(this.location)) {
+        applicableOptions.push(this.formattingOptions[key])
+      }
+    })
 
-    return optionKey in this.formattingOptions
-      ? this.formattingOptions[optionKey]
-      : {}
+    return Object.assign({}, ...applicableOptions)
   }
 }

@@ -94,6 +94,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
     "description": "The filters to apply on prices.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "id",
@@ -101,6 +102,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "IDs to filter prices.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -111,6 +113,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
     "description": "The context used to select the prices. For example, you can specify the region ID in this context, and only prices having the same value will be retrieved.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "context",
@@ -118,6 +121,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "an object whose keys are the name of the context attribute. Its value can be a string or a number. For example, you can pass the `currency_code` property with its value being the currency code to calculate the price in. Another example is passing the `quantity` property to calculate the price for that specified quantity, which finds a price set whose `min_quantity` and `max_quantity` conditions match the specified quantity.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -128,6 +132,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -135,6 +140,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -143,6 +149,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -151,6 +158,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -159,6 +167,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -167,6 +176,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -182,6 +192,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The calculated price matching the context and filters provided.",
+    "expandable": false,
     "children": [
       {
         "name": "amount",
@@ -189,6 +200,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "The calculated amount. It can possibly be `null` if there's no price set up for the provided context.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -197,6 +209,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "The currency code of the calculated price. It can possibly be `null`.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -205,6 +218,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "The ID of the price set.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -213,6 +227,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "The maximum quantity required to be purchased for this price to apply. It's set if the `quantity` property is provided in the context. Otherwise, its value will be `null`.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -221,6 +236,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
         "description": "The minimum quantity required to be purchased for this price to apply. It's set if the `quantity` property is provided in the context. Otherwise, its value will be `null`.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]

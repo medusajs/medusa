@@ -13,79 +13,21 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 <ParameterTypes parameters={[
   {
     "name": "postAuthentication_",
-    "type": "[`middlewareType`](../../modules/internal.mdx#middlewaretype)[]",
+    "type": "[`middlewareType`](../types/internal.middlewareType.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "middleware",
-        "type": "[`middlewareHandlerType`](../../modules/internal.mdx#middlewarehandlertype)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`options`: Record<`string`, `unknown`\\>) => `RequestHandler`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "options",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "preAuthentication_",
-    "type": "[`middlewareType`](../../modules/internal.mdx#middlewaretype)[]",
+    "type": "[`middlewareType`](../types/internal.middlewareType.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "middleware",
-        "type": "[`middlewareHandlerType`](../../modules/internal.mdx#middlewarehandlertype)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`options`: Record<`string`, `unknown`\\>) => `RequestHandler`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "options",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "preCartCreation_",
@@ -118,22 +60,12 @@ Adds a middleware function to be called after authentication is completed.
 <ParameterTypes parameters={[
   {
     "name": "middleware",
-    "type": "[`middlewareHandlerType`](../../modules/internal.mdx#middlewarehandlertype)",
+    "type": "[`middlewareHandlerType`](../types/internal.middlewareHandlerType.mdx)",
     "description": "the middleware function. Should return a middleware function.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`options`: Record<`string`, `unknown`\\>) => `RequestHandler`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
@@ -171,22 +103,12 @@ Adds a middleware function to be called before authentication is completed.
 <ParameterTypes parameters={[
   {
     "name": "middleware",
-    "type": "[`middlewareHandlerType`](../../modules/internal.mdx#middlewarehandlertype)",
+    "type": "[`middlewareHandlerType`](../types/internal.middlewareHandlerType.mdx)",
     "description": "the middleware function. Should return a middleware function.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`options`: Record<`string`, `unknown`\\>) => `RequestHandler`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
@@ -316,17 +238,7 @@ ___
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Router",
-        "type": "`Router`",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -412,64 +324,7 @@ ___
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "RequestHandler",
-        "type": "`RequestHandler`<`ParamsDictionary`, `any`, `any`, `ParsedQs`, Record<`string`, `any`\\>\\>",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "any",
-            "type": "`any`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "any",
-            "type": "`any`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "Record",
-            "type": "Record<`string`, `any`\\>",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "string",
-                "type": "`string`",
-                "optional": true,
-                "defaultValue": "",
-                "description": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "any",
-                "type": "`any`",
-                "optional": true,
-                "defaultValue": "",
-                "description": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 

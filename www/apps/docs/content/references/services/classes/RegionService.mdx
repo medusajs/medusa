@@ -1,0 +1,1212 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# RegionService
+
+Provides layer to manipulate regions.
+
+## Constructors
+
+### constructor
+
+**new RegionService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-30.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "countryRepository_",
+    "type": "`Repository`<[`Country`](Country.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "currencyRepository_",
+    "type": "`Repository`<[`Currency`](Currency.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentProviderRepository_",
+    "type": "`Repository`<[`FulfillmentProvider`](FulfillmentProvider.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentProviderService_",
+    "type": "[`FulfillmentProviderService`](FulfillmentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "paymentProviderRepository_",
+    "type": "`Repository`<[`PaymentProvider`](PaymentProvider.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "paymentProviderService_",
+    "type": "[`PaymentProviderService`](PaymentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionRepository_",
+    "type": "`Repository`<[`Region`](Region.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "storeService_",
+    "type": "[`StoreService`](StoreService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxProviderRepository_",
+    "type": "`Repository`<[`TaxProvider`](TaxProvider.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"region.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"region.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"region.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addCountry
+
+**addCountry**(`regionId`, `code`): `Promise`<[`Region`](Region.mdx)\>
+
+Adds a country to the region.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to add a country to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "code",
+    "type": "`string`",
+    "description": "a 2 digit alphanumeric ISO country code.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated Region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### addFulfillmentProvider
+
+**addFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.mdx)\>
+
+Adds a fulfillment provider that is available in the region. Fails if the
+provider doesn't exist.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to add the provider to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "providerId",
+    "type": "`string`",
+    "description": "the provider to add to the region",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated Region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### addPaymentProvider
+
+**addPaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.mdx)\>
+
+Adds a payment provider that is available in the region. Fails if the
+provider doesn't exist.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to add the provider to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "providerId",
+    "type": "`string`",
+    "description": "the provider to add to the region",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated Region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`data`): `Promise`<[`Region`](Region.mdx)\>
+
+Creates a region.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`CreateRegionInput`](../types/CreateRegionInput.mdx)",
+    "description": "the unvalidated region",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the newly created region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`regionId`): `Promise`<`void`\>
+
+Deletes a region.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector?`, `config?`): `Promise`<[`Region`](Region.mdx)[]\>
+
+Lists all regions based on a query
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`Region`](Region.mdx)\\>",
+    "description": "query object for find",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Region`](Region.mdx)\\>",
+    "description": "configuration settings",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`Region`](Region.mdx)[], `number`]\>
+
+Lists all regions based on a query and returns them along with count
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`Region`](Region.mdx)\\>",
+    "description": "query object for find",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Region`](Region.mdx)\\>",
+    "description": "configuration settings",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`Region`](Region.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`Region`](Region.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removeCountry
+
+**removeCountry**(`regionId`, `code`): `Promise`<[`Region`](Region.mdx)\>
+
+Removes a country from a Region.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to remove from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "code",
+    "type": "`string`",
+    "description": "a 2 digit alphanumeric ISO country code to remove",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated Region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removeFulfillmentProvider
+
+**removeFulfillmentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.mdx)\>
+
+Removes a fulfillment provider from a region. Is idempotent.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to remove the provider from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "providerId",
+    "type": "`string`",
+    "description": "the provider to remove from the region",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated Region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removePaymentProvider
+
+**removePaymentProvider**(`regionId`, `providerId`): `Promise`<[`Region`](Region.mdx)\>
+
+Removes a payment provider from a region. Is idempotent.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to remove the provider from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "providerId",
+    "type": "`string`",
+    "description": "the provider to remove from the region",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated Region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`regionId`, `config?`): `Promise`<[`Region`](Region.mdx)\>
+
+Retrieves a region by its id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the id of the region to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Region`](Region.mdx)\\>",
+    "description": "configuration settings",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByCountryCode
+
+**retrieveByCountryCode**(`code`, `config?`): `Promise`<[`Region`](Region.mdx)\>
+
+Retrieve a region by country code.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "code",
+    "type": "`string`",
+    "description": "a 2 digit alphanumeric ISO country code",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Region`](Region.mdx)\\>",
+    "description": "region find config",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a Region with country code",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByName
+
+**retrieveByName**(`name`): `Promise`<[`Region`](Region.mdx)\>
+
+Retrieves a region by name.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "the name of the region to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "region with the matching name",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`regionId`, `update`): `Promise`<[`Region`](Region.mdx)\>
+
+Updates a region
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the region to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateRegionInput`](../types/UpdateRegionInput.mdx)",
+    "description": "the data to update the region with",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Region`](Region.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Region`](Region.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateCountry
+
+`Protected` **validateCountry**(`code`, `regionId`): `Promise`<[`Country`](Country.mdx)\>
+
+Validates a country code. Will normalize the code before checking for
+existence.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "code",
+    "type": "`string`",
+    "description": "a 2 digit alphanumeric ISO country code",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "the id of the current region to check against",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Country`](Country.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Country`](Country.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the validated Country",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateCurrency
+
+`Protected` **validateCurrency**(`currencyCode`): `Promise`<`void`\>
+
+Validates a currency code. Will throw if the currency code doesn't exist.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "currencyCode",
+    "type": "`string`",
+    "description": "an ISO currency code",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "void",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Throws
+
+if the provided currency code is invalid
+
+___
+
+### validateFields
+
+`Protected` **validateFields**<`T`\>(`regionData`, `id?`): `Promise`<`DeepPartial`<[`Region`](Region.mdx)\>\>
+
+Validates fields for creation and updates. If the region already exists
+the id can be passed to check that country updates are allowed.
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "[`UpdateRegionInput`](../types/UpdateRegionInput.mdx) \\| [`CreateRegionInput`](../types/CreateRegionInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "regionData",
+    "type": "[`Omit`](../types/Omit.mdx)<`T`, ``\"metadata\"`` \\| ``\"currency_code\"``\\>",
+    "description": "the region data to validate",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`T` extends [`UpdateRegionInput`](../types/UpdateRegionInput.mdx) ? `string` : `undefined`",
+    "description": "optional id of the region to check against",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`DeepPartial`<[`Region`](Region.mdx)\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`DeepPartial`<[`Region`](Region.mdx)\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the validated region data",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateTaxRate
+
+`Protected` **validateTaxRate**(`taxRate`): `void`
+
+Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "taxRate",
+    "type": "`number`",
+    "description": "a number representing the tax rate of the region",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "void",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Throws
+
+if the tax rate isn't number between 0-100
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`RegionService`](RegionService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`RegionService`](RegionService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "RegionService",
+    "type": "[`RegionService`](RegionService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

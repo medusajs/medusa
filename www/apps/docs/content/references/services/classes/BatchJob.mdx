@@ -1,0 +1,243 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# BatchJob
+
+A Batch Job indicates an asynchronus task stored in the Medusa backend. Its status determines whether it has been executed or not.
+
+## Constructors
+
+### constructor
+
+**new BatchJob**()
+
+A Batch Job indicates an asynchronus task stored in the Medusa backend. Its status determines whether it has been executed or not.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "canceled_at",
+    "type": "`Date`",
+    "description": "The date of the concellation.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "completed_at",
+    "type": "`Date`",
+    "description": "The date of the completion.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "confirmed_at",
+    "type": "`Date`",
+    "description": "The date when the confirmation has been done.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_by",
+    "type": "``null`` \\| `string`",
+    "description": "The unique identifier of the user that created the batch job.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_by_user",
+    "type": "[`User`](User.mdx)",
+    "description": "The details of the user that created the batch job.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "``null`` \\| `Date`",
+    "description": "The date with timezone at which the resource was deleted.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "dry_run",
+    "type": "`boolean`",
+    "description": "Specify if the job must apply the modifications or not.",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "failed_at",
+    "type": "`Date`",
+    "description": "The date when the job failed.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The unique identifier for the batch job.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "pre_processed_at",
+    "type": "`Date`",
+    "description": "The date from which the job has been pre-processed.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "processing_at",
+    "type": "`Date`",
+    "description": "The date the job is processing at.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "result",
+    "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../types/BatchJobResultError.mdx))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../types/BatchJobResultStatDescriptor.mdx)[]  } & Record<`string`, `unknown`\\>",
+    "description": "The result of the batch job.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "[`BatchJobStatus`](../enums/BatchJobStatus.mdx)",
+    "description": "The status of the batch job.",
+    "optional": false,
+    "defaultValue": "created",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string`",
+    "description": "The type of batch job.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was last updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### loadStatus
+
+**loadStatus**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### toJSON
+
+**toJSON**(): [`BatchJob`](BatchJob.mdx)
+
+A Batch Job indicates an asynchronus task stored in the Medusa backend. Its status determines whether it has been executed or not.
+
+#### Returns
+
+[`BatchJob`](BatchJob.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "BatchJob",
+    "type": "[`BatchJob`](BatchJob.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

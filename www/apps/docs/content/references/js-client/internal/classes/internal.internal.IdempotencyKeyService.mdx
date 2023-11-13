@@ -101,17 +101,7 @@ transaction manager is created.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
@@ -129,17 +119,7 @@ transaction manager is created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -170,49 +150,12 @@ identifier.
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`CreateIdempotencyKeyInput`](../../modules/internal.mdx#createidempotencykeyinput)",
+    "type": "[`CreateIdempotencyKeyInput`](../types/internal.CreateIdempotencyKeyInput.mdx)",
     "description": "payload of request to create idempotency key for",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "idempotency_key",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "request_method",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "request_params",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "request_path",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -226,17 +169,7 @@ identifier.
     "defaultValue": "",
     "description": "the created idempotency key",
     "expandable": false,
-    "children": [
-      {
-        "name": "IdempotencyKey",
-        "type": "[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -297,17 +230,7 @@ Execute the initial steps in a idempotent request.
     "defaultValue": "",
     "description": "the existing or created idempotency key",
     "expandable": false,
-    "children": [
-      {
-        "name": "IdempotencyKey",
-        "type": "[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -341,17 +264,7 @@ Locks an idempotency.
     "defaultValue": "",
     "description": "result of the update operation",
     "expandable": false,
-    "children": [
-      {
-        "name": "IdempotencyKey",
-        "type": "[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -366,7 +279,7 @@ Retrieves an idempotency key
 <ParameterTypes parameters={[
   {
     "name": "idempotencyKeyOrSelector",
-    "type": "`string` \\| [`Selector`](../modules/internal.internal.mdx#selector)<[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)\\>",
+    "type": "`string` \\| [`Selector`](../types/internal.internal.Selector.mdx)<[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)\\>",
     "description": "key or selector to retrieve",
     "optional": false,
     "defaultValue": "",
@@ -385,17 +298,7 @@ Retrieves an idempotency key
     "defaultValue": "",
     "description": "idempotency key",
     "expandable": false,
-    "children": [
-      {
-        "name": "IdempotencyKey",
-        "type": "[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -470,17 +373,7 @@ Locks an idempotency.
     "defaultValue": "",
     "description": "result of the update operation",
     "expandable": false,
-    "children": [
-      {
-        "name": "IdempotencyKey",
-        "type": "[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -540,22 +433,12 @@ always consist of 2 or more of these phases. The required phases are
   },
   {
     "name": "callback",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<[`IdempotencyCallbackResult`](../../modules/internal.mdx#idempotencycallbackresult)\\>",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<[`IdempotencyCallbackResult`](../types/internal.IdempotencyCallbackResult.mdx)\\>",
     "description": "functionality to execute within the phase",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<[`IdempotencyCallbackResult`](../../modules/internal.mdx#idempotencycallbackresult)\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -569,16 +452,6 @@ always consist of 2 or more of these phases. The required phases are
     "defaultValue": "",
     "description": "new updated idempotency key",
     "expandable": false,
-    "children": [
-      {
-        "name": "IdempotencyKey",
-        "type": "[`IdempotencyKey`](internal.internal.IdempotencyKey.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

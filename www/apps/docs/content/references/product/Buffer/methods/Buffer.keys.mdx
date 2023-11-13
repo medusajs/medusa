@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `buf` keys (indices).
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('buffer');
 
@@ -40,6 +40,7 @@ for (const key of buf.keys()) {
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": [
       {
         "name": "number",
@@ -47,6 +48,7 @@ for (const key of buf.keys()) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       }
     ]

@@ -221,7 +221,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsRes`](../internal/types/internal.AdminInventoryItemsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details.",
@@ -237,7 +237,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[`InventoryItemDTO`](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -528,7 +528,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsRes`](../internal/types/internal.AdminInventoryItemsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "the inventory item's details.",
@@ -544,7 +544,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[`InventoryItemDTO`](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -767,7 +767,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "The deletion operation's details.",
@@ -1023,7 +1023,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsRes`](../internal/types/internal.AdminInventoryItemsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "the inventory item's details.",
@@ -1039,7 +1039,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[`InventoryItemDTO`](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -1417,7 +1417,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsListWithVariantsAndLocationLevelsRes`](../modules/internal.mdx#admininventoryitemslistwithvariantsandlocationlevelsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsListWithVariantsAndLocationLevelsRes`](../internal/types/internal.AdminInventoryItemsListWithVariantsAndLocationLevelsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "The list of inventory items with pagination fields.",
@@ -1425,7 +1425,7 @@ medusa.admin.inventoryItems
     "children": [
       {
         "name": "AdminInventoryItemsListWithVariantsAndLocationLevelsRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `inventory_items`: [`DecoratedInventoryItemDTO`](../modules/internal.mdx#decoratedinventoryitemdto)[]  }",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `inventory_items`: [`DecoratedInventoryItemDTO`](../internal/types/internal.DecoratedInventoryItemDTO.mdx)[]  }",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -1460,7 +1460,7 @@ medusa.admin.inventoryItems
           },
           {
             "name": "inventory_items",
-            "type": "[`DecoratedInventoryItemDTO`](../modules/internal.mdx#decoratedinventoryitemdto)[]",
+            "type": "[`DecoratedInventoryItemDTO`](../internal/types/internal.DecoratedInventoryItemDTO.mdx)[]",
             "description": "an array of Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -1630,7 +1630,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "location_levels",
-                "type": "[`InventoryLevelDTO`](../modules/internal.mdx#inventoryleveldto)[]",
+                "type": "[`InventoryLevelDTO`](../internal/types/internal.InventoryLevelDTO.mdx)[]",
                 "description": "An array of location level details",
                 "optional": true,
                 "defaultValue": "",
@@ -1756,7 +1756,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsLocationLevelsRes`](../modules/internal.mdx#admininventoryitemslocationlevelsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsLocationLevelsRes`](../internal/types/internal.AdminInventoryItemsLocationLevelsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details and list of location levels.",
@@ -1789,7 +1789,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "location_levels",
-                "type": "[`InventoryLevelDTO`](../modules/internal.mdx#inventoryleveldto)[]",
+                "type": "[`InventoryLevelDTO`](../internal/types/internal.InventoryLevelDTO.mdx)[]",
                 "description": "List of stock levels at a given location",
                 "optional": false,
                 "defaultValue": "",
@@ -1879,7 +1879,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsRes`](../internal/types/internal.AdminInventoryItemsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details.",
@@ -1895,7 +1895,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[`InventoryItemDTO`](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -2275,7 +2275,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsRes`](../internal/types/internal.AdminInventoryItemsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details.",
@@ -2291,7 +2291,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[`InventoryItemDTO`](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -2581,7 +2581,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminInventoryItemsRes`](../internal/types/internal.AdminInventoryItemsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "the inventory item's details.",
@@ -2597,7 +2597,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[`InventoryItemDTO`](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",

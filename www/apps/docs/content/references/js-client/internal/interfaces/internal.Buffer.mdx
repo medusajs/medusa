@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "buffer",
-    "type": "[`ArrayBufferLike`](../../modules/internal.mdx#arraybufferlike)",
+    "type": "[`ArrayBufferLike`](../types/internal.ArrayBufferLike.mdx)",
     "description": "The ArrayBuffer instance referenced by the array.",
     "optional": false,
     "defaultValue": "",
@@ -79,17 +79,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -446,26 +436,7 @@ for (const pair of buf.entries()) {
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -540,17 +511,7 @@ Determines whether all the members of an array satisfy the specified test.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thisArg",
@@ -665,7 +626,7 @@ console.log(buf.fill('zz', 'hex'));
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "The encoding for `value` if `value` is a string.",
     "optional": true,
     "defaultValue": "",
@@ -708,17 +669,7 @@ Returns the elements of an array that meet the condition specified in a callback
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thisArg",
@@ -762,17 +713,7 @@ otherwise.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thisArg",
@@ -816,17 +757,7 @@ otherwise.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thisArg",
@@ -869,17 +800,7 @@ Performs the specified action for each element in an array.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thisArg",
@@ -956,7 +877,7 @@ console.log(buf.includes('this', 4));
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "If `value` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",
@@ -1072,7 +993,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`.",
     "optional": true,
     "defaultValue": "",
@@ -1166,17 +1087,7 @@ for (const key of buf.keys()) {
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1272,7 +1183,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`.",
     "optional": true,
     "defaultValue": "",
@@ -1316,17 +1227,7 @@ contains the results.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thisArg",
@@ -2871,17 +2772,7 @@ call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2911,17 +2802,7 @@ call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initialValue",
@@ -2964,17 +2845,7 @@ call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `U`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initialValue",
@@ -3011,17 +2882,7 @@ argument in the next call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3051,17 +2912,7 @@ argument in the next call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initialValue",
@@ -3104,17 +2955,7 @@ argument in the next call to the callback function.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `U`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initialValue",
@@ -3165,17 +3006,7 @@ Sets a value or an array of values.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "length",
-        "type": "`number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "offset",
@@ -3295,17 +3126,7 @@ Determines whether the specified callback function returns true for any element 
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thisArg",
@@ -3348,17 +3169,7 @@ Sorts an array.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`a`: `number`, `b`: `number`) => `number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3748,7 +3559,7 @@ console.log(buf2.toString(undefined, 0, 3));
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "The character encoding to use.",
     "optional": true,
     "defaultValue": "",
@@ -3858,17 +3669,7 @@ for (const value of buf) {
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3918,7 +3719,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "The character encoding of `string`.",
     "optional": true,
     "defaultValue": "",
@@ -3970,7 +3771,7 @@ v0.1.90
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4027,7 +3828,7 @@ v0.1.90
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
