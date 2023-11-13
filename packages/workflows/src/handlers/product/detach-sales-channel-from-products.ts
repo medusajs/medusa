@@ -59,7 +59,7 @@ export async function detachSalesChannelFromProducts({
         })
       )
 
-      await remoteLink.remove(links)
+      await remoteLink.delete(links)
     }
 
     return
