@@ -1,6 +1,6 @@
 import { BaseFilterable } from "../../dal"
 import { RuleTypeDTO } from "./rule-type"
-import { PriceListDTO } from "./price-list"
+import { PriceListDTO, PriceListRuleValueDTO } from "./price-list"
 
 export interface PriceListRuleDTO {
   id: string
@@ -8,6 +8,7 @@ export interface PriceListRuleDTO {
   priority: number
   rule_type: RuleTypeDTO
   price_list: PriceListDTO
+  price_list_rule_values?: PriceListRuleValueDTO[]
 }
 
 export interface CreatePriceListRuleDTO {

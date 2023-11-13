@@ -111,6 +111,11 @@ export interface FilterablePriceListRuleValueProps
 //   value: string
 //   price_list_rule_id: string
 // }
+// export interface PriceListRuleValueDTO {
+//   id: string
+//   value: string
+//   price_list_rule: PriceListRuleDTO
+// }
 
 export interface AddPriceListPricesDTO {
   priceListId: string
