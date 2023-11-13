@@ -5,6 +5,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   ManyToMany,
   OneToMany,
   OptionalProps,
@@ -28,6 +29,9 @@ export default class PriceList {
     | "number_rules"
     | "starts_at"
     | "ends_at"
+    | "created_at"
+    | "updated_at"
+    | "deleted_at"
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -35,23 +39,26 @@ export default class PriceList {
   @Property({ columnType: "text" })
   title: string
 
+  @Property({ columnType: "text" })
+  description: string
+
   @Enum({ items: () => PriceListStatus, default: PriceListStatus.DRAFT })
-  status!: PriceListStatus
+  status?: PriceListStatus
 
   @Enum({ items: () => PriceListType, default: PriceListType.SALE })
-  type!: PriceListType
+  type?: PriceListType
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  starts_at: Date | null
+  starts_at?: Date | null
 
   @Property({
     columnType: "timestamptz",
     nullable: true,
   })
-  ends_at: Date | null
+  ends_at?: Date | null
 
   @OneToMany(() => PriceSetMoneyAmount, (psma) => psma.price_list, {
     cascade: [Cascade.REMOVE],
@@ -73,8 +80,27 @@ export default class PriceList {
   @Property({ columnType: "integer", default: 0 })
   number_rules?: number
 
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  created_at?: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+    defaultRaw: "now()",
+  })
+  updated_at?: Date
+
+  @Index({ name: "IDX_price_list_deleted_at" })
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at?: Date
+
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "pset")
+    this.id = generateEntityId(this.id, "plist")
   }
 }

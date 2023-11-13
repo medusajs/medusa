@@ -2,10 +2,10 @@ import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
-import { createPriceLists } from "../../../__fixtures__/price-list"
-import { createRuleTypes } from "../../../__fixtures__/rule-type"
 import { initialize } from "../../../../src"
+import { createPriceLists } from "../../../__fixtures__/price-list"
+import { createPriceListRules } from "../../../__fixtures__/price-list-rules"
+import { createRuleTypes } from "../../../__fixtures__/rule-type"
 
 jest.setTimeout(30000)
 
@@ -36,7 +36,7 @@ describe("PriceListRule Service", () => {
   })
 
   describe("list", () => {
-    it("list priceListRules", async () => {
+    it("should list priceListRules", async () => {
       const priceListRuleResult = await service.listPriceListRules()
 
       expect(priceListRuleResult).toEqual([
@@ -49,7 +49,7 @@ describe("PriceListRule Service", () => {
       ])
     })
 
-    it("list priceListRules by pricelist id", async () => {
+    it("should list priceListRules by pricelist id", async () => {
       const priceListRuleResult = await service.listPriceListRules({
         id: ["price-list-rule-1"],
       })

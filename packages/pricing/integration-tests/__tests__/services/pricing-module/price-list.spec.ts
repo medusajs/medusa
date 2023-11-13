@@ -184,8 +184,9 @@ describe("PriceList Service", () => {
       const [created] = await service.createPriceLists([
         {
           title: "test",
-          starts_at: "10/01/2023" as unknown as Date,
-          ends_at: "10/30/2023" as unknown as Date,
+          description: "test",
+          starts_at: "10/01/2023",
+          ends_at: "10/30/2023",
           rules: {
             customer_group_id: [
               "vip-customer-group-id",
@@ -207,7 +208,7 @@ describe("PriceList Service", () => {
       await service.updatePriceLists([
         {
           id: created.id,
-          starts_at: updateDate,
+          starts_at: updateDate.toISOString(),
           rules: {
             new_rule: ["new-rule-value"],
           },
@@ -252,7 +253,7 @@ describe("PriceList Service", () => {
               }),
             }),
           ]),
-          price_list_rules: [
+          price_list_rules: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
               rule_type: expect.objectContaining({
@@ -266,7 +267,7 @@ describe("PriceList Service", () => {
                 }),
               ],
             }),
-          ],
+          ]),
         })
       )
     })
@@ -297,8 +298,9 @@ describe("PriceList Service", () => {
       const [created] = await service.createPriceLists([
         {
           title: "test",
-          starts_at: "10/01/2023" as unknown as Date,
-          ends_at: "10/30/2023" as unknown as Date,
+          description: "test",
+          starts_at: "10/01/2023",
+          ends_at: "10/30/2023",
           rules: {
             customer_group_id: [
               "vip-customer-group-id",

@@ -4,6 +4,7 @@ import {
   PriceSetMoneyAmountDTO,
   RemoteQueryFunction,
 } from "@medusajs/types"
+
 import {
   FlagRouter,
   MedusaV2Flag,
@@ -11,6 +12,7 @@ import {
   removeNullish,
 } from "@medusajs/utils"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
+
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -274,6 +276,8 @@ class PricingService extends TransactionBaseService {
 
           pricingResult.original_price = calculatedPrice?.original_amount
           pricingResult.calculated_price = calculatedPrice?.calculated_amount
+          pricingResult.calculated_price_type =
+            calculatedPrice?.calculated_price?.price_list_type
         }
       }
 
@@ -290,7 +294,10 @@ class PricingService extends TransactionBaseService {
     }[],
     context: PricingContext
   ): Promise<Map<string, ProductVariantPricing>> {
-    if (this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+    if (
+      this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key) &&
+      this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
+    ) {
       return await this.getProductVariantPricingModulePricing_(data, context)
     }
 
@@ -298,7 +305,7 @@ class PricingService extends TransactionBaseService {
       .withTransaction(this.activeManager_)
       .calculateVariantPrice(data, context.price_selection)
 
-    const pricingResultMap = new Map()
+    const pricingResultMap = new Map<string, ProductVariantPricing>()
 
     for (const [variantId, pricing] of variantsPricing.entries()) {
       const pricingResult: ProductVariantPricing = {
@@ -680,6 +687,7 @@ class PricingService extends TransactionBaseService {
         {
           relations: [
             "money_amount",
+            "price_list",
             "price_set",
             "price_rules",
             "price_rules.rule_type",
@@ -703,6 +711,7 @@ class PricingService extends TransactionBaseService {
         const moneyAmount = {
           ...priceSetMoneyAmount.money_amount,
           region_id: null as null | string,
+          price_list_id: priceSetMoneyAmount.price_list?.id,
         }
 
         if (regionId) {
