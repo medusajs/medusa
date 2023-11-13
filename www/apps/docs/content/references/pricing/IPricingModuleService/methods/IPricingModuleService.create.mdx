@@ -22,34 +22,30 @@ This method is used to create a new price set.
 To create a default price set, don't pass any rules. For example:
 
 ```ts
-import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+import { initialize as initializePricingModule } from "@medusajs/pricing"
 
-async function createPriceSet () {
+async function createPriceSet() {
   const pricingService = await initializePricingModule()
 
-  const priceSet = await pricingService.create(
-    {
-      rules: [],
-      prices: [
-        {
-          amount: 500,
-          currency_code: "USD",
-          min_quantity: 0,
-          max_quantity: 4,
-          rules: {},
-        },
-        {
-          amount: 400,
-          currency_code: "USD",
-          min_quantity: 5,
-          max_quantity: 10,
-          rules: {},
-        },
-      ],
-    },
-  )
+  const priceSet = await pricingService.create({
+    rules: [],
+    prices: [
+      {
+        amount: 500,
+        currency_code: "USD",
+        min_quantity: 0,
+        max_quantity: 4,
+        rules: {},
+      },
+      {
+        amount: 400,
+        currency_code: "USD",
+        min_quantity: 5,
+        max_quantity: 10,
+        rules: {},
+      },
+    ],
+  })
 
   // do something with the price set or return it
 }
@@ -58,42 +54,38 @@ async function createPriceSet () {
 To create a price set and associate it with rule types:
 
 ```ts
-import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+import { initialize as initializePricingModule } from "@medusajs/pricing"
 
-async function createPriceSet () {
+async function createPriceSet() {
   const pricingService = await initializePricingModule()
 
-  const priceSet = await pricingService.create(
-    {
-      rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
-      prices: [
-        {
-          amount: 300,
-          currency_code: "EUR",
-          rules: {
-            region_id: "PL",
-            city: "krakow"
-          },
+  const priceSet = await pricingService.create({
+    rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
+    prices: [
+      {
+        amount: 300,
+        currency_code: "EUR",
+        rules: {
+          region_id: "PL",
+          city: "krakow",
         },
-        {
-          amount: 400,
-          currency_code: "EUR",
-          rules: {
-            region_id: "PL"
-          },
+      },
+      {
+        amount: 400,
+        currency_code: "EUR",
+        rules: {
+          region_id: "PL",
         },
-        {
-          amount: 450,
-          currency_code: "EUR",
-          rules: {
-            city: "krakow"
-          },
-        }
-      ],
-    },
-  )
+      },
+      {
+        amount: 450,
+        currency_code: "EUR",
+        rules: {
+          city: "krakow",
+        },
+      },
+    ],
+  })
 
   // do something with the price set or return it
 }
@@ -108,6 +100,7 @@ async function createPriceSet () {
     "description": "The attributes of the price set to create.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "prices",
@@ -115,6 +108,7 @@ async function createPriceSet () {
         "description": "The prices to create and add to this price set.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "amount",
@@ -122,6 +116,7 @@ async function createPriceSet () {
             "description": "The amount of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -130,6 +125,7 @@ async function createPriceSet () {
             "description": "The currency of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -138,6 +134,7 @@ async function createPriceSet () {
             "description": "The currency code of this money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -146,6 +143,7 @@ async function createPriceSet () {
             "description": "The ID of the money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -154,6 +152,7 @@ async function createPriceSet () {
             "description": "The maximum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -162,6 +161,7 @@ async function createPriceSet () {
             "description": "The minimum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -170,6 +170,7 @@ async function createPriceSet () {
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -180,7 +181,18 @@ async function createPriceSet () {
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "rule_attribute",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -190,6 +202,7 @@ async function createPriceSet () {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -197,6 +210,7 @@ async function createPriceSet () {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -205,6 +219,7 @@ async function createPriceSet () {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -213,6 +228,7 @@ async function createPriceSet () {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -221,6 +237,7 @@ async function createPriceSet () {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -229,6 +246,7 @@ async function createPriceSet () {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -244,6 +262,7 @@ async function createPriceSet () {
     "optional": false,
     "defaultValue": "",
     "description": "The created price set.",
+    "expandable": false,
     "children": [
       {
         "name": "id",
@@ -251,6 +270,7 @@ async function createPriceSet () {
         "description": "The ID of the price set.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -259,6 +279,7 @@ async function createPriceSet () {
         "description": "The prices that belong to this price set.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "amount",
@@ -266,6 +287,7 @@ async function createPriceSet () {
             "description": "The price of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -274,6 +296,7 @@ async function createPriceSet () {
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -282,6 +305,7 @@ async function createPriceSet () {
             "description": "The currency code of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -290,6 +314,7 @@ async function createPriceSet () {
             "description": "The ID of the money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -298,6 +323,7 @@ async function createPriceSet () {
             "description": "The maximum quantity required to be purchased for this price to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -306,6 +332,7 @@ async function createPriceSet () {
             "description": "The minimum quantity required to be purchased for this price to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -316,6 +343,7 @@ async function createPriceSet () {
         "description": "The rule types applied on this price set.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "default_priority",
@@ -323,6 +351,7 @@ async function createPriceSet () {
             "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -331,6 +360,7 @@ async function createPriceSet () {
             "description": "The ID of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -339,6 +369,7 @@ async function createPriceSet () {
             "description": "The display name of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -347,6 +378,7 @@ async function createPriceSet () {
             "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -364,11 +396,9 @@ This method is used to create multiple price sets.
 To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
 
 ```ts
-import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+import { initialize as initializePricingModule } from "@medusajs/pricing"
 
-async function createPriceSets () {
+async function createPriceSets() {
   const pricingService = await initializePricingModule()
 
   const priceSets = await pricingService.create([
@@ -391,11 +421,9 @@ async function createPriceSets () {
 To create price sets and associate them with rule types:
 
 ```ts
-import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+import { initialize as initializePricingModule } from "@medusajs/pricing"
 
-async function createPriceSets () {
+async function createPriceSets() {
   const pricingService = await initializePricingModule()
 
   const priceSets = await pricingService.create([
@@ -407,7 +435,7 @@ async function createPriceSets () {
           currency_code: "EUR",
           rules: {
             region_id: "PL",
-            city: "krakow"
+            city: "krakow",
           },
         },
         {
@@ -416,16 +444,16 @@ async function createPriceSets () {
           min_quantity: 0,
           max_quantity: 4,
           rules: {
-            region_id: "PL"
+            region_id: "PL",
           },
         },
         {
           amount: 450,
           currency_code: "EUR",
           rules: {
-            city: "krakow"
+            city: "krakow",
           },
-        }
+        },
       ],
     },
   ])
@@ -443,6 +471,7 @@ async function createPriceSets () {
     "description": "The price sets to create.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "prices",
@@ -450,6 +479,7 @@ async function createPriceSets () {
         "description": "The prices to create and add to this price set.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "amount",
@@ -457,6 +487,7 @@ async function createPriceSets () {
             "description": "The amount of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -465,6 +496,7 @@ async function createPriceSets () {
             "description": "The currency of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -473,6 +505,7 @@ async function createPriceSets () {
             "description": "The currency code of this money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -481,6 +514,7 @@ async function createPriceSets () {
             "description": "The ID of the money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -489,6 +523,7 @@ async function createPriceSets () {
             "description": "The maximum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -497,6 +532,7 @@ async function createPriceSets () {
             "description": "The minimum quantity required to be purchased for this money amount to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -505,6 +541,7 @@ async function createPriceSets () {
             "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -515,7 +552,18 @@ async function createPriceSets () {
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "rule_attribute",
+            "type": "`string`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       }
     ]
   },
@@ -525,6 +573,7 @@ async function createPriceSets () {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -532,6 +581,7 @@ async function createPriceSets () {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -540,6 +590,7 @@ async function createPriceSets () {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -548,6 +599,7 @@ async function createPriceSets () {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -556,6 +608,7 @@ async function createPriceSets () {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -564,6 +617,7 @@ async function createPriceSets () {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -579,6 +633,7 @@ async function createPriceSets () {
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price sets.",
+    "expandable": false,
     "children": [
       {
         "name": "PriceSetDTO[]",
@@ -586,6 +641,7 @@ async function createPriceSets () {
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "id",
@@ -593,6 +649,7 @@ async function createPriceSets () {
             "description": "The ID of the price set.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -601,6 +658,7 @@ async function createPriceSets () {
             "description": "The prices that belong to this price set.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -609,6 +667,7 @@ async function createPriceSets () {
             "description": "The rule types applied on this price set.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

@@ -153,7 +153,7 @@ delete:
   operationId: DeleteDiscountsDiscountConditionsCondition
   summary: Delete a Condition
   description: >-
-    Deletes a Discount Condition. This does not delete resources associated to
+    Delete a Discount Condition. This does not delete resources associated to
     the discount condition.
   x-authenticated: true
   parameters:

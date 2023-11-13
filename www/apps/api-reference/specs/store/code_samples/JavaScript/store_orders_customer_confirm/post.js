@@ -9,4 +9,4 @@ medusa.orders.confirmRequest(
 })
 .catch(() => {
   // an error occurred
-});
+})

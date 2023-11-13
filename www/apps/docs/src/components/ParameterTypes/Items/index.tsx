@@ -1,8 +1,21 @@
-import { DetailsSummary, InlineCode, MarkdownContent } from "docs-ui"
+import {
+  Badge,
+  DetailsSummary,
+  ExpandableNotice,
+  FeatureFlagNotice,
+  InlineCode,
+  MarkdownContent,
+} from "docs-ui"
 import React from "react"
 import Details from "../../../theme/Details"
 import clsx from "clsx"
 import { Parameter } from ".."
+import {
+  ArrowDownLeftMini,
+  ArrowsPointingOutMini,
+  TriangleRightMini,
+} from "@medusajs/icons"
+import IconFlagMini from "../../../theme/Icon/FlagMini"
 
 type ParameterTypesItemsProps = {
   parameters: Parameter[]
@@ -13,17 +26,48 @@ const ParameterTypesItems = ({
   parameters,
   level = 1,
 }: ParameterTypesItemsProps) => {
+  function getGroupName() {
+    switch (level) {
+      case 1:
+        return "group/parameterOne"
+      case 2:
+        return "group/parameterTwo"
+      case 3:
+        return "group/parameterThree"
+      case 4:
+        return "group/parameterFour"
+    }
+  }
+  function getBorderForGroupName() {
+    switch (level) {
+      case 1:
+        return "group-open/parameterOne:border-solid group-open/parameterOne:border-0 group-open/parameterOne:border-b"
+      case 2:
+        return "group-open/parameterTwo:border-solid group-open/parameterTwo:border-0 group-open/parameterTwo:border-b"
+      case 3:
+        return "group-open/parameterThree:border-solid group-open/parameterThree:border-0 group-open/parameterThree:border-b"
+      case 4:
+        return "group-open/parameterFour:border-solid group-open/parameterFour:border-0 group-open/parameterFour:border-b"
+    }
+  }
+  function getRotateForGroupName() {
+    switch (level) {
+      case 1:
+        return "group-open/parameterOne:rotate-90"
+      case 2:
+        return "group-open/parameterTwo:rotate-90"
+      case 3:
+        return "group-open/parameterThree:rotate-90"
+      case 4:
+        return "group-open/parameterFour:rotate-90"
+    }
+  }
   function getItemClassNames(details = true) {
     return clsx(
-      level < 3 && [
-        "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t",
-        "first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0",
-      ],
-      details && level == 1 && `group/parameter`,
-      !details &&
-        level == 1 &&
-        `group-open/parameter:border-solid group-open/parameter:border-0 group-open/parameter:border-b`,
-      level >= 3 && "!border-0"
+      "odd:[&:not(:first-child):not(:last-child)]:!border-y last:not(:first-child):!border-t",
+      "first:!border-t-0 first:not(:last-child):!border-b last:!border-b-0 even:!border-y-0",
+      details && getGroupName(),
+      !details && getBorderForGroupName()
     )
   }
   function getSummary(parameter: Parameter, key: number, nested = true) {
@@ -48,16 +92,15 @@ const ParameterTypesItems = ({
           ) : undefined
         }
         expandable={parameter.children?.length > 0}
+        hideExpandableIcon={true}
         className={clsx(
           getItemClassNames(false),
-          level < 3 && "!p-1",
-          !nested && "cursor-default",
-          level >= 3 && [
-            "pl-1 mt-1",
-            "mx-1 relative before:content-[''] before:h-full before:w-0.25",
-            "before:absolute before:top-0 before:left-0",
-            "before:bg-medusa-fg-muted before:rounded-full",
-          ]
+          "py-1 pr-1",
+          level === 1 && "pl-1",
+          level === 2 && "pl-3",
+          level === 3 && "pl-[120px]",
+          level === 4 && "pl-[160px]",
+          !nested && "cursor-default"
         )}
         onClick={(e) => {
           const targetElm = e.target as HTMLElement
@@ -68,35 +111,63 @@ const ParameterTypesItems = ({
           }
         }}
       >
-        <div className="flex gap-0.75">
-          <InlineCode>{parameter.name}</InlineCode>
-          <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
-            <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
-              {parameter.type}
-            </MarkdownContent>
-          </span>
-          {parameter.optional === false && (
-            <span
+        <div className="flex gap-0.5">
+          {nested && (
+            <TriangleRightMini
               className={clsx(
-                "text-compact-x-small-plus uppercase",
-                "text-medusa-fg-error"
+                "text-medusa-fg-subtle transition-transform",
+                getRotateForGroupName()
               )}
-            >
-              Required
-            </span>
+            />
           )}
+          {!nested && level > 1 && (
+            <ArrowDownLeftMini
+              className={clsx("text-medusa-fg-subtle flip-y")}
+            />
+          )}
+          <div className="flex gap-0.75 flex-wrap">
+            <InlineCode>{parameter.name}</InlineCode>
+            <span className="font-monospace text-compact-small-plus text-medusa-fg-subtle">
+              <MarkdownContent allowedElements={["a"]} unwrapDisallowed={true}>
+                {parameter.type}
+              </MarkdownContent>
+            </span>
+            {parameter.optional === false && (
+              <span
+                className={clsx(
+                  "text-compact-x-small-plus uppercase",
+                  "text-medusa-fg-error"
+                )}
+              >
+                Required
+              </span>
+            )}
+            {parameter.featureFlag && (
+              <FeatureFlagNotice
+                featureFlag={parameter.featureFlag}
+                type="parameter"
+                badgeClassName="!p-0 leading-none"
+                badgeContent={
+                  <IconFlagMini className="!text-medusa-tag-green-text" />
+                }
+              />
+            )}
+            {parameter.expandable && (
+              <ExpandableNotice
+                type="method"
+                link="https://docs.medusajs.com/js-client/overview#expanding-fields"
+                badgeClassName="!p-0 leading-none"
+                badgeContent={<ArrowsPointingOutMini />}
+              />
+            )}
+          </div>
         </div>
       </DetailsSummary>
     )
   }
 
   return (
-    <div
-      className={clsx(
-        level > 1 && "bg-docs-bg-surface rounded",
-        level >= 3 && "mb-1"
-      )}
-    >
+    <div>
       {parameters.map((parameter, key) => {
         return (
           <>

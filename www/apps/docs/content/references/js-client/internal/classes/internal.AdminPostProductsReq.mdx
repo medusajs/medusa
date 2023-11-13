@@ -1,0 +1,238 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostProductsReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "categories",
+    "type": "[`ProductProductCategoryReq`](internal.ProductProductCategoryReq.mdx)[]",
+    "description": "Product categories to add the Product to.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "featureFlag": "product_categories",
+    "children": []
+  },
+  {
+    "name": "collection_id",
+    "type": "`string`",
+    "description": "The ID of the Product Collection the Product belongs to.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "description",
+    "type": "`string`",
+    "description": "The description of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountable",
+    "type": "`boolean`",
+    "description": "A flag to indicate if discounts can be applied to the Line Items generated from this Product",
+    "optional": false,
+    "defaultValue": "true",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "handle",
+    "type": "`string`",
+    "description": "A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "height",
+    "type": "`number`",
+    "description": "The height of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "hs_code",
+    "type": "`string`",
+    "description": "The Harmonized System code of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "images",
+    "type": "`string`[]",
+    "description": "An array of images of the Product. Each value in the array is a URL to the image. You can use the upload API Routes to upload the image and obtain a URL.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "is_giftcard",
+    "type": "`boolean`",
+    "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "length",
+    "type": "`number`",
+    "description": "The length of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "material",
+    "type": "`string`",
+    "description": "The material composition of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional set of key-value pairs with additional information.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "mid_code",
+    "type": "`string`",
+    "description": "The Manufacturer Identification code of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`ProductOptionReq`](internal.ProductOptionReq.mdx)[]",
+    "description": "The Options that the Product should have. A new product option will be created for every item in the array.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "origin_country",
+    "type": "`string`",
+    "description": "The country of origin of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sales_channels",
+    "type": "[`ProductSalesChannelReq`](internal.ProductSalesChannelReq.mdx)[]",
+    "description": "Sales channels to associate the Product with.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "[`ProductStatus`](../enums/internal.ProductStatus.mdx)",
+    "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
+    "optional": true,
+    "defaultValue": "draft",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subtitle",
+    "type": "`string`",
+    "description": "The subtitle of the Product",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tags",
+    "type": "[`ProductTagReq`](internal.ProductTagReq.mdx)[]",
+    "description": "Product Tags to associate the Product with.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "thumbnail",
+    "type": "`string`",
+    "description": "The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload API Routes to upload the thumbnail and obtain a URL.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "title",
+    "type": "`string`",
+    "description": "The title of the Product",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "[`ProductTypeReq`](internal.ProductTypeReq.mdx)",
+    "description": "The Product Type to associate the Product with.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variants",
+    "type": "[`ProductVariantReq`](internal.ProductVariantReq.mdx)[]",
+    "description": "An array of Product Variants to create with the Product. Each product variant must have a unique combination of Product Option values.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "weight",
+    "type": "`number`",
+    "description": "The weight of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "width",
+    "type": "`number`",
+    "description": "The width of the Product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

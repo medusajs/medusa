@@ -6,4 +6,4 @@ medusa.admin.auth.createSession({
 })
 .then(({ user }) => {
   console.log(user.id);
-});
+})

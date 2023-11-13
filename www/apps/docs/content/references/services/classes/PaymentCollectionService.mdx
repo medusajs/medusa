@@ -1,0 +1,808 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PaymentCollectionService
+
+## Constructors
+
+### constructor
+
+**new PaymentCollectionService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-23.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerService_",
+    "type": "[`CustomerService`](CustomerService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBusService_",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "paymentCollectionRepository_",
+    "type": "`Repository`<[`PaymentCollection`](PaymentCollection.mdx)\\> & { `getPaymentCollectionIdByPaymentId`: Method getPaymentCollectionIdByPaymentId ; `getPaymentCollectionIdBySessionId`: Method getPaymentCollectionIdBySessionId  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "paymentProviderService_",
+    "type": "[`PaymentProviderService`](PaymentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"payment-collection.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"payment-collection.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PAYMENT_AUTHORIZED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"payment-collection.payment_authorized\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"payment-collection.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### authorizePaymentSessions
+
+**authorizePaymentSessions**(`paymentCollectionId`, `sessionIds`, `context?`): `Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+Authorizes the payment sessions of a payment collection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionId",
+    "type": "`string`",
+    "description": "the id of the payment collection",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sessionIds",
+    "type": "`string`[]",
+    "description": "array of payment session ids to be authorized",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "additional data required by payment providers",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment collection and its payment session.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`data`): `Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+Creates a new payment collection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`CreatePaymentCollectionInput`](../types/CreatePaymentCollectionInput.mdx)",
+    "description": "info to create the payment collection",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment collection created.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`paymentCollectionId`): `Promise`<`undefined` \| [`PaymentCollection`](PaymentCollection.mdx)\>
+
+Deletes a payment collection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionId",
+    "type": "`string`",
+    "description": "the id of the payment collection to be removed",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`undefined` \| [`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`undefined` \\| [`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment collection removed.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isValidTotalAmount
+
+`Private` **isValidTotalAmount**(`total`, `sessionsInput`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "total",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sessionsInput",
+    "type": "[`PaymentCollectionsSessionsBatchInput`](../types/PaymentCollectionsSessionsBatchInput.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### markAsAuthorized
+
+**markAsAuthorized**(`paymentCollectionId`): `Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+Marks a payment collection as authorized bypassing the payment flow.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionId",
+    "type": "`string`",
+    "description": "the id of the payment collection",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment session authorized.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### refreshPaymentSession
+
+**refreshPaymentSession**(`paymentCollectionId`, `sessionId`, `customerId`): `Promise`<[`PaymentSession`](PaymentSession.mdx)\>
+
+Removes and recreate a payment session of a payment collection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionId",
+    "type": "`string`",
+    "description": "the id of the payment collection",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sessionId",
+    "type": "`string`",
+    "description": "the id of the payment session to be replaced",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerId",
+    "type": "`string`",
+    "description": "the id of the customer",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentSession`](PaymentSession.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentSession`](PaymentSession.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the new payment session created.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`paymentCollectionId`, `config?`): `Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+Retrieves a payment collection by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionId",
+    "type": "`string`",
+    "description": "the id of the payment collection",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "description": "the config to retrieve the payment collection",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment collection.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setPaymentSession
+
+**setPaymentSession**(`paymentCollectionId`, `sessionInput`, `customerId`): `Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+Manages a single payment sessions of a payment collection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionId",
+    "type": "`string`",
+    "description": "the id of the payment collection",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sessionInput",
+    "type": "[`PaymentCollectionsSessionsInput`](../types/PaymentCollectionsSessionsInput.mdx)",
+    "description": "object containing payment session info",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerId",
+    "type": "`string`",
+    "description": "the id of the customer",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment collection and its payment session.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setPaymentSessionsBatch
+
+**setPaymentSessionsBatch**(`paymentCollectionOrId`, `sessionsInput`, `customerId`): `Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+Manages multiple payment sessions of a payment collection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionOrId",
+    "type": "`string` \\| [`PaymentCollection`](PaymentCollection.mdx)",
+    "description": "the id of the payment collection",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sessionsInput",
+    "type": "[`PaymentCollectionsSessionsBatchInput`](../types/PaymentCollectionsSessionsBatchInput.mdx)[]",
+    "description": "array containing payment session info",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerId",
+    "type": "`string`",
+    "description": "the id of the customer",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment collection and its payment sessions.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`paymentCollectionId`, `data`): `Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+Updates a payment collection.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentCollectionId",
+    "type": "`string`",
+    "description": "the id of the payment collection to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "`DeepPartial`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "description": "info to be updated",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentCollection`](PaymentCollection.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the payment collection updated.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`PaymentCollectionService`](PaymentCollectionService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PaymentCollectionService`](PaymentCollectionService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "default",
+    "type": "[`PaymentCollectionService`](PaymentCollectionService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

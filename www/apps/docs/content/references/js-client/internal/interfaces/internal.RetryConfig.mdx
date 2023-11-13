@@ -1,0 +1,131 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# RetryConfig
+
+Configuration for the Axios `request` method.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "backoffType",
+    "type": "``\"linear\"`` \\| ``\"static\"`` \\| ``\"exponential\"``",
+    "description": "Backoff Type; 'linear', 'static' or 'exponential'.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "checkRetryAfter",
+    "type": "`boolean`",
+    "description": "Whether to check for 'Retry-After' header in response and use value as delay. Defaults to true.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "currentRetryAttempt",
+    "type": "`number`",
+    "description": "The number of retries already attempted.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "httpMethodsToRetry",
+    "type": "`string`[]",
+    "description": "The HTTP Methods that will be automatically retried. Defaults to ['GET','PUT','HEAD','OPTIONS','DELETE']",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "instance",
+    "type": "[`AxiosInstance`](internal.AxiosInstance.mdx)",
+    "description": "The instance of the axios object to which the interceptor is attached.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maxRetryAfter",
+    "type": "`number`",
+    "description": "Max permitted Retry-After value (in ms) - rejects if greater. Defaults to 5 mins.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maxRetryDelay",
+    "type": "`number`",
+    "description": "Ceiling for calculated delay (in ms) - delay will not exceed this value.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "noResponseRetries",
+    "type": "`number`",
+    "description": "When there is no response, the number of retries to attempt. Defaults to 2.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "onRetryAttempt",
+    "type": "(`err`: [`AxiosError`](internal.AxiosError.mdx)<`any`, `any`\\>) => `void`",
+    "description": "Function to invoke when a retry attempt is made.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retry",
+    "type": "`number`",
+    "description": "The number of times to retry the request. Defaults to 3.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retryDelay",
+    "type": "`number`",
+    "description": "The amount of time to initially delay the retry. Defaults to 100.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shouldRetry",
+    "type": "(`err`: [`AxiosError`](internal.AxiosError.mdx)<`any`, `any`\\>) => `boolean`",
+    "description": "Function to invoke which determines if you should retry",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "statusCodesToRetry",
+    "type": "`number`[][]",
+    "description": "The HTTP response status codes that will automatically be retried. Defaults to: [[100, 199], [429, 429], [500, 599]]",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

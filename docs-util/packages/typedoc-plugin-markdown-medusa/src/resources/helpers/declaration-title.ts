@@ -57,7 +57,9 @@ export default function (theme: MarkdownTheme) {
         this.defaultValue &&
         this.defaultValue !== "..."
       ) {
-        md.push(` = \`${stripLineBreaks(stripComments(this.defaultValue))}\``)
+        md.push(
+          ` = \`${stripLineBreaks(stripComments(`${this.defaultValue}`))}\``
+        )
       }
       return md.join("")
     }

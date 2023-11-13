@@ -1,0 +1,3153 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminRegionsResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminRegionsResource
+
+This class is used to send requests to [Admin Region API Routes](https://docs.medusajs.com/api/admin#regions). All its method
+are available in the JS Client under the `medusa.admin.regions` property.
+
+All methods in this class require [user authentication](AdminAuthResource.mdx#createsession).
+
+Regions are different countries or geographical regions that the commerce store serves customers in.
+Admins can manage these regions, their providers, and more.
+
+Related Guide: [How to manage regions](https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions).
+
+## Methods
+
+### addCountry
+
+Add a country to the list of countries in a region.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .addCountry(regionId, {
+    country_code: "dk",
+  })
+  .then(({ region }) => {
+    console.log(region.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostRegionsRegionCountriesReq`](../internal/classes/internal.AdminPostRegionsRegionCountriesReq.mdx)",
+    "description": "The country to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "country_code",
+        "type": "`string`",
+        "description": "The 2 character ISO code for the Country.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### addFulfillmentProvider
+
+Add a fulfillment provider to the list of fulfullment providers in a region.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .addFulfillmentProvider(regionId, {
+    provider_id: "manual",
+  })
+  .then(({ region }) => {
+    console.log(region.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostRegionsRegionFulfillmentProvidersReq`](../internal/classes/internal.AdminPostRegionsRegionFulfillmentProvidersReq.mdx)",
+    "description": "The fulfillment provider to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the Fulfillment Provider.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### addPaymentProvider
+
+Add a payment provider to the list of payment providers in a region.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .addPaymentProvider(regionId, {
+    provider_id: "manual",
+  })
+  .then(({ region }) => {
+    console.log(region.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostRegionsRegionPaymentProvidersReq`](../internal/classes/internal.AdminPostRegionsRegionPaymentProvidersReq.mdx)",
+    "description": "The payment provider to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the Payment Provider.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### create
+
+Create a region.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .create({
+    name: "Europe",
+    currency_code: "eur",
+    tax_rate: 0,
+    payment_providers: ["manual"],
+    fulfillment_providers: ["manual"],
+    countries: ["DK"],
+  })
+  .then(({ region }) => {
+    console.log(region.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`AdminPostRegionsReq`](../internal/classes/internal.AdminPostRegionsReq.mdx)",
+    "description": "The region to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "countries",
+        "type": "`string`[]",
+        "description": "A list of countries' 2 ISO characters that should be included in the Region.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "The 3 character ISO currency code to use in the Region.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillment_providers",
+        "type": "`string`[]",
+        "description": "A list of Fulfillment Provider IDs that can be used in the Region",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "includes_tax",
+        "type": "`boolean`",
+        "description": "Whether taxes are included in the prices of the region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the Region",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "payment_providers",
+        "type": "`string`[]",
+        "description": "A list of Payment Provider IDs that can be used in the Region",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_code",
+        "type": "`string`",
+        "description": "The tax code of the Region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number`",
+        "description": "The tax rate to use in the Region.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### delete
+
+Delete a region. Associated resources, such as providers or currencies are not deleted. Associated tax rates are deleted.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions.delete(regionId).then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the deletion operation's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### deleteCountry
+
+Delete a country from the list of countries in a region. The country will still be available in the system, and it can be used in other regions.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions.deleteCountry(regionId, "dk").then(({ region }) => {
+  console.log(region.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "country_code",
+    "type": "`string`",
+    "description": "The code of the country to delete from the region.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### deleteFulfillmentProvider
+
+Delete a fulfillment provider from a region. The fulfillment provider will still be available for usage in other regions.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .deleteFulfillmentProvider(regionId, "manual")
+  .then(({ region }) => {
+    console.log(region.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the fulfillment provider to delete from the region.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### deletePaymentProvider
+
+Delete a payment provider from a region. The payment provider will still be available for usage in other regions.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .deletePaymentProvider(regionId, "manual")
+  .then(({ region }) => {
+    console.log(region.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the payment provider to delete from the region.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### list
+
+Retrieve a list of Regions. The regions can be filtered by fields such as `created_at` passed in the `query` parameter. The regions can also be paginated.
+
+#### Example
+
+To list regions:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions.list().then(({ regions, limit, offset, count }) => {
+  console.log(regions.length)
+})
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .list({
+    limit,
+    offset,
+  })
+  .then(({ regions, limit, offset, count }) => {
+    console.log(regions.length)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[`AdminGetRegionsParams`](../internal/classes/internal.AdminGetRegionsParams.mdx)",
+    "description": "Filters and pagination configurations to apply on the retrieved regions.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "created_at",
+        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "description": "Date filters to apply on the regions' `created_at` date.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "gt",
+            "type": "`Date`",
+            "description": "The filtered date must be greater than this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "gte",
+            "type": "`Date`",
+            "description": "The filtered date must be greater than or equal to this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "lt",
+            "type": "`Date`",
+            "description": "The filtered date must be less than this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "lte",
+            "type": "`Date`",
+            "description": "The filtered date must be less than or equal to this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "deleted_at",
+        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "description": "Date filters to apply on the regions' `deleted_at` date.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "gt",
+            "type": "`Date`",
+            "description": "The filtered date must be greater than this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "gte",
+            "type": "`Date`",
+            "description": "The filtered date must be greater than or equal to this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "lt",
+            "type": "`Date`",
+            "description": "The filtered date must be less than this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "lte",
+            "type": "`Date`",
+            "description": "The filtered date must be less than or equal to this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "limit",
+        "type": "`number`",
+        "description": "Limit the number of items returned in the list.",
+        "optional": true,
+        "defaultValue": "50",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "offset",
+        "type": "`number`",
+        "description": "The number of items to skip when retrieving a list.",
+        "optional": true,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "updated_at",
+        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "description": "Date filters to apply on the regions' `updated_at` date.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "gt",
+            "type": "`Date`",
+            "description": "The filtered date must be greater than this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "gte",
+            "type": "`Date`",
+            "description": "The filtered date must be greater than or equal to this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "lt",
+            "type": "`Date`",
+            "description": "The filtered date must be less than this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "lte",
+            "type": "`Date`",
+            "description": "The filtered date must be less than or equal to this value.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsListRes`](../internal/types/internal.AdminRegionsListRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of regions with pagination fields.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsListRes",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `regions`: [`Region`](../internal/classes/internal.Region.mdx)[]  }",
+        "description": "The list of regions with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "regions",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+            "description": "An array of regions details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a region's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions.retrieve(regionId).then(({ region }) => {
+  console.log(region.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieveFulfillmentOptions
+
+Retrieve a list of fulfillment options available in a region.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .retrieveFulfillmentOptions(regionId)
+  .then(({ fulfillment_options }) => {
+    console.log(fulfillment_options.length)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminGetRegionsRegionFulfillmentOptionsRes`](../internal/classes/internal.AdminGetRegionsRegionFulfillmentOptionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of fulfillment options.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminGetRegionsRegionFulfillmentOptionsRes",
+        "type": "[`AdminGetRegionsRegionFulfillmentOptionsRes`](../internal/classes/internal.AdminGetRegionsRegionFulfillmentOptionsRes.mdx)",
+        "optional": false,
+        "defaultValue": "",
+        "description": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Update a region's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.regions
+  .update(regionId, {
+    name: "Europe",
+  })
+  .then(({ region }) => {
+    console.log(region.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The region's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostRegionsRegionReq`](../internal/classes/internal.AdminPostRegionsRegionReq.mdx)",
+    "description": "The attributes to update in the region.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "automatic_taxes",
+        "type": "`boolean`",
+        "description": "If set to `true`, the Medusa backend will automatically calculate taxes for carts in this region. If set to `false`, the taxes must be calculated manually.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "countries",
+        "type": "`string`[]",
+        "description": "A list of countries' 2 ISO characters that should be included in the Region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "currency_code",
+        "type": "`string`",
+        "description": "The 3 character ISO currency code to use in the Region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fulfillment_providers",
+        "type": "`string`[]",
+        "description": "A list of Fulfillment Provider IDs that can be used in the Region",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "gift_cards_taxable",
+        "type": "`boolean`",
+        "description": "If set to `true`, taxes will be applied on gift cards.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "includes_tax",
+        "type": "`boolean`",
+        "description": "Whether taxes are included in the prices of the region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
+        "children": []
+      },
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the Region",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "payment_providers",
+        "type": "`string`[]",
+        "description": "A list of Payment Provider IDs that can be used in the Region",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_code",
+        "type": "`string`",
+        "description": "The tax code of the Region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_provider_id",
+        "type": "``null`` \\| `string`",
+        "description": "The ID of the tax provider to use. If none provided, the system tax provider is used.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "tax_rate",
+        "type": "`number`",
+        "description": "The tax rate to use in the Region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRegionsRes`](../internal/types/internal.AdminRegionsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the region's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRegionsRes",
+        "type": "`object`",
+        "description": "The region's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "region",
+            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "description": "Region details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "automatic_taxes",
+                "type": "`boolean`",
+                "description": "Whether taxes should be automated in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "countries",
+                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "description": "The details of the countries included in this region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The three character currency code used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_providers",
+                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards_taxable",
+                "type": "`boolean`",
+                "description": "Whether the gift cards are taxable or not in this region.",
+                "optional": false,
+                "defaultValue": "true",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "includes_tax",
+                "type": "`boolean`",
+                "description": "Whether the prices for the region include tax",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "featureFlag": "tax_inclusive_pricing",
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name of the region as displayed to the customer. If the Region only has one country it is recommended to write the country name.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_providers",
+                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "description": "The details of the payment providers that can be used to process payments in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_code",
+                "type": "`string`",
+                "description": "The tax code used on purchases in the Region. This may be used by other systems for accounting purposes.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_provider",
+                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "description": "The details of the tax provider used in the region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_provider_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the tax provider used in this region",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "`number`",
+                "description": "The tax rate that should be charged on purchases in the Region.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_rates",
+                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "description": "The details of the tax rates used in the region, aside from the default rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

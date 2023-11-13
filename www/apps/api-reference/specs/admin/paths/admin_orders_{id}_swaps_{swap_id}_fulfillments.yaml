@@ -1,7 +1,10 @@
 post:
   operationId: PostOrdersOrderSwapsSwapFulfillments
   summary: Create a Swap Fulfillment
-  description: Create a Fulfillment for a Swap.
+  description: >-
+    Create a Fulfillment for a Swap and change its fulfillment status to
+    `fulfilled`. If it requires any additional actions, its fulfillment status
+    may change to `requires_action`.
   x-authenticated: true
   externalDocs:
     description: Handling a swap's fulfillment

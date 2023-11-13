@@ -1,0 +1,30 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AsyncResourceOptions
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "requireManualDestroy",
+    "type": "`boolean`",
+    "description": "Disables automatic `emitDestroy` when the object is garbage collected. This usually does not need to be set (even if `emitDestroy` is called manually), unless the resource's `asyncId` is retrieved and the sensitive API's `emitDestroy` is called with it.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "triggerAsyncId",
+    "type": "`number`",
+    "description": "The ID of the execution context that created this async event.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

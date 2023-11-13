@@ -1,0 +1,725 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# TaxProviderService
+
+Finds tax providers and assists in tax related operations.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cacheService_",
+    "type": "[`ICacheService`](../interfaces/internal.ICacheService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "container_",
+    "type": "`AwilixContainer`<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`IEventBusService`](../interfaces/internal.IEventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getCacheKey",
+    "type": "`any`",
+    "description": "The cache key to get cache hits by.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "smTaxLineRepo_",
+    "type": "`Repository`<[`ShippingMethodTaxLine`](internal.internal.ShippingMethodTaxLine.mdx)\\> & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxLineRepo_",
+    "type": "`Repository`<[`LineItemTaxLine`](internal.internal.LineItemTaxLine.mdx)\\> & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxProviderRepo_",
+    "type": "`Repository`<[`TaxProvider`](internal.TaxProvider.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxRateService_",
+    "type": "[`TaxRateService`](internal.internal.TaxRateService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### clearLineItemsTaxLines
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "itemIds",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### clearTaxLines
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cartId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createShippingTaxLines
+
+Persists the tax lines relevant for a shipping method to the database. Used
+for return shipping methods.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingMethod",
+    "type": "[`ShippingMethod`](internal.ShippingMethod-4.mdx)",
+    "description": "the shipping method to create tax lines for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculationContext",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "description": "the calculation context to get tax lines by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<([`LineItemTaxLine`](internal.internal.LineItemTaxLine.mdx) \\| [`ShippingMethodTaxLine`](internal.internal.ShippingMethodTaxLine.mdx))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the newly created tax lines",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createTaxLines
+
+Persists the tax lines relevant for an order to the database.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cartOrLineItems",
+    "type": "[`Cart`](internal.Cart.mdx) \\| [`LineItem`](internal.LineItem.mdx)[]",
+    "description": "the cart or line items to create tax lines for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculationContext",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "description": "the calculation context to get tax lines by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<([`LineItemTaxLine`](internal.internal.LineItemTaxLine.mdx) \\| [`ShippingMethodTaxLine`](internal.internal.ShippingMethodTaxLine.mdx))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the newly created tax lines",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getRegionRatesForProduct
+
+Gets the tax rates configured for a product. The rates are cached between
+calls.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productIds",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region",
+    "type": "[`RegionDetails`](../types/internal.RegionDetails.mdx)",
+    "description": "the region to get configured rates for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`Map`<`string`, [`TaxServiceRate`](../types/internal.TaxServiceRate.mdx)[]\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the tax rates configured for the shipping option. A map by product id",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getRegionRatesForShipping
+
+Gets the tax rates configured for a shipping option. The rates are cached
+between calls.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "the option id of the shipping method.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionDetails",
+    "type": "[`RegionDetails`](../types/internal.RegionDetails.mdx)",
+    "description": "the region to get configured rates for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`TaxServiceRate`](../types/internal.TaxServiceRate.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the tax rates configured for the shipping option.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getShippingTaxLines
+
+Gets the relevant tax lines for a shipping method. Note: this method
+doesn't persist the tax lines. Use createShippingTaxLines if you wish to
+persist the tax lines to the DB layer.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "shippingMethod",
+    "type": "[`ShippingMethod`](internal.ShippingMethod-4.mdx)",
+    "description": "the shipping method to get tax lines for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculationContext",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "description": "the calculation context to get tax lines by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingMethodTaxLine`](internal.internal.ShippingMethodTaxLine.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the computed tax lines",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getTaxLines
+
+Gets the relevant tax lines for an order or cart. If an order is provided
+the order's tax lines will be returned. If a cart is provided the tax lines
+will be computed from the tax rules and potentially a 3rd party tax plugin.
+Note: this method doesn't persist the tax lines. Use createTaxLines if you
+wish to persist the tax lines to the DB layer.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "lineItems",
+    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "description": "the cart or order to get tax lines for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculationContext",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "description": "the calculation context to get tax lines by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<([`LineItemTaxLine`](internal.internal.LineItemTaxLine.mdx) \\| [`ShippingMethodTaxLine`](internal.internal.ShippingMethodTaxLine.mdx))[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the computed tax lines",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getTaxLinesMap
+
+Return a map of tax lines for line items and shipping methods
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "items",
+    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculationContext",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`TaxLinesMaps`](../types/internal.TaxLinesMaps.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`TaxProvider`](internal.TaxProvider.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### registerInstalledProviders
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "providers",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveProvider
+
+Retrieves the relevant tax provider for the given region.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "region",
+    "type": "[`Region`](internal.Region.mdx)",
+    "description": "the region to get tax provider for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "getTaxLines",
+    "type": "(`itemLines`: [`ItemTaxCalculationLine`](../types/internal.internal.ItemTaxCalculationLine.mdx)[], `shippingLines`: [`ShippingTaxCalculationLine`](../types/internal.internal.ShippingTaxCalculationLine.mdx)[], `context`: [`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)) => `Promise`<[`ProviderTaxLine`](../types/internal.ProviderTaxLine.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "TaxProviderService",
+    "type": "[`TaxProviderService`](internal.internal.TaxProviderService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

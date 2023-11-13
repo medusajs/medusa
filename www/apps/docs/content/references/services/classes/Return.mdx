@@ -1,0 +1,215 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Return
+
+A Return holds information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can also be used as part of a Swap or a Claim.
+
+## Constructors
+
+### constructor
+
+**new Return**()
+
+A Return holds information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can also be used as part of a Swap or a Claim.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "claim_order",
+    "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+    "description": "The details of the claim that the return may belong to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "claim_order_id",
+    "type": "``null`` \\| `string`",
+    "description": "The ID of the claim that the return may belong to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The return's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "idempotency_key",
+    "type": "``null`` \\| `string`",
+    "description": "Randomly generated key used to continue the completion of the return in case of failure.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`ReturnItem`](ReturnItem.mdx)[]",
+    "description": "The details of the items that the customer is returning.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "``null`` \\| `string`",
+    "description": "The ID of the stock location the return will be added back.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "no_notification",
+    "type": "``null`` \\| `boolean`",
+    "description": "When set to true, no notification will be sent related to this return.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "[`Order`](Order.mdx)",
+    "description": "The details of the order that the return was created for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "order_id",
+    "type": "``null`` \\| `string`",
+    "description": "The ID of the order that the return was created for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "received_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the return was received.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refund_amount",
+    "type": "`number`",
+    "description": "The amount that should be refunded as a result of the return.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_method",
+    "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+    "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "[`ReturnStatus`](../enums/ReturnStatus.mdx)",
+    "description": "Status of the Return.",
+    "optional": false,
+    "defaultValue": "requested",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "swap",
+    "type": "[`Swap`](Swap.mdx)",
+    "description": "The details of the swap that the return may belong to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "swap_id",
+    "type": "``null`` \\| `string`",
+    "description": "The ID of the swap that the return may belong to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,1218 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminReturnsResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminReturnsResource
+
+This class is used to send requests to [Admin Return API Routes](https://docs.medusajs.com/api/admin#returns). All its method
+are available in the JS Client under the `medusa.admin.returns` property.
+
+All methods in this class require [user authentication](AdminAuthResource.mdx#createsession).
+
+A return can be created by a customer or an admin to return items in an order.
+Admins can manage these returns and change their state.
+
+Related Guide: [How to manage returns](https://docs.medusajs.com/modules/orders/admin/manage-returns).
+
+## Methods
+
+### cancel
+
+Registers a return as canceled. The return can be associated with an order, claim, or swap.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.returns.cancel(returnId).then(({ order }) => {
+  console.log(order.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The return's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReturnsCancelRes`](../internal/types/internal.AdminReturnsCancelRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the details of the order associated with the return. If the return is associated with a claim or a swap, then it'll be the order\nthat the claim or swap belongs to.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminReturnsCancelRes",
+        "type": "`object`",
+        "description": "The associated order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order",
+            "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+            "description": "Order details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The ID of the billing address associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the order was canceled on.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "claims",
+                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)[]",
+                "description": "The details of the claims created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The 3 character currency code that is used in the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The ID of the customer associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "The details of the discounts applied on the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "draft_order",
+                "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+                "description": "The details of the draft order this order was created from.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "draft_order_id",
+                "type": "`string`",
+                "description": "The ID of the draft order this order was created from.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "edits",
+                "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+                "description": "The details of the order edits done on the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "external_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of an external order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_status",
+                "type": "[`FulfillmentStatus`](../internal/enums/internal.FulfillmentStatus.mdx)",
+                "description": "The order's fulfillment status",
+                "optional": false,
+                "defaultValue": "not_fulfilled",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillments",
+                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "description": "The details of the fulfillments created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_transactions",
+                "type": "[`GiftCardTransaction`](../internal/classes/internal.GiftCardTransaction.mdx)[]",
+                "description": "The gift card transactions made in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "The details of the gift card used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the processing of the order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The tax total applied on items",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the line items that belong to the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification",
+                "type": "`boolean`",
+                "description": "Flag for describing whether or not notifications related to this should be send.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "paid_total",
+                "type": "`number`",
+                "description": "The total amount paid",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_status",
+                "type": "[`PaymentStatus`](../internal/enums/internal.PaymentStatus.mdx)",
+                "description": "The order's payment status",
+                "optional": false,
+                "defaultValue": "not_paid",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payments",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "description": "The details of the payments used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refundable_amount",
+                "type": "`number`",
+                "description": "The amount that can be refunded",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refunded_total",
+                "type": "`number`",
+                "description": "The total amount refunded if the order is returned.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refunds",
+                "type": "[`Refund`](../internal/classes/internal.Refund.mdx)[]",
+                "description": "The details of the refunds created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region this order was created in.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region this order was created in.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "returnable_items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "returns",
+                "type": "[`Return`](../internal/classes/internal.Return.mdx)[]",
+                "description": "The details of the returns created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel this order belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the sales channel this order belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The ID of the shipping address associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The tax total applied on shipping",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderStatus`](../internal/enums/internal.OrderStatus.mdx)",
+                "description": "The order's status",
+                "optional": false,
+                "defaultValue": "pending",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "swaps",
+                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)[]",
+                "description": "The details of the swaps created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "``null`` \\| `number`",
+                "description": "The order's tax rate",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### list
+
+Retrieve a list of Returns. The returns can be paginated.
+
+#### Example
+
+To list returns:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.returns.list().then(({ returns, limit, offset, count }) => {
+  console.log(returns.length)
+})
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.returns
+  .list({
+    limit,
+    offset,
+  })
+  .then(({ returns, limit, offset, count }) => {
+    console.log(returns.length)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[`AdminGetReturnsParams`](../internal/classes/internal.AdminGetReturnsParams.mdx)",
+    "description": "Paignation configurations to be applied on the retrieved returns.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "limit",
+        "type": "`number`",
+        "description": "Limit the number of items returned in the list.",
+        "optional": true,
+        "defaultValue": "50",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "offset",
+        "type": "`number`",
+        "description": "The number of items to skip when retrieving a list.",
+        "optional": true,
+        "defaultValue": "50",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReturnsListRes`](../internal/types/internal.AdminReturnsListRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of returns with pagination fields.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminReturnsListRes",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `returns`: [`Return`](../internal/classes/internal.Return.mdx)[]  }",
+        "description": "The list of returns with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "returns",
+            "type": "[`Return`](../internal/classes/internal.Return.mdx)[]",
+            "description": "An array of returns details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "claim_order",
+                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)",
+                "description": "The details of the claim that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "claim_order_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the claim that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The return's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "``null`` \\| `string`",
+                "description": "Randomly generated key used to continue the completion of the return in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`ReturnItem`](../internal/classes/internal.internal.ReturnItem.mdx)[]",
+                "description": "The details of the items that the customer is returning.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "location_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the stock location the return will be added back.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification",
+                "type": "``null`` \\| `boolean`",
+                "description": "When set to true, no notification will be sent related to this return.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that the return was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the order that the return was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "received_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the return was received.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refund_amount",
+                "type": "`number`",
+                "description": "The amount that should be refunded as a result of the return.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_data",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_method",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)",
+                "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`ReturnStatus`](../internal/enums/internal.internal.ReturnStatus.mdx)",
+                "description": "Status of the Return.",
+                "optional": false,
+                "defaultValue": "requested",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "swap",
+                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+                "description": "The details of the swap that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "swap_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the swap that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### receive
+
+Mark a return as received. This also updates the status of associated order, claim, or swap accordingly.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.returns
+  .receive(returnId, {
+    items: [
+      {
+        item_id,
+        quantity: 1,
+      },
+    ],
+  })
+  .then((data) => {
+    console.log(data.return.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The return's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostReturnsReturnReceiveReq`](../internal/classes/internal.AdminPostReturnsReturnReceiveReq.mdx)",
+    "description": "The received return.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "items",
+        "type": "[`Item`](../internal/classes/internal.Item-7.mdx)[]",
+        "description": "The Line Items that have been received.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "item_id",
+            "type": "`string`",
+            "description": "The ID of the Line Item.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The quantity of the Line Item.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "location_id",
+        "type": "`string`",
+        "description": "The ID of the location to return items from.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "refund",
+        "type": "`number`",
+        "description": "The amount to refund.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReturnsRes`](../internal/types/internal.AdminReturnsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the return's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminReturnsRes",
+        "type": "`object`",
+        "description": "The return's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "return",
+            "type": "[`Return`](../internal/classes/internal.Return.mdx)",
+            "description": "Return details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "claim_order",
+                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)",
+                "description": "The details of the claim that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "claim_order_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the claim that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The return's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "``null`` \\| `string`",
+                "description": "Randomly generated key used to continue the completion of the return in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`ReturnItem`](../internal/classes/internal.internal.ReturnItem.mdx)[]",
+                "description": "The details of the items that the customer is returning.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "location_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the stock location the return will be added back.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification",
+                "type": "``null`` \\| `boolean`",
+                "description": "When set to true, no notification will be sent related to this return.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that the return was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the order that the return was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "received_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the return was received.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refund_amount",
+                "type": "`number`",
+                "description": "The amount that should be refunded as a result of the return.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_data",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_method",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)",
+                "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`ReturnStatus`](../internal/enums/internal.internal.ReturnStatus.mdx)",
+                "description": "Status of the Return.",
+                "optional": false,
+                "defaultValue": "requested",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "swap",
+                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+                "description": "The details of the swap that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "swap_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the swap that the return may belong to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

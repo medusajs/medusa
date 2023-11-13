@@ -15,7 +15,7 @@ not contain enough space to fit the entire string, only part of `string` will be
 written. However, partially encoded characters will not be written.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.alloc(256);
 
@@ -41,6 +41,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
     "description": "String to write to `buf`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -49,6 +50,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
     "description": "The character encoding of `string`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -64,6 +66,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
     "optional": true,
     "defaultValue": "",
     "description": "Number of bytes written.",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -83,6 +86,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -91,6 +95,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -99,6 +104,7 @@ v0.1.90
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -114,6 +120,7 @@ v0.1.90
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -129,6 +136,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -137,6 +145,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -145,6 +154,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -153,6 +163,7 @@ v0.1.90
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -168,6 +179,7 @@ v0.1.90
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

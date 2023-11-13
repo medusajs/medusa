@@ -6,4 +6,4 @@ medusa.admin.uploads.getPresignedDownloadUrl({
 })
 .then(({ download_url }) => {
   console.log(download_url);
-});
+})

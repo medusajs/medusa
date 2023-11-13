@@ -1,0 +1,2587 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminDraftOrdersResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminDraftOrdersResource
+
+This class is used to send requests to [Admin Draft Order API Routes](https://docs.medusajs.com/api/admin#draft-orders). All its method
+are available in the JS Client under the `medusa.admin.draftOrders` property.
+
+All methods in this class require [user authentication](AdminAuthResource.mdx#createsession).
+
+A draft order is an order created manually by the admin. It allows admins to create orders without direct involvement from the customer.
+
+Related Guide: [How to manage draft orders](https://docs.medusajs.com/modules/orders/admin/manage-draft-orders).
+
+## Methods
+
+### addLineItem
+
+Create a Line Item in the Draft Order.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .addLineItem(draftOrderId, {
+    quantity: 1,
+  })
+  .then(({ draft_order }) => {
+    console.log(draft_order.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the draft order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersDraftOrderLineItemsReq`](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsReq.mdx)",
+    "description": "The line item to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "The optional key-value map with additional details about the Line Item.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "The quantity of the line item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "The title of the line item if `variant_id` is not provided.",
+        "optional": true,
+        "defaultValue": "Custom item",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "unit_price",
+        "type": "`number`",
+        "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variant_id",
+        "type": "`string`",
+        "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the draft order's details",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "The list of draft orders.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "draft_order",
+            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "description": "Draft order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the draft order was canceled at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date the draft order was completed at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The draft order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The draft order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification_order",
+                "type": "`boolean`",
+                "description": "Whether to send the customer notifications regarding order updates.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "optional": false,
+                "defaultValue": "open",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### create
+
+Create a Draft Order. A draft order is not transformed into an order until payment is captured.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .create({
+    email: "user@example.com",
+    region_id,
+    items: [
+      {
+        quantity: 1,
+      },
+    ],
+    shipping_methods: [
+      {
+        option_id,
+      },
+    ],
+  })
+  .then(({ draft_order }) => {
+    console.log(draft_order.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersReq`](../internal/classes/internal.AdminPostDraftOrdersReq.mdx)",
+    "description": "The draft order to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "billing_address",
+        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "description": "The Address to be used for billing purposes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "The ID of the customer this draft order is associated with.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discounts",
+        "type": "[`Discount`](../internal/classes/internal.Discount-2.mdx)[]",
+        "description": "The discounts to add to the draft order",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The code of the discount to apply",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "The email of the customer of the draft order",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[`Item`](../internal/classes/internal.Item-3.mdx)[]",
+        "description": "The draft order's line items.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "metadata",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "The optional key-value map with additional details about the line item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The quantity of the line item.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "title",
+            "type": "`string`",
+            "description": "The title of the line item if `variant_id` is not provided.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "unit_price",
+            "type": "`number`",
+            "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "variant_id",
+            "type": "`string`",
+            "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "The optional key-value map with additional details about the Draft Order.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification_order",
+        "type": "`boolean`",
+        "description": "An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the region for the draft order",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_address",
+        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "description": "The Address to be used for shipping purposes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_methods",
+        "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod.mdx)[]",
+        "description": "The shipping methods for the draft order",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "data",
+            "type": "Record<`string`, `unknown`\\>",
+            "description": "The optional additional data needed for the shipping method",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "option_id",
+            "type": "`string`",
+            "description": "The ID of the shipping option in use",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "price",
+            "type": "`number`",
+            "description": "The price of the shipping method.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "status",
+        "type": "`string`",
+        "description": "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the draft order's details",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "The list of draft orders.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "draft_order",
+            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "description": "Draft order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the draft order was canceled at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date the draft order was completed at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The draft order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The draft order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification_order",
+                "type": "`boolean`",
+                "description": "Whether to send the customer notifications regarding order updates.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "optional": false,
+                "defaultValue": "open",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### delete
+
+Delete a Draft Order
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .delete(draftOrderId)
+  .then(({ id, object, deleted }) => {
+    console.log(id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the draft order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the deletion operation details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### list
+
+Retrieve an list of Draft Orders. The draft orders can be filtered by parameters such as `query`. The draft orders can also paginated.
+
+#### Example
+
+To list draft orders:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .list()
+  .then(({ draft_orders, limit, offset, count }) => {
+    console.log(draft_orders.length)
+  })
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .list({
+    limit,
+    offset,
+  })
+  .then(({ draft_orders, limit, offset, count }) => {
+    console.log(draft_orders.length)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[`AdminGetDraftOrdersParams`](../internal/classes/internal.AdminGetDraftOrdersParams.mdx)",
+    "description": "Filters and pagination configurations to apply on the retrieved draft orders.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "limit",
+        "type": "`number`",
+        "description": "Limit the number of items returned in the list.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "offset",
+        "type": "`number`",
+        "description": "The number of items to skip when retrieving a list.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "q",
+        "type": "`string`",
+        "description": "Search term to search draft orders by their display IDs and emails.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersListRes`](../internal/types/internal.AdminDraftOrdersListRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of draft orders with pagination fields.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminDraftOrdersListRes",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `draft_orders`: [`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)[]  }",
+        "description": "The list of draft orders with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "draft_orders",
+            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)[]",
+            "description": "An array of draft order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the draft order was canceled at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date the draft order was completed at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The draft order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The draft order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification_order",
+                "type": "`boolean`",
+                "description": "Whether to send the customer notifications regarding order updates.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "optional": false,
+                "defaultValue": "open",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### markPaid
+
+Capture the draft order's payment. This will also set the draft order's status to `completed` and create an order from the draft order. The payment is captured through Medusa's system payment,
+which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
+  console.log(order.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the draft order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPostDraftOrdersDraftOrderRegisterPaymentRes`](../internal/types/internal.AdminPostDraftOrdersDraftOrderRegisterPaymentRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the created order's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminPostDraftOrdersDraftOrderRegisterPaymentRes",
+        "type": "`object`",
+        "description": "The order's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order",
+            "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+            "description": "Order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The ID of the billing address associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the order was canceled on.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "claims",
+                "type": "[`ClaimOrder`](../internal/classes/internal.ClaimOrder.mdx)[]",
+                "description": "The details of the claims created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The 3 character currency code that is used in the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The ID of the customer associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "The details of the discounts applied on the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "draft_order",
+                "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+                "description": "The details of the draft order this order was created from.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "draft_order_id",
+                "type": "`string`",
+                "description": "The ID of the draft order this order was created from.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "edits",
+                "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+                "description": "The details of the order edits done on the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "external_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of an external order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_status",
+                "type": "[`FulfillmentStatus`](../internal/enums/internal.FulfillmentStatus.mdx)",
+                "description": "The order's fulfillment status",
+                "optional": false,
+                "defaultValue": "not_fulfilled",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillments",
+                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "description": "The details of the fulfillments created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_transactions",
+                "type": "[`GiftCardTransaction`](../internal/classes/internal.GiftCardTransaction.mdx)[]",
+                "description": "The gift card transactions made in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "The details of the gift card used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the processing of the order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The tax total applied on items",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the line items that belong to the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification",
+                "type": "`boolean`",
+                "description": "Flag for describing whether or not notifications related to this should be send.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "paid_total",
+                "type": "`number`",
+                "description": "The total amount paid",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_status",
+                "type": "[`PaymentStatus`](../internal/enums/internal.PaymentStatus.mdx)",
+                "description": "The order's payment status",
+                "optional": false,
+                "defaultValue": "not_paid",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payments",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "description": "The details of the payments used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refundable_amount",
+                "type": "`number`",
+                "description": "The amount that can be refunded",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refunded_total",
+                "type": "`number`",
+                "description": "The total amount refunded if the order is returned.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "refunds",
+                "type": "[`Refund`](../internal/classes/internal.Refund.mdx)[]",
+                "description": "The details of the refunds created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region this order was created in.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region this order was created in.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "returnable_items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "returns",
+                "type": "[`Return`](../internal/classes/internal.Return.mdx)[]",
+                "description": "The details of the returns created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel this order belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The ID of the sales channel this order belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The ID of the shipping address associated with the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods used in the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The tax total applied on shipping",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderStatus`](../internal/enums/internal.OrderStatus.mdx)",
+                "description": "The order's status",
+                "optional": false,
+                "defaultValue": "pending",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "swaps",
+                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)[]",
+                "description": "The details of the swaps created for the order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "tax_rate",
+                "type": "``null`` \\| `number`",
+                "description": "The order's tax rate",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the order",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### removeLineItem
+
+Delete a Line Item from a Draft Order.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .removeLineItem(draftOrderId, itemId)
+  .then(({ draft_order }) => {
+    console.log(draft_order.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the draft order that the line item belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemId",
+    "type": "`string`",
+    "description": "The ID of the line item to delete from the draft order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the draft order's details",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "The list of draft orders.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "draft_order",
+            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "description": "Draft order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the draft order was canceled at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date the draft order was completed at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The draft order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The draft order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification_order",
+                "type": "`boolean`",
+                "description": "Whether to send the customer notifications regarding order updates.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "optional": false,
+                "defaultValue": "open",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a Draft Order's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
+  console.log(draft_order.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the draft order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the draft order's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "The list of draft orders.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "draft_order",
+            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "description": "Draft order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the draft order was canceled at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date the draft order was completed at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The draft order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The draft order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification_order",
+                "type": "`boolean`",
+                "description": "Whether to send the customer notifications regarding order updates.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "optional": false,
+                "defaultValue": "open",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Update a Draft Order's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .update(draftOrderId, {
+    email: "user@example.com",
+  })
+  .then(({ draft_order }) => {
+    console.log(draft_order.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the draft order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersDraftOrderReq`](../internal/classes/internal.AdminPostDraftOrdersDraftOrderReq.mdx)",
+    "description": "The attributes to update in the draft order.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "billing_address",
+        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "description": "The Address to be used for billing purposes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "country_code",
+        "type": "`string`",
+        "description": "The 2 character ISO code for the Country.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "The ID of the customer this draft order is associated with.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discounts",
+        "type": "[`Discount`](../internal/classes/internal.Discount-3.mdx)[]",
+        "description": "An array of Discount codes to add to the Draft Order.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The code that a Discount is identifed by.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "An email to be used in the Draft Order.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "no_notification_order",
+        "type": "`boolean`",
+        "description": "An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the Region to create the Draft Order in.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_address",
+        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "description": "The Address to be used for shipping purposes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the draft order's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "The list of draft orders.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "draft_order",
+            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "description": "Draft order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the draft order was canceled at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date the draft order was completed at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The draft order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The draft order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification_order",
+                "type": "`boolean`",
+                "description": "Whether to send the customer notifications regarding order updates.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "optional": false,
+                "defaultValue": "open",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### updateLineItem
+
+Update a Line Item in a Draft Order.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.draftOrders
+  .updateLineItem(draftOrderId, lineId, {
+    quantity: 1,
+  })
+  .then(({ draft_order }) => {
+    console.log(draft_order.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the draft order that the line item belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemId",
+    "type": "`string`",
+    "description": "The ID of the line item to update.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostDraftOrdersDraftOrderLineItemsItemReq`](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsItemReq.mdx)",
+    "description": "The attributes to update in the line item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "The optional key-value map with additional details about the Line Item.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "The quantity of the line item.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "title",
+        "type": "`string`",
+        "description": "The title of the line item if `variant_id` is not provided.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "unit_price",
+        "type": "`number`",
+        "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDraftOrdersRes`](../internal/types/internal.AdminDraftOrdersRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the draft order's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminDraftOrdersRes",
+        "type": "`object`",
+        "description": "The list of draft orders.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "draft_order",
+            "type": "[`DraftOrder`](../internal/classes/internal.DraftOrder.mdx)",
+            "description": "Draft order's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date the draft order was canceled at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart associated with the draft order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date the draft order was completed at.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "display_id",
+                "type": "`number`",
+                "description": "The draft order's display ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The draft order's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification_order",
+                "type": "`boolean`",
+                "description": "Whether to send the customer notifications regarding order updates.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order created from the draft order when its payment is captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`DraftOrderStatus`](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
+                "optional": false,
+                "defaultValue": "open",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

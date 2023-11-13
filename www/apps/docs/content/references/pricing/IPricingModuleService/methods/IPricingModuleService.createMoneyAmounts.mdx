@@ -18,11 +18,9 @@ This method creates money amounts.
 ## Example
 
 ```ts
-import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+import { initialize as initializePricingModule } from "@medusajs/pricing"
 
-async function retrieveMoneyAmounts () {
+async function retrieveMoneyAmounts() {
   const pricingService = await initializePricingModule()
 
   const moneyAmounts = await pricingService.createMoneyAmounts([
@@ -34,8 +32,8 @@ async function retrieveMoneyAmounts () {
       amount: 400,
       currency_code: "USD",
       min_quantity: 0,
-      max_quantity: 4
-    }
+      max_quantity: 4,
+    },
   ])
 
   // do something with the money amounts or return them
@@ -51,6 +49,7 @@ async function retrieveMoneyAmounts () {
     "description": "The money amounts to create.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "amount",
@@ -58,6 +57,7 @@ async function retrieveMoneyAmounts () {
         "description": "The amount of this money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -66,6 +66,7 @@ async function retrieveMoneyAmounts () {
         "description": "The currency of this money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "code",
@@ -73,6 +74,7 @@ async function retrieveMoneyAmounts () {
             "description": "The code of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -81,6 +83,7 @@ async function retrieveMoneyAmounts () {
             "description": "The name of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -89,6 +92,7 @@ async function retrieveMoneyAmounts () {
             "description": "The symbol of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -97,6 +101,7 @@ async function retrieveMoneyAmounts () {
             "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -107,6 +112,7 @@ async function retrieveMoneyAmounts () {
         "description": "The currency code of this money amount.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -115,6 +121,7 @@ async function retrieveMoneyAmounts () {
         "description": "The ID of the money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -123,6 +130,7 @@ async function retrieveMoneyAmounts () {
         "description": "The maximum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -131,6 +139,7 @@ async function retrieveMoneyAmounts () {
         "description": "The minimum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -141,6 +150,7 @@ async function retrieveMoneyAmounts () {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -148,6 +158,7 @@ async function retrieveMoneyAmounts () {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -156,6 +167,7 @@ async function retrieveMoneyAmounts () {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -164,6 +176,7 @@ async function retrieveMoneyAmounts () {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -172,6 +185,7 @@ async function retrieveMoneyAmounts () {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -180,6 +194,7 @@ async function retrieveMoneyAmounts () {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -195,6 +210,7 @@ async function retrieveMoneyAmounts () {
     "optional": false,
     "defaultValue": "",
     "description": "The list of created money amounts.",
+    "expandable": false,
     "children": [
       {
         "name": "MoneyAmountDTO[]",
@@ -202,6 +218,7 @@ async function retrieveMoneyAmounts () {
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "amount",
@@ -209,6 +226,7 @@ async function retrieveMoneyAmounts () {
             "description": "The price of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -217,6 +235,7 @@ async function retrieveMoneyAmounts () {
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -225,6 +244,7 @@ async function retrieveMoneyAmounts () {
             "description": "The currency code of this money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -233,6 +253,7 @@ async function retrieveMoneyAmounts () {
             "description": "The ID of the money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -241,6 +262,7 @@ async function retrieveMoneyAmounts () {
             "description": "The maximum quantity required to be purchased for this price to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -249,6 +271,7 @@ async function retrieveMoneyAmounts () {
             "description": "The minimum quantity required to be purchased for this price to be applied.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

@@ -1,0 +1,68 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FilterableCustomerGroupProps
+
+Filters to apply on the retrieved customer groups.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the customer groups' `created_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discount_condition_id",
+    "type": "`string`",
+    "description": "Filter customer groups by their associated discount condition's ID.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](internal.StringComparisonOperator.mdx)",
+    "description": "IDs to filter customer groups by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`[]",
+    "description": "Names to filter customer groups by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "q",
+    "type": "`string`",
+    "description": "Search term to search customer groups by their name.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the customer groups' `update_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

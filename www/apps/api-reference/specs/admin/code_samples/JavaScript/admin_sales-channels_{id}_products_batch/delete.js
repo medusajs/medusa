@@ -9,5 +9,5 @@ medusa.admin.salesChannels.removeProducts(salesChannelId, {
   ]
 })
 .then(({ sales_channel }) => {
-  console.log(sales_channel.id);
-});
+  console.log(sales_channel.id)
+})

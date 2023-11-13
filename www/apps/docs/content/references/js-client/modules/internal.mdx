@@ -1,0 +1,2415 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# internal
+
+## Namespaces
+
+- [EventEmitter](../internal/modules/internal.EventEmitter.mdx)
+- [internal](../internal/modules/internal.internal.mdx)
+- [internal](../internal/modules/internal.internal-1.mdx)
+- [internal](../internal/modules/internal.internal-2.mdx)
+- [internal](../internal/modules/internal.internal-3.mdx)
+- [internal](../internal/modules/internal.internal-4.mdx)
+- [internal](../internal/modules/internal.internal-5.mdx)
+
+## Enumerations
+
+- [CartType](../internal/enums/internal.CartType.mdx)
+- [DefaultPriceType](../internal/enums/internal.DefaultPriceType.mdx)
+- [DiscountConditionJoinTableForeignKey](../internal/enums/internal.DiscountConditionJoinTableForeignKey.mdx)
+- [DiscountConditionOperator](../internal/enums/internal.DiscountConditionOperator.mdx)
+- [FulfillmentStatus](../internal/enums/internal.FulfillmentStatus.mdx)
+- [FulfillmentStatus](../internal/enums/internal.FulfillmentStatus-1.mdx)
+- [OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)
+- [OrderStatus](../internal/enums/internal.OrderStatus.mdx)
+- [OrderStatus](../internal/enums/internal.OrderStatus-1.mdx)
+- [PaymentCollectionStatus](../internal/enums/internal.PaymentCollectionStatus.mdx)
+- [PaymentStatus](../internal/enums/internal.PaymentStatus.mdx)
+- [PaymentStatus](../internal/enums/internal.PaymentStatus-1.mdx)
+- [PriceListStatus](../internal/enums/internal.PriceListStatus.mdx)
+- [PriceListType](../internal/enums/internal.PriceListType.mdx)
+- [ProductStatus](../internal/enums/internal.ProductStatus.mdx)
+- [RefundReason](../internal/enums/internal.RefundReason.mdx)
+- [ShippingProfileType](../internal/enums/internal.ShippingProfileType.mdx)
+- [SwapFulfillmentStatus](../internal/enums/internal.SwapFulfillmentStatus.mdx)
+- [SwapPaymentStatus](../internal/enums/internal.SwapPaymentStatus.mdx)
+
+## Classes
+
+- [AbstractEventBusModuleService](../internal/classes/internal.AbstractEventBusModuleService.mdx)
+- [AbstractSearchService](../internal/classes/internal.AbstractSearchService.mdx)
+- [AdditionalItem](../internal/classes/internal.AdditionalItem.mdx)
+- [AdditionalItem](../internal/classes/internal.AdditionalItem-1.mdx)
+- [AdditionalItem](../internal/classes/internal.AdditionalItem-2.mdx)
+- [Address](../internal/classes/internal.Address.mdx)
+- [AddressCreatePayload](../internal/classes/internal.AddressCreatePayload.mdx)
+- [AddressPayload](../internal/classes/internal.AddressPayload.mdx)
+- [AdminCreateUserRequest](../internal/classes/internal.AdminCreateUserRequest.mdx)
+- [AdminDeleteCustomerGroupsGroupCustomerBatchReq](../internal/classes/internal.AdminDeleteCustomerGroupsGroupCustomerBatchReq.mdx)
+- [AdminDeleteDiscountsDiscountConditionsConditionBatchReq](../internal/classes/internal.AdminDeleteDiscountsDiscountConditionsConditionBatchReq.mdx)
+- [AdminDeletePriceListPricesPricesReq](../internal/classes/internal.AdminDeletePriceListPricesPricesReq.mdx)
+- [AdminDeletePriceListsPriceListProductsPricesBatchReq](../internal/classes/internal.AdminDeletePriceListsPriceListProductsPricesBatchReq.mdx)
+- [AdminDeleteProductCategoriesCategoryProductsBatchReq](../internal/classes/internal.AdminDeleteProductCategoriesCategoryProductsBatchReq.mdx)
+- [AdminDeleteProductsFromCollectionReq](../internal/classes/internal.AdminDeleteProductsFromCollectionReq.mdx)
+- [AdminDeletePublishableApiKeySalesChannelsBatchReq](../internal/classes/internal.AdminDeletePublishableApiKeySalesChannelsBatchReq.mdx)
+- [AdminDeleteSalesChannelsChannelProductsBatchReq](../internal/classes/internal.AdminDeleteSalesChannelsChannelProductsBatchReq.mdx)
+- [AdminDeleteSalesChannelsChannelStockLocationsReq](../internal/classes/internal.AdminDeleteSalesChannelsChannelStockLocationsReq.mdx)
+- [AdminDeleteTaxRatesTaxRateProductTypesParams](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesParams.mdx)
+- [AdminDeleteTaxRatesTaxRateProductTypesReq](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesReq.mdx)
+- [AdminDeleteTaxRatesTaxRateProductsParams](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsParams.mdx)
+- [AdminDeleteTaxRatesTaxRateProductsReq](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsReq.mdx)
+- [AdminDeleteTaxRatesTaxRateShippingOptionsParams](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsParams.mdx)
+- [AdminDeleteTaxRatesTaxRateShippingOptionsReq](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsReq.mdx)
+- [AdminDeleteUploadsReq](../internal/classes/internal.AdminDeleteUploadsReq.mdx)
+- [AdminGetBatchPaginationParams](../internal/classes/internal.AdminGetBatchPaginationParams.mdx)
+- [AdminGetBatchParams](../internal/classes/internal.AdminGetBatchParams.mdx)
+- [AdminGetCollectionsPaginationParams](../internal/classes/internal.AdminGetCollectionsPaginationParams.mdx)
+- [AdminGetCollectionsParams](../internal/classes/internal.AdminGetCollectionsParams.mdx)
+- [AdminGetCurrenciesParams](../internal/classes/internal.AdminGetCurrenciesParams.mdx)
+- [AdminGetCustomerGroupsGroupParams](../internal/classes/internal.AdminGetCustomerGroupsGroupParams.mdx)
+- [AdminGetCustomerGroupsParams](../internal/classes/internal.AdminGetCustomerGroupsParams.mdx)
+- [AdminGetCustomersParams](../internal/classes/internal.AdminGetCustomersParams.mdx)
+- [AdminGetDiscountsDiscountConditionsConditionParams](../internal/classes/internal.AdminGetDiscountsDiscountConditionsConditionParams.mdx)
+- [AdminGetDiscountsDiscountRuleParams](../internal/classes/internal.AdminGetDiscountsDiscountRuleParams.mdx)
+- [AdminGetDiscountsParams](../internal/classes/internal.AdminGetDiscountsParams.mdx)
+- [AdminGetDraftOrdersParams](../internal/classes/internal.AdminGetDraftOrdersParams.mdx)
+- [AdminGetGiftCardsParams](../internal/classes/internal.AdminGetGiftCardsParams.mdx)
+- [AdminGetInventoryItemsItemLocationLevelsParams](../internal/classes/internal.AdminGetInventoryItemsItemLocationLevelsParams.mdx)
+- [AdminGetInventoryItemsItemParams](../internal/classes/internal.AdminGetInventoryItemsItemParams.mdx)
+- [AdminGetInventoryItemsParams](../internal/classes/internal.AdminGetInventoryItemsParams.mdx)
+- [AdminGetNotesParams](../internal/classes/internal.AdminGetNotesParams.mdx)
+- [AdminGetNotificationsParams](../internal/classes/internal.AdminGetNotificationsParams.mdx)
+- [AdminGetOrdersParams](../internal/classes/internal.AdminGetOrdersParams.mdx)
+- [AdminGetPaymentCollectionsParams](../internal/classes/internal.AdminGetPaymentCollectionsParams.mdx)
+- [AdminGetPriceListPaginationParams](../internal/classes/internal.AdminGetPriceListPaginationParams.mdx)
+- [AdminGetPriceListsPriceListProductsParams](../internal/classes/internal.AdminGetPriceListsPriceListProductsParams.mdx)
+- [AdminGetProductCategoriesParams](../internal/classes/internal.AdminGetProductCategoriesParams.mdx)
+- [AdminGetProductCategoryParams](../internal/classes/internal.AdminGetProductCategoryParams.mdx)
+- [AdminGetProductTagsPaginationParams](../internal/classes/internal.AdminGetProductTagsPaginationParams.mdx)
+- [AdminGetProductTagsParams](../internal/classes/internal.AdminGetProductTagsParams.mdx)
+- [AdminGetProductTypesParams](../internal/classes/internal.AdminGetProductTypesParams.mdx)
+- [AdminGetProductsParams](../internal/classes/internal.AdminGetProductsParams.mdx)
+- [AdminGetRegionsPaginationParams](../internal/classes/internal.AdminGetRegionsPaginationParams.mdx)
+- [AdminGetRegionsParams](../internal/classes/internal.AdminGetRegionsParams.mdx)
+- [AdminGetRegionsRegionFulfillmentOptionsRes](../internal/classes/internal.AdminGetRegionsRegionFulfillmentOptionsRes.mdx)
+- [AdminGetReservationsParams](../internal/classes/internal.AdminGetReservationsParams.mdx)
+- [AdminGetReturnsParams](../internal/classes/internal.AdminGetReturnsParams.mdx)
+- [AdminGetSalesChannelsParams](../internal/classes/internal.AdminGetSalesChannelsParams.mdx)
+- [AdminGetShippingOptionsParams](../internal/classes/internal.AdminGetShippingOptionsParams.mdx)
+- [AdminGetStockLocationsParams](../internal/classes/internal.AdminGetStockLocationsParams.mdx)
+- [AdminGetSwapsParams](../internal/classes/internal.AdminGetSwapsParams.mdx)
+- [AdminGetTaxRatesParams](../internal/classes/internal.AdminGetTaxRatesParams.mdx)
+- [AdminGetTaxRatesTaxRateParams](../internal/classes/internal.AdminGetTaxRatesTaxRateParams.mdx)
+- [AdminGetVariantParams](../internal/classes/internal.AdminGetVariantParams.mdx)
+- [AdminGetVariantsParams](../internal/classes/internal.AdminGetVariantsParams.mdx)
+- [AdminListCustomerSelector](../internal/classes/internal.AdminListCustomerSelector.mdx)
+- [AdminListOrdersSelector](../internal/classes/internal.AdminListOrdersSelector.mdx)
+- [AdminPostAuthReq](../internal/classes/internal.AdminPostAuthReq.mdx)
+- [AdminPostBatchesReq](../internal/classes/internal.AdminPostBatchesReq.mdx)
+- [AdminPostCollectionsCollectionReq](../internal/classes/internal.AdminPostCollectionsCollectionReq.mdx)
+- [AdminPostCollectionsReq](../internal/classes/internal.AdminPostCollectionsReq.mdx)
+- [AdminPostCurrenciesCurrencyReq](../internal/classes/internal.AdminPostCurrenciesCurrencyReq.mdx)
+- [AdminPostCustomerGroupsGroupCustomersBatchReq](../internal/classes/internal.AdminPostCustomerGroupsGroupCustomersBatchReq.mdx)
+- [AdminPostCustomerGroupsGroupReq](../internal/classes/internal.AdminPostCustomerGroupsGroupReq.mdx)
+- [AdminPostCustomerGroupsReq](../internal/classes/internal.AdminPostCustomerGroupsReq.mdx)
+- [AdminPostCustomersCustomerReq](../internal/classes/internal.AdminPostCustomersCustomerReq.mdx)
+- [AdminPostCustomersReq](../internal/classes/internal.AdminPostCustomersReq.mdx)
+- [AdminPostDiscountsDiscountConditions](../internal/classes/internal.AdminPostDiscountsDiscountConditions.mdx)
+- [AdminPostDiscountsDiscountConditionsCondition](../internal/classes/internal.AdminPostDiscountsDiscountConditionsCondition.mdx)
+- [AdminPostDiscountsDiscountConditionsConditionBatchParams](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionBatchParams.mdx)
+- [AdminPostDiscountsDiscountConditionsConditionBatchReq](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionBatchReq.mdx)
+- [AdminPostDiscountsDiscountConditionsConditionParams](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionParams.mdx)
+- [AdminPostDiscountsDiscountConditionsParams](../internal/classes/internal.AdminPostDiscountsDiscountConditionsParams.mdx)
+- [AdminPostDiscountsDiscountDynamicCodesReq](../internal/classes/internal.AdminPostDiscountsDiscountDynamicCodesReq.mdx)
+- [AdminPostDiscountsDiscountReq](../internal/classes/internal.AdminPostDiscountsDiscountReq.mdx)
+- [AdminPostDiscountsDiscountRule](../internal/classes/internal.AdminPostDiscountsDiscountRule.mdx)
+- [AdminPostDiscountsReq](../internal/classes/internal.AdminPostDiscountsReq.mdx)
+- [AdminPostDraftOrdersDraftOrderLineItemsItemReq](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsItemReq.mdx)
+- [AdminPostDraftOrdersDraftOrderLineItemsReq](../internal/classes/internal.AdminPostDraftOrdersDraftOrderLineItemsReq.mdx)
+- [AdminPostDraftOrdersDraftOrderReq](../internal/classes/internal.AdminPostDraftOrdersDraftOrderReq.mdx)
+- [AdminPostDraftOrdersReq](../internal/classes/internal.AdminPostDraftOrdersReq.mdx)
+- [AdminPostGiftCardsGiftCardReq](../internal/classes/internal.AdminPostGiftCardsGiftCardReq.mdx)
+- [AdminPostGiftCardsReq](../internal/classes/internal.AdminPostGiftCardsReq.mdx)
+- [AdminPostInventoryItemsInventoryItemParams](../internal/classes/internal.AdminPostInventoryItemsInventoryItemParams.mdx)
+- [AdminPostInventoryItemsInventoryItemReq](../internal/classes/internal.AdminPostInventoryItemsInventoryItemReq.mdx)
+- [AdminPostInventoryItemsItemLocationLevelsLevelParams](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsLevelParams.mdx)
+- [AdminPostInventoryItemsItemLocationLevelsLevelReq](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsLevelReq.mdx)
+- [AdminPostInventoryItemsItemLocationLevelsParams](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsParams.mdx)
+- [AdminPostInventoryItemsItemLocationLevelsReq](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsReq.mdx)
+- [AdminPostInventoryItemsParams](../internal/classes/internal.AdminPostInventoryItemsParams.mdx)
+- [AdminPostInventoryItemsReq](../internal/classes/internal.AdminPostInventoryItemsReq.mdx)
+- [AdminPostInvitesInviteAcceptReq](../internal/classes/internal.AdminPostInvitesInviteAcceptReq.mdx)
+- [AdminPostInvitesInviteAcceptUserReq](../internal/classes/internal.AdminPostInvitesInviteAcceptUserReq.mdx)
+- [AdminPostInvitesReq](../internal/classes/internal.AdminPostInvitesReq.mdx)
+- [AdminPostNotesNoteReq](../internal/classes/internal.AdminPostNotesNoteReq.mdx)
+- [AdminPostNotesReq](../internal/classes/internal.AdminPostNotesReq.mdx)
+- [AdminPostNotificationsNotificationResendReq](../internal/classes/internal.AdminPostNotificationsNotificationResendReq.mdx)
+- [AdminPostOrderEditsEditLineItemsLineItemReq](../internal/classes/internal.AdminPostOrderEditsEditLineItemsLineItemReq.mdx)
+- [AdminPostOrderEditsEditLineItemsReq](../internal/classes/internal.AdminPostOrderEditsEditLineItemsReq.mdx)
+- [AdminPostOrderEditsOrderEditReq](../internal/classes/internal.AdminPostOrderEditsOrderEditReq.mdx)
+- [AdminPostOrderEditsReq](../internal/classes/internal.AdminPostOrderEditsReq.mdx)
+- [AdminPostOrdersOrderClaimsClaimFulfillmentsReq](../internal/classes/internal.AdminPostOrdersOrderClaimsClaimFulfillmentsReq.mdx)
+- [AdminPostOrdersOrderClaimsClaimReq](../internal/classes/internal.AdminPostOrdersOrderClaimsClaimReq.mdx)
+- [AdminPostOrdersOrderClaimsClaimShipmentsReq](../internal/classes/internal.AdminPostOrdersOrderClaimsClaimShipmentsReq.mdx)
+- [AdminPostOrdersOrderClaimsReq](../internal/classes/internal.AdminPostOrdersOrderClaimsReq.mdx)
+- [AdminPostOrdersOrderFulfillmentsReq](../internal/classes/internal.AdminPostOrdersOrderFulfillmentsReq.mdx)
+- [AdminPostOrdersOrderRefundsReq](../internal/classes/internal.AdminPostOrdersOrderRefundsReq.mdx)
+- [AdminPostOrdersOrderReq](../internal/classes/internal.AdminPostOrdersOrderReq.mdx)
+- [AdminPostOrdersOrderReturnsReq](../internal/classes/internal.AdminPostOrdersOrderReturnsReq.mdx)
+- [AdminPostOrdersOrderShipmentReq](../internal/classes/internal.AdminPostOrdersOrderShipmentReq.mdx)
+- [AdminPostOrdersOrderShippingMethodsReq](../internal/classes/internal.AdminPostOrdersOrderShippingMethodsReq.mdx)
+- [AdminPostOrdersOrderSwapsReq](../internal/classes/internal.AdminPostOrdersOrderSwapsReq.mdx)
+- [AdminPostOrdersOrderSwapsSwapFulfillmentsReq](../internal/classes/internal.AdminPostOrdersOrderSwapsSwapFulfillmentsReq.mdx)
+- [AdminPostOrdersOrderSwapsSwapShipmentsReq](../internal/classes/internal.AdminPostOrdersOrderSwapsSwapShipmentsReq.mdx)
+- [AdminPostPaymentRefundsReq](../internal/classes/internal.AdminPostPaymentRefundsReq.mdx)
+- [AdminPostPriceListPricesPricesReq](../internal/classes/internal.AdminPostPriceListPricesPricesReq.mdx)
+- [AdminPostPriceListsPriceListPriceListReq](../internal/classes/internal.AdminPostPriceListsPriceListPriceListReq.mdx)
+- [AdminPostPriceListsPriceListReq](../internal/classes/internal.AdminPostPriceListsPriceListReq.mdx)
+- [AdminPostProductCategoriesCategoryProductsBatchReq](../internal/classes/internal.AdminPostProductCategoriesCategoryProductsBatchReq.mdx)
+- [AdminPostProductCategoriesCategoryReq](../internal/classes/internal.AdminPostProductCategoriesCategoryReq.mdx)
+- [AdminPostProductCategoriesReq](../internal/classes/internal.AdminPostProductCategoriesReq.mdx)
+- [AdminPostProductsProductMetadataReq](../internal/classes/internal.AdminPostProductsProductMetadataReq.mdx)
+- [AdminPostProductsProductOptionsOption](../internal/classes/internal.AdminPostProductsProductOptionsOption.mdx)
+- [AdminPostProductsProductOptionsReq](../internal/classes/internal.AdminPostProductsProductOptionsReq.mdx)
+- [AdminPostProductsProductReq](../internal/classes/internal.AdminPostProductsProductReq.mdx)
+- [AdminPostProductsProductVariantsReq](../internal/classes/internal.AdminPostProductsProductVariantsReq.mdx)
+- [AdminPostProductsProductVariantsVariantReq](../internal/classes/internal.AdminPostProductsProductVariantsVariantReq.mdx)
+- [AdminPostProductsReq](../internal/classes/internal.AdminPostProductsReq.mdx)
+- [AdminPostProductsToCollectionReq](../internal/classes/internal.AdminPostProductsToCollectionReq.mdx)
+- [AdminPostPublishableApiKeySalesChannelsBatchReq](../internal/classes/internal.AdminPostPublishableApiKeySalesChannelsBatchReq.mdx)
+- [AdminPostPublishableApiKeysPublishableApiKeyReq](../internal/classes/internal.AdminPostPublishableApiKeysPublishableApiKeyReq.mdx)
+- [AdminPostPublishableApiKeysReq](../internal/classes/internal.AdminPostPublishableApiKeysReq.mdx)
+- [AdminPostRegionsRegionCountriesReq](../internal/classes/internal.AdminPostRegionsRegionCountriesReq.mdx)
+- [AdminPostRegionsRegionFulfillmentProvidersReq](../internal/classes/internal.AdminPostRegionsRegionFulfillmentProvidersReq.mdx)
+- [AdminPostRegionsRegionPaymentProvidersReq](../internal/classes/internal.AdminPostRegionsRegionPaymentProvidersReq.mdx)
+- [AdminPostRegionsRegionReq](../internal/classes/internal.AdminPostRegionsRegionReq.mdx)
+- [AdminPostRegionsReq](../internal/classes/internal.AdminPostRegionsReq.mdx)
+- [AdminPostReservationsReq](../internal/classes/internal.AdminPostReservationsReq.mdx)
+- [AdminPostReservationsReservationReq](../internal/classes/internal.AdminPostReservationsReservationReq.mdx)
+- [AdminPostReturnReasonsReasonReq](../internal/classes/internal.AdminPostReturnReasonsReasonReq.mdx)
+- [AdminPostReturnReasonsReq](../internal/classes/internal.AdminPostReturnReasonsReq.mdx)
+- [AdminPostReturnsReturnReceiveReq](../internal/classes/internal.AdminPostReturnsReturnReceiveReq.mdx)
+- [AdminPostSalesChannelsChannelProductsBatchReq](../internal/classes/internal.AdminPostSalesChannelsChannelProductsBatchReq.mdx)
+- [AdminPostSalesChannelsChannelStockLocationsReq](../internal/classes/internal.AdminPostSalesChannelsChannelStockLocationsReq.mdx)
+- [AdminPostSalesChannelsReq](../internal/classes/internal.AdminPostSalesChannelsReq.mdx)
+- [AdminPostSalesChannelsSalesChannelReq](../internal/classes/internal.AdminPostSalesChannelsSalesChannelReq.mdx)
+- [AdminPostShippingOptionsOptionReq](../internal/classes/internal.AdminPostShippingOptionsOptionReq.mdx)
+- [AdminPostShippingOptionsReq](../internal/classes/internal.AdminPostShippingOptionsReq.mdx)
+- [AdminPostShippingProfilesProfileReq](../internal/classes/internal.AdminPostShippingProfilesProfileReq.mdx)
+- [AdminPostShippingProfilesReq](../internal/classes/internal.AdminPostShippingProfilesReq.mdx)
+- [AdminPostStockLocationsLocationReq](../internal/classes/internal.AdminPostStockLocationsLocationReq.mdx)
+- [AdminPostStockLocationsReq](../internal/classes/internal.AdminPostStockLocationsReq.mdx)
+- [AdminPostStoreReq](../internal/classes/internal.AdminPostStoreReq.mdx)
+- [AdminPostTaxRatesParams](../internal/classes/internal.AdminPostTaxRatesParams.mdx)
+- [AdminPostTaxRatesReq](../internal/classes/internal.AdminPostTaxRatesReq.mdx)
+- [AdminPostTaxRatesTaxRateParams](../internal/classes/internal.AdminPostTaxRatesTaxRateParams.mdx)
+- [AdminPostTaxRatesTaxRateProductTypesReq](../internal/classes/internal.AdminPostTaxRatesTaxRateProductTypesReq.mdx)
+- [AdminPostTaxRatesTaxRateProductsParams](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsParams.mdx)
+- [AdminPostTaxRatesTaxRateProductsReq](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsReq.mdx)
+- [AdminPostTaxRatesTaxRateReq](../internal/classes/internal.AdminPostTaxRatesTaxRateReq.mdx)
+- [AdminPostTaxRatesTaxRateShippingOptionsParams](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsParams.mdx)
+- [AdminPostTaxRatesTaxRateShippingOptionsReq](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsReq.mdx)
+- [AdminPostUploadsDownloadUrlReq](../internal/classes/internal.AdminPostUploadsDownloadUrlReq.mdx)
+- [AdminPriceListPricesCreateReq](../internal/classes/internal.AdminPriceListPricesCreateReq.mdx)
+- [AdminPriceListPricesUpdateReq](../internal/classes/internal.AdminPriceListPricesUpdateReq.mdx)
+- [AdminPriceSelectionParams](../internal/classes/internal.AdminPriceSelectionParams.mdx)
+- [AdminProductCategoriesReqBase](../internal/classes/internal.AdminProductCategoriesReqBase.mdx)
+- [AdminResetPasswordRequest](../internal/classes/internal.AdminResetPasswordRequest.mdx)
+- [AdminResetPasswordTokenRequest](../internal/classes/internal.AdminResetPasswordTokenRequest.mdx)
+- [AdminUpdateDiscountRule](../internal/classes/internal.AdminUpdateDiscountRule.mdx)
+- [AdminUpdatePaymentCollectionsReq](../internal/classes/internal.AdminUpdatePaymentCollectionsReq.mdx)
+- [AdminUpdateUserRequest](../internal/classes/internal.AdminUpdateUserRequest.mdx)
+- [AdminUpsertConditionsReq](../internal/classes/internal.AdminUpsertConditionsReq.mdx)
+- [AsyncResource](../internal/classes/internal.AsyncResource.mdx)
+- [Axios](../internal/classes/internal.Axios.mdx)
+- [BaseEntity](../internal/classes/internal.BaseEntity.mdx)
+- [BatchJob](../internal/classes/internal.BatchJob.mdx)
+- [Blob](../internal/classes/internal.Blob.mdx)
+- [Cart](../internal/classes/internal.Cart.mdx)
+- [ClaimOrder](../internal/classes/internal.ClaimOrder.mdx)
+- [Client](../internal/classes/internal.Client.mdx)
+- [Currency](../internal/classes/internal.Currency.mdx)
+- [CustomShippingOption](../internal/classes/internal.CustomShippingOption.mdx)
+- [Customer](../internal/classes/internal.Customer.mdx)
+- [CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)
+- [CustomerGroup](../internal/classes/internal.CustomerGroup-1.mdx)
+- [CustomerGroup](../internal/classes/internal.CustomerGroup-2.mdx)
+- [CustomerGroupUpdate](../internal/classes/internal.CustomerGroupUpdate.mdx)
+- [CustomerGroupsBatchCustomer](../internal/classes/internal.CustomerGroupsBatchCustomer.mdx)
+- [DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)
+- [Discount](../internal/classes/internal.Discount.mdx)
+- [Discount](../internal/classes/internal.Discount-1.mdx)
+- [Discount](../internal/classes/internal.Discount-2.mdx)
+- [Discount](../internal/classes/internal.Discount-3.mdx)
+- [Discount](../internal/classes/internal.Discount-4.mdx)
+- [DiscountCondition](../internal/classes/internal.DiscountCondition.mdx)
+- [DraftOrder](../internal/classes/internal.DraftOrder.mdx)
+- [Duplex](../internal/classes/internal.Duplex.mdx)
+- [EventEmitter](../internal/classes/internal.EventEmitter-1.mdx)
+- [FilterableCartProps](../internal/classes/internal.FilterableCartProps.mdx)
+- [FilterableCustomerGroupProps](../internal/classes/internal.FilterableCustomerGroupProps.mdx)
+- [FilterableDiscountProps](../internal/classes/internal.FilterableDiscountProps.mdx)
+- [FilterableLineItemAdjustmentProps](../internal/classes/internal.FilterableLineItemAdjustmentProps.mdx)
+- [FilterablePriceListProps](../internal/classes/internal.FilterablePriceListProps.mdx)
+- [FilterableProductProps](../internal/classes/internal.FilterableProductProps.mdx)
+- [FilterableProductVariantProps](../internal/classes/internal.FilterableProductVariantProps.mdx)
+- [FindPaginationParams](../internal/classes/internal.FindPaginationParams.mdx)
+- [FindParams](../internal/classes/internal.FindParams.mdx)
+- [FlagRouter](../internal/classes/internal.FlagRouter.mdx)
+- [Fulfillment](../internal/classes/internal.Fulfillment.mdx)
+- [FulfillmentOption](../internal/classes/internal.FulfillmentOption.mdx)
+- [FulfillmentService](../internal/classes/internal.FulfillmentService.mdx)
+- [GetOrderEditsOrderEditParams](../internal/classes/internal.GetOrderEditsOrderEditParams.mdx)
+- [GetOrderEditsParams](../internal/classes/internal.GetOrderEditsParams.mdx)
+- [GetPaymentsParams](../internal/classes/internal.GetPaymentsParams.mdx)
+- [GetPublishableApiKeySalesChannelsParams](../internal/classes/internal.GetPublishableApiKeySalesChannelsParams.mdx)
+- [GetPublishableApiKeysParams](../internal/classes/internal.GetPublishableApiKeysParams.mdx)
+- [GiftCard](../internal/classes/internal.GiftCard.mdx)
+- [GiftCard](../internal/classes/internal.GiftCard-1.mdx)
+- [GiftCard](../internal/classes/internal.GiftCard-2.mdx)
+- [GiftCardTransaction](../internal/classes/internal.GiftCardTransaction.mdx)
+- [Group](../internal/classes/internal.Group.mdx)
+- [Image](../internal/classes/internal.Image.mdx)
+- [Invite](../internal/classes/internal.Invite.mdx)
+- [Item](../internal/classes/internal.Item.mdx)
+- [Item](../internal/classes/internal.Item-1.mdx)
+- [Item](../internal/classes/internal.Item-2.mdx)
+- [Item](../internal/classes/internal.Item-3.mdx)
+- [Item](../internal/classes/internal.Item-4.mdx)
+- [Item](../internal/classes/internal.Item-5.mdx)
+- [Item](../internal/classes/internal.Item-6.mdx)
+- [Item](../internal/classes/internal.Item-7.mdx)
+- [LineItem](../internal/classes/internal.LineItem.mdx)
+- [MedusaError](../internal/classes/internal.MedusaError.mdx)
+- [Note](../internal/classes/internal.Note.mdx)
+- [Notification](../internal/classes/internal.Notification.mdx)
+- [NotificationProvider](../internal/classes/internal.NotificationProvider.mdx)
+- [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)
+- [OptionRequirement](../internal/classes/internal.OptionRequirement.mdx)
+- [OptionRequirement](../internal/classes/internal.OptionRequirement-1.mdx)
+- [Order](../internal/classes/internal.Order.mdx)
+- [OrderEdit](../internal/classes/internal.OrderEdit.mdx)
+- [OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)
+- [OrdersReturnItem](../internal/classes/internal.OrdersReturnItem.mdx)
+- [PassThrough](../internal/classes/internal.PassThrough.mdx)
+- [Payment](../internal/classes/internal.Payment.mdx)
+- [PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)
+- [PaymentMethod](../internal/classes/internal.PaymentMethod.mdx)
+- [PaymentProvider](../internal/classes/internal.PaymentProvider.mdx)
+- [PaymentService](../internal/classes/internal.PaymentService.mdx)
+- [PaymentSession](../internal/classes/internal.PaymentSession.mdx)
+- [PriceList](../internal/classes/internal.PriceList.mdx)
+- [PriceSelectionParams](../internal/classes/internal.PriceSelectionParams.mdx)
+- [Product](../internal/classes/internal.Product.mdx)
+- [ProductBatchProductCategory](../internal/classes/internal.ProductBatchProductCategory.mdx)
+- [ProductBatchSalesChannel](../internal/classes/internal.ProductBatchSalesChannel.mdx)
+- [ProductCategory](../internal/classes/internal.ProductCategory.mdx)
+- [ProductCollection](../internal/classes/internal.ProductCollection.mdx)
+- [ProductOptionReq](../internal/classes/internal.ProductOptionReq.mdx)
+- [ProductProductCategoryReq](../internal/classes/internal.ProductProductCategoryReq.mdx)
+- [ProductSalesChannelReq](../internal/classes/internal.ProductSalesChannelReq.mdx)
+- [ProductTag](../internal/classes/internal.ProductTag.mdx)
+- [ProductTagReq](../internal/classes/internal.ProductTagReq.mdx)
+- [ProductType](../internal/classes/internal.ProductType.mdx)
+- [ProductTypeReq](../internal/classes/internal.ProductTypeReq.mdx)
+- [ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq.mdx)
+- [ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq-1.mdx)
+- [ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq-2.mdx)
+- [ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq-3.mdx)
+- [ProductVariantPricesCreateReq](../internal/classes/internal.ProductVariantPricesCreateReq.mdx)
+- [ProductVariantPricesUpdateReq](../internal/classes/internal.ProductVariantPricesUpdateReq.mdx)
+- [ProductVariantReq](../internal/classes/internal.ProductVariantReq.mdx)
+- [ProductVariantReq](../internal/classes/internal.ProductVariantReq-1.mdx)
+- [PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)
+- [Readable](../internal/classes/internal.Readable.mdx)
+- [ReadableBase](../internal/classes/internal.ReadableBase.mdx)
+- [Refund](../internal/classes/internal.Refund.mdx)
+- [Region](../internal/classes/internal.Region.mdx)
+- [Return](../internal/classes/internal.Return.mdx)
+- [ReturnItem](../internal/classes/internal.ReturnItem.mdx)
+- [ReturnReason](../internal/classes/internal.ReturnReason.mdx)
+- [ReturnShipping](../internal/classes/internal.ReturnShipping.mdx)
+- [ReturnShipping](../internal/classes/internal.ReturnShipping-1.mdx)
+- [ReturnShipping](../internal/classes/internal.ReturnShipping-2.mdx)
+- [ReturnShipping](../internal/classes/internal.ReturnShipping-3.mdx)
+- [SalesChannel](../internal/classes/internal.SalesChannel.mdx)
+- [ShippingAddressPayload](../internal/classes/internal.ShippingAddressPayload.mdx)
+- [ShippingMethod](../internal/classes/internal.ShippingMethod.mdx)
+- [ShippingMethod](../internal/classes/internal.ShippingMethod-1.mdx)
+- [ShippingMethod](../internal/classes/internal.ShippingMethod-2.mdx)
+- [ShippingMethod](../internal/classes/internal.ShippingMethod-3.mdx)
+- [ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)
+- [ShippingOption](../internal/classes/internal.ShippingOption.mdx)
+- [ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)
+- [Socket](../internal/classes/internal.Socket.mdx)
+- [SoftDeletableEntity](../internal/classes/internal.SoftDeletableEntity.mdx)
+- [StockLocationAddress](../internal/classes/internal.StockLocationAddress.mdx)
+- [StockLocationAddress](../internal/classes/internal.StockLocationAddress-1.mdx)
+- [Store](../internal/classes/internal.Store.mdx)
+- [StoreGetCollectionsParams](../internal/classes/internal.StoreGetCollectionsParams.mdx)
+- [StoreGetCustomersCustomerOrdersPaginationParams](../internal/classes/internal.StoreGetCustomersCustomerOrdersPaginationParams.mdx)
+- [StoreGetCustomersCustomerOrdersParams](../internal/classes/internal.StoreGetCustomersCustomerOrdersParams.mdx)
+- [StoreGetOrdersParams](../internal/classes/internal.StoreGetOrdersParams.mdx)
+- [StoreGetPaymentCollectionsParams](../internal/classes/internal.StoreGetPaymentCollectionsParams.mdx)
+- [StoreGetProductCategoriesCategoryParams](../internal/classes/internal.StoreGetProductCategoriesCategoryParams.mdx)
+- [StoreGetProductCategoriesParams](../internal/classes/internal.StoreGetProductCategoriesParams.mdx)
+- [StoreGetProductTagsParams](../internal/classes/internal.StoreGetProductTagsParams.mdx)
+- [StoreGetProductTypesParams](../internal/classes/internal.StoreGetProductTypesParams.mdx)
+- [StoreGetProductsPaginationParams](../internal/classes/internal.StoreGetProductsPaginationParams.mdx)
+- [StoreGetProductsParams](../internal/classes/internal.StoreGetProductsParams.mdx)
+- [StoreGetShippingOptionsParams](../internal/classes/internal.StoreGetShippingOptionsParams.mdx)
+- [StoreGetVariantsParams](../internal/classes/internal.StoreGetVariantsParams.mdx)
+- [StorePaymentCollectionSessionsReq](../internal/classes/internal.StorePaymentCollectionSessionsReq.mdx)
+- [StorePostAuthReq](../internal/classes/internal.StorePostAuthReq.mdx)
+- [StorePostCartReq](../internal/classes/internal.StorePostCartReq.mdx)
+- [StorePostCartsCartLineItemsItemReq](../internal/classes/internal.StorePostCartsCartLineItemsItemReq.mdx)
+- [StorePostCartsCartLineItemsReq](../internal/classes/internal.StorePostCartsCartLineItemsReq.mdx)
+- [StorePostCartsCartPaymentSessionReq](../internal/classes/internal.StorePostCartsCartPaymentSessionReq.mdx)
+- [StorePostCartsCartPaymentSessionUpdateReq](../internal/classes/internal.StorePostCartsCartPaymentSessionUpdateReq.mdx)
+- [StorePostCartsCartReq](../internal/classes/internal.StorePostCartsCartReq.mdx)
+- [StorePostCartsCartShippingMethodReq](../internal/classes/internal.StorePostCartsCartShippingMethodReq.mdx)
+- [StorePostCustomersCustomerAcceptClaimReq](../internal/classes/internal.StorePostCustomersCustomerAcceptClaimReq.mdx)
+- [StorePostCustomersCustomerAddressesAddressReq](../internal/classes/internal.StorePostCustomersCustomerAddressesAddressReq.mdx)
+- [StorePostCustomersCustomerAddressesReq](../internal/classes/internal.StorePostCustomersCustomerAddressesReq.mdx)
+- [StorePostCustomersCustomerOrderClaimReq](../internal/classes/internal.StorePostCustomersCustomerOrderClaimReq.mdx)
+- [StorePostCustomersCustomerPasswordTokenReq](../internal/classes/internal.StorePostCustomersCustomerPasswordTokenReq.mdx)
+- [StorePostCustomersCustomerReq](../internal/classes/internal.StorePostCustomersCustomerReq.mdx)
+- [StorePostCustomersReq](../internal/classes/internal.StorePostCustomersReq.mdx)
+- [StorePostCustomersResetPasswordReq](../internal/classes/internal.StorePostCustomersResetPasswordReq.mdx)
+- [StorePostOrderEditsOrderEditDecline](../internal/classes/internal.StorePostOrderEditsOrderEditDecline.mdx)
+- [StorePostPaymentCollectionsBatchSessionsAuthorizeReq](../internal/classes/internal.StorePostPaymentCollectionsBatchSessionsAuthorizeReq.mdx)
+- [StorePostPaymentCollectionsBatchSessionsReq](../internal/classes/internal.StorePostPaymentCollectionsBatchSessionsReq.mdx)
+- [StorePostPaymentCollectionsSessionsReq](../internal/classes/internal.StorePostPaymentCollectionsSessionsReq.mdx)
+- [StorePostReturnsReq](../internal/classes/internal.StorePostReturnsReq.mdx)
+- [StorePostSearchReq](../internal/classes/internal.StorePostSearchReq.mdx)
+- [StorePostSwapsReq](../internal/classes/internal.StorePostSwapsReq.mdx)
+- [Stream](../internal/classes/internal.Stream.mdx)
+- [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)
+- [Swap](../internal/classes/internal.Swap.mdx)
+- [Tag](../internal/classes/internal.Tag.mdx)
+- [TaxLine](../internal/classes/internal.TaxLine.mdx)
+- [TaxProvider](../internal/classes/internal.TaxProvider.mdx)
+- [TaxRate](../internal/classes/internal.TaxRate.mdx)
+- [Transform](../internal/classes/internal.Transform.mdx)
+- [User](../internal/classes/internal.User.mdx)
+- [WritableBase](../internal/classes/internal.WritableBase.mdx)
+- [internal](../internal/classes/internal.internal-6.mdx)
+
+## Interfaces
+
+- [AddressInfo](../internal/interfaces/internal.AddressInfo.mdx)
+- [ArrayBufferView](../internal/interfaces/internal.ArrayBufferView.mdx)
+- [ArrayLike](../internal/interfaces/internal.ArrayLike.mdx)
+- [ArrayOptions](../internal/interfaces/internal.ArrayOptions.mdx)
+- [AsyncGenerator](../internal/interfaces/internal.AsyncGenerator.mdx)
+- [AsyncGeneratorFunction](../internal/interfaces/internal.AsyncGeneratorFunction.mdx)
+- [AsyncIterable](../internal/interfaces/internal.AsyncIterable.mdx)
+- [AsyncIterableIterator](../internal/interfaces/internal.AsyncIterableIterator.mdx)
+- [AsyncIterator](../internal/interfaces/internal.AsyncIterator.mdx)
+- [AsyncResourceOptions](../internal/interfaces/internal.AsyncResourceOptions.mdx)
+- [AxiosAdapter](../internal/interfaces/internal.AxiosAdapter.mdx)
+- [AxiosBasicCredentials](../internal/interfaces/internal.AxiosBasicCredentials.mdx)
+- [AxiosDefaults](../internal/interfaces/internal.AxiosDefaults.mdx)
+- [AxiosError](../internal/interfaces/internal.AxiosError.mdx)
+- [AxiosInstance](../internal/interfaces/internal.AxiosInstance.mdx)
+- [AxiosInterceptorManager](../internal/interfaces/internal.AxiosInterceptorManager.mdx)
+- [AxiosPromise](../internal/interfaces/internal.AxiosPromise.mdx)
+- [AxiosProxyConfig](../internal/interfaces/internal.AxiosProxyConfig.mdx)
+- [AxiosRequestTransformer](../internal/interfaces/internal.AxiosRequestTransformer.mdx)
+- [AxiosResponse](../internal/interfaces/internal.AxiosResponse.mdx)
+- [AxiosResponseTransformer](../internal/interfaces/internal.AxiosResponseTransformer.mdx)
+- [BaseRepositoryService](../internal/interfaces/internal.BaseRepositoryService.mdx)
+- [BlobOptions](../internal/interfaces/internal.BlobOptions.mdx)
+- [BlobPropertyBag](../internal/interfaces/internal.BlobPropertyBag.mdx)
+- [Boolean](../internal/interfaces/internal.Boolean.mdx)
+- [Buffer](../internal/interfaces/internal.Buffer.mdx)
+- [BufferConstructor](../internal/interfaces/internal.BufferConstructor.mdx)
+- [CallSite](../internal/interfaces/internal.CallSite.mdx)
+- [Cancel](../internal/interfaces/internal.Cancel.mdx)
+- [CancelToken](../internal/interfaces/internal.CancelToken.mdx)
+- [Config](../internal/interfaces/internal.Config.mdx)
+- [ConnectOpts](../internal/interfaces/internal.ConnectOpts.mdx)
+- [CreateNoteInput](../internal/interfaces/internal.CreateNoteInput.mdx)
+- [CreateUserInput](../internal/interfaces/internal.CreateUserInput.mdx)
+- [DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)
+- [Dict](../internal/interfaces/internal.Dict.mdx)
+- [Disposable](../internal/interfaces/internal.Disposable.mdx)
+- [DuplexOptions](../internal/interfaces/internal.DuplexOptions.mdx)
+- [ErrnoException](../internal/interfaces/internal.ErrnoException.mdx)
+- [Error](../internal/interfaces/internal.Error.mdx)
+- [EventEmitter](../internal/interfaces/internal.EventEmitter-2.mdx)
+- [EventEmitterOptions](../internal/interfaces/internal.EventEmitterOptions.mdx)
+- [File](../internal/interfaces/internal.File.mdx)
+- [FilePropertyBag](../internal/interfaces/internal.FilePropertyBag.mdx)
+- [HTTPResponse](../internal/interfaces/internal.HTTPResponse.mdx)
+- [HeadersDefaults](../internal/interfaces/internal.HeadersDefaults.mdx)
+- [ICacheService](../internal/interfaces/internal.ICacheService.mdx)
+- [IEventBusModuleService](../internal/interfaces/internal.IEventBusModuleService.mdx)
+- [IEventBusService](../internal/interfaces/internal.IEventBusService.mdx)
+- [IInventoryService](../internal/interfaces/internal.IInventoryService.mdx)
+- [IPricingModuleService](../internal/interfaces/internal.IPricingModuleService.mdx)
+- [IStockLocationService](../internal/interfaces/internal.IStockLocationService.mdx)
+- [ITransactionBaseService](../internal/interfaces/internal.ITransactionBaseService.mdx)
+- [IncomingHttpHeaders](../internal/interfaces/internal.IncomingHttpHeaders.mdx)
+- [IpcSocketConnectOpts](../internal/interfaces/internal.IpcSocketConnectOpts.mdx)
+- [Iterable](../internal/interfaces/internal.Iterable.mdx)
+- [IterableIterator](../internal/interfaces/internal.IterableIterator.mdx)
+- [Iterator](../internal/interfaces/internal.Iterator.mdx)
+- [IteratorReturnResult](../internal/interfaces/internal.IteratorReturnResult.mdx)
+- [IteratorYieldResult](../internal/interfaces/internal.IteratorYieldResult.mdx)
+- [Logger](../internal/interfaces/internal.Logger.mdx)
+- [LookupAddress](../internal/interfaces/internal.LookupAddress.mdx)
+- [LookupAllOptions](../internal/interfaces/internal.LookupAllOptions.mdx)
+- [LookupOptions](../internal/interfaces/internal.LookupOptions.mdx)
+- [OnReadOpts](../internal/interfaces/internal.OnReadOpts.mdx)
+- [PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx)
+- [PromiseLike](../internal/interfaces/internal.PromiseLike.mdx)
+- [QueuingStrategy](../internal/interfaces/internal.QueuingStrategy.mdx)
+- [QueuingStrategy](../internal/interfaces/internal.QueuingStrategy-1.mdx)
+- [QueuingStrategySize](../internal/interfaces/internal.QueuingStrategySize.mdx)
+- [QueuingStrategySize](../internal/interfaces/internal.QueuingStrategySize-1.mdx)
+- [ReadWriteStream](../internal/interfaces/internal.ReadWriteStream.mdx)
+- [ReadableByteStreamController](../internal/interfaces/internal.ReadableByteStreamController.mdx)
+- [ReadableByteStreamController](../internal/interfaces/internal.ReadableByteStreamController-1.mdx)
+- [ReadableByteStreamControllerCallback](../internal/interfaces/internal.ReadableByteStreamControllerCallback.mdx)
+- [ReadableOptions](../internal/interfaces/internal.ReadableOptions.mdx)
+- [ReadableStream](../internal/interfaces/internal.ReadableStream.mdx)
+- [ReadableStream](../internal/interfaces/internal.ReadableStream-1.mdx)
+- [ReadableStream](../internal/interfaces/internal.ReadableStream-2.mdx)
+- [ReadableStreamBYOBReader](../internal/interfaces/internal.ReadableStreamBYOBReader.mdx)
+- [ReadableStreamBYOBReader](../internal/interfaces/internal.ReadableStreamBYOBReader-1.mdx)
+- [ReadableStreamBYOBRequest](../internal/interfaces/internal.ReadableStreamBYOBRequest.mdx)
+- [ReadableStreamDefaultController](../internal/interfaces/internal.ReadableStreamDefaultController.mdx)
+- [ReadableStreamDefaultController](../internal/interfaces/internal.ReadableStreamDefaultController-1.mdx)
+- [ReadableStreamDefaultReadDoneResult](../internal/interfaces/internal.ReadableStreamDefaultReadDoneResult.mdx)
+- [ReadableStreamDefaultReadValueResult](../internal/interfaces/internal.ReadableStreamDefaultReadValueResult.mdx)
+- [ReadableStreamDefaultReader](../internal/interfaces/internal.ReadableStreamDefaultReader.mdx)
+- [ReadableStreamDefaultReader](../internal/interfaces/internal.ReadableStreamDefaultReader-1.mdx)
+- [ReadableStreamErrorCallback](../internal/interfaces/internal.ReadableStreamErrorCallback.mdx)
+- [ReadableStreamGenericReader](../internal/interfaces/internal.ReadableStreamGenericReader.mdx)
+- [ReadableStreamGenericReader](../internal/interfaces/internal.ReadableStreamGenericReader-1.mdx)
+- [ReadableStreamGetReaderOptions](../internal/interfaces/internal.ReadableStreamGetReaderOptions.mdx)
+- [ReadableStreamReadDoneResult](../internal/interfaces/internal.ReadableStreamReadDoneResult.mdx)
+- [ReadableStreamReadDoneResult](../internal/interfaces/internal.ReadableStreamReadDoneResult-1.mdx)
+- [ReadableStreamReadValueResult](../internal/interfaces/internal.ReadableStreamReadValueResult.mdx)
+- [ReadableStreamReadValueResult](../internal/interfaces/internal.ReadableStreamReadValueResult-1.mdx)
+- [ReadableWritablePair](../internal/interfaces/internal.ReadableWritablePair.mdx)
+- [ReadableWritablePair](../internal/interfaces/internal.ReadableWritablePair-1.mdx)
+- [RequestOptions](../internal/interfaces/internal.RequestOptions.mdx)
+- [RetryConfig](../internal/interfaces/internal.RetryConfig.mdx)
+- [SharedArrayBuffer](../internal/interfaces/internal.SharedArrayBuffer.mdx)
+- [SharedArrayBufferConstructor](../internal/interfaces/internal.SharedArrayBufferConstructor.mdx)
+- [SocketConstructorOpts](../internal/interfaces/internal.SocketConstructorOpts.mdx)
+- [StaticEventEmitterOptions](../internal/interfaces/internal.StaticEventEmitterOptions.mdx)
+- [StreamPipeOptions](../internal/interfaces/internal.StreamPipeOptions.mdx)
+- [StreamPipeOptions](../internal/interfaces/internal.StreamPipeOptions-1.mdx)
+- [TcpSocketConnectOpts](../internal/interfaces/internal.TcpSocketConnectOpts.mdx)
+- [TransformOptions](../internal/interfaces/internal.TransformOptions.mdx)
+- [TransitionalOptions](../internal/interfaces/internal.TransitionalOptions.mdx)
+- [UnderlyingByteSource](../internal/interfaces/internal.UnderlyingByteSource.mdx)
+- [UnderlyingByteSource](../internal/interfaces/internal.UnderlyingByteSource-1.mdx)
+- [UnderlyingDefaultSource](../internal/interfaces/internal.UnderlyingDefaultSource.mdx)
+- [UnderlyingSink](../internal/interfaces/internal.UnderlyingSink.mdx)
+- [UnderlyingSink](../internal/interfaces/internal.UnderlyingSink-1.mdx)
+- [UnderlyingSinkAbortCallback](../internal/interfaces/internal.UnderlyingSinkAbortCallback.mdx)
+- [UnderlyingSinkAbortCallback](../internal/interfaces/internal.UnderlyingSinkAbortCallback-1.mdx)
+- [UnderlyingSinkCloseCallback](../internal/interfaces/internal.UnderlyingSinkCloseCallback.mdx)
+- [UnderlyingSinkCloseCallback](../internal/interfaces/internal.UnderlyingSinkCloseCallback-1.mdx)
+- [UnderlyingSinkStartCallback](../internal/interfaces/internal.UnderlyingSinkStartCallback.mdx)
+- [UnderlyingSinkStartCallback](../internal/interfaces/internal.UnderlyingSinkStartCallback-1.mdx)
+- [UnderlyingSinkWriteCallback](../internal/interfaces/internal.UnderlyingSinkWriteCallback.mdx)
+- [UnderlyingSinkWriteCallback](../internal/interfaces/internal.UnderlyingSinkWriteCallback-1.mdx)
+- [UnderlyingSource](../internal/interfaces/internal.UnderlyingSource.mdx)
+- [UnderlyingSource](../internal/interfaces/internal.UnderlyingSource-1.mdx)
+- [UnderlyingSourceCancelCallback](../internal/interfaces/internal.UnderlyingSourceCancelCallback.mdx)
+- [UnderlyingSourceCancelCallback](../internal/interfaces/internal.UnderlyingSourceCancelCallback-1.mdx)
+- [UnderlyingSourcePullCallback](../internal/interfaces/internal.UnderlyingSourcePullCallback.mdx)
+- [UnderlyingSourcePullCallback](../internal/interfaces/internal.UnderlyingSourcePullCallback-1.mdx)
+- [UnderlyingSourceStartCallback](../internal/interfaces/internal.UnderlyingSourceStartCallback.mdx)
+- [UnderlyingSourceStartCallback](../internal/interfaces/internal.UnderlyingSourceStartCallback-1.mdx)
+- [UpdateUserInput](../internal/interfaces/internal.UpdateUserInput.mdx)
+- [WritableStream](../internal/interfaces/internal.WritableStream.mdx)
+- [WritableStream](../internal/interfaces/internal.WritableStream-1.mdx)
+- [WritableStream](../internal/interfaces/internal.WritableStream-2.mdx)
+- [WritableStreamDefaultController](../internal/interfaces/internal.WritableStreamDefaultController.mdx)
+- [WritableStreamDefaultController](../internal/interfaces/internal.WritableStreamDefaultController-1.mdx)
+- [WritableStreamDefaultWriter](../internal/interfaces/internal.WritableStreamDefaultWriter.mdx)
+- [WritableStreamDefaultWriter](../internal/interfaces/internal.WritableStreamDefaultWriter-1.mdx)
+- [\_DOMEventTarget](../internal/interfaces/internal._DOMEventTarget.mdx)
+- [\_NodeEventTarget](../internal/interfaces/internal._NodeEventTarget.mdx)
+
+## Type Aliases
+
+- [AddOrderEditLineItemInput](../internal/types/internal.AddOrderEditLineItemInput.mdx)
+- [AdjustmentContext](../internal/types/internal.AdjustmentContext.mdx)
+- [AdminAuthRes](../internal/types/internal.AdminAuthRes.mdx)
+- [AdminBatchJobListRes](../internal/types/internal.AdminBatchJobListRes.mdx)
+- [AdminBatchJobRes](../internal/types/internal.AdminBatchJobRes.mdx)
+- [AdminBearerAuthRes](../internal/types/internal.AdminBearerAuthRes.mdx)
+- [AdminCollectionsListRes](../internal/types/internal.AdminCollectionsListRes.mdx)
+- [AdminCollectionsRes](../internal/types/internal.AdminCollectionsRes.mdx)
+- [AdminCreateUploadPayload](../internal/types/internal.AdminCreateUploadPayload.mdx)
+- [AdminCreateUserPayload](../internal/types/internal.AdminCreateUserPayload.mdx)
+- [AdminCurrenciesListRes](../internal/types/internal.AdminCurrenciesListRes.mdx)
+- [AdminCurrenciesRes](../internal/types/internal.AdminCurrenciesRes.mdx)
+- [AdminCustomerGroupsListRes](../internal/types/internal.AdminCustomerGroupsListRes.mdx)
+- [AdminCustomerGroupsRes](../internal/types/internal.AdminCustomerGroupsRes.mdx)
+- [AdminCustomersListRes](../internal/types/internal.AdminCustomersListRes.mdx)
+- [AdminCustomersRes](../internal/types/internal.AdminCustomersRes.mdx)
+- [AdminDeleteProductsFromCollectionRes](../internal/types/internal.AdminDeleteProductsFromCollectionRes.mdx)
+- [AdminDiscountConditionsRes](../internal/types/internal.AdminDiscountConditionsRes.mdx)
+- [AdminDiscountsListRes](../internal/types/internal.AdminDiscountsListRes.mdx)
+- [AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)
+- [AdminDraftOrdersListRes](../internal/types/internal.AdminDraftOrdersListRes.mdx)
+- [AdminDraftOrdersRes](../internal/types/internal.AdminDraftOrdersRes.mdx)
+- [AdminExtendedStoresRes](../internal/types/internal.AdminExtendedStoresRes.mdx)
+- [AdminGetVariantsVariantInventoryRes](../internal/types/internal.AdminGetVariantsVariantInventoryRes.mdx)
+- [AdminGiftCardsListRes](../internal/types/internal.AdminGiftCardsListRes.mdx)
+- [AdminGiftCardsRes](../internal/types/internal.AdminGiftCardsRes.mdx)
+- [AdminInventoryItemsListWithVariantsAndLocationLevelsRes](../internal/types/internal.AdminInventoryItemsListWithVariantsAndLocationLevelsRes.mdx)
+- [AdminInventoryItemsLocationLevelsRes](../internal/types/internal.AdminInventoryItemsLocationLevelsRes.mdx)
+- [AdminInventoryItemsRes](../internal/types/internal.AdminInventoryItemsRes.mdx)
+- [AdminListInvitesRes](../internal/types/internal.AdminListInvitesRes.mdx)
+- [AdminNotesListRes](../internal/types/internal.AdminNotesListRes.mdx)
+- [AdminNotesRes](../internal/types/internal.AdminNotesRes.mdx)
+- [AdminNotificationsListRes](../internal/types/internal.AdminNotificationsListRes.mdx)
+- [AdminNotificationsRes](../internal/types/internal.AdminNotificationsRes.mdx)
+- [AdminOrderEditItemChangeDeleteRes](../internal/types/internal.AdminOrderEditItemChangeDeleteRes.mdx)
+- [AdminOrderEditsListRes](../internal/types/internal.AdminOrderEditsListRes.mdx)
+- [AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)
+- [AdminOrdersListRes](../internal/types/internal.AdminOrdersListRes.mdx)
+- [AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)
+- [AdminPaymentCollectionDeleteRes](../internal/types/internal.AdminPaymentCollectionDeleteRes.mdx)
+- [AdminPaymentCollectionsRes](../internal/types/internal.AdminPaymentCollectionsRes.mdx)
+- [AdminPaymentProvidersList](../internal/types/internal.AdminPaymentProvidersList.mdx)
+- [AdminPaymentRes](../internal/types/internal.AdminPaymentRes.mdx)
+- [AdminPostDraftOrdersDraftOrderRegisterPaymentRes](../internal/types/internal.AdminPostDraftOrdersDraftOrderRegisterPaymentRes.mdx)
+- [AdminPostInvitesPayload](../internal/types/internal.AdminPostInvitesPayload.mdx)
+- [AdminPriceListDeleteBatchRes](../internal/types/internal.AdminPriceListDeleteBatchRes.mdx)
+- [AdminPriceListRes](../internal/types/internal.AdminPriceListRes.mdx)
+- [AdminPriceListsListRes](../internal/types/internal.AdminPriceListsListRes.mdx)
+- [AdminPriceListsProductsListRes](../internal/types/internal.AdminPriceListsProductsListRes.mdx)
+- [AdminProductCategoriesCategoryRes](../internal/types/internal.AdminProductCategoriesCategoryRes.mdx)
+- [AdminProductCategoriesListRes](../internal/types/internal.AdminProductCategoriesListRes.mdx)
+- [AdminProductTagsListRes](../internal/types/internal.AdminProductTagsListRes.mdx)
+- [AdminProductTypesListRes](../internal/types/internal.AdminProductTypesListRes.mdx)
+- [AdminProductsDeleteOptionRes](../internal/types/internal.AdminProductsDeleteOptionRes.mdx)
+- [AdminProductsDeleteRes](../internal/types/internal.AdminProductsDeleteRes.mdx)
+- [AdminProductsDeleteVariantRes](../internal/types/internal.AdminProductsDeleteVariantRes.mdx)
+- [AdminProductsListRes](../internal/types/internal.AdminProductsListRes.mdx)
+- [AdminProductsListTagsRes](../internal/types/internal.AdminProductsListTagsRes.mdx)
+- [AdminProductsListTypesRes](../internal/types/internal.AdminProductsListTypesRes.mdx)
+- [AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)
+- [AdminPublishableApiKeysListRes](../internal/types/internal.AdminPublishableApiKeysListRes.mdx)
+- [AdminPublishableApiKeysListSalesChannelsRes](../internal/types/internal.AdminPublishableApiKeysListSalesChannelsRes.mdx)
+- [AdminPublishableApiKeysRes](../internal/types/internal.AdminPublishableApiKeysRes.mdx)
+- [AdminRefundRes](../internal/types/internal.AdminRefundRes.mdx)
+- [AdminRegionsListRes](../internal/types/internal.AdminRegionsListRes.mdx)
+- [AdminRegionsRes](../internal/types/internal.AdminRegionsRes.mdx)
+- [AdminReservationsListRes](../internal/types/internal.AdminReservationsListRes.mdx)
+- [AdminReservationsRes](../internal/types/internal.AdminReservationsRes.mdx)
+- [AdminReturnReasonsListRes](../internal/types/internal.AdminReturnReasonsListRes.mdx)
+- [AdminReturnReasonsRes](../internal/types/internal.AdminReturnReasonsRes.mdx)
+- [AdminReturnsCancelRes](../internal/types/internal.AdminReturnsCancelRes.mdx)
+- [AdminReturnsListRes](../internal/types/internal.AdminReturnsListRes.mdx)
+- [AdminReturnsRes](../internal/types/internal.AdminReturnsRes.mdx)
+- [AdminSalesChannelsListRes](../internal/types/internal.AdminSalesChannelsListRes.mdx)
+- [AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)
+- [AdminShippingOptionsListRes](../internal/types/internal.AdminShippingOptionsListRes.mdx)
+- [AdminShippingOptionsRes](../internal/types/internal.AdminShippingOptionsRes.mdx)
+- [AdminShippingProfilesListRes](../internal/types/internal.AdminShippingProfilesListRes.mdx)
+- [AdminShippingProfilesRes](../internal/types/internal.AdminShippingProfilesRes.mdx)
+- [AdminStockLocationsListRes](../internal/types/internal.AdminStockLocationsListRes.mdx)
+- [AdminStockLocationsRes](../internal/types/internal.AdminStockLocationsRes.mdx)
+- [AdminStoresRes](../internal/types/internal.AdminStoresRes.mdx)
+- [AdminSwapsListRes](../internal/types/internal.AdminSwapsListRes.mdx)
+- [AdminSwapsRes](../internal/types/internal.AdminSwapsRes.mdx)
+- [AdminTaxProvidersList](../internal/types/internal.AdminTaxProvidersList.mdx)
+- [AdminTaxRatesListRes](../internal/types/internal.AdminTaxRatesListRes.mdx)
+- [AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)
+- [AdminUpdateUserPayload](../internal/types/internal.AdminUpdateUserPayload.mdx)
+- [AdminUploadsDownloadUrlRes](../internal/types/internal.AdminUploadsDownloadUrlRes.mdx)
+- [AdminUploadsRes](../internal/types/internal.AdminUploadsRes.mdx)
+- [AdminUserRes](../internal/types/internal.AdminUserRes.mdx)
+- [AdminUsersListRes](../internal/types/internal.AdminUsersListRes.mdx)
+- [AdminVariantsListRes](../internal/types/internal.AdminVariantsListRes.mdx)
+- [AdminVariantsRes](../internal/types/internal.AdminVariantsRes.mdx)
+- [AllocationMapOptions](../internal/types/internal.AllocationMapOptions.mdx)
+- [ArrayBufferLike](../internal/types/internal.ArrayBufferLike.mdx)
+- [ArrayBufferView](../internal/types/internal.ArrayBufferView-1.mdx)
+- [AuthenticateResult](../internal/types/internal.AuthenticateResult.mdx)
+- [AvailabilityContext](../internal/types/internal.AvailabilityContext.mdx)
+- [AxiosRequestHeaders](../internal/types/internal.AxiosRequestHeaders.mdx)
+- [AxiosResponseHeaders](../internal/types/internal.AxiosResponseHeaders.mdx)
+- [BinaryLike](../internal/types/internal.BinaryLike.mdx)
+- [BlobPart](../internal/types/internal.BlobPart.mdx)
+- [BufferEncoding](../internal/types/internal.BufferEncoding.mdx)
+- [BufferSource](../internal/types/internal.BufferSource.mdx)
+- [CalculateOptionPriceInput](../internal/types/internal.CalculateOptionPriceInput.mdx)
+- [CalculationContextData](../internal/types/internal.CalculationContextData.mdx)
+- [CalculationContextOptions](../internal/types/internal.CalculationContextOptions.mdx)
+- [CartCreateProps](../internal/types/internal.CartCreateProps.mdx)
+- [CartUpdateProps](../internal/types/internal.CartUpdateProps.mdx)
+- [CategoryQueryParams](../internal/types/internal.CategoryQueryParams.mdx)
+- [ClaimTypeValue](../internal/types/internal.ClaimTypeValue.mdx)
+- [ComposeFnParam](../internal/types/internal.ComposeFnParam.mdx)
+- [ConfigModule](../internal/types/internal.ConfigModule.mdx)
+- [Constructor](../internal/types/internal.Constructor.mdx)
+- [CreateAnalyticsConfig](../internal/types/internal.CreateAnalyticsConfig.mdx)
+- [CreateClaimInput](../internal/types/internal.CreateClaimInput.mdx)
+- [CreateClaimItemAdditionalItemInput](../internal/types/internal.CreateClaimItemAdditionalItemInput.mdx)
+- [CreateClaimItemInput](../internal/types/internal.CreateClaimItemInput.mdx)
+- [CreateClaimReturnShippingInput](../internal/types/internal.CreateClaimReturnShippingInput.mdx)
+- [CreateClaimShippingMethodInput](../internal/types/internal.CreateClaimShippingMethodInput.mdx)
+- [CreateCustomShippingOptionInput](../internal/types/internal.CreateCustomShippingOptionInput.mdx)
+- [CreateCustomerInput](../internal/types/internal.CreateCustomerInput.mdx)
+- [CreateDiscountInput](../internal/types/internal.CreateDiscountInput.mdx)
+- [CreateDiscountRuleInput](../internal/types/internal.CreateDiscountRuleInput.mdx)
+- [CreateDynamicDiscountInput](../internal/types/internal.CreateDynamicDiscountInput.mdx)
+- [CreateFulfillmentOrder](../internal/types/internal.CreateFulfillmentOrder.mdx)
+- [CreateGiftCardInput](../internal/types/internal.CreateGiftCardInput.mdx)
+- [CreateGiftCardTransactionInput](../internal/types/internal.CreateGiftCardTransactionInput.mdx)
+- [CreateIdempotencyKeyInput](../internal/types/internal.CreateIdempotencyKeyInput.mdx)
+- [CreateOauthInput](../internal/types/internal.CreateOauthInput.mdx)
+- [CreateOrderEditInput](../internal/types/internal.CreateOrderEditInput.mdx)
+- [CreateOrderEditItemChangeInput](../internal/types/internal.CreateOrderEditItemChangeInput.mdx)
+- [CreatePaymentCollectionInput](../internal/types/internal.CreatePaymentCollectionInput.mdx)
+- [CreatePaymentInput](../internal/types/internal.CreatePaymentInput.mdx)
+- [CreateProductCategoryInput](../internal/types/internal.CreateProductCategoryInput.mdx)
+- [CreateProductCollection](../internal/types/internal.CreateProductCollection.mdx)
+- [CreateProductInput](../internal/types/internal.CreateProductInput.mdx)
+- [CreateProductProductCategoryInput](../internal/types/internal.CreateProductProductCategoryInput.mdx)
+- [CreateProductProductOption](../internal/types/internal.CreateProductProductOption.mdx)
+- [CreateProductProductSalesChannelInput](../internal/types/internal.CreateProductProductSalesChannelInput.mdx)
+- [CreateProductProductTagInput](../internal/types/internal.CreateProductProductTagInput.mdx)
+- [CreateProductProductTypeInput](../internal/types/internal.CreateProductProductTypeInput.mdx)
+- [CreateProductProductVariantInput](../internal/types/internal.CreateProductProductVariantInput.mdx)
+- [CreateProductProductVariantPriceInput](../internal/types/internal.CreateProductProductVariantPriceInput.mdx)
+- [CreateProductVariantInput](../internal/types/internal.CreateProductVariantInput.mdx)
+- [CreateRegionInput](../internal/types/internal.CreateRegionInput.mdx)
+- [CreateReturnInput](../internal/types/internal.CreateReturnInput.mdx)
+- [CreateReturnReason](../internal/types/internal.CreateReturnReason.mdx)
+- [CreateReturnType](../internal/types/internal.CreateReturnType.mdx)
+- [CreateSalesChannelInput](../internal/types/internal.CreateSalesChannelInput.mdx)
+- [CreateShipmentConfig](../internal/types/internal.CreateShipmentConfig.mdx)
+- [CreateShippingMethod](../internal/types/internal.CreateShippingMethod.mdx)
+- [CreateShippingMethodDto](../internal/types/internal.CreateShippingMethodDto.mdx)
+- [CreateShippingOptionInput](../internal/types/internal.CreateShippingOptionInput.mdx)
+- [CreateShippingProfile](../internal/types/internal.CreateShippingProfile.mdx)
+- [CreateTaxRateInput](../internal/types/internal.CreateTaxRateInput.mdx)
+- [CreateUserRoles](../internal/types/internal.CreateUserRoles.mdx)
+- [CreateUserRolesEnum](../internal/types/internal.CreateUserRolesEnum.mdx)
+- [CustomerGroupConstructorProps](../internal/types/internal.CustomerGroupConstructorProps.mdx)
+- [DecoratedInventoryItemDTO](../internal/types/internal.DecoratedInventoryItemDTO.mdx)
+- [DefaultWithoutRelations](../internal/types/internal.DefaultWithoutRelations.mdx)
+- [DefaultWithoutRelations](../internal/types/internal.DefaultWithoutRelations-1.mdx)
+- [DeleteFileType](../internal/types/internal.DeleteFileType.mdx)
+- [DeleteResponse](../internal/types/internal.DeleteResponse-1.mdx)
+- [Dictionary](../internal/types/internal.Dictionary.mdx)
+- [Discount](../internal/types/internal.Discount-5.mdx)
+- [DiscountAllocation](../internal/types/internal.DiscountAllocation.mdx)
+- [DiscountConditionInput](../internal/types/internal.DiscountConditionInput.mdx)
+- [DiscountConditionResourceType](../internal/types/internal.DiscountConditionResourceType.mdx)
+- [DraftOrderCreateProps](../internal/types/internal.DraftOrderCreateProps.mdx)
+- [EmitData](../internal/types/internal.EmitData.mdx)
+- [EndingType](../internal/types/internal.EndingType.mdx)
+- [Exclude](../internal/types/internal.Exclude.mdx)
+- [ExpandScalar](../internal/types/internal.ExpandScalar.mdx)
+- [ExtendedStoreDTO](../internal/types/internal.ExtendedStoreDTO.mdx)
+- [FeatureFlagsResponse](../internal/types/internal.FeatureFlagsResponse.mdx)
+- [FileServiceGetUploadStreamResult](../internal/types/internal.FileServiceGetUploadStreamResult.mdx)
+- [FileServiceUploadResult](../internal/types/internal.FileServiceUploadResult.mdx)
+- [FilterValue](../internal/types/internal.FilterValue.mdx)
+- [FilterValue2](../internal/types/internal.FilterValue2.mdx)
+- [FilterableTaxRateProps](../internal/types/internal.FilterableTaxRateProps.mdx)
+- [FilterableUserProps](../internal/types/internal.FilterableUserProps.mdx)
+- [FindProductConfig](../internal/types/internal.FindProductConfig.mdx)
+- [FindWithRelationsOptions](../internal/types/internal.FindWithRelationsOptions.mdx)
+- [FindWithoutRelationsOptions](../internal/types/internal.FindWithoutRelationsOptions.mdx)
+- [FindWithoutRelationsOptions](../internal/types/internal.FindWithoutRelationsOptions-1.mdx)
+- [FulFillmentItemType](../internal/types/internal.FulFillmentItemType.mdx)
+- [FulfillmentItemPartition](../internal/types/internal.FulfillmentItemPartition.mdx)
+- [FulfillmentOptions](../internal/types/internal.FulfillmentOptions.mdx)
+- [FulfillmentProviderContainer](../internal/types/internal.FulfillmentProviderContainer.mdx)
+- [FulfillmentProviderData](../internal/types/internal.FulfillmentProviderData.mdx)
+- [FulfillmentProviderKey](../internal/types/internal.FulfillmentProviderKey.mdx)
+- [GenerateInputData](../internal/types/internal.GenerateInputData.mdx)
+- [GenerateLineItemContext](../internal/types/internal.GenerateLineItemContext.mdx)
+- [GeneratedAdjustment](../internal/types/internal.GeneratedAdjustment.mdx)
+- [GetLineItemTotalOptions](../internal/types/internal.GetLineItemTotalOptions.mdx)
+- [GetRegionPriceContext](../internal/types/internal.GetRegionPriceContext.mdx)
+- [GetShippingMethodTotalsOptions](../internal/types/internal.GetShippingMethodTotalsOptions.mdx)
+- [GetTotalsOptions](../internal/types/internal.GetTotalsOptions.mdx)
+- [GetUploadedFileType](../internal/types/internal.GetUploadedFileType.mdx)
+- [GiftCardAllocation](../internal/types/internal.GiftCardAllocation.mdx)
+- [GiftCardTransaction](../internal/types/internal.GiftCardTransaction-1.mdx)
+- [IdempotencyCallbackResult](../internal/types/internal.IdempotencyCallbackResult.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-1.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-2.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-3.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-4.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-5.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-6.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-7.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-8.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-9.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-10.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-11.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-12.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-13.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-14.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-15.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-16.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-17.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-18.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-19.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-20.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-21.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-22.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-23.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-24.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-25.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-26.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-27.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-28.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-29.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-30.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-31.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-32.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-33.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-34.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-35.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-36.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-37.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-38.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-39.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-40.mdx)
+- [InjectedDependencies](../internal/types/internal.InjectedDependencies-41.mdx)
+- [InjectedProps](../internal/types/internal.InjectedProps.mdx)
+- [InventoryItemDTO](../internal/types/internal.InventoryItemDTO.mdx)
+- [InventoryLevelDTO](../internal/types/internal.InventoryLevelDTO.mdx)
+- [InviteUserRolesEnum](../internal/types/internal.InviteUserRolesEnum.mdx)
+- [Item](../internal/types/internal.Item-8.mdx)
+- [IteratorResult](../internal/types/internal.IteratorResult.mdx)
+- [LineAllocationsMap](../internal/types/internal.LineAllocationsMap.mdx)
+- [LineDiscount](../internal/types/internal.LineDiscount.mdx)
+- [LineDiscountAmount](../internal/types/internal.LineDiscountAmount.mdx)
+- [LineItemAdjustmentServiceProps](../internal/types/internal.LineItemAdjustmentServiceProps.mdx)
+- [LineItemTotals](../internal/types/internal.LineItemTotals.mdx)
+- [LineItemTotals](../internal/types/internal.LineItemTotals-1.mdx)
+- [LineItemTotalsOptions](../internal/types/internal.LineItemTotalsOptions.mdx)
+- [LineItemUpdate](../internal/types/internal.LineItemUpdate.mdx)
+- [LineItemValidateData](../internal/types/internal.LineItemValidateData.mdx)
+- [ListAndCountSelector](../internal/types/internal.ListAndCountSelector.mdx)
+- [LookupFunction](../internal/types/internal.LookupFunction.mdx)
+- [MedusaContainer](../internal/types/internal.MedusaContainer.mdx)
+- [MedusaContainer](../internal/types/internal.MedusaContainer-1.mdx)
+- [MedusaErrorHandlerFunction](../internal/types/internal.MedusaErrorHandlerFunction.mdx)
+- [Method](../internal/types/internal.Method.mdx)
+- [MiddlewareVerb](../internal/types/internal.MiddlewareVerb.mdx)
+- [ModuleDeclaration](../internal/types/internal.ModuleDeclaration.mdx)
+- [ModulesResponse](../internal/types/internal.ModulesResponse.mdx)
+- [NoUndefined](../internal/types/internal.NoUndefined.mdx)
+- [Omit](../internal/types/internal.Omit.mdx)
+- [OperatorMap](../internal/types/internal.OperatorMap.mdx)
+- [Order](../internal/types/internal.Order-1.mdx)
+- [OrdersReturnItem](../internal/types/internal.OrdersReturnItem-1.mdx)
+- [PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx)
+- [ParserConfig](../internal/types/internal.ParserConfig.mdx)
+- [Partial](../internal/types/internal.Partial.mdx)
+- [PaymentCollectionsSessionsBatchInput](../internal/types/internal.PaymentCollectionsSessionsBatchInput.mdx)
+- [PaymentCollectionsSessionsInput](../internal/types/internal.PaymentCollectionsSessionsInput.mdx)
+- [PaymentDataInput](../internal/types/internal.PaymentDataInput.mdx)
+- [PaymentProviderKey](../internal/types/internal.PaymentProviderKey.mdx)
+- [PaymentSessionInput](../internal/types/internal.PaymentSessionInput.mdx)
+- [Pick](../internal/types/internal.Pick.mdx)
+- [PrevLimit](../internal/types/internal.PrevLimit.mdx)
+- [Price](../internal/types/internal.Price.mdx)
+- [PriceListConstructorProps](../internal/types/internal.PriceListConstructorProps.mdx)
+- [PricedProduct](../internal/types/internal.PricedProduct.mdx)
+- [PricedShippingOption](../internal/types/internal.PricedShippingOption.mdx)
+- [PricedVariant](../internal/types/internal.PricedVariant.mdx)
+- [PricingContext](../internal/types/internal.PricingContext.mdx)
+- [Primary](../internal/types/internal.Primary.mdx)
+- [ProductCategoryInput](../internal/types/internal.ProductCategoryInput.mdx)
+- [ProductOptionInput](../internal/types/internal.ProductOptionInput.mdx)
+- [ProductSelector](../internal/types/internal.ProductSelector.mdx)
+- [ProductVariantOption](../internal/types/internal.ProductVariantOption.mdx)
+- [ProductVariantPrice](../internal/types/internal.ProductVariantPrice.mdx)
+- [ProductVariantPricing](../internal/types/internal.ProductVariantPricing.mdx)
+- [PropertyDecorator](../internal/types/internal.PropertyDecorator.mdx)
+- [ProviderLineItemTaxLine](../internal/types/internal.ProviderLineItemTaxLine.mdx)
+- [ProviderShippingMethodTaxLine](../internal/types/internal.ProviderShippingMethodTaxLine.mdx)
+- [ProviderTaxLine](../internal/types/internal.ProviderTaxLine.mdx)
+- [Query](../internal/types/internal.Query.mdx)
+- [ReadableStreamController](../internal/types/internal.ReadableStreamController.mdx)
+- [ReadableStreamController](../internal/types/internal.ReadableStreamController-1.mdx)
+- [ReadableStreamDefaultReadResult](../internal/types/internal.ReadableStreamDefaultReadResult.mdx)
+- [ReadableStreamReadResult](../internal/types/internal.ReadableStreamReadResult.mdx)
+- [ReadableStreamReadResult](../internal/types/internal.ReadableStreamReadResult-1.mdx)
+- [ReadableStreamReader](../internal/types/internal.ReadableStreamReader.mdx)
+- [Readonly](../internal/types/internal.Readonly.mdx)
+- [ReadonlyPrimary](../internal/types/internal.ReadonlyPrimary.mdx)
+- [Record](../internal/types/internal.Record.mdx)
+- [RegionDetails](../internal/types/internal.RegionDetails.mdx)
+- [RemoteQueryFunction](../internal/types/internal.RemoteQueryFunction.mdx)
+- [ReorderConditions](../internal/types/internal.ReorderConditions.mdx)
+- [RequestContext](../internal/types/internal.RequestContext.mdx)
+- [RequestMethod](../internal/types/internal.RequestMethod.mdx)
+- [ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)
+- [ReserveQuantityContext](../internal/types/internal.ReserveQuantityContext.mdx)
+- [Response](../internal/types/internal.Response.mdx)
+- [ResponsePromise](../internal/types/internal.ResponsePromise.mdx)
+- [ResponseType](../internal/types/internal.ResponseType.mdx)
+- [ReturnedData](../internal/types/internal.ReturnedData.mdx)
+- [RouteVerb](../internal/types/internal.RouteVerb.mdx)
+- [Scalar](../internal/types/internal.Scalar.mdx)
+- [SessionOptions](../internal/types/internal.SessionOptions.mdx)
+- [ShippingMethod](../internal/types/internal.ShippingMethod-5.mdx)
+- [ShippingMethodData](../internal/types/internal.ShippingMethodData.mdx)
+- [ShippingMethodTotals](../internal/types/internal.ShippingMethodTotals.mdx)
+- [ShippingMethodTotals](../internal/types/internal.ShippingMethodTotals-1.mdx)
+- [ShippingMethodUpdate](../internal/types/internal.ShippingMethodUpdate.mdx)
+- [ShippingOptionData](../internal/types/internal.ShippingOptionData.mdx)
+- [ShippingOptionPricing](../internal/types/internal.ShippingOptionPricing.mdx)
+- [SocketConnectOpts](../internal/types/internal.SocketConnectOpts.mdx)
+- [SocketReadyState](../internal/types/internal.SocketReadyState.mdx)
+- [StagedJobServiceProps](../internal/types/internal.StagedJobServiceProps.mdx)
+- [StockLocationDTO](../internal/types/internal.StockLocationDTO.mdx)
+- [StockLocationExpandedDTO](../internal/types/internal.StockLocationExpandedDTO.mdx)
+- [StoreAuthRes](../internal/types/internal.StoreAuthRes.mdx)
+- [StoreBearerAuthRes](../internal/types/internal.StoreBearerAuthRes.mdx)
+- [StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)
+- [StoreCollectionsListRes](../internal/types/internal.StoreCollectionsListRes.mdx)
+- [StoreCollectionsRes](../internal/types/internal.StoreCollectionsRes.mdx)
+- [StoreCompleteCartRes](../internal/types/internal.StoreCompleteCartRes.mdx)
+- [StoreCustomersListOrdersRes](../internal/types/internal.StoreCustomersListOrdersRes.mdx)
+- [StoreCustomersListPaymentMethodsRes](../internal/types/internal.StoreCustomersListPaymentMethodsRes.mdx)
+- [StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)
+- [StoreGetAuthEmailRes](../internal/types/internal.StoreGetAuthEmailRes.mdx)
+- [StoreGetProductCategoriesCategoryRes](../internal/types/internal.StoreGetProductCategoriesCategoryRes.mdx)
+- [StoreGetProductCategoriesRes](../internal/types/internal.StoreGetProductCategoriesRes.mdx)
+- [StoreGiftCardsRes](../internal/types/internal.StoreGiftCardsRes.mdx)
+- [StoreOrderEditsRes](../internal/types/internal.StoreOrderEditsRes.mdx)
+- [StoreOrdersRes](../internal/types/internal.StoreOrdersRes.mdx)
+- [StorePaymentCollectionsRes](../internal/types/internal.StorePaymentCollectionsRes.mdx)
+- [StorePaymentCollectionsSessionRes](../internal/types/internal.StorePaymentCollectionsSessionRes.mdx)
+- [StorePostSearchRes](../internal/types/internal.StorePostSearchRes.mdx)
+- [StoreProductTagsListRes](../internal/types/internal.StoreProductTagsListRes.mdx)
+- [StoreProductTypesListRes](../internal/types/internal.StoreProductTypesListRes.mdx)
+- [StoreProductsListRes](../internal/types/internal.StoreProductsListRes.mdx)
+- [StoreProductsRes](../internal/types/internal.StoreProductsRes.mdx)
+- [StoreRegionsListRes](../internal/types/internal.StoreRegionsListRes.mdx)
+- [StoreRegionsRes](../internal/types/internal.StoreRegionsRes.mdx)
+- [StoreReturnReasonsListRes](../internal/types/internal.StoreReturnReasonsListRes.mdx)
+- [StoreReturnReasonsRes](../internal/types/internal.StoreReturnReasonsRes.mdx)
+- [StoreReturnsRes](../internal/types/internal.StoreReturnsRes.mdx)
+- [StoreShippingOptionsListRes](../internal/types/internal.StoreShippingOptionsListRes.mdx)
+- [StoreSwapsRes](../internal/types/internal.StoreSwapsRes.mdx)
+- [StoreVariantsListRes](../internal/types/internal.StoreVariantsListRes.mdx)
+- [StoreVariantsRes](../internal/types/internal.StoreVariantsRes.mdx)
+- [Subscriber](../internal/types/internal.Subscriber.mdx)
+- [SubscriberContext](../internal/types/internal.SubscriberContext.mdx)
+- [SubtotalOptions](../internal/types/internal.SubtotalOptions.mdx)
+- [TaxLinesMaps](../internal/types/internal.TaxLinesMaps.mdx)
+- [TaxRateListByConfig](../internal/types/internal.TaxRateListByConfig.mdx)
+- [TaxServiceRate](../internal/types/internal.TaxServiceRate.mdx)
+- [TaxedPricing](../internal/types/internal.TaxedPricing.mdx)
+- [TotalsConfig](../internal/types/internal.TotalsConfig.mdx)
+- [TotalsContext](../internal/types/internal.TotalsContext.mdx)
+- [TotalsServiceProps](../internal/types/internal.TotalsServiceProps.mdx)
+- [TransformCallback](../internal/types/internal.TransformCallback.mdx)
+- [Transformer](../internal/types/internal.Transformer.mdx)
+- [TypedArray](../internal/types/internal.TypedArray.mdx)
+- [UpdateAnalyticsConfig](../internal/types/internal.UpdateAnalyticsConfig.mdx)
+- [UpdateClaimInput](../internal/types/internal.UpdateClaimInput.mdx)
+- [UpdateClaimItemImageInput](../internal/types/internal.UpdateClaimItemImageInput.mdx)
+- [UpdateClaimItemInput](../internal/types/internal.UpdateClaimItemInput.mdx)
+- [UpdateClaimItemTagInput](../internal/types/internal.UpdateClaimItemTagInput.mdx)
+- [UpdateClaimShippingMethodInput](../internal/types/internal.UpdateClaimShippingMethodInput.mdx)
+- [UpdateCurrencyInput](../internal/types/internal.UpdateCurrencyInput.mdx)
+- [UpdateCustomerInput](../internal/types/internal.UpdateCustomerInput.mdx)
+- [UpdateDiscountInput](../internal/types/internal.UpdateDiscountInput.mdx)
+- [UpdateDiscountRuleInput](../internal/types/internal.UpdateDiscountRuleInput.mdx)
+- [UpdateGiftCardInput](../internal/types/internal.UpdateGiftCardInput.mdx)
+- [UpdateOauthInput](../internal/types/internal.UpdateOauthInput.mdx)
+- [UpdateOrderInput](../internal/types/internal.UpdateOrderInput.mdx)
+- [UpdateProductCategoryInput](../internal/types/internal.UpdateProductCategoryInput.mdx)
+- [UpdateProductCollection](../internal/types/internal.UpdateProductCollection.mdx)
+- [UpdateProductInput](../internal/types/internal.UpdateProductInput.mdx)
+- [UpdateProductProductVariantDTO](../internal/types/internal.UpdateProductProductVariantDTO.mdx)
+- [UpdateProductVariantData](../internal/types/internal.UpdateProductVariantData.mdx)
+- [UpdateProductVariantInput](../internal/types/internal.UpdateProductVariantInput.mdx)
+- [UpdateRegionInput](../internal/types/internal.UpdateRegionInput.mdx)
+- [UpdateReturnInput](../internal/types/internal.UpdateReturnInput.mdx)
+- [UpdateReturnReason](../internal/types/internal.UpdateReturnReason.mdx)
+- [UpdateShippingOptionInput](../internal/types/internal.UpdateShippingOptionInput.mdx)
+- [UpdateShippingProfile](../internal/types/internal.UpdateShippingProfile.mdx)
+- [UpdateStoreInput](../internal/types/internal.UpdateStoreInput.mdx)
+- [UpdateTaxRateInput](../internal/types/internal.UpdateTaxRateInput.mdx)
+- [UpdateUserRoles](../internal/types/internal.UpdateUserRoles.mdx)
+- [UpdateUserRolesEnum](../internal/types/internal.UpdateUserRolesEnum.mdx)
+- [UpdateVariantPricesData](../internal/types/internal.UpdateVariantPricesData.mdx)
+- [UpdateVariantRegionPriceData](../internal/types/internal.UpdateVariantRegionPriceData.mdx)
+- [UploadStreamDescriptorType](../internal/types/internal.UploadStreamDescriptorType.mdx)
+- [UpsertTagsInput](../internal/types/internal.UpsertTagsInput.mdx)
+- [UpsertTypeInput](../internal/types/internal.UpsertTypeInput.mdx)
+- [UserServiceProps](../internal/types/internal.UserServiceProps.mdx)
+- [VariantInventory](../internal/types/internal.VariantInventory.mdx)
+- [WithImplicitCoercion](../internal/types/internal.WithImplicitCoercion.mdx)
+- [handler](../internal/types/internal.handler.mdx)
+- [middlewareHandlerType](../internal/types/internal.middlewareHandlerType.mdx)
+- [middlewareType](../internal/types/internal.middlewareType.mdx)
+
+## Enumeration Members
+
+### DEFAULT
+
+ **DEFAULT**: ``"default"``
+
+___
+
+### ORDER\_EDIT
+
+ **ORDER\_EDIT**: ``"order_edit"``
+
+The payment collection is used for an order edit.
+
+## Variables
+
+### AddressRepository
+
+ `Const` **AddressRepository**: `Repository`
+
+___
+
+### AdminGetDiscountsParams\_base
+
+ `Const` **AdminGetDiscountsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### AdminGetInventoryItemsParams\_base
+
+ `Const` **AdminGetInventoryItemsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### AdminGetPriceListsPriceListProductsParams\_base
+
+ `Const` **AdminGetPriceListsPriceListProductsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### AdminGetProductCategoriesParams\_base
+
+ `Const` **AdminGetProductCategoriesParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### AdminGetReservationsParams\_base
+
+ `Const` **AdminGetReservationsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### AdminGetSalesChannelsParams\_base
+
+ `Const` **AdminGetSalesChannelsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### AdminGetStockLocationsParams\_base
+
+ `Const` **AdminGetStockLocationsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### AnalyticsConfigRepository
+
+ `Const` **AnalyticsConfigRepository**: `Repository`
+
+___
+
+### BatchJobRepository
+
+ `Const` **BatchJobRepository**: `Repository`
+
+___
+
+### Buffer
+
+ **Buffer**: [`BufferConstructor`](../internal/interfaces/internal.BufferConstructor.mdx)
+
+___
+
+### CartRepository
+
+ `Const` **CartRepository**: `Repository` & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }
+
+___
+
+### ClaimRepository
+
+ `Const` **ClaimRepository**: `Repository`
+
+___
+
+### CountryRepository
+
+ `Const` **CountryRepository**: `Repository`
+
+___
+
+### CurrencyRepository
+
+ `Const` **CurrencyRepository**: `Repository`
+
+___
+
+### CustomShippingOptionRepository
+
+ `Const` **CustomShippingOptionRepository**: `Repository`
+
+___
+
+### CustomerGroupRepository
+
+ `Const` **CustomerGroupRepository**: `Repository` & { `addCustomers`: Method addCustomers ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `removeCustomers`: Method removeCustomers  }
+
+___
+
+### CustomerRepository
+
+ `Const` **CustomerRepository**: `Repository` & { `listAndCount`: Method listAndCount  }
+
+___
+
+### DiscountConditionRepository
+
+ `Const` **DiscountConditionRepository**: `Repository` & { `addConditionResources`: Method addConditionResources ; `canApplyForCustomer`: Method canApplyForCustomer ; `findOneWithDiscount`: Method findOneWithDiscount ; `getJoinTableResourceIdentifiers`: Method getJoinTableResourceIdentifiers ; `isValidForProduct`: Method isValidForProduct ; `queryConditionTable`: Method queryConditionTable ; `removeConditionResources`: Method removeConditionResources  }
+
+___
+
+### DraftOrderRepository
+
+ `Const` **DraftOrderRepository**: `Repository`
+
+___
+
+### File
+
+ **File**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fileBits",
+    "type": "[`BlobPart`](../internal/types/internal.BlobPart.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fileName",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`FilePropertyBag`](../internal/interfaces/internal.FilePropertyBag.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "File",
+    "type": "[`File`](internal.mdx#file)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`File`](internal.mdx#file)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### FulfillmentProviderRepository
+
+ `Const` **FulfillmentProviderRepository**: `Repository`
+
+___
+
+### FulfillmentRepository
+
+ `Const` **FulfillmentRepository**: `Repository`
+
+___
+
+### GetOrderEditsParams\_base
+
+ `Const` **GetOrderEditsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### GetPublishableApiKeySalesChannelsParams\_base
+
+ `Const` **GetPublishableApiKeySalesChannelsParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### GetPublishableApiKeysParams\_base
+
+ `Const` **GetPublishableApiKeysParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### GiftCardRepository
+
+ `Const` **GiftCardRepository**: `Repository` & { `listGiftCardsAndCount`: Method listGiftCardsAndCount  }
+
+___
+
+### GiftCardTransactionRepository
+
+ `Const` **GiftCardTransactionRepository**: `Repository`
+
+___
+
+### HTTP\_METHODS
+
+ `Const` **HTTP\_METHODS**: readonly [``"GET"``, ``"POST"``, ``"PUT"``, ``"PATCH"``, ``"DELETE"``, ``"OPTIONS"``, ``"HEAD"``]
+
+List of all the supported HTTP methods
+
+___
+
+### IdempotencyKeyRepository
+
+ `Const` **IdempotencyKeyRepository**: `Repository`
+
+___
+
+### ImageRepository
+
+ `Const` **ImageRepository**: `Repository` & { `insertBulk`: Method insertBulk ; `upsertImages`: Method upsertImages  }
+
+___
+
+### LineItemAdjustmentRepository
+
+ `Const` **LineItemAdjustmentRepository**: `Repository`
+
+___
+
+### LineItemRepository
+
+ `Const` **LineItemRepository**: `Repository` & { `findByReturn`: Method findByReturn  }
+
+___
+
+### LineItemTaxLineRepository
+
+ `Const` **LineItemTaxLineRepository**: `Repository` & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }
+
+___
+
+### MoneyAmountRepository
+
+ `Const` **MoneyAmountRepository**: `Repository` & { `addPriceListPrices`: Method addPriceListPrices ; `createProductVariantMoneyAmounts`: Method createProductVariantMoneyAmounts ; `deletePriceListPrices`: Method deletePriceListPrices ; `deleteVariantPricesNotIn`: Method deleteVariantPricesNotIn ; `findCurrencyMoneyAmounts`: Method findCurrencyMoneyAmounts ; `findManyForVariantInPriceList`: Method findManyForVariantInPriceList ; `findManyForVariantInRegion`: Method findManyForVariantInRegion ; `findManyForVariantsInRegion`: Method findManyForVariantsInRegion ; `findRegionMoneyAmounts`: Method findRegionMoneyAmounts ; `findVariantPricesNotIn`: Method findVariantPricesNotIn ; `getPricesForVariantInRegion`: Method getPricesForVariantInRegion ; `insertBulk`: Method insertBulk ; `updatePriceListPrices`: Method updatePriceListPrices ; `upsertVariantCurrencyPrice`: Method upsertVariantCurrencyPrice  }
+
+___
+
+### NoteRepository
+
+ `Const` **NoteRepository**: `Repository`
+
+___
+
+### NotificationProviderRepository
+
+ `Const` **NotificationProviderRepository**: `Repository`
+
+___
+
+### NotificationRepository
+
+ `Const` **NotificationRepository**: `Repository`
+
+___
+
+### OauthRepository
+
+ `Const` **OauthRepository**: `Repository`
+
+___
+
+### OrderEditRepository
+
+ `Const` **OrderEditRepository**: `Repository`
+
+___
+
+### OrderItemChangeRepository
+
+ `Const` **OrderItemChangeRepository**: `Repository`
+
+___
+
+### OrderRepository
+
+ `Const` **OrderRepository**: `Repository` & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }
+
+___
+
+### PaymentCollectionRepository
+
+ `Const` **PaymentCollectionRepository**: `Repository` & { `getPaymentCollectionIdByPaymentId`: Method getPaymentCollectionIdByPaymentId ; `getPaymentCollectionIdBySessionId`: Method getPaymentCollectionIdBySessionId  }
+
+___
+
+### PaymentProviderRepository
+
+ `Const` **PaymentProviderRepository**: `Repository`
+
+___
+
+### PaymentRepository
+
+ `Const` **PaymentRepository**: `Repository`
+
+___
+
+### PaymentSessionRepository
+
+ `Const` **PaymentSessionRepository**: `Repository`
+
+___
+
+### PriceListRepository
+
+ `Const` **PriceListRepository**: `Repository` & { `listAndCount`: Method listAndCount ; `listPriceListsVariantIdsMap`: Method listPriceListsVariantIdsMap  }
+
+___
+
+### ProductCategoryRepository
+
+ `Const` **ProductCategoryRepository**: `TreeRepository` & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }
+
+___
+
+### ProductCollectionRepository
+
+ `Const` **ProductCollectionRepository**: `Repository` & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId  }
+
+___
+
+### ProductOptionRepository
+
+ `Const` **ProductOptionRepository**: `Repository`
+
+___
+
+### ProductRepository
+
+ `Const` **ProductRepository**: `Repository` & { `_applyCategoriesQuery`: Method \_applyCategoriesQuery ; `_findWithRelations`: Method \_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }
+
+___
+
+### ProductTagRepository
+
+ `Const` **ProductTagRepository**: `Repository` & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `insertBulk`: Method insertBulk ; `listTagsByUsage`: Method listTagsByUsage ; `upsertTags`: Method upsertTags  }
+
+___
+
+### ProductTypeRepository
+
+ `Const` **ProductTypeRepository**: `Repository` & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }
+
+___
+
+### ProductVariantRepository
+
+ `Const` **ProductVariantRepository**: `Repository`
+
+___
+
+### ReadableByteStreamController
+
+ **ReadableByteStreamController**: `Object`
+
+#### Call signature
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableByteStreamController",
+    "type": "() => [`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableByteStreamController
+
+ **ReadableByteStreamController**: `Object`
+
+#### Call signature
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableByteStreamController",
+    "type": "() => [`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller-1)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableByteStreamController`](internal.mdx#readablebytestreamcontroller-1)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStream
+
+ **ReadableStream**: `Object`
+
+#### Call signature
+
+**new ReadableStream**(`underlyingSource`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream)<`Uint8Array`\>
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "underlyingSource",
+    "type": "[`UnderlyingByteSource`](../internal/interfaces/internal.UnderlyingByteSource.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy",
+    "type": "`object`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy.highWaterMark",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream)<`Uint8Array`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**new ReadableStream**<`R`\>(`underlyingSource`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream)<`R`\>
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "underlyingSource",
+    "type": "[`UnderlyingDefaultSource`](../internal/interfaces/internal.UnderlyingDefaultSource.mdx)<`R`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy",
+    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy.mdx)<`R`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**new ReadableStream**<`R`\>(`underlyingSource?`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream)<`R`\>
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "underlyingSource",
+    "type": "[`UnderlyingSource`](../internal/interfaces/internal.UnderlyingSource.mdx)<`R`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy",
+    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy.mdx)<`R`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStream`](internal.mdx#readablestream)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStream
+
+ **ReadableStream**: `Object`
+
+#### Call signature
+
+**new ReadableStream**(`underlyingSource`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream-1)<`Uint8Array`\>
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "underlyingSource",
+    "type": "[`UnderlyingByteSource`](../internal/interfaces/internal.UnderlyingByteSource-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy",
+    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy-1.mdx)<`Uint8Array`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`Uint8Array`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**new ReadableStream**<`R`\>(`underlyingSource?`, `strategy?`): [`ReadableStream`](internal.mdx#readablestream-1)<`R`\>
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "underlyingSource",
+    "type": "[`UnderlyingSource`](../internal/interfaces/internal.UnderlyingSource-1.mdx)<`R`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy",
+    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy-1.mdx)<`R`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStreamBYOBReader
+
+ **ReadableStreamBYOBReader**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamBYOBReader",
+    "type": "(`stream`: [`ReadableStream`](internal.mdx#readablestream)<`any`\\>) => [`ReadableStreamBYOBReader`](internal.mdx#readablestreambyobreader)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStreamBYOBReader`](internal.mdx#readablestreambyobreader)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStreamBYOBReader
+
+ **ReadableStreamBYOBReader**: `any`
+
+___
+
+### ReadableStreamBYOBRequest
+
+ **ReadableStreamBYOBRequest**: `Object`
+
+#### Call signature
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamBYOBRequest",
+    "type": "() => [`ReadableStreamBYOBRequest`](internal.mdx#readablestreambyobrequest)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStreamBYOBRequest`](internal.mdx#readablestreambyobrequest)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStreamDefaultController
+
+ **ReadableStreamDefaultController**: `Object`
+
+#### Call signature
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamDefaultController",
+    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller)<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStreamDefaultController
+
+ **ReadableStreamDefaultController**: `Object`
+
+#### Call signature
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamDefaultController",
+    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller-1)<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStreamDefaultController`](internal.mdx#readablestreamdefaultcontroller-1)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStreamDefaultReader
+
+ **ReadableStreamDefaultReader**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream)<`R`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamDefaultReader",
+    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### ReadableStreamDefaultReader
+
+ **ReadableStreamDefaultReader**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`ReadableStream`](internal.mdx#readablestream-1)<`R`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamDefaultReader",
+    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader-1)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`ReadableStreamDefaultReader`](internal.mdx#readablestreamdefaultreader-1)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### RefundRepository
+
+ `Const` **RefundRepository**: `Repository`
+
+___
+
+### RegionRepository
+
+ `Const` **RegionRepository**: `Repository`
+
+___
+
+### ReturnItemRepository
+
+ `Const` **ReturnItemRepository**: `Repository`
+
+___
+
+### ReturnReasonRepository
+
+ `Const` **ReturnReasonRepository**: `Repository`
+
+___
+
+### ReturnRepository
+
+ `Const` **ReturnRepository**: `Repository`
+
+___
+
+### SalesChannelRepository
+
+ `Const` **SalesChannelRepository**: `Repository` & { `addProducts`: Method addProducts ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `listProductIdsBySalesChannelIds`: Method listProductIdsBySalesChannelIds ; `removeProducts`: Method removeProducts  }
+
+___
+
+### SharedArrayBuffer
+
+ **SharedArrayBuffer**: [`SharedArrayBufferConstructor`](../internal/interfaces/internal.SharedArrayBufferConstructor.mdx)
+
+___
+
+### ShippingMethodRepository
+
+ `Const` **ShippingMethodRepository**: `Repository`
+
+___
+
+### ShippingOptionRepository
+
+ `Const` **ShippingOptionRepository**: `Repository` & { `upsertShippingProfile`: Method upsertShippingProfile  }
+
+___
+
+### ShippingOptionRequirementRepository
+
+ `Const` **ShippingOptionRequirementRepository**: `Repository`
+
+___
+
+### ShippingProfileRepository
+
+ `Const` **ShippingProfileRepository**: `Repository` & { `findByProducts`: Method findByProducts  }
+
+___
+
+### StagedJobRepository
+
+ `Const` **StagedJobRepository**: `Repository` & { `insertBulk`: Method insertBulk  }
+
+___
+
+### StoreGetProductCategoriesParams\_base
+
+ `Const` **StoreGetProductCategoriesParams\_base**: [`internal`](../internal/modules/internal.internal.mdx)
+
+___
+
+### StoreRepository
+
+ `Const` **StoreRepository**: `Repository`
+
+___
+
+### SwapRepository
+
+ `Const` **SwapRepository**: `Repository`
+
+___
+
+### TaxProviderRepository
+
+ `Const` **TaxProviderRepository**: `Repository`
+
+___
+
+### TrackingLinkRepository
+
+ `Const` **TrackingLinkRepository**: `Repository`
+
+___
+
+### UserRepository
+
+ `Const` **UserRepository**: `Repository`
+
+___
+
+### WritableStream
+
+ **WritableStream**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "underlyingSink",
+    "type": "[`UnderlyingSink`](../internal/interfaces/internal.UnderlyingSink.mdx)<`W`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy",
+    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy.mdx)<`W`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "WritableStream",
+    "type": "[`WritableStream`](internal.mdx#writablestream)<`W`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`WritableStream`](internal.mdx#writablestream)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### WritableStream
+
+ **WritableStream**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "underlyingSink",
+    "type": "[`UnderlyingSink`](../internal/interfaces/internal.UnderlyingSink-1.mdx)<`W`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "strategy",
+    "type": "[`QueuingStrategy`](../internal/interfaces/internal.QueuingStrategy-1.mdx)<`W`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "WritableStream",
+    "type": "[`WritableStream`](internal.mdx#writablestream-1)<`W`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`WritableStream`](internal.mdx#writablestream-1)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### WritableStreamDefaultController
+
+ **WritableStreamDefaultController**: `Object`
+
+#### Call signature
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "WritableStreamDefaultController",
+    "type": "() => [`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### WritableStreamDefaultController
+
+ **WritableStreamDefaultController**: `Object`
+
+#### Call signature
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "WritableStreamDefaultController",
+    "type": "() => [`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller-1)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`WritableStreamDefaultController`](internal.mdx#writablestreamdefaultcontroller-1)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### WritableStreamDefaultWriter
+
+ **WritableStreamDefaultWriter**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`WritableStream`](internal.mdx#writablestream)<`W`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "WritableStreamDefaultWriter",
+    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter)<`W`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### WritableStreamDefaultWriter
+
+ **WritableStreamDefaultWriter**: `Object`
+
+#### Call signature
+
+##### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "stream",
+    "type": "[`WritableStream`](internal.mdx#writablestream-1)<`W`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+##### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "WritableStreamDefaultWriter",
+    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter-1)<`W`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "prototype",
+    "type": "[`WritableStreamDefaultWriter`](internal.mdx#writablestreamdefaultwriter-1)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Functions
+
+### Boolean
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "value",
+    "type": "`T`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### Error
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "message",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Error",
+    "type": "(`message?`: `string`) => [`Error`](internal.mdx#error)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -206,39 +206,63 @@ export default async (req: Request, res: Response) => {
   res.json({ reservations, count, limit, offset })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved reservations.
+ */
 export class AdminGetReservationsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Location IDs to filter reservations by.
+   */
   @IsOptional()
   @IsType([String, [String]])
   location_id?: string | string[]
 
+  /**
+   * Inventory item IDs to filter reservations by.
+   */
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   inventory_item_id?: string[]
 
+  /**
+   * Line item IDs to filter reservations by.
+   */
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   line_item_id?: string[]
 
+  /**
+   * "Create by" user IDs to filter reservations by.
+   */
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
   created_by?: string[]
 
+  /**
+   * Numerical filters to apply on the reservations' `quantity` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => NumericalComparisonOperator)
   quantity?: NumericalComparisonOperator
 
+  /**
+   * Date filters to apply on the reservations' `created_at` field.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * String filters tp apply on the reservations' `description` field.
+   */
   @IsOptional()
   @IsType([StringComparisonOperator, String])
   description?: string | StringComparisonOperator

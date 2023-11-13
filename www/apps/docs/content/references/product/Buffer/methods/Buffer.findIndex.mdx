@@ -22,7 +22,18 @@ otherwise.
     "description": "find calls predicate once for each element of the array, in ascending order, until it finds one where predicate returns true. If such an element is found, findIndex immediately returns that element index. Otherwise, findIndex returns -1.",
     "optional": false,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "(`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "thisArg",
@@ -30,6 +41,7 @@ otherwise.
     "description": "If provided, it will be used as the this value for each invocation of predicate. If it is not provided, undefined is used instead.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -45,6 +57,7 @@ otherwise.
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.5
+
+### Patch Changes
+
+- [#5547](https://github.com/medusajs/medusa/pull/5547) [`09ab1d1be`](https://github.com/medusajs/medusa/commit/09ab1d1be6ec0c50e3fcc828c740265debd2222b) Thanks [@egormkn](https://github.com/egormkn)! - feat(create-medusa-app): print error message for failed database connection
+
 ## 1.2.4
 
 ### Patch Changes

@@ -1,0 +1,59 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ShippingMethod
+
+The attributes to update in the order's shipping method.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "The data to attach to the shipping method.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "Record<`string`, `unknown`\\>[]",
+    "description": "The line items associated with this shipping methods.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price",
+    "type": "`number`",
+    "description": "The price of the shipping method.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "profile_id",
+    "type": "`string`",
+    "description": "The ID of the shipping profile used in the order.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the shipping provider used in the order.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -102,7 +102,7 @@ post:
 delete:
   operationId: DeleteDraftOrdersDraftOrder
   summary: Delete a Draft Order
-  description: Delete a Draft Order
+  description: Delete a Draft Order.
   x-authenticated: true
   parameters:
     - in: path

@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.inventoryItems.deleteLocationLevel(inventoryItemId, locationId)
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

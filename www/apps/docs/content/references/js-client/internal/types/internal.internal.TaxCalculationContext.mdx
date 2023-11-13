@@ -1,0 +1,71 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# TaxCalculationContext
+
+ **TaxCalculationContext**: `Object`
+
+Information relevant to a tax calculation, such as the shipping address where
+the items are going.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "allocation_map",
+    "type": "[`LineAllocationsMap`](internal.LineAllocationsMap.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customer",
+    "type": "[`Customer`](../classes/internal.Customer.mdx)",
+    "description": "A customer can make purchases in your store and manage their profile.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "is_return",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region",
+    "type": "[`Region`](../classes/internal.Region.mdx)",
+    "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_address",
+    "type": "[`Address`](../classes/internal.Address.mdx) \\| ``null``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_methods",
+    "type": "[`ShippingMethod`](../classes/internal.ShippingMethod-4.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

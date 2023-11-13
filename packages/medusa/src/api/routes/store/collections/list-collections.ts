@@ -77,7 +77,7 @@ import { Type } from "class-transformer"
  *       medusa.collections.list()
  *       .then(({ collections, limit, offset, count }) => {
  *         console.log(collections.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -118,26 +118,46 @@ export default async (req, res) => {
   res.status(200).json({ collections, count, limit: take, offset: skip })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product collections.
+ */
 export class StoreGetCollectionsParams {
+  /**
+   * Handles to filter product collections by.
+   */
   @IsOptional()
   @IsArray()
   handle?: string[]
 
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 10
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   limit?: number = 10
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
+  /**
+   * Date filters to apply on the product collections' `created_at` date
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product collections' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

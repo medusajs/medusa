@@ -1,4 +1,5 @@
 type: object
+description: The list of stock locations with pagination fields.
 required:
   - stock_locations
   - count

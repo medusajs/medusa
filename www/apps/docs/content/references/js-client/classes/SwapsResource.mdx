@@ -1,0 +1,710 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/SwapsResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# SwapsResource
+
+This class is used to send requests to [Store Swap API Routes](https://docs.medusajs.com/api/store#swaps). All its method
+are available in the JS Client under the `medusa.swaps` property.
+
+A swap is created by a customer or an admin to exchange an item with a new one.
+Creating a swap implicitely includes creating a return for the item being exchanged.
+
+Related Guide: [How to create a swap in a storefront](https://docs.medusajs.com/modules/orders/storefront/create-swap)
+
+## Methods
+
+### create
+
+Create a Swap for an Order. This will also create a return and associate it with the swap. If a return shipping option is specified, the return will automatically be fulfilled.
+To complete the swap, you must use the [CartsResource.complete](CartsResource.mdx#complete) method passing it the ID of the swap's cart.
+
+An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
+the response. If an error occurs during swap creation or the request is interrupted for any reason, the swap creation can be retried by passing the idempotency
+key in the `Idempotency-Key` header.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.swaps
+  .create({
+    order_id,
+    return_items: [
+      {
+        item_id,
+        quantity: 1,
+      },
+    ],
+    additional_items: [
+      {
+        variant_id,
+        quantity: 1,
+      },
+    ],
+  })
+  .then(({ swap }) => {
+    console.log(swap.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`StorePostSwapsReq`](../internal/classes/internal.StorePostSwapsReq.mdx)",
+    "description": "The data of the swap to be created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "additional_items",
+        "type": "[`AdditionalItem`](../internal/classes/internal.AdditionalItem.mdx)[]",
+        "description": "The items to exchange the returned items with.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The quantity of the variant.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "variant_id",
+            "type": "`string`",
+            "description": "The ID of the Product Variant.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "order_id",
+        "type": "`string`",
+        "description": "The ID of the Order to create the Swap for.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "return_items",
+        "type": "[`Item`](../internal/classes/internal.Item-2.mdx)[]",
+        "description": "The items to include in the Return.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "item_id",
+            "type": "`string`",
+            "description": "The ID of the order's line item to return.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "note",
+            "type": "`string`",
+            "description": "The note to add to the item being swapped.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The quantity to return.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "reason_id",
+            "type": "`string`",
+            "description": "The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons API Route.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "return_shipping_option",
+        "type": "`string`",
+        "description": "The ID of the Shipping Option to create the Shipping Method from.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreSwapsRes`](../internal/types/internal.StoreSwapsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the swap's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreSwapsRes",
+        "type": "`object`",
+        "description": "The swap's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "swap",
+            "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+            "description": "Swap details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "additional_items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the new products to send to the customer, represented as line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "allow_backorder",
+                "type": "`boolean`",
+                "description": "If true, swaps can be completed with items out of stock",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the Swap was canceled.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart that the customer uses to complete the swap.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart that the customer uses to complete the swap.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the Swap was confirmed by the Customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference amount between the order’s original total and the new total imposed by the swap. If its value is negative, a refund must be issues to the customer. If it's positive, additional payment must be authorized by the customer. Otherwise, no payment processing is required.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_status",
+                "type": "[`SwapFulfillmentStatus`](../internal/enums/internal.SwapFulfillmentStatus.mdx)",
+                "description": "The status of the Fulfillment of the Swap.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillments",
+                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "description": "The details of the fulfillments that are used to send the new items to the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The swap's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the swap in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification",
+                "type": "`boolean`",
+                "description": "If set to true, no notification will be sent related to this swap",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that the swap belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that the swap belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the additional payment authorized by the customer when `difference_due` is positive.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_status",
+                "type": "[`SwapPaymentStatus`](../internal/enums/internal.SwapPaymentStatus.mdx)",
+                "description": "The status of the Payment of the Swap. The payment may either refer to the refund of an amount or the authorization of a new amount.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "return_order",
+                "type": "[`Return`](../internal/classes/internal.Return.mdx)",
+                "description": "The details of the return that belongs to the swap, which holds the details on the items being returned.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address that the new items should be sent to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The Address to send the new Line Items to - in most cases this will be the same as the shipping address on the Order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods used to fulfill the additional items purchased.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieveByCartId
+
+Retrieve a Swap's details by the ID of its cart.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.swaps.retrieveByCartId(cartId).then(({ swap }) => {
+  console.log(swap.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The cart's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreSwapsRes`](../internal/types/internal.StoreSwapsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the swap's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreSwapsRes",
+        "type": "`object`",
+        "description": "The swap's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "swap",
+            "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+            "description": "Swap details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "additional_items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the new products to send to the customer, represented as line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "allow_backorder",
+                "type": "`boolean`",
+                "description": "If true, swaps can be completed with items out of stock",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the Swap was canceled.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart that the customer uses to complete the swap.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart that the customer uses to complete the swap.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the Swap was confirmed by the Customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference amount between the order’s original total and the new total imposed by the swap. If its value is negative, a refund must be issues to the customer. If it's positive, additional payment must be authorized by the customer. Otherwise, no payment processing is required.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillment_status",
+                "type": "[`SwapFulfillmentStatus`](../internal/enums/internal.SwapFulfillmentStatus.mdx)",
+                "description": "The status of the Fulfillment of the Swap.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "fulfillments",
+                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "description": "The details of the fulfillments that are used to send the new items to the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The swap's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the swap in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "no_notification",
+                "type": "`boolean`",
+                "description": "If set to true, no notification will be sent related to this swap",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that the swap belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that the swap belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the additional payment authorized by the customer when `difference_due` is positive.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_status",
+                "type": "[`SwapPaymentStatus`](../internal/enums/internal.SwapPaymentStatus.mdx)",
+                "description": "The status of the Payment of the Swap. The payment may either refer to the refund of an amount or the authorization of a new amount.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "return_order",
+                "type": "[`Return`](../internal/classes/internal.Return.mdx)",
+                "description": "The details of the return that belongs to the swap, which holds the details on the items being returned.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address that the new items should be sent to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The Address to send the new Line Items to - in most cases this will be the same as the shipping address on the Order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods used to fulfill the additional items purchased.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

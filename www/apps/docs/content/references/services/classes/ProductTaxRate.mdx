@@ -1,0 +1,85 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductTaxRate
+
+This represents the association between a tax rate and a product to indicate that the product is taxed in a way different than the default.
+
+## Constructors
+
+### constructor
+
+**new ProductTaxRate**()
+
+This represents the association between a tax rate and a product to indicate that the product is taxed in a way different than the default.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "product",
+    "type": "[`Product`](Product.mdx)",
+    "description": "The details of the product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "product_id",
+    "type": "`string`",
+    "description": "The ID of the Product",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rate_id",
+    "type": "`string`",
+    "description": "The ID of the Tax Rate",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rate",
+    "type": "[`TaxRate`](TaxRate.mdx)",
+    "description": "The details of the tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

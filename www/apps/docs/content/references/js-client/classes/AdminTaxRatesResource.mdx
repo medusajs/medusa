@@ -1,0 +1,2887 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminTaxRatesResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminTaxRatesResource
+
+This class is used to send requests to [Admin Tax Rate API Routes](https://docs.medusajs.com/api/admin#tax-rates). All its method
+are available in the JS Client under the `medusa.admin.taxRates` property.
+
+All methods in this class require [user authentication](AdminAuthResource.mdx#createsession).
+
+Each region has at least a default tax rate. Admins can create and manage additional tax rates that can be applied for certain conditions, such as for specific product types.
+
+Related Guide: [How to manage tax rates](https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates).
+
+## Methods
+
+### addProductTypes
+
+Add product types to a tax rate.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .addProductTypes(taxRateId, {
+    product_types: [productTypeId],
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostTaxRatesTaxRateProductTypesReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateProductTypesReq.mdx)",
+    "description": "The product types to add to the tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "product_types",
+        "type": "`string`[]",
+        "description": "The IDs of the types of products to associate with this tax rate",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminGetTaxRatesTaxRateParams`](../internal/classes/internal.AdminGetTaxRatesTaxRateParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### addProducts
+
+Add products to a tax rate.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .addProducts(taxRateId, {
+    products: [productId],
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostTaxRatesTaxRateProductsReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsReq.mdx)",
+    "description": "The products to add to the tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "products",
+        "type": "`string`[]",
+        "description": "The IDs of the products to associate with this tax rate",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminPostTaxRatesTaxRateProductsParams`](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### addShippingOptions
+
+Add shipping options to a tax rate.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .addShippingOptions(taxRateId, {
+    shipping_options: [shippingOptionId],
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostTaxRatesTaxRateShippingOptionsReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsReq.mdx)",
+    "description": "The shipping options to add to the tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "shipping_options",
+        "type": "`string`[]",
+        "description": "The IDs of the shipping options to associate with this tax rate",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminPostTaxRatesTaxRateShippingOptionsParams`](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### create
+
+Create a tax rate.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .create({
+    code: "TEST",
+    name: "New Tax Rate",
+    region_id,
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`AdminPostTaxRatesReq`](../internal/classes/internal.AdminPostTaxRatesReq.mdx)",
+    "description": "The tax rate to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "code",
+        "type": "`string`",
+        "description": "The code of the tax rate.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the tax rate.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_types",
+        "type": "`string`[]",
+        "description": "The IDs of the types of products associated with this tax rate",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "`string`[]",
+        "description": "The IDs of the products associated with this tax rate.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rate",
+        "type": "``null`` \\| `number`",
+        "description": "The numeric rate to charge.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the Region that the tax rate belongs to.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_options",
+        "type": "`string`[]",
+        "description": "The IDs of the shipping options associated with this tax rate",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminPostTaxRatesParams`](../internal/classes/internal.AdminPostTaxRatesParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### delete
+
+Delete a tax rate. Resources associated with the tax rate, such as products or product types, are not deleted.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates.delete(taxRateId).then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the deletion operation's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### list
+
+Retrieve a list of tax rates. The tax rates can be filtered by fields such as `name` or `rate` passed in the `query` parameter. The tax rates can also be paginated.
+
+#### Example
+
+To list tax rates:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates.list().then(({ tax_rates, limit, offset, count }) => {
+  console.log(tax_rates.length)
+})
+```
+
+To specify relations that should be retrieved within the tax rates:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .list({
+    expand: "shipping_options",
+  })
+  .then(({ tax_rates, limit, offset, count }) => {
+    console.log(tax_rates.length)
+  })
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .list({
+    expand: "shipping_options",
+    limit,
+    offset,
+  })
+  .then(({ tax_rates, limit, offset, count }) => {
+    console.log(tax_rates.length)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[`AdminGetTaxRatesParams`](../internal/classes/internal.AdminGetTaxRatesParams.mdx)",
+    "description": "Filters and pagination configurations applied to the retrieved tax rates.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "code",
+        "type": "`string`",
+        "description": "Code to filter tax rates by.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "limit",
+        "type": "`number`",
+        "description": "Limit the number of items returned in the list.",
+        "optional": true,
+        "defaultValue": "50",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "Name to filter tax rates by.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "offset",
+        "type": "`number`",
+        "description": "The number of items to skip when retrieving a list.",
+        "optional": true,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rate",
+        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "description": "Number filters to filter tax rates' `rate` field.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string` \\| `string`[]",
+        "description": "Filter tax rates by the IDs of their associates region.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesListRes`](../internal/types/internal.AdminTaxRatesListRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of tax rates with pagination fields.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesListRes",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `tax_rates`: [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]  }",
+        "description": "The list of tax rates with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "tax_rates",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+            "description": "An array of tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### removeProductTypes
+
+Remove product types from a tax rate. This only removes the association between the product types and the tax rate. It does not delete the product types.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .removeProductTypes(taxRateId, {
+    product_types: [productTypeId],
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminDeleteTaxRatesTaxRateProductTypesReq`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesReq.mdx)",
+    "description": "The product types to remove from the tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "product_types",
+        "type": "`string`[]",
+        "description": "The IDs of the product types to remove their association with this tax rate.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminDeleteTaxRatesTaxRateProductTypesParams`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### removeProducts
+
+Remove products from a tax rate. This only removes the association between the products and the tax rate. It does not delete the products.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .removeProducts(taxRateId, {
+    products: [productId],
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminDeleteTaxRatesTaxRateProductsReq`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsReq.mdx)",
+    "description": "The products to remove from the tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "products",
+        "type": "`string`[]",
+        "description": "The IDs of the products to remove their association with this tax rate.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminDeleteTaxRatesTaxRateProductsParams`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### removeShippingOptions
+
+Remove shipping options from a tax rate. This only removes the association between the shipping options and the tax rate. It does not delete the shipping options.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .removeShippingOptions(taxRateId, {
+    shipping_options: [shippingOptionId],
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminDeleteTaxRatesTaxRateShippingOptionsReq`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsReq.mdx)",
+    "description": "The shipping options to remove from the tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "shipping_options",
+        "type": "`string`[]",
+        "description": "The IDs of the shipping options to remove their association with this tax rate.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminDeleteTaxRatesTaxRateShippingOptionsParams`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a tax rate's details.
+
+#### Example
+
+A simple example that retrieves a tax rate by its ID:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates.retrieve(taxRateId).then(({ tax_rate }) => {
+  console.log(tax_rate.id)
+})
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .retrieve(taxRateId, {
+    expand: "shipping_options",
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "[`AdminGetTaxRatesTaxRateParams`](../internal/classes/internal.AdminGetTaxRatesTaxRateParams.mdx)",
+    "description": "Configurations to apply on retrieved tax rates.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Update a tax rate's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.taxRates
+  .update(taxRateId, {
+    name: "New Tax Rate",
+  })
+  .then(({ tax_rate }) => {
+    console.log(tax_rate.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The tax rate's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostTaxRatesTaxRateReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateReq.mdx)",
+    "description": "The attributes to update in the tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "code",
+        "type": "`string`",
+        "description": "The code of the tax rate.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the tax rate.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "product_types",
+        "type": "`string`[]",
+        "description": "The IDs of the types of product types associated with this tax rate",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "`string`[]",
+        "description": "The IDs of the products associated with this tax rate",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "rate",
+        "type": "``null`` \\| `number`",
+        "description": "The numeric rate to charge.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the Region that the tax rate belongs to.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_options",
+        "type": "`string`[]",
+        "description": "The IDs of the shipping options associated with this tax rate",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "type": "[`AdminPostTaxRatesTaxRateParams`](../internal/classes/internal.AdminPostTaxRatesTaxRateParams.mdx)",
+    "description": "Configurations to apply on the retrieved tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`[]",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`[]",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminTaxRatesRes`](../internal/types/internal.AdminTaxRatesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the tax rate's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminTaxRatesRes",
+        "type": "`object`",
+        "description": "The tax rate's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "tax_rate",
+            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "description": "Tax rate details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "code",
+                "type": "``null`` \\| `string`",
+                "description": "A code to identify the tax type by",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The tax rate's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "A human friendly name for the tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_count",
+                "type": "`number`",
+                "description": "The count of products",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_type_count",
+                "type": "`number`",
+                "description": "The count of product types",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "product_types",
+                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "The details of the product types that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "rate",
+                "type": "``null`` \\| `number`",
+                "description": "The numeric rate to charge",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The ID of the region that the rate belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_option_count",
+                "type": "`number`",
+                "description": "The count of shipping options",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that belong to this tax rate.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

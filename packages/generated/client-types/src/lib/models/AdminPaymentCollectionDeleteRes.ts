@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The details of deleting a payment collection.
+ */
 export interface AdminPaymentCollectionDeleteRes {
   /**
    * The ID of the deleted Payment Collection.

@@ -1,7 +1,7 @@
 get:
   operationId: GetDiscountsDiscount
   summary: Get a Discount
-  description: Retrieves a Discount
+  description: Retrieve a Discount.
   x-authenticated: true
   parameters:
     - in: path

@@ -1,4 +1,5 @@
 type: object
+description: The note's details.
 required:
   - note
 properties:

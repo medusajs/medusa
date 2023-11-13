@@ -192,7 +192,7 @@ export type ResponseInventoryItem = Partial<InventoryItemDTO> & {
  *     $ref: "#/components/schemas/ResponseInventoryItem"
  *   sales_channel_availability:
  *     type: array
- *     description: An array of details about the variant's inventory availability in sales channels.
+ *     description: Details about the variant's inventory availability in sales channels.
  *     items:
  *       type: object
  *       required:
@@ -223,10 +223,11 @@ export type VariantInventory = {
 /**
  * @schema AdminGetVariantsVariantInventoryRes
  * type: object
+ * description: "The variant's inventory details."
  * properties:
  *   variant:
  *     type: object
- *     description: "The product variant's."
+ *     description: "The product variant's inventory details."
  *     $ref: "#/components/schemas/VariantInventory"
  */
 export type AdminGetVariantsVariantInventoryRes = {

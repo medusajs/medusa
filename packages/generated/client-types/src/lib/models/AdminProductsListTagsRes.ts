@@ -3,6 +3,9 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The usage details of product tags.
+ */
 export interface AdminProductsListTagsRes {
   /**
    * An array of product tags details.

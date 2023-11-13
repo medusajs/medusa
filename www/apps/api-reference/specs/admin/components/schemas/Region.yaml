@@ -30,7 +30,7 @@ properties:
     type: string
     example: EU
   currency_code:
-    description: The 3 character currency code used in the region.
+    description: The three character currency code used in the region.
     type: string
     example: usd
     externalDocs:

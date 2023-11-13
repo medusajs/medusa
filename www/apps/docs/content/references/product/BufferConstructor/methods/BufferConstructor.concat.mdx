@@ -22,7 +22,7 @@ combined length of the `Buffer`s in `list` exceeds `totalLength`, the result is
 truncated to `totalLength`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Create a single `Buffer` from a list of three `Buffer` instances.
 
@@ -53,6 +53,7 @@ console.log(bufA.length);
     "description": "List of `Buffer` or Uint8Array instances to concatenate.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -61,6 +62,7 @@ console.log(bufA.length);
     "description": "Total length of the `Buffer` instances in `list` when concatenated.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -76,6 +78,7 @@ console.log(bufA.length);
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

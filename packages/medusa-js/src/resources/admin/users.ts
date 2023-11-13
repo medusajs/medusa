@@ -12,12 +12,39 @@ import {
 } from "../.."
 import BaseResource from "../base"
 
+/**
+ * This class is used to send requests to [Admin User API Routes](https://docs.medusajs.com/api/admin#users). All its method
+ * are available in the JS Client under the `medusa.admin.users` property.
+ * 
+ * All methods in this class require {@link AdminAuthResource.createSession | user authentication}.
+ * 
+ * A store can have more than one user, each having the same privileges. Admins can manage users, their passwords, and more.
+ * 
+ * Related Guide: [How to manage users](https://docs.medusajs.com/modules/users/admin/manage-users).
+ */
 class AdminUsersResource extends BaseResource {
+  
   /**
-   * @description resets password by re-sending password token.
-   * @param payload payload for generating reset-password token.
-   * @param customHeaders
-   * @returns
+   * Generate a password token for an admin user with a given email. This also triggers the `user.password_reset` event. So, if you have a Notification Service installed
+   * that can handle this event, a notification, such as an email, will be sent to the user. The token is triggered as part of the `user.password_reset` event's payload. 
+   * That token must be used later to reset the password using the {@link resetPassword} method.
+   * @param {AdminResetPasswordTokenRequest} payload - The user's reset details.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<void>} Resolves when the token is generated successfully.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.users.sendResetPasswordToken({
+   *   email: "user@example.com"
+   * })
+   * .then(() => {
+   *   // successful
+   * })
+   * .catch(() => {
+   *   // error occurred
+   * })
    */
   sendResetPasswordToken(
     payload: AdminResetPasswordTokenRequest,
@@ -28,10 +55,23 @@ class AdminUsersResource extends BaseResource {
   }
 
   /**
-   * @description resets the users password given the correct token.
-   * @param payload reset password information.
-   * @param customHeaders
-   * @returns
+   * Reset the password of an admin user using their reset password token. You must generate a reset password token first for the user using the {@link sendResetPasswordToken} method,
+   * then use that token to reset the password in this method.
+   * @param {AdminResetPasswordRequest} payload - The reset details.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.users.resetPassword({
+   *   token: "supersecrettoken",
+   *   password: "supersecret"
+   * })
+   * .then(({ user }) => {
+   *   console.log(user.id);
+   * })
    */
   resetPassword(
     payload: AdminResetPasswordRequest,
@@ -42,10 +82,19 @@ class AdminUsersResource extends BaseResource {
   }
 
   /**
-   * Retrieves a given user
-   * @param id id of the user
-   * @param customHeaders
-   * @returns the user
+   * Retrieve an admin user's details.
+   * @param {string} id - The user's ID.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.users.retrieve(userId)
+   * .then(({ user }) => {
+   *   console.log(user.id);
+   * })
    */
   retrieve(
     id: string,
@@ -56,10 +105,22 @@ class AdminUsersResource extends BaseResource {
   }
 
   /**
-   * @description creates a user with the provided information
-   * @param payload user creation request body
-   * @param customHeaders
-   * @returns created user
+   * Create an admin user. The user has the same privileges as all admin users, and will be able to authenticate and perform admin functionalities right after creation.
+   * @param {AdminCreateUserPayload} payload - The user to create.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.users.create({
+   *   email: "user@example.com",
+   *   password: "supersecret"
+   * })
+   * .then(({ user }) => {
+   *   console.log(user.id);
+   * })
    */
   create(
     payload: AdminCreateUserPayload,
@@ -70,11 +131,22 @@ class AdminUsersResource extends BaseResource {
   }
 
   /**
-   * @description updates a given user
-   * @param id id of the user to update
-   * @param payload user update request body
-   * @param customHeaders
-   * @returns the updated user
+   * Update an admin user's details.
+   * @param {string} id - The user's ID.
+   * @param {AdminUpdateUserPayload} payload - The attributes to update in the user.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminUserRes>} Resolves to the user's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.users.update(userId, {
+   *   first_name: "Marcellus"
+   * })
+   * .then(({ user }) => {
+   *   console.log(user.id);
+   * })
    */
   update(
     id: string,
@@ -86,10 +158,19 @@ class AdminUsersResource extends BaseResource {
   }
 
   /**
-   * @description deletes a user
-   * @param id id of the user to be deleted
-   * @param customHeaders
-   * @returns delete response
+   * Delete a user. Once deleted, the user will not be able to authenticate or perform admin functionalities.
+   * @param {string} id - The user's ID.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminDeleteUserRes>} Resolves to the deletion operation's details.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.users.delete(userId)
+   * .then(({ id, object, deleted }) => {
+   *   console.log(id);
+   * })
    */
   delete(
     id: string,
@@ -100,8 +181,18 @@ class AdminUsersResource extends BaseResource {
   }
 
   /**
-   * @description lists all users
-   * @returns a list of all users
+   * Retrieve all admin users.
+   * @param {Record<string, any>} customHeaders - Custom headers to attach to the request.
+   * @returns {ResponsePromise<AdminUsersListRes>} Resolves to the list of users.
+   * 
+   * @example
+   * import Medusa from "@medusajs/medusa-js"
+   * const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+   * // must be previously logged in or use api token
+   * medusa.admin.users.list()
+   * .then(({ users }) => {
+   *   console.log(users.length);
+   * })
    */
   list(
     customHeaders: Record<string, any> = {}

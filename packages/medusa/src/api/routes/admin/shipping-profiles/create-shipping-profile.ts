@@ -29,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -95,6 +95,12 @@ export default async (req, res) => {
  *     description: The type of the Shipping Profile
  *     type: string
  *     enum: [default, gift_card, custom]
+ *   metadata:
+ *     description: An optional set of key-value pairs with additional information.
+ *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostShippingProfilesReq {
   @IsString()
