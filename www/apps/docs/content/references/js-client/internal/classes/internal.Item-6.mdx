@@ -1,0 +1,66 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Item
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the Claim Item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "images",
+    "type": "[`Image`](internal.Image.mdx)[]",
+    "description": "A list of image URL's that will be associated with the Claim",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional set of key-value pairs to hold additional information.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "note",
+    "type": "`string`",
+    "description": "Short text describing the Claim Item in further detail.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "reason",
+    "type": "`string`",
+    "description": "The reason for the Claim",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tags",
+    "type": "[`Tag`](internal.Tag.mdx)[]",
+    "description": "A list o tags to add to the Claim Item",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

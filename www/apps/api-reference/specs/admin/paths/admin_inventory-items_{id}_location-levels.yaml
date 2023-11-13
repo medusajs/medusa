@@ -3,8 +3,7 @@ get:
   summary: List Inventory Level
   description: >-
     Retrieve a list of inventory levels of an inventory item. The inventory
-    levels can be filtered by fields such as `location_id`. The inventory levels
-    can also be paginated.
+    levels can be filtered by fields such as `location_id`.
   x-authenticated: true
   parameters:
     - in: path
@@ -77,8 +76,8 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostInventoryItemsInventoryItemLocationLevels
-  summary: Create an Location Level
-  description: Create an Location Level for a given Inventory Item.
+  summary: Create a Location Level
+  description: Create a Location Level for a given Inventory Item.
   x-authenticated: true
   parameters:
     - in: path

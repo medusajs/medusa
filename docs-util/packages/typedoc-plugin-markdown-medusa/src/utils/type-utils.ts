@@ -128,7 +128,7 @@ export function getDeclarationType(model: DeclarationReflection): string {
           obj.type ? getType(obj.type) : escapeChars(obj.toString())
         } ${
           obj.defaultValue && obj.defaultValue !== "..."
-            ? `= ${escapeChars(obj.defaultValue)}`
+            ? `= ${escapeChars(`${obj.defaultValue}`)}`
             : ""
         }`
       })
@@ -136,7 +136,7 @@ export function getDeclarationType(model: DeclarationReflection): string {
       types ? types.join("; ") : ""
     } }${
       model.defaultValue && model.defaultValue !== "..."
-        ? `= ${escapeChars(model.defaultValue)}`
+        ? `= ${escapeChars(`${model.defaultValue}`)}`
         : ""
     }`
   }

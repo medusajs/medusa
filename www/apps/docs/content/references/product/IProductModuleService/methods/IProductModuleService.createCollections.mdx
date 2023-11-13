@@ -44,6 +44,7 @@ async function createCollection (title: string) {
     "description": "The product collections to be created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "handle",
@@ -51,6 +52,7 @@ async function createCollection (title: string) {
         "description": "The product collection's handle. If not provided, the value of this attribute is set to the slug version of the title.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -59,6 +61,7 @@ async function createCollection (title: string) {
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -67,6 +70,7 @@ async function createCollection (title: string) {
         "description": "",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -75,6 +79,7 @@ async function createCollection (title: string) {
         "description": "The product collection's title.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -85,6 +90,7 @@ async function createCollection (title: string) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -92,6 +98,7 @@ async function createCollection (title: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -100,6 +107,7 @@ async function createCollection (title: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -108,6 +116,7 @@ async function createCollection (title: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -116,6 +125,7 @@ async function createCollection (title: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -124,6 +134,7 @@ async function createCollection (title: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -139,6 +150,7 @@ async function createCollection (title: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product collections.",
+    "expandable": false,
     "children": [
       {
         "name": "ProductCollectionDTO[]",
@@ -146,6 +158,7 @@ async function createCollection (title: string) {
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "deleted_at",
@@ -153,6 +166,7 @@ async function createCollection (title: string) {
             "description": "When the product collection was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -161,6 +175,7 @@ async function createCollection (title: string) {
             "description": "The handle of the product collection. The handle can be used to create slug URL paths.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -169,6 +184,7 @@ async function createCollection (title: string) {
             "description": "The ID of the product collection.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -177,6 +193,7 @@ async function createCollection (title: string) {
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -185,6 +202,7 @@ async function createCollection (title: string) {
             "description": "The associated products. It may only be available if the `products` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -193,6 +211,7 @@ async function createCollection (title: string) {
             "description": "The title of the product collection.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

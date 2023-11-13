@@ -1,0 +1,1193 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# SwapService
+
+Handles swaps
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cartService_",
+    "type": "[`CartService`](internal.internal.CartService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customShippingOptionService_",
+    "type": "[`CustomShippingOptionService`](internal.internal.CustomShippingOptionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentService_",
+    "type": "[`FulfillmentService`](internal.FulfillmentService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemAdjustmentService_",
+    "type": "[`LineItemAdjustmentService`](internal.internal.LineItemAdjustmentService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemService_",
+    "type": "[`LineItemService`](internal.internal.LineItemService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "orderService_",
+    "type": "[`OrderService`](internal.internal.OrderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "paymentProviderService_",
+    "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantInventoryService_",
+    "type": "[`ProductVariantInventoryService`](internal.internal.ProductVariantInventoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "returnService_",
+    "type": "[`ReturnService`](internal.internal.ReturnService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingOptionService_",
+    "type": "[`ShippingOptionService`](internal.internal.ShippingOptionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "swapRepository_",
+    "type": "`Repository`<[`Swap`](internal.Swap.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalsService_",
+    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.FULFILLMENT_CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PAYMENT_CAPTURED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PAYMENT_CAPTURE_FAILED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PAYMENT_COMPLETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PROCESS_REFUND_FAILED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.RECEIVED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.REFUND_PROCESSED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.SHIPMENT_CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### areReturnItemsValid
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "returnItems",
+    "type": "[`WithRequiredProperty`](../types/internal.internal.WithRequiredProperty.mdx)<[`Partial`](../types/internal.Partial.mdx)<[`ReturnItem`](internal.internal.ReturnItem.mdx)\\>, ``\"item_id\"``\\>[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancel
+
+Cancels a given swap if possible. A swap can only be canceled if all
+related returns, fulfillments, and payments have been canceled. If a swap
+is associated with a refund, it cannot be canceled.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "the id of the swap to cancel.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the canceled swap.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancelFulfillment
+
+Cancels a fulfillment (if related to a swap)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the ID of the fulfillment to cancel",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated swap",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+Creates a swap from an order, with given return items, additional items
+and an optional return shipping method.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "the order to base the swap off",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "returnItems",
+    "type": "[`WithRequiredProperty`](../types/internal.internal.WithRequiredProperty.mdx)<[`Partial`](../types/internal.Partial.mdx)<[`ReturnItem`](internal.internal.ReturnItem.mdx)\\>, ``\"item_id\"``\\>[]",
+    "description": "the items to return in the swap",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "additionalItems",
+    "type": "[`Pick`](../types/internal.Pick.mdx)<[`LineItem`](internal.LineItem.mdx), ``\"variant_id\"`` \\| ``\"quantity\"``\\>[]",
+    "description": "the items to send to the customer",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "returnShipping",
+    "type": "`object`",
+    "description": "an optional shipping method for returning the returnItems",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "returnShipping.option_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "returnShipping.price",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "custom",
+    "type": "`object`",
+    "description": "contains relevant custom information. This object may include no_notification which will disable sending notification when creating swap. If set, it overrules the attribute inherited from the order",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "custom.allow_backorder",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "custom.idempotency_key",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "custom.location_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "custom.no_notification",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the newly created swap",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createCart
+
+Creates a cart from the given swap. The cart can be used to pay
+for differences associated with the swap. The swap represented by the
+swapId must belong to the order. Fails if there is already a cart on the
+swap.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "the id of the swap to create the cart from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customShippingOptions",
+    "type": "{ `option_id`: `string` ; `price`: `number`  }[]",
+    "description": "the shipping options",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "`object`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context.sales_channel_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the swap with its cart_id prop set to the id of the new cart.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createFulfillment
+
+Fulfills the additional items associated with the swap. Will call the
+fulfillment providers associated with the shipping methods.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "the id of the swap to fulfill,",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`CreateShipmentConfig`](../types/internal.CreateShipmentConfig.mdx)",
+    "description": "optional configurations, includes optional metadata to attach to the shipment, and a no_notification flag.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated swap with new status and fulfillments.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createShipment
+
+Marks a fulfillment as shipped and attaches tracking numbers.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "the id of the swap that has been shipped.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the id of the specific fulfillment that has been shipped",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "trackingLinks",
+    "type": "{ `tracking_number`: `string`  }[]",
+    "description": "the tracking numbers associated with the shipment",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`CreateShipmentConfig`](../types/internal.CreateShipmentConfig.mdx)",
+    "description": "optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated swap with new fulfillments and status.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteMetadata
+
+Dedicated method to delete metadata for a swap.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "the order to delete metadata from.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "key",
+    "type": "`string`",
+    "description": "key for metadata field",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the updated result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+List swaps.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Swap`](internal.Swap.mdx)\\>",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Swap`](internal.Swap.mdx)\\>",
+    "description": "the configuration used to find the objects. contains relations, skip, and take.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+List swaps.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Swap`](internal.Swap.mdx)\\>",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Swap`](internal.Swap.mdx)\\>",
+    "description": "the configuration used to find the objects. contains relations, skip, and take.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`Swap`](internal.Swap.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### processDifference
+
+Process difference for the requested swap.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "id of a swap being processed",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "processed swap",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### registerCartCompletion
+
+Register a cart completion
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "The id of the swap",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "swap related to the cart",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### registerReceived
+
+Registers the swap return items as received so that they cannot be used
+as a part of other swaps/returns.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`any`",
+    "description": "the id of the order with the swap.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the resulting order",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieves a swap with the given id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "the id of the swap to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`Omit`](../types/internal.Omit.mdx)<[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Swap`](internal.Swap.mdx)\\>, ``\"select\"``\\> & { `select?`: `string`[]  }",
+    "description": "the configuration to retrieve the swap",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the swap",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByCartId
+
+Retrieves a swap based on its associated cart id
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cartId",
+    "type": "`string`",
+    "description": "the cart id that the swap's cart has",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "relations",
+    "type": "`string`[]",
+    "description": "the relations to retrieve swap",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the swap",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### transformQueryForCart
+
+Transform find config object for retrieval.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "config",
+    "type": "[`Omit`](../types/internal.Omit.mdx)<[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Swap`](internal.Swap.mdx)\\>, ``\"select\"``\\> & { `select?`: `string`[]  }",
+    "description": "parsed swap find config",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "[`Omit`](../types/internal.Omit.mdx)<[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Swap`](internal.Swap.mdx)\\>, ``\"select\"``\\> & { `select?`: `string`[]  } & { `cartRelations`: `undefined` \\| `string`[] ; `cartSelects`: `undefined` \\| keyof [`Cart`](internal.Cart.mdx)[]  }",
+    "type": "[`Omit`](../types/internal.Omit.mdx)<[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Swap`](internal.Swap.mdx)\\>, ``\"select\"``\\> & { `select?`: `string`[]  } & { `cartRelations`: `undefined` \\| `string`[] ; `cartSelects`: `undefined` \\| keyof [`Cart`](internal.Cart.mdx)[]  }",
+    "optional": true,
+    "defaultValue": "",
+    "description": "transformed find swap config",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+Update the swap record.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "swapId",
+    "type": "`string`",
+    "description": "id of a swap to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`Partial`](../types/internal.Partial.mdx)<[`Swap`](internal.Swap.mdx)\\>",
+    "description": "new data",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Swap`](internal.Swap.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated swap record",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "SwapService",
+    "type": "[`SwapService`](internal.internal.SwapService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

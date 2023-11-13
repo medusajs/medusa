@@ -172,6 +172,6 @@ export default RestockNotificationSubscriber
 Handler methods subscribed to the `restock-notification.restocked` event, which in this case is the `handleRestockNotification` method, receive the following object data payload as a parameter:
 
 - `variant_id`: The ID of the variant that has been restocked.
-- `emails`: An array of strings indicating the email addresses subscribed to the restocked variant. Here, you pass it along to the SendGrid plugin directly to send the email to everyone subscribed. If necessary, you can also retrieve the customer of that email using the `CustomerService`'s [retrieveByEmail](../../references/services/classes/CustomerService.md#retrievebyemail) method.
+- `emails`: An array of strings indicating the email addresses subscribed to the restocked variant. Here, you pass it along to the SendGrid plugin directly to send the email to everyone subscribed. If necessary, you can also retrieve the customer of that email using the `CustomerService`'s [retrieveByEmail](../../references/services/classes/CustomerService.mdx#retrievebyemail) method.
 
 In the method, you retrieve the variant by its ID using the `ProductVariantService`, then send the email using the SendGrid plugins' `SendGridService`.

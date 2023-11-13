@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 Equivalent to `buf.indexOf() !== -1`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('this is a buffer');
 
@@ -42,6 +42,7 @@ console.log(buf.includes('this', 4));
     "description": "What to search for.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -50,6 +51,7 @@ console.log(buf.includes('this', 4));
     "description": "Where to begin searching in `buf`. If negative, then offset is calculated from the end of `buf`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -58,6 +60,7 @@ console.log(buf.includes('this', 4));
     "description": "If `value` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -73,6 +76,7 @@ console.log(buf.includes('this', 4));
     "optional": true,
     "defaultValue": "",
     "description": "`true` if `value` was found in `buf`, `false` otherwise.",
+    "expandable": false,
     "children": []
   }
 ]} />

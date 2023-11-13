@@ -57,6 +57,9 @@ export class SalesChannel extends SoftDeletableEntity {
   )
   locations: SalesChannelLocation[]
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "sc")

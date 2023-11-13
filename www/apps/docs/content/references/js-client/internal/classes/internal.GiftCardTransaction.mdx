@@ -1,0 +1,95 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# GiftCardTransaction
+
+Gift Card Transactions are created once a Customer uses a Gift Card to pay for their Order.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "amount",
+    "type": "`number`",
+    "description": "The amount that was used from the Gift Card.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "gift_card",
+    "type": "[`GiftCard`](internal.GiftCard-1.mdx)",
+    "description": "The details of the gift card associated used in this transaction.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "gift_card_id",
+    "type": "`string`",
+    "description": "The ID of the Gift Card that was used in the transaction.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The gift card transaction's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "is_taxable",
+    "type": "`boolean`",
+    "description": "Whether the transaction is taxable or not.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "The details of the order that the gift card was used for payment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "order_id",
+    "type": "`string`",
+    "description": "The ID of the order that the gift card was used for payment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rate",
+    "type": "``null`` \\| `number`",
+    "description": "The tax rate of the transaction",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

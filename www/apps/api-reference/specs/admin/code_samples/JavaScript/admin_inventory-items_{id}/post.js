@@ -6,4 +6,4 @@ medusa.admin.inventoryItems.update(inventoryItemId, {
 })
 .then(({ inventory_item }) => {
   console.log(inventory_item.id);
-});
+})

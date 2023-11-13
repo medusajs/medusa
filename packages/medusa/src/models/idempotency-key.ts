@@ -43,6 +43,9 @@ export class IdempotencyKey {
   @Column({ default: "started" })
   recovery_point: string
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ikey")

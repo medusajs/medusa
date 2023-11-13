@@ -13,7 +13,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
  * summary: "Cancel Claim's Fulfillment"
- * description: "Cancel a claim's fulfillment and change its status."
+ * description: "Cancel a claim's fulfillment and change its fulfillment status to `canceled`."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the order the claim is associated with.
@@ -34,7 +34,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.cancelClaimFulfillment(orderId, claimId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

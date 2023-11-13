@@ -23,6 +23,7 @@ Aside from the options detailed in [typedoc-plugin-markdown](https://github.com/
   - `frontmatterData`: (optional) an object that will be injected as frontmatter to the pages matching specified pattern.
   - `parameterComponent`: (optional) a string indicating the name of a React component to pass the parameters as an object to. This is only used if the `parameterStyle` option is set to `component`. This also must be used with the `mdxOutput` option enabled, and an import string for the component passed to the `mdxImports` option. The React component will receive a `parameters` prop, which is an array of type [Parameter](./src/types.ts#L95).
   - `mdxImports`: (optional) an array of strings, each holding an import statement that will be added to the beginning of each page. For example, `["import ParameterTypes from "@site/src/components/ParameterTypes""]`. Must be used along with the `mdxOutput` option enabled.
+  - `maxLevel`: (optional) a number indicating the maximum level parameters and return types are expanded. Default is `3`.
 
 ## Build Plugin
 

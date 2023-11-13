@@ -1,0 +1,548 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# LineItemAdjustmentService
+
+Provides layer to manipulate line item adjustments.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountService",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemAdjustmentRepo_",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+Creates a line item adjustment
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`Partial`](../types/internal.Partial.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "description": "the line item adjustment to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "line item adjustment",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createAdjustmentForLineItem
+
+Creates adjustment for a line item
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "the cart object holding discounts",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItem",
+    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "description": "the line item for which a line item adjustment might be created",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a line item adjustment or undefined if no adjustment was created",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createAdjustments
+
+Creates adjustment for a line item
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "the cart object holding discounts",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItem",
+    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "description": "the line item for which a line item adjustment might be created",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[] \\| [`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[][]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created\notherwise returns an array of line item adjustments for each line item in the cart",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+Deletes line item adjustments matching a selector
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selectorOrIds",
+    "type": "`string` \\| `string`[] \\| [`FilterableLineItemAdjustmentProps`](internal.FilterableLineItemAdjustmentProps.mdx) & { `discount_id?`: `FindOperator`<``null`` \\| `string`\\>  }",
+    "description": "the query object for find or the line item adjustment id",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### generateAdjustments
+
+Creates adjustment for a line item
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "calculationContextData",
+    "type": "[`CalculationContextData`](../types/internal.CalculationContextData.mdx)",
+    "description": "the calculationContextData object holding discounts",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "generatedLineItem",
+    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "description": "the line item for which a line item adjustment might be created",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`AdjustmentContext`](../types/internal.AdjustmentContext.mdx)",
+    "description": "the line item for which a line item adjustment might be created",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`GeneratedAdjustment`](../types/internal.GeneratedAdjustment.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a line item adjustment or undefined if no adjustment was created",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+Lists line item adjustments
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableLineItemAdjustmentProps`](internal.FilterableLineItemAdjustmentProps.mdx)",
+    "description": "the query object for find",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "description": "the config to be used for find",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieves a line item adjustment by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "lineItemAdjustmentId",
+    "type": "`string`",
+    "description": "the id of the line item adjustment to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "description": "the config to retrieve the line item adjustment by",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the line item adjustment.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+Creates a line item adjustment
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the line item adjustment id to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`Partial`](../types/internal.Partial.mdx)<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "description": "the line item adjustment to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "line item adjustment",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "LineItemAdjustmentService",
+    "type": "[`LineItemAdjustmentService`](internal.internal.LineItemAdjustmentService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

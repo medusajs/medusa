@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.reservations.retrieve(reservationId)
 .then(({ reservation }) => {
   console.log(reservation.id);
-});
+})

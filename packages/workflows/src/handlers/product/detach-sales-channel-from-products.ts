@@ -1,5 +1,8 @@
 import { WorkflowArguments } from "../../helper"
-import { promiseAll } from "@medusajs/utils"
+import {
+  IsolateSalesChannelDomainFeatureFlag,
+  promiseAll,
+} from "@medusajs/utils"
 
 type ProductHandle = string
 type SalesChannelId = string
@@ -15,6 +18,8 @@ export async function detachSalesChannelFromProducts({
   data,
 }: WorkflowArguments<HandlerInput>): Promise<void> {
   const { manager } = context
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+
   const productsHandleSalesChannelsMap = data.productsHandleSalesChannelsMap
   const products = data.products
 
@@ -33,16 +38,43 @@ export async function detachSalesChannelFromProducts({
     }
   })
 
-  await promiseAll(
-    Array.from(salesChannelIdProductIdsMap.entries()).map(
-      async ([salesChannelId, productIds]) => {
-        return await salesChannelServiceTx.removeProducts(
-          salesChannelId,
-          productIds
-        )
-      }
+  if (
+    featureFlagRouter.isFeatureEnabled(IsolateSalesChannelDomainFeatureFlag.key)
+  ) {
+    const remoteLink = container.resolve("remoteLink")
+    const links: any[] = []
+
+    for (const [
+      salesChannelId,
+      productIds,
+    ] of salesChannelIdProductIdsMap.entries()) {
+      productIds.forEach((id) =>
+        links.push({
+          productService: {
+            product_id: id,
+          },
+          salesChannelService: {
+            sales_channel_id: salesChannelId,
+          },
+        })
+      )
+
+      await remoteLink.delete(links)
+    }
+
+    return
+  } else {
+    await promiseAll(
+      Array.from(salesChannelIdProductIdsMap.entries()).map(
+        async ([salesChannelId, productIds]) => {
+          return await salesChannelServiceTx.removeProducts(
+            salesChannelId,
+            productIds
+          )
+        }
+      )
     )
-  )
+  }
 }
 
 detachSalesChannelFromProducts.aliases = {

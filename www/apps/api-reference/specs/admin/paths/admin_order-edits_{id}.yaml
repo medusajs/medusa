@@ -64,7 +64,7 @@ get:
 post:
   operationId: PostOrderEditsOrderEdit
   summary: Update an Order Edit
-  description: Updates an Order Edit's details.
+  description: Update an Order Edit's details.
   x-authenticated: true
   parameters:
     - in: path

@@ -6,4 +6,4 @@ medusa.admin.orders.fulfillSwap(orderId, swapId, {
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

@@ -1,0 +1,75 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostOrdersOrderReturnsReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "items",
+    "type": "[`OrdersReturnItem`](internal.OrdersReturnItem.mdx)[]",
+    "description": "The line items that will be returned.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "location_id",
+    "type": "`string`",
+    "description": "The ID of the location used for the return.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "no_notification",
+    "type": "`boolean`",
+    "description": "If set to `true`, no notification will be sent to the customer related to this Return.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "note",
+    "type": "`string`",
+    "description": "An optional note with information about the Return.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "receive_now",
+    "type": "`boolean`",
+    "description": "A flag to indicate if the Return should be registerd as received immediately.",
+    "optional": true,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refund",
+    "type": "`number`",
+    "description": "The amount to refund.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "return_shipping",
+    "type": "[`ReturnShipping`](internal.ReturnShipping-1.mdx)",
+    "description": "The Shipping Method to be used to handle the return shipment.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

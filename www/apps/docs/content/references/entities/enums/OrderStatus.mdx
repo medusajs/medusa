@@ -6,11 +6,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # OrderStatus
 
+The order's status.
+
 ## Enumeration Members
 
 ### ARCHIVED
 
  **ARCHIVED** = ``"archived"``
+
+The order is archived.
 
 ___
 
@@ -18,11 +22,17 @@ ___
 
  **CANCELED** = ``"canceled"``
 
+The order is canceled.
+
 ___
 
 ### COMPLETED
 
  **COMPLETED** = ``"completed"``
+
+The order is completed, meaning that 
+the items have been fulfilled and the payment
+has been captured.
 
 ___
 
@@ -30,8 +40,12 @@ ___
 
  **PENDING** = ``"pending"``
 
+The order is pending.
+
 ___
 
 ### REQUIRES\_ACTION
 
  **REQUIRES\_ACTION** = ``"requires_action"``
+
+The order requires action.

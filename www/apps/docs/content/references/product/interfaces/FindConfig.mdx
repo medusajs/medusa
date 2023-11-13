@@ -18,6 +18,7 @@ which provides correct typing of field names in its properties.
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -31,7 +32,18 @@ which provides correct typing of field names in its properties.
     "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
     "optional": true,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "__type",
+        "type": "`object`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   },
   {
     "name": "relations",
@@ -39,6 +51,7 @@ which provides correct typing of field names in its properties.
     "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -47,6 +60,7 @@ which provides correct typing of field names in its properties.
     "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -55,6 +69,7 @@ which provides correct typing of field names in its properties.
     "description": "A number indicating the number of records to skip before retrieving the results.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -63,6 +78,7 @@ which provides correct typing of field names in its properties.
     "description": "A number indicating the number of records to return in the result.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -71,6 +87,7 @@ which provides correct typing of field names in its properties.
     "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -37,7 +37,7 @@ import { promiseAll } from "@medusajs/utils"
  *       })
  *       .catch(() => {
  *         // an error occurred
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

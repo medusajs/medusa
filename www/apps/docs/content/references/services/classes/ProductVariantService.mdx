@@ -1,0 +1,1464 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductVariantService
+
+## Constructors
+
+### constructor
+
+**new ProductVariantService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "`Object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cartRepository_",
+    "type": "`Repository`<[`Cart`](Cart.mdx)\\> & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "moneyAmountRepository_",
+    "type": "`Repository`<[`MoneyAmount`](MoneyAmount.mdx)\\> & { `addPriceListPrices`: Method addPriceListPrices ; `createProductVariantMoneyAmounts`: Method createProductVariantMoneyAmounts ; `deletePriceListPrices`: Method deletePriceListPrices ; `deleteVariantPricesNotIn`: Method deleteVariantPricesNotIn ; `findCurrencyMoneyAmounts`: Method findCurrencyMoneyAmounts ; `findManyForVariantInPriceList`: Method findManyForVariantInPriceList ; `findManyForVariantInRegion`: Method findManyForVariantInRegion ; `findManyForVariantsInRegion`: Method findManyForVariantsInRegion ; `findRegionMoneyAmounts`: Method findRegionMoneyAmounts ; `findVariantPricesNotIn`: Method findVariantPricesNotIn ; `getPricesForVariantInRegion`: Method getPricesForVariantInRegion ; `insertBulk`: Method insertBulk ; `updatePriceListPrices`: Method updatePriceListPrices ; `upsertVariantCurrencyPrice`: Method upsertVariantCurrencyPrice  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceSelectionStrategy_",
+    "type": "[`IPriceSelectionStrategy`](../interfaces/IPriceSelectionStrategy.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productOptionValueRepository_",
+    "type": "`Repository`<[`ProductOptionValue`](ProductOptionValue.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productRepository_",
+    "type": "`Repository`<[`Product`](Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantRepository_",
+    "type": "`Repository`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionService_",
+    "type": "[`RegionService`](RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-variant.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-variant.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product-variant.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addOptionValue
+
+**addOptionValue**(`variantId`, `optionId`, `optionValue`): `Promise`<[`ProductOptionValue`](ProductOptionValue.mdx)\>
+
+Adds option value to a variant.
+Fails when product with variant does not exist or
+if that product does not have an option with the given
+option id. Fails if given variant is not found.
+Option value must be of type string or number.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the variant to decorate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "the option from product.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionValue",
+    "type": "`string`",
+    "description": "option value to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductOptionValue`](ProductOptionValue.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductOptionValue`](ProductOptionValue.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**<`TVariants`, `TOutput`\>(`productOrProductId`, `variants`): `Promise`<`TOutput`\>
+
+Creates an unpublished product variant. Will validate against parent product
+to ensure that the variant can in fact be created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TVariants",
+    "type": "[`CreateProductVariantInput`](../types/CreateProductVariantInput.mdx) \\| [`CreateProductVariantInput`](../types/CreateProductVariantInput.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TOutput",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productOrProductId",
+    "type": "`string` \\| [`Product`](Product.mdx)",
+    "description": "the product the variant will be added to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variants",
+    "type": "[`CreateProductVariantInput`](../types/CreateProductVariantInput.mdx) \\| [`CreateProductVariantInput`](../types/CreateProductVariantInput.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TOutput`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TOutput`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the creation result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`variantIds`): `Promise`<`void`\>
+
+Deletes variant or variants.
+Will never fail due to delete being idempotent.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantIds",
+    "type": "`string` \\| `string`[]",
+    "description": "the id of the variant to delete. Must be castable as an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "empty promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteOptionValue
+
+**deleteOptionValue**(`variantId`, `optionId`): `Promise`<`void`\>
+
+Deletes option value from given variant.
+Will never fail due to delete being idempotent.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the variant to decorate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "the option from product.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "empty promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFreeTextQueryBuilder\_
+
+**getFreeTextQueryBuilder_**(`variantRepo`, `query`, `q?`): `SelectQueryBuilder`<[`ProductVariant`](ProductVariant.mdx)\>
+
+Lists variants based on the provided parameters and includes the count of
+variants that match the query.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantRepo",
+    "type": "`Repository`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "description": "the variant repository",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "[`FindWithRelationsOptions`](../types/FindWithRelationsOptions.mdx)",
+    "description": "object that defines the scope for what should be returned",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "q",
+    "type": "`string`",
+    "description": "free text query",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`SelectQueryBuilder`<[`ProductVariant`](ProductVariant.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "SelectQueryBuilder",
+    "type": "`SelectQueryBuilder`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "an array containing the products as the first element and the total\n  count of products that matches the query as the second element.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getRegionPrice
+
+**getRegionPrice**(`variantId`, `context`): `Promise`<``null`` \| `number`\>
+
+Gets the price specific to a region. If no region specific money amount
+exists the function will try to use a currency price. If no default
+currency price exists the function will throw an error.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the id of the variant to get price from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`GetRegionPriceContext`](../types/GetRegionPriceContext.mdx)",
+    "description": "context for getting region price",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<``null`` \| `number`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<``null`` \\| `number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the price specific to the region",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isVariantInSalesChannels
+
+**isVariantInSalesChannels**(`id`, `salesChannelIds`): `Promise`<`boolean`\>
+
+Check if the variant is assigned to at least one of the provided sales channels.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "product variant id",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "salesChannelIds",
+    "type": "`string`[]",
+    "description": "an array of sales channel ids",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`boolean`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector`, `config?`): `Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableProductVariantProps`](FilterableProductVariantProps.mdx)",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductVariant`](ProductVariant.mdx)\\> & [`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "query config object for variant retrieval",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+**listAndCount**(`selector`, `config?`): `Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableProductVariantProps`](FilterableProductVariantProps.mdx)",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductVariant`](ProductVariant.mdx)\\> & [`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "query config object for variant retrieval",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`variantId`, `config?`): `Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+Gets a product variant by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the id of the product to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductVariant`](ProductVariant.mdx)\\> & [`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "query config object for variant retrieval.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveBySKU
+
+**retrieveBySKU**(`sku`, `config?`): `Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+Gets a product variant by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "sku",
+    "type": "`string`",
+    "description": "The unique stock keeping unit used to identify the product variant.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductVariant`](ProductVariant.mdx)\\> & [`PriceSelectionContext`](../types/PriceSelectionContext.mdx)",
+    "description": "query config object for variant retrieval.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the product document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setCurrencyPrice
+
+**setCurrencyPrice**(`variantId`, `price`): `Promise`<[`MoneyAmount`](MoneyAmount.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the id of the variant to set prices for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price",
+    "type": "[`ProductVariantPrice`](../types/ProductVariantPrice.mdx)",
+    "description": "the price for the variant",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`MoneyAmount`](MoneyAmount.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`MoneyAmount`](MoneyAmount.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+use addOrUpdateCurrencyPrices instead
+Sets the default price for the given currency.
+
+___
+
+### setRegionPrice
+
+**setRegionPrice**(`variantId`, `price`): `Promise`<[`MoneyAmount`](MoneyAmount.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the id of the variant to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "price",
+    "type": "[`ProductVariantPrice`](../types/ProductVariantPrice.mdx)",
+    "description": "the price for the variant.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`MoneyAmount`](MoneyAmount.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`MoneyAmount`](MoneyAmount.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+use addOrUpdateRegionPrices instead
+Sets the default price of a specific region
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`variantData`): `Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+Updates a collection of variant.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantData",
+    "type": "{ `updateData`: [`UpdateProductVariantInput`](../types/UpdateProductVariantInput.mdx) ; `variant`: [`ProductVariant`](ProductVariant.mdx)  }[]",
+    "description": "a collection of variant and the data to update.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the update result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+Updates a variant.
+Price updates should use dedicated methods.
+The function will throw, if price updates are attempted.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantOrVariantId",
+    "type": "`string` \\| [`Partial`](../types/Partial.mdx)<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "description": "variant or id of a variant.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateProductVariantInput`](../types/UpdateProductVariantInput.mdx)",
+    "description": "an object with the update values.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the update result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**update**(`variantOrVariantId`, `update`): `Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantOrVariantId",
+    "type": "`string` \\| [`Partial`](../types/Partial.mdx)<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateProductVariantInput`](../types/UpdateProductVariantInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateBatch
+
+`Protected` **updateBatch**(`variantData`): `Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantData",
+    "type": "[`UpdateProductVariantData`](../types/UpdateProductVariantData.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateOptionValue
+
+**updateOptionValue**(`variantId`, `optionId`, `optionValue`): `Promise`<[`ProductOptionValue`](ProductOptionValue.mdx)\>
+
+Updates variant's option value.
+Option value must be of type string or number.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the variant to decorate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "the option from product.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionValue",
+    "type": "`string`",
+    "description": "option value to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductOptionValue`](ProductOptionValue.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductOptionValue`](ProductOptionValue.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateVariantPrices
+
+**updateVariantPrices**(`data`): `Promise`<`void`\>
+
+Updates variant/prices collection.
+Deletes any prices that are not in the update object, and is not associated with a price list.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`UpdateVariantPricesData`](../types/UpdateVariantPricesData.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "empty promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**updateVariantPrices**(`variantId`, `prices`): `Promise`<`void`\>
+
+Updates a variant's prices.
+Deletes any prices that are not in the update object, and is not associated with a price list.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantId",
+    "type": "`string`",
+    "description": "the id of variant",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prices",
+    "type": "[`ProductVariantPrice`](../types/ProductVariantPrice.mdx)[]",
+    "description": "the update prices",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "empty promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateVariantPricesBatch
+
+`Protected` **updateVariantPricesBatch**(`data`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`UpdateVariantPricesData`](../types/UpdateVariantPricesData.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### upsertCurrencyPrices
+
+**upsertCurrencyPrices**(`data`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "{ `price`: [`WithRequiredProperty`](../types/WithRequiredProperty.mdx)<[`ProductVariantPrice`](../types/ProductVariantPrice.mdx), ``\"currency_code\"``\\> ; `variantId`: `string`  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### upsertRegionPrices
+
+**upsertRegionPrices**(`data`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`UpdateVariantRegionPriceData`](../types/UpdateVariantRegionPriceData.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateVariantsToCreate\_
+
+`Protected` **validateVariantsToCreate_**(`product`, `variants`): `void`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "product",
+    "type": "[`Product`](Product.mdx)",
+    "description": "A product is a saleable item that holds general information such as name or description. It must include at least one Product Variant, where each product variant defines different options to purchase the product with (for example, different sizes or colors). The prices and inventory of the product are defined on the variant level.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variants",
+    "type": "[`CreateProductVariantInput`](../types/CreateProductVariantInput.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`ProductVariantService`](ProductVariantService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ProductVariantService`](ProductVariantService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "ProductVariantService",
+    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

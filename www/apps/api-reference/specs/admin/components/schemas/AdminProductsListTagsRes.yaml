@@ -1,4 +1,5 @@
 type: object
+description: The usage details of product tags.
 required:
   - tags
 properties:

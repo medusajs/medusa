@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AddPricesDTO
+
+The prices to add to a price set.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceSetId",
+    "type": "`string`",
+    "description": "The ID of the price set to add prices to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prices",
+    "type": "[`CreatePricesDTO`](internal.internal-1.PricingTypes.CreatePricesDTO.mdx)[]",
+    "description": "The prices to add to the price set.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,86 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Country
+
+Country details
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "display_name",
+    "type": "`string`",
+    "description": "The country name appropriate for display.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`number`",
+    "description": "The country's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "iso_2",
+    "type": "`string`",
+    "description": "The 2 character ISO code of the country in lower case",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "iso_3",
+    "type": "`string`",
+    "description": "The 2 character ISO code of the country in lower case",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "The normalized country name in upper case.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "num_code",
+    "type": "`number`",
+    "description": "The numerical ISO code for the country.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region",
+    "type": "[`Region`](internal.Region.mdx)",
+    "description": "The details of the region the country is associated with.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "region_id",
+    "type": "``null`` \\| `string`",
+    "description": "The region ID this country is associated with.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

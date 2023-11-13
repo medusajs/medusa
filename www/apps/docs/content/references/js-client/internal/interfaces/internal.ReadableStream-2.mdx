@@ -1,0 +1,287 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ReadableStream
+
+This Streams API interface represents a readable stream of byte data.
+
+## Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "R",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "locked",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### [asyncIterator]
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "AsyncIterableIterator",
+    "type": "[`AsyncIterableIterator`](internal.AsyncIterableIterator.mdx)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancel
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "reason",
+    "type": "`any`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getReader
+
+**getReader**(): [`ReadableStreamDefaultReader`](../../modules/internal.mdx#readablestreamdefaultreader-1)<`R`\>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamDefaultReader",
+    "type": "[`ReadableStreamDefaultReader`](../../modules/internal.mdx#readablestreamdefaultreader-1)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**getReader**(`options`): [`ReadableStreamBYOBReader`](../../modules/internal.mdx#readablestreambyobreader-1)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "options",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options.mode",
+    "type": "``\"byob\"``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamBYOBReader",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### pipeThrough
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transform",
+    "type": "[`ReadableWritablePair`](internal.ReadableWritablePair-1.mdx)<`T`, `R`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`StreamPipeOptions`](internal.StreamPipeOptions-1.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`T`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### pipeTo
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "destination",
+    "type": "[`WritableStream`](../../modules/internal.mdx#writablestream-1)<`R`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`StreamPipeOptions`](internal.StreamPipeOptions-1.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### tee
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "[[`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`R`\\>, [`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`R`\\>]",
+    "type": "[[`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`R`\\>, [`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`R`\\>]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### values
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "options",
+    "type": "`object`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options.preventCancel",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "AsyncIterableIterator",
+    "type": "[`AsyncIterableIterator`](internal.AsyncIterableIterator.mdx)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

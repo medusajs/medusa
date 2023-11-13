@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# RequestOptions
+
+Options to pass to requests sent to custom API Routes
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "numberOfRetries",
+    "type": "`number`",
+    "description": "The number of times to retry a request before failing.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "timeout",
+    "type": "`number`",
+    "description": "The number of milliseconds before the request times out.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,3864 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminOrderEditsResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminOrderEditsResource
+
+This class is used to send requests to [Admin Order Edit API Routes](https://docs.medusajs.com/api/admin#order-edits). All its method
+are available in the JS Client under the `medusa.admin.orderEdits` property.
+
+All methods in this class require [user authentication](AdminAuthResource.mdx#createsession).
+
+An admin can edit an order to remove, add, or update an item's quantity. When an admin edits an order, they're stored as an `OrderEdit`.
+
+Related Guide: [How to edit an order](https://docs.medusajs.com/modules/orders/admin/edit-order).
+
+## Methods
+
+### addLineItem
+
+Create a line item change in the order edit that indicates adding an item in the original order. The item will not be added to the original order until the order edit is
+confirmed.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .addLineItem(orderEditId, {
+    variant_id,
+    quantity,
+  })
+  .then(({ order_edit }) => {
+    console.log(order_edit.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the order edit to add the line item change to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostOrderEditsEditLineItemsReq`](../internal/classes/internal.AdminPostOrderEditsEditLineItemsReq.mdx)",
+    "description": "The line item change to be created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "An optional set of key-value pairs to hold additional information.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "The quantity of the item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "variant_id",
+        "type": "`string`",
+        "description": "The ID of the product variant associated with the item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### cancel
+
+Cancel an order edit.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
+  console.log(order_edit.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the order edit to cancel.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### confirm
+
+Confirm an order edit. This will reflect the changes in the order edit on the associated order.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
+  console.log(order_edit.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the order edit to confirm.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### create
+
+Create an order edit.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
+  console.log(order_edit.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`AdminPostOrderEditsReq`](../internal/classes/internal.AdminPostOrderEditsReq.mdx)",
+    "description": "The order edit to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "created_by",
+        "type": "`string`",
+        "description": "",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "internal_note",
+        "type": "`string`",
+        "description": "An optional note to associate with the order edit.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "order_id",
+        "type": "`string`",
+        "description": "The ID of the order to create the edit for.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### delete
+
+Delete an order edit. Only order edits that have the status `created` can be deleted.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits.delete(orderEditId).then(({ id, object, deleted }) => {
+  console.log(id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the order edit.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the deletion operation's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### deleteItemChange
+
+Delete a line item change that indicates the addition, deletion, or update of a line item in the original order.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .deleteItemChange(orderEdit_id, itemChangeId)
+  .then(({ id, object, deleted }) => {
+    console.log(id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderEditId",
+    "type": "`string`",
+    "description": "The ID of the order edit.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemChangeId",
+    "type": "`string`",
+    "description": "The ID of the line item change.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditItemChangeDeleteRes`](../internal/types/internal.AdminOrderEditItemChangeDeleteRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the deletion operation's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditItemChangeDeleteRes",
+        "type": "`object`",
+        "description": "The details of deleting order edit item changes.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "deleted",
+            "type": "`boolean`",
+            "description": "Whether or not the Order Edit Item Change was deleted.",
+            "optional": false,
+            "defaultValue": "true",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "id",
+            "type": "`string`",
+            "description": "The ID of the deleted Order Edit Item Change.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "object",
+            "type": "``\"item_change\"``",
+            "description": "The type of the object that was deleted.",
+            "optional": false,
+            "defaultValue": "item_change",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### list
+
+Retrieve a list of order edits. The order edits can be filtered by fields such as `q` or `order_id` passed to the `query` parameter. The order edits can also be paginated.
+
+#### Example
+
+To list order edits:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits.list().then(({ order_edits, count, limit, offset }) => {
+  console.log(order_edits.length)
+})
+```
+
+To specify relations that should be retrieved within the order edits:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .list({
+    expand: "order",
+  })
+  .then(({ order_edits, count, limit, offset }) => {
+    console.log(order_edits.length)
+  })
+```
+
+By default, only the first `50` records are retrieved. You can control pagination by specifying the `limit` and `offset` properties:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .list({
+    expand: "order",
+    limit,
+    offset,
+  })
+  .then(({ order_edits, count, limit, offset }) => {
+    console.log(order_edits.length)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "query",
+    "type": "[`GetOrderEditsParams`](../internal/classes/internal.GetOrderEditsParams.mdx)",
+    "description": "Filters and pagination configurations applied to retrieved order edits.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "limit",
+        "type": "`number`",
+        "description": "Limit the number of items returned in the list.",
+        "optional": true,
+        "defaultValue": "20",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "offset",
+        "type": "`number`",
+        "description": "The number of items to skip when retrieving a list.",
+        "optional": true,
+        "defaultValue": "0",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "order_id",
+        "type": "`string`",
+        "description": "Filter the order edits by their associated order's ID.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "q",
+        "type": "`string`",
+        "description": "Search term to search order edits by their internal note.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsListRes`](../internal/types/internal.AdminOrderEditsListRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of order edits with pagination fields.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsListRes",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `order_edits`: [`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]  }",
+        "description": "The list of order edits with pagination fields.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "count",
+            "type": "`number`",
+            "description": "The total number of items available.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "limit",
+            "type": "`number`",
+            "description": "The maximum number of items that can be returned in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "offset",
+            "type": "`number`",
+            "description": "The number of items skipped before the returned items in the list.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "order_edits",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+            "description": "An array of order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### removeLineItem
+
+Create a line item change in the order edit that indicates deleting an item in the original order. The item in the original order will not be deleted until the order edit is
+confirmed.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .removeLineItem(orderEditId, lineItemId)
+  .then(({ order_edit }) => {
+    console.log(order_edit.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderEditId",
+    "type": "`string`",
+    "description": "The ID of the order edit that the line item change belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemId",
+    "type": "`string`",
+    "description": "The ID of the line item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### requestConfirmation
+
+Request customer confirmation of an order edit. This would emit the event `order-edit.requested` which Notification Providers listen to and send
+a notification to the customer about the order edit.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits.requestConfirmation(orderEditId)
+.then({ order_edit }) => {
+  console.log(order_edit.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the order edit.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve an order edit's details.
+
+#### Example
+
+A simple example that retrieves an order edit by its ID:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits.retrieve(orderEditId).then(({ order_edit }) => {
+  console.log(order_edit.id)
+})
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .retrieve(orderEditId, {
+    expand: "order",
+  })
+  .then(({ order_edit }) => {
+    console.log(order_edit.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the order edit.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "[`GetOrderEditsOrderEditParams`](../internal/classes/internal.GetOrderEditsOrderEditParams.mdx)",
+    "description": "Configurations to apply on the retrieved order edit.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Update an Order Edit's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .update(orderEditId, {
+    internal_note: "internal reason XY",
+  })
+  .then(({ order_edit }) => {
+    console.log(order_edit.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The ID of the order edit.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostOrderEditsOrderEditReq`](../internal/classes/internal.AdminPostOrderEditsOrderEditReq.mdx)",
+    "description": "The attributes to update in an order edit.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "internal_note",
+        "type": "`string`",
+        "description": "An optional note to create or update in the order edit.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### updateLineItem
+
+Create or update a line item change in the order edit that indicates addition, deletion, or update of a line item into an original order. Line item changes
+are only reflected on the original order after the order edit is confirmed.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.orderEdits
+  .updateLineItem(orderEditId, lineItemId, {
+    quantity: 5,
+  })
+  .then(({ order_edit }) => {
+    console.log(order_edit.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderEditId",
+    "type": "`string`",
+    "description": "The ID of the order edit that the line item belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemId",
+    "type": "`string`",
+    "description": "The ID of the line item to create or update its line item change.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostOrderEditsEditLineItemsLineItemReq`](../internal/classes/internal.AdminPostOrderEditsEditLineItemsLineItemReq.mdx)",
+    "description": "The creation or update of the line item change.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "quantity",
+        "type": "`number`",
+        "description": "The quantity to update",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminOrderEditsRes`](../internal/types/internal.AdminOrderEditsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the order edit's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminOrderEditsRes",
+        "type": "`object`",
+        "description": "The order edit details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "order_edit",
+            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "description": "Order edit details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "canceled_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was cancelled.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who cancelled the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "changes",
+                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "description": "The details of all the changes on the original order's line items.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "confirmed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was confirmed.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "confirmed_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who confirmed the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who created the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who declined the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "declined_reason",
+                "type": "`string`",
+                "description": "An optional note why the order edit is declined.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "difference_due",
+                "type": "`number`",
+                "description": "The difference between the total amount of the order and total amount of edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of the gift card tax amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of the gift card amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The order edit's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "internal_note",
+                "type": "`string`",
+                "description": "An optional note with additional details about the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that this order edit was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that is edited",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_collection",
+                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "description": "The details of the payment collection used to authorize additional payment if necessary.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_collection_id",
+                "type": "`string`",
+                "description": "The ID of the payment collection",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the edit was requested.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "requested_by",
+                "type": "`string`",
+                "description": "The unique identifier of the user or customer who requested the order edit.",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of the shipping amount",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "status",
+                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "description": "The status of the order edit.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The total of subtotal",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the edited order.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

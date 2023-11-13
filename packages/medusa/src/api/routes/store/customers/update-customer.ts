@@ -32,7 +32,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

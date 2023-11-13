@@ -17,7 +17,7 @@ other than an unsigned 8-bit integer.
 This function is also available under the `writeUint8` alias.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.allocUnsafe(4);
 
@@ -39,6 +39,7 @@ console.log(buf);
     "description": "Number to be written to `buf`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -47,6 +48,7 @@ console.log(buf);
     "description": "Number of bytes to skip before starting to write. Must satisfy `0 <= offset <= buf.length - 1`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -62,6 +64,7 @@ console.log(buf);
     "optional": true,
     "defaultValue": "",
     "description": "`offset` plus the number of bytes written.",
+    "expandable": false,
     "children": []
   }
 ]} />

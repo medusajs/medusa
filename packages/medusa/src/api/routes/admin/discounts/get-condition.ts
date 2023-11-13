@@ -26,7 +26,7 @@ import { FindParams } from "../../../../types/common"
  *       medusa.admin.discounts.getCondition(discountId, conditionId)
  *       .then(({ discount_condition }) => {
  *         console.log(discount_condition.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

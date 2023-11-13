@@ -2,7 +2,7 @@ post:
   operationId: PostOrdersOrderShippingMethods
   summary: Add a Shipping Method
   description: >-
-    Adds a Shipping Method to an Order. If another Shipping Method exists with
+    Add a Shipping Method to an Order. If another Shipping Method exists with
     the same Shipping Profile, the previous Shipping Method will be replaced.
   parameters:
     - in: path

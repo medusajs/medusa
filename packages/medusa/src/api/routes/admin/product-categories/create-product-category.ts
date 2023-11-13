@@ -36,7 +36,7 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -113,10 +113,12 @@ export default async (req: Request, res: Response) => {
  *     description: The handle of the product category. If none is provided, the kebab-case version of the name will be used. This field can be used as a slug in URLs.
  *   is_internal:
  *     type: boolean
- *     description: If set to `true`, the product category will only be available to admins.
+ *     description: >-
+ *       If set to `true`, the product category will only be available to admins.
  *   is_active:
  *     type: boolean
- *     description: If set to `false`, the product category will not be available in the storefront.
+ *     description: >-
+ *       If set to `false`, the product category will not be available in the storefront.
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category

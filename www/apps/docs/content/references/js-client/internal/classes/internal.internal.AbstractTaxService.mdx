@@ -1,0 +1,99 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AbstractTaxService
+
+Interface to be implemented by tax provider plugins. The interface defines a
+single method `getTaxLines` that returns numerical rates to apply to line
+items and shipping methods.
+
+## Implements
+
+- [`ITaxService`](../interfaces/internal.internal.ITaxService.mdx)
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "identifier",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### getIdentifier
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getTaxLines
+
+Retrieves the numerical tax lines for a calculation context.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "itemLines",
+    "type": "[`ItemTaxCalculationLine`](../types/internal.internal.ItemTaxCalculationLine.mdx)[]",
+    "description": "the line item calculation lines",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingLines",
+    "type": "[`ShippingTaxCalculationLine`](../types/internal.internal.ShippingTaxCalculationLine.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "description": "other details relevant to the tax determination",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProviderTaxLine`](../types/internal.ProviderTaxLine.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "numerical tax rates that should apply to the provided calculation\n  lines",
+    "expandable": false,
+    "children": []
+  }
+]} />

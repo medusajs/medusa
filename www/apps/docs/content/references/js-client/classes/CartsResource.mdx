@@ -1,0 +1,4657 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/CartsResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# CartsResource
+
+This class is used to send requests to [Store Cart API Routes](https://docs.medusajs.com/api/store#carts). All its method
+are available in the JS Client under the `medusa.carts` property.
+
+A cart is a virtual shopping bag that customers can use to add items they want to purchase.
+A cart is then used to checkout and place an order.
+
+Related Guide: [How to implement cart functionality in your storefront](https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart).
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "lineItems",
+    "type": "[`LineItemsResource`](LineItemsResource.mdx)",
+    "description": "An instance of [LineItemsResource](LineItemsResource.mdx) used to send requests to line-item-related routes part of the [Store Cart API Routes](https://docs.medusajs.com/api/store#carts).",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addShippingMethod
+
+Add a shipping method to the cart. The validation of the `data` field is handled by the fulfillment provider of the chosen shipping option.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts
+  .addShippingMethod(cartId, {
+    option_id,
+  })
+  .then(({ cart }) => {
+    console.log(cart.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The ID of the cart to add the shipping method to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`StorePostCartsCartShippingMethodReq`](../internal/classes/internal.StorePostCartsCartShippingMethodReq.mdx)",
+    "description": "The shipping method to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "data",
+        "type": "Record<`string`, `any`\\>",
+        "description": "Used to hold any data that the shipping method may need to process the fulfillment of the order. This depends on the fulfillment provider you're using.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "option_id",
+        "type": "`string`",
+        "description": "ID of the shipping option to create the method from.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### complete
+
+Complete a cart and place an order or create a swap, based on the cart's type. This includes attempting to authorize the cart's payment.
+If authorizing the payment requires more action, the cart will not be completed and the order will not be placed or the swap will not be created.
+An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
+the response. If an error occurs during cart completion or the request is interrupted for any reason, the cart completion can be retried by passing the idempotency
+key in the `Idempotency-Key` header.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts.complete(cartId).then(({ cart }) => {
+  console.log(cart.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The ID of the cart to complete.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCompleteCartRes`](../internal/types/internal.StoreCompleteCartRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the completion details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCompleteCartRes",
+        "type": "{ `data`: [`Cart`](../internal/classes/internal.Cart.mdx) ; `type`: ``\"cart\"``  } \\| { `data`: [`Order`](../internal/classes/internal.Order.mdx) ; `type`: ``\"order\"``  } \\| { `data`: [`Swap`](../internal/classes/internal.Swap.mdx) ; `type`: ``\"swap\"``  }",
+        "description": "If the cart is completed successfully, this will have the created order or the swap's details, based on the cart's type. Otherwise, it'll be the cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### create
+
+Create a Cart. Although optional, specifying the cart's region and sales channel can affect the cart's pricing and
+the products that can be added to the cart respectively. So, make sure to set those early on and change them if necessary, such as when the customer changes their region.
+If a customer is logged in, make sure to pass its ID or email within the cart's details so that the cart is attached to the customer.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts.create().then(({ cart }) => {
+  console.log(cart.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`StorePostCartReq`](../internal/classes/internal.StorePostCartReq.mdx)",
+    "description": "The cart to create.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "context",
+        "type": "`object`",
+        "description": "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "country_code",
+        "type": "`string`",
+        "description": "The two character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "items",
+        "type": "[`Item`](../internal/classes/internal.Item.mdx)[]",
+        "description": "An array of product variants to generate line items from.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "quantity",
+            "type": "`number`",
+            "description": "The quantity to add into the cart.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "variant_id",
+            "type": "`string`",
+            "description": "The ID of the Product Variant.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the Region to create the Cart in. Setting the cart's region can affect the pricing of the items in the cart as well as the used currency. If this parameter is not provided, the first region in the store is used by default.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "sales_channel_id",
+        "type": "`string`",
+        "description": "The ID of the Sales channel to create the Cart in. The cart's sales channel affects which products can be added to the cart. If a product does not exist in the cart's sales channel, it cannot be added to the cart. If you add a publishable API key in the header of this request and specify a sales channel ID, the specified sales channel must be within the scope of the publishable API key's resources. If you add a publishable API key in the header of this request, you don't specify a sales channel ID, and the publishable API key is associated with one sales channel, that sales channel will be attached to the cart. If no sales channel is passed and no publishable API key header is passed or the publishable API key isn't associated with any sales channel, the cart will not be associated with any sales channel.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the created cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### createPaymentSessions
+
+Create Payment Sessions for each of the available Payment Providers in the Cart's Region. If there's only one payment session created,
+it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
+  console.log(cart.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The ID of the cart to create the payment sessions for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### deleteDiscount
+
+Remove a Discount from a Cart. This only removes the application of the discount, and not completely deletes it. The totals will be re-calculated and the payment sessions
+will be refreshed after the removal.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
+  console.log(cart.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "the ID of the cart to remove the discount from.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "code",
+    "type": "`string`",
+    "description": "The code of the discount to remove from the cart.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### deletePaymentSession
+
+Delete a Payment Session in a Cart. May be useful if a payment has failed. The totals will be recalculated.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
+  console.log(cart.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The ID of the cart to delete the payment session from.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the payment provider that the session is associated with.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### refreshPaymentSession
+
+Refresh a Payment Session to ensure that it is in sync with the Cart. This is usually not necessary, but is provided for edge cases.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
+  console.log(cart.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The ID of the cart to refresh its payment session.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the payment provider that's associated with the payment session.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a Cart's details. This includes recalculating its totals.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts.retrieve(cartId).then(({ cart }) => {
+  console.log(cart.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The cart's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### setPaymentSession
+
+Select the Payment Session that will be used to complete the cart. This is typically used when the customer chooses their preferred payment method during checkout.
+The totals of the cart will be recalculated.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts
+  .setPaymentSession(cartId, {
+    provider_id: "manual",
+  })
+  .then(({ cart }) => {
+    console.log(cart.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The cart's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`StorePostCartsCartPaymentSessionReq`](../internal/classes/internal.StorePostCartsCartPaymentSessionReq.mdx)",
+    "description": "The associated payment provider.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "provider_id",
+        "type": "`string`",
+        "description": "The ID of the Payment Provider.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Update a Cart's details. If the cart has payment sessions and the region was not changed, the payment sessions are updated. The cart's totals are also recalculated.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts
+  .update(cartId, {
+    email: "user@example.com",
+  })
+  .then(({ cart }) => {
+    console.log(cart.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The cart's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`StorePostCartsCartReq`](../internal/classes/internal.StorePostCartsCartReq.mdx)",
+    "description": "The attributes to update in the cart.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "billing_address",
+        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "description": "The Address to be used for billing purposes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "context",
+        "type": "`object`",
+        "description": "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "country_code",
+        "type": "`string`",
+        "description": "The 2 character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "customer_id",
+        "type": "`string`",
+        "description": "The ID of the Customer to associate the Cart with.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "discounts",
+        "type": "[`Discount`](../internal/classes/internal.Discount.mdx)[]",
+        "description": "An array of Discount codes to add to the Cart.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The code of the discount.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "An email to be used on the Cart.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "gift_cards",
+        "type": "[`GiftCard`](../internal/classes/internal.GiftCard.mdx)[]",
+        "description": "An array of Gift Card codes to add to the Cart.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "code",
+            "type": "`string`",
+            "description": "The code of a gift card.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "region_id",
+        "type": "`string`",
+        "description": "The ID of the Region to create the Cart in. Setting the cart's region can affect the pricing of the items in the cart as well as the used currency.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "sales_channel_id",
+        "type": "`string`",
+        "description": "The ID of the Sales channel to create the Cart in. The cart's sales channel affects which products can be added to the cart. If a product does not exist in the cart's sales channel, it cannot be added to the cart. If you add a publishable API key in the header of this request and specify a sales channel ID, the specified sales channel must be within the scope of the publishable API key's resources.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_address",
+        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "description": "The Address to be used for shipping purposes.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### updatePaymentSession
+
+Update a Payment Session with additional data. This can be useful depending on the payment provider used.
+All payment sessions are updated and cart totals are recalculated afterwards.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.carts
+  .updatePaymentSession(cartId, "manual", {
+    data: {},
+  },
+})
+  .then(({ cart }) => {
+    console.log(cart.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart_id",
+    "type": "`string`",
+    "description": "The cart's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "provider_id",
+    "type": "`string`",
+    "description": "The ID of the payment provider that the payment session is associated with.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`StorePostCartsCartPaymentSessionUpdateReq`](../internal/classes/internal.StorePostCartsCartPaymentSessionUpdateReq.mdx)",
+    "description": "The attributes to update in the payment session.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "data",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "The data to update the payment session with.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreCartsRes`](../internal/types/internal.StoreCartsRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the cart's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreCartsRes",
+        "type": "`object`",
+        "description": "The cart's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "cart",
+            "type": "[`Omit`](../internal/types/internal.Omit.mdx)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "description": "Cart details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "`string`",
+                "description": "The billing address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "completed_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the cart was completed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "context",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The context of the cart which can include info like IP or user agent.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "customer",
+                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "description": "The details of the customer the cart belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "customer_id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discount_total",
+                "type": "`number`",
+                "description": "The total of discount rounded",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "discounts",
+                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "description": "An array of details of all discounts applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The email associated with the cart",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_tax_total",
+                "type": "`number`",
+                "description": "The total of gift cards with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_card_total",
+                "type": "`number`",
+                "description": "The total of gift cards",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "gift_cards",
+                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "description": "An array of details of all gift cards applied to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The cart's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a cart in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "item_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of items with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "items",
+                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "description": "The line items added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_authorized_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the payment was authorized.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID if available",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment_session",
+                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "description": "The details of the selected payment session in the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_sessions",
+                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "description": "The details of all payment sessions created on the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "raw_discount_total",
+                "type": "`number`",
+                "description": "The total of discount",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "region",
+                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "description": "The details of the region associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "region_id",
+                "type": "`string`",
+                "description": "The region's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "sales_channel",
+                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "description": "The details of the sales channel associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "sales_channel_id",
+                "type": "``null`` \\| `string`",
+                "description": "The sales channel ID the cart is associated with.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_address",
+                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the shipping address associated with the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_address_id",
+                "type": "`string`",
+                "description": "The shipping address's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_methods",
+                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "description": "The details of the shipping methods added to the cart.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of shipping with taxes",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_total",
+                "type": "`number`",
+                "description": "The total of shipping",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "subtotal",
+                "type": "`number`",
+                "description": "The subtotal of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "tax_total",
+                "type": "``null`` \\| `number`",
+                "description": "The total of tax",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "total",
+                "type": "`number`",
+                "description": "The total amount of the cart",
+                "optional": true,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "description": "The cart's type.",
+                "optional": false,
+                "defaultValue": "default",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

@@ -1,0 +1,784 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# UserService
+
+Provides layer to manipulate users.
+
+## Constructors
+
+### constructor
+
+**new UserService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`UserServiceProps`](../types/UserServiceProps.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "analyticsConfigService_",
+    "type": "[`AnalyticsConfigService`](AnalyticsConfigService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "userRepository_",
+    "type": "`Repository`<[`User`](User.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PASSWORD_RESET",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.password_reset\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"user.updated\"",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`user`, `password`): `Promise`<[`User`](User.mdx)\>
+
+Creates a user with username being validated.
+Fails if email is not a valid format.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "user",
+    "type": "[`CreateUserInput`](../interfaces/CreateUserInput.mdx)",
+    "description": "the user to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "password",
+    "type": "`string`",
+    "description": "user's password to hash",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`User`](User.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`User`](User.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of create",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`userId`): `Promise`<`void`\>
+
+Deletes a user from a given user id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the id of the user to delete. Must be castable as an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### generateResetPasswordToken
+
+**generateResetPasswordToken**(`userId`): `Promise`<`string`\>
+
+Generate a JSON Web token, that will be sent to a user, that wishes to
+reset password.
+The token will be signed with the users current password hash as a secret
+a long side a payload with userId and the expiry time for the token, which
+is always 15 minutes.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the id of the user to reset password for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`string`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`string`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the generated JSON web token",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### hashPassword\_
+
+**hashPassword_**(`password`): `Promise`<`string`\>
+
+Hashes a password
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "password",
+    "type": "`string`",
+    "description": "the value to hash",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`string`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`string`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "hashed password",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector`, `config?`): `Promise`<[`User`](User.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableUserProps`](../types/FilterableUserProps.mdx)",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`object`",
+    "description": "the configuration object for the query",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`User`](User.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`User`](User.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`userId`, `config?`): `Promise`<[`User`](User.mdx)\>
+
+Gets a user by id.
+Throws in case of DB Error and if user was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the id of the user to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`User`](User.mdx)\\>",
+    "description": "query configs",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`User`](User.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`User`](User.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the user document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByApiToken
+
+**retrieveByApiToken**(`apiToken`, `relations?`): `Promise`<[`User`](User.mdx)\>
+
+Gets a user by api token.
+Throws in case of DB Error and if user was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "apiToken",
+    "type": "`string`",
+    "description": "the token of the user to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "relations",
+    "type": "`string`[]",
+    "description": "relations to include with the user.",
+    "optional": false,
+    "defaultValue": "[]",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`User`](User.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`User`](User.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the user document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByEmail
+
+**retrieveByEmail**(`email`, `config?`): `Promise`<[`User`](User.mdx)\>
+
+Gets a user by email.
+Throws in case of DB Error and if user was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "the email of the user to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`User`](User.mdx)\\>",
+    "description": "query config",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`User`](User.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`User`](User.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the user document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setPassword\_
+
+**setPassword_**(`userId`, `password`): `Promise`<[`User`](User.mdx)\>
+
+Sets a password for a user
+Fails if no user exists with userId and if the hashing of the new
+password does not work.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "the userId to set password for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "password",
+    "type": "`string`",
+    "description": "the old password to set",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`User`](User.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`User`](User.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`userId`, `update`): `Promise`<[`User`](User.mdx)\>
+
+Updates a user.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "userId",
+    "type": "`string`",
+    "description": "id of the user to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateUserInput`](../interfaces/UpdateUserInput.mdx)",
+    "description": "the values to be updated on the user",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`User`](User.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`User`](User.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of create",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`UserService`](UserService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`UserService`](UserService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "UserService",
+    "type": "[`UserService`](UserService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

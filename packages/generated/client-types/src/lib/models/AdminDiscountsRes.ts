@@ -7,6 +7,9 @@ import type { Discount } from "./Discount"
 import type { DiscountRule } from "./DiscountRule"
 import type { Region } from "./Region"
 
+/**
+ * The discount's details.
+ */
 export interface AdminDiscountsRes {
   /**
    * Discount details.

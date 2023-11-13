@@ -1,0 +1,57 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminCreateUserRequest
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "The User's email.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "first_name",
+    "type": "`string`",
+    "description": "The first name of the User.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "last_name",
+    "type": "`string`",
+    "description": "The last name of the User.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "password",
+    "type": "`string`",
+    "description": "The User's password.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "role",
+    "type": "[`UserRoles`](../enums/internal.internal.UserRoles.mdx)",
+    "description": "The role assigned to the user. These roles don't provide any different privileges.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

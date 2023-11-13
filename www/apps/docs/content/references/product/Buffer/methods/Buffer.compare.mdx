@@ -18,7 +18,7 @@ Comparison is based on the actual sequence of bytes in each `Buffer`.
 * `-1` is returned if `target` should come _after_`buf` when sorted.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf1 = Buffer.from('ABC');
 const buf2 = Buffer.from('BCD');
@@ -42,7 +42,7 @@ console.log([buf1, buf2, buf3].sort(Buffer.compare));
 The optional `targetStart`, `targetEnd`, `sourceStart`, and `sourceEnd`arguments can be used to limit the comparison to specific ranges within `target`and `buf` respectively.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf1 = Buffer.from([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 const buf2 = Buffer.from([5, 6, 7, 8, 9, 1, 2, 3, 4]);
@@ -66,6 +66,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
     "description": "A `Buffer` or Uint8Array with which to compare `buf`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -74,6 +75,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
     "description": "The offset within `target` at which to begin comparison.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -82,6 +84,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
     "description": "The offset within `target` at which to end comparison (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -90,6 +93,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
     "description": "The offset within `buf` at which to begin comparison.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -98,6 +102,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
     "description": "The offset within `buf` at which to end comparison (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -113,6 +118,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

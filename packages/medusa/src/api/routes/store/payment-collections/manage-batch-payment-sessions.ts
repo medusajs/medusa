@@ -11,7 +11,7 @@ import { PaymentCollectionService } from "../../../../services"
  * description: "Create, update, or delete a list of payment sessions of a Payment Collections. If a payment session is not provided in the `sessions` array, it's deleted."
  * x-authenticated: false
  * parameters:
- *   - (path) id=* {string} The ID of the Payment Collections.
+ *   - (path) id=* {string} The ID of the Payment Collection.
  * requestBody:
  *   content:
  *     application/json:
@@ -44,7 +44,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
  *
  *       // Example 2: Updating one session and removing the other
  *       medusa.paymentCollections.managePaymentSessionsBatch(paymentId, {
@@ -58,7 +58,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -143,7 +143,7 @@ export class StorePostPaymentCollectionsSessionsReq {
  *   - sessions
  * properties:
  *   sessions:
- *     description: "An array of payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted."
+ *     description: "Payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted."
  *     type: array
  *     items:
  *       type: object
