@@ -14,7 +14,11 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import {
+  IsolateSalesChannelDomainFeatureFlag,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
@@ -340,7 +344,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const remoteQuery = req.scope.resolve("remoteQuery")
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
-    IsolateSalesChannelDomain.key
+    IsolateSalesChannelDomainFeatureFlag.key
   )
 
   let salesChannelIdFilter = filterableFields.sales_channel_id
