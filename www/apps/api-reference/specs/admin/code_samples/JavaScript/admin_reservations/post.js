@@ -9,4 +9,4 @@ medusa.admin.reservations.create({
 })
 .then(({ reservation }) => {
   console.log(reservation.id);
-});
+})

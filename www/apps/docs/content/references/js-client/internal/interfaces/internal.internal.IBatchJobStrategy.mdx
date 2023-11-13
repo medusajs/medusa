@@ -96,17 +96,7 @@ transaction manager is created.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
@@ -124,17 +114,7 @@ transaction manager is created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -168,17 +148,7 @@ Builds and returns a template file that can be downloaded and filled in
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "string",
-        "type": "`string`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -227,7 +197,7 @@ Method for preparing a batch job for processing
 <ParameterTypes parameters={[
   {
     "name": "batchJobEntity",
-    "type": "[`CreateBatchJobInput`](../modules/internal.internal.mdx#createbatchjobinput)",
+    "type": "[`CreateBatchJobInput`](../types/internal.internal.CreateBatchJobInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -250,50 +220,12 @@ Method for preparing a batch job for processing
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CreateBatchJobInput`](../modules/internal.internal.mdx#createbatchjobinput)\\>",
+    "type": "`Promise`<[`CreateBatchJobInput`](../types/internal.internal.CreateBatchJobInput.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "CreateBatchJobInput",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "context",
-            "type": "[`BatchJob`](../classes/internal.BatchJob.mdx)[``\"context\"``]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "dry_run",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 

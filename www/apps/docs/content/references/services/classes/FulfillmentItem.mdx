@@ -1,0 +1,67 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FulfillmentItem
+
+This represents the association between a Line Item and a Fulfillment.
+
+## Constructors
+
+### constructor
+
+**new FulfillmentItem**()
+
+This represents the association between a Line Item and a Fulfillment.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillment",
+    "type": "[`Fulfillment`](Fulfillment.mdx)",
+    "description": "The details of the fulfillment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "fulfillment_id",
+    "type": "`string`",
+    "description": "The ID of the Fulfillment that the Fulfillment Item belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "item",
+    "type": "[`LineItem`](LineItem.mdx)",
+    "description": "The details of the line item.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "item_id",
+    "type": "`string`",
+    "description": "The ID of the Line Item that the Fulfillment Item references.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "The quantity of the Line Item that is included in the Fulfillment.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

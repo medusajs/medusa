@@ -1,0 +1,35 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ItemTaxCalculationLine
+
+ **ItemTaxCalculationLine**: `Object`
+
+A line item and the tax rates that have been configured to apply to the
+product contained in the line item.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "item",
+    "type": "[`LineItem`](../classes/LineItem.mdx)",
+    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rates",
+    "type": "[`TaxServiceRate`](TaxServiceRate.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

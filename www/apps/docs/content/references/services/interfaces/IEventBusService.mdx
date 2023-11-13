@@ -1,0 +1,217 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# IEventBusService
+
+## Methods
+
+### emit
+
+**emit**<`T`\>(`event`, `data`, `options?`): `Promise`<`unknown`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "event",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "`T`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`unknown`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`unknown`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`unknown`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### subscribe
+
+**subscribe**(`eventName`, `subscriber`, `context?`): [`IEventBusService`](IEventBusService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "eventName",
+    "type": "`string` \\| `symbol`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subscriber",
+    "type": "[`Subscriber`](../types/Subscriber.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SubscriberContext`](../types/SubscriberContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`IEventBusService`](IEventBusService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "IEventBusService",
+    "type": "[`IEventBusService`](IEventBusService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### unsubscribe
+
+**unsubscribe**(`eventName`, `subscriber`, `context?`): [`IEventBusService`](IEventBusService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "eventName",
+    "type": "`string` \\| `symbol`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "subscriber",
+    "type": "[`Subscriber`](../types/Subscriber.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SubscriberContext`](../types/SubscriberContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`IEventBusService`](IEventBusService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "IEventBusService",
+    "type": "[`IEventBusService`](IEventBusService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`IEventBusService`](IEventBusService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`IEventBusService`](IEventBusService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "IEventBusService",
+    "type": "[`IEventBusService`](IEventBusService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

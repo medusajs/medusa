@@ -10,15 +10,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 **allocUnsafeSlow**(`size`): [`Buffer`](../../variables/Buffer-1.mdx)
 
-Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_INVALID_ARG_VALUE` is thrown. A zero-length `Buffer` is created
-if `size` is 0.
+Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown. A zero-length `Buffer` is created if
+`size` is 0.
 
 The underlying memory for `Buffer` instances created in this way is _not_
 _initialized_. The contents of the newly created `Buffer` are unknown and _may contain sensitive data_. Use `buf.fill(0)` to initialize
 such `Buffer` instances with zeroes.
 
 When using `Buffer.allocUnsafe()` to allocate new `Buffer` instances,
-allocations under 4 KB are sliced from a single pre-allocated `Buffer`. This
+allocations under 4 KiB are sliced from a single pre-allocated `Buffer`. This
 allows applications to avoid the garbage collection overhead of creating many
 individually allocated `Buffer` instances. This approach improves both
 performance and memory usage by eliminating the need to track and clean up as
@@ -30,7 +30,7 @@ to create an un-pooled `Buffer` instance using `Buffer.allocUnsafeSlow()` and
 then copying out the relevant bits.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Need to keep around a few small chunks of memory.
 const store = [];
@@ -60,6 +60,7 @@ A `TypeError` will be thrown if `size` is not a number.
     "description": "The desired length of the new `Buffer`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -75,6 +76,7 @@ A `TypeError` will be thrown if `size` is not a number.
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

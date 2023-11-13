@@ -125,7 +125,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminReservationsRes`](../modules/internal.mdx#adminreservationsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsRes`](../internal/types/internal.AdminReservationsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
@@ -141,7 +141,7 @@ medusa.admin.reservations
         "children": [
           {
             "name": "reservation",
-            "type": "[`ReservationItemDTO`](../modules/internal.mdx#reservationitemdto)",
+            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)",
             "description": "Reservation details.",
             "optional": false,
             "defaultValue": "",
@@ -301,7 +301,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -593,7 +593,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminReservationsListRes`](../modules/internal.mdx#adminreservationslistres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsListRes`](../internal/types/internal.AdminReservationsListRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of reservations with pagination fields.",
@@ -601,7 +601,7 @@ medusa.admin.reservations
     "children": [
       {
         "name": "AdminReservationsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `reservations`: [`ReservationItemDTO`](../modules/internal.mdx#reservationitemdto)[]  }",
+        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `reservations`: [`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)[]  }",
         "description": "The list of reservations with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -636,7 +636,7 @@ medusa.admin.reservations
           },
           {
             "name": "reservations",
-            "type": "[`ReservationItemDTO`](../modules/internal.mdx#reservationitemdto)[]",
+            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)[]",
             "description": "An array of reservations details.",
             "optional": false,
             "defaultValue": "",
@@ -794,7 +794,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminReservationsRes`](../modules/internal.mdx#adminreservationsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsRes`](../internal/types/internal.AdminReservationsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
@@ -810,7 +810,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
         "children": [
           {
             "name": "reservation",
-            "type": "[`ReservationItemDTO`](../modules/internal.mdx#reservationitemdto)",
+            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)",
             "description": "Reservation details.",
             "optional": false,
             "defaultValue": "",
@@ -1018,7 +1018,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminReservationsRes`](../modules/internal.mdx#adminreservationsres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsRes`](../internal/types/internal.AdminReservationsRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
@@ -1034,7 +1034,7 @@ medusa.admin.reservations
         "children": [
           {
             "name": "reservation",
-            "type": "[`ReservationItemDTO`](../modules/internal.mdx#reservationitemdto)",
+            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)",
             "description": "Reservation details.",
             "optional": false,
             "defaultValue": "",

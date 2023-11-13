@@ -1,7 +1,7 @@
 post:
   operationId: PostPriceListsPriceListPricesBatch
   summary: Add or Update Prices
-  description: Add or update a list of prices in a Price List
+  description: Add or update a list of prices in a Price List.
   x-authenticated: true
   parameters:
     - in: path

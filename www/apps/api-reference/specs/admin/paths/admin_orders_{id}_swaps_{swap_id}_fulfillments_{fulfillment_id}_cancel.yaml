@@ -1,7 +1,7 @@
 post:
   operationId: PostOrdersSwapFulfillmentsCancel
   summary: Cancel Swap's Fulfilmment
-  description: Cancel a swap's fulfillment and change its status.
+  description: Cancel a swap's fulfillment and change its fulfillment status to `canceled`.
   x-authenticated: true
   parameters:
     - in: path

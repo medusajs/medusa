@@ -1,4 +1,5 @@
 type: object
+description: The reservation's details.
 required:
   - reservation
 properties:

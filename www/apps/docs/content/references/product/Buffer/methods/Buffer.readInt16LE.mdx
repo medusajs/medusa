@@ -15,7 +15,7 @@ Reads a signed, little-endian 16-bit integer from `buf` at the specified`offset`
 Integers read from a `Buffer` are interpreted as two's complement signed values.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from([0, 5]);
 
@@ -34,6 +34,7 @@ console.log(buf.readInt16LE(1));
     "description": "Number of bytes to skip before starting to read. Must satisfy `0 <= offset <= buf.length - 2`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -49,6 +50,7 @@ console.log(buf.readInt16LE(1));
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

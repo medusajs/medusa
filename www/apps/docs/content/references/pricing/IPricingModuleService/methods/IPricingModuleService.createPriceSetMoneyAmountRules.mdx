@@ -47,6 +47,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
     "description": "The price set money amount rules to create.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "price_set_money_amount",
@@ -54,6 +55,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "The ID of a price set money amount.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -62,6 +64,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "The ID of a rule type.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -70,6 +73,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "The value of the price set money amount rule.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -80,6 +84,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -87,6 +92,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -95,6 +101,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -103,6 +110,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -111,6 +119,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -119,6 +128,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -134,6 +144,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price set money amount rules.",
+    "expandable": false,
     "children": [
       {
         "name": "PriceSetMoneyAmountRulesDTO[]",
@@ -141,6 +152,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "id",
@@ -148,6 +160,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
             "description": "The ID of the price set money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -156,6 +169,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
             "description": "The associated price set money amount. It may only be available if the relation `price_set_money_amount` is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -164,6 +178,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
             "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -172,6 +187,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
             "description": "The value of the price set money amount rule.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

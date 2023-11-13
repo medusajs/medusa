@@ -6,4 +6,4 @@ medusa.admin.giftCards.update(giftCardId, {
 })
 .then(({ gift_card }) => {
   console.log(gift_card.id);
-});
+})

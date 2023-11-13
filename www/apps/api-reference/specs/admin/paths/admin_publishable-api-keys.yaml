@@ -80,7 +80,7 @@ get:
 post:
   operationId: PostPublishableApiKeys
   summary: Create Publishable API Key
-  description: Creates a Publishable API Key.
+  description: Create a Publishable API Key.
   requestBody:
     content:
       application/json:

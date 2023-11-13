@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.batchJobs.retrieve(batchJobId)
 .then(({ batch_job }) => {
   console.log(batch_job.id);
-});
+})

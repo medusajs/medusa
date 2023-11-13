@@ -17,6 +17,7 @@ The rules to add to a price set.
     "description": "The ID of the price set to add the rules to.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -25,6 +26,17 @@ The rules to add to a price set.
     "description": "The rules to add to a price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
     "optional": false,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "attribute",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

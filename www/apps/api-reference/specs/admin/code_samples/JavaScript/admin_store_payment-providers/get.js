@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.store.listPaymentProviders()
 .then(({ payment_providers }) => {
   console.log(payment_providers.length);
-});
+})

@@ -1,4 +1,5 @@
 type: object
+description: List of currencies with pagination fields.
 required:
   - currencies
   - count

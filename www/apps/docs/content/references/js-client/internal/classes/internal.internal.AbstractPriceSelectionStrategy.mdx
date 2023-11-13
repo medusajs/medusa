@@ -96,17 +96,7 @@ transaction manager is created.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
@@ -124,17 +114,7 @@ transaction manager is created.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -164,72 +144,16 @@ circumstances described in the context.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "{ `quantity?`: `number` ; `taxRates`: [`TaxServiceRate`](../../modules/internal.mdx#taxservicerate)[] ; `variantId`: `string`  }[]",
+    "type": "{ `quantity?`: `number` ; `taxRates`: [`TaxServiceRate`](../types/internal.TaxServiceRate.mdx)[] ; `variantId`: `string`  }[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "quantity",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "taxRates",
-        "type": "[`TaxServiceRate`](../../modules/internal.mdx#taxservicerate)[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "code",
-            "type": "`string` \\| ``null``",
-            "description": "The tax rate's code.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "The tax rate's name.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "rate",
-            "type": "`number` \\| ``null``",
-            "description": "The tax rate.",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "variantId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../modules/internal.internal.mdx#priceselectioncontext)",
+    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "Details relevant to determine the correct pricing of the variant",
     "optional": false,
     "defaultValue": "",
@@ -243,96 +167,12 @@ circumstances described in the context.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`Map`<`string`, [`PriceSelectionResult`](../modules/internal.internal.mdx#priceselectionresult)\\>\\>",
+    "type": "`Promise`<`Map`<`string`, [`PriceSelectionResult`](../types/internal.internal.PriceSelectionResult.mdx)\\>\\>",
     "optional": false,
     "defaultValue": "",
     "description": "pricing details in an object containing the calculated lowest price,\nthe default price an all valid prices for the given variant",
     "expandable": false,
-    "children": [
-      {
-        "name": "Map",
-        "type": "`Map`<`string`, [`PriceSelectionResult`](../modules/internal.internal.mdx#priceselectionresult)\\>",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "string",
-            "type": "`string`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "PriceSelectionResult",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "calculatedPrice",
-                "type": "`number` \\| ``null``",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculatedPriceIncludesTax",
-                "type": "`boolean` \\| ``null``",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculatedPriceType",
-                "type": "[`PriceType`](../modules/internal.internal.mdx#pricetype-1)",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "originalPrice",
-                "type": "`number` \\| ``null``",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "originalPriceIncludesTax",
-                "type": "`boolean` \\| ``null``",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "prices",
-                "type": "[`MoneyAmount`](internal.internal.MoneyAmount.mdx)[]",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 

@@ -85,7 +85,7 @@ medusa.auth
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreAuthRes`](../modules/internal.mdx#storeauthres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreAuthRes`](../internal/types/internal.StoreAuthRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
@@ -285,7 +285,7 @@ medusa.auth.deleteSession().then(() => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<`void`\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`void`\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when customer is logged out successfully.",
@@ -336,7 +336,7 @@ medusa.auth.exists("user@example.com")
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreGetAuthEmailRes`](../modules/internal.mdx#storegetauthemailres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreGetAuthEmailRes`](../internal/types/internal.StoreGetAuthEmailRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the result of the check.",
@@ -402,7 +402,7 @@ medusa.auth.getSession().then(({ customer }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreAuthRes`](../modules/internal.mdx#storeauthres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreAuthRes`](../internal/types/internal.StoreAuthRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
@@ -635,7 +635,7 @@ medusa.auth
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreBearerAuthRes`](../modules/internal.mdx#storebearerauthres)\\>",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreBearerAuthRes`](../internal/types/internal.StoreBearerAuthRes.mdx)\\>",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the access token of the customer, if they're authenticated successfully.",

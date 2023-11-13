@@ -1,3 +1,4 @@
+description: The list of invites.
 type: object
 required:
   - invites

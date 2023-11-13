@@ -1,0 +1,50 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ConfigModule
+
+ **ConfigModule**: `Object`
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "featureFlags",
+    "type": "Record<`string`, `boolean` \\| `string`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "modules",
+    "type": "Record<`string`, `boolean` \\| [`Partial`](Partial.mdx)<[`InternalModuleDeclaration`](InternalModuleDeclaration.mdx) \\| [`ExternalModuleDeclaration`](ExternalModuleDeclaration.mdx)\\>\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "plugins",
+    "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "projectConfig",
+    "type": "[`ProjectConfigOptions`](ProjectConfigOptions.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -38,6 +38,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
     "description": "The IDs of the price sets to delete.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -46,6 +47,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -53,6 +55,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -61,6 +64,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -69,6 +73,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -77,6 +82,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -85,6 +91,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -100,6 +107,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the price sets are successfully deleted.",
+    "expandable": false,
     "children": []
   }
 ]} />

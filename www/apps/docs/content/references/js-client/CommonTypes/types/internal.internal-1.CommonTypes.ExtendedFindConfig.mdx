@@ -1,0 +1,23 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ExtendedFindConfig
+
+ **ExtendedFindConfig**<`TEntity`\>: [`Omit`](../../internal/types/internal.Omit.mdx)<`FindOneOptions`<`TEntity`\>, ``"where"`` \| ``"relations"`` \| ``"select"``\> \| [`Omit`](../../internal/types/internal.Omit.mdx)<`FindManyOptions`<`TEntity`\>, ``"where"`` \| ``"relations"`` \| ``"select"``\> & { `order?`: `FindOptionsOrder`<`TEntity`\> ; `relations?`: `FindOptionsRelations`<`TEntity`\> ; `select?`: `FindOptionsSelect`<`TEntity`\> ; `skip?`: `number` ; `take?`: `number` ; `where`: `FindOptionsWhere`<`TEntity`\> \| `FindOptionsWhere`<`TEntity`\>[]  }
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "TEntity",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

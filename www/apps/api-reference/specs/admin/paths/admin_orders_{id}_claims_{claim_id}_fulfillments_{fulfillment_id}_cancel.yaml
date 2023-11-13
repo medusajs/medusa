@@ -1,7 +1,9 @@
 post:
   operationId: PostOrdersClaimFulfillmentsCancel
   summary: Cancel Claim's Fulfillment
-  description: Cancel a claim's fulfillment and change its status.
+  description: >-
+    Cancel a claim's fulfillment and change its fulfillment status to
+    `canceled`.
   x-authenticated: true
   parameters:
     - in: path

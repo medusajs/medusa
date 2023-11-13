@@ -14,7 +14,7 @@ Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/J
 called automatically when a `Buffer` is used in a `for..of` statement.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('buffer');
 
@@ -52,6 +52,7 @@ for (const value of buf) {
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": [
       {
         "name": "number",
@@ -59,6 +60,7 @@ for (const value of buf) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       }
     ]

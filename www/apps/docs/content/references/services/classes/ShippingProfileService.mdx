@@ -1,0 +1,961 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ShippingProfileService
+
+Provides layer to manipulate profiles.
+
+#### Implements
+
+## Constructors
+
+### constructor
+
+**new ShippingProfileService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-38.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customShippingOptionService_",
+    "type": "[`CustomShippingOptionService`](CustomShippingOptionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productRepository_",
+    "type": "`Repository`<[`Product`](Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productService_",
+    "type": "[`ProductService`](ProductService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingOptionService_",
+    "type": "[`ShippingOptionService`](ShippingOptionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingProfileRepository_",
+    "type": "`Repository`<[`ShippingProfile`](ShippingProfile.mdx)\\> & { `findByProducts`: Method findByProducts  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addProduct
+
+**addProduct**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profileId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productId",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+use [addProducts](ShippingProfileService.mdx#addproducts) instead
+
+___
+
+### addProducts
+
+**addProducts**(`profileId`, `productId`): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+Adds a product or an array of products to the profile.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profileId",
+    "type": "`string`",
+    "description": "the profile to add the products to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productId",
+    "type": "`string` \\| `string`[]",
+    "description": "the ID of the product or multiple products to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of update",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### addShippingOption
+
+**addShippingOption**(`profileId`, `optionId`): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+Adds a shipping option to the profile. The shipping option can be used to
+fulfill the products in the products field.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profileId",
+    "type": "`string`",
+    "description": "the profile to apply the shipping option to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionId",
+    "type": "`string` \\| `string`[]",
+    "description": "the ID of the option or multiple options to add to the profile",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the model update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`profile`): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+Creates a new shipping profile.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profile",
+    "type": "[`CreateShippingProfile`](../types/CreateShippingProfile.mdx)",
+    "description": "the shipping profile to create from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the create operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createDefault
+
+**createDefault**(): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+Creates a default shipping profile, if this does not already exist.
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the shipping profile",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createGiftCardDefault
+
+**createGiftCardDefault**(): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+Creates a default shipping profile, for gift cards if unless it already
+exists.
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the shipping profile",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`profileId`): `Promise`<`void`\>
+
+Deletes a profile with a given profile id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profileId",
+    "type": "`string`",
+    "description": "the id of the profile to delete. Must be castable as an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### fetchCartOptions
+
+**fetchCartOptions**(`cart`): `Promise`<[`ShippingOption`](ShippingOption.mdx)[]\>
+
+Finds all the shipping profiles that cover the products in a cart, and
+validates all options that are available for the cart.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "`any`",
+    "description": "the cart object to find shipping options for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingOption`](ShippingOption.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingOption`](ShippingOption.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a list of the available shipping options",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getMapProfileIdsByProductIds
+
+**getMapProfileIdsByProductIds**(`productIds`): `Promise`<`Map`<`string`, `string`\>\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`Map`<`string`, `string`\>\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`Map`<`string`, `string`\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getProfilesInCart
+
+`Protected` **getProfilesInCart**(`cart`): `Promise`<`string`[]\>
+
+Returns a list of all the productIds in the cart.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "[`Cart`](Cart.mdx)",
+    "description": "the cart to extract products from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`string`[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`string`[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a list of product ids",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector?`, `config?`): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "description": "the config object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removeProducts
+
+**removeProducts**(`profileId`, `productId`): `Promise`<`void` \| [`ShippingProfile`](ShippingProfile.mdx)\>
+
+Removes a product or an array of products from the profile.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profileId",
+    "type": "``null`` \\| `string`",
+    "description": "the profile to add the products to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productId",
+    "type": "`string` \\| `string`[]",
+    "description": "the ID of the product or multiple products to add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void` \| [`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| [`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of update",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`profileId`, `options?`): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+Gets a profile by id.
+Throws in case of DB Error and if profile was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profileId",
+    "type": "`string`",
+    "description": "the id of the profile to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "description": "options opf the query.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the profile document.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveDefault
+
+**retrieveDefault**(): `Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.mdx)\>
+
+#### Returns
+
+`Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<``null`` \\| [`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveForProducts
+
+**retrieveForProducts**(`productIds`): `Promise`<{ `[product_id: string]`: [`ShippingProfile`](ShippingProfile.mdx)[];  }\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productIds",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<{ `[product_id: string]`: [`ShippingProfile`](ShippingProfile.mdx)[];  }\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<{ `[product_id: string]`: [`ShippingProfile`](ShippingProfile.mdx)[];  }\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveGiftCardDefault
+
+**retrieveGiftCardDefault**(): `Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.mdx)\>
+
+Retrieves the default gift card profile
+
+#### Returns
+
+`Promise`<``null`` \| [`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<``null`` \\| [`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the shipping profile for gift cards",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`profileId`, `update`): `Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+Updates a profile. Metadata updates and product updates should use
+dedicated methods, e.g. `setMetadata`, `addProduct`, etc. The function
+will throw errors if metadata or product updates are attempted.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "profileId",
+    "type": "`string`",
+    "description": "the id of the profile. Must be a string that can be casted to an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateShippingProfile`](../types/UpdateShippingProfile.mdx)",
+    "description": "an object with the update values.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ShippingProfile`](ShippingProfile.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the update result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`ShippingProfileService`](ShippingProfileService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ShippingProfileService`](ShippingProfileService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "ShippingProfileService",
+    "type": "[`ShippingProfileService`](ShippingProfileService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

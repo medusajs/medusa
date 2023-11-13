@@ -1,0 +1,52 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminProductsDeleteVariantRes
+
+ **AdminProductsDeleteVariantRes**: `Object`
+
+The details of deleting a product's variant.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "deleted",
+    "type": "`boolean`",
+    "description": "Whether or not the items were deleted.",
+    "optional": false,
+    "defaultValue": "true",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "object",
+    "type": "``\"product-variant\"``",
+    "description": "The type of the object that was deleted.",
+    "optional": false,
+    "defaultValue": "product-variant",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "product",
+    "type": "[`Product`](../classes/internal.Product.mdx)",
+    "description": "Product details.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant_id",
+    "type": "`string`",
+    "description": "The ID of the deleted Product Variant.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
