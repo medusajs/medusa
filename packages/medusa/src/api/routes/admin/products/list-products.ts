@@ -8,7 +8,11 @@ import {
 } from "../../../../services"
 
 import { IInventoryService } from "@medusajs/types"
-import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import {
+  IsolateSalesChannelDomainFeatureFlag,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Product } from "../../../../models"
 import { PricedProduct } from "../../../../types/pricing"
@@ -311,7 +315,7 @@ async function listAndCountProductWithIsolatedProductModule(
   const remoteQuery = req.scope.resolve("remoteQuery")
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
   const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
-    IsolateSalesChannelDomain.key
+    IsolateSalesChannelDomainFeatureFlag.key
   )
 
   const productIdsFilter: Set<string> = new Set()
