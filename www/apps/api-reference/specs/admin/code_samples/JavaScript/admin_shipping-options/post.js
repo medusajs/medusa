@@ -11,4 +11,4 @@ medusa.admin.shippingOptions.create({
 })
 .then(({ shipping_option }) => {
   console.log(shipping_option.id);
-});
+})

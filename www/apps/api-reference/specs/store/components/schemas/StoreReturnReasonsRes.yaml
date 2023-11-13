@@ -1,4 +1,5 @@
 type: object
+description: The return reason's details.
 x-expanded-relations:
   field: return_reason
   relations:

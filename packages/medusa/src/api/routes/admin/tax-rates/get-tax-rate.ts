@@ -44,7 +44,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.taxRates.retrieve(taxRateId)
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -90,11 +90,20 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminGetTaxRatesTaxRateParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

@@ -23,7 +23,7 @@ import { defaultAdminCollectionsRelations } from "."
  *       medusa.admin.collections.retrieve(collectionId)
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

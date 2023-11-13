@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/regions
  * operationId: "GetRegions"
  * summary: "List Regions"
- * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated"
+ * description: "Retrieve a list of Regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated."
  * x-authenticated: true
  * parameters:
  *  - in: query
@@ -111,7 +111,7 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.regions.list()
  *       .then(({ regions, limit, offset, count }) => {
  *         console.log(regions.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -170,29 +170,52 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * {@inheritDoc FindPaginationParams}
+ */
 export class AdminGetRegionsPaginationParams {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)
   limit?: number = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsInt()
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved regions.
+ */
 export class AdminGetRegionsParams extends AdminGetRegionsPaginationParams {
+  /**
+   * Date filters to apply on the regions' `created_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the regions' `updated_at` date.
+   */
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the regions' `deleted_at` date.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)

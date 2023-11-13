@@ -30,7 +30,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       })
  *       .then(({ reservation }) => {
  *         console.log(reservation.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -116,6 +116,9 @@ export default async (req, res) => {
  *   quantity:
  *     description: "The quantity to reserve."
  *     type: number
+ *   description:
+ *     description: "The reservation's description."
+ *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object

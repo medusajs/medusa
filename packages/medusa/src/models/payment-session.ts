@@ -61,6 +61,9 @@ export class PaymentSession extends BaseEntity {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   payment_authorized_at: Date
 
+  /**
+   * @apiIgnore
+   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ps")

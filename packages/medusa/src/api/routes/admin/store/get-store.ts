@@ -26,7 +26,7 @@ import { MedusaModule } from "@medusajs/modules-sdk"
  *       medusa.admin.store.retrieve()
  *       .then(({ store }) => {
  *         console.log(store.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -1,5 +1,14 @@
 # @medusajs/cache-inmemory
 
+## 1.8.10
+
+### Patch Changes
+
+- [#5511](https://github.com/medusajs/medusa/pull/5511) [`80fe362f3`](https://github.com/medusajs/medusa/commit/80fe362f33cba69e52418b57e2e2d476923fc510) Thanks [@adrien2p](https://github.com/adrien2p)! - Integration tests fixes and ignore ttl 0 on cache modules
+
+- Updated dependencies [[`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/modules-sdk@1.12.3
+
 ## 1.8.9
 
 ### Patch Changes

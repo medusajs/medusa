@@ -10,7 +10,7 @@ post:
     - in: path
       name: id
       required: true
-      description: The ID of the Payment Collections.
+      description: The ID of the Payment Collection.
       schema:
         type: string
   requestBody:

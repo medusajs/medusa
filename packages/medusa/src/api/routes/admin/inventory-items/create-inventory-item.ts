@@ -39,7 +39,7 @@ import { MedusaError } from "@medusajs/utils"
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -158,7 +158,7 @@ function generateAttachInventoryToVariantHandler(
   productVariantInventoryService: ProductVariantInventoryService
 ) {
   return async ({ data }) => {
-    let inventoryItems = await productVariantInventoryService.listByVariant(
+    const inventoryItems = await productVariantInventoryService.listByVariant(
       variantId
     )
 
@@ -234,6 +234,15 @@ function generateAttachInventoryToVariantHandler(
  *     type: string
  *   material:
  *     description: The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
+ *     type: string
+ *   title:
+ *     description: The inventory item's title.
+ *     type: string
+ *   description:
+ *     description: The inventory item's description.
+ *     type: string
+ *   thumbnail:
+ *     description: The inventory item's thumbnail.
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.

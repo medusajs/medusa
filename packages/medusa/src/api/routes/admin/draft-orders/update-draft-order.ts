@@ -48,7 +48,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       })
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

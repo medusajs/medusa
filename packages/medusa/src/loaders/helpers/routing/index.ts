@@ -1,19 +1,24 @@
 import { promiseAll } from "@medusajs/utils"
 import cors from "cors"
-import { Express, json, urlencoded } from "express"
+import { Router, json, text, urlencoded, type Express } from "express"
 import { readdir } from "fs/promises"
 import { parseCorsOrigins } from "medusa-core-utils"
 import { extname, join, sep } from "path"
 import {
   authenticate,
   authenticateCustomer,
+  errorHandler,
   requireCustomerAuthentication,
+  wrapHandler,
 } from "../../../api/middlewares"
 import { ConfigModule } from "../../../types/global"
 import logger from "../../logger"
 import {
+  AsyncRouteHandler,
   GlobalMiddlewareDescriptor,
   HTTP_METHODS,
+  MiddlewareRoute,
+  MiddlewareVerb,
   MiddlewaresConfig,
   RouteConfig,
   RouteDescriptor,
@@ -85,11 +90,81 @@ function calculatePriority(path: string): number {
   return depth + specifity + catchall
 }
 
+function matchMethod(
+  method: RouteVerb,
+  configMethod: MiddlewareRoute["method"]
+): boolean {
+  if (!configMethod || configMethod === "USE" || configMethod === "ALL") {
+    return true
+  } else if (Array.isArray(configMethod)) {
+    return (
+      configMethod.includes(method) ||
+      configMethod.includes("ALL") ||
+      configMethod.includes("USE")
+    )
+  } else {
+    return method === configMethod
+  }
+}
+
+/**
+ * Function that looks though the global middlewares and returns the first
+ * complete match for the given path and method.
+ *
+ * @param path - The path to match
+ * @param method - The method to match
+ * @param routes - The routes to match against
+ * @returns The first complete match or undefined if no match is found
+ */
+function findMatch(
+  path: string,
+  method: RouteVerb,
+  routes: MiddlewareRoute[]
+): MiddlewareRoute | undefined {
+  for (const route of routes) {
+    const { matcher, method: configMethod } = route
+
+    if (matchMethod(method, configMethod)) {
+      let isMatch = false
+
+      if (typeof matcher === "string") {
+        // Convert wildcard expressions to proper regex for matching entire path
+        // The '.*' will match any character sequence including '/'
+        const regex = new RegExp(`^${matcher.split("*").join(".*")}$`)
+        isMatch = regex.test(path)
+      } else if (matcher instanceof RegExp) {
+        // Ensure that the regex matches the entire path
+        const match = path.match(matcher)
+        isMatch = match !== null && match[0] === path
+      }
+
+      if (isMatch) {
+        return route // Return the first complete match
+      }
+    }
+  }
+
+  return undefined // Return undefined if no complete match is found
+}
+
+/**
+ * Returns an array of body parser middlewares that are applied on routes
+ * out-of-the-box.
+ */
+function getBodyParserMiddleware(sizeLimit?: string | number | undefined) {
+  return [
+    json({ limit: sizeLimit }),
+    text({ limit: sizeLimit }),
+    urlencoded({ limit: sizeLimit, extended: true }),
+  ]
+}
+
 export class RoutesLoader {
   protected routesMap = new Map<string, RouteDescriptor>()
   protected globalMiddlewaresDescriptor: GlobalMiddlewareDescriptor | undefined
 
   protected app: Express
+  protected router: Router
   protected activityId?: string
   protected rootDir: string
   protected configModule: ConfigModule
@@ -113,6 +188,7 @@ export class RoutesLoader {
     excludes?: RegExp[]
   }) {
     this.app = app
+    this.router = Router()
     this.activityId = activityId
     this.rootDir = rootDir
     this.configModule = configModule
@@ -133,16 +209,16 @@ export class RoutesLoader {
   }: {
     config?: MiddlewaresConfig
   }): void {
-    if (!config?.routes) {
+    if (!config?.routes && !config?.errorHandler) {
       log({
         activityId: this.activityId,
-        message: `No middleware routes found. Skipping middleware application.`,
+        message: `Empty middleware config. Skipping middleware application.`,
       })
 
       return
     }
 
-    for (const route of config.routes) {
+    for (const route of config.routes ?? []) {
       if (!route.matcher) {
         throw new Error(
           `Route is missing a \`matcher\` field. The 'matcher' field is required when applying middleware to this route.`
@@ -211,6 +287,7 @@ export class RoutesLoader {
     await promiseAll(
       [...this.routesMap.values()].map(async (descriptor: RouteDescriptor) => {
         const absolutePath = descriptor.absolutePath
+        const route = descriptor.route
 
         return await import(absolutePath).then((import_) => {
           const map = this.routesMap
@@ -223,30 +300,41 @@ export class RoutesLoader {
           }
 
           /**
-           * If the developer has not exported the authenticate flag
-           * we default to true.
+           * If the developer has not exported the
+           * AUTHENTICATE flag we default to true.
            */
           const shouldRequireAuth =
             import_[AUTHTHENTICATE] !== undefined
               ? (import_[AUTHTHENTICATE] as boolean)
               : true
 
-          if (
-            shouldRequireAuth &&
-            absolutePath.includes(join("api", "admin"))
-          ) {
-            config.shouldRequireAdminAuth = shouldRequireAuth
+          /**
+           * If the developer has not exported the
+           * CORS flag we default to true.
+           */
+          const shouldAddCors =
+            import_["CORS"] !== undefined ? (import_["CORS"] as boolean) : true
+
+          if (route.startsWith("/admin")) {
+            if (shouldAddCors) {
+              config.shouldAppendAdminCors = true
+            }
+
+            if (shouldRequireAuth) {
+              config.shouldRequireAdminAuth = true
+            }
           }
 
-          if (
-            shouldRequireAuth &&
-            absolutePath.includes(join("api", "store", "me"))
-          ) {
-            config.shouldRequireCustomerAuth = shouldRequireAuth
-          }
-
-          if (absolutePath.includes(join("api", "store"))) {
+          if (route.startsWith("/store")) {
             config.shouldAppendCustomer = true
+
+            if (shouldAddCors) {
+              config.shouldAppendStoreCors = true
+            }
+          }
+
+          if (shouldRequireAuth && route.startsWith("/store/me")) {
+            config.shouldRequireCustomerAuth = shouldRequireAuth
           }
 
           const handlers = Object.keys(import_).filter((key) => {
@@ -446,7 +534,45 @@ export class RoutesLoader {
     )
   }
 
-  protected async registerRoutes(): Promise<void> {
+  /**
+   * Apply the most specific body parser middleware to the router
+   */
+  applyBodyParserMiddleware(path: string, method: RouteVerb): void {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    const mostSpecificConfig = findMatch(
+      path,
+      method,
+      middlewareDescriptor?.config?.routes ?? []
+    )
+
+    if (!mostSpecificConfig || mostSpecificConfig?.bodyParser === undefined) {
+      this.router[method.toLowerCase()](path, ...getBodyParserMiddleware())
+
+      return
+    }
+
+    if (mostSpecificConfig?.bodyParser) {
+      const sizeLimit = mostSpecificConfig?.bodyParser?.sizeLimit
+
+      this.router[method.toLowerCase()](
+        path,
+        ...getBodyParserMiddleware(sizeLimit)
+      )
+
+      return
+    }
+
+    return
+  }
+
+  /**
+   * Apply the route specific middlewares to the router,
+   * this includes the cors, authentication and
+   * body parsing. These are applied first to ensure
+   * that they are applied before any other middleware.
+   */
+  applyRouteSpecificMiddlewares(): void {
     const prioritizedRoutes = prioritize([...this.routesMap.values()])
 
     for (const descriptor of prioritizedRoutes) {
@@ -456,17 +582,121 @@ export class RoutesLoader {
 
       const routes = descriptor.config.routes
 
-      if (descriptor.config.shouldAppendCustomer) {
-        this.app.use(descriptor.route, authenticateCustomer())
+      /**
+       * Apply default store and admin middlewares if
+       * not opted out of.
+       */
+
+      if (descriptor.config.shouldAppendAdminCors) {
+        /**
+         * Apply the admin cors
+         */
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.admin_cors || ""
+            ),
+            credentials: true,
+          })
+        )
       }
 
-      if (descriptor.config.shouldRequireAdminAuth) {
-        this.app.use(descriptor.route, authenticate())
+      if (descriptor.config.shouldAppendStoreCors) {
+        /**
+         * Apply the store cors
+         */
+        this.router.use(
+          descriptor.route,
+          cors({
+            origin: parseCorsOrigins(
+              this.configModule.projectConfig.store_cors || ""
+            ),
+            credentials: true,
+          })
+        )
+      }
+
+      if (descriptor.config.shouldAppendCustomer) {
+        /**
+         * Add the customer to the request object
+         */
+        this.router.use(descriptor.route, authenticateCustomer())
       }
 
       if (descriptor.config.shouldRequireCustomerAuth) {
-        this.app.use(descriptor.route, requireCustomerAuthentication())
+        /**
+         * Require the customer to be authenticated
+         */
+        this.router.use(descriptor.route, requireCustomerAuthentication())
       }
+
+      if (descriptor.config.shouldRequireAdminAuth) {
+        /**
+         * Require the admin to be authenticated
+         */
+        this.router.use(descriptor.route, authenticate())
+      }
+
+      for (const route of routes) {
+        /**
+         * Apply the body parser middleware if the route
+         * has not opted out of it.
+         */
+        this.applyBodyParserMiddleware(descriptor.route, route.method!)
+      }
+    }
+  }
+
+  /**
+   * Apply the error handler middleware to the router
+   */
+  applyErrorHandlerMiddleware(): void {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    if (!middlewareDescriptor) {
+      return
+    }
+
+    const errorHandlerFn = middlewareDescriptor.config?.errorHandler
+
+    /**
+     * If the user has opted out of the error handler then return
+     */
+    if (errorHandlerFn === false) {
+      return
+    }
+
+    /**
+     * If the user has provided a custom error handler then use it
+     */
+    if (errorHandlerFn) {
+      this.router.use(errorHandlerFn)
+      return
+    }
+
+    /**
+     * If the user has not provided a custom error handler then use the
+     * default one.
+     */
+    this.router.use(errorHandler())
+  }
+
+  protected async registerRoutes(): Promise<void> {
+    const middlewareDescriptor = this.globalMiddlewaresDescriptor
+
+    const shouldWrapHandler = middlewareDescriptor?.config
+      ? middlewareDescriptor.config.errorHandler !== false
+      : true
+
+    const prioritizedRoutes = prioritize([...this.routesMap.values()])
+
+    for (const descriptor of prioritizedRoutes) {
+      if (!descriptor.config?.routes?.length) {
+        continue
+      }
+
+      const routes = descriptor.config.routes
 
       for (const route of routes) {
         log({
@@ -475,7 +705,16 @@ export class RoutesLoader {
             descriptor.route
           }`,
         })
-        this.app[route.method!.toLowerCase()](descriptor.route, route.handler)
+
+        /**
+         * If the user hasn't opted out of error handling then
+         * we wrap the handler in a try/catch block.
+         */
+        const handler = shouldWrapHandler
+          ? wrapHandler(route.handler as AsyncRouteHandler)
+          : route.handler
+
+        this.router[route.method!.toLowerCase()](descriptor.route, handler)
       }
     }
   }
@@ -493,48 +732,26 @@ export class RoutesLoader {
 
     const routes = descriptor.config.routes
 
-    for (const route of routes) {
-      if (Array.isArray(route.method)) {
-        for (const method of route.method) {
-          log({
-            activityId: this.activityId,
-            message: `Registering middleware [${method}] - ${route.matcher}`,
-          })
+    /**
+     * We don't prioritize the middlewares to preserve the order
+     * in which they are defined in the 'middlewares.ts'. This is to
+     * maintain the same behavior as how middleware is applied
+     * in Express.
+     */
 
-          this.app[method.toLowerCase()](route.matcher, ...route.middlewares)
-        }
-      } else {
+    for (const route of routes) {
+      const methods = (
+        Array.isArray(route.method) ? route.method : [route.method]
+      ).filter(Boolean) as MiddlewareVerb[]
+
+      for (const method of methods) {
         log({
           activityId: this.activityId,
-          message: `Registering middleware [${route.method}] - ${route.matcher}`,
+          message: `Registering middleware [${method}] - ${route.matcher}`,
         })
 
-        this.app[route.method!.toLowerCase()](
-          route.matcher,
-          ...route.middlewares
-        )
+        this.router[method.toLowerCase()](route.matcher, ...route.middlewares)
       }
-    }
-  }
-
-  applyGlobalMiddlewares() {
-    if (this.routesMap.size > 0) {
-      this.app.use(json(), urlencoded({ extended: true }))
-
-      const adminCors = this.configModule.projectConfig.admin_cors || ""
-      this.app.use(
-        "/admin",
-        cors({
-          origin: parseCorsOrigins(adminCors),
-          credentials: true,
-        })
-      )
-
-      const storeCors = this.configModule.projectConfig.store_cors || ""
-      this.app.use(
-        "/store",
-        cors({ origin: parseCorsOrigins(storeCors), credentials: true })
-      )
     }
   }
 
@@ -561,10 +778,20 @@ export class RoutesLoader {
       await this.createRoutesMap({ dirPath: this.rootDir })
       await this.createRoutesConfig()
 
-      this.applyGlobalMiddlewares()
+      this.applyRouteSpecificMiddlewares()
 
       await this.registerMiddlewares()
       await this.registerRoutes()
+
+      this.applyErrorHandlerMiddleware()
+
+      /**
+       * Apply the router to the app.
+       *
+       * This prevents middleware from a plugin from
+       * bleeding into the global middleware stack.
+       */
+      this.app.use("/", this.router)
     }
 
     performance && performance.mark("file-base-routing-end" + this.rootDir)

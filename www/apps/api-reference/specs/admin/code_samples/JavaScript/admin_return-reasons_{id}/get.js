@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.returnReasons.retrieve(returnReasonId)
 .then(({ return_reason }) => {
   console.log(return_reason.id);
-});
+})

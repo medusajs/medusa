@@ -51,6 +51,7 @@ export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
 /**
  * @schema StoreSwapsRes
  * type: object
+ * description: "The swap's details."
  * x-expanded-relations:
  *   field: swap
  *   relations:

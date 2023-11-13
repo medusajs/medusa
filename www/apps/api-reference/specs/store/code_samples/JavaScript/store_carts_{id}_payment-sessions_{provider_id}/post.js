@@ -7,4 +7,4 @@ medusa.carts.updatePaymentSession(cartId, "manual", {
 })
 .then(({ cart }) => {
   console.log(cart.id);
-});
+})

@@ -63,7 +63,7 @@ import { FindParams } from "../../../../types/common"
  *       })
  *       .then(({ discount }) => {
  *         console.log(discount.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -152,14 +152,16 @@ export default async (req: Request, res: Response) => {
  *         description: "A short description of the discount"
  *       type:
  *         type: string
- *         description: "The type of the discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers."
+ *         description: >-
+ *           The type of the discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.
  *         enum: [fixed, percentage, free_shipping]
  *       value:
  *         type: number
  *         description: "The value that the discount represents. This will depend on the type of the discount."
  *       allocation:
  *         type: string
- *         description: "The scope that the discount should apply to. `total` indicates that the discount should be applied on the cart total, and `item` indicates that the discount should be applied to each discountable item in the cart."
+ *         description: >-
+ *           The scope that the discount should apply to. `total` indicates that the discount should be applied on the cart total, and `item` indicates that the discount should be applied to each discountable item in the cart.
  *         enum: [total, item]
  *       conditions:
  *         type: array
@@ -171,8 +173,9 @@ export default async (req: Request, res: Response) => {
  *           properties:
  *             operator:
  *               type: string
- *               description: "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
- *                discountable resources are everything but the specified resources."
+ *               description: >-
+ *                 Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *                 discountable resources are everything but the specified resources.
  *               enum: [in, not_in]
  *             products:
  *               type: array
@@ -201,7 +204,8 @@ export default async (req: Request, res: Response) => {
  *                 type: string
  *   is_disabled:
  *     type: boolean
- *     description: Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.
+ *     description: >-
+ *       Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.
  *     default: false
  *   starts_at:
  *     type: string
@@ -277,24 +281,42 @@ export class AdminPostDiscountsReq {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * Details of the discount rule to create.
+ */
 export class AdminPostDiscountsDiscountRule {
+  /**
+   * The discount rule's description.
+   */
   @IsString()
   @IsOptional()
   description?: string
 
+  /**
+   * The discount rule's type.
+   */
   @IsEnum(DiscountRuleType, {
     message: `Invalid rule type, must be one of "fixed", "percentage" or "free_shipping"`,
   })
   type: DiscountRuleType
 
+  /**
+   * The discount rule's value.
+   */
   @IsNumber()
   value: number
 
+  /**
+   * The discount rule's allocation.
+   */
   @IsEnum(AllocationType, {
     message: `Invalid allocation type, must be one of "total" or "item"`,
   })
   allocation: AllocationType
 
+  /**
+   * The discount rule's conditions.
+   */
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
@@ -302,9 +324,18 @@ export class AdminPostDiscountsDiscountRule {
   conditions?: AdminCreateCondition[]
 }
 
+/**
+ * Details of the discount condition to create.
+ */
 export class AdminCreateCondition extends AdminUpsertConditionsReq {
+  /**
+   * The operator of the discount condition.
+   */
   @IsString()
   operator: DiscountConditionOperator
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminPostDiscountsParams extends FindParams {}

@@ -1,3 +1,4 @@
+description: The list of draft orders with pagination fields.
 type: object
 x-expanded-relations:
   field: draft_orders

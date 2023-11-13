@@ -1,6 +1,6 @@
 {
   "name": "medusa-source-shopify",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Source plugin that allows users to import products from a Shopify store",
   "main": "index.js",
   "repository": {

@@ -31,7 +31,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

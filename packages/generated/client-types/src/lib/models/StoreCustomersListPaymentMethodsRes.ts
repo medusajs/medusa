@@ -3,9 +3,12 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
+/**
+ * The payment method's details.
+ */
 export interface StoreCustomersListPaymentMethodsRes {
   /**
-   * An array of saved payment method details.
+   * The details of the saved payment methods.
    */
   payment_methods: Array<{
     /**

@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/price-lists/{id}/prices/batch
  * operationId: "PostPriceListsPriceListPricesBatch"
  * summary: "Add or Update Prices"
- * description: "Add or update a list of prices in a Price List"
+ * description: "Add or update a list of prices in a Price List."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
@@ -41,7 +41,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -144,7 +144,8 @@ export default async (req, res) => {
  *           description: The maximum quantity for which the price will be used.
  *           type: integer
  *   override:
- *     description: "If set to `true`, the prices will replace all existing prices associated with the Price List."
+ *     description: >-
+ *       If set to `true`, the prices will replace all existing prices associated with the Price List.
  *     type: boolean
  */
 export class AdminPostPriceListPricesPricesReq {
