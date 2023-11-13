@@ -256,7 +256,7 @@ export default async (req, res) => {
   }
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
+  if (isMedusaV2Enabled) {
     rawProduct = await getProductWithIsolatedProductModule(req, product.id)
   } else {
     rawProduct = await productService.retrieve(product.id, {
