@@ -27,6 +27,7 @@ import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/ta
 import { PriceList } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { listAndCountPriceListPricingModule } from "./get-price-list"
 
 /**
  * @oas [post] /admin/price-lists
@@ -134,6 +135,15 @@ export default async (req: Request, res) => {
       },
     })
     priceList = result[0]?.priceList
+
+    req.params.id = priceList?.id
+
+    const [priceLists, _] = await listAndCountPriceListPricingModule({
+      req,
+      list: false,
+    })
+
+    priceList = priceLists[0]
   } else {
     const createdPl = await manager.transaction(async (transactionManager) => {
       return await priceListService

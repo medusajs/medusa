@@ -181,7 +181,7 @@ export async function listAndCountPriceListPricingModule({
     )
 
     const customerGroupPriceListRule = priceListRules.find(
-      (plr) => plr.rule_type?.rule_attribute === "customer_groups"
+      (plr) => plr.rule_type?.rule_attribute === "customer_group_id"
     )
 
     for (const priceSetMoneyAmount of priceSetMoneyAmounts) {

@@ -84,7 +84,7 @@ export async function prepareUpdatePriceLists({
         priceListDataClone.rules = {}
       }
 
-      priceListDataClone.rules["customer_groups"] = customerGroups.map(
+      priceListDataClone.rules["customer_group_id"] = customerGroups.map(
         (group) => group.id
       )
     }
