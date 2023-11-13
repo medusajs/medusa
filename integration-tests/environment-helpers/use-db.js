@@ -148,15 +148,21 @@ module.exports = {
       const pgConnectionLoader =
         require("@medusajs/medusa/dist/loaders/pg-connection").default
 
+      const featureFlagLoader =
+        require("@medusajs/medusa/dist/loaders/feature-flags").default
+
       const medusaAppLoader =
         require("@medusajs/medusa/dist/loaders/medusa-app").default
 
       const container = createMedusaContainer()
 
+      const featureFlagRouter = await featureFlagLoader(configModule)
+
       container.register({
         [ContainerRegistrationKeys.CONFIG_MODULE]: asValue(configModule),
         [ContainerRegistrationKeys.LOGGER]: asValue(console),
         [ContainerRegistrationKeys.MANAGER]: asValue(dbDataSource.manager),
+        featureFlagRouter: asValue(featureFlagRouter),
       })
 
       const pgConnection = await pgConnectionLoader({ configModule, container })
