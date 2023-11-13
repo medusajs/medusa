@@ -100,7 +100,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
     await db.teardown()
   })
 
-  it.only("should update price lists successfully with prices", async () => {
+  it("should update price lists successfully with prices", async () => {
     const var2PriceSet = await createVariantPriceSet({
       container: appContainer,
       variantId: variant2.id,

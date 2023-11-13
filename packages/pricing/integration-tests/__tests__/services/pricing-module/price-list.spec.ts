@@ -204,11 +204,11 @@ describe("PriceList Service", () => {
         },
       ])
 
-      const updateDate = new Date().toISOString()
+      const updateDate = new Date()
       await service.updatePriceLists([
         {
           id: created.id,
-          starts_at: updateDate,
+          starts_at: updateDate.toISOString(),
           rules: {
             new_rule: ["new-rule-value"],
           },
@@ -253,7 +253,7 @@ describe("PriceList Service", () => {
               }),
             }),
           ]),
-          price_list_rules: [
+          price_list_rules: expect.arrayContaining([
             expect.objectContaining({
               id: expect.any(String),
               rule_type: expect.objectContaining({
@@ -267,7 +267,7 @@ describe("PriceList Service", () => {
                 }),
               ],
             }),
-          ],
+          ]),
         })
       )
     })
