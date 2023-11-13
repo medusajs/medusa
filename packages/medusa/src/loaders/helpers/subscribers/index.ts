@@ -4,8 +4,10 @@ import { readdir } from "fs/promises"
 import { extname, join, sep } from "path"
 
 import { EventBusService } from "../../../services"
-import { SubscriberConfig, SubscriberHandler } from "../../../types/subscribers"
+import { SubscriberArgs, SubscriberConfig } from "../../../types/subscribers"
 import logger from "../../logger"
+
+type SubscriberHandler<T> = (args: SubscriberArgs<T>) => Promise<void>
 
 type SubscriberModule<T> = {
   config: SubscriberConfig
@@ -154,16 +156,17 @@ export class SubscriberRegistrar {
     /**
      * If the handler is not anonymous, use the name
      */
-    if (handlerName) {
+    if (handlerName && !handlerName.startsWith("default")) {
       return kebabCase(handlerName)
     }
 
     /**
      * If the handler is anonymous, use the file name
      */
-    fileName = fileName.replace(extname(fileName), "").replace(sep, "-")
+    const idFromFile =
+      fileName.split(sep).pop()?.replace(extname(fileName), "") ?? ""
 
-    return kebabCase(fileName)
+    return kebabCase(idFromFile)
   }
 
   private createSubscriber<T>({
@@ -183,7 +186,12 @@ export class SubscriberRegistrar {
     const events = Array.isArray(event) ? event : [event]
 
     const subscriber: Subscriber<T> = async (data: T, eventName: string) => {
-      return handler(data, eventName, this.container_, this.pluginOptions_)
+      return handler({
+        data,
+        eventName,
+        container: this.container_,
+        pluginOptions: this.pluginOptions_,
+      })
     }
 
     const subscriberId = this.inferIdentifier(fileName, config, handler)

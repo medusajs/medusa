@@ -42,42 +42,27 @@ export default class ScheduledJobsRegistrar {
     const handler = job.default
 
     if (!handler || typeof handler !== "function") {
-      /**
-       * If the handler is not a function, we can't use it
-       */
       return false
     }
 
     const config = job.config
 
     if (!config) {
-      /**
-       * If the job is missing a config, we can't use it
-       */
       logger.warn(`The job is missing a config. Skipping registration.`)
       return false
     }
 
     if (!config.schedule) {
-      /**
-       * If the job is missing a cron_schedule, we can't use it
-       */
       logger.warn(`The job is missing a schedule. Skipping registration.`)
       return false
     }
 
     if (!config.name) {
-      /**
-       * If the job is missing a name, we can't use it
-       */
       logger.warn(`The job is missing a name. Skipping registration.`)
       return false
     }
 
     if (config.data && typeof config.data !== "object") {
-      /**
-       * If the job has data but it's not an object, we can't use it
-       */
       logger.warn(`The job data is not an object. Skipping registration.`)
       return false
     }

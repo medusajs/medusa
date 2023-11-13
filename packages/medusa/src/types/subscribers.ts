@@ -9,9 +9,9 @@ export type SubscriberConfig = {
   context?: SubscriberContext
 }
 
-export type SubscriberHandler<T> = (
-  data: T,
-  eventName: string,
-  container: MedusaContainer,
+export type SubscriberArgs<T = unknown> = {
+  data: T
+  eventName: string
+  container: MedusaContainer
   pluginOptions: Record<string, unknown>
-) => Promise<void>
+}
