@@ -1,8 +1,8 @@
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 
-import { MedusaError } from "@medusajs/utils"
-import { WorkflowArguments } from "../../helper"
 import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { MedusaError, MedusaV2Flag } from "@medusajs/utils"
+import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
 type VariantIndexAndPrices = {
@@ -99,7 +99,7 @@ export async function updateProductsVariantsPrices({
     }
   }
 
-  if (featureFlagRouter.isFeatureEnabled("isolate_pricing_domain")) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const remoteLink = container.resolve("remoteLink")
     const pricingModuleService = container.resolve(
       ModuleRegistrationName.PRICING

@@ -1,6 +1,11 @@
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { FlagRouter, MedusaError, promiseAll } from "@medusajs/utils"
-import { updateProducts, Workflows } from "@medusajs/workflows"
+import {
+  FlagRouter,
+  MedusaError,
+  MedusaV2Flag,
+  promiseAll,
+} from "@medusajs/utils"
+import { Workflows, updateProducts } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -51,7 +56,6 @@ import { ProductVariantRepository } from "../../../../repositories/product-varia
 import { Logger } from "../../../../types/global"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -140,17 +144,15 @@ export default async (req, res) => {
   const productModuleService = req.scope.resolve("productModuleService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.UpdateProducts,
-  })
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
-  if (isWorkflowEnabled && !productModuleService) {
+  if (isMedusaV2Enabled && !productModuleService) {
     logger.warn(
       `Cannot run ${Workflows.UpdateProducts} workflow without '@medusajs/product' installed`
     )
   }
 
-  if (isWorkflowEnabled && !!productModuleService) {
+  if (isMedusaV2Enabled) {
     const updateProductWorkflow = updateProducts(req.scope)
 
     const input = {
@@ -289,7 +291,7 @@ export default async (req, res) => {
 
   let rawProduct
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (isMedusaV2Enabled) {
     rawProduct = await getProductWithIsolatedProductModule(req, id)
   } else {
     rawProduct = await productService.retrieve(id, {
