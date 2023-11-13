@@ -73,14 +73,17 @@ You can list all reservations in your store by sending a request to the [List Re
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.list()
     .then(({ reservations, limit, count, offset }) => {
       console.log(reservations.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminReservations } from "medusa-react"
 
@@ -106,8 +109,10 @@ You can list all reservations in your store by sending a request to the [List Re
 
     export default Reservations
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations`, {
       credentials: "include",
@@ -117,12 +122,15 @@ You can list all reservations in your store by sending a request to the [List Re
       console.log(reservations.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/reservations' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -144,6 +152,7 @@ You can create a reservation by sending a request to the [Create Reservation API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.create({
       location_id,
@@ -154,8 +163,10 @@ You can create a reservation by sending a request to the [Create Reservation API
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateReservation } from "medusa-react"
 
@@ -176,8 +187,10 @@ You can create a reservation by sending a request to the [Create Reservation API
 
     export default CreateReservation
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations`, {
       credentials: "include",
@@ -196,8 +209,10 @@ You can create a reservation by sending a request to the [Create Reservation API
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -208,6 +223,7 @@ You can create a reservation by sending a request to the [Create Reservation API
             "quantity": 1
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -227,6 +243,7 @@ You can update a reservation by sending a request to the [Update Reservation API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.update(reservationId, {
       quantity,
@@ -235,8 +252,10 @@ You can update a reservation by sending a request to the [Update Reservation API
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateReservation } from "medusa-react"
 
@@ -257,8 +276,10 @@ You can update a reservation by sending a request to the [Update Reservation API
 
     export default UpdateReservation
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations/${reservationId}`, {
       credentials: "include",
@@ -275,8 +296,10 @@ You can update a reservation by sending a request to the [Update Reservation API
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -285,6 +308,7 @@ You can update a reservation by sending a request to the [Update Reservation API
             "quantity": 3
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -306,14 +330,17 @@ You can delete a reservation by sending a request to the [Delete Reservation API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.delete(reservationId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteReservation } from "medusa-react"
 
@@ -332,8 +359,10 @@ You can delete a reservation by sending a request to the [Delete Reservation API
 
     export default DeleteReservation
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations/${reservationId}`, {
       credentials: "include",
@@ -344,12 +373,15 @@ You can delete a reservation by sending a request to the [Delete Reservation API
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

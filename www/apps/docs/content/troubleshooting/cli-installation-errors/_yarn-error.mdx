@@ -11,16 +11,20 @@ You have to add Yarn’s install location to the PATH variable:
 
 <Tabs groupId="operating-systems" isCodeTabs={true}>
   <TabItem value="unix" label="MacOS / Linux" default>
+
     ```bash
     export PATH="$(yarn global bin):$PATH"
     ```
+
   </TabItem>
   <TabItem value="windows" label="Windows">
+
     ```bash
     # MAKE SURE TO INCLUDE %path%
     setx path "%path%;c:\users\YOURUSERNAME\appdata\local\yarn\bin"
     # YOURUSERNAME is your account username
     ```
+
   </TabItem>
 </Tabs>
 

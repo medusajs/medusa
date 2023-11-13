@@ -236,6 +236,7 @@ For example:
 
 <Tabs groupId="admin-custom-query" isCodeTabs={true}>
   <TabItem value="post-page" label="src/admin/routes/blog/posts/[id]/page.tsx" default>
+
     ```tsx
     import { useAdminCustomQuery } from "medusa-react"
     import { useParams } from "react-router-dom"
@@ -280,8 +281,10 @@ For example:
 
     export default BlogPost
     ```
+
   </TabItem>
   <TabItem value="posts-page" label="src/admin/routes/blog/author/[id]/posts/page.tsx">
+
     ```tsx
     import { useAdminCustomQuery } from "medusa-react"
     import { useParams } from "react-router-dom"
@@ -334,6 +337,7 @@ For example:
 
     export default AuthorsBlogPosts
     ```
+
   </TabItem>
 </Tabs>
 

@@ -56,14 +56,17 @@ You can list all tax providers of a store using the [List Tax Providers API Rout
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.store.listTaxProviders()
     .then(({ tax_providers }) => {
       console.log(tax_providers.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminStoreTaxProviders } from "medusa-react"
 
@@ -92,8 +95,10 @@ You can list all tax providers of a store using the [List Tax Providers API Rout
 
     export default TaxProviders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/store/tax-providers`, {
       credentials: "include",
@@ -103,12 +108,15 @@ You can list all tax providers of a store using the [List Tax Providers API Rout
       console.log(tax_providers.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/store/tax-providers' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -124,6 +132,7 @@ You can change the tax provider of a region using the [Update Region API Route](
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.regions.update(regionId, {
       tax_provider_id,
@@ -132,8 +141,10 @@ You can change the tax provider of a region using the [Update Region API Route](
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateRegion } from "medusa-react"
 
@@ -152,8 +163,10 @@ You can change the tax provider of a region using the [Update Region API Route](
 
     export default UpdateRegion
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
       credentials: "include",
@@ -170,8 +183,10 @@ You can change the tax provider of a region using the [Update Region API Route](
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -180,6 +195,7 @@ You can change the tax provider of a region using the [Update Region API Route](
         "tax_provider_id": "<TAX_PROVIDER_ID>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -197,6 +213,7 @@ In addition to changing the tax provider, you can use the same [Update Region AP
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.regions.update(regionId, {
       tax_provider_id,
@@ -209,8 +226,10 @@ In addition to changing the tax provider, you can use the same [Update Region AP
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateRegion } from "medusa-react"
 
@@ -233,8 +252,10 @@ In addition to changing the tax provider, you can use the same [Update Region AP
 
     export default UpdateRegion
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
       credentials: "include",
@@ -255,8 +276,10 @@ In addition to changing the tax provider, you can use the same [Update Region AP
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -269,6 +292,7 @@ In addition to changing the tax provider, you can use the same [Update Region AP
         "tax_rate": 10
     }'
     ```
+
   </TabItem>
 </Tabs>
 

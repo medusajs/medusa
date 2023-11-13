@@ -58,14 +58,17 @@ You can list invites by sending a request to the [List Invite API Route](https:/
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.invites.list()
     .then(({ invites }) => {
       console.log(invites.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminInvites } from "medusa-react"
 
@@ -89,8 +92,10 @@ You can list invites by sending a request to the [List Invite API Route](https:/
 
     export default Invites
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/invites`, {
       credentials: "include",
@@ -100,12 +105,15 @@ You can list invites by sending a request to the [List Invite API Route](https:/
       console.log(invites.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/invites' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -121,6 +129,7 @@ You can create an invite by sending a request to the [Create Invite API Route](h
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.invites.create({
       user: "user@example.com",
@@ -130,8 +139,10 @@ You can create an invite by sending a request to the [Create Invite API Route](h
       // successful
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateInvite } from "medusa-react"
 
@@ -151,8 +162,10 @@ You can create an invite by sending a request to the [Create Invite API Route](h
 
     export default CreateInvite
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/invites`, {
       credentials: "include",
@@ -170,8 +183,10 @@ You can create an invite by sending a request to the [Create Invite API Route](h
       // successful
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/invites' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -181,6 +196,7 @@ You can create an invite by sending a request to the [Create Invite API Route](h
         "role": "admin"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -201,6 +217,7 @@ You can accept an invite by sending a request to the [Accept Invite API Route](h
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.invites.accept({
       token,
@@ -214,8 +231,10 @@ You can accept an invite by sending a request to the [Accept Invite API Route](h
       // successful
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminAcceptInvite } from "medusa-react"
 
@@ -239,8 +258,10 @@ You can accept an invite by sending a request to the [Accept Invite API Route](h
 
     export default AcceptInvite
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/invites/accept`, {
       credentials: "include",
@@ -262,8 +283,10 @@ You can accept an invite by sending a request to the [Accept Invite API Route](h
       // successful
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/invites/accept' \
     -H 'Content-Type: application/json' \
@@ -276,6 +299,7 @@ You can accept an invite by sending a request to the [Accept Invite API Route](h
         }
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -297,14 +321,17 @@ You can resend an invite if it’s not accepted yet. To resend an invite, send a
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.invites.resend(inviteId)
     .then(() => {
       // successful
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminResendInvite } from "medusa-react"
 
@@ -321,8 +348,10 @@ You can resend an invite if it’s not accepted yet. To resend an invite, send a
 
     export default ResendInvite
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/invites/${inviteId}/resend`, {
       credentials: "include",
@@ -333,12 +362,15 @@ You can resend an invite if it’s not accepted yet. To resend an invite, send a
       // successful
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/invites/<INVITE_ID>/resend' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -354,14 +386,17 @@ You can delete an invite by sending a request to the [Delete Invite API Route](h
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.invites.delete(inviteId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteInvite } from "medusa-react"
 
@@ -378,8 +413,10 @@ You can delete an invite by sending a request to the [Delete Invite API Route](h
 
     export default DeleteInvite
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/invites/${inviteId}`, {
       credentials: "include",
@@ -390,12 +427,15 @@ You can delete an invite by sending a request to the [Delete Invite API Route](h
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/invites/<INVITE_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

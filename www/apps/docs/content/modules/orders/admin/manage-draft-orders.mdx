@@ -56,14 +56,17 @@ You can list draft orders by sending a request to the [List Draft Orders API Rou
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.list()
     .then(({ draft_orders, limit, offset, count }) => {
       console.log(draft_orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDraftOrders } from "medusa-react"
 
@@ -89,8 +92,10 @@ You can list draft orders by sending a request to the [List Draft Orders API Rou
 
     export default DraftOrders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders`, {
       credentials: "include",
@@ -100,12 +105,15 @@ You can list draft orders by sending a request to the [List Draft Orders API Rou
       console.log(draft_orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/draft-orders' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -121,6 +129,7 @@ You can create a draft order by sending a request to the [Create Draft Order API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.create({
       email,
@@ -150,8 +159,10 @@ You can create a draft order by sending a request to the [Create Draft Order API
       console.log(draft_order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateDraftOrder } from "medusa-react"
 
@@ -191,8 +202,10 @@ You can create a draft order by sending a request to the [Create Draft Order API
 
     export default CreateDraftOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders`, {
       credentials: "include",
@@ -230,8 +243,10 @@ You can create a draft order by sending a request to the [Create Draft Order API
       console.log(draft_order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -258,6 +273,7 @@ You can create a draft order by sending a request to the [Create Draft Order API
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -286,14 +302,17 @@ You can retrieve a draft order by sending a request to the [Get Draft Order API 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.retrieve(draftOrderId)
     .then(({ draft_order }) => {
       console.log(draft_order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDraftOrder } from "medusa-react"
 
@@ -314,8 +333,10 @@ You can retrieve a draft order by sending a request to the [Get Draft Order API 
 
     export default DraftOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
       credentials: "include",
@@ -325,12 +346,15 @@ You can retrieve a draft order by sending a request to the [Get Draft Order API 
       console.log(draft_order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -346,6 +370,7 @@ You can update a draft order by sending a request to the [Update Draft Order API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.update(draftOrderId, {
       email: "user@example.com",
@@ -354,8 +379,10 @@ You can update a draft order by sending a request to the [Update Draft Order API
       console.log(draft_order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateDraftOrder } from "medusa-react"
 
@@ -376,8 +403,10 @@ You can update a draft order by sending a request to the [Update Draft Order API
 
     export default UpdateDraftOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
       credentials: "include",
@@ -394,8 +423,10 @@ You can update a draft order by sending a request to the [Update Draft Order API
       console.log(draft_order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -404,6 +435,7 @@ You can update a draft order by sending a request to the [Update Draft Order API
         "email": "user@example.com"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -423,6 +455,7 @@ You can add line items to a draft order by sending a request to the [Create Line
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.addLineItem(draftOrderId, {
       quantity: 1,
@@ -431,8 +464,10 @@ You can add line items to a draft order by sending a request to the [Create Line
       console.log(draft_order.cart.items)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDraftOrderAddLineItem } from "medusa-react"
 
@@ -453,9 +488,12 @@ You can add line items to a draft order by sending a request to the [Create Line
 
     export default AddLineItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items`, {
         credentials: "include",
@@ -472,8 +510,10 @@ You can add line items to a draft order by sending a request to the [Create Line
         console.log(draft_order.cart.items)
       })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -482,6 +522,7 @@ You can add line items to a draft order by sending a request to the [Create Line
         "quantity": 1
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -504,6 +545,7 @@ You can update a line item by sending a request to the [Update Line Item API Rou
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.updateLineItem(draftOrderId, itemId, {
       quantity: 1,
@@ -512,8 +554,10 @@ You can update a line item by sending a request to the [Update Line Item API Rou
       console.log(draft_order.cart.items)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDraftOrderUpdateLineItem } from "medusa-react"
 
@@ -535,9 +579,12 @@ You can update a line item by sending a request to the [Update Line Item API Rou
 
     export default UpdateLineItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
       credentials: "include",
@@ -554,8 +601,10 @@ You can update a line item by sending a request to the [Update Line Item API Rou
       console.log(draft_order.cart.items)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -564,6 +613,7 @@ You can update a line item by sending a request to the [Update Line Item API Rou
         "quantity": 1
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -579,14 +629,17 @@ You can delete a line item by sending a request to the [Delete Line Item API Rou
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.removeLineItem(draftOrderId, itemId)
     .then(({ draft_order }) => {
       console.log(draft_order.cart.items)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDraftOrderRemoveLineItem } from "medusa-react"
 
@@ -605,9 +658,12 @@ You can delete a line item by sending a request to the [Delete Line Item API Rou
 
     export default DeleteLineItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/line-items/${itemId}`, {
       credentials: "include",
@@ -618,12 +674,15 @@ You can delete a line item by sending a request to the [Delete Line Item API Rou
       console.log(draft_order.cart.items)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<ITEM_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -641,14 +700,17 @@ You can register the draft order payment by sending a request to the [Register D
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.markPaid(draftOrderId)
     .then(({ order }) => {
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDraftOrderRegisterPayment } from "medusa-react"
 
@@ -667,8 +729,10 @@ You can register the draft order payment by sending a request to the [Register D
 
     export default RegisterPayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}/pay`, {
       credentials: "include",
@@ -679,12 +743,15 @@ You can register the draft order payment by sending a request to the [Register D
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/pay' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -700,14 +767,17 @@ You can delete a draft order by sending a request to the [Delete Draft Order API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.draftOrders.delete(draftOrderId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteDraftOrder } from "medusa-react"
 
@@ -726,8 +796,10 @@ You can delete a draft order by sending a request to the [Delete Draft Order API
 
     export default DeleteDraftOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/draft-orders/${draftOrderId}`, {
       credentials: "include",
@@ -738,12 +810,15 @@ You can delete a draft order by sending a request to the [Delete Draft Order API
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

@@ -56,6 +56,7 @@ You can create a sales channel by sending a request to the Create a Sales Channe
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.salesChannels.create({
       name: "App",
@@ -65,8 +66,10 @@ You can create a sales channel by sending a request to the Create a Sales Channe
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateSalesChannel } from "medusa-react"
 
@@ -86,8 +89,10 @@ You can create a sales channel by sending a request to the Create a Sales Channe
 
     export default CreateSalesChannel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/sales-channels`, {
       method: "POST",
@@ -105,8 +110,10 @@ You can create a sales channel by sending a request to the Create a Sales Channe
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/sales-channels' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -116,6 +123,7 @@ You can create a sales channel by sending a request to the Create a Sales Channe
         description: 'Mobile app'
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -131,14 +139,17 @@ You can list all sales channels by sending a request to the List Sales Channels 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.salesChannels.list()
     .then(({ sales_channels, limit, offset, count }) => {
       console.log(sales_channels.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { SalesChannel } from "@medusajs/medusa"
     import { useAdminSalesChannels } from "medusa-react"
@@ -165,8 +176,10 @@ You can list all sales channels by sending a request to the List Sales Channels 
 
     export default SalesChannels
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/sales-channels`, {
       credentials: "include",
@@ -176,12 +189,15 @@ You can list all sales channels by sending a request to the List Sales Channels 
       console.log(sales_channels.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/sales-channels' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -195,14 +211,17 @@ You can retrieve a sales channel’s details by its ID using the Get Sales Chann
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.salesChannels.retrieve(salesChannelId)
     .then(({ sales_channel }) => {
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminSalesChannel } from "medusa-react"
 
@@ -222,8 +241,10 @@ You can retrieve a sales channel’s details by its ID using the Get Sales Chann
 
     export default SalesChannel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}`, {
       credentials: "include",
@@ -233,12 +254,15 @@ You can retrieve a sales channel’s details by its ID using the Get Sales Chann
       console.log(sales_channels.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -252,6 +276,7 @@ You can update a Sales Channel’s details and attributes by sending a request t
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.salesChannels.update(salesChannelId, {
       is_disabled: false,
@@ -260,8 +285,10 @@ You can update a Sales Channel’s details and attributes by sending a request t
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateSalesChannel } from "medusa-react"
 
@@ -282,8 +309,10 @@ You can update a Sales Channel’s details and attributes by sending a request t
 
     export default UpdateSalesChannel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}`, {
       method: "POST",
@@ -300,8 +329,10 @@ You can update a Sales Channel’s details and attributes by sending a request t
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -310,6 +341,7 @@ You can update a Sales Channel’s details and attributes by sending a request t
         "is_disabled": false
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -327,14 +359,17 @@ You can delete a sales channel by sending a request to the Delete Sales Channel 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.salesChannels.delete(salesChannelId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteSalesChannel } from "medusa-react"
 
@@ -353,8 +388,10 @@ You can delete a sales channel by sending a request to the Delete Sales Channel 
 
     export default SalesChannel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/sales-channels/${salesChannelId}`, {
       method: "DELETE",
@@ -365,12 +402,15 @@ You can delete a sales channel by sending a request to the Delete Sales Channel 
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -386,6 +426,7 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.salesChannels.addProducts(salesChannelId, {
       product_ids: [
@@ -398,8 +439,10 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminAddProductsToSalesChannel } from "medusa-react"
 
@@ -424,9 +467,12 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
 
     export default SalesChannel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
@@ -450,8 +496,10 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -464,6 +512,7 @@ To add a product to a sales channel, send a request to the Sales Channel’s Add
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -477,6 +526,7 @@ You can list the products available in a sales channel by sending a request to t
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.list({
       sales_channel_id: [
@@ -487,8 +537,10 @@ You can list the products available in a sales channel by sending a request to t
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Product } from "@medusajs/medusa"
     import { 
@@ -522,9 +574,12 @@ You can list the products available in a sales channel by sending a request to t
 
     export default SalesChannelProducts
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/products?sales_channel_id[0]=${salesChannelId}`,
@@ -537,12 +592,15 @@ You can list the products available in a sales channel by sending a request to t
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -560,7 +618,9 @@ You can delete a product from a sales channel by sending a request to the Sales 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
 <!-- eslint-disable max-len -->
+
     ```ts
     medusa.admin.salesChannels.removeProducts(salesChannelId, {
       product_ids: [
@@ -573,8 +633,10 @@ You can delete a product from a sales channel by sending a request to the Sales 
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminDeleteProductsFromSalesChannel, 
@@ -601,9 +663,12 @@ You can delete a product from a sales channel by sending a request to the Sales 
 
     export default SalesChannel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/sales-channels/${salesChannelId}/products/batch`,
@@ -627,8 +692,10 @@ You can delete a product from a sales channel by sending a request to the Sales 
       console.log(sales_channel.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/sales-channels/<SALES_CHANNEL_ID>/products/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -641,6 +708,7 @@ You can delete a product from a sales channel by sending a request to the Sales 
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -656,6 +724,7 @@ You can filter orders by a specific sales channel by sending a request to the Li
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.list({
       sales_channel_id: [
@@ -668,8 +737,10 @@ You can filter orders by a specific sales channel by sending a request to the Li
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Order } from "@medusajs/medusa"
     import { useAdminOrders } from "medusa-react"
@@ -698,9 +769,12 @@ You can filter orders by a specific sales channel by sending a request to the Li
 
     export default SalesChannelOrders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders?sales_channel_id[0]=${salesChannelId}`, {
       credentials: "include",
@@ -710,12 +784,15 @@ You can filter orders by a specific sales channel by sending a request to the Li
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[0]=<SALES_CHANNEL_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

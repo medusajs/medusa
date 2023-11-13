@@ -5,7 +5,6 @@ import { DetailsSummary } from "docs-ui"
 
 export default function MDXDetails(props: Omit<Props, "key">): JSX.Element {
   const items = React.Children.toArray(props.children)
-  console.log(items)
   // Split summary item from the rest to pass it as a separate prop to the
   // Details theme component
   const summary = items.find(

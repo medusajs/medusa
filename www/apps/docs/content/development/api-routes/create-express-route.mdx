@@ -144,20 +144,24 @@ Then, create an object that will hold the CORS configurations. Based on whether 
 
 <Tabs groupId="endpoint-type" isCodeTabs={true}>
   <TabItem value="storefront" label="Storefront CORS" default>
+
     ```ts
     const storeCorsOptions = {
       origin: projectConfig.store_cors.split(","),
       credentials: true,
     }
     ```
+
   </TabItem>
   <TabItem value="admin" label="Admin CORS">
+
     ```ts
     const adminCorsOptions = {
       origin: projectConfig.admin_cors.split(","),
       credentials: true,
     }
     ```
+
   </TabItem>
 </Tabs>
 
@@ -165,6 +169,7 @@ Finally, you can either pass the `cors` middleware for a specific route, or pass
 
 <Tabs groupId="pass-type" isCodeTabs={true}>
   <TabItem value="single" label="Pass to Endpoint" default>
+
     ```ts
     adminRouter.options("/admin/hello", cors(adminCorsOptions))
     adminRouter.get(
@@ -175,11 +180,14 @@ Finally, you can either pass the `cors` middleware for a specific route, or pass
       }
     )
     ```
+
   </TabItem>
   <TabItem value="router" label="Pass to Router">
+
     ```ts
     adminRouter.use(cors(adminCorsOptions))
     ```
+
   </TabItem>
 </Tabs>
 
@@ -245,6 +253,7 @@ Then, pass the middleware to either a single route or an entire router:
 
 <Tabs groupId="pass-type" isCodeTabs={true}>
   <TabItem value="single" label="Pass to Endpoint" default>
+
     ```ts
     // only necessary if you're passing cors options per route
     router.options("/store/hello", cors(storeCorsOptions))
@@ -266,8 +275,10 @@ Then, pass the middleware to either a single route or an entire router:
       }
     )
     ```
+
   </TabItem>
   <TabItem value="router" label="Pass to Router">
+
     ```ts
     storeRouter.use(requireCustomerAuthentication())
     // all routes added to storeRouter are now protected
@@ -276,6 +287,7 @@ Then, pass the middleware to either a single route or an entire router:
 
     // storeRouter.use(authenticateCustomer())
     ```
+
   </TabItem>
 </Tabs>
 
@@ -293,6 +305,7 @@ Then, pass the middleware to either a single route or an entire router:
 
 <Tabs groupId="pass-type" isCodeTabs={true}>
   <TabItem value="single" label="Pass to Endpoint" default>
+
     ```ts
     // only necessary if you're passing cors options per route
     adminRouter.options("/admin/hello", cors(adminCorsOptions))
@@ -310,14 +323,17 @@ Then, pass the middleware to either a single route or an entire router:
       }
     )
     ```
+
   </TabItem>
   <TabItem value="router" label="Pass to Router">
+
     ```ts
     adminRouter.use(authenticate())
     // all routes added to adminRouter are now protected
     // the logged in user can be accessed using:
     // req.user.userId
     ```
+
   </TabItem>
 </Tabs>
 
@@ -613,6 +629,7 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
 
 <Tabs groupId="files" isCodeTabs={true}>
   <TabItem value="index" label="src/api/index.ts" default>
+
     ```ts
     import express, { Router } from "express"
     import adminRoutes from "./admin"
@@ -633,8 +650,10 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
       return router
     }
     ```
+
   </TabItem>
   <TabItem value="admin" label="src/api/admin.ts">
+
     ```ts
     import { Router } from "express"
     import PostService from "../services/post"
@@ -836,8 +855,10 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
       }))
     }
     ```
+
   </TabItem>
   <TabItem value="store" label="src/api/store.ts">
+
     ```ts
     import { Router } from "express"
     import { 
@@ -917,6 +938,7 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
       }))
     }
     ```
+
   </TabItem>
 </Tabs>
 

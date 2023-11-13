@@ -74,6 +74,7 @@ You can retrieve a single order edit by its ID by sending a request to the [Get 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.orderEdits.retrieve(orderEditId)
     .then(({ order_edit }) => {
@@ -81,8 +82,10 @@ You can retrieve a single order edit by its ID by sending a request to the [Get 
       // show changed items to the customer
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useOrderEdit } from "medusa-react"
 
@@ -94,8 +97,10 @@ You can retrieve a single order edit by its ID by sending a request to the [Get 
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/order-edits/${orderEditId}`)
     .then((response) => response.json())
@@ -104,6 +109,7 @@ You can retrieve a single order edit by its ID by sending a request to the [Get 
       // show changed items to the customer
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -196,7 +202,9 @@ If `difference_due` is greater than 0, then additional payment from the customer
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
 <!-- eslint-disable max-len -->
+
     ```ts
     medusa.paymentCollections.managePaymentSession(paymentCollectionId, {
       provider_id,
@@ -205,8 +213,10 @@ If `difference_due` is greater than 0, then additional payment from the customer
       console.log(payment_collection.payment_sessions)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useManagePaymentSession } from "medusa-react"
 
@@ -227,9 +237,12 @@ If `difference_due` is greater than 0, then additional payment from the customer
 
     export default OrderEditPayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/store/payment-collections/${paymentCollectionId}/sessions`,
@@ -249,6 +262,7 @@ If `difference_due` is greater than 0, then additional payment from the customer
       console.log(payment_collection.payment_sessions)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -257,6 +271,7 @@ If `difference_due` is greater than 0, then additional payment from the customer
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa
       .paymentCollection
@@ -268,8 +283,10 @@ If `difference_due` is greater than 0, then additional payment from the customer
       console.log(payment_session.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAuthorizePaymentSession } from "medusa-react"
 
@@ -288,9 +305,12 @@ If `difference_due` is greater than 0, then additional payment from the customer
 
     export default OrderEditPayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/store/payment-collection/${paymentCollectionId}` + 
@@ -305,6 +325,7 @@ If `difference_due` is greater than 0, then additional payment from the customer
       console.log(payment_session.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -318,14 +339,17 @@ To confirm and complete the order edit, send a request to the [Complete Order Ed
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.orderEdits.complete(orderEditId)
     .then(({ order_edit }) => {
       console.log(order_edit.confirmed_at)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCompleteOrderEdit } from "medusa-react"
 
@@ -342,9 +366,12 @@ To confirm and complete the order edit, send a request to the [Complete Order Ed
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/store/order-edits/${orderEditId}/complete`, {
       method: "POST",
@@ -355,6 +382,7 @@ To confirm and complete the order edit, send a request to the [Complete Order Ed
       console.log(order_edit.confirmed_at)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -378,6 +406,7 @@ If the customer wants to decline the Order Edit, you can do that by sending a re
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.orderEdits.decline(orderEditId, {
       decline_reason: "I am not satisfied",
@@ -386,8 +415,10 @@ If the customer wants to decline the Order Edit, you can do that by sending a re
       console.log(order_edit.declined_at)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useDeclineOrderEdit } from "medusa-react"
 
@@ -406,8 +437,10 @@ If the customer wants to decline the Order Edit, you can do that by sending a re
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(
       `<BACKEND_URL>/store/order-edits/${orderEditId}/decline`, 
@@ -427,6 +460,7 @@ If the customer wants to decline the Order Edit, you can do that by sending a re
       console.log(order_edit.declined_at)
     })
     ```
+
   </TabItem>
 </Tabs>
 

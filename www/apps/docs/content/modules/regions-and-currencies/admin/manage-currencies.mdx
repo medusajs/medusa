@@ -64,14 +64,17 @@ You can list all available currencies in your system by sending a request to the
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.currencies.list()
     .then(({ currencies, count, offset, limit }) => {
       console.log(currencies.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Currency } from "@medusajs/medusa"
     import { useAdminCurrencies } from "medusa-react"
@@ -98,8 +101,10 @@ You can list all available currencies in your system by sending a request to the
 
     export default Currencies
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/currencies`, {
       credentials: "include",
@@ -109,12 +114,15 @@ You can list all available currencies in your system by sending a request to the
       console.log(currencies.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/currencies' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -130,6 +138,7 @@ You can update a currency by sending a request to the [Update Currency API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.currencies.update(code, {
       includes_tax: true,
@@ -138,8 +147,10 @@ You can update a currency by sending a request to the [Update Currency API Route
       console.log(currency.code)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateCurrency } from "medusa-react"
 
@@ -158,8 +169,10 @@ You can update a currency by sending a request to the [Update Currency API Route
 
     export default UpdateCode
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/currencies/${code}`, {
         credentials: "include",
@@ -176,8 +189,10 @@ You can update a currency by sending a request to the [Update Currency API Route
         console.log(currency.code)
       })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/currencies/<CODE>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -186,6 +201,7 @@ You can update a currency by sending a request to the [Update Currency API Route
         "includes_tax": true
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -213,14 +229,17 @@ You can list currencies in a store by sending a request to the [Get Store Detail
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.store.retrieve()
     .then(({ store }) => {
       console.log(store.currencies, store.default_currency)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Currency } from "@medusajs/medusa"
     import { useAdminStore } from "medusa-react"
@@ -252,8 +271,10 @@ You can list currencies in a store by sending a request to the [Get Store Detail
 
     export default StoreCurrencies
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/store`, {
       credentials: "include",
@@ -263,12 +284,15 @@ You can list currencies in a store by sending a request to the [Get Store Detail
       console.log(store.currencies, store.default_currency)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/store' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -283,14 +307,17 @@ You can add a currency to a store using the [Add a Currency Code API Route](http
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.store.addCurrency(code)
     .then(({ store }) => {
       console.log(store.currencies)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminAddStoreCurrency } from "medusa-react"
 
@@ -307,8 +334,10 @@ You can add a currency to a store using the [Add a Currency Code API Route](http
 
     export default AddCurrency
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/store/currencies/${code}`, {
       credentials: "include",
@@ -319,12 +348,15 @@ You can add a currency to a store using the [Add a Currency Code API Route](http
       console.log(store.currencies)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/store/currencies/<CODE>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -338,14 +370,17 @@ You can remove a currency from a store by sending a request to the [Delete Curre
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.store.deleteCurrency(code)
     .then(({ store }) => {
       console.log(store.currencies)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteStoreCurrency } from "medusa-react"
 
@@ -362,8 +397,10 @@ You can remove a currency from a store by sending a request to the [Delete Curre
 
     export default DeleteCurrency
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/store/currencies/${code}`, {
       credentials: "include",
@@ -374,12 +411,15 @@ You can remove a currency from a store by sending a request to the [Delete Curre
       console.log(store.currencies)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/store/currencies/<CODE>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

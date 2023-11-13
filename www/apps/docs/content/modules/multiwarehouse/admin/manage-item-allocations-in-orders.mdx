@@ -80,6 +80,7 @@ You can create an item allocation by sending a request to the [Create a Reservat
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.create({
       line_item_id,
@@ -91,8 +92,10 @@ You can create an item allocation by sending a request to the [Create a Reservat
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateReservation } from "medusa-react"
 
@@ -114,8 +117,10 @@ You can create an item allocation by sending a request to the [Create a Reservat
 
     export default CreateReservation
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations`, {
       credentials: "include",
@@ -135,8 +140,10 @@ You can create an item allocation by sending a request to the [Create a Reservat
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -148,6 +155,7 @@ You can create an item allocation by sending a request to the [Create a Reservat
             "quantity": 1
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -168,6 +176,7 @@ You can retrieve the item allocations of a line item in an order using the [List
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.list({
       line_item_id,
@@ -176,8 +185,10 @@ You can retrieve the item allocations of a line item in an order using the [List
       console.log(reservations.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminReservations } from "medusa-react"
 
@@ -205,9 +216,12 @@ You can retrieve the item allocations of a line item in an order using the [List
 
     export default Reservations
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations?line_item_id=${lineItemId}`, {
       credentials: "include",
@@ -217,12 +231,15 @@ You can retrieve the item allocations of a line item in an order using the [List
       console.log(reservations.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/reservations?line_item_id=<LINE_ITEM_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -236,14 +253,17 @@ You can retrieve a single item allocation by its ID using the [Get a Reservation
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.retrieve(reservationId)
     .then(({ reservation }) => {
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminReservation } from "medusa-react"
 
@@ -264,8 +284,10 @@ You can retrieve a single item allocation by its ID using the [Get a Reservation
 
     export default Reservation
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations/${reservationId}`, {
       credentials: "include",
@@ -275,12 +297,15 @@ You can retrieve a single item allocation by its ID using the [Get a Reservation
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -294,6 +319,7 @@ You can update an item allocation to change the location to allocate from or the
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.update(reservationId, {
       quantity,
@@ -302,8 +328,10 @@ You can update an item allocation to change the location to allocate from or the
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateReservation } from "medusa-react"
 
@@ -324,8 +352,10 @@ You can update an item allocation to change the location to allocate from or the
 
     export default UpdateReservation
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations/${reservationId}`, {
       credentials: "include",
@@ -342,8 +372,10 @@ You can update an item allocation to change the location to allocate from or the
       console.log(reservation.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -352,6 +384,7 @@ You can update an item allocation to change the location to allocate from or the
             "quantity": 3
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -373,14 +406,17 @@ You can delete an item allocation by sending a request to the [Delete Reservatio
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.reservations.delete(reservationId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteReservation } from "medusa-react"
 
@@ -399,8 +435,10 @@ You can delete an item allocation by sending a request to the [Delete Reservatio
 
     export default DeleteReservation
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/reservations/${reservationId}`, {
       credentials: "include",
@@ -411,12 +449,15 @@ You can delete an item allocation by sending a request to the [Delete Reservatio
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/reservations/<RESERVATION_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -436,6 +477,7 @@ When you create a fulfillment of an order, you can specify the location to fulfi
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.createFulfillment(orderId, {
       items: [
@@ -451,8 +493,10 @@ When you create a fulfillment of an order, you can specify the location to fulfi
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateFulfillment } from "medusa-react"
 
@@ -478,8 +522,10 @@ When you create a fulfillment of an order, you can specify the location to fulfi
 
     export default CreateFulfillment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillment`, {
       credentials: "include",
@@ -503,8 +549,10 @@ When you create a fulfillment of an order, you can specify the location to fulfi
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillment' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -519,6 +567,7 @@ When you create a fulfillment of an order, you can specify the location to fulfi
             "location_id": "<LOC_ID>"
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -534,6 +583,7 @@ When requesting a return, you can specify the location to return the item to by 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.requestReturn(orderId, {
       items: [
@@ -549,8 +599,10 @@ When requesting a return, you can specify the location to return the item to by 
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminRequestReturn } from "medusa-react"
 
@@ -576,8 +628,10 @@ When requesting a return, you can specify the location to return the item to by 
 
     export default RequestReturn
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/return`, {
       credentials: "include",
@@ -601,8 +655,10 @@ When requesting a return, you can specify the location to return the item to by 
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/return' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -617,6 +673,7 @@ When requesting a return, you can specify the location to return the item to by 
             "location_id": "<LOC_ID>"
         }'
     ```
+
   </TabItem>
 </Tabs>
 

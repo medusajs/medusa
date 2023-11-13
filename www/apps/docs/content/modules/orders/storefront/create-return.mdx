@@ -61,6 +61,7 @@ You can optionally allow customers to choose a return shipping option that theyâ
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.shippingOptions.list({
       is_return: "true",
@@ -69,8 +70,10 @@ You can optionally allow customers to choose a return shipping option that theyâ
       console.log(shipping_options.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useShippingOptions } from "medusa-react"
 
@@ -101,8 +104,10 @@ You can optionally allow customers to choose a return shipping option that theyâ
 
     export default ReturnShippingOptions
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/shipping-options?is_return=true`, {
       credentials: "include",
@@ -112,6 +117,7 @@ You can optionally allow customers to choose a return shipping option that theyâ
       console.log(shipping_options.length)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -127,6 +133,7 @@ You can create the return by sending a request to the [Create Return API Route](
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.returns.create({
       order_id,
@@ -144,8 +151,10 @@ You can create the return by sending a request to the [Create Return API Route](
       console.log(data.return.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCreateReturn } from "medusa-react"
 
@@ -173,8 +182,10 @@ You can create the return by sending a request to the [Create Return API Route](
 
     export default CreateReturn
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/returns`, {
       credentials: "include",
@@ -200,6 +211,7 @@ You can create the return by sending a request to the [Create Return API Route](
       console.log(data.return.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 

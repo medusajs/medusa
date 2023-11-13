@@ -60,14 +60,17 @@ You can list available products using the [List Products API Route](https://docs
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.list()
     .then(({ products, limit, offset, count }) => {
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProducts } from "medusa-react"
 
@@ -91,6 +94,7 @@ You can list available products using the [List Products API Route](https://docs
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -100,6 +104,7 @@ You can list available products using the [List Products API Route](https://docs
   )} attributes={{
     badge: true
   }}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -114,8 +119,10 @@ You can list available products using the [List Products API Route](https://docs
       console.log(products.length)
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/products`, {
       credentials: "include",
@@ -125,11 +132,14 @@ You can list available products using the [List Products API Route](https://docs
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/products'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -145,6 +155,7 @@ For example, you can filter products by a category ID:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.list({
       category_id: ["cat_123"],
@@ -153,8 +164,10 @@ For example, you can filter products by a category ID:
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProducts } from "medusa-react"
     import { Product } from "@medusajs/medusa"
@@ -181,6 +194,7 @@ For example, you can filter products by a category ID:
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -190,6 +204,7 @@ For example, you can filter products by a category ID:
   )} attributes={{
     badge: true
   }}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -206,8 +221,10 @@ For example, you can filter products by a category ID:
       console.log(products)
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/products?category_id[]=cat_123`, {
       credentials: "include",
@@ -217,11 +234,14 @@ For example, you can filter products by a category ID:
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/products?category_id[]=cat_123'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -233,6 +253,7 @@ To expand the categories of each product, you can pass `categories` to the `expa
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.list({
       expand: "categories",
@@ -241,8 +262,10 @@ To expand the categories of each product, you can pass `categories` to the `expa
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProducts } from "medusa-react"
     import { Product } from "@medusajs/medusa"
@@ -269,6 +292,7 @@ To expand the categories of each product, you can pass `categories` to the `expa
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -278,6 +302,7 @@ To expand the categories of each product, you can pass `categories` to the `expa
   )} attributes={{
     badge: true
   }}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -294,8 +319,10 @@ To expand the categories of each product, you can pass `categories` to the `expa
       console.log(products)
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/products?expand=categories`, {
       credentials: "include",
@@ -305,11 +332,14 @@ To expand the categories of each product, you can pass `categories` to the `expa
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/products?expand=categories'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -329,6 +359,7 @@ For example:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.list({
       cart_id,
@@ -338,8 +369,10 @@ For example:
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProducts } from "medusa-react"
     import { Product } from "@medusajs/medusa"
@@ -367,9 +400,12 @@ For example:
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/store/products?cart_id=${cartId}&region_id=${regionId}`, {
       credentials: "include",
@@ -379,11 +415,14 @@ For example:
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/products?cart_id=<CART_ID>&region_id=<REGION_ID>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -439,6 +478,7 @@ Here’s an example of how you can calculate the price with and without Medusa R
 
 <Tabs groupId="client-preference" isCodeTabs={true}>
   <TabItem value="client" label="Without Medusa Client" default>
+
     ```tsx
     import React, { useEffect, useState } from "react"
     import Medusa from "@medusajs/medusa-js"
@@ -491,8 +531,10 @@ Here’s an example of how you can calculate the price with and without Medusa R
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="With Medusa React">
+
     ```tsx
     import { formatVariantPrice, useProducts } from "medusa-react"
     import { Product, ProductVariant } from "@medusajs/medusa"
@@ -532,6 +574,7 @@ Here’s an example of how you can calculate the price with and without Medusa R
 
     export default Products
     ```
+
   </TabItem>
 </Tabs>
 
@@ -549,6 +592,7 @@ You can search products using the [Search Products API Route](https://docs.medus
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.search({
       q: "Shirt",
@@ -557,8 +601,10 @@ You can search products using the [Search Products API Route](https://docs.medus
       console.log(hits.length)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/products/search`, {
       credentials: "include",
@@ -575,8 +621,10 @@ You can search products using the [Search Products API Route](https://docs.medus
       console.log(hits.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/store/products/search?q=Shirt' \
     -H 'Content-Type: application/json' \
@@ -584,6 +632,7 @@ You can search products using the [Search Products API Route](https://docs.medus
       "q": "Shirt"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -599,14 +648,17 @@ You can retrieve the details of a single product by its ID using the [Get a Prod
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.retrieve(productId)
     .then(({ product }) => {
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProduct } from "medusa-react"
 
@@ -623,6 +675,7 @@ You can retrieve the details of a single product by its ID using the [Get a Prod
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -632,6 +685,7 @@ You can retrieve the details of a single product by its ID using the [Get a Prod
   )} attributes={{
     badge: true
   }}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -648,8 +702,10 @@ You can retrieve the details of a single product by its ID using the [Get a Prod
       console.log(products[0])
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/products/${productId}`, {
       credentials: "include",
@@ -659,11 +715,14 @@ You can retrieve the details of a single product by its ID using the [Get a Prod
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/products/<PRODUCT_ID>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -683,6 +742,7 @@ You can retrieve the details of a product by its handle by sending a request to 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.list({
       handle,
@@ -694,8 +754,10 @@ You can retrieve the details of a product by its handle by sending a request to 
       const product = products[0]
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProducts } from "medusa-react"
 
@@ -717,6 +779,7 @@ You can retrieve the details of a product by its handle by sending a request to 
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -726,6 +789,7 @@ You can retrieve the details of a product by its handle by sending a request to 
   )} attributes={{
     badge: true
   }}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -742,8 +806,10 @@ You can retrieve the details of a product by its handle by sending a request to 
       console.log(products[0])
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/products?handle=${handle}`, {
       credentials: "include",
@@ -756,11 +822,14 @@ You can retrieve the details of a product by its handle by sending a request to 
       const product = products[0]
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/products?handle=<HANDLE>'
     ```
+
   </TabItem>
 </Tabs>
 

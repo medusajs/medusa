@@ -56,14 +56,17 @@ You can list products as an admin using the [List Products API Route](https://do
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.list()
     .then(({ products, limit, offset, count }) => {
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminProducts } from "medusa-react"
 
@@ -87,8 +90,10 @@ You can list products as an admin using the [List Products API Route](https://do
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products`, {
       credentials: "include",
@@ -98,12 +103,15 @@ You can list products as an admin using the [List Products API Route](https://do
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -121,6 +129,7 @@ You can create a product by sending a request to the [Create a Product API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.create({
       title: "Shirt",
@@ -172,8 +181,10 @@ You can create a product by sending a request to the [Create a Product API Route
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateProduct } from "medusa-react"
 
@@ -235,8 +246,10 @@ You can create a product by sending a request to the [Create a Product API Route
 
     export default CreateProduct
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products`, {
       credentials: "include",
@@ -294,8 +307,10 @@ You can create a product by sending a request to the [Create a Product API Route
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -346,6 +361,7 @@ You can create a product by sending a request to the [Create a Product API Route
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -387,14 +403,17 @@ You can retrieve a single product as an admin by sending a request to the [Get a
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.retrieve(productId)
     .then(({ product }) => {
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminProduct } from "medusa-react"
 
@@ -415,8 +434,10 @@ You can retrieve a single product as an admin by sending a request to the [Get a
 
     export default Product
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}`, {
       credentials: "include",
@@ -426,12 +447,15 @@ You can retrieve a single product as an admin by sending a request to the [Get a
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -447,6 +471,7 @@ You can update a product by sending a request to the [Update Product API Route](
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.update(productId, {
       title: "Shirt",
@@ -455,8 +480,10 @@ You can update a product by sending a request to the [Update Product API Route](
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateProduct } from "medusa-react"
 
@@ -477,8 +504,10 @@ You can update a product by sending a request to the [Update Product API Route](
 
     export default UpdateProduct
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}`, {
       credentials: "include",
@@ -495,8 +524,10 @@ You can update a product by sending a request to the [Update Product API Route](
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -505,6 +536,7 @@ You can update a product by sending a request to the [Update Product API Route](
         "title": "Shirt"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -530,6 +562,7 @@ You can add a product option to a product by sending a request to the [Add Produ
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.addOption(productId, {
       title: "Size",
@@ -538,8 +571,10 @@ You can add a product option to a product by sending a request to the [Add Produ
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateProductOption } from "medusa-react"
 
@@ -560,8 +595,10 @@ You can add a product option to a product by sending a request to the [Add Produ
 
     export default CreateProductOption
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}/options`, {
       credentials: "include",
@@ -578,8 +615,10 @@ You can add a product option to a product by sending a request to the [Add Produ
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -588,6 +627,7 @@ You can add a product option to a product by sending a request to the [Add Produ
         "title": "Size"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -601,6 +641,7 @@ You can update a product option by sending a request to the [Update Product Opti
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.updateOption(productId, optionId, {
       title: "Size",
@@ -609,8 +650,10 @@ You can update a product option by sending a request to the [Update Product Opti
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateProductOption } from "medusa-react"
 
@@ -632,9 +675,12 @@ You can update a product option by sending a request to the [Update Product Opti
 
     export default UpdateProductOption
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}/options/${optionId}`, {
       credentials: "include",
@@ -651,8 +697,10 @@ You can update a product option by sending a request to the [Update Product Opti
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options/<OPT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -661,6 +709,7 @@ You can update a product option by sending a request to the [Update Product Opti
         "title": "Size"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -676,14 +725,17 @@ You can delete a product option by sending a request to the [Delete Product Opti
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.deleteOption(productId, optionId)
     .then(({ option_id, object, deleted, product }) => {
       console.log(product.options)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteProductOption } from "medusa-react"
 
@@ -702,9 +754,12 @@ You can delete a product option by sending a request to the [Delete Product Opti
 
     export default DeleteProductOption
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}/options/${optionId}`, {
       credentials: "include",
@@ -715,12 +770,15 @@ You can delete a product option by sending a request to the [Delete Product Opti
       console.log(product.options)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>/options/<OPT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -749,6 +807,7 @@ You can create a product variant by sending a request to the [Create Product Var
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.createVariant(product_id, {
       title: "White Shirt",
@@ -769,8 +828,10 @@ You can create a product variant by sending a request to the [Create Product Var
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateVariant } from "medusa-react"
 
@@ -803,8 +864,10 @@ You can create a product variant by sending a request to the [Create Product Var
 
     export default CreateProductVariant
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}/variants`, {
       credentials: "include",
@@ -833,8 +896,10 @@ You can create a product variant by sending a request to the [Create Product Var
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -855,6 +920,7 @@ You can create a product variant by sending a request to the [Create Product Var
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -876,6 +942,7 @@ You can update a product variant by sending a request to the [Update a Product V
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.updateVariant(productId, variantId, {
       title: "White Shirt",
@@ -884,8 +951,10 @@ You can update a product variant by sending a request to the [Update a Product V
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateVariant } from "medusa-react"
 
@@ -907,9 +976,12 @@ You can update a product variant by sending a request to the [Update a Product V
 
     export default UpdateProductVariant
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}/variants/${variantId}`, {
       credentials: "include",
@@ -926,8 +998,10 @@ You can update a product variant by sending a request to the [Update a Product V
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants/<VARIANT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -936,6 +1010,7 @@ You can update a product variant by sending a request to the [Update a Product V
       "title": "White Shirt"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -951,14 +1026,17 @@ You can delete a product variant by sending a request to the [Delete a Product V
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.deleteVariant(productId, variantId)
     .then(({ variant_id, object, deleted, product }) => {
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteVariant } from "medusa-react"
 
@@ -977,9 +1055,12 @@ You can delete a product variant by sending a request to the [Delete a Product V
 
     export default DeleteProductVariant
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}/variants/${variantId}`, {
       credentials: "include",
@@ -990,12 +1071,15 @@ You can delete a product variant by sending a request to the [Delete a Product V
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>/variants/<VARIANT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -1016,14 +1100,17 @@ You can delete a product by sending a request to the [Delete a Product API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.delete(productId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteProduct } from "medusa-react"
 
@@ -1042,8 +1129,10 @@ You can delete a product by sending a request to the [Delete a Product API Route
 
     export default DeleteProduct
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${productId}`, {
       credentials: "include",
@@ -1054,12 +1143,15 @@ You can delete a product by sending a request to the [Delete a Product API Route
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<PRODUCT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

@@ -62,6 +62,7 @@ You can retrieve the gift card product using the [List Products API Route](https
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.list({
       is_giftcard: true,
@@ -75,8 +76,10 @@ You can retrieve the gift card product using the [List Products API Route](https
       }
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Product } from "@medusajs/medusa"
     import { useProducts } from "medusa-react"
@@ -105,8 +108,10 @@ You can retrieve the gift card product using the [List Products API Route](https
 
     export default GiftCards
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/products?is_giftcard=true`, {
       credentials: "include",
@@ -120,6 +125,7 @@ You can retrieve the gift card product using the [List Products API Route](https
       }
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -145,6 +151,7 @@ You can retrieve the details of a gift card by sending a request to the [Get Gif
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.giftCards.retrieve(code)
     .then(({ gift_card }) => {
@@ -154,8 +161,10 @@ You can retrieve the details of a gift card by sending a request to the [Get Gif
       // gift card doesn't exist or is disabled
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useGiftCard } from "medusa-react"
 
@@ -173,8 +182,10 @@ You can retrieve the details of a gift card by sending a request to the [Get Gif
 
     export default GiftCard
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/gift-cards/${code}`, {
       credentials: "include",
@@ -187,6 +198,7 @@ You can retrieve the details of a gift card by sending a request to the [Get Gif
       // gift card doesn't exist or is disabled
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -214,6 +226,7 @@ You can redeem a gift card during checkout by sending a request to the [Update C
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.carts.update(cartId, {
       gift_cards: [
@@ -229,8 +242,10 @@ You can redeem a gift card during checkout by sending a request to the [Update C
       // gift card doesn't exist or is disabled
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCart } from "medusa-react"
 
@@ -254,8 +269,10 @@ You can redeem a gift card during checkout by sending a request to the [Update C
 
     export default Cart
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/cart/${cartId}`, {
       method: "POST",
@@ -279,6 +296,7 @@ You can redeem a gift card during checkout by sending a request to the [Update C
       // gift card doesn't exist or is disabled
     })
     ```
+
   </TabItem>
 </Tabs>
 

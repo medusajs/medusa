@@ -56,14 +56,17 @@ You can show a list of customers by sending a request to the [List Customers API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customers.list()
     .then(({ customers, limit, offset, count }) => {
       console.log(customers.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Customer } from "@medusajs/medusa"
     import { useAdminCustomers } from "medusa-react"
@@ -90,8 +93,10 @@ You can show a list of customers by sending a request to the [List Customers API
 
     export default Customers
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/customers`, {
       credentials: "include",
@@ -101,12 +106,15 @@ You can show a list of customers by sending a request to the [List Customers API
       console.log(customers.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customers' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -135,6 +143,7 @@ You can create a customer account by sending a request to the [Create a Customer
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customers.create({
       email,
@@ -146,8 +155,10 @@ You can create a customer account by sending a request to the [Create a Customer
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateCustomer } from "medusa-react"
 
@@ -176,8 +187,10 @@ You can create a customer account by sending a request to the [Create a Customer
 
     export default CreateCustomer
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/customers`, {
       method: "POST",
@@ -197,8 +210,10 @@ You can create a customer account by sending a request to the [Create a Customer
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customers' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -210,6 +225,7 @@ You can create a customer account by sending a request to the [Create a Customer
         "password": "<PASSWORD>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -234,6 +250,7 @@ You can edit a customer’s information by sending a request to the [Update a Cu
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customers.update(customerId, {
       first_name,
@@ -242,8 +259,10 @@ You can edit a customer’s information by sending a request to the [Update a Cu
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateCustomer } from "medusa-react"
 
@@ -272,8 +291,10 @@ You can edit a customer’s information by sending a request to the [Update a Cu
 
     export default UpdateCustomer
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/customers/${customerId}`, {
       method: "POST",
@@ -290,8 +311,10 @@ You can edit a customer’s information by sending a request to the [Update a Cu
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customers/<CUSTOMER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -300,6 +323,7 @@ You can edit a customer’s information by sending a request to the [Update a Cu
         "first_name": "<FIRST_NAME>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 

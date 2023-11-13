@@ -61,14 +61,17 @@ You can list inventory items by sending a request to the [List Inventory Items A
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.list()
     .then(({ inventory_items }) => {
       console.log(inventory_items.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminInventoryItems } from "medusa-react"
 
@@ -98,8 +101,10 @@ You can list inventory items by sending a request to the [List Inventory Items A
 
     export default InventoryItems
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items`, {
       credentials: "include",
@@ -109,12 +114,15 @@ You can list inventory items by sending a request to the [List Inventory Items A
       console.log(inventory_items.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/inventory-items' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -136,6 +144,7 @@ You can create an inventory item by sending a request to the [Create Inventory I
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.create({
       variant_id,
@@ -144,8 +153,10 @@ You can create an inventory item by sending a request to the [Create Inventory I
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateInventoryItem } from "medusa-react"
 
@@ -164,8 +175,10 @@ You can create an inventory item by sending a request to the [Create Inventory I
 
     export default CreateInventoryItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items`, {
       credentials: "include",
@@ -182,8 +195,10 @@ You can create an inventory item by sending a request to the [Create Inventory I
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -192,6 +207,7 @@ You can create an inventory item by sending a request to the [Create Inventory I
               "variant_id": "variant_123"
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -207,14 +223,17 @@ You can retrieve an inventory item by sending a request to the [Get Inventory It
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.retrieve(inventoryItemId)
     .then(({ inventory_item }) => {
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminInventoryItem } from "medusa-react"
 
@@ -235,8 +254,10 @@ You can retrieve an inventory item by sending a request to the [Get Inventory It
 
     export default InventoryItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items/${inventoryItemId}`, 
       {
@@ -248,12 +269,15 @@ You can retrieve an inventory item by sending a request to the [Get Inventory It
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -269,6 +293,7 @@ You can update an inventory item by sending a request to the [Update Inventory I
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.update(inventoryItemId, {
       origin_country: "US",
@@ -277,8 +302,10 @@ You can update an inventory item by sending a request to the [Update Inventory I
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateInventoryItem } from "medusa-react"
 
@@ -299,8 +326,10 @@ You can update an inventory item by sending a request to the [Update Inventory I
 
     export default UpdateInventoryItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items/${inventoryItemId}`,
       {
@@ -319,8 +348,10 @@ You can update an inventory item by sending a request to the [Update Inventory I
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -329,6 +360,7 @@ You can update an inventory item by sending a request to the [Update Inventory I
               "origin_country": "US"
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -348,14 +380,17 @@ You can list inventory levels of an inventory item by sending a request to the [
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.listLocationLevels(inventoryItemId)
     .then(({ inventory_item }) => {
       console.log(inventory_item.location_levels)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminInventoryItemLocationLevels,
@@ -383,9 +418,12 @@ You can list inventory levels of an inventory item by sending a request to the [
 
     export default InventoryItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items/${inventoryItemId}/location-levels`, {
       credentials: "include",
@@ -395,12 +433,15 @@ You can list inventory levels of an inventory item by sending a request to the [
       console.log(inventory_item.location_levels)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -414,6 +455,7 @@ You can create a location level by sending a request to the [Create Inventory Le
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.createLocationLevel(
       inventoryItemId, 
@@ -426,8 +468,10 @@ You can create a location level by sending a request to the [Create Inventory Le
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateLocationLevel } from "medusa-react"
 
@@ -449,9 +493,12 @@ You can create a location level by sending a request to the [Create Inventory Le
 
     export default CreateLocationLevel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items/${inventoryItemId}/location-levels`, {
       credentials: "include",
@@ -469,8 +516,10 @@ You can create a location level by sending a request to the [Create Inventory Le
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -480,6 +529,7 @@ You can create a location level by sending a request to the [Create Inventory Le
               "stocked_quantity": 10
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -498,6 +548,7 @@ You can update a location level by sending a request to the [Update Location Lev
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.updateLocationLevel(
       inventoryItemId, 
@@ -510,8 +561,10 @@ You can update a location level by sending a request to the [Update Location Lev
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateLocationLevel } from "medusa-react"
 
@@ -533,9 +586,12 @@ You can update a location level by sending a request to the [Update Location Lev
 
     export default UpdateLocationLevel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`, {
       credentials: "include",
@@ -552,8 +608,10 @@ You can update a location level by sending a request to the [Update Location Lev
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels/<LOCATION_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>' \
@@ -562,6 +620,7 @@ You can update a location level by sending a request to the [Update Location Lev
               "stocked_quantity": 10
         }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -577,6 +636,7 @@ You can delete a location level of an inventory item by sending a request to the
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.deleteLocationLevel(
       inventoryItemId, 
@@ -586,8 +646,10 @@ You can delete a location level of an inventory item by sending a request to the
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteLocationLevel } from "medusa-react"
 
@@ -606,9 +668,12 @@ You can delete a location level of an inventory item by sending a request to the
 
     export default DeleteLocationLevel
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items/${inventoryItemId}/location-levels/${locationId}`, {
       credentials: "include",
@@ -619,12 +684,15 @@ You can delete a location level of an inventory item by sending a request to the
       console.log(inventory_item.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>/location-levels/<LOC_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -640,14 +708,17 @@ You can delete an inventory item by sending a request to the [Delete Inventory I
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.inventoryItems.delete(inventoryItemId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteInventoryItem } from "medusa-react"
 
@@ -666,8 +737,10 @@ You can delete an inventory item by sending a request to the [Delete Inventory I
 
     export default DeleteInventoryItem
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/inventory-items/${inventoryItemId}`,
       {
@@ -680,12 +753,15 @@ You can delete an inventory item by sending a request to the [Delete Inventory I
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/inventory-items/<ITEM_ID>' \
         -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

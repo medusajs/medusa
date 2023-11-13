@@ -57,14 +57,17 @@ You can retrieve users in a store by sending a request to the [List Users API Ro
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.users.list()
     .then(({ users }) => {
       console.log(users.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUsers } from "medusa-react"
 
@@ -88,8 +91,10 @@ You can retrieve users in a store by sending a request to the [List Users API Ro
 
     export default Users
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/users`, {
       credentials: "include",
@@ -99,12 +104,15 @@ You can retrieve users in a store by sending a request to the [List Users API Ro
       console.log(users.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/users' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -120,6 +128,7 @@ You can create a user by sending a request to the [Create User API Route](https:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.users.create({
       email: "user@example.com",
@@ -129,8 +138,10 @@ You can create a user by sending a request to the [Create User API Route](https:
       console.log(user.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateUser } from "medusa-react"
 
@@ -150,8 +161,10 @@ You can create a user by sending a request to the [Create User API Route](https:
 
     export default CreateUser
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/users`, {
       credentials: "include",
@@ -169,8 +182,10 @@ You can create a user by sending a request to the [Create User API Route](https:
       console.log(user.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/users' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -180,6 +195,7 @@ You can create a user by sending a request to the [Create User API Route](https:
         "password": "supersecret"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -200,6 +216,7 @@ You can update a user’s details by sending a request to the [Update User API R
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.users.update(userId, {
       first_name: "Marcellus",
@@ -208,8 +225,10 @@ You can update a user’s details by sending a request to the [Update User API R
       console.log(user.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateUser } from "medusa-react"
 
@@ -228,8 +247,10 @@ You can update a user’s details by sending a request to the [Update User API R
 
     export default UpdateUser
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/users/${userId}`, {
       credentials: "include",
@@ -246,8 +267,10 @@ You can update a user’s details by sending a request to the [Update User API R
       console.log(user.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -256,6 +279,7 @@ You can update a user’s details by sending a request to the [Update User API R
         "first_name": "Marcellus"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -273,14 +297,17 @@ You can delete a user by sending a request to the [Delete User API Route](https:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.users.delete(userId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteUser } from "medusa-react"
 
@@ -297,8 +324,10 @@ You can delete a user by sending a request to the [Delete User API Route](https:
 
     export default DeleteUser
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/users/${userId}`, {
       credentials: "include",
@@ -309,12 +338,15 @@ You can delete a user by sending a request to the [Delete User API Route](https:
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/users/<USER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

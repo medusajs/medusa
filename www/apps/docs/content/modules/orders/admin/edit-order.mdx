@@ -84,6 +84,7 @@ To do that, send a request to the [Create an OrderEdit API Route](https://docs.m
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orderEdits.create({
       order_id, // required
@@ -92,8 +93,10 @@ To do that, send a request to the [Create an OrderEdit API Route](https://docs.m
       console.log(order_edit.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateOrderEdit } from "medusa-react"
 
@@ -111,8 +114,10 @@ To do that, send a request to the [Create an OrderEdit API Route](https://docs.m
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/order-edits`, {
       method: "POST",
@@ -129,8 +134,10 @@ To do that, send a request to the [Create an OrderEdit API Route](https://docs.m
       console.log(order_edit.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -139,6 +146,7 @@ To do that, send a request to the [Create an OrderEdit API Route](https://docs.m
         "order_id": "<ORDER_ID>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -170,6 +178,7 @@ To add a new item to the original order, send a request to the [Add Line Item AP
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orderEdits.addLineItem(orderEditId, {
       quantity: 1,
@@ -179,8 +188,10 @@ To add a new item to the original order, send a request to the [Add Line Item AP
       console.log(order_edit.changes)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrderEditAddLineItem } from "medusa-react"
 
@@ -200,8 +211,10 @@ To add a new item to the original order, send a request to the [Add Line Item AP
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items`, {
       method: "POST",
@@ -219,8 +232,10 @@ To add a new item to the original order, send a request to the [Add Line Item AP
       console.log(order_edit.changes)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -230,6 +245,7 @@ To add a new item to the original order, send a request to the [Add Line Item AP
         "variant_id": "<VARIANT_ID>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -247,6 +263,7 @@ To update an item, send a request to the [Update Line Item API Route](https://do
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orderEdits.updateLineItem(orderEditId, itemId, {
       quantity: 2,
@@ -255,8 +272,10 @@ To update an item, send a request to the [Update Line Item API Route](https://do
       console.log(order_edit.changes)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrderEditUpdateLineItem } from "medusa-react"
 
@@ -277,9 +296,12 @@ To update an item, send a request to the [Update Line Item API Route](https://do
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
       method: "POST",
@@ -298,6 +320,7 @@ To update an item, send a request to the [Update Line Item API Route](https://do
     ```
     </TabItem>
     <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -306,6 +329,7 @@ To update an item, send a request to the [Update Line Item API Route](https://do
         "quantity": 2
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -321,14 +345,17 @@ You can remove an item from the original order by sending a request to the [Remo
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orderEdits.removeLineItem(orderEditId, itemId)
     .then(({ order_edit }) => {
       console.log(order_edit.changes)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrderEditDeleteLineItem } from "medusa-react"
 
@@ -347,9 +374,12 @@ You can remove an item from the original order by sending a request to the [Remo
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
       method: "DELETE",
@@ -360,12 +390,15 @@ You can remove an item from the original order by sending a request to the [Remo
       console.log(order_edit.changes)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -383,14 +416,17 @@ To revert an item change, send a request to the [Delete Item Change API Route](h
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orderEdits.deleteItemChange(orderEditId, changeId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteOrderEditItemChange } from "medusa-react"
 
@@ -409,9 +445,12 @@ To revert an item change, send a request to the [Delete Item Change API Route](h
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/order-edits/${orderEditId}/changes/${changeId}`,
@@ -425,12 +464,15 @@ To revert an item change, send a request to the [Delete Item Change API Route](h
       console.log(id, object, deleted)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/changes/<CHANGE_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -452,6 +494,7 @@ To move an Order Edit into the request state, send a request to the [Request Con
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orderEdits.requestConfirmation(orderEditId)
     .then(({ order_edit }) => {
@@ -461,8 +504,10 @@ To move an Order Edit into the request state, send a request to the [Request Con
       )
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminRequestOrderEditConfirmation,
@@ -483,9 +528,12 @@ To move an Order Edit into the request state, send a request to the [Request Con
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/request`, {
       method: "POST",
@@ -496,12 +544,15 @@ To move an Order Edit into the request state, send a request to the [Request Con
       console.log(order_edit.requested_at, order_edit.requested_by)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/request' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -539,14 +590,17 @@ To confirm an Order Edit, send a request to the [Confirm Order Edit API Route](h
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orderEdits.confirm(orderEditId)
     .then(({ order_edit }) => {
       console.log(order_edit.confirmed_at, order_edit.confirmed_by)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminConfirmOrderEdit } from "medusa-react"
 
@@ -562,9 +616,12 @@ To confirm an Order Edit, send a request to the [Confirm Order Edit API Route](h
 
     export default OrderEdit
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/confirm`, {
       method: "POST",
@@ -575,12 +632,15 @@ To confirm an Order Edit, send a request to the [Confirm Order Edit API Route](h
       console.log(order_edit.confirmed_at, order_edit.confirmed_by)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/confirm' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -613,14 +673,17 @@ If the payment is authorized by the customer, it can be captured by sending a re
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.payments.capturePayment(paymentId)
     .then(({ payment }) => {
       console.log(payment.captured_at)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminPaymentsCapturePayment } from "medusa-react"
 
@@ -638,8 +701,10 @@ If the payment is authorized by the customer, it can be captured by sending a re
 
     export default OrderEditPayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/payments/${paymentId}/capture`, {
       method: "POST",
@@ -650,12 +715,15 @@ If the payment is authorized by the customer, it can be captured by sending a re
       console.log(payment.captured_at)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/capture' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -671,6 +739,7 @@ To refund the difference to the customer, send a request to the [Refund Payment 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     import { RefundReason } from "@medusajs/medusa"
     // ...
@@ -683,8 +752,10 @@ To refund the difference to the customer, send a request to the [Refund Payment 
       console.log(refund.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminPaymentsRefundPayment } from "medusa-react"
     import { RefundReason } from "@medusajs/medusa"
@@ -705,8 +776,10 @@ To refund the difference to the customer, send a request to the [Refund Payment 
 
     export default OrderEditPayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/payments/${paymentId}/refund`, {
       method: "POST",
@@ -724,8 +797,10 @@ To refund the difference to the customer, send a request to the [Refund Payment 
       console.log(refund.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/refund' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -735,6 +810,7 @@ To refund the difference to the customer, send a request to the [Refund Payment 
         "reason": "discount"
     }'
     ```
+
   </TabItem>
 </Tabs>
 

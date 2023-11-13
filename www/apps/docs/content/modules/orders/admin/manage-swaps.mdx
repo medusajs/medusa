@@ -69,14 +69,17 @@ You can view an order’s swaps by retrieving the order using the [Get Order API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.retrieve(orderId)
     .then(({ order }) => {
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrder } from "medusa-react"
 
@@ -107,8 +110,10 @@ You can view an order’s swaps by retrieving the order using the [Get Order API
 
     export default Order
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
       credentials: "include",
@@ -118,12 +123,15 @@ You can view an order’s swaps by retrieving the order using the [Get Order API
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -141,14 +149,17 @@ Regardless of whether you need to refund or capture the payment, you can process
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.processSwapPayment(orderId, swapId)
     .then(({ order }) => {
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminProcessSwapPayment } from "medusa-react"
 
@@ -167,9 +178,12 @@ Regardless of whether you need to refund or capture the payment, you can process
 
     export default ProcessPayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/swaps/${swapId}/process-payment`, {
       credentials: "include",
@@ -180,12 +194,15 @@ Regardless of whether you need to refund or capture the payment, you can process
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/swaps/<SWAP_ID>/process-payment' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -207,6 +224,7 @@ You can create a fulfillment for a swap by sending a request to the [Create Swap
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.fulfillSwap(orderId, swapId, {
     })
@@ -214,8 +232,10 @@ You can create a fulfillment for a swap by sending a request to the [Create Swap
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminFulfillSwap } from "medusa-react"
 
@@ -236,9 +256,12 @@ You can create a fulfillment for a swap by sending a request to the [Create Swap
 
     export default FulfillSwap
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/swaps/${swapId}/fulfillments`, {
       credentials: "include",
@@ -249,12 +272,15 @@ You can create a fulfillment for a swap by sending a request to the [Create Swap
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/swaps/<SWAP_ID>/fulfillments' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -270,6 +296,7 @@ You can create a shipment for a swap’s fulfillment using the [Create Swap Ship
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.createSwapShipment(orderId, swapId, {
       fulfillment_id,
@@ -278,8 +305,10 @@ You can create a shipment for a swap’s fulfillment using the [Create Swap Ship
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateSwapShipment } from "medusa-react"
 
@@ -301,9 +330,12 @@ You can create a shipment for a swap’s fulfillment using the [Create Swap Ship
 
     export default CreateShipment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/swaps/${swapId}/shipments`, {
       credentials: "include",
@@ -320,8 +352,10 @@ You can create a shipment for a swap’s fulfillment using the [Create Swap Ship
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/swaps/<SWAP_ID>/shipments' \
     -H 'Authorization: Bearer <API_TOKEN>'\
@@ -330,6 +364,7 @@ You can create a shipment for a swap’s fulfillment using the [Create Swap Ship
         "fulfillment_id": "<FUL_ID>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -355,6 +390,7 @@ You can cancel a fulfillment by sending a request to the [Cancel Swap Fulfillmen
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.cancelSwapFulfillment(
       orderId, 
@@ -365,8 +401,10 @@ You can cancel a fulfillment by sending a request to the [Cancel Swap Fulfillmen
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCancelSwapFulfillment } from "medusa-react"
 
@@ -388,9 +426,12 @@ You can cancel a fulfillment by sending a request to the [Cancel Swap Fulfillmen
 
     export default CancelFulfillment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/swaps/${swapId}/shipments/${fulfillmentId}/cancel`, {
       credentials: "include",
@@ -401,12 +442,15 @@ You can cancel a fulfillment by sending a request to the [Cancel Swap Fulfillmen
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/swaps/<SWAP_ID>/fulfillments/<FUL_ID>/cancel' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -430,14 +474,17 @@ You can cancel a swap by sending a request to the [Cancel Swap API Route](https:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.cancelSwap(orderId, swapId)
     .then(({ order }) => {
       console.log(order.swaps)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCancelSwap } from "medusa-react"
 
@@ -456,9 +503,12 @@ You can cancel a swap by sending a request to the [Cancel Swap API Route](https:
 
     export default CancelSwap
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/swaps/${swapId}/cancel`, {
         credentials: "include",
@@ -469,12 +519,15 @@ You can cancel a swap by sending a request to the [Cancel Swap API Route](https:
         console.log(order.swaps)
       })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/swaps/<SWAP_ID>/cancel' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

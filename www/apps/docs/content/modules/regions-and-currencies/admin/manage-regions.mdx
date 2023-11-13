@@ -64,6 +64,7 @@ You can retrieve regions available on your backend using the [List Regions API R
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.regions.list()
     .then(({ regions, limit, offset, count }) => {
@@ -71,8 +72,10 @@ You can retrieve regions available on your backend using the [List Regions API R
       // display regions
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Region } from "@medusajs/medusa"
     import { useAdminRegions } from "medusa-react"
@@ -97,8 +100,10 @@ You can retrieve regions available on your backend using the [List Regions API R
 
     export default Regions
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/regions`, {
       credentials: "include",
@@ -109,12 +114,15 @@ You can retrieve regions available on your backend using the [List Regions API R
       // display regions
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/regions' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -130,6 +138,7 @@ You can create a region by sending a request to the [Create a Region API Route](
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.regions.create({
       name: "Europe",
@@ -149,8 +158,10 @@ You can create a region by sending a request to the [Create a Region API Route](
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateRegion } from "medusa-react"
 
@@ -180,8 +191,10 @@ You can create a region by sending a request to the [Create a Region API Route](
 
     export default CreateRegion
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/regions`, {
       credentials: "include",
@@ -209,8 +222,10 @@ You can create a region by sending a request to the [Create a Region API Route](
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -230,6 +245,7 @@ You can create a region by sending a request to the [Create a Region API Route](
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -256,6 +272,7 @@ Alternatively, you can update the details of a region using the [Update a Region
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.regions.update(regionId, {
       countries: [
@@ -267,8 +284,10 @@ Alternatively, you can update the details of a region using the [Update a Region
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateRegion } from "medusa-react"
 
@@ -290,8 +309,10 @@ Alternatively, you can update the details of a region using the [Update a Region
 
     export default UpdateRegion
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
       credentials: "include",
@@ -311,8 +332,10 @@ Alternatively, you can update the details of a region using the [Update a Region
       console.log(region.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/regions/<REGION_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -324,6 +347,7 @@ Alternatively, you can update the details of a region using the [Update a Region
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -347,6 +371,7 @@ You can add a shipping option to a region by sending a request to the [Create Sh
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.shippingOptions.create({
       name: "PostFake",
@@ -361,8 +386,10 @@ You can add a shipping option to a region by sending a request to the [Create Sh
       console.log(shipping_option.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateShippingOption } from "medusa-react"
 
@@ -387,8 +414,10 @@ You can add a shipping option to a region by sending a request to the [Create Sh
 
     export default Region
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/shipping-options`, {
       credentials: "include",
@@ -411,8 +440,10 @@ You can add a shipping option to a region by sending a request to the [Create Sh
       console.log(shipping_option.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/shipping-options' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -426,6 +457,7 @@ You can add a shipping option to a region by sending a request to the [Create Sh
         "amount": 1000
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -458,14 +490,17 @@ You can delete a region by sending a request to the [Delete a Region API Route](
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.regions.delete(regionId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteRegion } from "medusa-react"
 
@@ -482,8 +517,10 @@ You can delete a region by sending a request to the [Delete a Region API Route](
 
     export default Region
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/regions/${regionId}`, {
       credentials: "include",
@@ -494,12 +531,15 @@ You can delete a region by sending a request to the [Delete a Region API Route](
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/regions/<REGION_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

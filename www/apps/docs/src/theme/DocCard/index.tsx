@@ -197,7 +197,7 @@ function CardCategory({
     <CardLayout
       {...item}
       href={href}
-      icon="🗃️"
+      icon={icon}
       title={item.label}
       // eslint-disable-next-line @docusaurus/string-literal-i18n-messages
       description={translate(

@@ -68,6 +68,7 @@ You can create a discount by sending a request to the [Create Discount API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     import { 
       AllocationType,
@@ -91,8 +92,10 @@ You can create a discount by sending a request to the [Create Discount API Route
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminCreateDiscount,
@@ -128,8 +131,10 @@ You can create a discount by sending a request to the [Create Discount API Route
 
     export default CreateDiscount
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/discounts`, {
       method: "POST",
@@ -156,8 +161,10 @@ You can create a discount by sending a request to the [Create Discount API Route
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -176,6 +183,7 @@ You can create a discount by sending a request to the [Create Discount API Route
         "is_disabled": false
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -200,6 +208,7 @@ For example, you can update the discount’s description and status by sending t
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.discounts.update(discountId, {
       is_disabled: true,
@@ -208,8 +217,10 @@ For example, you can update the discount’s description and status by sending t
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateDiscount } from "medusa-react"
 
@@ -229,8 +240,10 @@ For example, you can update the discount’s description and status by sending t
 
     export default UpdateDiscount
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/discounts/${discountId}`, {
       method: "POST",
@@ -247,8 +260,10 @@ For example, you can update the discount’s description and status by sending t
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -257,6 +272,7 @@ For example, you can update the discount’s description and status by sending t
       "is_disabled": true
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -282,6 +298,7 @@ You can send a request to the [Create Condition API Route](https://docs.medusajs
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     import { DiscountConditionOperator } from "@medusajs/medusa"
     // ...
@@ -295,8 +312,10 @@ You can send a request to the [Create Condition API Route](https://docs.medusajs
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDiscountCreateCondition } from "medusa-react"
     import { DiscountConditionOperator } from "@medusajs/medusa"
@@ -325,8 +344,10 @@ You can send a request to the [Create Condition API Route](https://docs.medusajs
 
     export default Discount
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/discounts/${discountId}/conditions`,
       {
@@ -348,8 +369,10 @@ You can send a request to the [Create Condition API Route](https://docs.medusajs
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -361,6 +384,7 @@ You can send a request to the [Create Condition API Route](https://docs.medusajs
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -387,6 +411,7 @@ You can retrieve a condition and its resources by sending a request to the [Get 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.discounts.getCondition(
       discountId, 
@@ -402,8 +427,10 @@ You can retrieve a condition and its resources by sending a request to the [Get 
       )
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminGetDiscountCondition } from "medusa-react"
     import { Product } from "@medusajs/medusa"
@@ -439,8 +466,10 @@ You can retrieve a condition and its resources by sending a request to the [Get 
 
     export default DiscountCondition
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/discounts/${discountId}` + 
@@ -457,12 +486,15 @@ You can retrieve a condition and its resources by sending a request to the [Get 
       )
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>&expand=products' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -480,6 +512,7 @@ For example, to update the products in a condition:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.discounts.updateCondition(
       discountId, 
@@ -494,8 +527,10 @@ For example, to update the products in a condition:
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDiscountUpdateCondition } from "medusa-react"
     import { Product } from "@medusajs/medusa"
@@ -518,9 +553,12 @@ For example, to update the products in a condition:
 
     export default DiscountCondition
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/discounts/${discountId}/conditions/${conditionId}`,
@@ -543,8 +581,10 @@ For example, to update the products in a condition:
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -556,6 +596,7 @@ For example, to update the products in a condition:
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -571,6 +612,7 @@ You can delete a condition by sending a request to the [Delete Condition API Rou
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.discounts.deleteCondition(
       discountId, 
@@ -580,8 +622,10 @@ You can delete a condition by sending a request to the [Delete Condition API Rou
       console.log(discount)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDiscountRemoveCondition } from "medusa-react"
 
@@ -600,9 +644,12 @@ You can delete a condition by sending a request to the [Delete Condition API Rou
 
     export default Discount
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/discounts/${discountId}/conditions/${conditionId}`,
@@ -616,12 +663,15 @@ You can delete a condition by sending a request to the [Delete Condition API Rou
       console.log(discount.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>/conditions/<CONDITION_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -637,14 +687,17 @@ You can delete a discount by sending a request to the [Delete Discount API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.discounts.delete(discount_id)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteDiscount } from "medusa-react"
 
@@ -661,8 +714,10 @@ You can delete a discount by sending a request to the [Delete Discount API Route
 
     export default Discount
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/discounts/${discountId}`, {
       method: "DELETE",
@@ -673,12 +728,15 @@ You can delete a discount by sending a request to the [Delete Discount API Route
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/discounts/<DISCOUNT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

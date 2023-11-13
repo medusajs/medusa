@@ -78,6 +78,7 @@ For example, sending the following request creates a price list with two prices:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     import { 
       PriceListStatus, 
@@ -108,8 +109,10 @@ For example, sending the following request creates a price list with two prices:
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       PriceListStatus, 
@@ -149,8 +152,10 @@ For example, sending the following request creates a price list with two prices:
 
     export default CreatePriceList
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/price-lists`, {
       method: "POST",
@@ -184,8 +189,10 @@ For example, sending the following request creates a price list with two prices:
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<YOUR_BACKEND_URL>/admin/price-lists' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -211,6 +218,7 @@ For example, sending the following request creates a price list with two prices:
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -226,14 +234,17 @@ You can retrieve all of a price list’s details using the Get a Price List API 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     medusa.admin.priceLists.retrieve(priceListId)
     .then(({ price_list }) => {
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { CustomerGroup } from "@medusajs/medusa"
     import { useAdminPriceList } from "medusa-react"
@@ -254,8 +265,10 @@ You can retrieve all of a price list’s details using the Get a Price List API 
 
     export default PriceList
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
       credentials: "include",
@@ -265,12 +278,15 @@ You can retrieve all of a price list’s details using the Get a Price List API 
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/price-lists/{id}' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -284,6 +300,7 @@ For example, by sending the following request the end date of the price list wil
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     medusa.admin.priceLists.update(priceListId, {
       ends_at: "2022-10-11",
@@ -292,8 +309,10 @@ For example, by sending the following request the end date of the price list wil
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       PriceListStatus, 
@@ -316,8 +335,10 @@ For example, by sending the following request the end date of the price list wil
 
     export default CreatePriceList
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
       method: "POST",
@@ -334,8 +355,10 @@ For example, by sending the following request the end date of the price list wil
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -344,6 +367,7 @@ For example, by sending the following request the end date of the price list wil
         "ends_at": "2022-10-11"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -365,6 +389,7 @@ For example, sending the following request adds a new price to the price list:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     medusa.admin.priceLists.addPrices(priceListId, {
       prices: [
@@ -379,8 +404,10 @@ For example, sending the following request adds a new price to the price list:
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreatePriceListPrices } from "medusa-react"
 
@@ -405,9 +432,12 @@ For example, sending the following request adds a new price to the price list:
 
     export default PriceList
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}/prices/batch`, {
       method: "POST",
@@ -430,8 +460,10 @@ For example, sending the following request adds a new price to the price list:
       console.log(price_list.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -446,6 +478,7 @@ For example, sending the following request adds a new price to the price list:
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -459,6 +492,7 @@ You can delete all the prices of a product’s variants using the [Delete Produc
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```tsx
     medusa
       .admin
@@ -468,8 +502,10 @@ You can delete all the prices of a product’s variants using the [Delete Produc
         console.log(ids.length)
       })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminDeletePriceListProductPrices,
@@ -491,9 +527,12 @@ You can delete all the prices of a product’s variants using the [Delete Produc
 
     export default PriceList
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```jsx
     fetch(
       `<BACKEND_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`,
@@ -507,12 +546,15 @@ You can delete all the prices of a product’s variants using the [Delete Produc
       console.log(ids.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -524,6 +566,7 @@ You can delete all the prices of a variant using the [Delete Variant Prices API 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```tsx
     medusa
       .admin
@@ -533,8 +576,10 @@ You can delete all the prices of a variant using the [Delete Variant Prices API 
         console.log(ids)
       })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminDeletePriceListVariantPrices,
@@ -557,9 +602,12 @@ You can delete all the prices of a variant using the [Delete Variant Prices API 
 
     export default PriceList
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```jsx
     fetch(
       `<BACKEND_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`,
@@ -573,12 +621,15 @@ You can delete all the prices of a variant using the [Delete Variant Prices API 
       console.log(ids.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -592,14 +643,17 @@ You can delete a price list, and subsequently all prices defined in it, using th
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     medusa.admin.priceLists.delete(priceListId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeletePriceList } from "medusa-react"
 
@@ -616,8 +670,10 @@ You can delete a price list, and subsequently all prices defined in it, using th
 
     export default PriceList
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
       method: "DELETE",
@@ -628,12 +684,15 @@ You can delete a price list, and subsequently all prices defined in it, using th
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

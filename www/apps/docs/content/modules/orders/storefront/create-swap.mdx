@@ -64,6 +64,7 @@ After collecting the swap details in step 1, you can create a swap in the Medusa
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.swaps.create({
       order_id,
@@ -85,8 +86,10 @@ After collecting the swap details in step 1, you can create a swap in the Medusa
       console.log(swap.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCreateSwap } from "medusa-react"
 
@@ -118,8 +121,10 @@ After collecting the swap details in step 1, you can create a swap in the Medusa
 
     export default CreateSwap
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/swaps`, {
       credentials: "include",
@@ -149,6 +154,7 @@ After collecting the swap details in step 1, you can create a swap in the Medusa
       console.log(swap.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -186,14 +192,17 @@ During your checkout flow, you might need to retrieve the swap using the cart’
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.swaps.retrieveByCartId(cartId)
     .then(({ swap }) => {
       console.log(swap.id)
     })
     ```
+
   </TabItem>
     <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCartSwap } from "medusa-react"
 
@@ -214,8 +223,10 @@ During your checkout flow, you might need to retrieve the swap using the cart’
 
     export default Swap
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/swaps/${cartId}`, {
       credentials: "include",
@@ -225,6 +236,7 @@ During your checkout flow, you might need to retrieve the swap using the cart’
       console.log(swap.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 

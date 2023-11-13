@@ -58,14 +58,17 @@ You can list product categories by sending a request to the [List Product Catego
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.productCategories.list()
     .then(({ product_categories, limit, offset, count }) => {
       console.log(product_categories.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProductCategories } from "medusa-react"
     import { ProductCategory } from "@medusajs/medusa"
@@ -97,6 +100,7 @@ You can list product categories by sending a request to the [List Product Catego
 
     export default Categories
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -104,6 +108,7 @@ You can list product categories by sending a request to the [List Product Catego
       <Badge variant="orange" className="ml-0.5">beta</Badge>
     </>
   )}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -118,8 +123,10 @@ You can list product categories by sending a request to the [List Product Catego
       console.log(categories)
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/product-categories`, {
       credentials: "include",
@@ -129,12 +136,15 @@ You can list product categories by sending a request to the [List Product Catego
       console.log(product_categories.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/product-categories' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -154,14 +164,17 @@ You can retrieve a single product category by its ID using the [Get a Product Ca
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.productCategories.retrieve(productCategoryId)
     .then(({ product_category }) => {
       console.log(product_category.name)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProductCategory } from "medusa-react"
 
@@ -178,6 +191,7 @@ You can retrieve a single product category by its ID using the [Get a Product Ca
 
     export default Category
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -185,6 +199,7 @@ You can retrieve a single product category by its ID using the [Get a Product Ca
       <Badge variant="orange">beta</Badge>
     </>
   )}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -201,9 +216,12 @@ You can retrieve a single product category by its ID using the [Get a Product Ca
       console.log(categories[0])
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/store/product-categories/${productCategoryId}`, {
       credentials: "include",
@@ -213,12 +231,15 @@ You can retrieve a single product category by its ID using the [Get a Product Ca
       console.log(product_category.name)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/product-categories/<CAT_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -236,6 +257,7 @@ You can retrieve the details of a category by its handle by sending a request to
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.productCategories.list({
       handle: "women",
@@ -247,8 +269,10 @@ You can retrieve the details of a category by its handle by sending a request to
       const category = product_categories[0]
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useProductCategories } from "medusa-react"
     import { ProductCategory } from "@medusajs/medusa"
@@ -282,6 +306,7 @@ You can retrieve the details of a category by its handle by sending a request to
 
     export default Categories
     ```
+
   </TabItem>
   <TabItem value="module" label={(
     <>
@@ -289,6 +314,7 @@ You can retrieve the details of a category by its handle by sending a request to
       <Badge variant="orange">beta</Badge>
     </>
   )}>
+
     ```ts
     import {
       initialize as initializeProductModule,
@@ -305,8 +331,10 @@ You can retrieve the details of a category by its handle by sending a request to
       console.log(categories[0])
     }
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/product-categories?handle=women`, {
       credentials: "include",
@@ -319,12 +347,15 @@ You can retrieve the details of a category by its handle by sending a request to
       const category = product_categories[0]
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/store/product-categories?handle=women' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

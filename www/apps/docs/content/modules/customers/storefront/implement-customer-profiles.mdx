@@ -62,6 +62,7 @@ You can register a new customer by sending a request to the [Create a Customer A
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.create({
       email,
@@ -73,8 +74,10 @@ You can register a new customer by sending a request to the [Create a Customer A
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCreateCustomer } from "medusa-react"
 
@@ -103,8 +106,10 @@ You can register a new customer by sending a request to the [Create a Customer A
 
     export default RegisterCustomer
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers`, {
       method: "POST",
@@ -124,6 +129,7 @@ You can register a new customer by sending a request to the [Create a Customer A
       console.log(customer.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -148,6 +154,7 @@ You can log in a customer into your store by sending a request to the [Customer 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.auth.authenticate({
       email,
@@ -157,8 +164,10 @@ You can log in a customer into your store by sending a request to the [Customer 
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/auth`, {
       method: "POST",
@@ -176,6 +185,7 @@ You can log in a customer into your store by sending a request to the [Customer 
       console.log(customer.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -193,14 +203,17 @@ You can log out a customer by sending a request to the [Customer Logout API Rout
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.auth.deleteSession()
     .then(() => {
       // success
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/auth`, {
       method: "DELETE",
@@ -210,6 +223,7 @@ You can log out a customer by sending a request to the [Customer Logout API Rout
       // success
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -229,6 +243,7 @@ You can request to reset a customer’s password by sending a request to the [Re
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.generatePasswordToken({
       email,
@@ -240,8 +255,10 @@ You can request to reset a customer’s password by sending a request to the [Re
       // failed
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers/password-token`, {
       method: "POST",
@@ -260,6 +277,7 @@ You can request to reset a customer’s password by sending a request to the [Re
       // failed
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -281,6 +299,7 @@ You can then reset the customer’s password to the new password they enter by s
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.resetPassword({
       email,
@@ -291,8 +310,10 @@ You can then reset the customer’s password to the new password they enter by s
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers/password-reset`, {
       method: "POST",
@@ -311,6 +332,7 @@ You can then reset the customer’s password to the new password they enter by s
       console.log(customer.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -332,6 +354,7 @@ You can edit a customer’s info using the [Update Customer API Route](https://d
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.update({
       first_name,
@@ -340,8 +363,10 @@ You can edit a customer’s info using the [Update Customer API Route](https://d
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useUpdateMe } from "medusa-react"
 
@@ -368,8 +393,10 @@ You can edit a customer’s info using the [Update Customer API Route](https://d
 
     export default UpdateCustomer
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers/me`, {
       method: "POST",
@@ -386,6 +413,7 @@ You can edit a customer’s info using the [Update Customer API Route](https://d
       console.log(customer.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -411,6 +439,7 @@ You can add a shipping address to a customer’s account by sending a request to
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.addresses.addAddress({
       address: {
@@ -431,8 +460,10 @@ You can add a shipping address to a customer’s account by sending a request to
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers/me/addresses`, {
       method: "POST",
@@ -461,6 +492,7 @@ You can add a shipping address to a customer’s account by sending a request to
       console.log(customer.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -483,6 +515,7 @@ You can edit a customer’s shipping address using the [Update a Shipping Addres
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.addresses.updateAddress(addressId, {
       first_name,
@@ -491,8 +524,10 @@ You can edit a customer’s shipping address using the [Update a Shipping Addres
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
       {
@@ -511,6 +546,7 @@ You can edit a customer’s shipping address using the [Update a Shipping Addres
       console.log(customer.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -524,14 +560,17 @@ You can delete a shipping address by sending a request to the [Delete an Address
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.addresses.deleteAddress(addressId)
     .then(({ customer }) => {
       console.log(customer.id)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
       {
@@ -544,6 +583,7 @@ You can delete a shipping address by sending a request to the [Delete an Address
       console.log(customer.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -559,14 +599,17 @@ You can retrieve a customer’s orders by sending a request to the [List Orders 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.customers.listOrders()
     .then(({ orders, limit, offset, count }) => {
       console.log(orders)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCustomerOrders } from "medusa-react"
     import { Order } from "@medusajs/medusa"
@@ -592,8 +635,10 @@ You can retrieve a customer’s orders by sending a request to the [List Orders 
 
     export default Orders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/customers/me/orders`, {
       credentials: "include",
@@ -603,6 +648,7 @@ You can retrieve a customer’s orders by sending a request to the [List Orders 
       console.log(orders)
     })
     ```
+
   </TabItem>
 </Tabs>
 

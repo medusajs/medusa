@@ -58,6 +58,7 @@ After initialization, you can use the client's properties and methods to send re
     // ...
   }
   ```
+
 </Details>
 
 ## How to Use this Reference
@@ -125,6 +126,7 @@ For example:
 
 <Tabs groupId="client-authentication-type" isCodeTabs={true}>
   <TabItem value="user" label="Admin User" default>
+
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
@@ -137,8 +139,10 @@ For example:
     })
     // send authenticated requests now
     ```
+
   </TabItem>
   <TabItem value="customer" label="Customer">
+
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
@@ -151,6 +155,7 @@ For example:
     })
     // send authenticated requests now
     ```
+
   </TabItem>
 </Tabs>
 
@@ -166,6 +171,7 @@ For example:
 
 <Tabs groupId="client-authentication-type" isCodeTabs={true}>
   <TabItem value="user" label="Admin User" default>
+
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
@@ -178,8 +184,10 @@ For example:
     })
     // send authenticated requests now
     ```
+
   </TabItem>
   <TabItem value="customer" label="Customer">
+
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
@@ -192,6 +200,7 @@ For example:
     })
     // send authenticated requests now
     ```
+
   </TabItem>
 </Tabs>
 
@@ -203,6 +212,7 @@ If a user doesn't have a personal API token, create one with the [admin.users.up
 
 <Tabs groupId="client-type" isCodeTabs={true}>
   <TabItem value="js-client" label="JS Client" default>
+
     ```ts
     import Medusa from "@medusajs/medusa-js"
     const medusa = new Medusa({
@@ -217,8 +227,10 @@ If a user doesn't have a personal API token, create one with the [admin.users.up
       console.log(user.api_token)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \\
     -H 'Cookie: connect.sid={sid}' \\
@@ -227,6 +239,7 @@ If a user doesn't have a personal API token, create one with the [admin.users.up
         "api_token": "{api_token}"
     }'
     ```
+
   </TabItem>
 </Tabs>
 

@@ -61,14 +61,17 @@ You can list available return reasons using the [List Return Reasons API Route](
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.returnReasons.list()
     .then(({ return_reasons }) => {
       console.log(return_reasons.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminReturnReasons } from "medusa-react"
 
@@ -96,8 +99,10 @@ You can list available return reasons using the [List Return Reasons API Route](
 
     export default ReturnReasons
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/return-reasons`, {
       credentials: "include",
@@ -107,12 +112,15 @@ You can list available return reasons using the [List Return Reasons API Route](
       console.log(return_reasons.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/return-reasons' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -126,6 +134,7 @@ You can create a return reason using the [Create Return Reason API Route](https:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.returnReasons.create({
       label: "Damaged",
@@ -135,8 +144,10 @@ You can create a return reason using the [Create Return Reason API Route](https:
       console.log(return_reason.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateReturnReason } from "medusa-react"
 
@@ -156,8 +167,10 @@ You can create a return reason using the [Create Return Reason API Route](https:
 
     export default CreateReturnReason
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/return-reasons`, {
       credentials: "include",
@@ -175,8 +188,10 @@ You can create a return reason using the [Create Return Reason API Route](https:
       console.log(return_reason.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/return-reasons' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -186,6 +201,7 @@ You can create a return reason using the [Create Return Reason API Route](https:
       "value": "damaged"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -204,6 +220,7 @@ You can update a return reason by sending a request to the [Update Return Reason
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.returnReasons.update(returnReasonId, {
       label: "Damaged",
@@ -212,8 +229,10 @@ You can update a return reason by sending a request to the [Update Return Reason
       console.log(return_reason.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateReturnReason } from "medusa-react"
 
@@ -234,8 +253,10 @@ You can update a return reason by sending a request to the [Update Return Reason
 
     export default UpdateReturnReason
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/return-reasons/${returnReasonId}`, {
       credentials: "include",
@@ -252,8 +273,10 @@ You can update a return reason by sending a request to the [Update Return Reason
       console.log(return_reason.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -262,6 +285,7 @@ You can update a return reason by sending a request to the [Update Return Reason
       "label": "Damaged"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -277,14 +301,17 @@ You can delete a return reason by sending a request to the [Delete Return Reason
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.returnReasons.delete(returnReasonId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteReturnReason } from "medusa-react"
 
@@ -303,8 +330,10 @@ You can delete a return reason by sending a request to the [Delete Return Reason
 
     export default DeleteReturnReason
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/return-reasons/${returnReasonId}`, {
       credentials: "include",
@@ -315,12 +344,15 @@ You can delete a return reason by sending a request to the [Delete Return Reason
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/return-reasons/<REASON_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -346,14 +378,17 @@ When you retrieve an order using the [Get Order API Route](https://docs.medusajs
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.retrieve(orderId)
     .then(({ order }) => {
       console.log(order.returns)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrder } from "medusa-react"
 
@@ -385,8 +420,10 @@ When you retrieve an order using the [Get Order API Route](https://docs.medusajs
 
     export default Order
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
       credentials: "include",
@@ -396,12 +433,15 @@ When you retrieve an order using the [Get Order API Route](https://docs.medusajs
       console.log(order.returns)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -431,6 +471,7 @@ You can mark a return as received by sending a request to the [Receive a Return 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.returns.receive(return_id, {
       items: [
@@ -444,8 +485,10 @@ You can mark a return as received by sending a request to the [Receive a Return 
       console.log(data.return.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminReceiveReturn } from "medusa-react"
 
@@ -466,8 +509,10 @@ You can mark a return as received by sending a request to the [Receive a Return 
 
     export default ReceiveReturn
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/returns/${returnId}/receive`, {
       credentials: "include",
@@ -489,8 +534,10 @@ You can mark a return as received by sending a request to the [Receive a Return 
       console.log(data.return.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/receive' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -504,6 +551,7 @@ You can mark a return as received by sending a request to the [Receive a Return 
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -532,14 +580,17 @@ You can cancel a return by sending a request to the [Cancel Return API Route](ht
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.returns.cancel(returnId)
     .then(({ order }) => {
       console.log(order.returns)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCancelReturn } from "medusa-react"
 
@@ -558,8 +609,10 @@ You can cancel a return by sending a request to the [Cancel Return API Route](ht
 
     export default CancelReturn
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/returns/${returnId}/cancel`, {
       credentials: "include",
@@ -570,12 +623,15 @@ You can cancel a return by sending a request to the [Cancel Return API Route](ht
       console.log(order.returns)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/returns/<RETURN_ID>/cancel' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

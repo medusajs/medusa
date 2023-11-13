@@ -55,14 +55,17 @@ You can list the tax rates by sending a request to the [List Tax Rates API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.list()
     .then(({ tax_rates, limit, offset, count }) => {
       console.log(tax_rates.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminTaxRates } from "medusa-react"
 
@@ -88,8 +91,10 @@ You can list the tax rates by sending a request to the [List Tax Rates API Route
 
     export default TaxRates
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates`, {
       credentials: "include",
@@ -99,12 +104,15 @@ You can list the tax rates by sending a request to the [List Tax Rates API Route
       console.log(tax_rates.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/tax-rates' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -118,6 +126,7 @@ You can retrieve the tax rate of a region by passing the `region_id` query param
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.list({
       region_id: "reg_123",
@@ -126,8 +135,10 @@ You can retrieve the tax rate of a region by passing the `region_id` query param
       console.log(tax_rates.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminTaxRates } from "medusa-react"
 
@@ -155,8 +166,10 @@ You can retrieve the tax rate of a region by passing the `region_id` query param
 
     export default TaxRates
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates?region_id=reg_123`, {
       credentials: "include",
@@ -166,12 +179,15 @@ You can retrieve the tax rate of a region by passing the `region_id` query param
       console.log(tax_rates.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id=reg_123' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -181,6 +197,7 @@ This query parameter also accepts an array of strings, allowing you to filter th
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.list({
       region_id: ["reg_123", "reg_456"],
@@ -189,8 +206,10 @@ This query parameter also accepts an array of strings, allowing you to filter th
       console.log(tax_rates.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminTaxRates } from "medusa-react"
 
@@ -218,9 +237,12 @@ This query parameter also accepts an array of strings, allowing you to filter th
 
     export default TaxRates
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=reg_456`, {
       credentials: "include",
@@ -230,12 +252,15 @@ This query parameter also accepts an array of strings, allowing you to filter th
       console.log(tax_rates.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=reg_456' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -247,6 +272,7 @@ You can create a tax rate by sending a request to the [Create Tax Rate API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.create({
       code: "TEST",
@@ -258,8 +284,10 @@ You can create a tax rate by sending a request to the [Create Tax Rate API Route
       console.log(tax_rate.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateTaxRate } from "medusa-react"
 
@@ -281,8 +309,10 @@ You can create a tax rate by sending a request to the [Create Tax Rate API Route
 
     export default CreateTaxRate
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates`, {
       credentials: "include",
@@ -302,8 +332,10 @@ You can create a tax rate by sending a request to the [Create Tax Rate API Route
       console.log(tax_rate.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -315,6 +347,7 @@ You can create a tax rate by sending a request to the [Create Tax Rate API Route
         "rate": 10
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -342,6 +375,7 @@ You can update a tax rate by sending a request to the [Update Tax Rate API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.update(taxRateId, {
       name: "New Tax Rate",
@@ -350,8 +384,10 @@ You can update a tax rate by sending a request to the [Update Tax Rate API Route
       console.log(tax_rate.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateTaxRate } from "medusa-react"
 
@@ -370,8 +406,10 @@ You can update a tax rate by sending a request to the [Update Tax Rate API Route
 
     export default UpdateTaxRate
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}`, {
       credentials: "include",
@@ -388,8 +426,10 @@ You can update a tax rate by sending a request to the [Update Tax Rate API Route
       console.log(tax_rate.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -398,6 +438,7 @@ You can update a tax rate by sending a request to the [Update Tax Rate API Route
         "name": "New Tax Rate"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -419,6 +460,7 @@ You can add a product to a tax rate by sending a request to the [Add Products AP
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.addProducts(taxRateId, {
       products: [
@@ -429,8 +471,10 @@ You can add a product to a tax rate by sending a request to the [Add Products AP
       console.log(tax_rate.products)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateProductTaxRates } from "medusa-react"
 
@@ -451,9 +495,12 @@ You can add a product to a tax rate by sending a request to the [Add Products AP
 
     export default AddProduct
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/products/batch`, {
       credentials: "include",
@@ -472,8 +519,10 @@ You can add a product to a tax rate by sending a request to the [Add Products AP
       console.log(tax_rate.products)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -484,6 +533,7 @@ You can add a product to a tax rate by sending a request to the [Add Products AP
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -499,6 +549,7 @@ You can remove a product from a tax rate by sending a request to the [Delete Pro
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.removeProducts(taxRateId, {
       products: [
@@ -509,8 +560,10 @@ You can remove a product from a tax rate by sending a request to the [Delete Pro
       console.log(tax_rate.products)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteProductTaxRates } from "medusa-react"
 
@@ -531,9 +584,12 @@ You can remove a product from a tax rate by sending a request to the [Delete Pro
 
     export default RemoveProduct
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/products/batch`, {
       credentials: "include",
@@ -552,8 +608,10 @@ You can remove a product from a tax rate by sending a request to the [Delete Pro
       console.log(tax_rate.products)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/products/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -564,6 +622,7 @@ You can remove a product from a tax rate by sending a request to the [Delete Pro
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -585,6 +644,7 @@ You can add a product type to a tax rate by sending a request to the [Add Produc
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.addProductTypes(taxRateId, {
       product_types: [
@@ -595,8 +655,10 @@ You can add a product type to a tax rate by sending a request to the [Add Produc
       console.log(tax_rate.product_types)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminCreateProductTypeTaxRates,
@@ -621,9 +683,12 @@ You can add a product type to a tax rate by sending a request to the [Add Produc
 
     export default AddProductTypes
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/product-types/batch`, {
       credentials: "include",
@@ -642,8 +707,10 @@ You can add a product type to a tax rate by sending a request to the [Add Produc
       console.log(tax_rate.product_types)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -654,6 +721,7 @@ You can add a product type to a tax rate by sending a request to the [Add Produc
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -669,6 +737,7 @@ You can remove a product type from a tax rate by sending a request to the [Delet
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.removeProductTypes(taxRateId, {
       product_types: [
@@ -679,8 +748,10 @@ You can remove a product type from a tax rate by sending a request to the [Delet
       console.log(tax_rate.product_types)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminDeleteProductTypeTaxRates,
@@ -705,9 +776,12 @@ You can remove a product type from a tax rate by sending a request to the [Delet
 
     export default RemoveProductTypes
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/product-types/batch`, {
       credentials: "include",
@@ -726,8 +800,10 @@ You can remove a product type from a tax rate by sending a request to the [Delet
       console.log(tax_rate.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/product-types/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -738,6 +814,7 @@ You can remove a product type from a tax rate by sending a request to the [Delet
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -759,6 +836,7 @@ You can add a shipping option to a tax rate by sending a request to the [Add Shi
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.addShippingOptions(taxRateId, {
       shipping_options: [
@@ -769,8 +847,10 @@ You can add a shipping option to a tax rate by sending a request to the [Add Shi
       console.log(tax_rate.shipping_options)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateShippingTaxRates } from "medusa-react"
 
@@ -793,9 +873,12 @@ You can add a shipping option to a tax rate by sending a request to the [Add Shi
 
     export default AddShippingOptions
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/shipping-options/batch`, {
       credentials: "include",
@@ -814,8 +897,10 @@ You can add a shipping option to a tax rate by sending a request to the [Add Shi
       console.log(tax_rate.shipping_options)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -826,6 +911,7 @@ You can add a shipping option to a tax rate by sending a request to the [Add Shi
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -841,6 +927,7 @@ You can remove a shipping option from a tax rate by sending a request to the [De
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.removeShippingOptions(taxRateId, {
       shipping_options: [
@@ -851,8 +938,10 @@ You can remove a shipping option from a tax rate by sending a request to the [De
       console.log(tax_rate.shipping_options)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteShippingTaxRates } from "medusa-react"
 
@@ -875,9 +964,12 @@ You can remove a shipping option from a tax rate by sending a request to the [De
 
     export default RemoveShippingOptions
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}/shipping-options/batch`, {
       credentials: "include",
@@ -896,8 +988,10 @@ You can remove a shipping option from a tax rate by sending a request to the [De
       console.log(tax_rate.shipping_options)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>/shipping-options/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -908,6 +1002,7 @@ You can remove a shipping option from a tax rate by sending a request to the [De
       ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -925,14 +1020,17 @@ You can delete a tax rate by sending a request to the [Delete Tax Rate API Route
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.taxRates.delete(taxRateId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteTaxRate } from "medusa-react"
 
@@ -949,8 +1047,10 @@ You can delete a tax rate by sending a request to the [Delete Tax Rate API Route
 
     export default DeleteTaxRate
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/tax-rates/${taxRateId}`, {
       credentials: "include",
@@ -961,12 +1061,15 @@ You can delete a tax rate by sending a request to the [Delete Tax Rate API Route
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/tax-rates/<TAX_RATE_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

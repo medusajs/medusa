@@ -692,13 +692,16 @@ For example:
 
 <Tabs groupId="files" isCodeTabs={true}>
   <TabItem value="custom-route" label="src/api/custom/route.ts" default>
+
     ```ts
     import getProducts from "../_methods/get-products"
 
     export const GET = getProducts
     ```
+
   </TabItem>
   <TabItem value="internal-method" label="src/api/_methods/get-product.ts">
+
     ```ts
     import { 
       MedusaRequest, 
@@ -721,6 +724,7 @@ For example:
       })
     }
     ```
+
   </TabItem>
 </Tabs>
 
@@ -738,6 +742,7 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
 
 <Tabs groupId="files" isCodeTabs={true}>
   <TabItem value="posts-routes" label="src/api/admin/posts/route.ts" default>
+
     ```ts
     import type {
       MedusaRequest, 
@@ -780,8 +785,10 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
       })
     }
     ```
+
   </TabItem>
   <TabItem value="posts-id-routes" label="src/api/admin/posts/[id]/route.ts">
+
     ```ts
     import type { 
       MedusaRequest, 
@@ -843,6 +850,7 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
       res.status(200).end()
     }
     ```
+
   </TabItem>
 </Tabs>
 

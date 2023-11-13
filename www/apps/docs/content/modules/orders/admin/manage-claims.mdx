@@ -62,14 +62,17 @@ To view an order’s claims, you can retrieve the order using the [Get Order API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.retrieve(orderId)
     .then(({ order }) => {
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrder } from "medusa-react"
 
@@ -101,8 +104,10 @@ To view an order’s claims, you can retrieve the order using the [Get Order API
 
     export default Order
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
       credentials: "include",
@@ -112,12 +117,15 @@ To view an order’s claims, you can retrieve the order using the [Get Order API
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -133,6 +141,7 @@ You can create a claim by sending a request to the [Create Claim API Route](http
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.createClaim(orderId, {
       type: "refund",
@@ -147,8 +156,10 @@ You can create a claim by sending a request to the [Create Claim API Route](http
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateClaim } from "medusa-react"
 
@@ -173,8 +184,10 @@ You can create a claim by sending a request to the [Create Claim API Route](http
 
     export default CreateClaim
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims`, {
       credentials: "include",
@@ -197,8 +210,10 @@ You can create a claim by sending a request to the [Create Claim API Route](http
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -213,6 +228,7 @@ You can create a claim by sending a request to the [Create Claim API Route](http
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -243,6 +259,7 @@ You can update a claim by sending a request to the [Update Claim API Route](http
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.updateClaim(orderId, claimId, {
       no_notification: true,
@@ -251,8 +268,10 @@ You can update a claim by sending a request to the [Update Claim API Route](http
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateClaim } from "medusa-react"
 
@@ -272,8 +291,10 @@ You can update a claim by sending a request to the [Update Claim API Route](http
 
     export default UpdateClaim
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}`,
@@ -293,8 +314,10 @@ You can update a claim by sending a request to the [Update Claim API Route](http
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -303,6 +326,7 @@ You can update a claim by sending a request to the [Update Claim API Route](http
         "no_notification": true
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -326,6 +350,7 @@ You can create a fulfillment for a claim by sending a request to the [Create Cla
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.fulfillClaim(orderId, claimId, {
     })
@@ -333,8 +358,10 @@ You can create a fulfillment for a claim by sending a request to the [Create Cla
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminFulfillClaim } from "medusa-react"
 
@@ -353,9 +380,12 @@ You can create a fulfillment for a claim by sending a request to the [Create Cla
 
     export default FulfillClaim
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/fulfillments`, {
       credentials: "include",
@@ -366,12 +396,15 @@ You can create a fulfillment for a claim by sending a request to the [Create Cla
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -387,6 +420,7 @@ You can create a shipment for a claim by sending a request to the [Create Claim 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.createClaimShipment(orderId, claimId, {
       fulfillment_id,
@@ -395,8 +429,10 @@ You can create a shipment for a claim by sending a request to the [Create Claim 
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateClaimShipment } from "medusa-react"
 
@@ -416,9 +452,12 @@ You can create a shipment for a claim by sending a request to the [Create Claim 
 
     export default CreateShipment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/shipments`, {
       credentials: "include",
@@ -435,8 +474,10 @@ You can create a shipment for a claim by sending a request to the [Create Claim 
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/shipments' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -445,6 +486,7 @@ You can create a shipment for a claim by sending a request to the [Create Claim 
         "fulfillment_id": "<FUL_ID>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -470,6 +512,7 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.cancelClaimFulfillment(
       orderId,
@@ -480,8 +523,10 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCancelClaimFulfillment } from "medusa-react"
 
@@ -503,9 +548,12 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
 
     export default CancelFulfillment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/fulfillments/${fulfillmentId}/cancel`, {
       credentials: "include",
@@ -516,12 +564,15 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments/<FUL_ID>/cancel' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -545,14 +596,17 @@ You can cancel a claim by sending a request to the [Cancel Claim API Route](http
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.cancelClaim(orderId, claimId)
     .then(({ order }) => {
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCancelClaim } from "medusa-react"
 
@@ -569,9 +623,12 @@ You can cancel a claim by sending a request to the [Cancel Claim API Route](http
 
     export default CancelClaim
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/cancel`, {
       credentials: "include",
@@ -582,12 +639,15 @@ You can cancel a claim by sending a request to the [Cancel Claim API Route](http
       console.log(order.claims)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/cancel' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

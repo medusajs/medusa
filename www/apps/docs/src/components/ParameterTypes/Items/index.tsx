@@ -1,5 +1,4 @@
 import {
-  Badge,
   DetailsSummary,
   ExpandableNotice,
   FeatureFlagNotice,

@@ -146,14 +146,17 @@ You can do that by sending the following request to the [Upload Files API Route]
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.uploads.create(file) // file is an instance of File
     .then(({ uploads }) => {
       const key = uploads[0].key
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUploadFile } from "medusa-react"
 
@@ -170,8 +173,10 @@ You can do that by sending the following request to the [Upload Files API Route]
 
     export default ImportPrices
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     const formData = new FormData()
     formData.append("files", file) // file is an instance of File
@@ -189,14 +194,17 @@ You can do that by sending the following request to the [Upload Files API Route]
       const key = uploads[0].key
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/uploads' \
       -H 'Authorization: Bearer {api_token}' \
       -H 'Content-Type: text/csv' \
       -F 'files=@"<FILE_PATH_1>"'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -212,6 +220,7 @@ You can do that by sending the following request to the [Create a Batch Job API 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.batchJobs.create({
       type: "price-list-import",
@@ -225,8 +234,10 @@ You can do that by sending the following request to the [Create a Batch Job API 
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateBatchJob } from "medusa-react"
 
@@ -249,8 +260,10 @@ You can do that by sending the following request to the [Create a Batch Job API 
 
     export default ImportPrices
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/batch-jobs`, {
       method: "POST",
@@ -272,8 +285,10 @@ You can do that by sending the following request to the [Create a Batch Job API 
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
     -H 'Authorization: Bearer {api_token}' \
@@ -289,6 +304,7 @@ You can do that by sending the following request to the [Create a Batch Job API 
     # <KEY> is the key you obtained from the previous step
     # <PRICE_LIST_ID> is the ID of the price list to import prices into
     ```
+
   </TabItem>
 </Tabs>
 
@@ -318,14 +334,17 @@ You can retrieve all the details of the batch job, including its status and the 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.batchJobs.retrieve(batchJobId)
     .then(( batch_job ) => {
       console.log(batch_job.status, batch_job.result)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminBatchJob } from "medusa-react"
 
@@ -349,8 +368,10 @@ You can retrieve all the details of the batch job, including its status and the 
 
     export default ImportPrices
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}`, {
       credentials: "include",
@@ -360,13 +381,16 @@ You can retrieve all the details of the batch job, including its status and the 
       console.log(batch_job.status, batch_job.result)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
     -H 'Authorization: Bearer {api_token}'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
+
   </TabItem>
 </Tabs>
 
@@ -400,14 +424,17 @@ To confirm a batch job send the following request:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.batchJobs.confirm(batchJobId)
     .then(( batch_job ) => {
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminConfirmBatchJob } from "medusa-react"
 
@@ -424,8 +451,10 @@ To confirm a batch job send the following request:
 
     export default ImportPrices
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}/confirm`, {
       method: "POST",
@@ -436,13 +465,16 @@ To confirm a batch job send the following request:
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
     -H 'Authorization: Bearer {api_token}'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
+
   </TabItem>
 </Tabs>
 

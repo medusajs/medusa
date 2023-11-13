@@ -294,6 +294,7 @@ For example, this creates a batch job of the type `publish-products`:
 
 <Tabs groupId="request-types" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     medusa.admin.batchJobs.create({
       type: "publish-products",
@@ -304,8 +305,10 @@ For example, this creates a batch job of the type `publish-products`:
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/batch-jobs`, {
       method: "POST",
@@ -324,8 +327,10 @@ For example, this creates a batch job of the type `publish-products`:
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -336,6 +341,7 @@ For example, this creates a batch job of the type `publish-products`:
         "dry_run": true
     }'
     ```
+
 </TabItem>
 </Tabs>
 
@@ -349,14 +355,17 @@ You can retrieve the batch job afterward to get its status and view details abou
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     medusa.admin.batchJobs.retrieve(batchJobId)
     .then(( batch_job ) => {
       console.log(batch_job.status, batch_job.result)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}`, {
       credentials: "include",
@@ -366,13 +375,16 @@ You can retrieve the batch job afterward to get its status and view details abou
       console.log(batch_job.status, batch_job.result)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
+
   </TabItem>
 </Tabs>
 
@@ -398,14 +410,17 @@ To process the batch job, send a request to [confirm the batch job](https://docs
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```jsx
     medusa.admin.batchJobs.confirm(batchJobId)
     .then(( batch_job ) => {
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```jsx
     fetch(`<BACKEND_URL>/admin/batch-jobs/${batchJobId}/confirm`, {
       method: "POST",
@@ -416,13 +431,16 @@ To process the batch job, send a request to [confirm the batch job](https://docs
       console.log(batch_job.status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/batch-jobs/<BATCH_JOB_ID>/confirm' \
     -H 'Authorization: Bearer <API_TOKEN>'
     # <BATCH_JOB_ID> is the ID of the batch job
     ```
+
   </TabItem>
 </Tabs>
 

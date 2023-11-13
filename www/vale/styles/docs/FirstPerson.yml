@@ -4,6 +4,7 @@ link: https://medusajs.notion.site/Style-Guide-Docs-fad86dd1c5f84b48b145e959f366
 ignorecase: true
 level: error
 nonword: true
+scope: text
 tokens:
   - (?:^|\s)I\s
   - (?:^|\s)I,\s

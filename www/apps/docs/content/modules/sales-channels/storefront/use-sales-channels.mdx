@@ -57,6 +57,7 @@ To filter products by a specific sales channel, pass the `sales_channel_id` quer
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.products.list({
       sales_channel_id: [
@@ -67,8 +68,10 @@ To filter products by a specific sales channel, pass the `sales_channel_id` quer
       console.log(products.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Product } from "@medusajs/medusa"
     import { useProducts } from "medusa-react"
@@ -97,9 +100,12 @@ To filter products by a specific sales channel, pass the `sales_channel_id` quer
 
     export default Products
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/store/products?sales_channel_id[0]=${salesChannelId}`)
     .then((response) => response.json())
@@ -107,6 +113,7 @@ To filter products by a specific sales channel, pass the `sales_channel_id` quer
       console.log(products.length)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -124,6 +131,7 @@ To associate a sales channel with a cart while creating it, you can pass the `sa
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.carts.create({
       sales_channel_id: salesChannelId,
@@ -132,8 +140,10 @@ To associate a sales channel with a cart while creating it, you can pass the `sa
       console.log(cart.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCart } from "medusa-react"
 
@@ -158,8 +168,10 @@ To associate a sales channel with a cart while creating it, you can pass the `sa
 
     export default Cart
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/carts`, {
       method: "POST",
@@ -175,6 +187,7 @@ To associate a sales channel with a cart while creating it, you can pass the `sa
       console.log(cart.id)
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -186,6 +199,7 @@ You can update the sales channel of an existing cart by passing the `sales_chann
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.carts.update(cartId, {
       sales_channel_id: salesChannelId,
@@ -194,8 +208,10 @@ You can update the sales channel of an existing cart by passing the `sales_chann
       console.log(cart.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useCart } from "medusa-react"
 
@@ -215,8 +231,10 @@ You can update the sales channel of an existing cart by passing the `sales_chann
 
     export default Cart
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/carts/${cartId}`, {
       method: "POST",
@@ -230,6 +248,7 @@ You can update the sales channel of an existing cart by passing the `sales_chann
     .then((response) => response.json())
     .then(({ cart }) => console.log(cart.id))
     ```
+
   </TabItem>
 </Tabs>
 

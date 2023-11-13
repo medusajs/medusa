@@ -65,14 +65,17 @@ You can retrieve a list of publishable API keys by sending a request to the [Lis
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys.list()
     .then(({ publishable_api_keys, count, limit, offset }) => {
       console.log(publishable_api_keys)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { PublishableApiKey } from "@medusajs/medusa"
     import { useAdminPublishableApiKeys } from "medusa-react"
@@ -105,8 +108,10 @@ You can retrieve a list of publishable API keys by sending a request to the [Lis
 
     export default PublishabelApiKeys
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/publishable-api-keys`, {
       credentials: "include",
@@ -116,12 +121,15 @@ You can retrieve a list of publishable API keys by sending a request to the [Lis
       console.log(publishable_api_keys)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/publishable-api-keys' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -148,6 +156,7 @@ You can create a publishable API key by sending a request to the [Create Publish
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys.create({
       title: "Web API Key",
@@ -156,8 +165,10 @@ You can create a publishable API key by sending a request to the [Create Publish
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreatePublishableApiKey } from "medusa-react"
 
@@ -176,8 +187,10 @@ You can create a publishable API key by sending a request to the [Create Publish
 
     export default CreatePublishableApiKey
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/publishable-api-keys`, {
       method: "POST",
@@ -194,8 +207,10 @@ You can create a publishable API key by sending a request to the [Create Publish
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -204,6 +219,7 @@ You can create a publishable API key by sending a request to the [Create Publish
         "title": "Web API Key"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -219,6 +235,7 @@ You can update a publishable API key’s details by sending a request to the [Up
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys.update(publishableApiKeyId, {
       title: "Web API Key",
@@ -227,8 +244,10 @@ You can update a publishable API key’s details by sending a request to the [Up
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdatePublishableApiKey } from "medusa-react"
 
@@ -249,9 +268,12 @@ You can update a publishable API key’s details by sending a request to the [Up
 
     export default UpdatePublishableApiKey
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
       method: "POST",
@@ -268,8 +290,10 @@ You can update a publishable API key’s details by sending a request to the [Up
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -278,6 +302,7 @@ You can update a publishable API key’s details by sending a request to the [Up
         "title": "Web API Key"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -295,14 +320,17 @@ You can revoke a publishable API key by sending a request to the [Revoke Publish
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys.revoke(publishableApiKeyId)
     .then(({ publishable_api_key }) => {
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminRevokePublishableApiKey } from "medusa-react"
 
@@ -321,9 +349,12 @@ You can revoke a publishable API key by sending a request to the [Revoke Publish
 
     export default PublishableApiKey
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/revoke`, 
@@ -337,12 +368,15 @@ You can revoke a publishable API key by sending a request to the [Revoke Publish
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/revoke' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -356,14 +390,17 @@ You can delete a publishable API key by sending a request to the [Delete Publish
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys.delete(publishableApiKeyId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeletePublishableApiKey } from "medusa-react"
 
@@ -382,9 +419,12 @@ You can delete a publishable API key by sending a request to the [Delete Publish
 
     export default PublishableApiKey
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}`, {
       method: "DELETE",
@@ -395,12 +435,15 @@ You can delete a publishable API key by sending a request to the [Delete Publish
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -424,6 +467,7 @@ You can retrieve the list of sales channels associated with a publishable API ke
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys
       .listSalesChannels(publishableApiKeyId)
@@ -431,8 +475,10 @@ You can retrieve the list of sales channels associated with a publishable API ke
       console.log(sales_channels)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { SalesChannel } from "@medusajs/medusa"
     import { 
@@ -464,9 +510,12 @@ You can retrieve the list of sales channels associated with a publishable API ke
 
     export default SalesChannels
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels`,
@@ -479,12 +528,15 @@ You can retrieve the list of sales channels associated with a publishable API ke
       console.log(sales_channels)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -498,6 +550,7 @@ You can add a sales channel to a publishable API key by sending a request to the
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys.addSalesChannelsBatch(
       publishableApiKeyId, 
@@ -513,8 +566,10 @@ You can add a sales channel to a publishable API key by sending a request to the
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import {
       useAdminAddPublishableKeySalesChannelsBatch,
@@ -542,9 +597,12 @@ You can add a sales channel to a publishable API key by sending a request to the
 
     export default PublishableApiKey
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels/batch`, 
@@ -568,8 +626,10 @@ You can add a sales channel to a publishable API key by sending a request to the
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -582,6 +642,7 @@ You can add a sales channel to a publishable API key by sending a request to the
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -599,6 +660,7 @@ You can delete a sales channel from a publishable API key by sending a request t
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(
       publishableApiKeyId,
@@ -614,8 +676,10 @@ You can delete a sales channel from a publishable API key by sending a request t
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminRemovePublishableKeySalesChannelsBatch,
@@ -643,9 +707,12 @@ You can delete a sales channel from a publishable API key by sending a request t
 
     export default PublishableApiKey
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/publishable-api-keys/${publishableApiKeyId}/sales-channels/batch`,
@@ -669,8 +736,10 @@ You can delete a sales channel from a publishable API key by sending a request t
       console.log(publishable_api_key.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/publishable-api-keys/<PUBLISHABLE_API_KEY>/sales-channels/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -683,6 +752,7 @@ You can delete a sales channel from a publishable API key by sending a request t
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 

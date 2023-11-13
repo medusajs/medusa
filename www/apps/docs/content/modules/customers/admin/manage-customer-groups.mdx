@@ -52,6 +52,7 @@ You can create a customer group by sending a request to the Create Customer Grou
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.create({
       name: "VIP",
@@ -60,8 +61,10 @@ You can create a customer group by sending a request to the Create Customer Grou
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateCustomerGroup } from "medusa-react"
 
@@ -86,8 +89,10 @@ You can create a customer group by sending a request to the Create Customer Grou
 
     export default CreateCustomerGroup
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/customer-groups`, {
       method: "POST",
@@ -104,8 +109,10 @@ You can create a customer group by sending a request to the Create Customer Grou
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customer-groups' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -114,6 +121,7 @@ You can create a customer group by sending a request to the Create Customer Grou
         "name": "VIP"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -127,14 +135,17 @@ You can get a list of all customer groups by sending a request to the List Custo
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.list()
     .then(({ customer_groups, limit, offset, count }) => {
       console.log(customer_groups.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { CustomerGroup } from "@medusajs/medusa"
     import { useAdminCustomerGroups } from "medusa-react"
@@ -168,8 +179,10 @@ You can get a list of all customer groups by sending a request to the List Custo
 
     export default CustomerGroups
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/customer-groups`, {
       credentials: "include",
@@ -179,12 +192,15 @@ You can get a list of all customer groups by sending a request to the List Custo
       console.log(customer_groups.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customer-groups' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -200,14 +216,17 @@ You can retrieve a single customer group by sending a request to the Get a Custo
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.retrieve(customerGroupId)
     .then(({ customer_group }) => {
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCustomerGroup } from "medusa-react"
 
@@ -226,8 +245,10 @@ You can retrieve a single customer group by sending a request to the Get a Custo
 
     export default CustomerGroup
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
@@ -240,12 +261,15 @@ You can retrieve a single customer group by sending a request to the Get a Custo
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -259,6 +283,7 @@ You can update a customer group’s data by sending a request to the Update Cust
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.update(customerGroupId, {
       metadata: {
@@ -269,8 +294,10 @@ You can update a customer group’s data by sending a request to the Update Cust
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateCustomerGroup } from "medusa-react"
 
@@ -297,8 +324,10 @@ You can update a customer group’s data by sending a request to the Update Cust
 
     export default UpdateCustomerGroup
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`,
@@ -320,8 +349,10 @@ You can update a customer group’s data by sending a request to the Update Cust
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -332,6 +363,7 @@ You can update a customer group’s data by sending a request to the Update Cust
         }
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -345,14 +377,17 @@ You can delete a customer group by sending a request to the Delete a Customer Gr
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.delete(customerGroupId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteCustomerGroup } from "medusa-react"
 
@@ -371,8 +406,10 @@ You can delete a customer group by sending a request to the Delete a Customer Gr
 
     export default CustomerGroup
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/customer-groups/${customerGroupId}`, 
@@ -386,12 +423,15 @@ You can delete a customer group by sending a request to the Delete a Customer Gr
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -407,6 +447,7 @@ You can add a customer to a group by sending a request to the Customer Group’s
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.addCustomers(customerGroupId, {
       customer_ids: [
@@ -419,8 +460,10 @@ You can add a customer to a group by sending a request to the Customer Group’s
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { 
       useAdminAddCustomersToCustomerGroup,
@@ -447,9 +490,12 @@ You can add a customer to a group by sending a request to the Customer Group’s
 
     export default CustomerGroup
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
@@ -473,8 +519,10 @@ You can add a customer to a group by sending a request to the Customer Group’s
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -487,6 +535,7 @@ You can add a customer to a group by sending a request to the Customer Group’s
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -498,14 +547,17 @@ You can retrieve a list of all customers in a customer group using the List Cust
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.listCustomers(customerGroupId)
     .then(({ customers, count, offset, limit }) => {
       console.log(customers.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Customer } from "@medusajs/medusa"
     import { useAdminCustomerGroupCustomers } from "medusa-react"
@@ -537,9 +589,12 @@ You can retrieve a list of all customers in a customer group using the List Cust
 
     export default CustomerGroup
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers`, {
       credentials: "include",
@@ -549,12 +604,15 @@ You can retrieve a list of all customers in a customer group using the List Cust
       console.log(customers.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -572,6 +630,7 @@ You can remove customers from a customer group by sending a request to the Remov
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.customerGroups.removeCustomers(
       customer_group_id,
@@ -587,8 +646,10 @@ You can remove customers from a customer group by sending a request to the Remov
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Customer } from "@medusajs/medusa"
     import { 
@@ -617,9 +678,12 @@ You can remove customers from a customer group by sending a request to the Remov
 
     export default CustomerGroup
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
 <!-- eslint-disable max-len -->
+
     ```ts
     fetch(
       `<BACKEND_URL>/admin/customer-groups/${customerGroupId}/customers/batch`,
@@ -643,8 +707,10 @@ You can remove customers from a customer group by sending a request to the Remov
       console.log(customer_group.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/customer-groups/<CUSTOMER_GROUP_ID>/customers/batch' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -657,6 +723,7 @@ You can remove customers from a customer group by sending a request to the Remov
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 

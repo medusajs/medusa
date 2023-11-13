@@ -81,6 +81,7 @@ To allow the customer to claim an order, send a request to the Claim an Order AP
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.orders.requestCustomerOrders({
       order_ids: [
@@ -94,8 +95,10 @@ To allow the customer to claim an order, send a request to the Claim an Order AP
       // an error occurred
     })
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/orders/batch/customer/token`, {
       method: "POST",
@@ -116,6 +119,7 @@ To allow the customer to claim an order, send a request to the Claim an Order AP
       // display an error to the customer
     })
     ```
+
   </TabItem>
 </Tabs>
 
@@ -135,6 +139,7 @@ Then, you send a request to the Verify Claim Order API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.orders.confirmRequest({
       token,
@@ -146,8 +151,10 @@ Then, you send a request to the Verify Claim Order API Route:
       // an error occurred
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useGrantOrderAccess } from "medusa-react"
 
@@ -166,8 +173,10 @@ Then, you send a request to the Verify Claim Order API Route:
 
     export default ClaimOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/store/orders/customer/confirm`, {
       method: "POST",
@@ -186,6 +195,7 @@ Then, you send a request to the Verify Claim Order API Route:
       // display an error to the customer
     })
     ```
+
   </TabItem>
 </Tabs>
 

@@ -71,6 +71,7 @@ For example, you can create another entity `Author` and add a `ManyToOne` relati
 
 <Tabs groupId="files" isCodeTabs={true}>
   <TabItem value="post" label="src/models/post.ts" default>
+
     ```ts
     import { 
       BeforeInsert, 
@@ -101,8 +102,10 @@ For example, you can create another entity `Author` and add a `ManyToOne` relati
       }
     }
     ```
+
   </TabItem>
   <TabItem value="author" label="src/models/author.ts">
+
     ```ts
     import { BaseEntity, generateEntityId } from "@medusajs/medusa"
     import { 
@@ -130,6 +133,7 @@ For example, you can create another entity `Author` and add a `ManyToOne` relati
       }
     }
     ```
+
   </TabItem>
 </Tabs>
 

@@ -67,6 +67,7 @@ You can retrieve the gift card products by sending a request to the [List Produc
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.list({
       is_giftcard: true,
@@ -79,8 +80,10 @@ You can retrieve the gift card products by sending a request to the [List Produc
       }
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { Product } from "@medusajs/medusa"
     import { 
@@ -114,8 +117,10 @@ You can retrieve the gift card products by sending a request to the [List Produc
 
     export default GiftCard
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products?is_giftcard=true`, {
       credentials: "include",
@@ -129,12 +134,15 @@ You can retrieve the gift card products by sending a request to the [List Produc
       }
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/products?is_giftcard=true' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -148,6 +156,7 @@ You can create a gift card product by sending a request to the [Create a Product
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     import { ProductStatus } from "@medusajs/medusa"
     // ...
@@ -185,8 +194,10 @@ You can create a gift card product by sending a request to the [Create a Product
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateProduct } from "medusa-react"
     import { ProductStatus } from "@medusajs/medusa"
@@ -232,8 +243,10 @@ You can create a gift card product by sending a request to the [Create a Product
 
     export default CreateGiftCard
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products`, {
       method: "POST",
@@ -276,8 +289,10 @@ You can create a gift card product by sending a request to the [Create a Product
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -312,6 +327,7 @@ You can create a gift card product by sending a request to the [Create a Product
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -341,6 +357,7 @@ You can update a gift card product’s details by sending a request to the [Upda
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.update(giftCardId, {
       description: "The best gift card",
@@ -349,8 +366,10 @@ You can update a gift card product’s details by sending a request to the [Upda
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateProduct } from "medusa-react"
 
@@ -369,8 +388,10 @@ You can update a gift card product’s details by sending a request to the [Upda
 
     export default UpdateGiftCard
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${giftCardId}`, {
       method: "POST",
@@ -387,8 +408,10 @@ You can update a gift card product’s details by sending a request to the [Upda
       console.log(product.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/products/<GIFT_CARD_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -397,6 +420,7 @@ You can update a gift card product’s details by sending a request to the [Upda
         "description": "The best gift card"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -412,14 +436,17 @@ You can delete a gift card product by sending a request to the [Delete a Product
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.products.delete(giftCardId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteProduct } from "medusa-react"
 
@@ -436,8 +463,10 @@ You can delete a gift card product by sending a request to the [Delete a Product
 
     export default GiftCard
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/products/${giftCardId}`, {
       method: "DELETE",
@@ -448,12 +477,15 @@ You can delete a gift card product by sending a request to the [Delete a Product
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/products/<GIFT_CARD_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -477,14 +509,17 @@ You can retrieve all custom gift cards by sending a request to the [List Gift Ca
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.giftCards.list()
     .then(({ gift_cards, limit, offset, count }) => {
       console.log(gift_cards.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { GiftCard } from "@medusajs/medusa"
     import { useAdminGiftCards } from "medusa-react"
@@ -511,8 +546,10 @@ You can retrieve all custom gift cards by sending a request to the [List Gift Ca
 
     export default CustomGiftCards
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/gift-cards`, {
       credentials: "include",
@@ -522,12 +559,15 @@ You can retrieve all custom gift cards by sending a request to the [List Gift Ca
       console.log(gift_cards.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/gift-cards' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -543,6 +583,7 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.giftCards.create({
       region_id,
@@ -552,8 +593,10 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
       console.log(gift_card.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateGiftCard } from "medusa-react"
 
@@ -573,8 +616,10 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
 
     export default CreateCustomGiftCards
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/gift-cards`, {
       method: "POST",
@@ -592,8 +637,10 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
       console.log(gift_card.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/gift-cards' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -603,6 +650,7 @@ You can create a custom gift card by sending a request to the [Create a Gift Car
         "value": 2000
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -620,6 +668,7 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.giftCards.update(giftCardId, {
       balance,
@@ -628,8 +677,10 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
       console.log(gift_card.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateGiftCard } from "medusa-react"
 
@@ -650,8 +701,10 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
 
     export default UpdateCustomGiftCards
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/gift-cards/${giftCardId}`, {
       method: "POST",
@@ -668,8 +721,10 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
       console.log(gift_card.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/gift-cards/<GIFT_CARD_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -678,6 +733,7 @@ You can update a gift card by sending a request to the [Update a Gift Card API R
         "balance": 2000
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -693,14 +749,17 @@ You can delete a custom gift card by sending a request to the [Delete a Gift Car
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.giftCards.delete(giftCardId)
     .then(({ id, object, deleted }) => {
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminDeleteGiftCard } from "medusa-react"
 
@@ -719,8 +778,10 @@ You can delete a custom gift card by sending a request to the [Delete a Gift Car
 
     export default CustomGiftCard
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/gift-cards/${giftCardId}`, {
       method: "DELETE",
@@ -731,12 +792,15 @@ You can delete a custom gift card by sending a request to the [Delete a Gift Car
       console.log(id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X DELETE '<BACKEND_URL>/admin/gift-card/<GIFT_CARD_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 

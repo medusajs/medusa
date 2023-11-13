@@ -64,14 +64,17 @@ You can list orders by sending a request to the [List Orders API Route](https://
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.list()
     .then(({ orders, limit, offset, count }) => {
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrders } from "medusa-react"
 
@@ -95,8 +98,10 @@ You can list orders by sending a request to the [List Orders API Route](https://
 
     export default Orders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders`, {
       credentials: "include",
@@ -106,12 +111,15 @@ You can list orders by sending a request to the [List Orders API Route](https://
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -127,6 +135,7 @@ For example, you can filter the orders by one or more status:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.list({
       status: ["completed"],
@@ -139,8 +148,10 @@ For example, you can filter the orders by one or more status:
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrders } from "medusa-react"
 
@@ -170,8 +181,10 @@ For example, you can filter the orders by one or more status:
 
     export default Orders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders?status[]=completed`, {
       credentials: "include",
@@ -181,12 +194,15 @@ For example, you can filter the orders by one or more status:
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -200,6 +216,7 @@ Another example is filtering the orders by a sales channel:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.list({
       sales_channel_id: [
@@ -214,8 +231,10 @@ Another example is filtering the orders by a sales channel:
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrders } from "medusa-react"
 
@@ -247,9 +266,12 @@ Another example is filtering the orders by a sales channel:
 
     export default Orders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders?sales_channel_id[]=${salesChannelId}`, {
       credentials: "include",
@@ -259,12 +281,15 @@ Another example is filtering the orders by a sales channel:
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[]=<CHANNEL_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -272,6 +297,7 @@ You can also combine filters together:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.list({
       status: ["completed"],
@@ -287,8 +313,10 @@ You can also combine filters together:
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrders } from "medusa-react"
 
@@ -321,10 +349,13 @@ You can also combine filters together:
 
     export default Orders
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
-  ```ts
+
+<!-- eslint-disable max-len -->
+
+    ```ts
     fetch(`<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=${salesChannelId}`, {
       credentials: "include",
     })
@@ -333,12 +364,15 @@ You can also combine filters together:
       console.log(orders.length)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=<CHANNEL_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -350,14 +384,17 @@ You can retrieve an order by sending a request to the [Get an Order API Route](h
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.retrieve(orderId)
     .then(({ order }) => {
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminOrder } from "medusa-react"
 
@@ -378,8 +415,10 @@ You can retrieve an order by sending a request to the [Get an Order API Route](h
 
     export default Order
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
       credentials: "include",
@@ -389,12 +428,15 @@ You can retrieve an order by sending a request to the [Get an Order API Route](h
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -423,6 +465,7 @@ You can update any of the above details of an order by sending a request to the 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.update(orderId, {
       email,
@@ -431,8 +474,10 @@ You can update any of the above details of an order by sending a request to the 
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminUpdateOrder } from "medusa-react"
 
@@ -453,8 +498,10 @@ You can update any of the above details of an order by sending a request to the 
 
     export default UpdateOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
       credentials: "include",
@@ -471,8 +518,10 @@ You can update any of the above details of an order by sending a request to the 
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -481,6 +530,7 @@ You can update any of the above details of an order by sending a request to the 
         "email": "user@example.com"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -500,14 +550,17 @@ You can capture an orderâ€™s payment by sending a request to the [Capture Orderâ
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.capturePayment(orderId)
     .then(({ order }) => {
       console.log(order.payment_status)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCapturePayment } from "medusa-react"
 
@@ -526,8 +579,10 @@ You can capture an orderâ€™s payment by sending a request to the [Capture Orderâ
 
     export default CapturePayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/capture`, {
       credentials: "include",
@@ -538,12 +593,15 @@ You can capture an orderâ€™s payment by sending a request to the [Capture Orderâ
       console.log(order.payment_status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/capture' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -559,6 +617,7 @@ To refund payment, send a request to the [Refund Payment API Route](https://docs
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.refundPayment(orderId, {
       amount,
@@ -568,8 +627,10 @@ To refund payment, send a request to the [Refund Payment API Route](https://docs
       console.log(order.payment_status, order.refunded_total)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminRefundPayment } from "medusa-react"
 
@@ -591,8 +652,10 @@ To refund payment, send a request to the [Refund Payment API Route](https://docs
 
     export default RefundPayment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/refund`, {
       credentials: "include",
@@ -610,8 +673,10 @@ To refund payment, send a request to the [Refund Payment API Route](https://docs
       console.log(order.payment_status, order.refunded_total)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/refund' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -621,6 +686,7 @@ To refund payment, send a request to the [Refund Payment API Route](https://docs
         "reason": "customer did not like the order"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -645,6 +711,7 @@ You can create a fulfillment by sending a request to the [Create a Fulfillment A
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.createFulfillment(orderId, {
       items: [
@@ -658,8 +725,10 @@ You can create a fulfillment by sending a request to the [Create a Fulfillment A
       console.log(order.fulfillment_status, order.fulfillments)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateFulfillment } from "medusa-react"
 
@@ -685,8 +754,10 @@ You can create a fulfillment by sending a request to the [Create a Fulfillment A
 
     export default CreateFuilfillment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillment`, {
       credentials: "include",
@@ -708,8 +779,10 @@ You can create a fulfillment by sending a request to the [Create a Fulfillment A
       console.log(order.fulfillment_status, order.fulfillments)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillment' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -723,6 +796,7 @@ You can create a fulfillment by sending a request to the [Create a Fulfillment A
         ]
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -745,6 +819,7 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.createShipment(orderId, {
       fulfillment_id,
@@ -753,8 +828,10 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
       console.log(order.fulfillment_status, order.fulfillments)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCreateShipment } from "medusa-react"
 
@@ -775,8 +852,10 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
 
     export default CreateShipment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/shipment`, {
       credentials: "include",
@@ -793,8 +872,10 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
       console.log(order.fulfillment_status, order.fulfillments)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/shipment' \
     -H 'Authorization: Bearer <API_TOKEN>' \
@@ -803,6 +884,7 @@ You can create a shipment for a fulfillment by sending a request to the [Create 
         "fulfillment_id": "<FUL_ID>"
     }'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -818,14 +900,17 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
     .then(({ order }) => {
       console.log(order.fulfillment_status)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCancelFulfillment } from "medusa-react"
 
@@ -844,9 +929,12 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
 
     export default CancelFulfillment
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
-  <!-- eslint-disable max-len -->
+
+<!-- eslint-disable max-len -->
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillments/${fulfillmentId}/cancel`, {
       credentials: "include",
@@ -857,12 +945,15 @@ You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API
       console.log(order.id)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillments/<FUL_ID>/cancel' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -878,14 +969,17 @@ You can mark an order completed, changing its status, by sending a request to th
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.complete(orderId)
     .then(({ order }) => {
       console.log(order.status)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCompleteOrder } from "medusa-react"
 
@@ -904,8 +998,10 @@ You can mark an order completed, changing its status, by sending a request to th
 
     export default CompleteOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/complete`, {
       credentials: "include",
@@ -916,12 +1012,15 @@ You can mark an order completed, changing its status, by sending a request to th
       console.log(order.status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/complete' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -937,14 +1036,17 @@ You can cancel an order by sending a request to the [Cancel Order API Route](htt
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.cancel(orderId)
     .then(({ order }) => {
       console.log(order.status)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminCancelOrder } from "medusa-react"
 
@@ -963,8 +1065,10 @@ You can cancel an order by sending a request to the [Cancel Order API Route](htt
 
     export default CancelOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/cancel`, {
       credentials: "include",
@@ -975,12 +1079,15 @@ You can cancel an order by sending a request to the [Cancel Order API Route](htt
       console.log(order.status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/cancel' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
@@ -996,14 +1103,17 @@ You can archive an order by sending a request to the [Archive Order API Route](h
 
 <Tabs groupId="request-type" isCodeTabs={true}>
   <TabItem value="client" label="Medusa JS Client" default>
+
     ```ts
     medusa.admin.orders.archive(orderId)
     .then(({ order }) => {
       console.log(order.status)
     })
     ```
+
   </TabItem>
   <TabItem value="medusa-react" label="Medusa React">
+
     ```tsx
     import { useAdminArchiveOrder } from "medusa-react"
 
@@ -1022,8 +1132,10 @@ You can archive an order by sending a request to the [Archive Order API Route](h
 
     export default ArchiveOrder
     ```
+
   </TabItem>
   <TabItem value="fetch" label="Fetch API">
+
     ```ts
     fetch(`<BACKEND_URL>/admin/orders/${orderId}/archive`, {
       credentials: "include",
@@ -1034,12 +1146,15 @@ You can archive an order by sending a request to the [Archive Order API Route](h
       console.log(order.status)
     })
     ```
+
   </TabItem>
   <TabItem value="curl" label="cURL">
+
     ```bash
     curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/archive' \
     -H 'Authorization: Bearer <API_TOKEN>'
     ```
+
   </TabItem>
 </Tabs>
 
