@@ -76,6 +76,19 @@ export async function prepareUpdatePriceLists({
       priceListDataClone.title = pld.name
     }
 
+    const customerGroups = pld.customer_groups || []
+    delete pld.customer_groups
+
+    if (customerGroups.length) {
+      if (!priceListDataClone.rules) {
+        priceListDataClone.rules = {}
+      }
+
+      priceListDataClone.rules["customer_groups"] = customerGroups.map(
+        (group) => group.id
+      )
+    }
+
     return priceListDataClone
   })
 

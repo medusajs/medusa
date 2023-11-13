@@ -2,6 +2,7 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
+  simpleCustomerGroupFactory,
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
@@ -56,6 +57,10 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
   beforeEach(async () => {
     await adminSeeder(dbConnection)
     await createDefaultRuleTypes(appContainer)
+    await simpleCustomerGroupFactory(dbConnection, {
+      id: "customer-group-2",
+      name: "Test Group 2",
+    })
 
     await simpleRegionFactory(dbConnection, {
       id: "test-region",
@@ -95,7 +100,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
     await db.teardown()
   })
 
-  it("should update price lists successfully with prices", async () => {
+  it.only("should update price lists successfully with prices", async () => {
     const var2PriceSet = await createVariantPriceSet({
       container: appContainer,
       variantId: variant2.id,
@@ -120,15 +125,6 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
       },
     ])
 
-    console.log(
-      "priceList- ",
-      JSON.stringify(
-        priceList?.price_set_money_amounts?.[0].money_amount?.id,
-        null,
-        2
-      )
-    )
-
     await createVariantPriceSet({
       container: appContainer,
       variantId: variant.id,
@@ -145,6 +141,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
     const data = {
       name: "new price list name",
       description: "new price list description",
+      customer_groups: [{ id: "customer-group-2" }],
       prices: [
         {
           variant_id: variant.id,
@@ -180,7 +177,16 @@ describe("[Product & Pricing Module] POST /admin/price-lists/:id", () => {
         status: "active",
         starts_at: expect.any(String),
         ends_at: expect.any(String),
-        customer_groups: [],
+        customer_groups: [
+          {
+            id: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            name: "Test Group 2",
+            metadata: null,
+          },
+        ],
         prices: expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),

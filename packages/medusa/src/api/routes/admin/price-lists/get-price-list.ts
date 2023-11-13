@@ -10,6 +10,7 @@ import { MedusaError } from "medusa-core-utils"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
 import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
+import { CustomerGroupService } from "../../../../services"
 import PriceListService from "../../../../services/price-list"
 import { defaultAdminProductRemoteQueryObject } from "../products"
 
@@ -107,6 +108,9 @@ export async function listAndCountPriceListPricingModule({
   const { id } = req.params
 
   const remoteQuery = req.scope.resolve("remoteQuery")
+  const customerGroupService: CustomerGroupService = req.scope.resolve(
+    "customerGroupService"
+  )
   const pricingModuleService: IPricingModuleService = req.scope.resolve(
     "pricingModuleService"
   )
@@ -162,9 +166,23 @@ export async function listAndCountPriceListPricingModule({
 
   for (const priceList of priceLists) {
     const priceSetMoneyAmounts = priceList.price_set_money_amounts || []
+    const priceListRulesData = priceList.price_list_rules || []
     delete priceList.price_set_money_amounts
+    delete priceList.price_list_rules
 
+    const priceListRuleIds = priceListRulesData.map((plr) => plr.id)
     const priceListPrices: PriceListPriceCoreDTO[] = []
+
+    const priceListRules = await pricingModuleService.listPriceListRules(
+      {
+        id: priceListRuleIds,
+      },
+      { relations: ["rule_type", "price_list_rule_values"] }
+    )
+
+    const customerGroupPriceListRule = priceListRules.find(
+      (plr) => plr.rule_type?.rule_attribute === "customer_groups"
+    )
 
     for (const priceSetMoneyAmount of priceSetMoneyAmounts) {
       const priceSetId = priceSetMoneyAmount?.price_set?.id
@@ -195,9 +213,21 @@ export async function listAndCountPriceListPricingModule({
 
     priceList.prices = priceListPrices
     priceList.name = priceList.title
-
-    // TODO: do something about customer groups
     priceList.customer_groups = []
+
+    if (customerGroupPriceListRule) {
+      const customerGroupIds =
+        customerGroupPriceListRule?.price_list_rule_values?.map(
+          (plrv) => plrv.value
+        ) || []
+
+      const customerGroups = await customerGroupService.list(
+        { id: customerGroupIds },
+        {}
+      )
+
+      priceList.customer_groups = customerGroups
+    }
 
     delete priceList.title
   }
@@ -213,6 +243,7 @@ export async function listAndCountPriceListPricingModule({
 }
 
 const defaultAdminPriceListRelationsPricingModule = [
+  "price_list_rules",
   "price_set_money_amounts",
   "price_set_money_amounts.money_amount",
   "price_set_money_amounts.price_set",

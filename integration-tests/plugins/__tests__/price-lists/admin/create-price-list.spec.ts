@@ -2,6 +2,7 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
+  simpleCustomerGroupFactory,
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
@@ -51,6 +52,10 @@ describe("[Product & Pricing Module] POST /admin/price-lists", () => {
   beforeEach(async () => {
     await adminSeeder(dbConnection)
     await createDefaultRuleTypes(appContainer)
+    await simpleCustomerGroupFactory(dbConnection, {
+      id: "customer-group-1",
+      name: "Test Group",
+    })
 
     await simpleRegionFactory(dbConnection, {
       id: "test-region",
@@ -100,7 +105,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists", () => {
       name: "test price list",
       description: "test",
       type: "override",
-      customer_groups: [],
+      customer_groups: [{ id: "customer-group-1" }],
       status: "active",
       prices: [
         {
@@ -131,7 +136,16 @@ describe("[Product & Pricing Module] POST /admin/price-lists", () => {
         status: "active",
         starts_at: null,
         ends_at: null,
-        customer_groups: [],
+        customer_groups: [
+          {
+            id: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            deleted_at: null,
+            name: "Test Group",
+            metadata: null,
+          },
+        ],
         prices: [
           expect.objectContaining({
             id: expect.any(String),

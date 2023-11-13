@@ -15,6 +15,9 @@ export interface UpdatePriceListWorkflowDTO {
   status?: PriceListStatus
   rules?: CreatePriceListRules
   prices?: PriceListVariantPriceDTO[]
+  customer_groups?: {
+    id: string
+  }[]
 }
 
 export interface UpdatePriceListWorkflowInputDTO {
