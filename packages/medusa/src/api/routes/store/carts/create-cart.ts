@@ -17,7 +17,8 @@ import {
 } from "../../../../services"
 
 import { MedusaContainer } from "@medusajs/modules-sdk"
-import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { FlagRouter } from "@medusajs/utils"
+import { Workflows } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
@@ -91,11 +92,13 @@ export default async (req, res) => {
     user_agent: req.get("user-agent"),
   }
 
-  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.CreateCart,
+  })
 
   let cart
 
-  if (isMedusaV2Enabled) {
+  if (isWorkflowEnabled) {
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
     const input = {
       ...validated,
