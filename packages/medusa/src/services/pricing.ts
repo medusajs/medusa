@@ -306,7 +306,7 @@ class PricingService extends TransactionBaseService {
       .withTransaction(this.activeManager_)
       .calculateVariantPrice(data, context.price_selection)
 
-    const pricingResultMap = new Map()
+    const pricingResultMap = new Map<string, ProductVariantPricing>()
 
     for (const [variantId, pricing] of variantsPricing.entries()) {
       const pricingResult: ProductVariantPricing = {

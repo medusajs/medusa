@@ -24,7 +24,7 @@ export class Migration20231101232834 extends Migration {
     this.addSql('drop table if exists "price_list_rule_value" cascade;')
 
     this.addSql(
-      'alter table "price_list_rule" add column "value" text[] not null;'
+      'alter table "price_list_rule" add column "value" text not null;'
     )
 
     this.addSql(`ALTER TABLE price_list DROP COLUMN IF EXISTS number_rules`)

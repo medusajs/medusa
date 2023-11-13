@@ -38,7 +38,7 @@ describe("PriceListRule Service", () => {
   })
 
   describe("list", () => {
-    it("list priceListRules", async () => {
+    it("should list all priceListRules", async () => {
       const priceListRuleResult = await service.list()
 
       expect(priceListRuleResult).toEqual([
@@ -51,7 +51,7 @@ describe("PriceListRule Service", () => {
       ])
     })
 
-    it("list priceListRules by priceListRule id", async () => {
+    it("should list priceListRules scoped by priceListRule id", async () => {
       const priceListRuleResult = await service.list({
         id: ["price-list-rule-1"],
       })

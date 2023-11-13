@@ -185,8 +185,8 @@ describe("PriceList Service", () => {
         {
           title: "test",
           description: "test",
-          starts_at: "10/01/2023" as unknown as Date,
-          ends_at: "10/30/2023" as unknown as Date,
+          starts_at: "10/01/2023",
+          ends_at: "10/30/2023",
           rules: {
             customer_group_id: [
               "vip-customer-group-id",
@@ -204,7 +204,7 @@ describe("PriceList Service", () => {
         },
       ])
 
-      const updateDate = new Date()
+      const updateDate = new Date().toISOString()
       await service.updatePriceLists([
         {
           id: created.id,
@@ -299,8 +299,8 @@ describe("PriceList Service", () => {
         {
           title: "test",
           description: "test",
-          starts_at: "10/01/2023" as unknown as Date,
-          ends_at: "10/30/2023" as unknown as Date,
+          starts_at: "10/01/2023",
+          ends_at: "10/30/2023",
           rules: {
             customer_group_id: [
               "vip-customer-group-id",

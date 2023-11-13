@@ -179,7 +179,7 @@ describe("PriceList Service", () => {
     const id = "price-list-2"
 
     it("should update the starts_at date of the priceList successfully", async () => {
-      const updateDate = new Date()
+      const updateDate = new Date().toISOString()
       await service.update([
         {
           id,

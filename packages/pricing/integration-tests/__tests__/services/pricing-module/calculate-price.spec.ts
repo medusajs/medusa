@@ -1754,7 +1754,6 @@ describe("PricingModule Service - Calculate Price", () => {
           }
         )
 
-        console.warn(priceSetsResult)
         expect(priceSetsResult).toEqual([
           {
             id: "price-set-EUR",
