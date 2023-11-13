@@ -1,9 +1,4 @@
-import {
-  CartService,
-  ProductService,
-  ProductVariantInventoryService,
-  SalesChannelService,
-} from "../../../../services"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -12,21 +7,24 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Transform, Type } from "class-transformer"
+import {
+  CartService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
 
-import { DateComparisonOperator } from "../../../../types/common"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { IsType } from "../../../../utils/validators/is-type"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
-import { PriceSelectionParams } from "../../../../types/price-selection"
-import PricingService from "../../../../services/pricing"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import PricingService from "../../../../services/pricing"
+import { DateComparisonOperator } from "../../../../types/common"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { IsType } from "../../../../utils/validators/is-type"
 import { defaultStoreCategoryScope } from "../product-categories"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import IsolateSalesChannelDomain from "../../../../loaders/feature-flags/isolate-sales-channel-domain"
-import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/products
@@ -253,7 +251,7 @@ export default async (req, res) => {
   }
 
   const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
-    IsolateProductDomain.key
+    MedusaV2Flag.key
   )
 
   const promises: Promise<any>[] = []
