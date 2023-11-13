@@ -17,6 +17,7 @@ A money amount's data. A money amount represents a price.
     "description": "The price of this money amount.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -25,6 +26,7 @@ A money amount's data. A money amount represents a price.
     "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "code",
@@ -32,6 +34,7 @@ A money amount's data. A money amount represents a price.
         "description": "The code of the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -40,6 +43,7 @@ A money amount's data. A money amount represents a price.
         "description": "The name of the currency.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -48,6 +52,7 @@ A money amount's data. A money amount represents a price.
         "description": "The symbol of the currency.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -56,6 +61,7 @@ A money amount's data. A money amount represents a price.
         "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -66,6 +72,7 @@ A money amount's data. A money amount represents a price.
     "description": "The currency code of this money amount.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -74,6 +81,7 @@ A money amount's data. A money amount represents a price.
     "description": "The ID of the money amount.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -82,6 +90,7 @@ A money amount's data. A money amount represents a price.
     "description": "The maximum quantity required to be purchased for this price to be applied.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -90,6 +99,7 @@ A money amount's data. A money amount represents a price.
     "description": "The minimum quantity required to be purchased for this price to be applied.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

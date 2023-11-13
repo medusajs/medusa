@@ -77,6 +77,7 @@ export default (app) => {
 /**
  * @schema AdminPublishableApiKeysRes
  * type: object
+ * description: "The publishable API key's details."
  * required:
  *   - publishable_api_key
  * properties:
@@ -91,6 +92,7 @@ export type AdminPublishableApiKeysRes = {
 /**
  * @schema AdminPublishableApiKeysListRes
  * type: object
+ * description: The list of publishable API keys with pagination fields.
  * required:
  *   - publishable_api_keys
  *   - count
@@ -141,6 +143,7 @@ export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 /**
  * @schema AdminPublishableApiKeysListSalesChannelsRes
  * type: object
+ * description: "The list of sales channel."
  * required:
  *   - sales_channels
  * properties:

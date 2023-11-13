@@ -39,7 +39,7 @@ import { IStockLocationService } from "@medusajs/types"
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -115,7 +115,7 @@ export default async (req: Request, res: Response) => {
  *     description: Stock location address' city
  *     example: Mexico city
  *   country_code:
- *     description: "The 2 character ISO code for the country."
+ *     description: "The two character ISO code for the country."
  *     type: string
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements

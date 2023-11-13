@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/regions/{id}/countries
  * operationId: "PostRegionsRegionCountries"
  * summary: "Add Country"
- * description: "Add a Country to the list of Countries in a Region"
+ * description: "Add a Country to the list of Countries in a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -33,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

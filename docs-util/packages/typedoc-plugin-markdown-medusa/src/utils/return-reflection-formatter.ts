@@ -12,14 +12,14 @@ import {
   getDefaultValue,
   reflectionComponentFormatter,
 } from "./reflection-formatter"
-
-const MAX_LEVEL = 3
+import { MarkdownTheme } from "../theme"
 
 export function returnReflectionComponentFormatter(
   reflectionType: SomeType,
   project: ProjectReflection,
   comment?: Comment,
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): Parameter[] {
   const typeName = getType(reflectionType, "object", false)
   const type = getType(reflectionType, "object")
@@ -41,15 +41,21 @@ export function returnReflectionComponentFormatter(
               ) || ""
             : "",
         description: comment ? getReturnComment(comment) : "",
+        expandable: comment?.hasModifier(`@expandable`) || false,
+        featureFlag: Handlebars.helpers.featureFlag(comment),
         children: [],
       })
-      if (!isOnlyVoid(reflectionType.typeArguments) && level + 1 <= MAX_LEVEL) {
+      if (
+        !isOnlyVoid(reflectionType.typeArguments) &&
+        level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
+      ) {
         reflectionType.typeArguments.forEach((typeArg) => {
           const typeArgComponent = returnReflectionComponentFormatter(
             typeArg,
             project,
             undefined,
-            level + 1
+            level + 1,
+            maxLevel
           )
           if (typeArgComponent.length) {
             componentItem[parentKey - 1].children?.push(...typeArgComponent)
@@ -65,7 +71,8 @@ export function returnReflectionComponentFormatter(
             componentItem.push(
               reflectionComponentFormatter(
                 childItem as DeclarationReflection,
-                level
+                level,
+                maxLevel
               )
             )
           })
@@ -73,7 +80,8 @@ export function returnReflectionComponentFormatter(
           componentItem.push(
             reflectionComponentFormatter(
               reflection as DeclarationReflection,
-              level
+              level,
+              maxLevel
             )
           )
         }
@@ -95,14 +103,17 @@ export function returnReflectionComponentFormatter(
             ) || ""
           : "",
       description: comment ? getReturnComment(comment) : "",
+      expandable: comment?.hasModifier(`@expandable`) || false,
+      featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     })
-    if (level + 1 <= MAX_LEVEL) {
+    if (level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)) {
       const elementTypeItem = returnReflectionComponentFormatter(
         reflectionType.elementType,
         project,
         undefined,
-        level + 1
+        level + 1,
+        maxLevel
       )
       if (elementTypeItem.length) {
         componentItem[parentKey - 1].children?.push(...elementTypeItem)
@@ -126,19 +137,22 @@ export function returnReflectionComponentFormatter(
               ) || ""
             : "",
         description: comment ? getReturnComment(comment) : "",
+        expandable: comment?.hasModifier(`@expandable`) || false,
+        featureFlag: Handlebars.helpers.featureFlag(comment),
         children: [],
       })
       pushTo = componentItem[parentKey - 1].children!
     } else {
       pushTo = componentItem
     }
-    if (level + 1 <= MAX_LEVEL) {
+    if (level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)) {
       reflectionType.elements.forEach((element) => {
         const elementTypeItem = returnReflectionComponentFormatter(
           element,
           project,
           undefined,
-          level + 1
+          level + 1,
+          maxLevel
         )
         if (elementTypeItem.length) {
           pushTo.push(...elementTypeItem)
@@ -159,6 +173,8 @@ export function returnReflectionComponentFormatter(
           ? getDefaultValue(reflectionType.declaration) || ""
           : "",
       description: comment ? getReturnComment(comment) : "",
+      expandable: comment?.hasModifier(`@expandable`) || false,
+      featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     })
   }

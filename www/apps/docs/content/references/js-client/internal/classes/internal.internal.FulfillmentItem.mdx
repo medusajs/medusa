@@ -1,0 +1,57 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FulfillmentItem
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillment",
+    "type": "[`Fulfillment`](internal.Fulfillment.mdx)",
+    "description": "A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillment_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "item",
+    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "item_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

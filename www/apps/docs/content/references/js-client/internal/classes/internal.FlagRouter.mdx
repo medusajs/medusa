@@ -1,0 +1,130 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FlagRouter
+
+## Implements
+
+- [`IFlagRouter`](../../FeatureFlagTypes/interfaces/internal.internal-1.FeatureFlagTypes.IFlagRouter.mdx)
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "flags",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### isFeatureEnabled
+
+Check if a feature flag is enabled.
+There are two ways of using this method:
+1. `isFeatureEnabled("myFeatureFlag")`
+2. `isFeatureEnabled({ myNestedFeatureFlag: "someNestedFlag" })`
+We use 1. for top-level feature flags and 2. for nested feature flags. Almost all flags are top-level.
+An example of a nested flag is workflows. To use it, you would do:
+`isFeatureEnabled({ workflows: Workflows.CreateCart })`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "flag",
+    "type": "`string` \\| Record<`string`, `string`\\>",
+    "description": "The flag to check",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "- Whether the flag is enabled or not",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listFlags
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "FeatureFlagsResponse",
+    "type": "{ `key`: `string` ; `value`: `boolean` \\| Record<`string`, `boolean`\\>  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### setFlag
+
+Sets a feature flag.
+Flags take two shapes:
+setFlag("myFeatureFlag", true)
+setFlag("myFeatureFlag", { nestedFlag: true })
+These shapes are used for top-level and nested flags respectively, as explained in isFeatureEnabled.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "key",
+    "type": "`string`",
+    "description": "The key of the flag to set.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`boolean` \\| { `[key: string]`: `boolean`;  }",
+    "description": "The value of the flag to set.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "- void",
+    "expandable": false,
+    "children": []
+  }
+]} />

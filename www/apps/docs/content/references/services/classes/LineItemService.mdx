@@ -1,0 +1,1053 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# LineItemService
+
+## Constructors
+
+### constructor
+
+**new LineItemService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-14.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cartRepository_",
+    "type": "`Repository`<[`Cart`](Cart.mdx)\\> & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemTaxLineRepo_",
+    "type": "`Repository`<[`LineItemTaxLine`](LineItemTaxLine.mdx)\\> & { `deleteForCart`: Method deleteForCart ; `upsertLines`: Method upsertLines  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemAdjustmentService_",
+    "type": "[`LineItemAdjustmentService`](LineItemAdjustmentService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemRepository_",
+    "type": "`Repository`<[`LineItem`](LineItem.mdx)\\> & { `findByReturn`: Method findByReturn  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "pricingService_",
+    "type": "[`PricingService`](PricingService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productService_",
+    "type": "[`ProductService`](ProductService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantService_",
+    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionService_",
+    "type": "[`RegionService`](RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxProviderService_",
+    "type": "[`TaxProviderService`](TaxProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cloneTo
+
+**cloneTo**(`ids`, `data?`, `options?`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "ids",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "`DeepPartial`<[`LineItem`](LineItem.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options.setOriginalLineItemId",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**<`T`, `TResult`\>(`data`): `Promise`<`TResult`\>
+
+Create a line item
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`T`",
+    "description": "the line item object to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the created line item",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createReturnLines
+
+**createReturnLines**(`returnId`, `cartId`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+Creates return line items for a given cart based on the return items in a
+return.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "returnId",
+    "type": "`string`",
+    "description": "the id to generate return items from.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cartId",
+    "type": "`string`",
+    "description": "the cart to assign the return line items to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the created line items",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createTaxLine
+
+**createTaxLine**(`args`): [`LineItemTaxLine`](LineItemTaxLine.mdx)
+
+Create a line item tax line.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "args",
+    "type": "`DeepPartial`<[`LineItemTaxLine`](LineItemTaxLine.mdx)\\>",
+    "description": "tax line partial passed to the repo create method",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`LineItemTaxLine`](LineItemTaxLine.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "LineItemTaxLine",
+    "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "a new line item tax line",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+
+Deletes a line item.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the id of the line item to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`undefined` \\| ``null`` \\| [`LineItem`](LineItem.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteWithTaxLines
+
+**deleteWithTaxLines**(`id`): `Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the id of the line item to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`undefined` \| ``null`` \| [`LineItem`](LineItem.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`undefined` \\| ``null`` \\| [`LineItem`](LineItem.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+no the cascade on the entity takes care of it
+Deletes a line item with the tax lines.
+
+___
+
+### generate
+
+**generate**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`, `context?`): `Promise`<`TResult`\>
+
+Generate a single or multiple line item without persisting the data into the db
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantIdOrData",
+    "type": "`T`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionIdOrContext",
+    "type": "`T` extends `string` ? `string` : [`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### generateLineItem
+
+`Protected` **generateLineItem**(`variant`, `quantity`, `context`): `Promise`<[`LineItem`](LineItem.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variant",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.product",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.product.discountable",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.product.is_giftcard",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.product.thumbnail",
+    "type": "``null`` \\| `string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.product.title",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.product_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant.title",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx) & { `variantPricing`: [`ProductVariantPricing`](../types/ProductVariantPricing.mdx)  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`LineItem`](LineItem.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItem`](LineItem.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector`, `config?`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`id`, `config?`): `Promise`<[`LineItem`](LineItem.mdx)\>
+
+Retrieves a line item by its id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the id of the line item to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`object`",
+    "description": "the config to be used at query building",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`LineItem`](LineItem.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItem`](LineItem.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the line item",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`idOrSelector`, `data`): `Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+Updates a line item
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "idOrSelector",
+    "type": "`string` \\| [`Selector`](../types/Selector.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "description": "the id or selector of the line item(s) to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`Partial`](../types/Partial.mdx)<[`LineItem`](LineItem.mdx)\\>",
+    "description": "the properties to update the line item(s)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`LineItem`](LineItem.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItem`](LineItem.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated line item(s)",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateGenerateArguments
+
+`Protected` **validateGenerateArguments**<`T`, `TResult`\>(`variantIdOrData`, `regionIdOrContext`, `quantity?`): `void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "variantIdOrData",
+    "type": "`string` \\| `T`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionIdOrContext",
+    "type": "`T` extends `string` ? `string` : [`GenerateLineItemContext`](../types/GenerateLineItemContext.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`LineItemService`](LineItemService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`LineItemService`](LineItemService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "LineItemService",
+    "type": "[`LineItemService`](LineItemService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

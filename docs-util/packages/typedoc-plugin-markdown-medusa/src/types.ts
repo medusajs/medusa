@@ -74,6 +74,7 @@ export type FormattingOptionType = {
   frontmatterData?: Record<string, unknown>
   parameterComponent?: string
   mdxImports?: string[]
+  maxLevel?: number
 }
 
 export type FormattingOptionsType = {
@@ -98,6 +99,8 @@ export type Parameter = {
   optional?: boolean
   defaultValue?: string
   description?: string
+  featureFlag?: string
+  expandable: boolean
   children?: Parameter[]
 }
 

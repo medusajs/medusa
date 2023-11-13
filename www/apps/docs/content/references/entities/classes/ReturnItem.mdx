@@ -6,1322 +6,243 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ReturnItem
 
+A return item represents a line item in an order that is to be returned. It includes details related to the return and the reason behind it.
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "is_requested",
     "type": "`boolean`",
-    "description": "",
+    "description": "Whether the Return Item was requested initially or received unexpectedly in the warehouse.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "true",
+    "expandable": false,
     "children": []
   },
   {
     "name": "item",
     "type": "[`LineItem`](LineItem.mdx)",
-    "description": "",
+    "description": "The details of the line item in the original order to be returned.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`LineItem`](LineItem.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "adjustments",
         "type": "[`LineItemAdjustment`](LineItemAdjustment.mdx)[]",
-        "description": "",
+        "description": "The details of the item's adjustments, which are available when a discount is applied on the item.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`LineItemAdjustment`](LineItemAdjustment.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "amount",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "description",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discount",
-            "type": "[`Discount`](Discount.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discount_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item",
-            "type": "[`LineItem`](LineItem.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "allow_discounts",
         "type": "`boolean`",
-        "description": "",
+        "description": "Flag to indicate if the Line Item should be included when doing discount calculations.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "cart",
         "type": "[`Cart`](Cart.mdx)",
-        "description": "",
+        "description": "The details of the cart that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Cart`](Cart.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "billing_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "billing_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "completed_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "context",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "customer",
-            "type": "[`Customer`](Customer.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "customer_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discount_total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discounts",
-            "type": "[`Discount`](Discount.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "email",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_tax_total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_cards",
-            "type": "[`GiftCard`](GiftCard.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "idempotency_key",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item_tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "object",
-            "type": "``\"cart\"``",
-            "description": "",
-            "optional": false,
-            "defaultValue": "`\"cart\"`",
-            "children": []
-          },
-          {
-            "name": "payment",
-            "type": "[`Payment`](Payment.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_authorized_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_session",
-            "type": "``null`` \\| [`PaymentSession`](PaymentSession.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_sessions",
-            "type": "[`PaymentSession`](PaymentSession.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "raw_discount_total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refundable_amount",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refunded_total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel",
-            "type": "[`SalesChannel`](SalesChannel.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address",
-            "type": "``null`` \\| [`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_methods",
-            "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "subtotal",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "[`CartType`](../enums/CartType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "afterLoad",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "cart_id",
         "type": "`string`",
-        "description": "",
+        "description": "The ID of the cart that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "claim_order",
         "type": "[`ClaimOrder`](ClaimOrder.mdx)",
-        "description": "",
+        "description": "The details of the claim that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ClaimOrder`](ClaimOrder.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "additional_items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "canceled_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "claim_items",
-            "type": "[`ClaimItem`](ClaimItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillment_status",
-            "type": "[`ClaimFulfillmentStatus`](../enums/ClaimFulfillmentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillments",
-            "type": "[`Fulfillment`](Fulfillment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "idempotency_key",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "no_notification",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order",
-            "type": "[`Order`](Order.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_status",
-            "type": "[`ClaimPaymentStatus`](../enums/ClaimPaymentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refund_amount",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_order",
-            "type": "[`Return`](Return.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_methods",
-            "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "[`ClaimType`](../enums/ClaimType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "claim_order_id",
         "type": "`string`",
-        "description": "",
+        "description": "The ID of the claim that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "description",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "A more detailed description of the contents of the Line Item.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "discount_total",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The total of discount of the line item rounded",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "fulfilled_quantity",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The quantity of the Line Item that has been fulfilled.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "gift_card_total",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The total of the gift card of the line item",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "has_shipping",
         "type": "``null`` \\| `boolean`",
-        "description": "",
+        "description": "Flag to indicate if the Line Item has fulfillment associated with it.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The line item's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "",
+        "description": "Indicates if the line item unit_price include tax",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
         "children": []
       },
       {
         "name": "is_giftcard",
         "type": "`boolean`",
-        "description": "",
+        "description": "Flag to indicate if the Line Item is a Gift Card.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
         "children": []
       },
       {
         "name": "is_return",
         "type": "`boolean`",
-        "description": "",
+        "description": "Is the item being returned",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "order",
         "type": "[`Order`](Order.mdx)",
-        "description": "",
+        "description": "The details of the order that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Order`](Order.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "billing_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "billing_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "canceled_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart",
-            "type": "[`Cart`](Cart.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "claims",
-            "type": "[`ClaimOrder`](ClaimOrder.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "currency",
-            "type": "[`Currency`](Currency.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "currency_code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "customer",
-            "type": "[`Customer`](Customer.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "customer_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discount_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discounts",
-            "type": "[`Discount`](Discount.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "display_id",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "draft_order",
-            "type": "[`DraftOrder`](DraftOrder.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "draft_order_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "edits",
-            "type": "[`OrderEdit`](OrderEdit.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "email",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "external_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillment_status",
-            "type": "[`FulfillmentStatus`](../enums/FulfillmentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillments",
-            "type": "[`Fulfillment`](Fulfillment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_tax_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_transactions",
-            "type": "[`GiftCardTransaction`](GiftCardTransaction.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_cards",
-            "type": "[`GiftCard`](GiftCard.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "idempotency_key",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item_tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "no_notification",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "object",
-            "type": "``\"order\"``",
-            "description": "",
-            "optional": false,
-            "defaultValue": "`\"order\"`",
-            "children": []
-          },
-          {
-            "name": "paid_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_status",
-            "type": "[`PaymentStatus`](../enums/PaymentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payments",
-            "type": "[`Payment`](Payment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "raw_discount_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refundable_amount",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refunded_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refunds",
-            "type": "[`Refund`](Refund.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "returnable_items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "returns",
-            "type": "[`Return`](Return.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel",
-            "type": "[`SalesChannel`](SalesChannel.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_methods",
-            "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "status",
-            "type": "[`OrderStatus`](../enums/OrderStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "subtotal",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "swaps",
-            "type": "[`Swap`](Swap.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_rate",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `Promise`<`void`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "order_edit",
         "type": "``null`` \\| [`OrderEdit`](OrderEdit.mdx)",
-        "description": "",
+        "description": "The details of the order edit.",
         "optional": true,
         "defaultValue": "",
+        "expandable": true,
         "children": []
       },
       {
         "name": "order_edit_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the order edit that the item may belong to.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "order_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the order that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "original_item_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the original line item. This is useful if the line item belongs to a resource that references an order, such as a return or an order edit.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "original_tax_total",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The original tax total amount of the line item",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "original_total",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The original total amount of the line item",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -1330,713 +251,169 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
         "description": "",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "quantity",
         "type": "`number`",
-        "description": "",
+        "description": "The quantity of the content in the Line Item.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "raw_discount_total",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The total of discount of the line item",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "refundable",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The amount that can be refunded from the given Line Item. Takes taxes and discounts into consideration.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "returned_quantity",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The quantity of the Line Item that has been returned.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "shipped_quantity",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The quantity of the Line Item that has been shipped.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "should_merge",
         "type": "`boolean`",
-        "description": "",
+        "description": "Flag to indicate if new Line Items with the same variant should be merged or added as an additional Line Item.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "true",
+        "expandable": false,
         "children": []
       },
       {
         "name": "subtotal",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The subtotal of the line item",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "swap",
         "type": "[`Swap`](Swap.mdx)",
-        "description": "",
+        "description": "The details of the swap that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Swap`](Swap.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "additional_items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "allow_backorder",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "canceled_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart",
-            "type": "[`Cart`](Cart.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "confirmed_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "difference_due",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillment_status",
-            "type": "[`SwapFulfillmentStatus`](../enums/SwapFulfillmentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillments",
-            "type": "[`Fulfillment`](Fulfillment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "idempotency_key",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "no_notification",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order",
-            "type": "[`Order`](Order.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment",
-            "type": "[`Payment`](Payment.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_status",
-            "type": "[`SwapPaymentStatus`](../enums/SwapPaymentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_order",
-            "type": "[`Return`](Return.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_methods",
-            "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "swap_id",
         "type": "`string`",
-        "description": "",
+        "description": "The ID of the swap that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "tax_lines",
         "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)[]",
-        "description": "",
+        "description": "The details of the item's tax lines.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`LineItemTaxLine`](LineItemTaxLine.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "code",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item",
-            "type": "[`LineItem`](LineItem.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "rate",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "tax_total",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The total of tax of the line item",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "thumbnail",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "A URL string to a small image of the contents of the Line Item.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "title",
         "type": "`string`",
-        "description": "",
+        "description": "The title of the Line Item.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "total",
         "type": "``null`` \\| `number`",
-        "description": "",
+        "description": "The total amount of the line item",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "unit_price",
         "type": "`number`",
-        "description": "",
+        "description": "The price of one unit of the content in the Line Item. This should be in the currency defined by the Cart/Order/Swap/Claim that the Line Item belongs to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "variant",
         "type": "[`ProductVariant`](ProductVariant.mdx)",
-        "description": "",
+        "description": "The details of the product variant that this item was created from.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ProductVariant`](ProductVariant.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "allow_backorder",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "barcode",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "ean",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "height",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "hs_code",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "inventory_items",
-            "type": "[`ProductVariantInventoryItem`](ProductVariantInventoryItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "inventory_quantity",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "length",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "manage_inventory",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "material",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "mid_code",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "options",
-            "type": "[`ProductOptionValue`](ProductOptionValue.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "origin_country",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "prices",
-            "type": "[`MoneyAmount`](MoneyAmount.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "product",
-            "type": "[`Product`](Product.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "product_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "purchasable",
-            "type": "`boolean`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sku",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "title",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "upc",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "variant_rank",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "weight",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "width",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "variant_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The id of the Product Variant contained in the Line Item.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "afterUpdateOrLoad",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeUpdate",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -2044,249 +421,144 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "item_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the Line Item that the Return Item references.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "metadata",
     "type": "Record<`string`, `unknown`\\>",
-    "description": "",
+    "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "note",
     "type": "`string`",
-    "description": "",
+    "description": "An optional note with additional details about the Return.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "quantity",
     "type": "`number`",
-    "description": "",
+    "description": "The quantity of the Line Item to be returned.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "reason",
     "type": "[`ReturnReason`](ReturnReason.mdx)",
-    "description": "",
+    "description": "The details of the reason for returning the item.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`ReturnReason`](ReturnReason.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "description",
         "type": "`string`",
-        "description": "",
+        "description": "A description of the Reason.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The return reason's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "label",
         "type": "`string`",
-        "description": "",
+        "description": "A text that can be displayed to the Customer as a reason.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "parent_return_reason",
         "type": "``null`` \\| [`ReturnReason`](ReturnReason.mdx)",
-        "description": "",
+        "description": "The details of the parent reason.",
         "optional": false,
         "defaultValue": "",
+        "expandable": true,
         "children": []
       },
       {
         "name": "parent_return_reason_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the parent reason.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "return_reason_children",
         "type": "[`ReturnReason`](ReturnReason.mdx)[]",
-        "description": "",
+        "description": "The details of the child reasons.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ReturnReason`](ReturnReason.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "description",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "label",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "parent_return_reason",
-            "type": "``null`` \\| [`ReturnReason`](ReturnReason.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "parent_return_reason_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_reason_children",
-            "type": "[`ReturnReason`](ReturnReason.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "value",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "value",
         "type": "`string`",
-        "description": "",
+        "description": "The value to identify the reason by.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -2294,1390 +566,216 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "reason_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the reason for returning the item.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "received_quantity",
     "type": "`number`",
-    "description": "",
+    "description": "The quantity that was received in the warehouse.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "requested_quantity",
     "type": "`number`",
-    "description": "",
+    "description": "The quantity that was originally requested to be returned.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "return_id",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the Return that the Return Item belongs to.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "return_order",
     "type": "[`Return`](Return.mdx)",
-    "description": "",
+    "description": "Details of the Return that the Return Item belongs to.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`Return`](Return.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "claim_order",
         "type": "[`ClaimOrder`](ClaimOrder.mdx)",
-        "description": "",
+        "description": "The details of the claim that the return may belong to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ClaimOrder`](ClaimOrder.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "additional_items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "canceled_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "claim_items",
-            "type": "[`ClaimItem`](ClaimItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillment_status",
-            "type": "[`ClaimFulfillmentStatus`](../enums/ClaimFulfillmentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillments",
-            "type": "[`Fulfillment`](Fulfillment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "idempotency_key",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "no_notification",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order",
-            "type": "[`Order`](Order.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_status",
-            "type": "[`ClaimPaymentStatus`](../enums/ClaimPaymentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refund_amount",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_order",
-            "type": "[`Return`](Return.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_methods",
-            "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "[`ClaimType`](../enums/ClaimType.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "claim_order_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the claim that the return may belong to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The return's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "idempotency_key",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "Randomly generated key used to continue the completion of the return in case of failure.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "items",
         "type": "[`ReturnItem`](ReturnItem.mdx)[]",
-        "description": "",
+        "description": "The details of the items that the customer is returning.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ReturnItem`](ReturnItem.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "is_requested",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item",
-            "type": "[`LineItem`](LineItem.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "note",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "quantity",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "reason",
-            "type": "[`ReturnReason`](ReturnReason.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "reason_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "received_quantity",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "requested_quantity",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_order",
-            "type": "[`Return`](Return.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "location_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the stock location the return will be added back.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
         "type": "``null`` \\| Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "no_notification",
         "type": "``null`` \\| `boolean`",
-        "description": "",
+        "description": "When set to true, no notification will be sent related to this return.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "order",
         "type": "[`Order`](Order.mdx)",
-        "description": "",
+        "description": "The details of the order that the return was created for.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Order`](Order.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "billing_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "billing_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "canceled_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart",
-            "type": "[`Cart`](Cart.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "claims",
-            "type": "[`ClaimOrder`](ClaimOrder.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "currency",
-            "type": "[`Currency`](Currency.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "currency_code",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "customer",
-            "type": "[`Customer`](Customer.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "customer_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discount_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "discounts",
-            "type": "[`Discount`](Discount.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "display_id",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "draft_order",
-            "type": "[`DraftOrder`](DraftOrder.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "draft_order_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "edits",
-            "type": "[`OrderEdit`](OrderEdit.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "email",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "external_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillment_status",
-            "type": "[`FulfillmentStatus`](../enums/FulfillmentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillments",
-            "type": "[`Fulfillment`](Fulfillment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_tax_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_card_transactions",
-            "type": "[`GiftCardTransaction`](GiftCardTransaction.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "gift_cards",
-            "type": "[`GiftCard`](GiftCard.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "idempotency_key",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "item_tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "no_notification",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "object",
-            "type": "``\"order\"``",
-            "description": "",
-            "optional": false,
-            "defaultValue": "`\"order\"`",
-            "children": []
-          },
-          {
-            "name": "paid_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_status",
-            "type": "[`PaymentStatus`](../enums/PaymentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payments",
-            "type": "[`Payment`](Payment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "raw_discount_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refundable_amount",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refunded_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "refunds",
-            "type": "[`Refund`](Refund.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region",
-            "type": "[`Region`](Region.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "returnable_items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "returns",
-            "type": "[`Return`](Return.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel",
-            "type": "[`SalesChannel`](SalesChannel.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_methods",
-            "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "status",
-            "type": "[`OrderStatus`](../enums/OrderStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "subtotal",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "swaps",
-            "type": "[`Swap`](Swap.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_rate",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_total",
-            "type": "``null`` \\| `number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "total",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `Promise`<`void`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "order_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the order that the return was created for.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "received_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the return was received.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "refund_amount",
         "type": "`number`",
-        "description": "",
+        "description": "The amount that should be refunded as a result of the return.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "shipping_data",
         "type": "Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "shipping_method",
         "type": "[`ShippingMethod`](ShippingMethod.mdx)",
-        "description": "",
+        "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`ShippingMethod`](ShippingMethod.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart",
-            "type": "[`Cart`](Cart.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "claim_order",
-            "type": "[`ClaimOrder`](ClaimOrder.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "claim_order_id",
-            "type": "``null`` \\| `string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "data",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "includes_tax",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order",
-            "type": "[`Order`](Order.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "price",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_order",
-            "type": "[`Return`](Return.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_option",
-            "type": "[`ShippingOption`](ShippingOption.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_option_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "subtotal",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "swap",
-            "type": "[`Swap`](Swap.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "swap_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_lines",
-            "type": "[`ShippingMethodTaxLine`](ShippingMethodTaxLine.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "tax_total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "total",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "status",
         "type": "[`ReturnStatus`](../enums/ReturnStatus.mdx)",
-        "description": "",
+        "description": "Status of the Return.",
         "optional": false,
-        "defaultValue": "",
-        "children": [
-          {
-            "name": "CANCELED",
-            "type": "``\"canceled\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "RECEIVED",
-            "type": "``\"received\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "REQUESTED",
-            "type": "``\"requested\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "REQUIRES_ACTION",
-            "type": "``\"requires_action\"``",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "defaultValue": "requested",
+        "expandable": false,
+        "children": []
       },
       {
         "name": "swap",
         "type": "[`Swap`](Swap.mdx)",
-        "description": "",
+        "description": "The details of the swap that the return may belong to.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`Swap`](Swap.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "additional_items",
-            "type": "[`LineItem`](LineItem.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "allow_backorder",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "canceled_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart",
-            "type": "[`Cart`](Cart.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "cart_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "confirmed_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "difference_due",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillment_status",
-            "type": "[`SwapFulfillmentStatus`](../enums/SwapFulfillmentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "fulfillments",
-            "type": "[`Fulfillment`](Fulfillment.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "idempotency_key",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "no_notification",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order",
-            "type": "[`Order`](Order.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "order_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment",
-            "type": "[`Payment`](Payment.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "payment_status",
-            "type": "[`SwapPaymentStatus`](../enums/SwapPaymentStatus.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "return_order",
-            "type": "[`Return`](Return.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address",
-            "type": "[`Address`](Address.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_address_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "shipping_methods",
-            "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "swap_id",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The ID of the swap that the return may belong to.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]

@@ -31,7 +31,7 @@ import IsolateSalesChannelDomain from "../../../../loaders/feature-flags/isolate
  *       medusa.admin.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

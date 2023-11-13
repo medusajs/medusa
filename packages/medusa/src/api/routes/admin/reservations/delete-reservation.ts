@@ -21,7 +21,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.reservations.delete(reservationId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

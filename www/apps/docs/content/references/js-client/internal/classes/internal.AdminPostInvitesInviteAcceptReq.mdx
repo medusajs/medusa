@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostInvitesInviteAcceptReq
+
+The details of the invite to be accepted.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "token",
+    "type": "`string`",
+    "description": "The token of the invite to accept. This is a unique token generated when the invite was created or resent.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "user",
+    "type": "[`AdminPostInvitesInviteAcceptUserReq`](internal.AdminPostInvitesInviteAcceptUserReq.mdx)",
+    "description": "The details of the user to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

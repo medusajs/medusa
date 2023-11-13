@@ -20,7 +20,7 @@ import UserService from "../../../../services/user"
  *       medusa.admin.users.retrieve(userId)
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -1,0 +1,366 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ILinkModule
+
+## Methods
+
+### \_\_joinerConfig
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ModuleJoinerConfig",
+    "type": "[`Omit`](../../internal/types/internal.Omit.mdx)<[`JoinerServiceConfig`](internal.internal-1.JoinerServiceConfig.mdx), ``\"serviceName\"`` \\| ``\"primaryKeys\"`` \\| ``\"relationships\"`` \\| ``\"extends\"``\\> & { `databaseConfig?`: { `extraFields?`: Record<`string`, { `defaultValue?`: `string` ; `nullable?`: `boolean` ; `options?`: Record<`string`, `unknown`\\> ; `type`: ``\"date\"`` \\| ``\"time\"`` \\| ``\"datetime\"`` \\| ``\"bigint\"`` \\| ``\"blob\"`` \\| ``\"uint8array\"`` \\| ``\"array\"`` \\| ``\"enumArray\"`` \\| ``\"enum\"`` \\| ``\"json\"`` \\| ``\"integer\"`` \\| ``\"smallint\"`` \\| ``\"tinyint\"`` \\| ``\"mediumint\"`` \\| ``\"float\"`` \\| ``\"double\"`` \\| ``\"boolean\"`` \\| ``\"decimal\"`` \\| ``\"string\"`` \\| ``\"uuid\"`` \\| ``\"text\"``  }\\> ; `idPrefix?`: `string` ; `tableName?`: `string`  } ; `extends?`: { `fieldAlias?`: Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\> ; `relationship`: [`ModuleJoinerRelationship`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx) ; `serviceName`: `string`  }[] ; `isLink?`: `boolean` ; `isReadOnlyLink?`: `boolean` ; `linkableKeys?`: Record<`string`, `string`\\> ; `primaryKeys?`: `string`[] ; `relationships?`: [`ModuleJoinerRelationship`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx)[] ; `schema?`: `string` ; `serviceName?`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "primaryKeyOrBulkData",
+    "type": "`string` \\| `string`[] \\| [`string` \\| `string`[], `string`, Record<string, unknown\\\\>?][]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "foreignKeyData",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`unknown`[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`unknown`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### dismiss
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "primaryKeyOrBulkData",
+    "type": "`string` \\| `string`[] \\| [`string` \\| `string`[], `string`][]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "foreignKeyData",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`unknown`[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "filters",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<`unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`unknown`[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "filters",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<`unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`unknown`[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### restore
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`unknown`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`RestoreReturn`](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| Record<`string`, `unknown`[]\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### softDelete
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "`unknown`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`SoftDeleteReturn`](../../DAL/interfaces/internal.internal-1.DAL.SoftDeleteReturn.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "sharedContext",
+    "type": "[`Context`](internal.internal-1.Context.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| Record<`string`, `unknown`[]\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

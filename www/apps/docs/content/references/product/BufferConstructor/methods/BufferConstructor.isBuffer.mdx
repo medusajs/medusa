@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 Returns `true` if `obj` is a `Buffer`, `false` otherwise.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 Buffer.isBuffer(Buffer.alloc(10)); // true
 Buffer.isBuffer(Buffer.from('foo')); // true
@@ -31,6 +31,7 @@ Buffer.isBuffer(new Uint8Array(1024)); // false
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -46,6 +47,7 @@ obj is Buffer
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

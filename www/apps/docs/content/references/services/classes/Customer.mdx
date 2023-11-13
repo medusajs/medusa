@@ -1,0 +1,188 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Customer
+
+A customer can make purchases in your store and manage their profile.
+
+## Constructors
+
+### constructor
+
+**new Customer**()
+
+A customer can make purchases in your store and manage their profile.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "billing_address",
+    "type": "[`Address`](Address.mdx)",
+    "description": "The details of the billing address associated with the customer.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "billing_address_id",
+    "type": "``null`` \\| `string`",
+    "description": "The customer's billing address ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "``null`` \\| `Date`",
+    "description": "The date with timezone at which the resource was deleted.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "The customer's email",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "first_name",
+    "type": "`string`",
+    "description": "The customer's first name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "groups",
+    "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
+    "description": "The customer groups the customer belongs to.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "has_account",
+    "type": "`boolean`",
+    "description": "Whether the customer has an account or not",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The customer's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "last_name",
+    "type": "`string`",
+    "description": "The customer's last name",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "orders",
+    "type": "[`Order`](Order.mdx)[]",
+    "description": "The details of the orders this customer placed.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "password_hash",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "phone",
+    "type": "`string`",
+    "description": "The customer's phone number",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_addresses",
+    "type": "[`Address`](Address.mdx)[]",
+    "description": "The details of the shipping addresses associated with the customer.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

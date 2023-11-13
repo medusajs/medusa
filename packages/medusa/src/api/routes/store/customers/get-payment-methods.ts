@@ -24,7 +24,7 @@ import { promiseAll } from "@medusajs/utils"
  *       medusa.customers.paymentMethods.list()
  *       .then(({ payment_methods }) => {
  *         console.log(payment_methods.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

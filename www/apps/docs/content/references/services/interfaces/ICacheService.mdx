@@ -1,0 +1,145 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ICacheService
+
+## Methods
+
+### get
+
+**get**<`T`\>(`key`): `Promise`<``null`` \| `T`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "key",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<``null`` \| `T`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<``null`` \\| `T`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### invalidate
+
+**invalidate**(`key`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "key",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### set
+
+**set**(`key`, `data`, `ttl?`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "key",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "`unknown`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "ttl",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,111 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostDraftOrdersReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "billing_address",
+    "type": "`string` \\| [`AddressPayload`](internal.AddressPayload.mdx)",
+    "description": "The Address to be used for billing purposes.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customer_id",
+    "type": "`string`",
+    "description": "The ID of the customer this draft order is associated with.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discounts",
+    "type": "[`Discount`](internal.Discount-2.mdx)[]",
+    "description": "The discounts to add to the draft order",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "The email of the customer of the draft order",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`Item`](internal.Item-3.mdx)[]",
+    "description": "The draft order's line items.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "The optional key-value map with additional details about the Draft Order.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "no_notification_order",
+    "type": "`boolean`",
+    "description": "An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region_id",
+    "type": "`string`",
+    "description": "The ID of the region for the draft order",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_address",
+    "type": "`string` \\| [`AddressPayload`](internal.AddressPayload.mdx)",
+    "description": "The Address to be used for shipping purposes.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_methods",
+    "type": "[`ShippingMethod`](internal.ShippingMethod.mdx)[]",
+    "description": "The shipping methods for the draft order",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "`string`",
+    "description": "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

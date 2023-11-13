@@ -1,0 +1,147 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AxiosPromise
+
+## Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "[toStringTag]",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### catch
+
+Attaches a callback for only the rejection of the Promise.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "onrejected",
+    "type": "``null`` \\| (`reason`: `any`) => `TResult` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult`\\>",
+    "description": "The callback to execute when the Promise is rejected.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\> \\| `TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A Promise for the completion of the callback.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### finally
+
+Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+resolved value cannot be modified from the callback.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "onfinally",
+    "type": "``null`` \\| () => `void`",
+    "description": "The callback to execute when the Promise is settled (fulfilled or rejected).",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A Promise for the completion of the callback.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### then
+
+Attaches callbacks for the resolution and/or rejection of the Promise.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "onfulfilled",
+    "type": "``null`` \\| (`value`: [`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\>) => `TResult1` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult1`\\>",
+    "description": "The callback to execute when the Promise is resolved.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "onrejected",
+    "type": "``null`` \\| (`reason`: `any`) => `TResult2` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult2`\\>",
+    "description": "The callback to execute when the Promise is rejected.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult1` \\| `TResult2`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "A Promise for the completion of which ever callback is executed.",
+    "expandable": false,
+    "children": []
+  }
+]} />

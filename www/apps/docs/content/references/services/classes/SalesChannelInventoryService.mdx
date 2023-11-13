@@ -1,0 +1,589 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# SalesChannelInventoryService
+
+## Constructors
+
+### constructor
+
+**new SalesChannelInventoryService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-34.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBusService_",
+    "type": "[`IEventBusService`](../interfaces/IEventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "salesChannelLocationService_",
+    "type": "[`SalesChannelLocationService`](SalesChannelLocationService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### inventoryService\_
+
+`Protected` `get` **inventoryService_**(): [`IInventoryService`](../interfaces/IInventoryService.mdx)
+
+#### Returns
+
+[`IInventoryService`](../interfaces/IInventoryService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "__joinerConfig",
+    "type": "() => [`ModuleJoinerConfig`](../types/ModuleJoinerConfig.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "adjustInventory",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `adjustment`: `number`, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "confirmInventory",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `quantity`: `number`, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`boolean`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createInventoryItem",
+    "type": "(`input`: [`CreateInventoryItemInput`](../types/CreateInventoryItemInput.mdx), `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createInventoryItems",
+    "type": "(`input`: [`CreateInventoryItemInput`](../types/CreateInventoryItemInput.mdx)[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createInventoryLevel",
+    "type": "(`data`: [`CreateInventoryLevelInput`](../types/CreateInventoryLevelInput.mdx), `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createInventoryLevels",
+    "type": "(`data`: [`CreateInventoryLevelInput`](../types/CreateInventoryLevelInput.mdx)[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createReservationItem",
+    "type": "(`input`: [`CreateReservationItemInput`](../types/CreateReservationItemInput.mdx), `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createReservationItems",
+    "type": "(`input`: [`CreateReservationItemInput`](../types/CreateReservationItemInput.mdx)[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteInventoryItem",
+    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteInventoryItemLevelByLocationId",
+    "type": "(`locationId`: `string` \\| `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteInventoryLevel",
+    "type": "(`inventoryLevelId`: `string`, `locationId`: `string`, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteReservationItem",
+    "type": "(`reservationItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteReservationItemByLocationId",
+    "type": "(`locationId`: `string` \\| `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleteReservationItemsByLineItem",
+    "type": "(`lineItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listInventoryItems",
+    "type": "(`selector`: [`FilterableInventoryItemProps`](../types/FilterableInventoryItemProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`InventoryItemDTO`](../types/InventoryItemDTO.mdx)\\>, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[[`InventoryItemDTO`](../types/InventoryItemDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listInventoryLevels",
+    "type": "(`selector`: [`FilterableInventoryLevelProps`](../types/FilterableInventoryLevelProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)\\>, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listReservationItems",
+    "type": "(`selector`: [`FilterableReservationItemProps`](../types/FilterableReservationItemProps.mdx), `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`ReservationItemDTO`](../types/ReservationItemDTO.mdx)\\>, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[[`ReservationItemDTO`](../types/ReservationItemDTO.mdx)[], `number`]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "restoreInventoryItem",
+    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`void`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveAvailableQuantity",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`number`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveInventoryItem",
+    "type": "(`inventoryItemId`: `string`, `config?`: [`FindConfig`](../interfaces/FindConfig-1.mdx)<[`InventoryItemDTO`](../types/InventoryItemDTO.mdx)\\>, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveInventoryLevel",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveReservationItem",
+    "type": "(`reservationId`: `string`, `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveReservedQuantity",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`number`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrieveStockedQuantity",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<`number`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateInventoryItem",
+    "type": "(`inventoryItemId`: `string`, `input`: [`CreateInventoryItemInput`](../types/CreateInventoryItemInput.mdx), `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/InventoryItemDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateInventoryLevel",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `update`: [`UpdateInventoryLevelInput`](../types/UpdateInventoryLevelInput.mdx), `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateInventoryLevels",
+    "type": "(`updates`: { `inventory_item_id`: `string` ; `location_id`: `string`  } & [`UpdateInventoryLevelInput`](../types/UpdateInventoryLevelInput.mdx)[], `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/InventoryLevelDTO.mdx)[]\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updateReservationItem",
+    "type": "(`reservationItemId`: `string`, `input`: [`UpdateReservationItemInput`](../types/UpdateReservationItemInput.mdx), `context?`: [`SharedContext`](../types/SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/ReservationItemDTO.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveAvailableItemQuantity
+
+**retrieveAvailableItemQuantity**(`salesChannelId`, `inventoryItemId`): `Promise`<`number`\>
+
+Retrieves the available quantity of an item across all sales channel locations
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "salesChannelId",
+    "type": "`string`",
+    "description": "Sales channel id",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventoryItemId",
+    "type": "`string`",
+    "description": "Item id",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`number`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "available quantity of item across all sales channel locations",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`SalesChannelInventoryService`](SalesChannelInventoryService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`SalesChannelInventoryService`](SalesChannelInventoryService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "SalesChannelInventoryService",
+    "type": "[`SalesChannelInventoryService`](SalesChannelInventoryService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

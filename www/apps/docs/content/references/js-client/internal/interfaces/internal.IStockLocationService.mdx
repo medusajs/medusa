@@ -1,0 +1,307 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# IStockLocationService
+
+## Methods
+
+### \_\_joinerConfig
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ModuleJoinerConfig",
+    "type": "[`Omit`](../types/internal.Omit.mdx)<[`JoinerServiceConfig`](../../internal-1/interfaces/internal.internal-1.JoinerServiceConfig.mdx), ``\"serviceName\"`` \\| ``\"primaryKeys\"`` \\| ``\"relationships\"`` \\| ``\"extends\"``\\> & { `databaseConfig?`: { `extraFields?`: Record<`string`, { `defaultValue?`: `string` ; `nullable?`: `boolean` ; `options?`: Record<`string`, `unknown`\\> ; `type`: ``\"date\"`` \\| ``\"time\"`` \\| ``\"datetime\"`` \\| ``\"bigint\"`` \\| ``\"blob\"`` \\| ``\"uint8array\"`` \\| ``\"array\"`` \\| ``\"enumArray\"`` \\| ``\"enum\"`` \\| ``\"json\"`` \\| ``\"integer\"`` \\| ``\"smallint\"`` \\| ``\"tinyint\"`` \\| ``\"mediumint\"`` \\| ``\"float\"`` \\| ``\"double\"`` \\| ``\"boolean\"`` \\| ``\"decimal\"`` \\| ``\"string\"`` \\| ``\"uuid\"`` \\| ``\"text\"``  }\\> ; `idPrefix?`: `string` ; `tableName?`: `string`  } ; `extends?`: { `fieldAlias?`: Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\> ; `relationship`: [`ModuleJoinerRelationship`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx) ; `serviceName`: `string`  }[] ; `isLink?`: `boolean` ; `isReadOnlyLink?`: `boolean` ; `linkableKeys?`: Record<`string`, `string`\\> ; `primaryKeys?`: `string`[] ; `relationships?`: [`ModuleJoinerRelationship`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx)[] ; `schema?`: `string` ; `serviceName?`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "input",
+    "type": "[`CreateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "input",
+    "type": "[`UpdateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -35,7 +35,7 @@ import { MedusaError } from "medusa-core-utils"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

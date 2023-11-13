@@ -17,7 +17,7 @@ for all TypedArrays, including Node.js `Buffer`s, although it takes
 different function arguments.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Create two `Buffer` instances.
 const buf1 = Buffer.allocUnsafe(26);
@@ -38,7 +38,7 @@ console.log(buf2.toString('ascii', 0, 25));
 ```
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Create a `Buffer` and copy data from one region to an overlapping region
 // within the same `Buffer`.
@@ -65,6 +65,7 @@ console.log(buf.toString());
     "description": "A `Buffer` or Uint8Array to copy into.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -73,6 +74,7 @@ console.log(buf.toString());
     "description": "The offset within `target` at which to begin writing.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -81,6 +83,7 @@ console.log(buf.toString());
     "description": "The offset within `buf` from which to begin copying.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -89,6 +92,7 @@ console.log(buf.toString());
     "description": "The offset within `buf` at which to stop copying (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -104,6 +108,7 @@ console.log(buf.toString());
     "optional": true,
     "defaultValue": "",
     "description": "The number of bytes copied.",
+    "expandable": false,
     "children": []
   }
 ]} />

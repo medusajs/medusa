@@ -1,0 +1,111 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ReadableStreamDefaultReader
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader)
+
+## Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "R",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "closed",
+    "type": "`Promise`<`undefined`\\>",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamBYOBReader/closed)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### cancel
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamBYOBReader/cancel)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "reason",
+    "type": "`any`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### read
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader/read)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ReadableStreamReadResult`](../types/internal.ReadableStreamReadResult.mdx)<`R`\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### releaseLock
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader/releaseLock)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

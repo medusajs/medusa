@@ -7,4 +7,4 @@ medusa.admin.discounts.createDynamicCode(discountId, {
 })
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})

@@ -17,7 +17,7 @@ This method is not compatible with the `Uint8Array.prototype.slice()`,
 which is a superclass of `Buffer`. To copy the slice, use`Uint8Array.prototype.slice()`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('buffer');
 
@@ -47,6 +47,7 @@ console.log(buf.toString());
     "description": "Where the new `Buffer` will start.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -55,6 +56,7 @@ console.log(buf.toString());
     "description": "Where the new `Buffer` will end (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -70,6 +72,7 @@ console.log(buf.toString());
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

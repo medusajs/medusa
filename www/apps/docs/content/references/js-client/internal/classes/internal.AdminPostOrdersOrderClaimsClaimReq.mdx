@@ -1,0 +1,48 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostOrdersOrderClaimsClaimReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "claim_items",
+    "type": "[`Item`](internal.Item-6.mdx)[]",
+    "description": "The Claim Items that the Claim will consist of.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional set of key-value pairs to hold additional information.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "no_notification",
+    "type": "`boolean`",
+    "description": "If set to true no notification will be send related to this Swap.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_methods",
+    "type": "[`ShippingMethod`](internal.ShippingMethod-3.mdx)[]",
+    "description": "The Shipping Methods to send the additional Line Items with.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

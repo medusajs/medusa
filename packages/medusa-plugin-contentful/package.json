@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-contentful",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "Contentful plugin for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
-    "@medusajs/utils": "workspace:^",
+    "@medusajs/utils": "^1.10.5",
     "body-parser": "^1.19.0",
     "contentful-management": "^5.27.1",
     "express": "^4.17.1",

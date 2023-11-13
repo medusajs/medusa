@@ -1,0 +1,75 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductTypeTaxRate
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "product_type",
+    "type": "[`ProductType`](internal.ProductType.mdx)",
+    "description": "A Product Type can be added to Products for filtering and reporting purposes.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "product_type_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rate_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rate",
+    "type": "[`TaxRate`](internal.TaxRate.mdx)",
+    "description": "A Tax Rate can be used to define a custom rate to charge on specified products, product types, and shipping options within a given region.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

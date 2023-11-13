@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminGetDiscountsDiscountRuleParams
+
+Filters to apply on discounts' rules.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "allocation",
+    "type": "[`AllocationType`](../enums/internal.internal.AllocationType.mdx)",
+    "description": "Allocation to filter discount rules by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "[`DiscountRuleType`](../enums/internal.internal.DiscountRuleType.mdx)",
+    "description": "Type to filter discount rules by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

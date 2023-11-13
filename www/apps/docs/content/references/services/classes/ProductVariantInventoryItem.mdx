@@ -1,0 +1,116 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductVariantInventoryItem
+
+A Product Variant Inventory Item links variants with inventory items and denotes the required quantity of the variant.
+
+## Constructors
+
+### constructor
+
+**new ProductVariantInventoryItem**()
+
+A Product Variant Inventory Item links variants with inventory items and denotes the required quantity of the variant.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "``null`` \\| `Date`",
+    "description": "The date with timezone at which the resource was deleted.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The product variant inventory item's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventory_item_id",
+    "type": "`string`",
+    "description": "The id of the inventory item",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "required_quantity",
+    "type": "`number`",
+    "description": "The quantity of an inventory item required for the variant.",
+    "optional": false,
+    "defaultValue": "1",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variant",
+    "type": "[`ProductVariant`](ProductVariant.mdx)",
+    "description": "The details of the product variant.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "variant_id",
+    "type": "`string`",
+    "description": "The id of the variant.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### beforeInsert
+
+`Private` **beforeInsert**(): `void`
+
+#### Returns
+
+`void`
+
+<ParameterTypes parameters={[
+  {
+    "name": "void",
+    "type": "`void`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

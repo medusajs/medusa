@@ -1,5 +1,11 @@
 # @medusajs/ui
 
+## 2.2.1
+
+### Patch Changes
+
+- [#5596](https://github.com/medusajs/medusa/pull/5596) [`e3f1da92d`](https://github.com/medusajs/medusa/commit/e3f1da92db1a5bb07ae8d79a90f0d1d04f9bfee3) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui,ui): Align @types/react versions
+
 ## 2.2.0
 
 ### Minor Changes

@@ -14,7 +14,7 @@ Interprets `buf` as an array of 64-bit numbers and swaps byte order _in-place_.
 Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 8.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -43,6 +43,7 @@ buf2.swap64();
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",
+    "expandable": false,
     "children": []
   }
 ]} />

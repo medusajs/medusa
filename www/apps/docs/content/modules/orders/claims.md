@@ -32,7 +32,7 @@ There are other important attributes discussed in later sections. Check out the 
 
 Claims are created in Medusa by an admin (typically a merchant). They are created on an order, and depending on the claim’s type the admin can specify details like the amount to be refunded, or the items to be returned and the new items to replace them.
 
-You can create a claim either using the [Create Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaims) or using the `ClaimService`'s [create method](../../references/services/classes/ClaimService.md#create). This section explains the process within the Create Claim API Route, with a focus on the `create` method.
+You can create a claim either using the [Create Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaims) or using the `ClaimService`'s [create method](../../references/services/classes/ClaimService.mdx#create). This section explains the process within the Create Claim API Route, with a focus on the `create` method.
 
 ### Idempotency Key
 
@@ -46,16 +46,16 @@ The following flow is implemented within the Create Claim API Route:
 
 ![Create Claim API Route Overview](https://res.cloudinary.com/dza7lstvk/image/upload/v1682519207/Medusa%20Docs/Diagrams/create-claim-overview_iqek1f.jpg)
 
-1. When the idempotency key’s recovery point is `started`, the creation of the claim is started using the `ClaimService`'s [create method](../../references/services/classes/ClaimService.md#create). If the claim is created successfully, the idempotency key’s recovery point is changed to `claim_created`. In the `create` method:
-    1. If the type of the claim is `refund` and no refund amount is set, the refund amount is calculated based on the items in the claim using the `ClaimService`'s [getRefundTotalForClaimLinesOnOrder method](../../references/services/classes/ClaimService.md#getrefundtotalforclaimlinesonorder).
-    2. If new items are specified to send to the customer, new line items, which are represented by the `LineItem` entity, are generated using the `LineItemService`'s [generate method](../../references/services/classes/LineItemService.md#generate). These line items are later attached to the claim when it’s created under the `additional_items` relation. Also, the quantity of these items are reserved from the product variant’s inventory using the `ProductVariantInventoryService`'s [reserveQuantity method](../../references/services/classes/ProductVariantInventoryService.md#reservequantity).
+1. When the idempotency key’s recovery point is `started`, the creation of the claim is started using the `ClaimService`'s [create method](../../references/services/classes/ClaimService.mdx#create). If the claim is created successfully, the idempotency key’s recovery point is changed to `claim_created`. In the `create` method:
+    1. If the type of the claim is `refund` and no refund amount is set, the refund amount is calculated based on the items in the claim using the `ClaimService`'s [getRefundTotalForClaimLinesOnOrder method](../../references/services/classes/ClaimService.mdx#getrefundtotalforclaimlinesonorder).
+    2. If new items are specified to send to the customer, new line items, which are represented by the `LineItem` entity, are generated using the `LineItemService`'s [generate method](../../references/services/classes/LineItemService.mdx#generate). These line items are later attached to the claim when it’s created under the `additional_items` relation. Also, the quantity of these items are reserved from the product variant’s inventory using the `ProductVariantInventoryService`'s [reserveQuantity method](../../references/services/classes/ProductVariantInventoryService.mdx#reservequantity).
     3. The claim is created and saved.
-    4. If there were additional items attached to the claim, tax lines are created for these items using the `TaxProviderService`'s [createTaxLines method](../../references/services/classes/TaxProviderService.md#createtaxlines).
-    5. If a shipping method was chosen to send the additional items to the customer, the shipping method is created using the `ShippingOptionService`'s [createShippingMethod method](../../references/services/classes/ShippingOptionService.md#createshippingmethod) or updated if it already exists using the `ShippingOptionService`'s [updateShippingMethod method](../../references/services/classes/ShippingOptionService.md#updateshippingmethod).
-    6. A claim item is created for each of the items specified in the claim. These are the items that were originally in the order and that the claim was created for. The claim items are created using the `ClaimItemService`'s [create method](../../references/services/classes/ClaimItemService.md#create).
-    7. If a return shipping method is specified, a return is created using the `ReturnService`'s [create method](../../references/services/classes/ReturnService.md#create).
-2. When the idempotency key’s recovery point is `claim_created`, if the claim’s type is `refund`, the refund is processed using the `ClaimService`'s [processRefund method](../../references/services/classes/ClaimService.md#processrefund). If the method is refunded successfully, the `payment_status` attribute of the claim is set to `refunded`. The refund is created directly on the order the claim belongs to. The recovery point of the idempotency key is changed to `refund_handled` at the end of this process.
-3. When the idempotency key’s recovery point is `refund_handled`, if the claim is associated with a return, the return is automatically fulfilled using the `ReturnService`'s [fulfill method](../../references/services/classes/ReturnService.md#fulfill) as it will be handled by the customer. The order associated with the claim is then returned and the idempotency key is set to `finished`.
+    4. If there were additional items attached to the claim, tax lines are created for these items using the `TaxProviderService`'s [createTaxLines method](../../references/services/classes/TaxProviderService.mdx#createtaxlines).
+    5. If a shipping method was chosen to send the additional items to the customer, the shipping method is created using the `ShippingOptionService`'s [createShippingMethod method](../../references/services/classes/ShippingOptionService.mdx#createshippingmethod) or updated if it already exists using the `ShippingOptionService`'s [updateShippingMethod method](../../references/services/classes/ShippingOptionService.mdx#updateshippingmethod).
+    6. A claim item is created for each of the items specified in the claim. These are the items that were originally in the order and that the claim was created for. The claim items are created using the `ClaimItemService`'s [create method](../../references/services/classes/ClaimItemService.mdx#create).
+    7. If a return shipping method is specified, a return is created using the `ReturnService`'s [create method](../../references/services/classes/ReturnService.mdx#create).
+2. When the idempotency key’s recovery point is `claim_created`, if the claim’s type is `refund`, the refund is processed using the `ClaimService`'s [processRefund method](../../references/services/classes/ClaimService.mdx#processrefund). If the method is refunded successfully, the `payment_status` attribute of the claim is set to `refunded`. The refund is created directly on the order the claim belongs to. The recovery point of the idempotency key is changed to `refund_handled` at the end of this process.
+3. When the idempotency key’s recovery point is `refund_handled`, if the claim is associated with a return, the return is automatically fulfilled using the `ReturnService`'s [fulfill method](../../references/services/classes/ReturnService.mdx#fulfill) as it will be handled by the customer. The order associated with the claim is then returned and the idempotency key is set to `finished`.
 
 ---
 
@@ -63,7 +63,7 @@ The following flow is implemented within the Create Claim API Route:
 
 If a claim’s type is `replace`, an admin can create a [fulfillment](./fulfillments.md) for the additional items that should be sent to the customer.
 
-A fulfillment can be created either using the [Create Claim Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimfulfillments) or the `ClaimService`'s [createFulfillment method](../../references/services/classes/ClaimService.md#createfulfillment).
+A fulfillment can be created either using the [Create Claim Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimfulfillments) or the `ClaimService`'s [createFulfillment method](../../references/services/classes/ClaimService.mdx#createfulfillment).
 
 :::note
 
@@ -73,9 +73,9 @@ The API Route handles updating the inventory and reservations. So, if you choose
 
 By default, when a fulfillment is created, the claim’s `fulfillment_status` is set to `fulfilled`. However, if any of the item’s quantity isn’t fulfilled successfully, the `fulfillment_status` is set to `requires_action`.
 
-After creating a fulfillment, you can create a shipment for the fulfillment either using the [Create Claim Shipment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimshipments) or the `ClaimService`'s [createShipment method](../../references/services/classes/ClaimService.md#createshipment). If only some of the items and their quantities are shipped, the `fulfillment_status` of the claim is set to `partially_shipped`. Otherwise, if all items and quantities are shipped, the `fulfillment_status` of the claim is set to `shipped`.
+After creating a fulfillment, you can create a shipment for the fulfillment either using the [Create Claim Shipment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimshipments) or the `ClaimService`'s [createShipment method](../../references/services/classes/ClaimService.mdx#createshipment). If only some of the items and their quantities are shipped, the `fulfillment_status` of the claim is set to `partially_shipped`. Otherwise, if all items and quantities are shipped, the `fulfillment_status` of the claim is set to `shipped`.
 
-You can alternatively cancel a fulfillment either using the [Cancel Claim Fulfillment API Route](https://docs.medusajs.com/api/admin#tag/Orders/operation/PostOrdersClaimFulfillmentsCancel) or the `ClaimService`'s [cancelFulfillment method](../../references/services/classes/ClaimService.md#cancelfulfillment). This would change the `fulfillment_status` of the claim to `canceled`.
+You can alternatively cancel a fulfillment either using the [Cancel Claim Fulfillment API Route](https://docs.medusajs.com/api/admin#tag/Orders/operation/PostOrdersClaimFulfillmentsCancel) or the `ClaimService`'s [cancelFulfillment method](../../references/services/classes/ClaimService.mdx#cancelfulfillment). This would change the `fulfillment_status` of the claim to `canceled`.
 
 ---
 
@@ -87,7 +87,7 @@ A claim's return can be marked as received, which would adjust the inventory and
 
 ## Cancel a Claim
 
-An admin can cancel a claim if it hasn’t been refunded either using the [Cancel Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersclaimcancel) or the `ClaimService`'s [cancel method](../../references/services/classes/ClaimService.md#cancel).
+An admin can cancel a claim if it hasn’t been refunded either using the [Cancel Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersclaimcancel) or the `ClaimService`'s [cancel method](../../references/services/classes/ClaimService.mdx#cancel).
 
 If any fulfillments were created, they must be canceled first. Similarly, if the claim is associated with a return, the return must be canceled first.
 

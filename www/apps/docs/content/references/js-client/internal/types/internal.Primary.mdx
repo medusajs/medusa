@@ -1,0 +1,23 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Primary
+
+ **Primary**<`T`\>: `T` extends { `[PrimaryKeyType]?`: infer PK  } ? [`ReadonlyPrimary`](internal.ReadonlyPrimary.mdx)<`PK`\> : `T` extends { `_id?`: infer PK  } ? [`ReadonlyPrimary`](internal.ReadonlyPrimary.mdx)<`PK`\> \| `string` : `T` extends { `uuid?`: infer PK  } ? [`ReadonlyPrimary`](internal.ReadonlyPrimary.mdx)<`PK`\> : `T` extends { `id?`: infer PK  } ? [`ReadonlyPrimary`](internal.ReadonlyPrimary.mdx)<`PK`\> : `never`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

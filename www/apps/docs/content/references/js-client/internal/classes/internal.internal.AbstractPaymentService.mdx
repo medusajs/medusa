@@ -1,0 +1,779 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AbstractPaymentService
+
+This will be
+
+#### Deprecated
+
+in the near future use the AbstractPaymentProcessor instead
+
+## Implements
+
+- [`PaymentService`](../interfaces/internal.internal.PaymentService.mdx)
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "identifier",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### authorizePayment
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSession",
+    "type": "[`PaymentSession`](internal.PaymentSession.mdx)",
+    "description": "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`Data`](../types/internal.internal.Data.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<{ `data`: [`Data`](../types/internal.internal.Data.mdx) ; `status`: [`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)  }\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+___
+
+### cancelPayment
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payment",
+    "type": "[`Payment`](internal.Payment.mdx)",
+    "description": "A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future
+
+___
+
+### capturePayment
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payment",
+    "type": "[`Payment`](internal.Payment.mdx)",
+    "description": "A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future
+
+___
+
+### createPayment
+
+`Abstract` **createPayment**(`context`): `Promise`<[`PaymentSessionResponse`](../types/internal.internal.PaymentSessionResponse.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "context",
+    "type": "[`Cart`](internal.Cart.mdx) & [`PaymentContext`](../types/internal.internal.PaymentContext.mdx)",
+    "description": "The type of this argument is meant to be temporary and once the previous method signature will be removed, the type will only be PaymentContext instead of Cart & PaymentContext",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentSessionResponse`](../types/internal.internal.PaymentSessionResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+`Abstract` **createPayment**(`cart`): `Promise`<[`Data`](../types/internal.internal.Data.mdx)\>
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future use `createPayment(context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
+
+___
+
+### deletePayment
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSession",
+    "type": "[`PaymentSession`](internal.PaymentSession.mdx)",
+    "description": "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future
+
+___
+
+### getIdentifier
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getPaymentData
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSession",
+    "type": "[`PaymentSession`](internal.PaymentSession.mdx)",
+    "description": "A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+___
+
+### getStatus
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`Data`](../types/internal.internal.Data.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future
+
+___
+
+### refundPayment
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payment",
+    "type": "[`Payment`](internal.Payment.mdx)",
+    "description": "A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refundAmount",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future
+
+___
+
+### retrievePayment
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentData",
+    "type": "[`Data`](../types/internal.internal.Data.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+___
+
+### retrieveSavedMethods
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "customer",
+    "type": "[`Customer`](internal.Customer.mdx)",
+    "description": "A customer can make purchases in your store and manage their profile.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updatePayment
+
+`Abstract` **updatePayment**(`paymentSessionData`, `context`): `Promise`<Record<`string`, `unknown`\> \| [`PaymentSessionResponse`](../types/internal.internal.PaymentSessionResponse.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "[`Data`](../types/internal.internal.Data.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`Cart`](internal.Cart.mdx) & [`PaymentContext`](../types/internal.internal.PaymentContext.mdx)",
+    "description": "The type of this argument is meant to be temporary and once the previous method signature will be removed, the type will only be PaymentContext instead of Cart & PaymentContext",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentSessionResponse`](../types/internal.internal.PaymentSessionResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "it return either a PaymentSessionResponse or PaymentSessionResponse[\"session_data\"] to maintain backward compatibility",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+`Abstract` **updatePayment**(`paymentSessionData`, `cart`): `Promise`<[`Data`](../types/internal.internal.Data.mdx)\>
+
+This will be
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "[`Data`](../types/internal.internal.Data.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+in the near future use `updatePayment(paymentSessionData: PaymentSessionData, context: Cart & PaymentContext): Promise<PaymentSessionResponse>` instead
+
+___
+
+### updatePaymentData
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "paymentSessionData",
+    "type": "[`Data`](../types/internal.internal.Data.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`Data`](../types/internal.internal.Data.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Data`](../types/internal.internal.Data.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Deprecated
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "AbstractPaymentService",
+    "type": "[`AbstractPaymentService`](internal.internal.AbstractPaymentService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

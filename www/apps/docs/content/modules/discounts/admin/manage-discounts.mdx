@@ -46,7 +46,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -191,9 +191,9 @@ This request accepts [many request-body parameters](https://docs.medusajs.com/ap
 
 - `code`: This parameter is required. It is a unique code. The customer redeems the discount using this code.
 - `rule`: This parameter is required. It is an object having at least the following fields:
-    - `type`: A string indicating the type of discount. It can be `fixed`, `percentage`, or `free_shipping`. When using the Medusa JS Client, you must use the enum type [DiscountRuleType](../../../references/js-client/internal/enums/admin_collections.internal.DiscountRuleType.mdx) for the value.
+    - `type`: A string indicating the type of discount. It can be `fixed`, `percentage`, or `free_shipping`. When using the Medusa JS Client, you must use the enum type [DiscountRuleType](../../../references/js-client/internal/enums/internal.internal.DiscountRuleType.mdx) for the value.
     - `value`: A number indicating the value of the discount. If the discount type is `fixed`, then it will be the fixed amount to discount from the cart’s totals or its items. If the discount type is `percentage`, then it will be the percentage to discount from the items in the cart. If the type is `free_shipping`, it has no effect and can be set to `0`.
-    - `allocation`: A string indicating how the discount should be applied. Can be `item` or `total`. If the type is not `fixed`, then this has no effect. When using the Medusa JS Client, you must use the enum type [AllocationType](../../../references/js-client/internal/enums/admin_collections.internal.AllocationType.mdx) for the value.
+    - `allocation`: A string indicating how the discount should be applied. Can be `item` or `total`. If the type is not `fixed`, then this has no effect. When using the Medusa JS Client, you must use the enum type [AllocationType](../../../references/js-client/internal/enums/internal.internal.AllocationType.mdx) for the value.
 - `regions`: An array of region IDs this discount can be used in. If the type of discount is `fixed`, only one region can be passed.
 
 This request returns the full `discount` object.

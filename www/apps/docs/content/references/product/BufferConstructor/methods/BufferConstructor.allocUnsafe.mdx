@@ -10,13 +10,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 **allocUnsafe**(`size`): [`Buffer`](../../variables/Buffer-1.mdx)
 
-Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_INVALID_ARG_VALUE` is thrown.
+Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown.
 
 The underlying memory for `Buffer` instances created in this way is _not_
 _initialized_. The contents of the newly created `Buffer` are unknown and _may contain sensitive data_. Use `Buffer.alloc()` instead to initialize`Buffer` instances with zeroes.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.allocUnsafe(10);
 
@@ -32,9 +32,8 @@ console.log(buf);
 A `TypeError` will be thrown if `size` is not a number.
 
 The `Buffer` module pre-allocates an internal `Buffer` instance of
-size `Buffer.poolSize` that is used as a pool for the fast allocation of new`Buffer` instances created using `Buffer.allocUnsafe()`,`Buffer.from(array)`, `Buffer.concat()`, and the
-deprecated`new Buffer(size)` constructor only when `size` is less than or equal
-to `Buffer.poolSize >> 1` (floor of `Buffer.poolSize` divided by two).
+size `Buffer.poolSize` that is used as a pool for the fast allocation of new`Buffer` instances created using `Buffer.allocUnsafe()`, `Buffer.from(array)`,
+and `Buffer.concat()` only when `size` is less than or equal to`Buffer.poolSize >> 1` (floor of `Buffer.poolSize` divided by two).
 
 Use of this pre-allocated internal memory pool is a key difference between
 calling `Buffer.alloc(size, fill)` vs. `Buffer.allocUnsafe(size).fill(fill)`.
@@ -52,6 +51,7 @@ additional performance that `Buffer.allocUnsafe()` provides.
     "description": "The desired length of the new `Buffer`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -67,6 +67,7 @@ additional performance that `Buffer.allocUnsafe()` provides.
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

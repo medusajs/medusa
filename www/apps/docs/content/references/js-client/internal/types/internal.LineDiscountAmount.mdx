@@ -1,0 +1,43 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# LineDiscountAmount
+
+ **LineDiscountAmount**: `Object`
+
+Associates a line item and discount allocation.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "amount",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customAdjustmentsAmount",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "item",
+    "type": "[`LineItem`](../classes/internal.LineItem.mdx)",
+    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

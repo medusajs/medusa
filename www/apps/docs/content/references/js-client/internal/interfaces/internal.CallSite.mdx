@@ -1,0 +1,274 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# CallSite
+
+## Methods
+
+### getColumnNumber
+
+Current column number [if this function was defined in a script]
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "``null`` \\| number",
+    "type": "``null`` \\| `number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getEvalOrigin
+
+A call site object representing the location where eval was called
+[if this function was created using a call to eval]
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "undefined \\| string",
+    "type": "`undefined` \\| `string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFileName
+
+Name of the script [if this function was defined in a script]
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "undefined \\| string",
+    "type": "`undefined` \\| `string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFunction
+
+Current function
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "undefined \\| Function",
+    "type": "`undefined` \\| `Function`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFunctionName
+
+Name of the current function, typically its name property.
+If a name property is not available an attempt will be made to try
+to infer a name from the function's context.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "``null`` \\| string",
+    "type": "``null`` \\| `string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getLineNumber
+
+Current line number [if this function was defined in a script]
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "``null`` \\| number",
+    "type": "``null`` \\| `number`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getMethodName
+
+Name of the property [of "this" or one of its prototypes] that holds
+the current function
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "``null`` \\| string",
+    "type": "``null`` \\| `string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getThis
+
+Value of "this"
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "unknown",
+    "type": "`unknown`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getTypeName
+
+Type of "this" as a string.
+This is the name of the function stored in the constructor field of
+"this", if available.  Otherwise the object's [[Class]] internal
+property.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "``null`` \\| string",
+    "type": "``null`` \\| `string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isConstructor
+
+Is this a constructor call?
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isEval
+
+Does this call take place in code defined by a call to eval?
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isNative
+
+Is this call in native V8 code?
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isToplevel
+
+Is this a toplevel invocation, that is, is "this" the global object?
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

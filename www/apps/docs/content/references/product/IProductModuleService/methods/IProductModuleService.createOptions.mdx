@@ -45,6 +45,7 @@ async function createProductOption (title: string, productId: string) {
     "description": "The product options to be created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "product_id",
@@ -52,6 +53,7 @@ async function createProductOption (title: string, productId: string) {
         "description": "The ID of the associated product.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -60,6 +62,7 @@ async function createProductOption (title: string, productId: string) {
         "description": "The product option's title.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -70,6 +73,7 @@ async function createProductOption (title: string, productId: string) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -77,6 +81,7 @@ async function createProductOption (title: string, productId: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -85,6 +90,7 @@ async function createProductOption (title: string, productId: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -93,6 +99,7 @@ async function createProductOption (title: string, productId: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -101,6 +108,7 @@ async function createProductOption (title: string, productId: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -109,6 +117,7 @@ async function createProductOption (title: string, productId: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -124,6 +133,7 @@ async function createProductOption (title: string, productId: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product options.",
+    "expandable": false,
     "children": [
       {
         "name": "ProductOptionDTO[]",
@@ -131,6 +141,7 @@ async function createProductOption (title: string, productId: string) {
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "deleted_at",
@@ -138,6 +149,7 @@ async function createProductOption (title: string, productId: string) {
             "description": "When the product option was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -146,6 +158,7 @@ async function createProductOption (title: string, productId: string) {
             "description": "The ID of the product option.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -154,6 +167,7 @@ async function createProductOption (title: string, productId: string) {
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -162,6 +176,7 @@ async function createProductOption (title: string, productId: string) {
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -170,6 +185,7 @@ async function createProductOption (title: string, productId: string) {
             "description": "The title of the product option.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -178,6 +194,7 @@ async function createProductOption (title: string, productId: string) {
             "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

@@ -1,0 +1,140 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Store
+
+A store holds the main settings of the commerce shop. By default, only one store is created and used within the Medusa backend. It holds settings related to the name of the store, available currencies, and more.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "currencies",
+    "type": "[`Currency`](internal.Currency.mdx)[]",
+    "description": "The details of the enabled currencies in the store.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "default_currency",
+    "type": "[`Currency`](internal.Currency.mdx)",
+    "description": "The details of the store's default currency.",
+    "optional": false,
+    "defaultValue": "usd",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "default_currency_code",
+    "type": "`string`",
+    "description": "The three character currency code that is the default of the store.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "default_location_id",
+    "type": "`string`",
+    "description": "The location ID the store is associated with.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "default_sales_channel",
+    "type": "[`SalesChannel`](internal.SalesChannel.mdx)",
+    "description": "The details of the store's default sales channel.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "default_sales_channel_id",
+    "type": "``null`` \\| `string`",
+    "description": "The ID of the store's default sales channel.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The store's ID",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "invite_link_template",
+    "type": "``null`` \\| `string`",
+    "description": "A template to generate Invite links from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "The name of the Store - this may be displayed to the Customer.",
+    "optional": false,
+    "defaultValue": "Medusa Store",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payment_link_template",
+    "type": "``null`` \\| `string`",
+    "description": "A template to generate Payment links from. Use {{cart_id}} to include the payment's `cart_id` in the link.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "swap_link_template",
+    "type": "``null`` \\| `string`",
+    "description": "A template to generate Swap links from. Use {{cart_id}} to include the Swap's `cart_id` in the link.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

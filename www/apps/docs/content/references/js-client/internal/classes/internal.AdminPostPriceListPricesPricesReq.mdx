@@ -1,0 +1,30 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostPriceListPricesPricesReq
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "override",
+    "type": "`boolean`",
+    "description": "If set to `true`, the prices will replace all existing prices associated with the Price List.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prices",
+    "type": "[`AdminPriceListPricesUpdateReq`](internal.AdminPriceListPricesUpdateReq.mdx)[]",
+    "description": "The prices to update or add.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,9 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ModuleJoinerConfig
+
+ **ModuleJoinerConfig**: [`Omit`](Omit.mdx)<[`JoinerServiceConfig`](../interfaces/JoinerServiceConfig.mdx), ``"serviceName"`` \| ``"primaryKeys"`` \| ``"relationships"`` \| ``"extends"``\> & { `databaseConfig?`: { `extraFields?`: Record<`string`, { `defaultValue?`: `string` ; `nullable?`: `boolean` ; `options?`: Record<`string`, `unknown`\> ; `type`: ``"date"`` \| ``"time"`` \| ``"datetime"`` \| ``"bigint"`` \| ``"blob"`` \| ``"uint8array"`` \| ``"array"`` \| ``"enumArray"`` \| ``"enum"`` \| ``"json"`` \| ``"integer"`` \| ``"smallint"`` \| ``"tinyint"`` \| ``"mediumint"`` \| ``"float"`` \| ``"double"`` \| ``"boolean"`` \| ``"decimal"`` \| ``"string"`` \| ``"uuid"`` \| ``"text"``  }\> ; `idPrefix?`: `string` ; `tableName?`: `string`  } ; `extends?`: { `fieldAlias?`: Record<`string`, `string` \| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\> ; `relationship`: [`ModuleJoinerRelationship`](ModuleJoinerRelationship.mdx) ; `serviceName`: `string`  }[] ; `isLink?`: `boolean` ; `isReadOnlyLink?`: `boolean` ; `linkableKeys?`: Record<`string`, `string`\> ; `primaryKeys?`: `string`[] ; `relationships?`: [`ModuleJoinerRelationship`](ModuleJoinerRelationship.mdx)[] ; `schema?`: `string` ; `serviceName?`: `string`  }

@@ -6,70 +6,72 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Store
 
+A store holds the main settings of the commerce shop. By default, only one store is created and used within the Medusa backend. It holds settings related to the name of the store, available currencies, and more.
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "created_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "currencies",
     "type": "[`Currency`](Currency.mdx)[]",
-    "description": "",
+    "description": "The details of the enabled currencies in the store.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`Currency`](Currency.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "code",
         "type": "`string`",
-        "description": "",
+        "description": "The 3 character ISO code for the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the currency prices include tax",
         "optional": true,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
         "children": []
       },
       {
         "name": "name",
         "type": "`string`",
-        "description": "",
+        "description": "The written name of the currency",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "symbol",
         "type": "`string`",
-        "description": "",
+        "description": "The symbol used to indicate the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "symbol_native",
         "type": "`string`",
-        "description": "",
+        "description": "The native symbol used to indicate the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -77,56 +79,55 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "default_currency",
     "type": "[`Currency`](Currency.mdx)",
-    "description": "",
+    "description": "The details of the store's default currency.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "usd",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`Currency`](Currency.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "code",
         "type": "`string`",
-        "description": "",
+        "description": "The 3 character ISO code for the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "",
+        "description": "Whether the currency prices include tax",
         "optional": true,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
+        "featureFlag": "tax_inclusive_pricing",
         "children": []
       },
       {
         "name": "name",
         "type": "`string`",
-        "description": "",
+        "description": "The written name of the currency",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "symbol",
         "type": "`string`",
-        "description": "",
+        "description": "The symbol used to indicate the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "symbol_native",
         "type": "`string`",
-        "description": "",
+        "description": "The native symbol used to indicate the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -134,185 +135,108 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "default_currency_code",
     "type": "`string`",
-    "description": "",
+    "description": "The three character currency code that is the default of the store.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "default_location_id",
     "type": "`string`",
-    "description": "",
+    "description": "The location ID the store is associated with.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "default_sales_channel",
     "type": "[`SalesChannel`](SalesChannel.mdx)",
-    "description": "",
+    "description": "The details of the store's default sales channel.",
     "optional": false,
     "defaultValue": "",
+    "expandable": true,
     "children": [
-      {
-        "name": "constructor",
-        "type": "() => [`SalesChannel`](SalesChannel.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
       {
         "name": "created_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "deleted_at",
         "type": "``null`` \\| `Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was deleted.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "description",
         "type": "``null`` \\| `string`",
-        "description": "",
+        "description": "The description of the sales channel.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "id",
         "type": "`string`",
-        "description": "",
+        "description": "The sales channel's ID",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "is_disabled",
         "type": "`boolean`",
-        "description": "",
+        "description": "Specify if the sales channel is enabled or disabled.",
         "optional": false,
-        "defaultValue": "",
+        "defaultValue": "false",
+        "expandable": false,
         "children": []
       },
       {
         "name": "locations",
         "type": "[`SalesChannelLocation`](SalesChannelLocation.mdx)[]",
-        "description": "",
+        "description": "The details of the stock locations related to the sales channel.",
         "optional": false,
         "defaultValue": "",
-        "children": [
-          {
-            "name": "constructor",
-            "type": "() => [`SalesChannelLocation`](SalesChannelLocation.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "location_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel",
-            "type": "[`SalesChannel`](SalesChannel.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "sales_channel_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "beforeInsert",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "children": []
-          }
-        ]
+        "expandable": true,
+        "children": []
       },
       {
         "name": "metadata",
         "type": "``null`` \\| Record<`string`, `unknown`\\>",
-        "description": "",
+        "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "name",
         "type": "`string`",
-        "description": "",
+        "description": "The name of the sales channel.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "updated_at",
         "type": "`Date`",
-        "description": "",
+        "description": "The date with timezone at which the resource was updated.",
         "optional": false,
         "defaultValue": "",
-        "children": []
-      },
-      {
-        "name": "beforeInsert",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -320,65 +244,73 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "default_sales_channel_id",
     "type": "``null`` \\| `string`",
-    "description": "",
+    "description": "The ID of the store's default sales channel.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The store's ID",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "invite_link_template",
     "type": "``null`` \\| `string`",
-    "description": "",
+    "description": "A template to generate Invite links from",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "metadata",
     "type": "``null`` \\| Record<`string`, `unknown`\\>",
-    "description": "",
+    "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "name",
     "type": "`string`",
-    "description": "",
+    "description": "The name of the Store - this may be displayed to the Customer.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "Medusa Store",
+    "expandable": false,
     "children": []
   },
   {
     "name": "payment_link_template",
     "type": "``null`` \\| `string`",
-    "description": "",
+    "description": "A template to generate Payment links from. Use {{cart_id}} to include the payment's `cart_id` in the link.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "swap_link_template",
     "type": "``null`` \\| `string`",
-    "description": "",
+    "description": "A template to generate Swap links from. Use {{cart_id}} to include the Swap's `cart_id` in the link.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "updated_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was updated.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -1,0 +1,168 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# Blob
+
+A [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) encapsulates immutable, raw data that can be safely shared across
+multiple worker threads.
+
+#### Since
+
+v15.7.0, v14.18.0
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "size",
+    "type": "`number`",
+    "description": "The total size of the `Blob` in bytes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string`",
+    "description": "The content-type of the `Blob`.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### arrayBuffer
+
+Returns a promise that fulfills with an [ArrayBuffer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) containing a copy of
+the `Blob` data.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`ArrayBuffer`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v15.7.0, v14.18.0
+
+___
+
+### slice
+
+Creates and returns a new `Blob` containing a subset of this `Blob` objects
+data. The original `Blob` is not altered.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "start",
+    "type": "`number`",
+    "description": "The starting index.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "`number`",
+    "description": "The ending index.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string`",
+    "description": "The content-type for the new `Blob`",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Blob",
+    "type": "[`Blob`](internal.Blob.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v15.7.0, v14.18.0
+
+___
+
+### stream
+
+Returns a new `ReadableStream` that allows the content of the `Blob` to be read.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v16.7.0
+
+___
+
+### text
+
+Returns a promise that fulfills with the contents of the `Blob` decoded as a
+UTF-8 string.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`string`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Since
+
+v15.7.0, v14.18.0

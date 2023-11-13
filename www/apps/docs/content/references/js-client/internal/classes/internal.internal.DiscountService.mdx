@@ -1,0 +1,1198 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# DiscountService
+
+Provides layer to manipulate discounts.
+
+#### Implements
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerService_",
+    "type": "[`CustomerService`](internal.internal.CustomerService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountConditionRepository_",
+    "type": "`Repository`<[`DiscountCondition`](internal.DiscountCondition.mdx)\\> & { `addConditionResources`: Method addConditionResources ; `canApplyForCustomer`: Method canApplyForCustomer ; `findOneWithDiscount`: Method findOneWithDiscount ; `getJoinTableResourceIdentifiers`: Method getJoinTableResourceIdentifiers ; `isValidForProduct`: Method isValidForProduct ; `queryConditionTable`: Method queryConditionTable ; `removeConditionResources`: Method removeConditionResources  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountConditionService_",
+    "type": "[`DiscountConditionService`](internal.internal.DiscountConditionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountRepository_",
+    "type": "`Repository`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountRuleRepository_",
+    "type": "`Repository`<[`DiscountRule`](internal.internal.DiscountRule.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "giftCardRepository_",
+    "type": "`Repository`<[`GiftCard`](internal.GiftCard-1.mdx)\\> & { `listGiftCardsAndCount`: Method listGiftCardsAndCount  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "newTotalsService_",
+    "type": "[`NewTotalsService`](internal.internal.NewTotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productService_",
+    "type": "[`ProductService`](internal.internal.ProductService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionService_",
+    "type": "[`RegionService`](internal.internal.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalsService_",
+    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addRegion
+
+Adds a region to the discount regions array.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "id of discount",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "id of region to add",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### calculateDiscountForLineItem
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItem",
+    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculationContextData",
+    "type": "[`CalculationContextData`](../types/internal.CalculationContextData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### canApplyForCustomer
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountRuleId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerId",
+    "type": "`undefined` \\| `string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+Creates a discount with provided data given that the data is validated.
+Normalizes discount code to uppercase.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discount",
+    "type": "[`CreateDiscountInput`](../types/internal.CreateDiscountInput.mdx)",
+    "description": "the discount data to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the create operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createDynamicCode
+
+Creates a dynamic code for a discount id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "the id of the discount to create a code for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`CreateDynamicDiscountInput`](../types/internal.CreateDynamicDiscountInput.mdx)",
+    "description": "the object containing a code to identify the discount by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the newly created dynamic code",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+Deletes a discount idempotently
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "id of discount to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the delete operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteDynamicCode
+
+Deletes a dynamic code for a discount id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "the id of the discount to create a code for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "code",
+    "type": "`string`",
+    "description": "the code to identify the discount by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the newly created dynamic code",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### hasCustomersGroupCondition
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discount",
+    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "description": "A discount can be applied to a cart for promotional purposes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### hasExpired
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discount",
+    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "description": "A discount can be applied to a cart for promotional purposes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### hasNotStarted
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discount",
+    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "description": "A discount can be applied to a cart for promotional purposes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### hasReachedLimit
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discount",
+    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "description": "A discount can be applied to a cart for promotional purposes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isDisabled
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discount",
+    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "description": "A discount can be applied to a cart for promotional purposes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isValidForRegion
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discount",
+    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "description": "A discount can be applied to a cart for promotional purposes.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "region_id",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableDiscountProps`](internal.FilterableDiscountProps.mdx)",
+    "description": "the query object for find",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Discount`](internal.Discount-1.mdx)\\>",
+    "description": "the config object containing query settings",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableDiscountProps`](internal.FilterableDiscountProps.mdx)",
+    "description": "the query object for find",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Discount`](internal.Discount-1.mdx)\\>",
+    "description": "the config object containing query settings",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`Discount`](internal.Discount-1.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listByCodes
+
+List all the discounts corresponding to the given codes
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountCodes",
+    "type": "`string`[]",
+    "description": "discount codes of discounts to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Discount`](internal.Discount-1.mdx)\\>",
+    "description": "the config object containing query settings",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the discounts",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### removeRegion
+
+Removes a region from the discount regions array.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "id of discount",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionId",
+    "type": "`string`",
+    "description": "id of region to remove",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Gets a discount by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "id of discount to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Discount`](internal.Discount-1.mdx)\\>",
+    "description": "the config object containing query settings",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the discount",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByCode
+
+Gets the discount by discount code.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountCode",
+    "type": "`string`",
+    "description": "discount code of discount to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Discount`](internal.Discount-1.mdx)\\>",
+    "description": "the config object containing query settings",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the discount",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+Updates a discount.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountId",
+    "type": "`string`",
+    "description": "discount id of discount to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateDiscountInput`](../types/internal.UpdateDiscountInput.mdx)",
+    "description": "the data to update the discount with",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Discount`](internal.Discount-1.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateDiscountForCartOrThrow
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discount",
+    "type": "[`Discount`](internal.Discount-1.mdx) \\| [`Discount`](internal.Discount-1.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateDiscountForProduct
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountRuleId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateDiscountRule\_
+
+Creates a discount rule with provided data given that the data is validated.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "discountRule",
+    "type": "`T`",
+    "description": "the discount rule to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "DiscountService",
+    "type": "[`DiscountService`](internal.internal.DiscountService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

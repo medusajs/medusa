@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PipelineTransform
+
+ **PipelineTransform**<`S`, `U`\>: [`ReadWriteStream`](../../internal/interfaces/internal.ReadWriteStream.mdx) \| (`source`: `S` extends (...`args`: `any`[]) => [`Iterable`](../../internal/interfaces/internal.Iterable.mdx)<infer ST\> \| [`AsyncIterable`](../../internal/interfaces/internal.AsyncIterable.mdx)<infer ST\> ? [`AsyncIterable`](../../internal/interfaces/internal.AsyncIterable.mdx)<`ST`\> : `S`) => [`AsyncIterable`](../../internal/interfaces/internal.AsyncIterable.mdx)<`U`\>
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "S",
+    "type": "[`PipelineTransformSource`](internal.internal-3.PipelineTransformSource.mdx)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "U",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

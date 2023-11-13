@@ -1,0 +1,85 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductTypeTaxRate
+
+This represents the association between a tax rate and a product type to indicate that the product type is taxed in a different way than the default.
+
+## Constructors
+
+### constructor
+
+**new ProductTypeTaxRate**()
+
+This represents the association between a tax rate and a product type to indicate that the product type is taxed in a different way than the default.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "product_type",
+    "type": "[`ProductType`](ProductType.mdx)",
+    "description": "The details of the product type.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "product_type_id",
+    "type": "`string`",
+    "description": "The ID of the Product type",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rate_id",
+    "type": "`string`",
+    "description": "The id of the Tax Rate",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rate",
+    "type": "[`TaxRate`](TaxRate.mdx)",
+    "description": "The details of the tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

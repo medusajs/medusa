@@ -8,6 +8,8 @@ export type Parameter = {
   optional?: boolean
   defaultValue?: string
   description?: string
+  featureFlag?: string
+  expandable: boolean
   children?: Parameter[]
 }
 
@@ -22,7 +24,7 @@ const ParameterTypes = ({
 }: ParameterTypesType) => {
   return (
     <div
-      className={clsx("bg-docs-bg shadow-card-rest rounded", className)}
+      className={clsx("bg-docs-bg-surface shadow-card-rest rounded", className)}
       {...props}
     >
       <ParameterTypesItems parameters={parameters} />

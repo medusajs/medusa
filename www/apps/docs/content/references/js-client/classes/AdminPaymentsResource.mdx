@@ -1,0 +1,807 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminPaymentsResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPaymentsResource
+
+This class is used to send requests to [Admin Payment API Routes](https://docs.medusajs.com/api/admin#payments). All its method
+are available in the JS Client under the `medusa.admin.payments` property.
+
+All methods in this class require [user authentication](AdminAuthResource.mdx#createsession).
+
+A payment can be related to an order, swap, return, or more. It can be captured or refunded.
+
+## Methods
+
+### capturePayment
+
+Capture a payment.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
+  console.log(payment.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The payment's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPaymentRes`](../internal/types/internal.AdminPaymentRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the payment's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminPaymentRes",
+        "type": "`object`",
+        "description": "The payment's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "payment",
+            "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+            "description": "Payment details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "amount",
+                "type": "`number`",
+                "description": "The amount that the Payment has been authorized for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "amount_refunded",
+                "type": "`number`",
+                "description": "The amount of the original Payment amount that has been refunded back to the Customer.",
+                "optional": false,
+                "defaultValue": "0",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the Payment was canceled.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "captured_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the Payment was captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency of the payment.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The 3 character ISO currency code of the payment.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "data",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The payment's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a payment in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "provider_id",
+                "type": "`string`",
+                "description": "The id of the Payment Provider that is responsible for the Payment",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "swap",
+                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+                "description": "The details of the swap that this payment was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "swap_id",
+                "type": "`string`",
+                "description": "The ID of the swap that this payment was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### refundPayment
+
+Refund a payment. The payment must be captured first.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.payments
+  .refundPayment(paymentId, {
+    amount: 1000,
+    reason: "return",
+    note: "Do not like it",
+  })
+  .then(({ payment }) => {
+    console.log(payment.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The payment's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostPaymentRefundsReq`](../internal/classes/internal.AdminPostPaymentRefundsReq.mdx)",
+    "description": "The refund to be created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "amount",
+        "type": "`number`",
+        "description": "The amount to refund.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "note",
+        "type": "`string`",
+        "description": "A note with additional details about the Refund.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "reason",
+        "type": "[`RefundReason`](../internal/enums/internal.RefundReason.mdx)",
+        "description": "The reason for the Refund.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "CLAIM",
+            "type": "``\"claim\"``",
+            "description": "The refund is applied because of a created claim.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DISCOUNT",
+            "type": "``\"discount\"``",
+            "description": "The refund is applied as a discount.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "OTHER",
+            "type": "``\"other\"``",
+            "description": "The refund is created for a custom reason.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "RETURN",
+            "type": "``\"return\"``",
+            "description": "The refund is applied because of a created return.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "SWAP",
+            "type": "``\"swap\"``",
+            "description": "The refund is applied because of a created swap.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRefundRes`](../internal/types/internal.AdminRefundRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the refund's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminRefundRes",
+        "type": "`object`",
+        "description": "The refund's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "refund",
+            "type": "[`Refund`](../internal/classes/internal.Refund.mdx)",
+            "description": "Refund details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "amount",
+                "type": "`number`",
+                "description": "The amount that has be refunded to the Customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The refund's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of the refund in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "note",
+                "type": "`string`",
+                "description": "An optional note explaining why the amount was refunded.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order this refund was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order this refund was created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "payment",
+                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the payment associated with the refund.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "payment_id",
+                "type": "`string`",
+                "description": "The payment's ID, if available.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "reason",
+                "type": "`string`",
+                "description": "The reason given for the Refund, will automatically be set when processed as part of a Swap, Claim or Return.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a payment's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
+  console.log(payment.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The payment's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "[`GetPaymentsParams`](../internal/classes/internal.GetPaymentsParams.mdx)",
+    "description": "Configurations to apply on the retrieved payment.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "expand",
+        "type": "`string`",
+        "description": "Comma-separated relations that should be expanded in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "fields",
+        "type": "`string`",
+        "description": "Comma-separated fields that should be included in the returned data.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPaymentRes`](../internal/types/internal.AdminPaymentRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the payment's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminPaymentRes",
+        "type": "`object`",
+        "description": "The payment's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "payment",
+            "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+            "description": "Payment details",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "amount",
+                "type": "`number`",
+                "description": "The amount that the Payment has been authorized for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "amount_refunded",
+                "type": "`number`",
+                "description": "The amount of the original Payment amount that has been refunded back to the Customer.",
+                "optional": false,
+                "defaultValue": "0",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "canceled_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the Payment was canceled.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "captured_at",
+                "type": "`string` \\| `Date`",
+                "description": "The date with timezone at which the Payment was captured.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "cart",
+                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "description": "The details of the cart that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "cart_id",
+                "type": "`string`",
+                "description": "The ID of the cart that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "currency",
+                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "description": "The details of the currency of the payment.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "currency_code",
+                "type": "`string`",
+                "description": "The 3 character ISO currency code of the payment.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "data",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The payment's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "idempotency_key",
+                "type": "`string`",
+                "description": "Randomly generated key used to continue the completion of a payment in case of failure.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "order",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "description": "The details of the order that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "order_id",
+                "type": "`string`",
+                "description": "The ID of the order that the payment session was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "provider_id",
+                "type": "`string`",
+                "description": "The id of the Payment Provider that is responsible for the Payment",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "swap",
+                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+                "description": "The details of the swap that this payment was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "swap_id",
+                "type": "`string`",
+                "description": "The ID of the swap that this payment was potentially created for.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

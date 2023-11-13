@@ -21,7 +21,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.carts.refreshPaymentSession(cartId, "manual")
  *       .then(({ cart }) => {
  *         console.log(cart.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

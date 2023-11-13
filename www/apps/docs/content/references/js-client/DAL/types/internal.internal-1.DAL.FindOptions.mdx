@@ -1,0 +1,46 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# FindOptions
+
+ **FindOptions**<`T`\>: `Object`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "options",
+    "type": "[`OptionsQuery`](../interfaces/internal.internal-1.DAL.OptionsQuery.mdx)<`T`, `any`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "where",
+    "type": "[`FilterQuery`](internal.internal-1.DAL.FilterQuery.mdx)<`T`\\> & [`BaseFilterable`](../interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterQuery`](internal.internal-1.DAL.FilterQuery.mdx)<`T`\\>\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

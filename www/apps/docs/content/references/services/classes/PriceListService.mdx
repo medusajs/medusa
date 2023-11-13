@@ -1,0 +1,1077 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PriceListService
+
+Provides layer to manipulate product tags.
+
+## Constructors
+
+### constructor
+
+**new PriceListService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`PriceListConstructorProps`](../types/PriceListConstructorProps.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerGroupService_",
+    "type": "[`CustomerGroupService`](CustomerGroupService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "moneyAmountRepo_",
+    "type": "`Repository`<[`MoneyAmount`](MoneyAmount.mdx)\\> & { `addPriceListPrices`: Method addPriceListPrices ; `createProductVariantMoneyAmounts`: Method createProductVariantMoneyAmounts ; `deletePriceListPrices`: Method deletePriceListPrices ; `deleteVariantPricesNotIn`: Method deleteVariantPricesNotIn ; `findCurrencyMoneyAmounts`: Method findCurrencyMoneyAmounts ; `findManyForVariantInPriceList`: Method findManyForVariantInPriceList ; `findManyForVariantInRegion`: Method findManyForVariantInRegion ; `findManyForVariantsInRegion`: Method findManyForVariantsInRegion ; `findRegionMoneyAmounts`: Method findRegionMoneyAmounts ; `findVariantPricesNotIn`: Method findVariantPricesNotIn ; `getPricesForVariantInRegion`: Method getPricesForVariantInRegion ; `insertBulk`: Method insertBulk ; `updatePriceListPrices`: Method updatePriceListPrices ; `upsertVariantCurrencyPrice`: Method upsertVariantCurrencyPrice  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceListRepo_",
+    "type": "`Repository`<[`PriceList`](PriceList.mdx)\\> & { `listAndCount`: Method listAndCount ; `listPriceListsVariantIdsMap`: Method listPriceListsVariantIdsMap  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productService_",
+    "type": "[`ProductService`](ProductService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantRepo_",
+    "type": "`Repository`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionService_",
+    "type": "[`RegionService`](RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variantService_",
+    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addCurrencyFromRegion
+
+`Protected` **addCurrencyFromRegion**<`T`\>(`prices`): `Promise`<`T`[]\>
+
+Add `currency_code` to an MA record if `region_id`is passed.
+
+<ParameterTypes parameters={[
+  {
+    "name": "T",
+    "type": "[`PriceListPriceUpdateInput`](../types/PriceListPriceUpdateInput.mdx) \\| [`PriceListPriceCreateInput`](../types/PriceListPriceCreateInput.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "prices",
+    "type": "`T`[]",
+    "description": "a list of PriceListPrice(Create/Update)Input records",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`T`[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`T`[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated `prices` list",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### addPrices
+
+**addPrices**(`id`, `prices`, `replace?`): `Promise`<[`PriceList`](PriceList.mdx)\>
+
+Adds prices to a price list in bulk, optionally replacing all existing prices
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "id of the price list",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "prices",
+    "type": "[`PriceListPriceCreateInput`](../types/PriceListPriceCreateInput.mdx)[]",
+    "description": "prices to add",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "replace",
+    "type": "`boolean`",
+    "description": "whether to replace existing prices",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PriceList`](PriceList.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated Price List",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### clearPrices
+
+**clearPrices**(`id`): `Promise`<`void`\>
+
+Removes all prices from a price list and deletes the removed prices in bulk
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "id of the price list",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated Price List",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`priceListObject`): `Promise`<[`PriceList`](PriceList.mdx)\>
+
+Creates a Price List
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListObject",
+    "type": "[`CreatePriceListInput`](../types/CreatePriceListInput.mdx)",
+    "description": "the Price List to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PriceList`](PriceList.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "created Price List",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`id`): `Promise`<`void`\>
+
+Deletes a Price List
+Will never fail due to delete being idempotent.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "id of the price list",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "empty promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deletePrices
+
+**deletePrices**(`id`, `priceIds`): `Promise`<`void`\>
+
+Removes prices from a price list and deletes the removed prices in bulk
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "id of the price list",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "priceIds",
+    "type": "`string`[]",
+    "description": "ids of the prices to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated Price List",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteProductPrices
+
+**deleteProductPrices**(`priceListId`, `productIds`): `Promise`<[`string`[], `number`]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`string`[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`string`[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteVariantPrices
+
+**deleteVariantPrices**(`priceListId`, `variantIds`): `Promise`<[`string`[], `number`]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variantIds",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`string`[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`string`[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector?`, `config?`): `Promise`<[`PriceList`](PriceList.mdx)[]\>
+
+Lists Price Lists
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterablePriceListProps`](FilterablePriceListProps.mdx)",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`PriceList`](PriceList.mdx)\\>",
+    "description": "the config to be used for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PriceList`](PriceList.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PriceList`](PriceList.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+**listAndCount**(`selector?`, `config?`): `Promise`<[[`PriceList`](PriceList.mdx)[], `number`]\>
+
+Lists Price Lists and adds count
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterablePriceListProps`](FilterablePriceListProps.mdx)",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`PriceList`](PriceList.mdx)\\>",
+    "description": "the config to be used for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`PriceList`](PriceList.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`PriceList`](PriceList.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listPriceListsVariantIdsMap
+
+**listPriceListsVariantIdsMap**(`priceListIds`): `Promise`<{ `[priceListId: string]`: `string`[];  }\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListIds",
+    "type": "`string` \\| `string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<{ `[priceListId: string]`: `string`[];  }\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<{ `[priceListId: string]`: `string`[];  }\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listProducts
+
+**listProducts**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`Product`](Product.mdx)[], `number`]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector",
+    "type": "[`FilterableProductProps`](FilterableProductProps.mdx) \\| [`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Product`](Product.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "requiresPriceList",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`Product`](Product.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`Product`](Product.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listVariants
+
+**listVariants**(`priceListId`, `selector?`, `config?`, `requiresPriceList?`): `Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "selector",
+    "type": "[`FilterableProductVariantProps`](FilterableProductVariantProps.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "requiresPriceList",
+    "type": "`boolean`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "false",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`ProductVariant`](ProductVariant.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`priceListId`, `config?`): `Promise`<[`PriceList`](PriceList.mdx)\>
+
+Retrieves a product tag by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "the id of the product tag to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`PriceList`](PriceList.mdx)\\>",
+    "description": "the config to retrieve the tag by",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PriceList`](PriceList.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the collection.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`id`, `update`): `Promise`<[`PriceList`](PriceList.mdx)\>
+
+Updates a Price List
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "the id of the Product List to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdatePriceListInput`](../types/UpdatePriceListInput.mdx)",
+    "description": "the update to apply",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`PriceList`](PriceList.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`PriceList`](PriceList.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated Price List",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### upsertCustomerGroups\_
+
+`Protected` **upsertCustomerGroups_**(`priceListId`, `customerGroups`): `Promise`<`void`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "priceListId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerGroups",
+    "type": "{ `id`: `string`  }[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`PriceListService`](PriceListService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`PriceListService`](PriceListService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "PriceListService",
+    "type": "[`PriceListService`](PriceListService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

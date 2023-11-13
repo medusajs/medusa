@@ -1,0 +1,665 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AuthResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AuthResource
+
+This class is used to send requests to [Store Auth API Routes](https://docs.medusajs.com/api/store#auth). All its method
+are available in the JS Client under the `medusa.auth` property.
+
+The methods in this class allows you to manage a customer's session, such as login or log out.
+You can send authenticated requests for a customer either using the Cookie header or using the JWT Token.
+When you log the customer in using the [authenticate](AuthResource.mdx#authenticate) method, the JS client will automatically attach the
+cookie header in all subsequent requests.
+
+Related Guide: [How to implement customer profiles in your storefront](https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles).
+
+## Methods
+
+### authenticate
+
+Authenticate a customer using their email and password. If the customer is authenticated successfully, the cookie is automatically attached to subsequent requests sent with the JS Client.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.auth
+  .authenticate({
+    email: "user@example.com",
+    password: "user@example.com",
+  })
+  .then(({ customer }) => {
+    console.log(customer.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`StorePostAuthReq`](../internal/classes/internal.StorePostAuthReq.mdx)",
+    "description": "The credentials of the customer to authenticate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "The Customer's email.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "password",
+        "type": "`string`",
+        "description": "The Customer's password.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreAuthRes`](../internal/types/internal.StoreAuthRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the customer's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreAuthRes",
+        "type": "`object`",
+        "description": "The customer's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "customer",
+            "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+            "description": "Customer's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "``null`` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### deleteSession
+
+Log out the customer and remove their authentication session. This method requires [customer authentication](AuthResource.mdx#authenticate).
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.auth.deleteSession().then(() => {
+  // customer logged out successfully
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves when customer is logged out successfully.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### exists
+
+Check if the email is already used by another registered customer. Can be used to validate a new customer's email.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.auth.exists("user@example.com")
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "email",
+    "type": "`string`",
+    "description": "The email to check.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreGetAuthEmailRes`](../internal/types/internal.StoreGetAuthEmailRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the result of the check.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreGetAuthEmailRes",
+        "type": "`object`",
+        "description": "Details on whether the email exists.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "exists",
+            "type": "`boolean`",
+            "description": "Whether email exists or not.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### getSession
+
+Retrieve the details of the logged-in customer. Can also be used to check if there is an authenticated customer.
+This method requires [customer authentication](AuthResource.mdx#authenticate).
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged
+medusa.auth.getSession().then(({ customer }) => {
+  console.log(customer.id)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreAuthRes`](../internal/types/internal.StoreAuthRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the customer's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreAuthRes",
+        "type": "`object`",
+        "description": "The customer's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "customer",
+            "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+            "description": "Customer's details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "billing_address",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "description": "The details of the billing address associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "billing_address_id",
+                "type": "``null`` \\| `string`",
+                "description": "The customer's billing address ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "email",
+                "type": "`string`",
+                "description": "The customer's email",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "first_name",
+                "type": "`string`",
+                "description": "The customer's first name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "groups",
+                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "description": "The customer groups the customer belongs to.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "has_account",
+                "type": "`boolean`",
+                "description": "Whether the customer has an account or not",
+                "optional": false,
+                "defaultValue": "false",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The customer's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "last_name",
+                "type": "`string`",
+                "description": "The customer's last name",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "orders",
+                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "description": "The details of the orders this customer placed.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "phone",
+                "type": "`string`",
+                "description": "The customer's phone number",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "shipping_addresses",
+                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "description": "The details of the shipping addresses associated with the customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### getToken
+
+Authenticate the customer and retrieve a JWT token to use for subsequent authenticated requests.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.auth
+  .getToken({
+    email: "user@example.com",
+    password: "supersecret",
+  })
+  .then(({ access_token }) => {
+    console.log(access_token)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`StorePostAuthReq`](../internal/classes/internal.StorePostAuthReq.mdx)",
+    "description": "The credentials of the customer to authenticate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "email",
+        "type": "`string`",
+        "description": "The Customer's email.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "password",
+        "type": "`string`",
+        "description": "The Customer's password.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreBearerAuthRes`](../internal/types/internal.StoreBearerAuthRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the access token of the customer, if they're authenticated successfully.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "StoreBearerAuthRes",
+        "type": "`object`",
+        "description": "The access token details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "access_token",
+            "type": "`string`",
+            "description": "Access token that can be used to send authenticated requests.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+]} />

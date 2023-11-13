@@ -22,7 +22,7 @@ import { SwapService } from "../../../../services"
  *       medusa.admin.swaps.retrieve(swapId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

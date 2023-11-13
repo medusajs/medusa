@@ -11,4 +11,4 @@ medusa.returns.create({
 })
 .then((data) => {
   console.log(data.return.id);
-});
+})
