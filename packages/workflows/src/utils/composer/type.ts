@@ -11,21 +11,18 @@ export type StepFunction<
   (...inputs: StepReturn<TInput[number]>[]): StepReturn<TResult>
 } & StepReturn<TResult>
 
+export type StepReturnProperties<T = unknown> = {
+  __type: Symbol
+  __step__: string
+  __returnProperties: string
+  value?: T
+}
+
 export type StepReturn<T = unknown> = T extends object
   ? {
       [Key in keyof T]: StepReturn<T[Key]>
-    } & {
-      __type: Symbol
-      __step__: string
-      __returnProperties: string
-      value?: T
-    }
-  : {
-      __type: Symbol
-      __step__: string
-      __returnProperties: string
-      value?: T
-    }
+    } & StepReturnProperties<T>
+  : StepReturnProperties<T>
 
 export type StepTransformer<T = unknown> = {
   __type: Symbol
