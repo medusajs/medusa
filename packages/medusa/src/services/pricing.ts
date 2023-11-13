@@ -64,6 +64,7 @@ class PricingService extends TransactionBaseService {
   protected get pricingModuleService(): IPricingModuleService {
     return this.__container__.pricingModuleService
   }
+
   protected get remoteQuery(): RemoteQueryFunction {
     return this.__container__.remoteQuery
   }
@@ -259,25 +260,33 @@ class PricingService extends TransactionBaseService {
       }
 
       if (priceSetId) {
-        const calculatedPrice: CalculatedPriceSet | undefined =
+        const calculatedPrices: CalculatedPriceSet | undefined =
           calculatedPriceMap.get(priceSetId)
 
-        if (calculatedPrice) {
-          pricingResult.prices = [
+        if (calculatedPrices) {
+          pricingResult.prices.push(
             {
-              id: calculatedPrice.calculated_price?.money_amount_id,
-              currency_code: calculatedPrice.currency_code,
-              amount: calculatedPrice.calculated_amount,
-              min_quantity: calculatedPrice.calculated_price?.min_quantity,
-              max_quantity: calculatedPrice.calculated_price?.max_quantity,
-              price_list_id: calculatedPrice.calculated_price?.price_list_id,
-            },
-          ] as MoneyAmount[]
+              id: calculatedPrices.calculated_price?.money_amount_id,
+              currency_code: calculatedPrices.currency_code,
+              amount: calculatedPrices.calculated_amount,
+              min_quantity: calculatedPrices.calculated_price?.min_quantity,
+              max_quantity: calculatedPrices.calculated_price?.max_quantity,
+              price_list_id: calculatedPrices.calculated_price?.price_list_id,
+            } as MoneyAmount,
+            {
+              id: calculatedPrices?.original_price?.money_amount_id,
+              currency_code: calculatedPrices.currency_code,
+              amount: calculatedPrices.original_amount,
+              min_quantity: calculatedPrices.original_price?.min_quantity,
+              max_quantity: calculatedPrices.original_price?.max_quantity,
+              price_list_id: calculatedPrices.original_price?.price_list_id,
+            } as MoneyAmount
+          )
 
-          pricingResult.original_price = calculatedPrice?.original_amount
-          pricingResult.calculated_price = calculatedPrice?.calculated_amount
+          pricingResult.original_price = calculatedPrices?.original_amount
+          pricingResult.calculated_price = calculatedPrices?.calculated_amount
           pricingResult.calculated_price_type =
-            calculatedPrice?.calculated_price?.price_list_type
+            calculatedPrices?.calculated_price?.price_list_type
         }
       }
 
