@@ -7,8 +7,7 @@ import {
   RegionService,
 } from "../../../../services"
 
-import { MedusaError, promiseAll } from "@medusajs/utils"
-import IsolateProductDomain from "../../../../loaders/feature-flags/isolate-product-domain"
+import { MedusaError, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
 import { defaultStoreProductRemoteQueryObject } from "./index"
@@ -97,7 +96,7 @@ export default async (req, res) => {
   const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
   let rawProduct
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomain.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     rawProduct = await getProductWithIsolatedProductModule(req, id)
   } else {
     rawProduct = await productService.retrieve(id, req.retrieveConfig)
