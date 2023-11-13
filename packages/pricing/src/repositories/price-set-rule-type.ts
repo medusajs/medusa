@@ -1,17 +1,13 @@
-import {
-  Context,
-  DAL,
-  UpdatePriceSetDTO,
-  CreatePriceSetRuleTypeDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { PriceSet, PriceSetRuleType, RuleType } from "@models"
+import { PriceSetRuleType } from "@models"
+import { CreatePriceSetRuleTypeDTO, UpdatePriceSetDTO } from "../types"
 
 export class PriceSetRuleTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager

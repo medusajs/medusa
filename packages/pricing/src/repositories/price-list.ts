@@ -1,13 +1,13 @@
-import { Context, DAL, UpdatePriceListDTO } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceList } from "@models"
-import { CreatePriceListDTO } from "../types"
+import { CreatePriceListDTO, UpdatePriceListDTO } from "../types"
 
 export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -80,7 +80,7 @@ export class PriceListRepository extends DALUtils.MikroOrmBaseRepository {
   }
 
   async update(
-    data: Omit<UpdatePriceListDTO, "rules">[],
+    data: UpdatePriceListDTO[],
     context: Context = {}
   ): Promise<PriceList[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)

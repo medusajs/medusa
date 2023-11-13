@@ -1,4 +1,4 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
+import { Context, DAL, FindConfig } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -8,6 +8,12 @@ import {
 } from "@medusajs/utils"
 import { Currency } from "@models"
 import { CurrencyRepository } from "@repositories"
+import {
+  CreateCurrencyDTO,
+  CurrencyDTO,
+  FilterableCurrencyProps,
+  UpdateCurrencyDTO,
+} from "../types"
 
 type InjectedDependencies = {
   currencyRepository: DAL.RepositoryService
@@ -23,10 +29,10 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
   @InjectManager("currencyRepository_")
   async retrieve(
     currencyCode: string,
-    config: FindConfig<PricingTypes.CurrencyDTO> = {},
+    config: FindConfig<CurrencyDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<Currency, PricingTypes.CurrencyDTO>({
+    return (await retrieveEntity<Currency, CurrencyDTO>({
       id: currencyCode,
       identifierColumn: "code",
       entityName: Currency.name,
@@ -38,8 +44,8 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
 
   @InjectManager("currencyRepository_")
   async list(
-    filters: PricingTypes.FilterableCurrencyProps = {},
-    config: FindConfig<PricingTypes.CurrencyDTO> = {},
+    filters: FilterableCurrencyProps = {},
+    config: FindConfig<CurrencyDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await this.currencyRepository_.find(
@@ -50,8 +56,8 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
 
   @InjectManager("currencyRepository_")
   async listAndCount(
-    filters: PricingTypes.FilterableCurrencyProps = {},
-    config: FindConfig<PricingTypes.CurrencyDTO> = {},
+    filters: FilterableCurrencyProps = {},
+    config: FindConfig<CurrencyDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     return (await this.currencyRepository_.findAndCount(
@@ -61,8 +67,8 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
   }
 
   private buildQueryForList(
-    filters: PricingTypes.FilterableCurrencyProps = {},
-    config: FindConfig<PricingTypes.CurrencyDTO> = {}
+    filters: FilterableCurrencyProps = {},
+    config: FindConfig<CurrencyDTO> = {}
   ) {
     const queryOptions = ModulesSdkUtils.buildQuery<Currency>(filters, config)
 
@@ -75,7 +81,7 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
 
   @InjectTransactionManager("currencyRepository_")
   async create(
-    data: PricingTypes.CreateCurrencyDTO[],
+    data: CreateCurrencyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.currencyRepository_ as CurrencyRepository).create(
@@ -86,7 +92,7 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
 
   @InjectTransactionManager("currencyRepository_")
   async update(
-    data: PricingTypes.UpdateCurrencyDTO[],
+    data: UpdateCurrencyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.currencyRepository_ as CurrencyRepository).update(

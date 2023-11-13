@@ -1,16 +1,21 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
+import { Context, DAL, FindConfig } from "@medusajs/types"
 import {
+  doNotForceTransaction,
   InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
-  doNotForceTransaction,
   retrieveEntity,
   shouldForceTransaction,
 } from "@medusajs/utils"
 import { PriceList } from "@models"
 import { PriceListRepository } from "@repositories"
-import { CreatePriceListDTO } from "../types"
+import {
+  CreatePriceListDTO,
+  FilterablePriceListProps,
+  PriceListDTO,
+  UpdatePriceListDTO,
+} from "../types"
 
 type InjectedDependencies = {
   priceListRepository: DAL.RepositoryService
@@ -26,10 +31,10 @@ export default class PriceListService<TEntity extends PriceList = PriceList> {
   @InjectManager("priceListRepository_")
   async retrieve(
     priceListId: string,
-    config: FindConfig<PricingTypes.PriceListDTO> = {},
+    config: FindConfig<PriceListDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<PriceList, PricingTypes.PriceListDTO>({
+    return (await retrieveEntity<PriceList, PriceListDTO>({
       id: priceListId,
       entityName: PriceList.name,
       repository: this.priceListRepository_,
@@ -40,8 +45,8 @@ export default class PriceListService<TEntity extends PriceList = PriceList> {
 
   @InjectManager("priceListRepository_")
   async list(
-    filters: PricingTypes.FilterablePriceListProps = {},
-    config: FindConfig<PricingTypes.PriceListDTO> = {},
+    filters: FilterablePriceListProps = {},
+    config: FindConfig<PriceListDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<PriceList>(filters, config)
@@ -54,8 +59,8 @@ export default class PriceListService<TEntity extends PriceList = PriceList> {
 
   @InjectManager("priceListRepository_")
   async listAndCount(
-    filters: PricingTypes.FilterablePriceListProps = {},
-    config: FindConfig<PricingTypes.PriceListDTO> = {},
+    filters: FilterablePriceListProps = {},
+    config: FindConfig<PriceListDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<PriceList>(filters, config)
@@ -79,7 +84,7 @@ export default class PriceListService<TEntity extends PriceList = PriceList> {
 
   @InjectTransactionManager(shouldForceTransaction, "priceListRepository_")
   async update(
-    data: Omit<PricingTypes.UpdatePriceListDTO, "rules">[],
+    data: UpdatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.priceListRepository_ as PriceListRepository).update(

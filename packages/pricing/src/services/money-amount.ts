@@ -1,4 +1,4 @@
-import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
+import { Context, DAL, FindConfig } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -8,6 +8,12 @@ import {
 } from "@medusajs/utils"
 import { MoneyAmount } from "@models"
 import { MoneyAmountRepository } from "@repositories"
+import {
+  CreateMoneyAmountDTO,
+  FilterableMoneyAmountProps,
+  MoneyAmountDTO,
+  UpdateMoneyAmountDTO,
+} from "../types"
 
 type InjectedDependencies = {
   moneyAmountRepository: DAL.RepositoryService
@@ -25,10 +31,10 @@ export default class MoneyAmountService<
   @InjectManager("moneyAmountRepository_")
   async retrieve(
     moneyAmountId: string,
-    config: FindConfig<PricingTypes.MoneyAmountDTO> = {},
+    config: FindConfig<MoneyAmountDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<MoneyAmount, PricingTypes.MoneyAmountDTO>({
+    return (await retrieveEntity<MoneyAmount, MoneyAmountDTO>({
       id: moneyAmountId,
       entityName: MoneyAmount.name,
       repository: this.moneyAmountRepository_,
@@ -39,8 +45,8 @@ export default class MoneyAmountService<
 
   @InjectManager("moneyAmountRepository_")
   async list(
-    filters: PricingTypes.FilterableMoneyAmountProps = {},
-    config: FindConfig<PricingTypes.MoneyAmountDTO> = {},
+    filters: FilterableMoneyAmountProps = {},
+    config: FindConfig<MoneyAmountDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<MoneyAmount>(
@@ -56,8 +62,8 @@ export default class MoneyAmountService<
 
   @InjectManager("moneyAmountRepository_")
   async listAndCount(
-    filters: PricingTypes.FilterableMoneyAmountProps = {},
-    config: FindConfig<PricingTypes.MoneyAmountDTO> = {},
+    filters: FilterableMoneyAmountProps = {},
+    config: FindConfig<MoneyAmountDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<MoneyAmount>(
@@ -73,7 +79,7 @@ export default class MoneyAmountService<
 
   @InjectTransactionManager("moneyAmountRepository_")
   async create(
-    data: PricingTypes.CreateMoneyAmountDTO[],
+    data: CreateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.moneyAmountRepository_ as MoneyAmountRepository).create(
@@ -84,7 +90,7 @@ export default class MoneyAmountService<
 
   @InjectTransactionManager("moneyAmountRepository_")
   async update(
-    data: PricingTypes.UpdateMoneyAmountDTO[],
+    data: UpdateMoneyAmountDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.moneyAmountRepository_ as MoneyAmountRepository).update(

@@ -1,17 +1,13 @@
-import {
-  Context,
-  CreateCurrencyDTO,
-  DAL,
-  UpdateCurrencyDTO,
-} from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
 import { DALUtils, MedusaError } from "@medusajs/utils"
 import {
-  LoadStrategy,
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
+  LoadStrategy,
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Currency } from "@models"
+import { CreateCurrencyDTO, UpdateCurrencyDTO } from "../types"
 
 export class CurrencyRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
