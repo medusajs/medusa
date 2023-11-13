@@ -8,11 +8,7 @@ import {
 } from "../../../../services"
 
 import { IInventoryService } from "@medusajs/types"
-import {
-  IsolateSalesChannelDomainFeatureFlag,
-  MedusaV2Flag,
-  promiseAll,
-} from "@medusajs/utils"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Product } from "../../../../models"
 import { PricedProduct } from "../../../../types/pricing"
@@ -313,10 +309,6 @@ async function listAndCountProductWithIsolatedProductModule(
   // TODO: Add support for fields/expands
 
   const remoteQuery = req.scope.resolve("remoteQuery")
-  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
-  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
-    IsolateSalesChannelDomainFeatureFlag.key
-  )
 
   const productIdsFilter: Set<string> = new Set()
   const variantIdsFilter: Set<string> = new Set()
@@ -326,35 +318,6 @@ async function listAndCountProductWithIsolatedProductModule(
   // This is not the best way of handling cross filtering but for now I would say it is fine
   const salesChannelIdFilter = filterableFields.sales_channel_id
   delete filterableFields.sales_channel_id
-
-  if (salesChannelIdFilter && !isSalesChannelModuleIsolationFFOn) {
-    const salesChannelService = req.scope.resolve(
-      "salesChannelService"
-    ) as SalesChannelService
-
-    promises.push(
-      salesChannelService
-        .listProductIdsBySalesChannelIds(salesChannelIdFilter)
-        .then((productIdsInSalesChannel) => {
-          let filteredProductIds =
-            productIdsInSalesChannel[salesChannelIdFilter]
-
-          if (filterableFields.id) {
-            filterableFields.id = Array.isArray(filterableFields.id)
-              ? filterableFields.id
-              : [filterableFields.id]
-
-            const salesChannelProductIdsSet = new Set(filteredProductIds)
-
-            filteredProductIds = filterableFields.id.filter((productId) =>
-              salesChannelProductIdsSet.has(productId)
-            )
-          }
-
-          filteredProductIds.map((id) => productIdsFilter.add(id))
-        })
-    )
-  }
 
   const priceListId = filterableFields.price_list_id
   delete filterableFields.price_list_id
@@ -402,30 +365,29 @@ async function listAndCountProductWithIsolatedProductModule(
     take: listConfig.take,
   }
 
+  // TODO: Change when support for fields/expands is added
   const query = {
     product: {
       __args: variables,
       ...defaultAdminProductRemoteQueryObject,
+      sales_channels: {
+        fields: [
+          "id",
+          "name",
+          "description",
+          "is_disabled",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+        ],
+      },
     },
   }
 
-  // TODO: Change when support for fields/expands is added
-  if (isSalesChannelModuleIsolationFFOn) {
-    query.product["sales_channels"] = {
-      fields: [
-        "id",
-        "name",
-        "description",
-        "is_disabled",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-      ],
-    }
-    if (salesChannelIdFilter) {
-      query.product["sales_channels"]["__args"] = {
-        filters: { id: salesChannelIdFilter },
-      }
+  // TODO: validate that this is filtering correctly
+  if (salesChannelIdFilter) {
+    query.product["sales_channels"]["__args"] = {
+      filters: { id: salesChannelIdFilter },
     }
   }
 
