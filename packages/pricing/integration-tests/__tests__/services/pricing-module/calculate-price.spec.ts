@@ -1724,6 +1724,62 @@ describe("PricingModule Service - Calculate Price", () => {
           },
         ])
       })
+
+      it("should return price list prices for price list with customer groupst", async () => {
+        const [{ id }] = await createPriceLists(
+          service,
+          {},
+          {
+            customer_group_id: [
+              "vip-customer-group-id",
+              "vip-customer-group-id-1",
+            ],
+          },
+          [
+            {
+              amount: 200,
+              currency_code: "EUR",
+              price_set_id: "price-set-EUR",
+            },
+          ]
+        )
+
+        const priceSetsResult = await service.calculatePrices(
+          { id: ["price-set-EUR"] },
+          {
+            context: {
+              currency_code: "EUR",
+              customer_group_id: "vip-customer-group-id",
+            },
+          }
+        )
+
+        console.warn(priceSetsResult)
+        expect(priceSetsResult).toEqual([
+          {
+            id: "price-set-EUR",
+            is_calculated_price_price_list: true,
+            calculated_amount: 200,
+            is_original_price_price_list: false,
+            original_amount: null,
+            currency_code: "EUR",
+            calculated_price: {
+              money_amount_id: expect.any(String),
+              price_list_id: id,
+              price_list_type: "sale",
+              min_quantity: null,
+              max_quantity: null,
+            },
+            original_price: {
+              money_amount_id: null,
+              price_list_id: null,
+              price_list_type: null,
+              min_quantity: null,
+              max_quantity: null,
+            },
+          },
+        ])
+      })
     })
   })
 })
