@@ -97,6 +97,25 @@ function applyStep<TStepInput extends StepReturn[], TResult extends unknown>({
       noCompensation: !compensateFn,
     })
     this.handlers.set(stepName, handler)
+    /*
+    const ret = {
+      __type: SymbolWorkflowStep,
+      __step__: stepName,
+    } as StepBinderReturn
+
+    const proxy = new Proxy(ret, {
+      get: function (target, prop: string, receiver) {
+        if (target[prop]) {
+          return target[prop]
+        }
+
+        return transform(target[prop], (context) => {
+          const { invoke } = context
+          return invoke[ret.__step__]?.output?.[prop]
+        })
+      },
+    })
+     */
 
     return new Proxy(
       {
