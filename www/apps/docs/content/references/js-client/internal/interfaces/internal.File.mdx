@@ -1,0 +1,173 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# File
+
+Provides information about files and allows JavaScript in a web page to access their content.
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/File)
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "lastModified",
+    "type": "`number`",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/File/lastModified)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/File/name)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "size",
+    "type": "`number`",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/size)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string`",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/type)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "webkitRelativePath",
+    "type": "`string`",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/File/webkitRelativePath)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### arrayBuffer
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/arrayBuffer)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`ArrayBuffer`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### slice
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/slice)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "start",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "end",
+    "type": "`number`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "contentType",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Blob",
+    "type": "`Blob`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### stream
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/stream)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream)<`Uint8Array`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### text
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/text)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`string`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,1915 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# OrderService
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "addressRepository_",
+    "type": "`Repository`<[`Address`](internal.Address.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cartService_",
+    "type": "[`CartService`](internal.internal.CartService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customerService_",
+    "type": "[`CustomerService`](internal.internal.CustomerService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discountService_",
+    "type": "[`DiscountService`](internal.internal.DiscountService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "draftOrderService_",
+    "type": "[`DraftOrderService`](internal.internal.DraftOrderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentProviderService_",
+    "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentService_",
+    "type": "[`FulfillmentService`](internal.FulfillmentService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "getTotalsRelations",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "giftCardService_",
+    "type": "[`GiftCardService`](internal.internal.GiftCardService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "inventoryService_",
+    "type": "[`IInventoryService`](../interfaces/internal.IInventoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItemService_",
+    "type": "[`LineItemService`](internal.internal.LineItemService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "newTotalsService_",
+    "type": "[`NewTotalsService`](internal.internal.NewTotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "orderRepository_",
+    "type": "`Repository`<[`Order`](internal.Order.mdx)\\> & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "paymentProviderService_",
+    "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantInventoryService_",
+    "type": "[`ProductVariantInventoryService`](internal.internal.ProductVariantInventoryService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "regionService_",
+    "type": "[`RegionService`](internal.internal.RegionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingOptionService_",
+    "type": "[`ShippingOptionService`](internal.internal.ShippingOptionService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shippingProfileService_",
+    "type": "[`ShippingProfileService`](internal.internal.ShippingProfileService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxProviderService_",
+    "type": "[`TaxProviderService`](internal.internal.TaxProviderService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalsService_",
+    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CANCELED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.COMPLETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.FULFILLMENT_CANCELED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.FULFILLMENT_CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.GIFT_CARD_CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.ITEMS_RETURNED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PAYMENT_CAPTURED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PAYMENT_CAPTURE_FAILED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.PLACED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.REFUND_CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.REFUND_FAILED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.RETURN_ACTION_REQUIRED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.RETURN_REQUESTED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.SHIPMENT_CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.SWAP_CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addShippingMethod
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`CreateShippingMethodDto`](../types/internal.CreateShippingMethodDto.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### archive
+
+Archives an order. It only alloved, if the order has been fulfilled
+and payment has been captured.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "the order to archive",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancel
+
+Cancels an order.
+Throws if fulfillment process has been initiated.
+Throws if payment process has been initiated.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "id of order to cancel.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "result of the update operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancelFulfillment
+
+Cancels a fulfillment (if related to an order)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the ID of the fulfillment to cancel",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated order",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### capturePayment
+
+Captures payment for an order.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "id of order to capture payment for.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "result of the update operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### completeOrder
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "id of the order to complete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createFromCart
+
+Creates an order from a cart
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cartOrId",
+    "type": "`string` \\| [`Cart`](internal.Cart.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the creation result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createFulfillment
+
+Creates fulfillments for an order.
+In a situation where the order has more than one shipping method,
+we need to partition the order items, such that they can be sent
+to their respective fulfillment provider.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "id of order to fulfil.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "itemsToFulfill",
+    "type": "[`FulFillmentItemType`](../types/internal.FulFillmentItemType.mdx)[]",
+    "description": "items to fulfil.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`object`",
+    "description": "the config to fulfil.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config.location_id",
+    "type": "`string`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config.metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config.no_notification",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "result of the update operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createGiftCardsFromLineItem\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "lineItem",
+    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise<GiftCard\\>[]",
+    "type": "`Promise`<[`GiftCard`](internal.GiftCard-1.mdx)\\>[]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createRefund
+
+Refunds a given amount back to the customer.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "id of the order to refund.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "refundAmount",
+    "type": "`number`",
+    "description": "the amount to refund.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "reason",
+    "type": "`string`",
+    "description": "the reason to refund.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "note",
+    "type": "`string`",
+    "description": "note for refund.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`object`",
+    "description": "the config for refund.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config.no_notification",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the refund operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createShipment
+
+Adds a shipment to the order to indicate that an order has left the
+warehouse. Will ask the fulfillment provider for any documents that may
+have been created in regards to the shipment.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "the id of the order that has been shipped",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillmentId",
+    "type": "`string`",
+    "description": "the fulfillment that has now been shipped",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "trackingLinks",
+    "type": "[`TrackingLink`](internal.internal.TrackingLink.mdx)[]",
+    "description": "array of tracking numbers associated with the shipment",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "`object`",
+    "description": "the config of the order that has been shipped",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config.metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config.no_notification",
+    "type": "`boolean`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the resulting order following the update.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### decorateTotals
+
+**decorateTotals**(`order`, `totalsFields?`): `Promise`<[`Order`](internal.Order.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalsFields",
+    "type": "`string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**decorateTotals**(`order`, `context?`): `Promise`<[`Order`](internal.Order.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`TotalsContext`](../types/internal.TotalsContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### decorateTotalsLegacy
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalsFields",
+    "type": "`string`[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFulfillmentItems
+
+Retrieves the order line items, given an array of items.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "the order to get line items from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`FulFillmentItemType`](../types/internal.FulFillmentItemType.mdx)[]",
+    "description": "the items to get",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transformer",
+    "type": "(`item`: `undefined` \\| [`LineItem`](internal.LineItem.mdx), `quantity`: `number`) => `unknown`",
+    "description": "a function to apply to each of the items retrieved from the order, should return a line item. If the transformer returns an undefined value the line item will be filtered from the returned array.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`LineItem`](internal.LineItem.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the line items generated by the transformer.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "the config to be used for find",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`QuerySelector`](../types/internal.internal.QuerySelector.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "the query object for find",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "the config to be used for find",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`Order`](internal.Order.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### registerReturnReceived
+
+Handles receiving a return. This will create a
+refund to the customer. If the returned items don't match the requested
+items the return status will be updated to requires_action. This behaviour
+is useful in situations where a custom refund amount is requested, but the
+returned items are not matching the requested items. Setting the
+allowMismatch argument to true, will process the return, ignoring any
+mismatches.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "the order to return.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "receivedReturn",
+    "type": "[`Return`](internal.Return.mdx)",
+    "description": "the received return",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customRefundAmount",
+    "type": "`number`",
+    "description": "the custom refund amount return",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+Gets an order by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "id or selector of order to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "config of order to retrieve",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the order document",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByCartId
+
+Gets an order by cart id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cartId",
+    "type": "`string`",
+    "description": "cart id to find order",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "the config to be used to find order",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the order document",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByCartIdWithTotals
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "cartId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByExternalId
+
+Gets an order by id.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "externalId",
+    "type": "`string`",
+    "description": "id of order to retrieve",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "query config to get order by",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the order document",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveLegacy
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderIdOrSelector",
+    "type": "`string` \\| [`Selector`](../types/internal.internal.Selector.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveWithTotals
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "context",
+    "type": "[`TotalsContext`](../types/internal.TotalsContext.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### transformQueryForTotals
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "config",
+    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Order`](internal.Order.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "`object`",
+    "type": "`object`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+<ParameterTypes parameters={[
+  {
+    "name": "relations",
+    "type": "`undefined` \\| `string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "select",
+    "type": "`undefined` \\| keyof [`Order`](internal.Order.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "totalsToSelect",
+    "type": "`undefined` \\| keyof [`Order`](internal.Order.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+Updates an order. Metadata updates should
+use dedicated method, e.g. `setMetadata` etc. The function
+will throw errors if metadata updates are attempted.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "orderId",
+    "type": "`string`",
+    "description": "the id of the order. Must be a string that can be casted to an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateOrderInput`](../types/internal.UpdateOrderInput.mdx)",
+    "description": "an object with the update values.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Order`](internal.Order.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the update result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateBillingAddress
+
+Updates the order's billing address.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "the order to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "address",
+    "type": "[`Address`](internal.Address.mdx)",
+    "description": "the value to set the billing address to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateShippingAddress
+
+Updates the order's shipping address.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "the order to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "address",
+    "type": "[`Address`](internal.Address.mdx)",
+    "description": "the value to set the shipping address to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateFulfillmentLineItem
+
+Checks that a given quantity of a line item can be fulfilled. Fails if the
+fulfillable quantity is lower than the requested fulfillment quantity.
+Fulfillable quantity is calculated by subtracting the already fulfilled
+quantity from the quantity that was originally purchased.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "item",
+    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "description": "the line item to check has sufficient fulfillable quantity.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "quantity",
+    "type": "`number`",
+    "description": "the quantity that is requested to be fulfilled.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "``null`` \\| LineItem",
+    "type": "``null`` \\| [`LineItem`](internal.LineItem.mdx)",
+    "optional": true,
+    "defaultValue": "",
+    "description": "a line item that has the requested fulfillment quantity\n  set.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "OrderService",
+    "type": "[`OrderService`](internal.internal.OrderService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

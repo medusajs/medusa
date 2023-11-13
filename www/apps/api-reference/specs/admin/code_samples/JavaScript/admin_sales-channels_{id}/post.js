@@ -6,4 +6,4 @@ medusa.admin.salesChannels.update(salesChannelId, {
 })
 .then(({ sales_channel }) => {
   console.log(sales_channel.id);
-});
+})

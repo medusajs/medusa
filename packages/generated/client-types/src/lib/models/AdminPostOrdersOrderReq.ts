@@ -9,7 +9,7 @@ import type { LineItem } from "./LineItem"
 
 export interface AdminPostOrdersOrderReq {
   /**
-   * the email associated with the order
+   * The email associated with the order
    */
   email?: string
   /**

@@ -25,7 +25,7 @@ import { removePriceListProductPrices } from "@medusajs/workflows/dist/definitio
  *       medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

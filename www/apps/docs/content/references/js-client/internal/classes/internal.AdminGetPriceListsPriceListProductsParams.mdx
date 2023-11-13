@@ -1,0 +1,176 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminGetPriceListsPriceListProductsParams
+
+Parameters used to filter and configure the pagination of the retrieved products associated with a price list.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "collection_id",
+    "type": "`string`[]",
+    "description": "Filter products by their associated collection ID.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the products' `created_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deleted_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the products' `deleted_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "description",
+    "type": "`string`",
+    "description": "Description to filter products by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "expand",
+    "type": "`string`",
+    "description": "Comma-separated relations that should be expanded in the returned data.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fields",
+    "type": "`string`",
+    "description": "Comma-separated fields that should be included in the returned data.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "handle",
+    "type": "`string`",
+    "description": "Handle to filter products by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "ID to filter products by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "is_giftcard",
+    "type": "`string`",
+    "description": "Filter products by whether they're gift cards.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "limit",
+    "type": "`number`",
+    "description": "Limit the number of products returned in the list. Default is `50`.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "The number of items to skip when retrieving a list.",
+    "optional": true,
+    "defaultValue": "0",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "`string`",
+    "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "q",
+    "type": "`string`",
+    "description": "Search term to search products' title, description, product variant's title and sku, and product collection's title.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "status",
+    "type": "[`ProductStatus`](../enums/internal.ProductStatus.mdx)[]",
+    "description": "Statuses to filter products by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tags",
+    "type": "`string`[]",
+    "description": "Tags to filter products by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "title",
+    "type": "`string`",
+    "description": "Title to filter products by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "`string`",
+    "description": "Type to filter products by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the products' `updated_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

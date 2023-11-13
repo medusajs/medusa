@@ -1,0 +1,866 @@
+---
+displayed_sidebar: jsClientSidebar
+slug: /references/js-client/AdminShippingProfilesResource
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminShippingProfilesResource
+
+This class is used to send requests to [Admin Shipping Profile API Routes](https://docs.medusajs.com/api/admin#shipping-profiles). All its method
+are available in the JS Client under the `medusa.admin.shippingProfiles` property.
+
+All methods in this class require [user authentication](AdminAuthResource.mdx#createsession).
+
+A shipping profile is used to group products that can be shipped in the same manner.
+They are created by the admin and they're not associated with a fulfillment provider.
+
+Related Guide: [Shipping Profile architecture](https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-profile).
+
+## Methods
+
+### create
+
+Create a shipping profile.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.shippingProfiles
+  .create({
+    name: "Large Products",
+  })
+  .then(({ shipping_profile }) => {
+    console.log(shipping_profile.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "payload",
+    "type": "[`AdminPostShippingProfilesReq`](../internal/classes/internal.AdminPostShippingProfilesReq.mdx)",
+    "description": "The shipping profile to create.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "An optional set of key-value pairs with additional information.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the Shipping Profile",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "type",
+        "type": "[`ShippingProfileType`](../internal/enums/internal.ShippingProfileType.mdx)",
+        "description": "The type of the Shipping Profile",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "CUSTOM",
+            "type": "``\"custom\"``",
+            "description": "The profile used to ship custom items.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DEFAULT",
+            "type": "``\"default\"``",
+            "description": "The default profile used to ship item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "GIFT_CARD",
+            "type": "``\"gift_card\"``",
+            "description": "The profile used to ship gift cards.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingProfilesRes`](../internal/types/internal.AdminShippingProfilesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the shipping profile's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminShippingProfilesRes",
+        "type": "`object`",
+        "description": "The shipping profile's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "shipping_profile",
+            "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+            "description": "Shipping profile details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The shipping profile's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name given to the Shipping profile - this may be displayed to the Customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`ShippingProfileType`](../internal/enums/internal.ShippingProfileType.mdx)",
+                "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### delete
+
+Delete a shipping profile. Associated shipping options are deleted as well.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.shippingProfiles
+  .delete(profileId)
+  .then(({ id, object, deleted }) => {
+    console.log(id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The shipping profile's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the deletion operation's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "deleted",
+        "type": "`boolean`",
+        "description": "Whether the item was deleted successfully.",
+        "optional": false,
+        "defaultValue": "true",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "id",
+        "type": "`string`",
+        "description": "The ID of the deleted item.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "object",
+        "type": "`string`",
+        "description": "The type of the deleted item.",
+        "optional": false,
+        "defaultValue": "product-collection",
+        "expandable": false,
+        "children": []
+      }
+    ]
+  }
+]} />
+
+___
+
+### list
+
+Retrieve a list of shipping profiles.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.shippingProfiles.list().then(({ shipping_profiles }) => {
+  console.log(shipping_profiles.length)
+})
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingProfilesListRes`](../internal/types/internal.AdminShippingProfilesListRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the list of shipping profiles.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminShippingProfilesListRes",
+        "type": "`object`",
+        "description": "The list of shipping profiles.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "shipping_profiles",
+            "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)[]",
+            "description": "An array of shipping profiles details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The shipping profile's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name given to the Shipping profile - this may be displayed to the Customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`ShippingProfileType`](../internal/enums/internal.ShippingProfileType.mdx)",
+                "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### retrieve
+
+Retrieve a shipping profile's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.shippingProfiles
+  .retrieve(profileId)
+  .then(({ shipping_profile }) => {
+    console.log(shipping_profile.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The shipping profile's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingProfilesRes`](../internal/types/internal.AdminShippingProfilesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the shipping profile's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminShippingProfilesRes",
+        "type": "`object`",
+        "description": "The shipping profile's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "shipping_profile",
+            "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+            "description": "Shipping profile details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The shipping profile's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name given to the Shipping profile - this may be displayed to the Customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`ShippingProfileType`](../internal/enums/internal.ShippingProfileType.mdx)",
+                "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />
+
+___
+
+### update
+
+Update a shipping profile's details.
+
+#### Example
+
+```ts
+import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.shippingProfiles
+  .update(shippingProfileId, {
+    name: "Large Products",
+  })
+  .then(({ shipping_profile }) => {
+    console.log(shipping_profile.id)
+  })
+```
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "The shipping profile's ID.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "payload",
+    "type": "[`AdminPostShippingProfilesProfileReq`](../internal/classes/internal.AdminPostShippingProfilesProfileReq.mdx)",
+    "description": "The attributes to update in the shipping profile.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": [
+      {
+        "name": "metadata",
+        "type": "Record<`string`, `unknown`\\>",
+        "description": "An optional set of key-value pairs with additional information.",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "name",
+        "type": "`string`",
+        "description": "The name of the Shipping Profile",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "products",
+        "type": "`string`[]",
+        "description": "product IDs to associate with the Shipping Profile",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "shipping_options",
+        "type": "`string`[]",
+        "description": "Shipping option IDs to associate with the Shipping Profile",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      },
+      {
+        "name": "type",
+        "type": "[`ShippingProfileType`](../internal/enums/internal.ShippingProfileType.mdx)",
+        "description": "The type of the Shipping Profile",
+        "optional": true,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "CUSTOM",
+            "type": "``\"custom\"``",
+            "description": "The profile used to ship custom items.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "DEFAULT",
+            "type": "``\"default\"``",
+            "description": "The default profile used to ship item.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          },
+          {
+            "name": "GIFT_CARD",
+            "type": "``\"gift_card\"``",
+            "description": "The profile used to ship gift cards.",
+            "optional": true,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "customHeaders",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Custom headers to attach to the request.",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ResponsePromise",
+    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingProfilesRes`](../internal/types/internal.AdminShippingProfilesRes.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "Resolves to the shipping profile's details.",
+    "expandable": false,
+    "children": [
+      {
+        "name": "AdminShippingProfilesRes",
+        "type": "`object`",
+        "description": "The shipping profile's details.",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": [
+          {
+            "name": "shipping_profile",
+            "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+            "description": "Shipping profile details.",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": [
+              {
+                "name": "created_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was created.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "deleted_at",
+                "type": "``null`` \\| `Date`",
+                "description": "The date with timezone at which the resource was deleted.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "id",
+                "type": "`string`",
+                "description": "The shipping profile's ID",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "metadata",
+                "type": "Record<`string`, `unknown`\\>",
+                "description": "An optional key-value map with additional details",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "name",
+                "type": "`string`",
+                "description": "The name given to the Shipping profile - this may be displayed to the Customer.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "products",
+                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "shipping_options",
+                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": true,
+                "children": []
+              },
+              {
+                "name": "type",
+                "type": "[`ShippingProfileType`](../internal/enums/internal.ShippingProfileType.mdx)",
+                "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              },
+              {
+                "name": "updated_at",
+                "type": "`Date`",
+                "description": "The date with timezone at which the resource was updated.",
+                "optional": false,
+                "defaultValue": "",
+                "expandable": false,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]} />

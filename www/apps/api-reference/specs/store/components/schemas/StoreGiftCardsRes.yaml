@@ -1,3 +1,4 @@
+description: The gift card's details.
 type: object
 required:
   - gift_card

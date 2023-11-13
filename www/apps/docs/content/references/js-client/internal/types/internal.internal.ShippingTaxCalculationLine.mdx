@@ -1,0 +1,35 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ShippingTaxCalculationLine
+
+ **ShippingTaxCalculationLine**: `Object`
+
+A shipping method and the tax rates that have been configured to apply to the
+shipping method.
+
+#### Type declaration
+
+<ParameterTypes parameters={[
+  {
+    "name": "rates",
+    "type": "[`TaxServiceRate`](internal.TaxServiceRate.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_method",
+    "type": "[`ShippingMethod`](../classes/internal.ShippingMethod-4.mdx)",
+    "description": "A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

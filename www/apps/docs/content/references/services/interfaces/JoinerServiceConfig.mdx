@@ -1,0 +1,75 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# JoinerServiceConfig
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "alias",
+    "type": "[`JoinerServiceConfigAlias`](JoinerServiceConfigAlias.mdx) \\| [`JoinerServiceConfigAlias`](JoinerServiceConfigAlias.mdx)[]",
+    "description": "Property name to use as entrypoint to the service",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "args",
+    "type": "Record<`string`, `any`\\>",
+    "description": "Extra arguments to pass to the remoteFetchData callback",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "extends",
+    "type": "{ `relationship`: [`JoinerRelationship`](../types/JoinerRelationship.mdx) ; `serviceName`: `string`  }[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fieldAlias",
+    "type": "Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\>",
+    "description": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "primaryKeys",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "relationships",
+    "type": "[`JoinerRelationship`](../types/JoinerRelationship.mdx)[]",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "serviceName",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -24,7 +24,7 @@ import { WorkflowTypes } from "@medusajs/types"
  *       medusa.admin.priceLists.delete(priceListId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

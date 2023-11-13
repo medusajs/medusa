@@ -36,7 +36,7 @@ import { removePriceListProductPrices } from "@medusajs/workflows/dist/definitio
  *       })
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

@@ -1,0 +1,1420 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ProductService
+
+## Constructors
+
+### constructor
+
+**new ProductService**(`«destructured»`)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "__namedParameters",
+    "type": "[`InjectedDependencies`](../types/InjectedDependencies-26.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "__configModule__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__container__",
+    "type": "`any`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "__moduleDeclaration__",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "eventBus_",
+    "type": "[`EventBusService`](EventBusService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "featureFlagRouter_",
+    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "imageRepository_",
+    "type": "`Repository`<[`Image`](Image.mdx)\\> & { `insertBulk`: Method insertBulk ; `upsertImages`: Method upsertImages  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "manager_",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productCategoryRepository_",
+    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productOptionRepository_",
+    "type": "`Repository`<[`ProductOption`](ProductOption.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productRepository_",
+    "type": "`Repository`<[`Product`](Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productTagRepository_",
+    "type": "`Repository`<[`ProductTag`](ProductTag.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `insertBulk`: Method insertBulk ; `listTagsByUsage`: Method listTagsByUsage ; `upsertTags`: Method upsertTags  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productTypeRepository_",
+    "type": "`Repository`<[`ProductType`](ProductType.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantRepository_",
+    "type": "`Repository`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productVariantService_",
+    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "searchService_",
+    "type": "[`SearchService`](SearchService.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "transactionManager_",
+    "type": "`undefined` \\| `EntityManager`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.CREATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product.created\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.DELETED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product.deleted\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "Events.UPDATED",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "\"product.updated\"",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "IndexName",
+    "type": "``\"products\"``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Accessors
+
+### activeManager\_
+
+`Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+<ParameterTypes parameters={[
+  {
+    "name": "EntityManager",
+    "type": "`EntityManager`",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### addOption
+
+**addOption**(`productId`, `optionTitle`): `Promise`<[`Product`](Product.mdx)\>
+
+Adds an option to a product. Options can, for example, be "Size", "Color",
+etc. Will update all the products variants with a dummy value for the newly
+created option. The same option cannot be added more than once.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the product to apply the new option to",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionTitle",
+    "type": "`string`",
+    "description": "the display title of the option, e.g. \"Size\"",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the model update operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### atomicPhase\_
+
+`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+<ParameterTypes parameters={[
+  {
+    "name": "TResult",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "TError",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "work",
+    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "description": "the transactional work to be done",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "isolationOrErrorHandler",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "the isolation level to be used for the work.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "maybeErrorHandlerOrDontFail",
+    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "description": "Potential error handler",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`TResult`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the transactional work",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### count
+
+**count**(`selector?`): `Promise`<`number`\>
+
+Return the total number of documents in database
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "description": "the selector to choose products by",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`number`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the count operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### create
+
+**create**(`productObject`): `Promise`<[`Product`](Product.mdx)\>
+
+Creates a product.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productObject",
+    "type": "[`CreateProductInput`](../types/CreateProductInput.mdx)",
+    "description": "the product to create",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the creation result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### delete
+
+**delete**(`productId`): `Promise`<`void`\>
+
+Deletes a product from a given product id. The product's associated
+variants will also be deleted.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the id of the product to delete. Must be castable as an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "empty promise",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### deleteOption
+
+**deleteOption**(`productId`, `optionId`): `Promise`<`void` \| [`Product`](Product.mdx)\>
+
+Delete an option from a product.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the product to delete an option from",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "the option to delete",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`void` \| [`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void` \\| [`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated product",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### filterProductsBySalesChannel
+
+**filterProductsBySalesChannel**(`productIds`, `salesChannelId`, `config?`): `Promise`<[`Product`](Product.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productIds",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "salesChannelId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### isProductInSalesChannels
+
+**isProductInSalesChannels**(`id`, `salesChannelIds`): `Promise`<`boolean`\>
+
+Check if the product is assigned to at least one of the provided sales channels.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "id",
+    "type": "`string`",
+    "description": "product id",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "salesChannelIds",
+    "type": "`string`[]",
+    "description": "an array of sales channel ids",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<`boolean`\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### list
+
+**list**(`selector`, `config?`): `Promise`<[`Product`](Product.mdx)[]\>
+
+Lists products based on the provided parameters.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`ProductSelector`](../types/ProductSelector.mdx)",
+    "description": "an object that defines rules to filter products by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "object that defines the scope for what should be returned",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find operation",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listAndCount
+
+**listAndCount**(`selector`, `config?`): `Promise`<[[`Product`](Product.mdx)[], `number`]\>
+
+Lists products based on the provided parameters and includes the count of
+products that match the query.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`ProductSelector`](../types/ProductSelector.mdx)",
+    "description": "an object that defines rules to filter products by",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "object that defines the scope for what should be returned",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[[`Product`](Product.mdx)[], `number`]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[[`Product`](Product.mdx)[], `number`]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "an array containing the products as\n  the first element and the total count of products that matches the query\n  as the second element.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listTagsByUsage
+
+**listTagsByUsage**(`take?`): `Promise`<[`ProductTag`](ProductTag.mdx)[]\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "take",
+    "type": "`number`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "10",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductTag`](ProductTag.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductTag`](ProductTag.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### listTypes
+
+**listTypes**(): `Promise`<[`ProductType`](ProductType.mdx)[]\>
+
+#### Returns
+
+`Promise`<[`ProductType`](ProductType.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductType`](ProductType.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### prepareListQuery\_
+
+`Protected` **prepareListQuery_**(`selector`, `config`): { `q`: `string` ; `query`: [`FindWithoutRelationsOptions`](../types/FindWithoutRelationsOptions-1.mdx) ; `relations`: keyof [`Product`](Product.mdx)[]  }
+
+Temporary method to be used in place we need custom query strategy to prevent typeorm bug
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`FilterableProductProps`](FilterableProductProps.mdx) \\| [`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`object`
+
+<ParameterTypes parameters={[
+  {
+    "name": "`object`",
+    "type": "`object`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+<ParameterTypes parameters={[
+  {
+    "name": "q",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "query",
+    "type": "[`FindWithoutRelationsOptions`](../types/FindWithoutRelationsOptions-1.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "relations",
+    "type": "keyof [`Product`](Product.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### reorderVariants
+
+**reorderVariants**(`productId`, `variantOrder`): `Promise`<[`Product`](Product.mdx)\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "variantOrder",
+    "type": "`string`[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve
+
+**retrieve**(`productId`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+
+Gets a product by id.
+Throws in case of DB Error and if product was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "id of the product to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "object that defines what should be included in the query response",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find one operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByExternalId
+
+**retrieveByExternalId**(`externalId`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+
+Gets a product by external id.
+Throws in case of DB Error and if product was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "externalId",
+    "type": "`string`",
+    "description": "handle of the product to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "details about what to get from the product",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find one operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveByHandle
+
+**retrieveByHandle**(`productHandle`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+
+Gets a product by handle.
+Throws in case of DB Error and if product was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productHandle",
+    "type": "`string`",
+    "description": "handle of the product to get.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "details about what to get from the product",
+    "optional": false,
+    "defaultValue": "{}",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find one operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveOptionByTitle
+
+**retrieveOptionByTitle**(`title`, `productId`): `Promise`<``null`` \| [`ProductOption`](ProductOption.mdx)\>
+
+Retrieve product's option by title.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "title",
+    "type": "`string`",
+    "description": "title of the option",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "id of a product",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<``null`` \| [`ProductOption`](ProductOption.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<``null`` \\| [`ProductOption`](ProductOption.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "product option",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveVariants
+
+**retrieveVariants**(`productId`, `config?`): `Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+Gets all variants belonging to a product.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the id of the product to get variants from.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "The config to select and configure relations etc...",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "an array of variants",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieve\_
+
+**retrieve_**(`selector`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+
+Gets a product by selector.
+Throws in case of DB Error and if product was not found.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "selector",
+    "type": "[`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "description": "selector object",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "config",
+    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "description": "object that defines what should be included in the query response",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the result of the find one operation.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### shouldRetryTransaction\_
+
+`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "err",
+    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`boolean`
+
+<ParameterTypes parameters={[
+  {
+    "name": "boolean",
+    "type": "`boolean`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### update
+
+**update**(`productId`, `update`): `Promise`<[`Product`](Product.mdx)\>
+
+Updates a product. Product variant updates should use dedicated methods,
+e.g. `addVariant`, etc. The function will throw errors if metadata or
+product variant updates are attempted.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the id of the product. Must be a string that can be casted to an ObjectId",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "update",
+    "type": "[`UpdateProductInput`](../types/UpdateProductInput.mdx)",
+    "description": "an object with the update values.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "resolves to the update result.",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateOption
+
+**updateOption**(`productId`, `optionId`, `data`): `Promise`<[`Product`](Product.mdx)\>
+
+Updates a product's option. Throws if the call tries to update an option
+not associated with the product. Throws if the updated title already exists.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productId",
+    "type": "`string`",
+    "description": "the product whose option we are updating",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "optionId",
+    "type": "`string`",
+    "description": "the id of the option we are updating",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`ProductOptionInput`](../types/ProductOptionInput.mdx)",
+    "description": "the data to update the option with",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the updated product",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### updateShippingProfile
+
+**updateShippingProfile**(`productIds`, `profileId`): `Promise`<[`Product`](Product.mdx)[]\>
+
+Assign a product to a profile, if a profile id null is provided then detach the product from the profile
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "productIds",
+    "type": "`string` \\| `string`[]",
+    "description": "ID or IDs of the products to update",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "profileId",
+    "type": "``null`` \\| `string`",
+    "description": "Shipping profile ID to update the shipping options with",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+`Promise`<[`Product`](Product.mdx)[]\>
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`Product`](Product.mdx)[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "updated products",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### withTransaction
+
+**withTransaction**(`transactionManager?`): [`ProductService`](ProductService.mdx)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transactionManager",
+    "type": "`EntityManager`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+[`ProductService`](ProductService.mdx)
+
+<ParameterTypes parameters={[
+  {
+    "name": "ProductService",
+    "type": "[`ProductService`](ProductService.mdx)",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

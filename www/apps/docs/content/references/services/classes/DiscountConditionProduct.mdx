@@ -1,0 +1,85 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# DiscountConditionProduct
+
+This represents the association between a discount condition and a product
+
+## Constructors
+
+### constructor
+
+**new DiscountConditionProduct**()
+
+This represents the association between a discount condition and a product
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "condition_id",
+    "type": "`string`",
+    "description": "The ID of the Discount Condition",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discount_condition",
+    "type": "[`DiscountCondition`](DiscountCondition.mdx)",
+    "description": "The details of the discount condition.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "product",
+    "type": "[`Product`](Product.mdx)",
+    "description": "The details of the product.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "product_id",
+    "type": "`string`",
+    "description": "The ID of the Product Tag",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

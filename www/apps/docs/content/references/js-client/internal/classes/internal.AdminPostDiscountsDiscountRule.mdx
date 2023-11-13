@@ -1,0 +1,59 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminPostDiscountsDiscountRule
+
+Details of the discount rule to create.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "allocation",
+    "type": "[`AllocationType`](../enums/internal.internal.AllocationType.mdx)",
+    "description": "The discount rule's allocation.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "conditions",
+    "type": "[`AdminCreateCondition`](internal.internal.AdminCreateCondition.mdx)[]",
+    "description": "The discount rule's conditions.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "description",
+    "type": "`string`",
+    "description": "The discount rule's description.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "type",
+    "type": "[`DiscountRuleType`](../enums/internal.internal.DiscountRuleType.mdx)",
+    "description": "The discount rule's type.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "value",
+    "type": "`number`",
+    "description": "The discount rule's value.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

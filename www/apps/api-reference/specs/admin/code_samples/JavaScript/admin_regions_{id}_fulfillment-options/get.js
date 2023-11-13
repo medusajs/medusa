@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.regions.retrieveFulfillmentOptions(regionId)
 .then(({ fulfillment_options }) => {
   console.log(fulfillment_options.length);
-});
+})

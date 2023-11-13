@@ -1,0 +1,48 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# EventEmitterAsyncResourceOptions
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "captureRejections",
+    "type": "`boolean`",
+    "description": "Enables automatic capturing of promise rejection.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`",
+    "description": "The type of async event, this is required when instantiating `EventEmitterAsyncResource` directly rather than as a child class.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "requireManualDestroy",
+    "type": "`boolean`",
+    "description": "Disables automatic `emitDestroy` when the object is garbage collected. This usually does not need to be set (even if `emitDestroy` is called manually), unless the resource's `asyncId` is retrieved and the sensitive API's `emitDestroy` is called with it.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "triggerAsyncId",
+    "type": "`number`",
+    "description": "The ID of the execution context that created this async event.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

@@ -1,0 +1,85 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ShippingTaxRate
+
+This represents the tax rates applied on a shipping option.
+
+## Constructors
+
+### constructor
+
+**new ShippingTaxRate**()
+
+This represents the tax rates applied on a shipping option.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "rate_id",
+    "type": "`string`",
+    "description": "The ID of the associated tax rate.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "shipping_option",
+    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "description": "The details of the shipping option.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "shipping_option_id",
+    "type": "`string`",
+    "description": "The ID of the shipping option.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "tax_rate",
+    "type": "[`TaxRate`](TaxRate.mdx)",
+    "description": "The details of the associated tax rate.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": true,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

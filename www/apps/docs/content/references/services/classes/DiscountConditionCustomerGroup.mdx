@@ -1,0 +1,85 @@
+---
+displayed_sidebar: servicesSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# DiscountConditionCustomerGroup
+
+Associates a discount condition with a customer group
+
+## Constructors
+
+### constructor
+
+**new DiscountConditionCustomerGroup**()
+
+Associates a discount condition with a customer group
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "condition_id",
+    "type": "`string`",
+    "description": "The ID of the Discount Condition",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "created_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was created.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customer_group",
+    "type": "[`CustomerGroup`](CustomerGroup.mdx)",
+    "description": "Available if the relation `customer_group` is expanded.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "customer_group_id",
+    "type": "`string`",
+    "description": "The ID of the Product Tag",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discount_condition",
+    "type": "[`DiscountCondition`](DiscountCondition.mdx)",
+    "description": "Available if the relation `discount_condition` is expanded.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "metadata",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "An optional key-value map with additional details",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "`Date`",
+    "description": "The date with timezone at which the resource was updated.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

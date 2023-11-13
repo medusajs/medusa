@@ -1,4 +1,5 @@
 type: object
+description: The payment's details.
 required:
   - payment
 properties:

@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 Returns `true` if both `buf` and `otherBuffer` have exactly the same bytes,`false` otherwise. Equivalent to `buf.compare(otherBuffer) === 0`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf1 = Buffer.from('ABC');
 const buf2 = Buffer.from('414243', 'hex');
@@ -34,6 +34,7 @@ console.log(buf1.equals(buf3));
     "description": "A `Buffer` or Uint8Array with which to compare `buf`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -49,6 +50,7 @@ console.log(buf1.equals(buf3));
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

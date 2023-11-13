@@ -3,8 +3,8 @@ delete:
   summary: Remove Discount
   description: >-
     Remove a Discount from a Cart. This only removes the application of the
-    discount, and not completely delete it. The totals will be re-calculated and
-    the payment sessions will be refreshed after the removal.
+    discount, and not completely deletes it. The totals will be re-calculated
+    and the payment sessions will be refreshed after the removal.
   parameters:
     - in: path
       name: id

@@ -1096,17 +1096,12 @@ export default Products`,
 
 
 In the response of listing API Routes, aside from the entities retrieved,
-there are three pagination-related fields returned: `count`, `limit`, and
-`offset`.
+there are three pagination-related fields returned:
 
 
-Similar to the query parameters, `limit` is the maximum number of items that
-can be returned in the response, and `field` is the number of items that
-were skipped before the entities in the result.
-
-
-`count` is the total number of available items of this entity. It can be
-used to determine how many pages are there.
+- `limit`: the maximum number of items that can be returned in the response.
+- `offset`: the number of items that were skipped before the entities in the result.
+- `count`: the total number of available items of this entity. It can be used to determine how many pages are there.
 
 
 For example, if the `count` is 100 and the `limit` is 50, you can divide the

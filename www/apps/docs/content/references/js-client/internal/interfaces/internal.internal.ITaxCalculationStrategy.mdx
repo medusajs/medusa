@@ -1,0 +1,60 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ITaxCalculationStrategy
+
+## Methods
+
+### calculate
+
+Calculates the tax amount for a given set of line items under applicable
+tax conditions and calculation contexts.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "items",
+    "type": "[`LineItem`](../classes/internal.LineItem.mdx)[]",
+    "description": "the line items to calculate the tax total for",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "taxLines",
+    "type": "([`LineItemTaxLine`](../classes/internal.internal.LineItemTaxLine.mdx) \\| [`ShippingMethodTaxLine`](../classes/internal.internal.ShippingMethodTaxLine.mdx))[]",
+    "description": "the tax lines that applies to the calculation",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "calculationContext",
+    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "description": "other details relevant for the calculation",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the tax total",
+    "expandable": false,
+    "children": []
+  }
+]} />

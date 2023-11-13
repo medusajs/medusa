@@ -20,7 +20,7 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.shippingOptions.delete(optionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

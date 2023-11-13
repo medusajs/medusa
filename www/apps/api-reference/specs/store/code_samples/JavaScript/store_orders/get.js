@@ -6,4 +6,4 @@ medusa.orders.lookupOrder({
 })
 .then(({ order }) => {
   console.log(order.id);
-});
+})

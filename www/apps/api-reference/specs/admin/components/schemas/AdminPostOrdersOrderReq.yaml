@@ -1,7 +1,7 @@
 type: object
 properties:
   email:
-    description: the email associated with the order
+    description: The email associated with the order
     type: string
   billing_address:
     description: The order's billing address

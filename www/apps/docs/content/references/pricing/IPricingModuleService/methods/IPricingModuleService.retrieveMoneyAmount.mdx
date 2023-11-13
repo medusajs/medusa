@@ -65,6 +65,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
     "description": "The ID of the money amount to retrieve.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -73,6 +74,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
     "description": "The configurations determining how a money amount is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "order",
@@ -80,7 +82,18 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "__type",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "relations",
@@ -88,6 +101,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -96,6 +110,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -104,6 +119,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -112,6 +128,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -120,6 +137,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -130,6 +148,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -137,6 +156,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -145,6 +165,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -153,6 +174,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -161,6 +183,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -169,6 +192,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -184,6 +208,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved money amount.",
+    "expandable": false,
     "children": [
       {
         "name": "amount",
@@ -191,6 +216,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "The price of this money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -199,6 +225,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "code",
@@ -206,6 +233,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
             "description": "The code of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -214,6 +242,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
             "description": "The name of the currency.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -222,6 +251,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
             "description": "The symbol of the currency.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -230,6 +260,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
             "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -240,6 +271,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "The currency code of this money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -248,6 +280,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "The ID of the money amount.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -256,6 +289,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "The maximum quantity required to be purchased for this price to be applied.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -264,6 +298,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
         "description": "The minimum quantity required to be purchased for this price to be applied.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]

@@ -42,6 +42,7 @@ async function updateCategory (id: string, name: string) {
     "description": "The ID of the product category to update.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -50,6 +51,7 @@ async function updateCategory (id: string, name: string) {
     "description": "The attributes to update in th product category.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "handle",
@@ -57,6 +59,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The handle of the product category.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -65,6 +68,7 @@ async function updateCategory (id: string, name: string) {
         "description": "Whether the product category is active.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -73,6 +77,7 @@ async function updateCategory (id: string, name: string) {
         "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -81,6 +86,7 @@ async function updateCategory (id: string, name: string) {
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -89,6 +95,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The name of the product category.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -97,6 +104,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The ID of the parent product category, if it has any. It may also be `null`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -105,6 +113,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The ranking of the category among sibling categories.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -115,6 +124,7 @@ async function updateCategory (id: string, name: string) {
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -122,6 +132,7 @@ async function updateCategory (id: string, name: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -130,6 +141,7 @@ async function updateCategory (id: string, name: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -138,6 +150,7 @@ async function updateCategory (id: string, name: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -146,6 +159,7 @@ async function updateCategory (id: string, name: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -154,6 +168,7 @@ async function updateCategory (id: string, name: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -169,6 +184,7 @@ async function updateCategory (id: string, name: string) {
     "optional": false,
     "defaultValue": "",
     "description": "The updated product category.",
+    "expandable": false,
     "children": [
       {
         "name": "category_children",
@@ -176,6 +192,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
@@ -183,6 +200,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -191,6 +209,7 @@ async function updateCategory (id: string, name: string) {
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -199,6 +218,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -207,6 +227,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -215,6 +236,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -223,6 +245,7 @@ async function updateCategory (id: string, name: string) {
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -231,6 +254,7 @@ async function updateCategory (id: string, name: string) {
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -239,6 +263,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -247,6 +272,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -255,6 +281,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -263,6 +290,7 @@ async function updateCategory (id: string, name: string) {
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -273,6 +301,7 @@ async function updateCategory (id: string, name: string) {
         "description": "When the product category was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -281,6 +310,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The description of the product category.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -289,6 +319,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The handle of the product category. The handle can be used to create slug URL paths.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -297,6 +328,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The ID of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -305,6 +337,7 @@ async function updateCategory (id: string, name: string) {
         "description": "Whether the product category is active.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -313,6 +346,7 @@ async function updateCategory (id: string, name: string) {
         "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -321,6 +355,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The name of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -329,6 +364,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
@@ -336,6 +372,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -344,6 +381,7 @@ async function updateCategory (id: string, name: string) {
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -352,6 +390,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -360,6 +399,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -368,6 +408,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -376,6 +417,7 @@ async function updateCategory (id: string, name: string) {
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -384,6 +426,7 @@ async function updateCategory (id: string, name: string) {
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -392,6 +435,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -400,6 +444,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -408,6 +453,7 @@ async function updateCategory (id: string, name: string) {
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -416,6 +462,7 @@ async function updateCategory (id: string, name: string) {
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -426,6 +473,7 @@ async function updateCategory (id: string, name: string) {
         "description": "The ranking of the product category among sibling categories.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -434,6 +482,7 @@ async function updateCategory (id: string, name: string) {
         "description": "When the product category was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]

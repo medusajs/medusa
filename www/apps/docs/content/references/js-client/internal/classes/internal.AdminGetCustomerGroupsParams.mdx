@@ -1,0 +1,104 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AdminGetCustomerGroupsParams
+
+Parameters used to filter and configure the pagination of the retrieved customer groups.
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "created_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the customer groups' `created_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "discount_condition_id",
+    "type": "`string`",
+    "description": "Filter customer groups by their associated discount condition's ID.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "expand",
+    "type": "`string`",
+    "description": "Comma-separated relations that should be expanded in the returned data.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "id",
+    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](internal.StringComparisonOperator.mdx)",
+    "description": "IDs to filter customer groups by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "limit",
+    "type": "`number`",
+    "description": "Limit the number of items returned in the list.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "name",
+    "type": "`string`[]",
+    "description": "Names to filter customer groups by.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "offset",
+    "type": "`number`",
+    "description": "The number of items to skip when retrieving a list.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "`string`",
+    "description": "The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "q",
+    "type": "`string`",
+    "description": "Search term to search customer groups by their name.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updated_at",
+    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "description": "Date filters to apply on the customer groups' `update_at` date.",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

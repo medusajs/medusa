@@ -1,0 +1,32 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# PipelineDestination
+
+ **PipelineDestination**<`S`, `P`\>: `S` extends [`PipelineTransformSource`](internal.internal-3.PipelineTransformSource.mdx)<infer ST\> ? [`WritableStream`](../../internal/interfaces/internal.WritableStream.mdx) \| [`PipelineDestinationIterableFunction`](internal.internal-3.PipelineDestinationIterableFunction.mdx)<`ST`\> \| [`PipelineDestinationPromiseFunction`](internal.internal-3.PipelineDestinationPromiseFunction.mdx)<`ST`, `P`\> : `never`
+
+#### Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "S",
+    "type": "[`PipelineTransformSource`](internal.internal-3.PipelineTransformSource.mdx)<`any`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "P",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

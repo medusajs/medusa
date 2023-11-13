@@ -6,86 +6,98 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Invite
 
+An invite is created when an admin user invites a new user to join the store's team. Once the invite is accepted, it's deleted.
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "accepted",
     "type": "`boolean`",
-    "description": "",
+    "description": "Whether the invite was accepted or not.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "false",
+    "expandable": false,
     "children": []
   },
   {
     "name": "created_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "deleted_at",
     "type": "``null`` \\| `Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was deleted.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "expires_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date the invite expires at.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "id",
     "type": "`string`",
-    "description": "",
+    "description": "The invite's ID",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "metadata",
     "type": "Record<`string`, `unknown`\\>",
-    "description": "",
+    "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "role",
     "type": "[`UserRoles`](../enums/UserRoles.mdx)",
-    "description": "",
+    "description": "The user's role. These roles don't change the privileges of the user.",
     "optional": false,
-    "defaultValue": "",
+    "defaultValue": "member",
+    "expandable": false,
     "children": [
       {
         "name": "ADMIN",
         "type": "``\"admin\"``",
-        "description": "",
+        "description": "The user is an admin.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "DEVELOPER",
         "type": "``\"developer\"``",
-        "description": "",
+        "description": "The user is a developer.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "MEMBER",
         "type": "``\"member\"``",
-        "description": "",
+        "description": "The user is a team member.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -93,25 +105,28 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "token",
     "type": "`string`",
-    "description": "",
+    "description": "The token used to accept the invite.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "updated_at",
     "type": "`Date`",
-    "description": "",
+    "description": "The date with timezone at which the resource was updated.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "user_email",
     "type": "`string`",
-    "description": "",
+    "description": "The email of the user being invited.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -1,0 +1,270 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# ReadableStream
+
+This Streams API interface represents a readable stream of byte data. The Fetch API offers a concrete instance of a ReadableStream through the body property of a Response object.
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream)
+
+## Type parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "R",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "locked",
+    "type": "`boolean`",
+    "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/locked)",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### cancel
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/cancel)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "reason",
+    "type": "`any`",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getReader
+
+**getReader**(`options`): [`ReadableStreamBYOBReader`](../../modules/internal.mdx#readablestreambyobreader)
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/getReader)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "options",
+    "type": "`object`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options.mode",
+    "type": "``\"byob\"``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamBYOBReader",
+    "type": "(`stream`: [`ReadableStream`](../../modules/internal.mdx#readablestream)<`any`\\>) => [`ReadableStreamBYOBReader`](../../modules/internal.mdx#readablestreambyobreader)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**getReader**(): [`ReadableStreamDefaultReader`](../../modules/internal.mdx#readablestreamdefaultreader)<`R`\>
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamDefaultReader",
+    "type": "[`ReadableStreamDefaultReader`](../../modules/internal.mdx#readablestreamdefaultreader)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+**getReader**(`options?`): [`ReadableStreamReader`](../types/internal.ReadableStreamReader.mdx)<`R`\>
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "options",
+    "type": "[`ReadableStreamGetReaderOptions`](internal.ReadableStreamGetReaderOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStreamReader",
+    "type": "[`ReadableStreamReader`](../types/internal.ReadableStreamReader.mdx)<`R`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### pipeThrough
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/pipeThrough)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "transform",
+    "type": "[`ReadableWritablePair`](internal.ReadableWritablePair.mdx)<`T`, `R`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`StreamPipeOptions`](internal.StreamPipeOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "ReadableStream",
+    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream)<`T`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### pipeTo
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/pipeTo)
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "destination",
+    "type": "[`WritableStream`](../../modules/internal.mdx#writablestream)<`R`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "options",
+    "type": "[`StreamPipeOptions`](internal.StreamPipeOptions.mdx)",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`void`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### tee
+
+[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStream/tee)
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "[[`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>, [`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>]",
+    "type": "[[`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>, [`ReadableStream`](../../modules/internal.mdx#readablestream)<`R`\\>]",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

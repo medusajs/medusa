@@ -50,3 +50,6 @@ properties:
   refund:
     description: The amount to refund.
     type: integer
+  location_id:
+    description: The ID of the location used for the return.
+    type: string

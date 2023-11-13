@@ -1,4 +1,5 @@
 type: object
+description: The list of the customer's orders with pagination fields.
 x-expanded-relations:
   field: orders
   relations:

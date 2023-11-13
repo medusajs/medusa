@@ -64,6 +64,10 @@ export function stripLineBreaks(str: string) {
     : ""
 }
 
+export function stripCode(str: string) {
+  return stripLineBreaks(str.replace("```ts", "").replace("```", ""))
+}
+
 export function camelToTitleCase(text: string) {
   return (
     text.substring(0, 1).toUpperCase() +

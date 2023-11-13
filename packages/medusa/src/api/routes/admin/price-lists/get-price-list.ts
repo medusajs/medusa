@@ -46,7 +46,7 @@ type PriceListCoreDTO = PriceListDTO & {
  *       medusa.admin.priceLists.retrieve(priceListId)
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

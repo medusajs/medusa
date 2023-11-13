@@ -26,7 +26,7 @@ import { joinLevels } from "./utils/join-levels"
  *       medusa.admin.inventoryItems.retrieve(inventoryItemId)
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

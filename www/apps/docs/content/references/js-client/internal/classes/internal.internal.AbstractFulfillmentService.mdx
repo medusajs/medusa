@@ -1,0 +1,543 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+import ParameterTypes from "@site/src/components/ParameterTypes"
+
+# AbstractFulfillmentService
+
+Fulfillment Provider interface
+Fullfillment provider plugin services should extend the AbstractFulfillmentService from this file
+
+## Implements
+
+- [`FulfillmentService`](../interfaces/internal.internal.FulfillmentService.mdx)
+
+## Properties
+
+<ParameterTypes parameters={[
+  {
+    "name": "config",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": true,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "container",
+    "type": "[`MedusaContainer`](../types/internal.MedusaContainer.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "identifier",
+    "type": "`string`",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+## Methods
+
+### calculatePrice
+
+Used to calculate a price for a given shipping option.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "optionData",
+    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`number`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### canCalculate
+
+Used to determine if a shipping option can have a calculated price
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### cancelFulfillment
+
+Cancel a fulfillment using data from the fulfillment
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillment",
+    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createFulfillment
+
+Create a fulfillment using data from shipping method, line items, and fulfillment. All from the order.
+The returned value of this method will populate the `fulfillment.data` field.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`ShippingMethodData`](../types/internal.ShippingMethodData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "items",
+    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "order",
+    "type": "[`Order`](internal.Order.mdx)",
+    "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "fulfillment",
+    "type": "[`Fulfillment`](internal.Fulfillment.mdx)",
+    "description": "A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### createReturn
+
+Used to create a return order. Should return the data necessary for future
+operations on the return; in particular the data may be used to receive
+documents attached to the return.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "returnOrder",
+    "type": "[`CreateReturnType`](../types/internal.CreateReturnType.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFulfillmentDocuments
+
+Used to retrieve documents associated with a fulfillment.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getFulfillmentOptions
+
+Called before a shipping option is created in Admin. The method should
+return all of the options that the fulfillment provider can be used with,
+and it is here the distinction between different shipping options are
+enforced. For example, a fulfillment provider may offer Standard Shipping
+and Express Shipping as fulfillment options, it is up to the store operator
+to create shipping options in Medusa that are offered to the customer.
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`any`[]\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getIdentifier
+
+Return a unique identifier to retrieve the fulfillment plugin provider
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "string",
+    "type": "`string`",
+    "optional": true,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getReturnDocuments
+
+Used to retrieve documents related to a return order.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### getShipmentDocuments
+
+Used to retrieve documents related to a shipment.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### retrieveDocuments
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "fulfillmentData",
+    "type": "Record<`string`, `unknown`\\>",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "documentType",
+    "type": "``\"label\"`` \\| ``\"invoice\"``",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`any`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateFulfillmentData
+
+Called before a shipping method is set on a cart to ensure that the data
+sent with the shipping method is valid. The data object may contain extra
+data about the shipment such as an id of a drop point. It is up to the
+fulfillment provider to enforce that the correct data is being sent
+through.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "optionData",
+    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "data",
+    "type": "[`FulfillmentProviderData`](../types/internal.FulfillmentProviderData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "cart",
+    "type": "[`Cart`](internal.Cart.mdx)",
+    "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "the data to populate `cart.shipping_methods.$.data` this\n   is usually important for future actions like generating shipping labels",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+___
+
+### validateOption
+
+Called before a shipping option is created in Admin. Use this to ensure
+that a fulfillment option does in fact exist.
+
+#### Parameters
+
+<ParameterTypes parameters={[
+  {
+    "name": "data",
+    "type": "[`ShippingOptionData`](../types/internal.ShippingOptionData.mdx)",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  }
+]} />
+
+#### Returns
+
+<ParameterTypes parameters={[
+  {
+    "name": "Promise",
+    "type": "`Promise`<`boolean`\\>",
+    "optional": false,
+    "defaultValue": "",
+    "description": "",
+    "expandable": false,
+    "children": []
+  }
+]} />

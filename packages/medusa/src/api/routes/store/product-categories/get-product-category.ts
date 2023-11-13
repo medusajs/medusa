@@ -26,9 +26,9 @@ import { defaultStoreCategoryScope } from "."
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.productCategories.retrieve(productCategoryId)
- *         .then(({ product_category }) => {
- *           console.log(product_category.id);
- *         });
+ *       .then(({ product_category }) => {
+ *         console.log(product_category.id);
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
