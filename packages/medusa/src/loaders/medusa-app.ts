@@ -12,6 +12,7 @@ import {
   MedusaContainer,
   ModuleDefinition,
 } from "@medusajs/types"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 
 import { ContainerRegistrationKeys, isObject } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -49,6 +50,8 @@ export const loadMedusaApp = async (
   },
   config = { registerInContainer: true }
 ): Promise<MedusaAppOutput> => {
+  const featureFlagRouter = container.resolve<FlagRouter>("featureFlagRouter")
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
   const injectedDependencies = {
     [ContainerRegistrationKeys.PG_CONNECTION]: container.resolve(
       ContainerRegistrationKeys.PG_CONNECTION
@@ -101,22 +104,24 @@ export const loadMedusaApp = async (
 
   const missingPackages: string[] = []
 
-  for (const requiredModuleKey of requiredModuleKeys) {
-    const isModuleInstalled = MedusaModule.isInstalled(requiredModuleKey)
+  if (isMedusaV2Enabled) {
+    for (const requiredModuleKey of requiredModuleKeys) {
+      const isModuleInstalled = MedusaModule.isInstalled(requiredModuleKey)
 
-    if (!isModuleInstalled) {
-      missingPackages.push(
-        MODULE_PACKAGE_NAMES[requiredModuleKey] || requiredModuleKey
+      if (!isModuleInstalled) {
+        missingPackages.push(
+          MODULE_PACKAGE_NAMES[requiredModuleKey] || requiredModuleKey
+        )
+      }
+    }
+
+    if (missingPackages.length) {
+      throw new Error(
+        `FeatureFlag medusa_v2 (MEDUSA_FF_MEDUSA_V2) requires the following packages/module registration: (${missingPackages.join(
+          ", "
+        )})`
       )
     }
-  }
-
-  if (missingPackages.length) {
-    throw new Error(
-      `FeatureFlag medusa_v2 (MEDUSA_FF_MEDUSA_V2) requires the following packages/module registration: (${missingPackages.join(
-        ", "
-      )})`
-    )
   }
 
   if (!config.registerInContainer) {
