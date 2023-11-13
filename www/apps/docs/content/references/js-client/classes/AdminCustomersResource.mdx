@@ -123,7 +123,7 @@ medusa.admin.customers
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminCustomersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomersRes](../internal/types/internal.AdminCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
@@ -422,7 +422,7 @@ medusa.admin.customers
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminCustomersListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomersListRes](../internal/types/internal.AdminCustomersListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of customers with pagination fields.",
@@ -430,7 +430,7 @@ medusa.admin.customers
     "children": [
       {
         "name": "AdminCustomersListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; customers: Customer[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; customers: [Customer](../internal/classes/internal.Customer.mdx)[]  &#125;`",
         "description": "The list of customers with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -659,7 +659,7 @@ medusa.admin.customers.retrieve(customerId).then(({ customer }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminCustomersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomersRes](../internal/types/internal.AdminCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
@@ -956,7 +956,7 @@ medusa.admin.customers
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminCustomersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomersRes](../internal/types/internal.AdminCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",

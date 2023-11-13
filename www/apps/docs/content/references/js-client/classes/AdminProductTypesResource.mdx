@@ -235,7 +235,7 @@ medusa.admin.productTypes
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductTypesListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductTypesListRes](../internal/types/internal.AdminProductTypesListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product types with pagination fields.",
@@ -243,7 +243,7 @@ medusa.admin.productTypes
     "children": [
       {
         "name": "AdminProductTypesListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; product_types: ProductType[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_types: [ProductType](../internal/classes/internal.ProductType.mdx)[]  &#125;`",
         "description": "The list of product types with pagination fields.",
         "optional": false,
         "defaultValue": "",

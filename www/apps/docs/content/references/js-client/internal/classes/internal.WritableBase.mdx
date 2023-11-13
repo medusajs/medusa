@@ -379,7 +379,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "chunks",
-    "type": "`\\&#123; chunk: any ; encoding: BufferEncoding  \\&#125;`[]",
+    "type": "`&#123; chunk: any ; encoding: [BufferEncoding](../types/internal.BufferEncoding.mdx)  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -415,7 +415,7 @@ ___
 
 ### addListener
 
-`**addListener**(event, listener): WritableBase`
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Event emitter
 The defined events on documents including:
@@ -463,7 +463,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): WritableBase`
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -502,7 +502,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): WritableBase`
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -541,7 +541,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): WritableBase`
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -580,7 +580,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): WritableBase`
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -619,7 +619,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): WritableBase`
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -658,7 +658,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): WritableBase`
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -706,7 +706,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [Iterable](../interfaces/internal.Iterable.mdx)\\&#60;T\\&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)\\&#60;T\\&#62;",
+    "type": "[ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [Iterable](../interfaces/internal.Iterable.mdx)&#60;T&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;T&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1116,7 +1116,7 @@ ___
 
 ### end
 
-`**end**(cb?): WritableBase`
+`**end**(cb?): [WritableBase](internal.WritableBase.mdx)`
 
 Calling the `writable.end()` method signals that no more data will be written
 to the `Writable`. The optional `chunk` and `encoding` arguments allow one
@@ -1166,7 +1166,7 @@ file.end('world!');
 
 v0.9.4
 
-`**end**(chunk, cb?): WritableBase`
+`**end**(chunk, cb?): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1205,7 +1205,7 @@ v0.9.4
   }
 ]} />
 
-`**end**(chunk, encoding, cb?): WritableBase`
+`**end**(chunk, encoding, cb?): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1463,7 +1463,7 @@ ___
 
 ### on
 
-`**on**(event, listener): WritableBase`
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -1533,7 +1533,7 @@ myEE.emit('foo');
 
 v0.1.101
 
-`**on**(event, listener): WritableBase`
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1572,7 +1572,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): WritableBase`
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1611,7 +1611,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): WritableBase`
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1650,7 +1650,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): WritableBase`
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1689,7 +1689,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): WritableBase`
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1728,7 +1728,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): WritableBase`
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1771,7 +1771,7 @@ ___
 
 ### once
 
-`**once**(event, listener): WritableBase`
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -1839,7 +1839,7 @@ myEE.emit('foo');
 
 v0.3.0
 
-`**once**(event, listener): WritableBase`
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1878,7 +1878,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): WritableBase`
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1917,7 +1917,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): WritableBase`
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1956,7 +1956,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): WritableBase`
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1995,7 +1995,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): WritableBase`
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2034,7 +2034,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): WritableBase`
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2117,7 +2117,7 @@ ___
 
 ### prependListener
 
-`**prependListener**(event, listener): WritableBase`
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -2173,7 +2173,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-`**prependListener**(event, listener): WritableBase`
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2212,7 +2212,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): WritableBase`
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2251,7 +2251,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): WritableBase`
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2290,7 +2290,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): WritableBase`
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2329,7 +2329,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): WritableBase`
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2368,7 +2368,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): WritableBase`
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2411,7 +2411,7 @@ ___
 
 ### prependOnceListener
 
-`**prependOnceListener**(event, listener): WritableBase`
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -2465,7 +2465,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-`**prependOnceListener**(event, listener): WritableBase`
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2504,7 +2504,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): WritableBase`
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2543,7 +2543,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): WritableBase`
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2582,7 +2582,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): WritableBase`
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2621,7 +2621,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): WritableBase`
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2660,7 +2660,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): WritableBase`
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2811,7 +2811,7 @@ ___
 
 ### removeListener
 
-`**removeListener**(event, listener): WritableBase`
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -2934,7 +2934,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v0.1.26
 
-`**removeListener**(event, listener): WritableBase`
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2973,7 +2973,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): WritableBase`
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3012,7 +3012,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): WritableBase`
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3051,7 +3051,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): WritableBase`
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3090,7 +3090,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): WritableBase`
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3129,7 +3129,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): WritableBase`
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3810,7 +3810,7 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "that iterates `eventName` events emitted by the `emitter`",
@@ -3827,7 +3827,7 @@ ___
 
 ### once
 
-`Static **once**(emitter, eventName, options?): Promise\&#60;any[]\&#62;`
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -3943,7 +3943,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any[]\\&#62;",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3956,7 +3956,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 
 v11.13.0, v10.16.0
 
-`Static **once**(emitter, eventName, options?): Promise\&#60;any[]\&#62;`
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 #### Parameters
 
@@ -3995,7 +3995,7 @@ v11.13.0, v10.16.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any[]\\&#62;",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

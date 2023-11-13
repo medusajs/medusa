@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "addressRepository_",
-    "type": "Repository\\&#60;Address\\&#62;",
+    "type": "Repository&#60;[Address](Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "claimRepository_",
-    "type": "Repository\\&#60;ClaimOrder\\&#62;",
+    "type": "Repository&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository\\&#60;LineItem\\&#62; & `\\&#123; findByReturn: Method findByReturn  \\&#125;`",
+    "type": "Repository&#60;[LineItem](LineItem.mdx)&#62; & `&#123; findByReturn: Method findByReturn  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingMethodRepository_",
-    "type": "Repository\\&#60;ShippingMethod\\&#62;",
+    "type": "Repository&#60;[ShippingMethod](ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -309,7 +309,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -341,7 +341,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -350,7 +350,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -359,7 +359,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -370,12 +370,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -388,7 +388,7 @@ ___
 
 ### cancel
 
-`**cancel**(id): Promise\&#60;ClaimOrder\&#62;`
+`**cancel**(id): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 #### Parameters
 
@@ -406,12 +406,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -424,7 +424,7 @@ ___
 
 ### cancelFulfillment
 
-`**cancelFulfillment**(fulfillmentId): Promise\&#60;ClaimOrder\&#62;`
+`**cancelFulfillment**(fulfillmentId): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 #### Parameters
 
@@ -442,12 +442,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -460,7 +460,7 @@ ___
 
 ### create
 
-`**create**(data): Promise\&#60;ClaimOrder\&#62;`
+`**create**(data): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 Creates a Claim on an Order. Claims consists of items that are claimed and
 optionally items to be sent as replacement for the claimed items. The
@@ -482,12 +482,12 @@ shipping address that the new items will be shipped to
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created claim",
@@ -500,7 +500,7 @@ ___
 
 ### createFulfillment
 
-`**createFulfillment**(id, config?): Promise\&#60;ClaimOrder\&#62;`
+`**createFulfillment**(id, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 #### Parameters
 
@@ -554,12 +554,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created claim",
@@ -572,7 +572,7 @@ ___
 
 ### createShipment
 
-`**createShipment**(id, fulfillmentId, trackingLinks?, config?): Promise\&#60;ClaimOrder\&#62;`
+`**createShipment**(id, fulfillmentId, trackingLinks?, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 #### Parameters
 
@@ -597,7 +597,7 @@ ___
   },
   {
     "name": "trackingLinks",
-    "type": "`\\&#123; tracking_number: string  \\&#125;`[]",
+    "type": "`&#123; tracking_number: string  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "[]",
@@ -635,12 +635,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -653,7 +653,7 @@ ___
 
 ### getRefundTotalForClaimLinesOnOrder
 
-`Protected **getRefundTotalForClaimLinesOnOrder**(order, claimItems): Promise\&#60;number\&#62;`
+`Protected **getRefundTotalForClaimLinesOnOrder**(order, claimItems): Promise&#60;number&#62;`
 
 Finds claim line items on an order and calculates the refund amount.
 There are three places too look:
@@ -687,12 +687,12 @@ Note, it will attempt to return early from each of these places to avoid having 
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the refund amount",
@@ -705,7 +705,7 @@ ___
 
 ### list
 
-`**list**(selector, config?): Promise\&#60;ClaimOrder[]\&#62;`
+`**list**(selector, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)[]&#62;`
 
 #### Parameters
 
@@ -721,7 +721,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;ClaimOrder\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "",
@@ -732,12 +732,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ClaimOrder[]\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder[]\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -750,7 +750,7 @@ ___
 
 ### processRefund
 
-`**processRefund**(id): Promise\&#60;ClaimOrder\&#62;`
+`**processRefund**(id): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 #### Parameters
 
@@ -768,12 +768,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -786,7 +786,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(claimId, config?): Promise\&#60;ClaimOrder\&#62;`
+`**retrieve**(claimId, config?): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 Gets an order by id.
 
@@ -804,7 +804,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;ClaimOrder\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": false,
     "defaultValue": "{}",
@@ -815,12 +815,12 @@ Gets an order by id.
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -840,7 +840,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -869,7 +869,7 @@ ___
 
 ### update
 
-`**update**(id, data): Promise\&#60;ClaimOrder\&#62;`
+`**update**(id, data): Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;`
 
 #### Parameters
 
@@ -896,12 +896,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ClaimOrder\&#62;
+Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -914,7 +914,7 @@ ___
 
 ### validateCreateClaimInput
 
-`Protected **validateCreateClaimInput**(data): Promise\&#60;void\&#62;`
+`Protected **validateCreateClaimInput**(data): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -932,12 +932,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -950,7 +950,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): ClaimService`
+`**withTransaction**(transactionManager?): [ClaimService](ClaimService.mdx)`
 
 #### Parameters
 

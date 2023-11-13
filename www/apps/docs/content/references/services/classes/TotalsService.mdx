@@ -142,7 +142,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -174,7 +174,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -183,7 +183,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -192,7 +192,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -203,12 +203,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -221,7 +221,7 @@ ___
 
 ### calculateDiscount\_
 
-`**calculateDiscount_**(lineItem, variant, variantPrice, value, discountType): LineDiscount`
+`**calculateDiscount_**(lineItem, variant, variantPrice, value, discountType): [LineDiscount](../types/LineDiscount.mdx)`
 
 Calculates either fixed or percentage discount of a variant
 
@@ -299,7 +299,7 @@ ___
 
 ### getAllocationItemDiscounts
 
-`**getAllocationItemDiscounts**(discount, cart): LineDiscount[]`
+`**getAllocationItemDiscounts**(discount, cart): [LineDiscount](../types/LineDiscount.mdx)[]`
 
 If the rule of a discount has allocation="item", then we need
 to calculate discount on each item in the cart. Furthermore, we need to
@@ -350,7 +350,7 @@ ___
 
 ### getAllocationMap
 
-`**getAllocationMap**(orderOrCart, options?): Promise\&#60;LineAllocationsMap\&#62;`
+`**getAllocationMap**(orderOrCart, options?): Promise&#60;[LineAllocationsMap](../types/LineAllocationsMap.mdx)&#62;`
 
 Gets a map of discounts and gift cards that apply to line items in an
 order. The function calculates the amount of a discount or gift card that
@@ -417,12 +417,12 @@ applies to a specific line item.
 
 #### Returns
 
-Promise\&#60;LineAllocationsMap\&#62;
+Promise&#60;[LineAllocationsMap](../types/LineAllocationsMap.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineAllocationsMap\\&#62;",
+    "type": "Promise&#60;[LineAllocationsMap](../types/LineAllocationsMap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the allocation map for the line items in the cart or order.",
@@ -435,7 +435,7 @@ ___
 
 ### getCalculationContext
 
-`**getCalculationContext**(calculationContextData, options?): Promise\&#60;TaxCalculationContext\&#62;`
+`**getCalculationContext**(calculationContextData, options?): Promise&#60;[TaxCalculationContext](../types/TaxCalculationContext.mdx)&#62;`
 
 Prepares the calculation context for a tax total calculation.
 
@@ -464,12 +464,12 @@ Prepares the calculation context for a tax total calculation.
 
 #### Returns
 
-Promise\&#60;TaxCalculationContext\&#62;
+Promise&#60;[TaxCalculationContext](../types/TaxCalculationContext.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TaxCalculationContext\\&#62;",
+    "type": "Promise&#60;[TaxCalculationContext](../types/TaxCalculationContext.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax calculation context",
@@ -482,7 +482,7 @@ ___
 
 ### getDiscountTotal
 
-`**getDiscountTotal**(cartOrOrder): Promise\&#60;number\&#62;`
+`**getDiscountTotal**(cartOrOrder): Promise&#60;number&#62;`
 
 Calculates the total discount amount for each of the different supported
 discount types. If discounts aren't present or invalid returns 0.
@@ -503,12 +503,12 @@ discount types. If discounts aren't present or invalid returns 0.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the total discounts amount",
@@ -521,7 +521,7 @@ ___
 
 ### getGiftCardTotal
 
-`**getGiftCardTotal**(cartOrOrder, opts?): Promise\&#60;\&#123; tax_total: number ; total: number  \&#125;\&#62;`
+`**getGiftCardTotal**(cartOrOrder, opts?): Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;`
 
 Gets the gift card amount on a cart or order.
 
@@ -559,12 +559,12 @@ Gets the gift card amount on a cart or order.
 
 #### Returns
 
-Promise\&#60;\&#123; tax_total: number ; total: number  \&#125;\&#62;
+Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; tax_total: number ; total: number  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the gift card amount applied to the cart or order",
@@ -577,7 +577,7 @@ ___
 
 ### getGiftCardableAmount
 
-`**getGiftCardableAmount**(cartOrOrder): Promise\&#60;number\&#62;`
+`**getGiftCardableAmount**(cartOrOrder): Promise&#60;number&#62;`
 
 Gets the amount that can be gift carded on a cart. In regions where gift
 cards are taxable this amount should exclude taxes.
@@ -598,12 +598,12 @@ cards are taxable this amount should exclude taxes.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the gift card amount applied to the cart or order",
@@ -616,7 +616,7 @@ ___
 
 ### getLineDiscounts
 
-`**getLineDiscounts**(cartOrOrder, discount?): LineDiscountAmount[]`
+`**getLineDiscounts**(cartOrOrder, discount?): [LineDiscountAmount](../types/LineDiscountAmount.mdx)[]`
 
 Returns the discount amount allocated to the line items of an order.
 
@@ -771,7 +771,7 @@ ___
 
 ### getLineItemRefund
 
-`**getLineItemRefund**(order, lineItem): Promise\&#60;number\&#62;`
+`**getLineItemRefund**(order, lineItem): Promise&#60;number&#62;`
 
 The amount that can be refunded for a given line item.
 
@@ -800,12 +800,12 @@ The amount that can be refunded for a given line item.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item refund amount.",
@@ -818,7 +818,7 @@ ___
 
 ### getLineItemTotal
 
-`**getLineItemTotal**(lineItem, cartOrOrder, options?): Promise\&#60;number\&#62;`
+`**getLineItemTotal**(lineItem, cartOrOrder, options?): Promise&#60;number&#62;`
 
 Gets a total for a line item. The total can take gift cards, discounts and
 taxes into account. This can be controlled through the options.
@@ -857,12 +857,12 @@ taxes into account. This can be controlled through the options.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item total",
@@ -875,7 +875,7 @@ ___
 
 ### getLineItemTotals
 
-`**getLineItemTotals**(lineItem, cartOrOrder, options?): Promise\&#60;LineItemTotals\&#62;`
+`**getLineItemTotals**(lineItem, cartOrOrder, options?): Promise&#60;[LineItemTotals](../types/LineItemTotals-1.mdx)&#62;`
 
 Breaks down the totals related to a line item; these are the subtotal, the
 amount of discount applied to the line item, the amount of a gift card
@@ -915,12 +915,12 @@ applied to a line item and the amount of tax applied to a line item.
 
 #### Returns
 
-Promise\&#60;LineItemTotals\&#62;
+Promise&#60;[LineItemTotals](../types/LineItemTotals-1.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItemTotals\\&#62;",
+    "type": "Promise&#60;[LineItemTotals](../types/LineItemTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the breakdown of the line item totals",
@@ -971,7 +971,7 @@ ___
 
 ### getRefundTotal
 
-`**getRefundTotal**(order, lineItems): Promise\&#60;number\&#62;`
+`**getRefundTotal**(order, lineItems): Promise&#60;number&#62;`
 
 Calculates refund total of line items.
 If any of the items to return have been discounted, we need to
@@ -1002,12 +1002,12 @@ apply the discount again before refunding them.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -1058,7 +1058,7 @@ ___
 
 ### getShippingMethodTotals
 
-`**getShippingMethodTotals**(shippingMethod, cartOrOrder, opts?): Promise\&#60;ShippingMethodTotals\&#62;`
+`**getShippingMethodTotals**(shippingMethod, cartOrOrder, opts?): Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals-1.mdx)&#62;`
 
 Gets the totals breakdown for a shipping method. Fetches tax lines if not
 already provided.
@@ -1097,12 +1097,12 @@ already provided.
 
 #### Returns
 
-Promise\&#60;ShippingMethodTotals\&#62;
+Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals-1.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethodTotals\\&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that breaks down the totals for the shipping method",
@@ -1115,7 +1115,7 @@ ___
 
 ### getShippingTotal
 
-`**getShippingTotal**(cartOrOrder): Promise\&#60;number\&#62;`
+`**getShippingTotal**(cartOrOrder): Promise&#60;number&#62;`
 
 Calculates shipping total
 
@@ -1135,12 +1135,12 @@ Calculates shipping total
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "shipping total",
@@ -1153,7 +1153,7 @@ ___
 
 ### getSubtotal
 
-`**getSubtotal**(cartOrOrder, opts?): Promise\&#60;number\&#62;`
+`**getSubtotal**(cartOrOrder, opts?): Promise&#60;number&#62;`
 
 Calculates subtotal of a given cart or order.
 
@@ -1182,12 +1182,12 @@ Calculates subtotal of a given cart or order.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -1239,7 +1239,7 @@ ___
 
 ### getTaxTotal
 
-`**getTaxTotal**(cartOrOrder, forceTaxes?): Promise\&#60;`null` \| number\&#62;`
+`**getTaxTotal**(cartOrOrder, forceTaxes?): Promise&#60;`null` \| number&#62;`
 
 Calculates tax total
 Currently based on the Danish tax system
@@ -1269,12 +1269,12 @@ Currently based on the Danish tax system
 
 #### Returns
 
-Promise\&#60;`null` \| number\&#62;
+Promise&#60;`null` \| number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;`null` \\| number\\&#62;",
+    "type": "Promise&#60;`null` \\| number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "tax total",
@@ -1287,7 +1287,7 @@ ___
 
 ### getTotal
 
-`**getTotal**(cartOrOrder, options?): Promise\&#60;number\&#62;`
+`**getTotal**(cartOrOrder, options?): Promise&#60;number&#62;`
 
 Calculates total of a given cart or order.
 
@@ -1316,12 +1316,12 @@ Calculates total of a given cart or order.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -1379,7 +1379,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1408,7 +1408,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): TotalsService`
+`**withTransaction**(transactionManager?): [TotalsService](TotalsService.mdx)`
 
 #### Parameters
 

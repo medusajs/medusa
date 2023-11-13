@@ -10,7 +10,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### \_\_joinerConfig
 
-`**__joinerConfig**(): ModuleJoinerConfig`
+`**__joinerConfig**(): [ModuleJoinerConfig](../types/ModuleJoinerConfig.mdx)`
 
 #### Returns
 
@@ -19,7 +19,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "ModuleJoinerConfig",
-    "type": "[Omit](../types/Omit.mdx)\\&#60;JoinerServiceConfig, `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`\\&#62; & `\\&#123; databaseConfig?: \\&#123; extraFields?: Record\\&#60;string, \\&#123; defaultValue?: string ; nullable?: boolean ; options?: Record\\&#60;string, unknown\\&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  \\&#125;\\&#62; ; idPrefix?: string ; tableName?: string  \\&#125; ; extends?: \\&#123; fieldAlias?: Record\\&#60;string, string \\| \\&#123; forwardArgumentsOnPath: string[] ; path: string  \\&#125;\\&#62; ; relationship: ModuleJoinerRelationship ; serviceName: string  \\&#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record\\&#60;string, string\\&#62; ; primaryKeys?: string[] ; relationships?: ModuleJoinerRelationship[] ; schema?: string ; serviceName?: string  \\&#125;`",
+    "type": "[Omit](../types/Omit.mdx)&#60;[JoinerServiceConfig](JoinerServiceConfig.mdx), `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`&#62; & `&#123; databaseConfig?: &#123; extraFields?: Record&#60;string, &#123; defaultValue?: string ; nullable?: boolean ; options?: Record&#60;string, unknown&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  &#125;&#62; ; idPrefix?: string ; tableName?: string  &#125; ; extends?: &#123; fieldAlias?: Record&#60;string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;&#62; ; relationship: [ModuleJoinerRelationship](../types/ModuleJoinerRelationship.mdx) ; serviceName: string  &#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record&#60;string, string&#62; ; primaryKeys?: string[] ; relationships?: [ModuleJoinerRelationship](../types/ModuleJoinerRelationship.mdx)[] ; schema?: string ; serviceName?: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -32,7 +32,7 @@ ___
 
 ### create
 
-`**create**(input, context?): Promise\&#60;StockLocationDTO\&#62;`
+`**create**(input, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -59,12 +59,12 @@ ___
 
 #### Returns
 
-Promise\&#60;StockLocationDTO\&#62;
+Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -77,7 +77,7 @@ ___
 
 ### delete
 
-`**delete**(id, context?): Promise\&#60;void\&#62;`
+`**delete**(id, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -104,12 +104,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -122,7 +122,7 @@ ___
 
 ### list
 
-`**list**(selector, config?, context?): Promise\&#60;StockLocationDTO[]\&#62;`
+`**list**(selector, config?, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;`
 
 #### Parameters
 
@@ -138,7 +138,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -158,12 +158,12 @@ ___
 
 #### Returns
 
-Promise\&#60;StockLocationDTO[]\&#62;
+Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;StockLocationDTO[]\\&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -176,7 +176,7 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector, config?, context?): Promise\&#60;[StockLocationDTO[], number]\&#62;`
+`**listAndCount**(selector, config?, context?): Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;`
 
 #### Parameters
 
@@ -192,7 +192,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -212,12 +212,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[StockLocationDTO[], number]\&#62;
+Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[StockLocationDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -230,7 +230,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(id, config?, context?): Promise\&#60;StockLocationDTO\&#62;`
+`**retrieve**(id, config?, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -246,7 +246,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -266,12 +266,12 @@ ___
 
 #### Returns
 
-Promise\&#60;StockLocationDTO\&#62;
+Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -284,7 +284,7 @@ ___
 
 ### update
 
-`**update**(id, input, context?): Promise\&#60;StockLocationDTO\&#62;`
+`**update**(id, input, context?): Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -320,12 +320,12 @@ ___
 
 #### Returns
 
-Promise\&#60;StockLocationDTO\&#62;
+Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

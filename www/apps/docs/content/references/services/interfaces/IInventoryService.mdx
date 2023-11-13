@@ -10,7 +10,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### \_\_joinerConfig
 
-`**__joinerConfig**(): ModuleJoinerConfig`
+`**__joinerConfig**(): [ModuleJoinerConfig](../types/ModuleJoinerConfig.mdx)`
 
 #### Returns
 
@@ -19,7 +19,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "ModuleJoinerConfig",
-    "type": "[Omit](../types/Omit.mdx)\\&#60;JoinerServiceConfig, `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`\\&#62; & `\\&#123; databaseConfig?: \\&#123; extraFields?: Record\\&#60;string, \\&#123; defaultValue?: string ; nullable?: boolean ; options?: Record\\&#60;string, unknown\\&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  \\&#125;\\&#62; ; idPrefix?: string ; tableName?: string  \\&#125; ; extends?: \\&#123; fieldAlias?: Record\\&#60;string, string \\| \\&#123; forwardArgumentsOnPath: string[] ; path: string  \\&#125;\\&#62; ; relationship: ModuleJoinerRelationship ; serviceName: string  \\&#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record\\&#60;string, string\\&#62; ; primaryKeys?: string[] ; relationships?: ModuleJoinerRelationship[] ; schema?: string ; serviceName?: string  \\&#125;`",
+    "type": "[Omit](../types/Omit.mdx)&#60;[JoinerServiceConfig](JoinerServiceConfig.mdx), `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`&#62; & `&#123; databaseConfig?: &#123; extraFields?: Record&#60;string, &#123; defaultValue?: string ; nullable?: boolean ; options?: Record&#60;string, unknown&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  &#125;&#62; ; idPrefix?: string ; tableName?: string  &#125; ; extends?: &#123; fieldAlias?: Record&#60;string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;&#62; ; relationship: [ModuleJoinerRelationship](../types/ModuleJoinerRelationship.mdx) ; serviceName: string  &#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record&#60;string, string&#62; ; primaryKeys?: string[] ; relationships?: [ModuleJoinerRelationship](../types/ModuleJoinerRelationship.mdx)[] ; schema?: string ; serviceName?: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -32,7 +32,7 @@ ___
 
 ### adjustInventory
 
-`**adjustInventory**(inventoryItemId, locationId, adjustment, context?): Promise\&#60;InventoryLevelDTO\&#62;`
+`**adjustInventory**(inventoryItemId, locationId, adjustment, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -77,12 +77,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryLevelDTO\&#62;
+Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -95,7 +95,7 @@ ___
 
 ### confirmInventory
 
-`**confirmInventory**(inventoryItemId, locationIds, quantity, context?): Promise\&#60;boolean\&#62;`
+`**confirmInventory**(inventoryItemId, locationIds, quantity, context?): Promise&#60;boolean&#62;`
 
 #### Parameters
 
@@ -140,12 +140,12 @@ ___
 
 #### Returns
 
-Promise\&#60;boolean\&#62;
+Promise&#60;boolean&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -158,7 +158,7 @@ ___
 
 ### createInventoryItem
 
-`**createInventoryItem**(input, context?): Promise\&#60;InventoryItemDTO\&#62;`
+`**createInventoryItem**(input, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -185,12 +185,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryItemDTO\&#62;
+Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryItemDTO\\&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -203,7 +203,7 @@ ___
 
 ### createInventoryItems
 
-`**createInventoryItems**(input, context?): Promise\&#60;InventoryItemDTO[]\&#62;`
+`**createInventoryItems**(input, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;`
 
 #### Parameters
 
@@ -230,12 +230,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryItemDTO[]\&#62;
+Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryItemDTO[]\\&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -248,7 +248,7 @@ ___
 
 ### createInventoryLevel
 
-`**createInventoryLevel**(data, context?): Promise\&#60;InventoryLevelDTO\&#62;`
+`**createInventoryLevel**(data, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -275,12 +275,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryLevelDTO\&#62;
+Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -293,7 +293,7 @@ ___
 
 ### createInventoryLevels
 
-`**createInventoryLevels**(data, context?): Promise\&#60;InventoryLevelDTO[]\&#62;`
+`**createInventoryLevels**(data, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;`
 
 #### Parameters
 
@@ -320,12 +320,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryLevelDTO[]\&#62;
+Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryLevelDTO[]\\&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -338,7 +338,7 @@ ___
 
 ### createReservationItem
 
-`**createReservationItem**(input, context?): Promise\&#60;ReservationItemDTO\&#62;`
+`**createReservationItem**(input, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -365,12 +365,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ReservationItemDTO\&#62;
+Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ReservationItemDTO\\&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -383,7 +383,7 @@ ___
 
 ### createReservationItems
 
-`**createReservationItems**(input, context?): Promise\&#60;ReservationItemDTO[]\&#62;`
+`**createReservationItems**(input, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;`
 
 #### Parameters
 
@@ -410,12 +410,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ReservationItemDTO[]\&#62;
+Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ReservationItemDTO[]\\&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -428,7 +428,7 @@ ___
 
 ### deleteInventoryItem
 
-`**deleteInventoryItem**(inventoryItemId, context?): Promise\&#60;void\&#62;`
+`**deleteInventoryItem**(inventoryItemId, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -455,12 +455,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -473,7 +473,7 @@ ___
 
 ### deleteInventoryItemLevelByLocationId
 
-`**deleteInventoryItemLevelByLocationId**(locationId, context?): Promise\&#60;void\&#62;`
+`**deleteInventoryItemLevelByLocationId**(locationId, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -500,12 +500,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -518,7 +518,7 @@ ___
 
 ### deleteInventoryLevel
 
-`**deleteInventoryLevel**(inventoryLevelId, locationId, context?): Promise\&#60;void\&#62;`
+`**deleteInventoryLevel**(inventoryLevelId, locationId, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -554,12 +554,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -572,7 +572,7 @@ ___
 
 ### deleteReservationItem
 
-`**deleteReservationItem**(reservationItemId, context?): Promise\&#60;void\&#62;`
+`**deleteReservationItem**(reservationItemId, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -599,12 +599,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -617,7 +617,7 @@ ___
 
 ### deleteReservationItemByLocationId
 
-`**deleteReservationItemByLocationId**(locationId, context?): Promise\&#60;void\&#62;`
+`**deleteReservationItemByLocationId**(locationId, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -644,12 +644,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -662,7 +662,7 @@ ___
 
 ### deleteReservationItemsByLineItem
 
-`**deleteReservationItemsByLineItem**(lineItemId, context?): Promise\&#60;void\&#62;`
+`**deleteReservationItemsByLineItem**(lineItemId, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -689,12 +689,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -707,7 +707,7 @@ ___
 
 ### listInventoryItems
 
-`**listInventoryItems**(selector, config?, context?): Promise\&#60;[InventoryItemDTO[], number]\&#62;`
+`**listInventoryItems**(selector, config?, context?): Promise&#60;[[InventoryItemDTO](../types/InventoryItemDTO.mdx)[], number]&#62;`
 
 #### Parameters
 
@@ -723,7 +723,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;InventoryItemDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -743,12 +743,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[InventoryItemDTO[], number]\&#62;
+Promise&#60;[[InventoryItemDTO](../types/InventoryItemDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[InventoryItemDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[InventoryItemDTO](../types/InventoryItemDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -761,7 +761,7 @@ ___
 
 ### listInventoryLevels
 
-`**listInventoryLevels**(selector, config?, context?): Promise\&#60;[InventoryLevelDTO[], number]\&#62;`
+`**listInventoryLevels**(selector, config?, context?): Promise&#60;[[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[], number]&#62;`
 
 #### Parameters
 
@@ -777,7 +777,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -797,12 +797,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[InventoryLevelDTO[], number]\&#62;
+Promise&#60;[[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[InventoryLevelDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -815,7 +815,7 @@ ___
 
 ### listReservationItems
 
-`**listReservationItems**(selector, config?, context?): Promise\&#60;[ReservationItemDTO[], number]\&#62;`
+`**listReservationItems**(selector, config?, context?): Promise&#60;[[ReservationItemDTO](../types/ReservationItemDTO.mdx)[], number]&#62;`
 
 #### Parameters
 
@@ -831,7 +831,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;ReservationItemDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -851,12 +851,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[ReservationItemDTO[], number]\&#62;
+Promise&#60;[[ReservationItemDTO](../types/ReservationItemDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ReservationItemDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ReservationItemDTO](../types/ReservationItemDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -869,7 +869,7 @@ ___
 
 ### restoreInventoryItem
 
-`**restoreInventoryItem**(inventoryItemId, context?): Promise\&#60;void\&#62;`
+`**restoreInventoryItem**(inventoryItemId, context?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -896,12 +896,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -914,7 +914,7 @@ ___
 
 ### retrieveAvailableQuantity
 
-`**retrieveAvailableQuantity**(inventoryItemId, locationIds, context?): Promise\&#60;number\&#62;`
+`**retrieveAvailableQuantity**(inventoryItemId, locationIds, context?): Promise&#60;number&#62;`
 
 #### Parameters
 
@@ -950,12 +950,12 @@ ___
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -968,7 +968,7 @@ ___
 
 ### retrieveInventoryItem
 
-`**retrieveInventoryItem**(inventoryItemId, config?, context?): Promise\&#60;InventoryItemDTO\&#62;`
+`**retrieveInventoryItem**(inventoryItemId, config?, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -984,7 +984,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;InventoryItemDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1004,12 +1004,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryItemDTO\&#62;
+Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryItemDTO\\&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1022,7 +1022,7 @@ ___
 
 ### retrieveInventoryLevel
 
-`**retrieveInventoryLevel**(inventoryItemId, locationId, context?): Promise\&#60;InventoryLevelDTO\&#62;`
+`**retrieveInventoryLevel**(inventoryItemId, locationId, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -1058,12 +1058,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryLevelDTO\&#62;
+Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1076,7 +1076,7 @@ ___
 
 ### retrieveReservationItem
 
-`**retrieveReservationItem**(reservationId, context?): Promise\&#60;ReservationItemDTO\&#62;`
+`**retrieveReservationItem**(reservationId, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -1103,12 +1103,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ReservationItemDTO\&#62;
+Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ReservationItemDTO\\&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1121,7 +1121,7 @@ ___
 
 ### retrieveReservedQuantity
 
-`**retrieveReservedQuantity**(inventoryItemId, locationIds, context?): Promise\&#60;number\&#62;`
+`**retrieveReservedQuantity**(inventoryItemId, locationIds, context?): Promise&#60;number&#62;`
 
 #### Parameters
 
@@ -1157,12 +1157,12 @@ ___
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1175,7 +1175,7 @@ ___
 
 ### retrieveStockedQuantity
 
-`**retrieveStockedQuantity**(inventoryItemId, locationIds, context?): Promise\&#60;number\&#62;`
+`**retrieveStockedQuantity**(inventoryItemId, locationIds, context?): Promise&#60;number&#62;`
 
 #### Parameters
 
@@ -1211,12 +1211,12 @@ ___
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1229,7 +1229,7 @@ ___
 
 ### updateInventoryItem
 
-`**updateInventoryItem**(inventoryItemId, input, context?): Promise\&#60;InventoryItemDTO\&#62;`
+`**updateInventoryItem**(inventoryItemId, input, context?): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -1265,12 +1265,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryItemDTO\&#62;
+Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryItemDTO\\&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1283,7 +1283,7 @@ ___
 
 ### updateInventoryLevel
 
-`**updateInventoryLevel**(inventoryItemId, locationId, update, context?): Promise\&#60;InventoryLevelDTO\&#62;`
+`**updateInventoryLevel**(inventoryItemId, locationId, update, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -1328,12 +1328,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryLevelDTO\&#62;
+Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1346,14 +1346,14 @@ ___
 
 ### updateInventoryLevels
 
-`**updateInventoryLevels**(updates, context?): Promise\&#60;InventoryLevelDTO[]\&#62;`
+`**updateInventoryLevels**(updates, context?): Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "updates",
-    "type": "`\\&#123; inventory_item_id: string ; location_id: string  \\&#125;` & [UpdateInventoryLevelInput](../types/UpdateInventoryLevelInput.mdx)[]",
+    "type": "`&#123; inventory_item_id: string ; location_id: string  &#125;` & [UpdateInventoryLevelInput](../types/UpdateInventoryLevelInput.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1373,12 +1373,12 @@ ___
 
 #### Returns
 
-Promise\&#60;InventoryLevelDTO[]\&#62;
+Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryLevelDTO[]\\&#62;",
+    "type": "Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1391,7 +1391,7 @@ ___
 
 ### updateReservationItem
 
-`**updateReservationItem**(reservationItemId, input, context?): Promise\&#60;ReservationItemDTO\&#62;`
+`**updateReservationItem**(reservationItemId, input, context?): Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;`
 
 #### Parameters
 
@@ -1427,12 +1427,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ReservationItemDTO\&#62;
+Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ReservationItemDTO\\&#62;",
+    "type": "Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

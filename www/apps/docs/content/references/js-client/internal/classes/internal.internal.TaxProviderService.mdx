@@ -49,7 +49,7 @@ Finds tax providers and assists in tax related operations.
   },
   {
     "name": "container_",
-    "type": "AwilixContainer\\&#60;any\\&#62;",
+    "type": "AwilixContainer&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ Finds tax providers and assists in tax related operations.
   },
   {
     "name": "smTaxLineRepo_",
-    "type": "Repository\\&#60;ShippingMethodTaxLine\\&#62; & `\\&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  \\&#125;`",
+    "type": "Repository&#60;[ShippingMethodTaxLine](internal.internal.ShippingMethodTaxLine.mdx)&#62; & `&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ Finds tax providers and assists in tax related operations.
   },
   {
     "name": "taxLineRepo_",
-    "type": "Repository\\&#60;LineItemTaxLine\\&#62; & `\\&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  \\&#125;`",
+    "type": "Repository&#60;[LineItemTaxLine](internal.internal.LineItemTaxLine.mdx)&#62; & `&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ Finds tax providers and assists in tax related operations.
   },
   {
     "name": "taxProviderRepo_",
-    "type": "Repository\\&#60;TaxProvider\\&#62;",
+    "type": "Repository&#60;[TaxProvider](internal.TaxProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -161,7 +161,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -170,7 +170,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -179,7 +179,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -193,7 +193,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -225,7 +225,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -257,7 +257,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -301,7 +301,7 @@ for return shipping methods.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;(LineItemTaxLine \\| ShippingMethodTaxLine)[]\\&#62;",
+    "type": "Promise&#60;([LineItemTaxLine](internal.internal.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](internal.internal.ShippingMethodTaxLine.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created tax lines",
@@ -344,7 +344,7 @@ Persists the tax lines relevant for an order to the database.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;(LineItemTaxLine \\| ShippingMethodTaxLine)[]\\&#62;",
+    "type": "Promise&#60;([LineItemTaxLine](internal.internal.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](internal.internal.ShippingMethodTaxLine.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created tax lines",
@@ -388,7 +388,7 @@ calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Map\\&#60;string, TaxServiceRate[]\\&#62;\\&#62;",
+    "type": "Promise&#60;Map&#60;string, [TaxServiceRate](../types/internal.TaxServiceRate.mdx)[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax rates configured for the shipping option. A map by product id",
@@ -432,7 +432,7 @@ between calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TaxServiceRate[]\\&#62;",
+    "type": "Promise&#60;[TaxServiceRate](../types/internal.TaxServiceRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax rates configured for the shipping option.",
@@ -477,7 +477,7 @@ persist the tax lines to the DB layer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethodTaxLine[]\\&#62;",
+    "type": "Promise&#60;[ShippingMethodTaxLine](internal.internal.ShippingMethodTaxLine.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the computed tax lines",
@@ -524,7 +524,7 @@ wish to persist the tax lines to the DB layer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;(LineItemTaxLine \\| ShippingMethodTaxLine)[]\\&#62;",
+    "type": "Promise&#60;([LineItemTaxLine](internal.internal.LineItemTaxLine.mdx) \\| [ShippingMethodTaxLine](internal.internal.ShippingMethodTaxLine.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the computed tax lines",
@@ -567,7 +567,7 @@ Return a map of tax lines for line items and shipping methods
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TaxLinesMaps\\&#62;",
+    "type": "Promise&#60;[TaxLinesMaps](../types/internal.TaxLinesMaps.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -585,7 +585,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TaxProvider[]\\&#62;",
+    "type": "Promise&#60;[TaxProvider](internal.TaxProvider.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -617,7 +617,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -651,7 +651,7 @@ Retrieves the relevant tax provider for the given region.
 <ParameterTypes parameters={[
   {
     "name": "getTaxLines",
-    "type": "(`itemLines`: [ItemTaxCalculationLine](../types/internal.internal.ItemTaxCalculationLine.mdx)[], `shippingLines`: [ShippingTaxCalculationLine](../types/internal.internal.ShippingTaxCalculationLine.mdx)[], `context`: [TaxCalculationContext](../types/internal.internal.TaxCalculationContext.mdx)) => Promise\\&#60;ProviderTaxLine[]\\&#62;",
+    "type": "(`itemLines`: [ItemTaxCalculationLine](../types/internal.internal.ItemTaxCalculationLine.mdx)[], `shippingLines`: [ShippingTaxCalculationLine](../types/internal.internal.ShippingTaxCalculationLine.mdx)[], `context`: [TaxCalculationContext](../types/internal.internal.TaxCalculationContext.mdx)) => Promise&#60;[ProviderTaxLine](../types/internal.ProviderTaxLine.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -669,7 +669,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",

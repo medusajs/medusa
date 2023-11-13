@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "returnItemRepository_",
-    "type": "Repository\\&#60;ReturnItem\\&#62;",
+    "type": "Repository&#60;[ReturnItem](ReturnItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "returnRepository_",
-    "type": "Repository\\&#60;Return\\&#62;",
+    "type": "Repository&#60;[Return](Return.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -201,7 +201,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -233,7 +233,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -242,7 +242,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -251,7 +251,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -262,12 +262,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -280,7 +280,7 @@ ___
 
 ### cancel
 
-`**cancel**(returnId): Promise\&#60;Return\&#62;`
+`**cancel**(returnId): Promise&#60;[Return](Return.mdx)&#62;`
 
 Cancels a return if possible. Returns can be canceled if it has not been received.
 
@@ -300,12 +300,12 @@ Cancels a return if possible. Returns can be canceled if it has not been receive
 
 #### Returns
 
-Promise\&#60;Return\&#62;
+Promise&#60;[Return](Return.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Return",
@@ -318,7 +318,7 @@ ___
 
 ### create
 
-`**create**(data): Promise\&#60;Return\&#62;`
+`**create**(data): Promise&#60;[Return](Return.mdx)&#62;`
 
 Creates a return request for an order, with given items, and a shipping
 method. If no refund amount is provided the refund amount is calculated from
@@ -340,12 +340,12 @@ the return lines and the shipping cost.
 
 #### Returns
 
-Promise\&#60;Return\&#62;
+Promise&#60;[Return](Return.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created return",
@@ -358,7 +358,7 @@ ___
 
 ### fulfill
 
-`**fulfill**(returnId): Promise\&#60;Return\&#62;`
+`**fulfill**(returnId): Promise&#60;[Return](Return.mdx)&#62;`
 
 #### Parameters
 
@@ -376,12 +376,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Return\&#62;
+Promise&#60;[Return](Return.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -394,7 +394,7 @@ ___
 
 ### getFulfillmentItems
 
-`Protected **getFulfillmentItems**(order, items, transformer): Promise\&#60;LineItem & \&#123; note?: string ; reason_id?: string  \&#125;[]\&#62;`
+`Protected **getFulfillmentItems**(order, items, transformer): Promise&#60;[LineItem](LineItem.mdx) & &#123; note?: string ; reason_id?: string  &#125;[]&#62;`
 
 Retrieves the order line items, given an array of items
 
@@ -432,12 +432,12 @@ Retrieves the order line items, given an array of items
 
 #### Returns
 
-Promise\&#60;LineItem & \&#123; note?: string ; reason_id?: string  \&#125;[]\&#62;
+Promise&#60;[LineItem](LineItem.mdx) & &#123; note?: string ; reason_id?: string  &#125;[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem & \\&#123; note?: string ; reason_id?: string  \\&#125;[]\\&#62;",
+    "type": "Promise&#60;[LineItem](LineItem.mdx) & &#123; note?: string ; reason_id?: string  &#125;[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line items generated by the transformer.",
@@ -450,14 +450,14 @@ ___
 
 ### list
 
-`**list**(selector, config?): Promise\&#60;Return[]\&#62;`
+`**list**(selector, config?): Promise&#60;[Return](Return.mdx)[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;Return\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Return](Return.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -466,7 +466,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Return\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Return](Return.mdx)&#62;",
     "description": "the config object for find",
     "optional": false,
     "defaultValue": "",
@@ -477,12 +477,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Return[]\&#62;
+Promise&#60;[Return](Return.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return[]\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -495,14 +495,14 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector, config?): Promise\&#60;[Return[], number]\&#62;`
+`**listAndCount**(selector, config?): Promise&#60;[[Return](Return.mdx)[], number]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;Return\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Return](Return.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -511,7 +511,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Return\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Return](Return.mdx)&#62;",
     "description": "the config object for find",
     "optional": false,
     "defaultValue": "",
@@ -522,12 +522,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[Return[], number]\&#62;
+Promise&#60;[[Return](Return.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[Return[], number]\\&#62;",
+    "type": "Promise&#60;[[Return](Return.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -540,7 +540,7 @@ ___
 
 ### receive
 
-`**receive**(returnId, receivedItems, refundAmount?, allowMismatch?, context?): Promise\&#60;Return\&#62;`
+`**receive**(returnId, receivedItems, refundAmount?, allowMismatch?, context?): Promise&#60;[Return](Return.mdx)&#62;`
 
 Registers a previously requested return as received. This will create a
 refund to the customer. If the returned items don't match the requested
@@ -611,12 +611,12 @@ mismatches.
 
 #### Returns
 
-Promise\&#60;Return\&#62;
+Promise&#60;[Return](Return.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -629,7 +629,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(returnId, config?): Promise\&#60;Return\&#62;`
+`**retrieve**(returnId, config?): Promise&#60;[Return](Return.mdx)&#62;`
 
 Retrieves a return by its id.
 
@@ -647,7 +647,7 @@ Retrieves a return by its id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Return\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Return](Return.mdx)&#62;",
     "description": "the config object",
     "optional": false,
     "defaultValue": "{}",
@@ -658,12 +658,12 @@ Retrieves a return by its id.
 
 #### Returns
 
-Promise\&#60;Return\&#62;
+Promise&#60;[Return](Return.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the return",
@@ -676,7 +676,7 @@ ___
 
 ### retrieveBySwap
 
-`**retrieveBySwap**(swapId, relations?): Promise\&#60;Return\&#62;`
+`**retrieveBySwap**(swapId, relations?): Promise&#60;[Return](Return.mdx)&#62;`
 
 #### Parameters
 
@@ -703,12 +703,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Return\&#62;
+Promise&#60;[Return](Return.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -728,7 +728,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -757,7 +757,7 @@ ___
 
 ### update
 
-`**update**(returnId, update): Promise\&#60;Return\&#62;`
+`**update**(returnId, update): Promise&#60;[Return](Return.mdx)&#62;`
 
 #### Parameters
 
@@ -784,12 +784,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Return\&#62;
+Promise&#60;[Return](Return.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Return\\&#62;",
+    "type": "Promise&#60;[Return](Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -802,7 +802,7 @@ ___
 
 ### validateReturnLineItem
 
-`Protected **validateReturnLineItem**(item?, quantity?, additional?): DeepPartial\&#60;LineItem\&#62;`
+`Protected **validateReturnLineItem**(item?, quantity?, additional?): DeepPartial&#60;[LineItem](LineItem.mdx)&#62;`
 
 Checks that a given quantity of a line item can be returned. Fails if the
 item is undefined or if the returnable quantity of the item is lower, than
@@ -860,12 +860,12 @@ the quantity that is requested to be returned.
 
 #### Returns
 
-DeepPartial\&#60;LineItem\&#62;
+DeepPartial&#60;[LineItem](LineItem.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "DeepPartial",
-    "type": "DeepPartial\\&#60;LineItem\\&#62;",
+    "type": "DeepPartial&#60;[LineItem](LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a line item where the quantity is set to the requested\n  return quantity.",
@@ -922,7 +922,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): ReturnService`
+`**withTransaction**(transactionManager?): [ReturnService](ReturnService.mdx)`
 
 #### Parameters
 

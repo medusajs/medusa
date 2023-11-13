@@ -135,7 +135,7 @@ medusa.customers
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCustomersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the created customer's details.",
@@ -151,7 +151,7 @@ medusa.customers
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;Customer, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -883,7 +883,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCustomersListOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersListOrdersRes](../internal/types/internal.StoreCustomersListOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of orders with pagination fields.",
@@ -891,7 +891,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
     "children": [
       {
         "name": "StoreCustomersListOrdersRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; orders: Order[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; orders: [Order](../internal/classes/internal.Order.mdx)[]  &#125;`",
         "description": "The list of the customer's orders with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1523,7 +1523,7 @@ medusa.customers
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCustomersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details.",
@@ -1539,7 +1539,7 @@ medusa.customers
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;Customer, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -1724,7 +1724,7 @@ medusa.customers.retrieve().then(({ customer }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCustomersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the logged-in customer's details.",
@@ -1740,7 +1740,7 @@ medusa.customers.retrieve().then(({ customer }) => {
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;Customer, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -2002,7 +2002,7 @@ medusa.customers
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCustomersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the logged-in customer's details.",
@@ -2018,7 +2018,7 @@ medusa.customers
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;Customer, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",

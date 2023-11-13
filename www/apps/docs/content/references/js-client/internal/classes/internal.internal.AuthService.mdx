@@ -107,7 +107,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -116,7 +116,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -125,7 +125,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +139,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -183,7 +183,7 @@ scrypt to match password with hashed value.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;AuthenticateResult\\&#62;",
+    "type": "Promise&#60;[AuthenticateResult](../types/internal.AuthenticateResult.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "success: whether authentication succeeded\n   user: the user document if authentication succeeded\n   error: a string with the error message",
@@ -217,7 +217,7 @@ Authenticates a given user with an API token
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;AuthenticateResult\\&#62;",
+    "type": "Promise&#60;[AuthenticateResult](../types/internal.AuthenticateResult.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "success: whether authentication succeeded\n   user: the user document if authentication succeeded\n   error: a string with the error message",
@@ -261,7 +261,7 @@ scrypt to match password with hashed value.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;AuthenticateResult\\&#62;",
+    "type": "Promise&#60;[AuthenticateResult](../types/internal.AuthenticateResult.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "success: whether authentication succeeded\n   customer: the customer document if authentication succeded\n   error: a string with the error message",
@@ -304,7 +304,7 @@ Verifies if a password is valid given the provided password hash
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the comparison",
@@ -322,7 +322,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",

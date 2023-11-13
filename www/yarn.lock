@@ -8298,15 +8298,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:^17.0.1":
-  version: 17.0.20
-  resolution: "@types/react-dom@npm:17.0.20"
-  dependencies:
-    "@types/react": ^17
-  checksum: 1389bfd96ec5f0c580bb1c237c8af137203de912cf403b4116cdfb026762bf31b4206cc1de0a5c20d0df2e07b0ba1b1b72ac51995d5ef45889d5d878321b7418
-  languageName: node
-  linkType: hard
-
 "@types/react-google-recaptcha@npm:^2.1.6":
   version: 2.1.6
   resolution: "@types/react-google-recaptcha@npm:2.1.6"
@@ -8387,17 +8378,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 3a90c1614765a03fc83408cfe7fd75a5284fad96014241654f59e64bf004bed81df3e757eff73310c8d332523e1d2b32230e35d9496f608a1ced93f9ca06a26e
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17, @types/react@npm:^17.0.1":
-  version: 17.0.65
-  resolution: "@types/react@npm:17.0.65"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: 6451cb4fa43228ea9be05522f02ba2295fd11276a6e7e2e61f9de02690006d1137fc83c65449f3c909c35bb760623cdb312949431cd9b152bcb38facc63ffb2f
   languageName: node
   linkType: hard
 
@@ -11281,8 +11261,8 @@ __metadata:
     "@octokit/request": ^8.1.1
     "@react-hook/resize-observer": ^1.2.6
     "@segment/analytics-next": ^1.55.0
-    "@types/react": ^17.0.1
-    "@types/react-dom": ^17.0.1
+    "@types/react": ^18.2.0
+    "@types/react-dom": ^18.2.0
     "@types/react-google-recaptcha": ^2.1.6
     algoliasearch: ^4.20.0
     clsx: ^2.0.0
@@ -11290,8 +11270,8 @@ __metadata:
     eslint-config-docs: "*"
     next: latest
     prism-react-renderer: ^2.0.6
-    react: ^17.0.1
-    react-dom: ^17.0.1
+    react: ^18.2.0
+    react-dom: ^18.2.0
     react-google-recaptcha: ^3.1.0
     react-instantsearch: ^7.0.3
     react-markdown: ^8.0.7
@@ -11305,11 +11285,11 @@ __metadata:
     tsup: ^5.10.1
     typescript: ^5.1.6
   peerDependencies:
-    "@types/react": ">=17"
-    "@types/react-dom": ">=17"
+    "@types/react": ^18.2.0
+    "@types/react-dom": ^18.2.0
     next: "*"
-    react: ">=17"
-    react-dom: ">=17"
+    react: ^18.2.0
+    react-dom: ^18.2.0
   languageName: unknown
   linkType: soft
 
@@ -11329,6 +11309,8 @@ __metadata:
     "@docusaurus/types": 3.0.0
     "@medusajs/icons": ^1.0.0
     "@svgr/webpack": 6.2.1
+    "@types/react": ^18.2.0
+    "@types/react-dom": ^18.2.0
     "@types/react-transition-group": ^4.4.6
     autoprefixer: ^10.4.14
     clsx: ^1.1.1
@@ -11339,6 +11321,7 @@ __metadata:
     eslint-config-docs: "*"
     file-loader: ^6.2.0
     lodash: ^4.17.21
+    mdast-util-mdx: ^3.0.0
     postcss: ^8.4.21
     prism-react-renderer: ^2.1.0
     react: ^18.2.0
@@ -19270,19 +19253,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.1":
-  version: 17.0.2
-  resolution: "react-dom@npm:17.0.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-    scheduler: ^0.20.2
-  peerDependencies:
-    react: 17.0.2
-  checksum: 51abbcb72450fe527ebf978c3bc989ba266630faaa53f47a2fae5392369729e8de62b2e4683598cbe651ea7873cd34ec7d5127e2f50bf4bfe6bd0c3ad9bddcb0
-  languageName: node
-  linkType: hard
-
 "react-error-overlay@npm:^6.0.11":
   version: 6.0.11
   resolution: "react-error-overlay@npm:6.0.11"
@@ -19590,16 +19560,6 @@ __metadata:
   dependencies:
     loose-envify: ^1.1.0
   checksum: b562d9b569b0cb315e44b48099f7712283d93df36b19a39a67c254c6686479d3980b7f013dc931f4a5a3ae7645eae6386b4aa5eea933baa54ecd0f9acb0902b8
-  languageName: node
-  linkType: hard
-
-"react@npm:^17.0.1":
-  version: 17.0.2
-  resolution: "react@npm:17.0.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: 07ae8959acf1596f0550685102fd6097d461a54a4fd46a50f88a0cd7daaa97fdd6415de1dcb4bfe0da6aa43221a6746ce380410fa848acc60f8ac41f6649c148
   languageName: node
   linkType: hard
 
@@ -20291,16 +20251,6 @@ __metadata:
   dependencies:
     xmlchars: ^2.2.0
   checksum: 3847b839f060ef3476eb8623d099aa502ad658f5c40fd60c105ebce86d244389b0d76fcae30f4d0c728d7705ceb2f7e9b34bb54717b6a7dbedaf5dad2d9a4b74
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.20.2":
-  version: 0.20.2
-  resolution: "scheduler@npm:0.20.2"
-  dependencies:
-    loose-envify: ^1.1.0
-    object-assign: ^4.1.1
-  checksum: b0982e4b0f34f4ffa4f2f486161c0fd9ce9b88680b045dccbf250eb1aa4fd27413570645455187a83535e2370f5c667a251045547765408492bd883cbe95fcdb
   languageName: node
   linkType: hard
 

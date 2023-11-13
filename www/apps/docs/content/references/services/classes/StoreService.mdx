@@ -60,7 +60,7 @@ Provides layer to manipulate store settings.
   },
   {
     "name": "currencyRepository_",
-    "type": "Repository\\&#60;Currency\\&#62;",
+    "type": "Repository&#60;[Currency](Currency.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -87,7 +87,7 @@ Provides layer to manipulate store settings.
   },
   {
     "name": "storeRepository_",
-    "type": "Repository\\&#60;Store\\&#62;",
+    "type": "Repository&#60;[Store](Store.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -131,7 +131,7 @@ EntityManager
 
 ### addCurrency
 
-`**addCurrency**(code): Promise\&#60;Store\&#62;`
+`**addCurrency**(code): Promise&#60;[Store](Store.mdx)&#62;`
 
 Add a currency to the store
 
@@ -151,12 +151,12 @@ Add a currency to the store
 
 #### Returns
 
-Promise\&#60;Store\&#62;
+Promise&#60;[Store](Store.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Store\\&#62;",
+    "type": "Promise&#60;[Store](Store.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result after update",
@@ -169,7 +169,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -201,7 +201,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -210,7 +210,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -219,7 +219,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -230,12 +230,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -248,18 +248,18 @@ ___
 
 ### create
 
-`**create**(): Promise\&#60;Store\&#62;`
+`**create**(): Promise&#60;[Store](Store.mdx)&#62;`
 
 Creates a store if it doesn't already exist.
 
 #### Returns
 
-Promise\&#60;Store\&#62;
+Promise&#60;[Store](Store.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Store\\&#62;",
+    "type": "Promise&#60;[Store](Store.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The store.",
@@ -272,7 +272,7 @@ ___
 
 ### getDefaultCurrency\_
 
-`Protected **getDefaultCurrency_**(code): Partial\&#60;Currency\&#62;`
+`Protected **getDefaultCurrency_**(code): [Partial](../types/Partial.mdx)&#60;[Currency](Currency.mdx)&#62;`
 
 #### Parameters
 
@@ -290,12 +290,12 @@ ___
 
 #### Returns
 
-[Partial](../types/Partial.mdx)\&#60;Currency\&#62;
+[Partial](../types/Partial.mdx)&#60;[Currency](Currency.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Partial",
-    "type": "[Partial](../types/Partial.mdx)\\&#60;Currency\\&#62;",
+    "type": "[Partial](../types/Partial.mdx)&#60;[Currency](Currency.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -308,7 +308,7 @@ ___
 
 ### removeCurrency
 
-`**removeCurrency**(code): Promise\&#60;any\&#62;`
+`**removeCurrency**(code): Promise&#60;any&#62;`
 
 Removes a currency from the store
 
@@ -328,12 +328,12 @@ Removes a currency from the store
 
 #### Returns
 
-Promise\&#60;any\&#62;
+Promise&#60;any&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any\\&#62;",
+    "type": "Promise&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result after update",
@@ -346,7 +346,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(config?): Promise\&#60;Store\&#62;`
+`**retrieve**(config?): Promise&#60;[Store](Store.mdx)&#62;`
 
 Retrieve the store settings. There is always a maximum of one store.
 
@@ -355,7 +355,7 @@ Retrieve the store settings. There is always a maximum of one store.
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Store\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Store](Store.mdx)&#62;",
     "description": "The config object from which the query will be built",
     "optional": false,
     "defaultValue": "{}",
@@ -366,12 +366,12 @@ Retrieve the store settings. There is always a maximum of one store.
 
 #### Returns
 
-Promise\&#60;Store\&#62;
+Promise&#60;[Store](Store.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Store\\&#62;",
+    "type": "Promise&#60;[Store](Store.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the store",
@@ -391,7 +391,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -420,7 +420,7 @@ ___
 
 ### update
 
-`**update**(data): Promise\&#60;Store\&#62;`
+`**update**(data): Promise&#60;[Store](Store.mdx)&#62;`
 
 Updates a store
 
@@ -440,12 +440,12 @@ Updates a store
 
 #### Returns
 
-Promise\&#60;Store\&#62;
+Promise&#60;[Store](Store.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Store\\&#62;",
+    "type": "Promise&#60;[Store](Store.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -458,7 +458,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): StoreService`
+`**withTransaction**(transactionManager?): [StoreService](StoreService.mdx)`
 
 #### Parameters
 

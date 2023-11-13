@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "customerGroupRepository_",
-    "type": "Repository\\&#60;CustomerGroup\\&#62; & `\\&#123; addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  \\&#125;`",
+    "type": "Repository&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & `&#123; addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -120,7 +120,7 @@ EntityManager
 
 ### addCustomers
 
-`**addCustomers**(id, customerIds): Promise\&#60;CustomerGroup\&#62;`
+`**addCustomers**(id, customerIds): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Add a batch of customers to a customer group at once
 
@@ -149,12 +149,12 @@ Add a batch of customers to a customer group at once
 
 #### Returns
 
-Promise\&#60;CustomerGroup\&#62;
+Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CustomerGroup\\&#62;",
+    "type": "Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer group after insertion",
@@ -167,7 +167,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -199,7 +199,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -208,7 +208,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -217,7 +217,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -228,12 +228,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -246,7 +246,7 @@ ___
 
 ### create
 
-`**create**(group): Promise\&#60;CustomerGroup\&#62;`
+`**create**(group): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Creates a customer group with the provided data.
 
@@ -255,7 +255,7 @@ Creates a customer group with the provided data.
 <ParameterTypes parameters={[
   {
     "name": "group",
-    "type": "DeepPartial\\&#60;CustomerGroup\\&#62;",
+    "type": "DeepPartial&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "description": "the customer group to create",
     "optional": false,
     "defaultValue": "",
@@ -266,12 +266,12 @@ Creates a customer group with the provided data.
 
 #### Returns
 
-Promise\&#60;CustomerGroup\&#62;
+Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CustomerGroup\\&#62;",
+    "type": "Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the create operation",
@@ -284,7 +284,7 @@ ___
 
 ### delete
 
-`**delete**(groupId): Promise\&#60;void\&#62;`
+`**delete**(groupId): Promise&#60;void&#62;`
 
 Remove customer group
 
@@ -304,12 +304,12 @@ Remove customer group
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise",
@@ -322,7 +322,7 @@ ___
 
 ### handleCreationFail
 
-`Private **handleCreationFail**(id, ids, error): Promise\&#60;never\&#62;`
+`Private **handleCreationFail**(id, ids, error): Promise&#60;never&#62;`
 
 #### Parameters
 
@@ -358,12 +358,12 @@ ___
 
 #### Returns
 
-Promise\&#60;never\&#62;
+Promise&#60;never&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;never\\&#62;",
+    "type": "Promise&#60;never&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -376,7 +376,7 @@ ___
 
 ### list
 
-`**list**(selector?, config): Promise\&#60;CustomerGroup[]\&#62;`
+`**list**(selector?, config): Promise&#60;[CustomerGroup](CustomerGroup.mdx)[]&#62;`
 
 List customer groups.
 
@@ -385,7 +385,7 @@ List customer groups.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;CustomerGroup\\&#62; & `\\&#123; discount_condition_id?: string ; q?: string  \\&#125;`",
+    "type": "[Selector](../types/Selector.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & `&#123; discount_condition_id?: string ; q?: string  &#125;`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -394,7 +394,7 @@ List customer groups.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;CustomerGroup\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -405,12 +405,12 @@ List customer groups.
 
 #### Returns
 
-Promise\&#60;CustomerGroup[]\&#62;
+Promise&#60;[CustomerGroup](CustomerGroup.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CustomerGroup[]\\&#62;",
+    "type": "Promise&#60;[CustomerGroup](CustomerGroup.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -423,7 +423,7 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector?, config): Promise\&#60;[CustomerGroup[], number]\&#62;`
+`**listAndCount**(selector?, config): Promise&#60;[[CustomerGroup](CustomerGroup.mdx)[], number]&#62;`
 
 Retrieve a list of customer groups and total count of records that match the query.
 
@@ -432,7 +432,7 @@ Retrieve a list of customer groups and total count of records that match the que
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;CustomerGroup\\&#62; & `\\&#123; discount_condition_id?: string ; q?: string  \\&#125;`",
+    "type": "[Selector](../types/Selector.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62; & `&#123; discount_condition_id?: string ; q?: string  &#125;`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "{}",
@@ -441,7 +441,7 @@ Retrieve a list of customer groups and total count of records that match the que
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;CustomerGroup\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -452,12 +452,12 @@ Retrieve a list of customer groups and total count of records that match the que
 
 #### Returns
 
-Promise\&#60;[CustomerGroup[], number]\&#62;
+Promise&#60;[[CustomerGroup](CustomerGroup.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[CustomerGroup[], number]\\&#62;",
+    "type": "Promise&#60;[[CustomerGroup](CustomerGroup.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -470,7 +470,7 @@ ___
 
 ### removeCustomer
 
-`**removeCustomer**(id, customerIds): Promise\&#60;CustomerGroup\&#62;`
+`**removeCustomer**(id, customerIds): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Remove list of customers from a customergroup
 
@@ -499,12 +499,12 @@ Remove list of customers from a customergroup
 
 #### Returns
 
-Promise\&#60;CustomerGroup\&#62;
+Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CustomerGroup\\&#62;",
+    "type": "Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customergroup with the provided id",
@@ -517,7 +517,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(customerGroupId, config?): Promise\&#60;CustomerGroup\&#62;`
+`**retrieve**(customerGroupId, config?): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 #### Parameters
 
@@ -544,12 +544,12 @@ ___
 
 #### Returns
 
-Promise\&#60;CustomerGroup\&#62;
+Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CustomerGroup\\&#62;",
+    "type": "Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -569,7 +569,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -598,7 +598,7 @@ ___
 
 ### update
 
-`**update**(customerGroupId, update): Promise\&#60;CustomerGroup\&#62;`
+`**update**(customerGroupId, update): Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;`
 
 Update a customer group.
 
@@ -627,12 +627,12 @@ Update a customer group.
 
 #### Returns
 
-Promise\&#60;CustomerGroup\&#62;
+Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CustomerGroup\\&#62;",
+    "type": "Promise&#60;[CustomerGroup](CustomerGroup.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resulting customer group",
@@ -645,7 +645,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): CustomerGroupService`
+`**withTransaction**(transactionManager?): [CustomerGroupService](CustomerGroupService.mdx)`
 
 #### Parameters
 

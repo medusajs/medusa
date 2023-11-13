@@ -68,7 +68,7 @@ async function retrievePriceSet (priceSetId: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;ProductDTO\\&#62;",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[ProductDTO](../../interfaces/ProductDTO.mdx)&#62;",
     "description": "The configurations determining how the product is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -202,7 +202,7 @@ async function retrievePriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductDTO\\&#62;",
+    "type": "Promise&#60;[ProductDTO](../../interfaces/ProductDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product.",

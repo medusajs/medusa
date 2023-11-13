@@ -21,7 +21,7 @@ export function returnReflectionComponentFormatter(
   level = 1,
   maxLevel?: number | undefined
 ): Parameter[] {
-  const typeName = getType(reflectionType, "object", false)
+  const typeName = getType(reflectionType, "object", false, true)
   const type = getType(reflectionType, "object")
   const componentItem: Parameter[] = []
   if (reflectionType.type === "reference") {

@@ -230,7 +230,7 @@ medusa.productTags
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreProductTagsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreProductTagsListRes](../internal/types/internal.StoreProductTagsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product tags with pagination fields.",
@@ -238,7 +238,7 @@ medusa.productTags
     "children": [
       {
         "name": "StoreProductTagsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; product_tags: ProductTag[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_tags: [ProductTag](../internal/classes/internal.ProductTag.mdx)[]  &#125;`",
         "description": "The list of product tags with pagination fields.",
         "optional": false,
         "defaultValue": "",

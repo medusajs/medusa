@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderEditRepository_",
-    "type": "Repository\\&#60;OrderEdit\\&#62;",
+    "type": "Repository&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -246,7 +246,7 @@ ___
 
 ### inventoryService\_
 
-`Protected get**inventoryService_**(): undefined \| IInventoryService`
+`Protected get**inventoryService_**(): undefined \| [IInventoryService](../interfaces/IInventoryService.mdx)`
 
 #### Returns
 
@@ -268,7 +268,7 @@ ___
 
 ### addLineItem
 
-`**addLineItem**(orderEditId, data): Promise\&#60;void\&#62;`
+`**addLineItem**(orderEditId, data): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -295,12 +295,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -313,7 +313,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -345,7 +345,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -354,7 +354,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -363,7 +363,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -374,12 +374,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -392,7 +392,7 @@ ___
 
 ### cancel
 
-`**cancel**(orderEditId, context?): Promise\&#60;OrderEdit\&#62;`
+`**cancel**(orderEditId, context?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -428,12 +428,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -446,7 +446,7 @@ ___
 
 ### confirm
 
-`**confirm**(orderEditId, context?): Promise\&#60;OrderEdit\&#62;`
+`**confirm**(orderEditId, context?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -482,12 +482,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -500,7 +500,7 @@ ___
 
 ### create
 
-`**create**(data, context): Promise\&#60;OrderEdit\&#62;`
+`**create**(data, context): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -536,12 +536,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -554,7 +554,7 @@ ___
 
 ### decline
 
-`**decline**(orderEditId, context): Promise\&#60;OrderEdit\&#62;`
+`**decline**(orderEditId, context): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -599,12 +599,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -617,7 +617,7 @@ ___
 
 ### decorateTotals
 
-`**decorateTotals**(orderEdit): Promise\&#60;OrderEdit\&#62;`
+`**decorateTotals**(orderEdit): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -635,12 +635,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -653,7 +653,7 @@ ___
 
 ### delete
 
-`**delete**(id): Promise\&#60;void\&#62;`
+`**delete**(id): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -671,12 +671,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -689,7 +689,7 @@ ___
 
 ### deleteClonedItems
 
-`Protected **deleteClonedItems**(orderEditId): Promise\&#60;void\&#62;`
+`Protected **deleteClonedItems**(orderEditId): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -707,12 +707,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -725,7 +725,7 @@ ___
 
 ### deleteItemChange
 
-`**deleteItemChange**(orderEditId, itemChangeId): Promise\&#60;void\&#62;`
+`**deleteItemChange**(orderEditId, itemChangeId): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -752,12 +752,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -770,14 +770,14 @@ ___
 
 ### list
 
-`**list**(selector, config?): Promise\&#60;OrderEdit[]\&#62;`
+`**list**(selector, config?): Promise&#60;[OrderEdit](OrderEdit.mdx)[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;OrderEdit\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -786,7 +786,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;OrderEdit\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -797,12 +797,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit[]\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit[]\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -815,14 +815,14 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector, config?): Promise\&#60;[OrderEdit[], number]\&#62;`
+`**listAndCount**(selector, config?): Promise&#60;[[OrderEdit](OrderEdit.mdx)[], number]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;OrderEdit\\&#62; & `\\&#123; q?: string  \\&#125;`",
+    "type": "[Selector](../types/Selector.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62; & `&#123; q?: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -831,7 +831,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;OrderEdit\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -842,12 +842,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[OrderEdit[], number]\&#62;
+Promise&#60;[[OrderEdit](OrderEdit.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[OrderEdit[], number]\\&#62;",
+    "type": "Promise&#60;[[OrderEdit](OrderEdit.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -860,7 +860,7 @@ ___
 
 ### refreshAdjustments
 
-`**refreshAdjustments**(orderEditId, config?): Promise\&#60;void\&#62;`
+`**refreshAdjustments**(orderEditId, config?): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -896,12 +896,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -914,7 +914,7 @@ ___
 
 ### removeLineItem
 
-`**removeLineItem**(orderEditId, lineItemId): Promise\&#60;void\&#62;`
+`**removeLineItem**(orderEditId, lineItemId): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -941,12 +941,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -959,7 +959,7 @@ ___
 
 ### requestConfirmation
 
-`**requestConfirmation**(orderEditId, context?): Promise\&#60;OrderEdit\&#62;`
+`**requestConfirmation**(orderEditId, context?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -995,12 +995,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1013,7 +1013,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(orderEditId, config?): Promise\&#60;OrderEdit\&#62;`
+`**retrieve**(orderEditId, config?): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -1029,7 +1029,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;OrderEdit\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1040,12 +1040,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1058,7 +1058,7 @@ ___
 
 ### retrieveActive
 
-`Protected **retrieveActive**(orderId, config?): Promise\&#60;undefined \| `null` \| OrderEdit\&#62;`
+`Protected **retrieveActive**(orderId, config?): Promise&#60;undefined \| `null` \| [OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -1074,7 +1074,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;OrderEdit\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1085,12 +1085,12 @@ ___
 
 #### Returns
 
-Promise\&#60;undefined \| `null` \| OrderEdit\&#62;
+Promise&#60;undefined \| `null` \| [OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| `null` \\| OrderEdit\\&#62;",
+    "type": "Promise&#60;undefined \\| `null` \\| [OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1110,7 +1110,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1139,7 +1139,7 @@ ___
 
 ### update
 
-`**update**(orderEditId, data): Promise\&#60;OrderEdit\&#62;`
+`**update**(orderEditId, data): Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;`
 
 #### Parameters
 
@@ -1155,7 +1155,7 @@ ___
   },
   {
     "name": "data",
-    "type": "DeepPartial\\&#60;OrderEdit\\&#62;",
+    "type": "DeepPartial&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1166,12 +1166,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderEdit\&#62;
+Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderEdit\\&#62;",
+    "type": "Promise&#60;[OrderEdit](OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1184,7 +1184,7 @@ ___
 
 ### updateLineItem
 
-`**updateLineItem**(orderEditId, itemId, data): Promise\&#60;void\&#62;`
+`**updateLineItem**(orderEditId, itemId, data): Promise&#60;void&#62;`
 
 Create or update order edit item change line item and apply the quantity
 - If the item change already exists then update the quantity of the line item as well as the line adjustments
@@ -1233,12 +1233,12 @@ Create or update order edit item change line item and apply the quantity
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1251,7 +1251,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): OrderEditService`
+`**withTransaction**(transactionManager?): [OrderEditService](OrderEditService.mdx)`
 
 #### Parameters
 

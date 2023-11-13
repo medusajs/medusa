@@ -14,7 +14,7 @@ The details of the claim to be created.
   {
     "name": "additional_items",
     "type": "[AdditionalItem](internal.AdditionalItem-2.mdx)[]",
-    "description": "The new items to send to the Customer. This is only used if the claim's type is \\`replace\\`.",
+    "description": "The new items to send to the Customer. This is only used if the claim's type is `replace`.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -50,7 +50,7 @@ The details of the claim to be created.
   {
     "name": "refund_amount",
     "type": "`number`",
-    "description": "The amount to refund the customer. This is used when the claim's type is \\`refund\\`.",
+    "description": "The amount to refund the customer. This is used when the claim's type is `refund`.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -86,7 +86,7 @@ The details of the claim to be created.
   {
     "name": "shipping_methods",
     "type": "[ShippingMethod](internal.ShippingMethod-2.mdx)[]",
-    "description": "The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is \\`replace\\`.",
+    "description": "The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is `replace`.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -95,7 +95,7 @@ The details of the claim to be created.
   {
     "name": "type",
     "type": "``\"refund\"`` \\| ``\"replace\"``",
-    "description": "The type of the Claim. This will determine how the Claim is treated: \\`replace\\` Claims will result in a Fulfillment with new items being created, while a \\`refund\\` Claim will refund the amount paid for the claimed items.",
+    "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

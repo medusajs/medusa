@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderItemChangeRepository_",
-    "type": "Repository\\&#60;OrderItemChange\\&#62;",
+    "type": "Repository&#60;[OrderItemChange](OrderItemChange.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -165,7 +165,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -197,7 +197,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -206,7 +206,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -215,7 +215,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -226,12 +226,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -244,7 +244,7 @@ ___
 
 ### create
 
-`**create**(data): Promise\&#60;OrderItemChange\&#62;`
+`**create**(data): Promise&#60;[OrderItemChange](OrderItemChange.mdx)&#62;`
 
 #### Parameters
 
@@ -262,12 +262,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderItemChange\&#62;
+Promise&#60;[OrderItemChange](OrderItemChange.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderItemChange\\&#62;",
+    "type": "Promise&#60;[OrderItemChange](OrderItemChange.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -280,7 +280,7 @@ ___
 
 ### delete
 
-`**delete**(itemChangeIds): Promise\&#60;void\&#62;`
+`**delete**(itemChangeIds): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -298,12 +298,12 @@ ___
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -316,14 +316,14 @@ ___
 
 ### list
 
-`**list**(selector, config?): Promise\&#60;OrderItemChange[]\&#62;`
+`**list**(selector, config?): Promise&#60;[OrderItemChange](OrderItemChange.mdx)[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;OrderItemChange\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[OrderItemChange](OrderItemChange.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -332,7 +332,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;OrderItemChange\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[OrderItemChange](OrderItemChange.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -343,12 +343,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderItemChange[]\&#62;
+Promise&#60;[OrderItemChange](OrderItemChange.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderItemChange[]\\&#62;",
+    "type": "Promise&#60;[OrderItemChange](OrderItemChange.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -361,7 +361,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(id, config?): Promise\&#60;OrderItemChange\&#62;`
+`**retrieve**(id, config?): Promise&#60;[OrderItemChange](OrderItemChange.mdx)&#62;`
 
 #### Parameters
 
@@ -377,7 +377,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;OrderItemChange\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[OrderItemChange](OrderItemChange.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -388,12 +388,12 @@ ___
 
 #### Returns
 
-Promise\&#60;OrderItemChange\&#62;
+Promise&#60;[OrderItemChange](OrderItemChange.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;OrderItemChange\\&#62;",
+    "type": "Promise&#60;[OrderItemChange](OrderItemChange.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -413,7 +413,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -442,7 +442,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): OrderEditItemChangeService`
+`**withTransaction**(transactionManager?): [OrderEditItemChangeService](OrderEditItemChangeService.mdx)`
 
 #### Parameters
 

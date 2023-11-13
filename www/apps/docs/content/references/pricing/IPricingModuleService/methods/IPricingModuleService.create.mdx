@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 This documentation provides a reference to the `create` method. This belongs to the Pricing Module.
 
-## create(data, sharedContext?): Promise\&#60;PriceSetDTO\&#62;
+## create(data, sharedContext?): Promise&#60;[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)&#62;
 
 This method is used to create a new price set.
 
@@ -177,7 +177,7 @@ async function createPriceSet() {
       },
       {
         "name": "rules",
-        "type": "`\\&#123; rule_attribute: string  \\&#125;`[]",
+        "type": "`&#123; rule_attribute: string  &#125;`[]",
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
@@ -258,7 +258,7 @@ async function createPriceSet() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created price set.",
@@ -387,7 +387,7 @@ async function createPriceSet() {
   }
 ]} />
 
-## create(data, sharedContext?): Promise\&#60;PriceSetDTO[]\&#62;
+## create(data, sharedContext?): Promise&#60;[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)[]&#62;
 
 This method is used to create multiple price sets.
 
@@ -548,7 +548,7 @@ async function createPriceSets() {
       },
       {
         "name": "rules",
-        "type": "`\\&#123; rule_attribute: string  \\&#125;`[]",
+        "type": "`&#123; rule_attribute: string  &#125;`[]",
         "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
         "optional": true,
         "defaultValue": "",
@@ -629,7 +629,7 @@ async function createPriceSets() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price sets.",

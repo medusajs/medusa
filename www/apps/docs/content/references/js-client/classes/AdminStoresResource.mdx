@@ -61,7 +61,7 @@ medusa.admin.store.addCurrency("eur").then(({ store }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminStoresRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminStoresRes](../internal/types/internal.AdminStoresRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
@@ -185,7 +185,7 @@ medusa.admin.store.addCurrency("eur").then(({ store }) => {
               {
                 "name": "payment_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Payment links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the payment's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -194,7 +194,7 @@ medusa.admin.store.addCurrency("eur").then(({ store }) => {
               {
                 "name": "swap_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Swap links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the Swap's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -262,7 +262,7 @@ medusa.admin.store.deleteCurrency("eur").then(({ store }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminStoresRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminStoresRes](../internal/types/internal.AdminStoresRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
@@ -386,7 +386,7 @@ medusa.admin.store.deleteCurrency("eur").then(({ store }) => {
               {
                 "name": "payment_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Payment links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the payment's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -395,7 +395,7 @@ medusa.admin.store.deleteCurrency("eur").then(({ store }) => {
               {
                 "name": "swap_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Swap links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the Swap's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -454,7 +454,7 @@ medusa.admin.store.listPaymentProviders().then(({ payment_providers }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPaymentProvidersList\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPaymentProvidersList](../internal/types/internal.AdminPaymentProvidersList.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of payment providers.",
@@ -488,7 +488,7 @@ medusa.admin.store.listPaymentProviders().then(({ payment_providers }) => {
               {
                 "name": "is_installed",
                 "type": "`boolean`",
-                "description": "Whether the payment service is installed in the current version. If a payment service is no longer installed, the \\`is\\_installed\\` attribute is set to \\`false\\`.",
+                "description": "Whether the payment service is installed in the current version. If a payment service is no longer installed, the `is\\_installed` attribute is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -538,7 +538,7 @@ medusa.admin.store.listTaxProviders().then(({ tax_providers }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminTaxProvidersList\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxProvidersList](../internal/types/internal.AdminTaxProvidersList.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of tax providers.",
@@ -572,7 +572,7 @@ medusa.admin.store.listTaxProviders().then(({ tax_providers }) => {
               {
                 "name": "is_installed",
                 "type": "`boolean`",
-                "description": "Whether the tax service is installed in the current version. If a tax service is no longer installed, the \\`is\\_installed\\` attribute is set to \\`false\\`.",
+                "description": "Whether the tax service is installed in the current version. If a tax service is no longer installed, the `is\\_installed` attribute is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -622,7 +622,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminExtendedStoresRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminExtendedStoresRes](../internal/types/internal.AdminExtendedStoresRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
@@ -746,7 +746,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
               {
                 "name": "payment_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Payment links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the payment's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -755,7 +755,7 @@ medusa.admin.store.retrieve().then(({ store }) => {
               {
                 "name": "swap_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Swap links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the Swap's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -867,7 +867,7 @@ medusa.admin.store
       {
         "name": "invite_link_template",
         "type": "`string`",
-        "description": "A template for invite links - use \\`\\&#123;\\&#123;invite\\_token\\&#125;\\&#125;\\` to insert the invite token",
+        "description": "A template for invite links - use `&#123;&#123;invite\\_token&#125;&#125;` to insert the invite token",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -894,7 +894,7 @@ medusa.admin.store
       {
         "name": "payment_link_template",
         "type": "`string`",
-        "description": "A template for payment links - use \\`\\&#123;\\&#123;cart\\_id\\&#125;\\&#125;\\` to insert the Cart ID",
+        "description": "A template for payment links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Cart ID",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -903,7 +903,7 @@ medusa.admin.store
       {
         "name": "swap_link_template",
         "type": "`string`",
-        "description": "A template for Swap links - use \\`\\&#123;\\&#123;cart\\_id\\&#125;\\&#125;\\` to insert the Swap Cart ID",
+        "description": "A template for Swap links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Swap Cart ID",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -927,7 +927,7 @@ medusa.admin.store
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminStoresRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminStoresRes](../internal/types/internal.AdminStoresRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the store's details.",
@@ -1051,7 +1051,7 @@ medusa.admin.store
               {
                 "name": "payment_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Payment links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the payment's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1060,7 +1060,7 @@ medusa.admin.store
               {
                 "name": "swap_link_template",
                 "type": "``null`` \\| `string`",
-                "description": "A template to generate Swap links from. Use \\&#123;\\&#123;cart\\_id\\&#125;\\&#125; to include the Swap's \\`cart\\_id\\` in the link.",
+                "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,

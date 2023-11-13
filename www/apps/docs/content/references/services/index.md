@@ -615,211 +615,211 @@ The payment collection is used for an order edit.
 
 ### AddressRepository
 
- `Const` **AddressRepository**: Repository\&#60;Address\&#62;
+ `Const` **AddressRepository**: Repository&#60;[Address](classes/Address.mdx)&#62;
 
 ___
 
 ### AnalyticsConfigRepository
 
- `Const` **AnalyticsConfigRepository**: Repository\&#60;AnalyticsConfig\&#62;
+ `Const` **AnalyticsConfigRepository**: Repository&#60;[AnalyticsConfig](classes/AnalyticsConfig.mdx)&#62;
 
 ___
 
 ### BatchJobRepository
 
- `Const` **BatchJobRepository**: Repository\&#60;BatchJob\&#62;
+ `Const` **BatchJobRepository**: Repository&#60;[BatchJob](classes/BatchJob.mdx)&#62;
 
 ___
 
 ### Buffer
 
- **Buffer**: BufferConstructor
+ **Buffer**: [BufferConstructor](interfaces/BufferConstructor.mdx)
 
 ___
 
 ### CartRepository
 
- `Const` **CartRepository**: Repository\&#60;Cart\&#62; & \&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  \&#125;
+ `Const` **CartRepository**: Repository&#60;[Cart](classes/Cart.mdx)&#62; & &#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;
 
 ___
 
 ### ClaimRepository
 
- `Const` **ClaimRepository**: Repository\&#60;ClaimOrder\&#62;
+ `Const` **ClaimRepository**: Repository&#60;[ClaimOrder](classes/ClaimOrder.mdx)&#62;
 
 ___
 
 ### CountryRepository
 
- `Const` **CountryRepository**: Repository\&#60;Country\&#62;
+ `Const` **CountryRepository**: Repository&#60;[Country](classes/Country.mdx)&#62;
 
 ___
 
 ### CurrencyRepository
 
- `Const` **CurrencyRepository**: Repository\&#60;Currency\&#62;
+ `Const` **CurrencyRepository**: Repository&#60;[Currency](classes/Currency.mdx)&#62;
 
 ___
 
 ### CustomShippingOptionRepository
 
- `Const` **CustomShippingOptionRepository**: Repository\&#60;CustomShippingOption\&#62;
+ `Const` **CustomShippingOptionRepository**: Repository&#60;[CustomShippingOption](classes/CustomShippingOption.mdx)&#62;
 
 ___
 
 ### CustomerGroupRepository
 
- `Const` **CustomerGroupRepository**: Repository\&#60;CustomerGroup\&#62; & \&#123; addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  \&#125;
+ `Const` **CustomerGroupRepository**: Repository&#60;[CustomerGroup](classes/CustomerGroup.mdx)&#62; & &#123; addCustomers: Method addCustomers ; findWithRelationsAndCount: Method findWithRelationsAndCount ; removeCustomers: Method removeCustomers  &#125;
 
 ___
 
 ### CustomerRepository
 
- `Const` **CustomerRepository**: Repository\&#60;Customer\&#62; & \&#123; listAndCount: Method listAndCount  \&#125;
+ `Const` **CustomerRepository**: Repository&#60;[Customer](classes/Customer.mdx)&#62; & &#123; listAndCount: Method listAndCount  &#125;
 
 ___
 
 ### DiscountConditionRepository
 
- `Const` **DiscountConditionRepository**: Repository\&#60;DiscountCondition\&#62; & \&#123; addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  \&#125;
+ `Const` **DiscountConditionRepository**: Repository&#60;[DiscountCondition](classes/DiscountCondition.mdx)&#62; & &#123; addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  &#125;
 
 ___
 
 ### DraftOrderRepository
 
- `Const` **DraftOrderRepository**: Repository\&#60;DraftOrder\&#62;
+ `Const` **DraftOrderRepository**: Repository&#60;[DraftOrder](classes/DraftOrder.mdx)&#62;
 
 ___
 
 ### FulfillmentProviderRepository
 
- `Const` **FulfillmentProviderRepository**: Repository\&#60;FulfillmentProvider\&#62;
+ `Const` **FulfillmentProviderRepository**: Repository&#60;[FulfillmentProvider](classes/FulfillmentProvider.mdx)&#62;
 
 ___
 
 ### FulfillmentRepository
 
- `Const` **FulfillmentRepository**: Repository\&#60;Fulfillment\&#62;
+ `Const` **FulfillmentRepository**: Repository&#60;[Fulfillment](classes/Fulfillment.mdx)&#62;
 
 ___
 
 ### GiftCardRepository
 
- `Const` **GiftCardRepository**: Repository\&#60;GiftCard\&#62; & \&#123; listGiftCardsAndCount: Method listGiftCardsAndCount  \&#125;
+ `Const` **GiftCardRepository**: Repository&#60;[GiftCard](classes/GiftCard.mdx)&#62; & &#123; listGiftCardsAndCount: Method listGiftCardsAndCount  &#125;
 
 ___
 
 ### GiftCardTransactionRepository
 
- `Const` **GiftCardTransactionRepository**: Repository\&#60;GiftCardTransaction\&#62;
+ `Const` **GiftCardTransactionRepository**: Repository&#60;[GiftCardTransaction](classes/GiftCardTransaction.mdx)&#62;
 
 ___
 
 ### IdempotencyKeyRepository
 
- `Const` **IdempotencyKeyRepository**: Repository\&#60;IdempotencyKey\&#62;
+ `Const` **IdempotencyKeyRepository**: Repository&#60;[IdempotencyKey](classes/IdempotencyKey.mdx)&#62;
 
 ___
 
 ### ImageRepository
 
- `Const` **ImageRepository**: Repository\&#60;Image\&#62; & \&#123; insertBulk: Method insertBulk ; upsertImages: Method upsertImages  \&#125;
+ `Const` **ImageRepository**: Repository&#60;[Image](classes/Image.mdx)&#62; & &#123; insertBulk: Method insertBulk ; upsertImages: Method upsertImages  &#125;
 
 ___
 
 ### LineItemAdjustmentRepository
 
- `Const` **LineItemAdjustmentRepository**: Repository\&#60;LineItemAdjustment\&#62;
+ `Const` **LineItemAdjustmentRepository**: Repository&#60;[LineItemAdjustment](classes/LineItemAdjustment.mdx)&#62;
 
 ___
 
 ### LineItemRepository
 
- `Const` **LineItemRepository**: Repository\&#60;LineItem\&#62; & \&#123; findByReturn: Method findByReturn  \&#125;
+ `Const` **LineItemRepository**: Repository&#60;[LineItem](classes/LineItem.mdx)&#62; & &#123; findByReturn: Method findByReturn  &#125;
 
 ___
 
 ### LineItemTaxLineRepository
 
- `Const` **LineItemTaxLineRepository**: Repository\&#60;LineItemTaxLine\&#62; & \&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  \&#125;
+ `Const` **LineItemTaxLineRepository**: Repository&#60;[LineItemTaxLine](classes/LineItemTaxLine.mdx)&#62; & &#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;
 
 ___
 
 ### MoneyAmountRepository
 
- `Const` **MoneyAmountRepository**: Repository\&#60;MoneyAmount\&#62; & \&#123; addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  \&#125;
+ `Const` **MoneyAmountRepository**: Repository&#60;[MoneyAmount](classes/MoneyAmount.mdx)&#62; & &#123; addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  &#125;
 
 ___
 
 ### NoteRepository
 
- `Const` **NoteRepository**: Repository\&#60;Note\&#62;
+ `Const` **NoteRepository**: Repository&#60;[Note](classes/Note.mdx)&#62;
 
 ___
 
 ### NotificationProviderRepository
 
- `Const` **NotificationProviderRepository**: Repository\&#60;NotificationProvider\&#62;
+ `Const` **NotificationProviderRepository**: Repository&#60;[NotificationProvider](classes/NotificationProvider.mdx)&#62;
 
 ___
 
 ### NotificationRepository
 
- `Const` **NotificationRepository**: Repository\&#60;Notification\&#62;
+ `Const` **NotificationRepository**: Repository&#60;[Notification](classes/Notification.mdx)&#62;
 
 ___
 
 ### OauthRepository
 
- `Const` **OauthRepository**: Repository\&#60;Oauth\&#62;
+ `Const` **OauthRepository**: Repository&#60;[Oauth](classes/Oauth.mdx)&#62;
 
 ___
 
 ### OrderEditRepository
 
- `Const` **OrderEditRepository**: Repository\&#60;OrderEdit\&#62;
+ `Const` **OrderEditRepository**: Repository&#60;[OrderEdit](classes/OrderEdit.mdx)&#62;
 
 ___
 
 ### OrderItemChangeRepository
 
- `Const` **OrderItemChangeRepository**: Repository\&#60;OrderItemChange\&#62;
+ `Const` **OrderItemChangeRepository**: Repository&#60;[OrderItemChange](classes/OrderItemChange.mdx)&#62;
 
 ___
 
 ### OrderRepository
 
- `Const` **OrderRepository**: Repository\&#60;Order\&#62; & \&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  \&#125;
+ `Const` **OrderRepository**: Repository&#60;[Order](classes/Order.mdx)&#62; & &#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;
 
 ___
 
 ### PaymentCollectionRepository
 
- `Const` **PaymentCollectionRepository**: Repository\&#60;PaymentCollection\&#62; & \&#123; getPaymentCollectionIdByPaymentId: Method getPaymentCollectionIdByPaymentId ; getPaymentCollectionIdBySessionId: Method getPaymentCollectionIdBySessionId  \&#125;
+ `Const` **PaymentCollectionRepository**: Repository&#60;[PaymentCollection](classes/PaymentCollection.mdx)&#62; & &#123; getPaymentCollectionIdByPaymentId: Method getPaymentCollectionIdByPaymentId ; getPaymentCollectionIdBySessionId: Method getPaymentCollectionIdBySessionId  &#125;
 
 ___
 
 ### PaymentProviderRepository
 
- `Const` **PaymentProviderRepository**: Repository\&#60;PaymentProvider\&#62;
+ `Const` **PaymentProviderRepository**: Repository&#60;[PaymentProvider](classes/PaymentProvider.mdx)&#62;
 
 ___
 
 ### PaymentRepository
 
- `Const` **PaymentRepository**: Repository\&#60;Payment\&#62;
+ `Const` **PaymentRepository**: Repository&#60;[Payment](classes/Payment.mdx)&#62;
 
 ___
 
 ### PaymentSessionRepository
 
- `Const` **PaymentSessionRepository**: Repository\&#60;PaymentSession\&#62;
+ `Const` **PaymentSessionRepository**: Repository&#60;[PaymentSession](classes/PaymentSession.mdx)&#62;
 
 ___
 
 ### PriceListRepository
 
- `Const` **PriceListRepository**: Repository\&#60;PriceList\&#62; & \&#123; listAndCount: Method listAndCount ; listPriceListsVariantIdsMap: Method listPriceListsVariantIdsMap  \&#125;
+ `Const` **PriceListRepository**: Repository&#60;[PriceList](classes/PriceList.mdx)&#62; & &#123; listAndCount: Method listAndCount ; listPriceListsVariantIdsMap: Method listPriceListsVariantIdsMap  &#125;
 
 ___
 
@@ -863,145 +863,145 @@ ___
 
 ### ProductCategoryRepository
 
- `Const` **ProductCategoryRepository**: TreeRepository\&#60;ProductCategory\&#62; & \&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  \&#125;
+ `Const` **ProductCategoryRepository**: TreeRepository&#60;[ProductCategory](classes/ProductCategory.mdx)&#62; & &#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;
 
 ___
 
 ### ProductCollectionRepository
 
- `Const` **ProductCollectionRepository**: Repository\&#60;ProductCollection\&#62; & \&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId  \&#125;
+ `Const` **ProductCollectionRepository**: Repository&#60;[ProductCollection](classes/ProductCollection.mdx)&#62; & &#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId  &#125;
 
 ___
 
 ### ProductOptionRepository
 
- `Const` **ProductOptionRepository**: Repository\&#60;ProductOption\&#62;
+ `Const` **ProductOptionRepository**: Repository&#60;[ProductOption](classes/ProductOption.mdx)&#62;
 
 ___
 
 ### ProductRepository
 
- `Const` **ProductRepository**: Repository\&#60;Product\&#62; & \&#123; _applyCategoriesQuery: Method \_applyCategoriesQuery ; _findWithRelations: Method \_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  \&#125;
+ `Const` **ProductRepository**: Repository&#60;[Product](classes/Product.mdx)&#62; & &#123; _applyCategoriesQuery: Method \_applyCategoriesQuery ; _findWithRelations: Method \_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;
 
 ___
 
 ### ProductTagRepository
 
- `Const` **ProductTagRepository**: Repository\&#60;ProductTag\&#62; & \&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; insertBulk: Method insertBulk ; listTagsByUsage: Method listTagsByUsage ; upsertTags: Method upsertTags  \&#125;
+ `Const` **ProductTagRepository**: Repository&#60;[ProductTag](classes/ProductTag.mdx)&#62; & &#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; insertBulk: Method insertBulk ; listTagsByUsage: Method listTagsByUsage ; upsertTags: Method upsertTags  &#125;
 
 ___
 
 ### ProductTypeRepository
 
- `Const` **ProductTypeRepository**: Repository\&#60;ProductType\&#62; & \&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  \&#125;
+ `Const` **ProductTypeRepository**: Repository&#60;[ProductType](classes/ProductType.mdx)&#62; & &#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  &#125;
 
 ___
 
 ### ProductVariantRepository
 
- `Const` **ProductVariantRepository**: Repository\&#60;ProductVariant\&#62;
+ `Const` **ProductVariantRepository**: Repository&#60;[ProductVariant](classes/ProductVariant.mdx)&#62;
 
 ___
 
 ### RefundRepository
 
- `Const` **RefundRepository**: Repository\&#60;Refund\&#62;
+ `Const` **RefundRepository**: Repository&#60;[Refund](classes/Refund.mdx)&#62;
 
 ___
 
 ### RegionRepository
 
- `Const` **RegionRepository**: Repository\&#60;Region\&#62;
+ `Const` **RegionRepository**: Repository&#60;[Region](classes/Region.mdx)&#62;
 
 ___
 
 ### ReturnItemRepository
 
- `Const` **ReturnItemRepository**: Repository\&#60;ReturnItem\&#62;
+ `Const` **ReturnItemRepository**: Repository&#60;[ReturnItem](classes/ReturnItem.mdx)&#62;
 
 ___
 
 ### ReturnReasonRepository
 
- `Const` **ReturnReasonRepository**: Repository\&#60;ReturnReason\&#62;
+ `Const` **ReturnReasonRepository**: Repository&#60;[ReturnReason](classes/ReturnReason.mdx)&#62;
 
 ___
 
 ### ReturnRepository
 
- `Const` **ReturnRepository**: Repository\&#60;Return\&#62;
+ `Const` **ReturnRepository**: Repository&#60;[Return](classes/Return.mdx)&#62;
 
 ___
 
 ### SalesChannelRepository
 
- `Const` **SalesChannelRepository**: Repository\&#60;SalesChannel\&#62; & \&#123; addProducts: Method addProducts ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; listProductIdsBySalesChannelIds: Method listProductIdsBySalesChannelIds ; removeProducts: Method removeProducts  \&#125;
+ `Const` **SalesChannelRepository**: Repository&#60;[SalesChannel](classes/SalesChannel.mdx)&#62; & &#123; addProducts: Method addProducts ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; listProductIdsBySalesChannelIds: Method listProductIdsBySalesChannelIds ; removeProducts: Method removeProducts  &#125;
 
 ___
 
 ### SharedArrayBuffer
 
- **SharedArrayBuffer**: SharedArrayBufferConstructor
+ **SharedArrayBuffer**: [SharedArrayBufferConstructor](interfaces/SharedArrayBufferConstructor.mdx)
 
 ___
 
 ### ShippingMethodRepository
 
- `Const` **ShippingMethodRepository**: Repository\&#60;ShippingMethod\&#62;
+ `Const` **ShippingMethodRepository**: Repository&#60;[ShippingMethod](classes/ShippingMethod.mdx)&#62;
 
 ___
 
 ### ShippingOptionRepository
 
- `Const` **ShippingOptionRepository**: Repository\&#60;ShippingOption\&#62; & \&#123; upsertShippingProfile: Method upsertShippingProfile  \&#125;
+ `Const` **ShippingOptionRepository**: Repository&#60;[ShippingOption](classes/ShippingOption.mdx)&#62; & &#123; upsertShippingProfile: Method upsertShippingProfile  &#125;
 
 ___
 
 ### ShippingOptionRequirementRepository
 
- `Const` **ShippingOptionRequirementRepository**: Repository\&#60;ShippingOptionRequirement\&#62;
+ `Const` **ShippingOptionRequirementRepository**: Repository&#60;[ShippingOptionRequirement](classes/ShippingOptionRequirement.mdx)&#62;
 
 ___
 
 ### ShippingProfileRepository
 
- `Const` **ShippingProfileRepository**: Repository\&#60;ShippingProfile\&#62; & \&#123; findByProducts: Method findByProducts  \&#125;
+ `Const` **ShippingProfileRepository**: Repository&#60;[ShippingProfile](classes/ShippingProfile.mdx)&#62; & &#123; findByProducts: Method findByProducts  &#125;
 
 ___
 
 ### StagedJobRepository
 
- `Const` **StagedJobRepository**: Repository\&#60;StagedJob\&#62; & \&#123; insertBulk: Method insertBulk  \&#125;
+ `Const` **StagedJobRepository**: Repository&#60;[StagedJob](classes/StagedJob.mdx)&#62; & &#123; insertBulk: Method insertBulk  &#125;
 
 ___
 
 ### StoreRepository
 
- `Const` **StoreRepository**: Repository\&#60;Store\&#62;
+ `Const` **StoreRepository**: Repository&#60;[Store](classes/Store.mdx)&#62;
 
 ___
 
 ### SwapRepository
 
- `Const` **SwapRepository**: Repository\&#60;Swap\&#62;
+ `Const` **SwapRepository**: Repository&#60;[Swap](classes/Swap.mdx)&#62;
 
 ___
 
 ### TaxProviderRepository
 
- `Const` **TaxProviderRepository**: Repository\&#60;TaxProvider\&#62;
+ `Const` **TaxProviderRepository**: Repository&#60;[TaxProvider](classes/TaxProvider.mdx)&#62;
 
 ___
 
 ### TrackingLinkRepository
 
- `Const` **TrackingLinkRepository**: Repository\&#60;TrackingLink\&#62;
+ `Const` **TrackingLinkRepository**: Repository&#60;[TrackingLink](classes/TrackingLink.mdx)&#62;
 
 ___
 
 ### UserRepository
 
- `Const` **UserRepository**: Repository\&#60;User\&#62;
+ `Const` **UserRepository**: Repository&#60;[User](classes/User.mdx)&#62;
 
 ## Functions
 

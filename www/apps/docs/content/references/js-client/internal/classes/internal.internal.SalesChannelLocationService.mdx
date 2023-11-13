@@ -112,7 +112,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`input`: [CreateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`input`: [CreateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`id`: `string`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`id`: `string`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise\\&#60;StockLocationDTO[]\\&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise\\&#60;[StockLocationDTO[], number]\\&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -200,7 +200,7 @@ Associates a sales channel with a stock location.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves when the association has been created.",
@@ -222,7 +222,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -231,7 +231,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -240,7 +240,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -254,7 +254,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -288,7 +288,7 @@ Lists the stock locations associated with a sales channel.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string[]\\&#62;",
+    "type": "Promise&#60;string[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves with an array of location IDs.",
@@ -322,7 +322,7 @@ Lists the sales channels associated with a stock location.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string[]\\&#62;",
+    "type": "Promise&#60;string[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves with an array of sales channel IDs.",
@@ -365,7 +365,7 @@ Removes an association between a sales channel and a stock location.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves when the association has been removed.",
@@ -383,7 +383,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",

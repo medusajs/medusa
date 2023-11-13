@@ -69,7 +69,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "productRepository_",
-    "type": "Repository\\&#60;Product\\&#62; & `\\&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  \\&#125;`",
+    "type": "Repository&#60;[Product](internal.Product.mdx)&#62; & `&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -96,7 +96,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "shippingProfileRepository_",
-    "type": "Repository\\&#60;ShippingProfile\\&#62; & `\\&#123; findByProducts: Method findByProducts  \\&#125;`",
+    "type": "Repository&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62; & `&#123; findByProducts: Method findByProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -164,7 +164,7 @@ Provides layer to manipulate profiles.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -211,7 +211,7 @@ Adds a product or an array of products to the profile.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of update",
@@ -255,7 +255,7 @@ fulfill the products in the products field.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the model update operation",
@@ -277,7 +277,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -286,7 +286,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -295,7 +295,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -309,7 +309,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -343,7 +343,7 @@ Creates a new shipping profile.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the create operation",
@@ -363,7 +363,7 @@ Creates a default shipping profile, if this does not already exist.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the shipping profile",
@@ -384,7 +384,7 @@ exists.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the shipping profile",
@@ -418,7 +418,7 @@ Deletes a profile with a given profile id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation.",
@@ -453,7 +453,7 @@ validates all options that are available for the cart.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOption[]\\&#62;",
+    "type": "Promise&#60;[ShippingOption](internal.ShippingOption.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a list of the available shipping options",
@@ -485,7 +485,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Map\\&#60;string, string\\&#62;\\&#62;",
+    "type": "Promise&#60;Map&#60;string, string&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -519,7 +519,7 @@ Returns a list of all the productIds in the cart.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string[]\\&#62;",
+    "type": "Promise&#60;string[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a list of product ids",
@@ -537,7 +537,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;ShippingProfile\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -546,7 +546,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ShippingProfile\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "description": "the config object for find",
     "optional": true,
     "defaultValue": "",
@@ -560,7 +560,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile[]\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -603,7 +603,7 @@ Removes a product or an array of products from the profile.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| ShippingProfile\\&#62;",
+    "type": "Promise&#60;void \\| [ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of update",
@@ -633,7 +633,7 @@ Throws in case of DB Error and if profile was not found.
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ShippingProfile\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "description": "options opf the query.",
     "optional": true,
     "defaultValue": "",
@@ -647,7 +647,7 @@ Throws in case of DB Error and if profile was not found.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the profile document.",
@@ -665,7 +665,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;`null` \\| ShippingProfile\\&#62;",
+    "type": "Promise&#60;`null` \\| [ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -697,7 +697,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; [product_id: string]: ShippingProfile[];  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; [product_id: string]: [ShippingProfile](internal.ShippingProfile.mdx)[];  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -717,7 +717,7 @@ Retrieves the default gift card profile
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;`null` \\| ShippingProfile\\&#62;",
+    "type": "Promise&#60;`null` \\| [ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the shipping profile for gift cards",
@@ -735,7 +735,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -794,7 +794,7 @@ will throw errors if metadata or product updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingProfile\\&#62;",
+    "type": "Promise&#60;[ShippingProfile](internal.ShippingProfile.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",

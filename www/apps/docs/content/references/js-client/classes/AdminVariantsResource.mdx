@@ -62,7 +62,7 @@ medusa.admin.variants.getInventory(variantId).then(({ variant }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminGetVariantsVariantInventoryRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminGetVariantsVariantInventoryRes](../internal/types/internal.AdminGetVariantsVariantInventoryRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the inventory details of the product variant.",
@@ -104,7 +104,7 @@ medusa.admin.variants.getInventory(variantId).then(({ variant }) => {
               },
               {
                 "name": "sales_channel_availability",
-                "type": "`\\&#123; available_quantity: number ; channel_id: string ; channel_name: string  \\&#125;`[]",
+                "type": "`&#123; available_quantity: number ; channel_id: string ; channel_name: string  &#125;`[]",
                 "description": "Details about the variant's inventory availability in sales channels.",
                 "optional": false,
                 "defaultValue": "",
@@ -307,7 +307,7 @@ medusa.admin.variants
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminVariantsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminVariantsListRes](../internal/types/internal.AdminVariantsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product variants with pagination fields.",
@@ -315,7 +315,7 @@ medusa.admin.variants
     "children": [
       {
         "name": "AdminVariantsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; variants: PricedVariant[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; variants: [PricedVariant](../internal/types/internal.PricedVariant.mdx)[]  &#125;`",
         "description": "The list of variants with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -359,7 +359,7 @@ medusa.admin.variants
               {
                 "name": "allow_backorder",
                 "type": "`boolean`",
-                "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
+                "description": "Whether the Product Variant should be purchasable when `inventory\\_quantity` is 0.",
                 "optional": false,
                 "defaultValue": "false",
                 "expandable": false,
@@ -807,7 +807,7 @@ medusa.admin.variants
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminVariantsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminVariantsRes](../internal/types/internal.AdminVariantsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product variant's details.",
@@ -832,7 +832,7 @@ medusa.admin.variants
               {
                 "name": "allow_backorder",
                 "type": "`boolean`",
-                "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
+                "description": "Whether the Product Variant should be purchasable when `inventory\\_quantity` is 0.",
                 "optional": false,
                 "defaultValue": "false",
                 "expandable": false,

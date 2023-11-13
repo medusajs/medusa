@@ -54,7 +54,7 @@ subscribers when events happen. Events will run asynchronously.
   },
   {
     "name": "enqueue_",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -166,7 +166,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -175,7 +175,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -189,7 +189,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -202,7 +202,7 @@ ___
 
 ### emit
 
-`**emit**<TypeParameter T>(data): Promise\&#60;void \| StagedJob[]\&#62;`
+`**emit**<TypeParameter T>(data): Promise&#60;void \| [StagedJob](internal.internal.StagedJob.mdx)[]&#62;`
 
 Calls all subscribers when an event occurs.
 
@@ -211,7 +211,7 @@ Calls all subscribers when an event occurs.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[EmitData](../types/internal.EmitData.mdx)\\&#60;T\\&#62;[]",
+    "type": "[EmitData](../types/internal.EmitData.mdx)&#60;T&#62;[]",
     "description": "The data to use to process the events",
     "optional": false,
     "defaultValue": "",
@@ -225,7 +225,7 @@ Calls all subscribers when an event occurs.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| StagedJob[]\\&#62;",
+    "type": "Promise&#60;void \\| [StagedJob](internal.internal.StagedJob.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the jobs from our queue",
@@ -234,7 +234,7 @@ Calls all subscribers when an event occurs.
   }
 ]} />
 
-`**emit**<TypeParameter T>(eventName, data, options?): Promise\&#60;void \| StagedJob\&#62;`
+`**emit**<TypeParameter T>(eventName, data, options?): Promise&#60;void \| [StagedJob](internal.internal.StagedJob.mdx)&#62;`
 
 Calls all subscribers when an event occurs.
 
@@ -275,7 +275,7 @@ Calls all subscribers when an event occurs.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| StagedJob\\&#62;",
+    "type": "Promise&#60;void \\| [StagedJob](internal.internal.StagedJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the job from our queue",
@@ -293,7 +293,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -311,7 +311,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "listConfig",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;StagedJob\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[StagedJob](internal.internal.StagedJob.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -325,7 +325,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;never[] \\| StagedJob[]\\&#62;",
+    "type": "Promise&#60;never[] \\| [StagedJob](internal.internal.StagedJob.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -343,7 +343,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -393,7 +393,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -422,7 +422,7 @@ Adds a function to a list of event subscribers.
   },
   {
     "name": "subscriber",
-    "type": "[Subscriber](../types/internal.Subscriber.mdx)\\&#60;unknown\\&#62;",
+    "type": "[Subscriber](../types/internal.Subscriber.mdx)&#60;unknown&#62;",
     "description": "the function to be called when a certain event happens. Subscribers must return a Promise.",
     "optional": false,
     "defaultValue": "",
@@ -474,7 +474,7 @@ Removes function from the list of event subscribers.
   },
   {
     "name": "subscriber",
-    "type": "[Subscriber](../types/internal.Subscriber.mdx)\\&#60;unknown\\&#62;",
+    "type": "[Subscriber](../types/internal.Subscriber.mdx)&#60;unknown&#62;",
     "description": "the function to be removed",
     "optional": false,
     "defaultValue": "",

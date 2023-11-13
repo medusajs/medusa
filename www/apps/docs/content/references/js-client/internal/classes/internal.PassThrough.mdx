@@ -250,7 +250,7 @@ Calls `readable.destroy()` with an `AbortError` and returns a promise that fulfi
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -272,7 +272,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -609,7 +609,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "chunks",
-    "type": "`\\&#123; chunk: any ; encoding: BufferEncoding  \\&#125;`[]",
+    "type": "`&#123; chunk: any ; encoding: [BufferEncoding](../types/internal.BufferEncoding.mdx)  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -645,7 +645,7 @@ ___
 
 ### addListener
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 Event emitter
 The defined events on documents including:
@@ -698,7 +698,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -737,7 +737,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -776,7 +776,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -815,7 +815,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -854,7 +854,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -893,7 +893,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -932,7 +932,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -971,7 +971,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -1010,7 +1010,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -1049,7 +1049,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -1088,7 +1088,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): PassThrough`
+`**addListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -1139,7 +1139,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1175,7 +1175,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [Iterable](../interfaces/internal.Iterable.mdx)\\&#60;T\\&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)\\&#60;T\\&#62;",
+    "type": "[ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [Iterable](../interfaces/internal.Iterable.mdx)&#60;T&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;T&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1304,7 +1304,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1786,7 +1786,7 @@ ___
 
 ### end
 
-`**end**(cb?): PassThrough`
+`**end**(cb?): [PassThrough](internal.PassThrough.mdx)`
 
 Calling the `writable.end()` method signals that no more data will be written
 to the `Writable`. The optional `chunk` and `encoding` arguments allow one
@@ -1836,7 +1836,7 @@ file.end('world!');
 
 v0.9.4
 
-`**end**(chunk, cb?): PassThrough`
+`**end**(chunk, cb?): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -1875,7 +1875,7 @@ v0.9.4
   }
 ]} />
 
-`**end**(chunk, encoding?, cb?): PassThrough`
+`**end**(chunk, encoding?, cb?): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -1976,7 +1976,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1999,7 +1999,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for every one of the chunks.",
@@ -2025,7 +2025,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to filter chunks from the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2065,7 +2065,7 @@ ___
 
 ### find
 
-`**find**<TypeParameter T>(fn, options?): Promise\&#60;undefined \| T\&#62;`
+`**find**<TypeParameter T>(fn, options?): Promise&#60;undefined \| T&#62;`
 
 This method is similar to `Array.prototype.find` and calls *fn* on each chunk in the stream
 to find a chunk with a truthy value for *fn*. Once an *fn* call's awaited return value is truthy,
@@ -2077,7 +2077,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => data is T",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => data is T",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2100,7 +2100,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| T\\&#62;",
+    "type": "Promise&#60;undefined \\| T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to the first chunk for which *fn* evaluated with a truthy value,\nor `undefined` if no element was found.",
@@ -2113,14 +2113,14 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 
 v17.5.0
 
-`**find**(fn, options?): Promise\&#60;any\&#62;`
+`**find**(fn, options?): Promise&#60;any&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2143,7 +2143,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any\\&#62;",
+    "type": "Promise&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2167,7 +2167,7 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. May be async. May be a stream or generator.",
     "optional": false,
     "defaultValue": "",
@@ -2223,7 +2223,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `void` \\| Promise\\&#60;void\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `void` \\| Promise&#60;void&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2246,7 +2246,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for when the stream has finished.",
@@ -2356,7 +2356,7 @@ or if the iterator should destroy the stream if the stream emitted an error duri
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2476,7 +2476,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2563,7 +2563,7 @@ ___
 
 ### on
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -2633,7 +2633,7 @@ myEE.emit('foo');
 
 v0.1.101
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2672,7 +2672,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2711,7 +2711,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2750,7 +2750,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2789,7 +2789,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2828,7 +2828,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2867,7 +2867,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2906,7 +2906,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2945,7 +2945,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -2984,7 +2984,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3023,7 +3023,7 @@ v0.1.101
   }
 ]} />
 
-`**on**(event, listener): PassThrough`
+`**on**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3066,7 +3066,7 @@ ___
 
 ### once
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -3134,7 +3134,7 @@ myEE.emit('foo');
 
 v0.3.0
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3173,7 +3173,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3212,7 +3212,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3251,7 +3251,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3290,7 +3290,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3329,7 +3329,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3368,7 +3368,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3407,7 +3407,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3446,7 +3446,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3485,7 +3485,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3524,7 +3524,7 @@ v0.3.0
   }
 ]} />
 
-`**once**(event, listener): PassThrough`
+`**once**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3648,7 +3648,7 @@ ___
 
 ### prependListener
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -3704,7 +3704,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3743,7 +3743,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3782,7 +3782,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3821,7 +3821,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3860,7 +3860,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3899,7 +3899,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3938,7 +3938,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -3977,7 +3977,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4016,7 +4016,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4055,7 +4055,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4094,7 +4094,7 @@ v6.0.0
   }
 ]} />
 
-`**prependListener**(event, listener): PassThrough`
+`**prependListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4137,7 +4137,7 @@ ___
 
 ### prependOnceListener
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
@@ -4191,7 +4191,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4230,7 +4230,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4269,7 +4269,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4308,7 +4308,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4347,7 +4347,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4386,7 +4386,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4425,7 +4425,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4464,7 +4464,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4503,7 +4503,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4542,7 +4542,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4581,7 +4581,7 @@ v6.0.0
   }
 ]} />
 
-`**prependOnceListener**(event, listener): PassThrough`
+`**prependOnceListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -4838,7 +4838,7 @@ ___
 
 ### reduce
 
-`**reduce**<TypeParameter T>(fn, initial?, options?): Promise\&#60;T\&#62;`
+`**reduce**<TypeParameter T>(fn, initial?, options?): Promise&#60;T&#62;`
 
 This method calls *fn* on each chunk of the stream in order, passing it the result from the calculation
 on the previous element. It returns a promise for the final value of the reduction.
@@ -4854,7 +4854,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `any`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `T`",
+    "type": "(`previous`: `any`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "a reducer function to call over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -4872,7 +4872,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4886,7 +4886,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;T\\&#62;",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for the final value of the reduction.",
@@ -4899,14 +4899,14 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 
 v17.5.0
 
-`**reduce**<TypeParameter T>(fn, initial, options?): Promise\&#60;T\&#62;`
+`**reduce**<TypeParameter T>(fn, initial, options?): Promise&#60;T&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `T`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `T`",
+    "type": "(`previous`: `T`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -4924,7 +4924,7 @@ v17.5.0
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4938,7 +4938,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;T\\&#62;",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4995,7 +4995,7 @@ ___
 
 ### removeListener
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -5118,7 +5118,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v0.1.26
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5157,7 +5157,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5196,7 +5196,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5235,7 +5235,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5274,7 +5274,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5313,7 +5313,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5352,7 +5352,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5391,7 +5391,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5430,7 +5430,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5469,7 +5469,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5508,7 +5508,7 @@ v0.1.26
   }
 ]} />
 
-`**removeListener**(event, listener): PassThrough`
+`**removeListener**(event, listener): [PassThrough](internal.PassThrough.mdx)`
 
 #### Parameters
 
@@ -5737,7 +5737,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -5760,7 +5760,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for at least one of the chunks.",
@@ -5793,7 +5793,7 @@ This method returns a new stream with the first *limit* chunks.
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -5834,7 +5834,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -5848,7 +5848,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any[]\\&#62;",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise containing an array with the contents of the stream.",
@@ -6382,7 +6382,7 @@ A utility method for creating duplex streams.
 <ParameterTypes parameters={[
   {
     "name": "src",
-    "type": "`string` \\| `Object` \\| Promise\\&#60;any\\&#62; \\| `ArrayBuffer` \\| [Stream](internal.Stream.mdx) \\| [Blob](internal.Blob.mdx) \\| [Iterable](../interfaces/internal.Iterable.mdx)\\&#60;any\\&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)\\&#60;any\\&#62; \\| [AsyncGeneratorFunction](../interfaces/internal.AsyncGeneratorFunction.mdx)",
+    "type": "`string` \\| `Object` \\| Promise&#60;any&#62; \\| `ArrayBuffer` \\| [Stream](internal.Stream.mdx) \\| [Blob](internal.Blob.mdx) \\| [Iterable](../interfaces/internal.Iterable.mdx)&#60;any&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;any&#62; \\| [AsyncGeneratorFunction](../interfaces/internal.AsyncGeneratorFunction.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6429,7 +6429,7 @@ A utility method for creating a `Duplex` from a web `ReadableStream` and `Writab
   },
   {
     "name": "duplexStream.readable",
-    "type": "[ReadableStream](../../modules/internal.mdx#readablestream-1)\\&#60;any\\&#62;",
+    "type": "[ReadableStream](../../modules/internal.mdx#readablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6438,7 +6438,7 @@ A utility method for creating a `Duplex` from a web `ReadableStream` and `Writab
   },
   {
     "name": "duplexStream.writable",
-    "type": "[WritableStream](../../modules/internal.mdx#writablestream-1)\\&#60;any\\&#62;",
+    "type": "[WritableStream](../../modules/internal.mdx#writablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6447,7 +6447,7 @@ A utility method for creating a `Duplex` from a web `ReadableStream` and `Writab
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;DuplexOptions, `\"signal\"` \\| `\"allowHalfOpen\"` \\| `\"decodeStrings\"` \\| `\"encoding\"` \\| `\"highWaterMark\"` \\| `\"objectMode\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[DuplexOptions](../interfaces/internal.DuplexOptions.mdx), `\"signal\"` \\| `\"allowHalfOpen\"` \\| `\"decodeStrings\"` \\| `\"encoding\"` \\| `\"highWaterMark\"` \\| `\"objectMode\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6801,7 +6801,7 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "that iterates `eventName` events emitted by the `emitter`",
@@ -6818,7 +6818,7 @@ ___
 
 ### once
 
-`Static **once**(emitter, eventName, options?): Promise\&#60;any[]\&#62;`
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -6934,7 +6934,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any[]\\&#62;",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -6947,7 +6947,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 
 v11.13.0, v10.16.0
 
-`Static **once**(emitter, eventName, options?): Promise\&#60;any[]\&#62;`
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 #### Parameters
 
@@ -6986,7 +6986,7 @@ v11.13.0, v10.16.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any[]\\&#62;",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -7086,7 +7086,7 @@ A utility method for creating a web `ReadableStream` and `WritableStream` from a
 <ParameterTypes parameters={[
   {
     "name": "readable",
-    "type": "[ReadableStream](../../modules/internal.mdx#readablestream-1)\\&#60;any\\&#62;",
+    "type": "[ReadableStream](../../modules/internal.mdx#readablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -7095,7 +7095,7 @@ A utility method for creating a web `ReadableStream` and `WritableStream` from a
   },
   {
     "name": "writable",
-    "type": "[WritableStream](../../modules/internal.mdx#writablestream-1)\\&#60;any\\&#62;",
+    "type": "[WritableStream](../../modules/internal.mdx#writablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -148,7 +148,7 @@ Handles swaps
   },
   {
     "name": "swapRepository_",
-    "type": "Repository\\&#60;Swap\\&#62;",
+    "type": "Repository&#60;[Swap](internal.Swap.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -292,7 +292,7 @@ Handles swaps
 <ParameterTypes parameters={[
   {
     "name": "returnItems",
-    "type": "[WithRequiredProperty](../types/internal.internal.WithRequiredProperty.mdx)\\&#60;Partial\\&#60;ReturnItem\\&#62;, `\"item_id\"`\\&#62;[]",
+    "type": "[WithRequiredProperty](../types/internal.internal.WithRequiredProperty.mdx)&#60;[Partial](../types/internal.Partial.mdx)&#60;[ReturnItem](internal.internal.ReturnItem.mdx)&#62;, `\"item_id\"`&#62;[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -306,7 +306,7 @@ Handles swaps
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -328,7 +328,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -337,7 +337,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -346,7 +346,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -360,7 +360,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -396,7 +396,7 @@ is associated with a refund, it cannot be canceled.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the canceled swap.",
@@ -430,7 +430,7 @@ Cancels a fulfillment (if related to a swap)
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated swap",
@@ -460,7 +460,7 @@ and an optional return shipping method.
   },
   {
     "name": "returnItems",
-    "type": "[WithRequiredProperty](../types/internal.internal.WithRequiredProperty.mdx)\\&#60;Partial\\&#60;ReturnItem\\&#62;, `\"item_id\"`\\&#62;[]",
+    "type": "[WithRequiredProperty](../types/internal.internal.WithRequiredProperty.mdx)&#60;[Partial](../types/internal.Partial.mdx)&#60;[ReturnItem](internal.internal.ReturnItem.mdx)&#62;, `\"item_id\"`&#62;[]",
     "description": "the items to return in the swap",
     "optional": false,
     "defaultValue": "",
@@ -469,7 +469,7 @@ and an optional return shipping method.
   },
   {
     "name": "additionalItems",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;LineItem, `\"variant_id\"` \\| `\"quantity\"`\\&#62;[]",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[LineItem](internal.LineItem.mdx), `\"variant_id\"` \\| `\"quantity\"`&#62;[]",
     "description": "the items to send to the customer",
     "optional": true,
     "defaultValue": "",
@@ -555,7 +555,7 @@ and an optional return shipping method.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created swap",
@@ -587,7 +587,7 @@ swap.
   },
   {
     "name": "customShippingOptions",
-    "type": "`\\&#123; option_id: string ; price: number  \\&#125;`[]",
+    "type": "`&#123; option_id: string ; price: number  &#125;`[]",
     "description": "the shipping options",
     "optional": true,
     "defaultValue": "",
@@ -619,7 +619,7 @@ swap.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the swap with its cart\\_id prop set to the id of the new cart.",
@@ -663,7 +663,7 @@ fulfillment providers associated with the shipping methods.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated swap with new status and fulfillments.",
@@ -701,7 +701,7 @@ Marks a fulfillment as shipped and attaches tracking numbers.
   },
   {
     "name": "trackingLinks",
-    "type": "`\\&#123; tracking_number: string  \\&#125;`[]",
+    "type": "`&#123; tracking_number: string  &#125;`[]",
     "description": "the tracking numbers associated with the shipment",
     "optional": true,
     "defaultValue": "",
@@ -724,7 +724,7 @@ Marks a fulfillment as shipped and attaches tracking numbers.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated swap with new fulfillments and status.",
@@ -767,7 +767,7 @@ Dedicated method to delete metadata for a swap.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the updated result.",
@@ -787,7 +787,7 @@ List swaps.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;Swap\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Swap](internal.Swap.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -796,7 +796,7 @@ List swaps.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Swap\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Swap](internal.Swap.mdx)&#62;",
     "description": "the configuration used to find the objects. contains relations, skip, and take.",
     "optional": true,
     "defaultValue": "",
@@ -810,7 +810,7 @@ List swaps.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap[]\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -830,7 +830,7 @@ List swaps.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;Swap\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Swap](internal.Swap.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -839,7 +839,7 @@ List swaps.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Swap\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Swap](internal.Swap.mdx)&#62;",
     "description": "the configuration used to find the objects. contains relations, skip, and take.",
     "optional": true,
     "defaultValue": "",
@@ -853,7 +853,7 @@ List swaps.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[Swap[], number]\\&#62;",
+    "type": "Promise&#60;[[Swap](internal.Swap.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -887,7 +887,7 @@ Process difference for the requested swap.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "processed swap",
@@ -921,7 +921,7 @@ Register a cart completion
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "swap related to the cart",
@@ -956,7 +956,7 @@ as a part of other swaps/returns.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting order",
@@ -985,7 +985,7 @@ Retrieves a swap with the given id.
   },
   {
     "name": "config",
-    "type": "[Omit](../types/internal.Omit.mdx)\\&#60;FindConfig\\&#60;Swap\\&#62;, `\"select\"`\\&#62; & `\\&#123; select?: string[]  \\&#125;`",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Swap](internal.Swap.mdx)&#62;, `\"select\"`&#62; & `&#123; select?: string[]  &#125;`",
     "description": "the configuration to retrieve the swap",
     "optional": true,
     "defaultValue": "",
@@ -999,7 +999,7 @@ Retrieves a swap with the given id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the swap",
@@ -1042,7 +1042,7 @@ Retrieves a swap based on its associated cart id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the swap",
@@ -1060,7 +1060,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1094,7 +1094,7 @@ Transform find config object for retrieval.
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[Omit](../types/internal.Omit.mdx)\\&#60;FindConfig\\&#60;Swap\\&#62;, `\"select\"`\\&#62; & `\\&#123; select?: string[]  \\&#125;`",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Swap](internal.Swap.mdx)&#62;, `\"select\"`&#62; & `&#123; select?: string[]  &#125;`",
     "description": "parsed swap find config",
     "optional": false,
     "defaultValue": "",
@@ -1107,8 +1107,8 @@ Transform find config object for retrieval.
 
 <ParameterTypes parameters={[
   {
-    "name": "Omit\\&#60;FindConfig\\&#60;Swap\\&#62;, `\"select\"`\\&#62; & \\&#123; select?: string[]  \\&#125; & \\&#123; cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof Cart[]  \\&#125;",
-    "type": "[Omit](../types/internal.Omit.mdx)\\&#60;FindConfig\\&#60;Swap\\&#62;, `\"select\"`\\&#62; & `\\&#123; select?: string[]  \\&#125;` & `\\&#123; cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof Cart[]  \\&#125;`",
+    "name": "Omit&#60;FindConfig&#60;Swap&#62;, `\"select\"`&#62; & &#123; select?: string[]  &#125; & &#123; cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof Cart[]  &#125;",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Swap](internal.Swap.mdx)&#62;, `\"select\"`&#62; & `&#123; select?: string[]  &#125;` & `&#123; cartRelations: undefined \\| string[] ; cartSelects: undefined \\| keyof [Cart](internal.Cart.mdx)[]  &#125;`",
     "optional": true,
     "defaultValue": "",
     "description": "transformed find swap config",
@@ -1137,7 +1137,7 @@ Update the swap record.
   },
   {
     "name": "update",
-    "type": "[Partial](../types/internal.Partial.mdx)\\&#60;Swap\\&#62;",
+    "type": "[Partial](../types/internal.Partial.mdx)&#60;[Swap](internal.Swap.mdx)&#62;",
     "description": "new data",
     "optional": false,
     "defaultValue": "",
@@ -1151,7 +1151,7 @@ Update the swap record.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Swap\\&#62;",
+    "type": "Promise&#60;[Swap](internal.Swap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated swap record",

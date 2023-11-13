@@ -92,7 +92,7 @@ subscribers when events happen. Events will run asynchronously.
   },
   {
     "name": "enqueue_",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -172,7 +172,7 @@ ___
 
 ### eventBusModuleService\_
 
-`Protected get**eventBusModuleService_**(): IEventBusModuleService`
+`Protected get**eventBusModuleService_**(): [IEventBusModuleService](../interfaces/IEventBusModuleService.mdx)`
 
 #### Returns
 
@@ -194,7 +194,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -226,7 +226,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -235,7 +235,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -244,7 +244,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -255,12 +255,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -273,7 +273,7 @@ ___
 
 ### emit
 
-`**emit**<TypeParameter T>(data): Promise\&#60;void \| StagedJob[]\&#62;`
+`**emit**<TypeParameter T>(data): Promise&#60;void \| [StagedJob](StagedJob.mdx)[]&#62;`
 
 Calls all subscribers when an event occurs.
 
@@ -294,7 +294,7 @@ Calls all subscribers when an event occurs.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[EmitData](../types/EmitData.mdx)\\&#60;T\\&#62;[]",
+    "type": "[EmitData](../types/EmitData.mdx)&#60;T&#62;[]",
     "description": "The data to use to process the events",
     "optional": false,
     "defaultValue": "",
@@ -305,12 +305,12 @@ Calls all subscribers when an event occurs.
 
 #### Returns
 
-Promise\&#60;void \| StagedJob[]\&#62;
+Promise&#60;void \| [StagedJob](StagedJob.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| StagedJob[]\\&#62;",
+    "type": "Promise&#60;void \\| [StagedJob](StagedJob.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the jobs from our queue",
@@ -319,7 +319,7 @@ Promise\&#60;void \| StagedJob[]\&#62;
   }
 ]} />
 
-`**emit**<TypeParameter T>(eventName, data, options?): Promise\&#60;void \| StagedJob\&#62;`
+`**emit**<TypeParameter T>(eventName, data, options?): Promise&#60;void \| [StagedJob](StagedJob.mdx)&#62;`
 
 Calls all subscribers when an event occurs.
 
@@ -369,12 +369,12 @@ Calls all subscribers when an event occurs.
 
 #### Returns
 
-Promise\&#60;void \| StagedJob\&#62;
+Promise&#60;void \| [StagedJob](StagedJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| StagedJob\\&#62;",
+    "type": "Promise&#60;void \\| [StagedJob](StagedJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the job from our queue",
@@ -387,16 +387,16 @@ ___
 
 ### enqueuer\_
 
-`**enqueuer_**(): Promise\&#60;void\&#62;`
+`**enqueuer_**(): Promise&#60;void&#62;`
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -409,14 +409,14 @@ ___
 
 ### listJobs
 
-`Protected **listJobs**(listConfig): Promise\&#60;never[] \| StagedJob[]\&#62;`
+`Protected **listJobs**(listConfig): Promise&#60;never[] \| [StagedJob](StagedJob.mdx)[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "listConfig",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;StagedJob\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[StagedJob](StagedJob.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -427,12 +427,12 @@ ___
 
 #### Returns
 
-Promise\&#60;never[] \| StagedJob[]\&#62;
+Promise&#60;never[] \| [StagedJob](StagedJob.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;never[] \\| StagedJob[]\\&#62;",
+    "type": "Promise&#60;never[] \\| [StagedJob](StagedJob.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -452,7 +452,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -503,16 +503,16 @@ ___
 
 ### stopEnqueuer
 
-`**stopEnqueuer**(): Promise\&#60;void\&#62;`
+`**stopEnqueuer**(): Promise&#60;void&#62;`
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -525,7 +525,7 @@ ___
 
 ### subscribe
 
-`**subscribe**(event, subscriber, context?): EventBusService`
+`**subscribe**(event, subscriber, context?): [EventBusService](EventBusService.mdx)`
 
 Adds a function to a list of event subscribers.
 
@@ -543,7 +543,7 @@ Adds a function to a list of event subscribers.
   },
   {
     "name": "subscriber",
-    "type": "[Subscriber](../types/Subscriber.mdx)\\&#60;unknown\\&#62;",
+    "type": "[Subscriber](../types/Subscriber.mdx)&#60;unknown&#62;",
     "description": "the function to be called when a certain event happens. Subscribers must return a Promise.",
     "optional": false,
     "defaultValue": "",
@@ -581,7 +581,7 @@ ___
 
 ### unsubscribe
 
-`**unsubscribe**(event, subscriber, context): EventBusService`
+`**unsubscribe**(event, subscriber, context): [EventBusService](EventBusService.mdx)`
 
 Removes function from the list of event subscribers.
 
@@ -599,7 +599,7 @@ Removes function from the list of event subscribers.
   },
   {
     "name": "subscriber",
-    "type": "[Subscriber](../types/Subscriber.mdx)\\&#60;unknown\\&#62;",
+    "type": "[Subscriber](../types/Subscriber.mdx)&#60;unknown&#62;",
     "description": "the function to be removed",
     "optional": false,
     "defaultValue": "",
@@ -637,7 +637,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): EventBusService`
+`**withTransaction**(transactionManager?): [EventBusService](EventBusService.mdx)`
 
 #### Parameters
 

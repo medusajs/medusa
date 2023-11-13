@@ -65,7 +65,7 @@ async function retrieveProductType (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;ProductTypeDTO\\&#62;",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product type is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -199,7 +199,7 @@ async function retrieveProductType (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTypeDTO\\&#62;",
+    "type": "Promise&#60;[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product type.",

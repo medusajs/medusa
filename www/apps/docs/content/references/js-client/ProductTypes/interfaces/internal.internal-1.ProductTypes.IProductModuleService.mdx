@@ -60,7 +60,7 @@ async function createProduct (title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created products.",
@@ -122,7 +122,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCategoryDTO\\&#62;",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created product category.",
@@ -185,7 +185,7 @@ async function createCollection (title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCollectionDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product collections.",
@@ -249,7 +249,7 @@ async function createProductOption (title: string, productId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductOptionDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product options.",
@@ -312,7 +312,7 @@ async function createProductTags (values: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTagDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product tags.",
@@ -375,7 +375,7 @@ async function createProductType (value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTypeDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product types.",
@@ -432,7 +432,7 @@ async function deleteProducts (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the products are successfully deleted.",
@@ -489,7 +489,7 @@ async function deleteCategory (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product category is successfully deleted.",
@@ -546,7 +546,7 @@ async function deleteCollection (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product options are successfully deleted.",
@@ -603,7 +603,7 @@ async function deleteProductOptions (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product options are successfully deleted.",
@@ -661,7 +661,7 @@ async function deleteProductTags (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product tags are successfully deleted.",
@@ -718,7 +718,7 @@ async function deleteProductTypes (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product types are successfully deleted.",
@@ -838,7 +838,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "description": "The configurations determining how the products are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -861,7 +861,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of products.",
@@ -981,7 +981,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "description": "The configurations determining how the products are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -1004,7 +1004,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of products along with the total count.",
@@ -1124,7 +1124,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductCategoryDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -1147,7 +1147,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductCategoryDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product categories along with their total count.",
@@ -1267,7 +1267,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductCollectionDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "description": "The configurations determining how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product collection.",
     "optional": true,
     "defaultValue": "",
@@ -1290,7 +1290,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductCollectionDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product collections along with the total count.",
@@ -1410,7 +1410,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductOptionDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "description": "The configurations determining how the product options are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
     "optional": true,
     "defaultValue": "",
@@ -1433,7 +1433,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductOptionDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product options along with the total count.",
@@ -1553,7 +1553,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductTagDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "description": "The configurations determining how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product tag.",
     "optional": true,
     "defaultValue": "",
@@ -1576,7 +1576,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductTagDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product tags along with the total count.",
@@ -1696,7 +1696,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductTypeDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -1719,7 +1719,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductTypeDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product types along with their total count.",
@@ -1839,7 +1839,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductVariantDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "description": "The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product variant.",
     "optional": true,
     "defaultValue": "",
@@ -1862,7 +1862,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductVariantDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product variants along with their total count.",
@@ -1982,7 +1982,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductCategoryDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -2005,7 +2005,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCategoryDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product categories.",
@@ -2125,7 +2125,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductCollectionDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "description": "The configurations determining how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product collection.",
     "optional": true,
     "defaultValue": "",
@@ -2148,7 +2148,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCollectionDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product collections.",
@@ -2268,7 +2268,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductOptionDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "description": "The configurations determining how the product options are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
     "optional": true,
     "defaultValue": "",
@@ -2291,7 +2291,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductOptionDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product options.",
@@ -2411,7 +2411,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductTagDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "description": "The configurations determining how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product tag.",
     "optional": true,
     "defaultValue": "",
@@ -2434,7 +2434,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTagDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product tags.",
@@ -2554,7 +2554,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductTypeDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -2577,7 +2577,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTypeDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product types.",
@@ -2697,7 +2697,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductVariantDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "description": "The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product variant.",
     "optional": true,
     "defaultValue": "",
@@ -2720,7 +2720,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariantDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product variants.",
@@ -2767,7 +2767,7 @@ async function restoreProducts (ids: string[]) {
   },
   {
     "name": "config",
-    "type": "[RestoreReturn](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)\\&#60;TReturnableLinkableKeys\\&#62;",
+    "type": "[RestoreReturn](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
     "description": "Configurations determining which relations to restore along with the each of the products. You can pass to its `returnLinkableKeys` property any of the product's relation attribute names, such as `variant_id`.",
     "optional": true,
     "defaultValue": "",
@@ -2790,7 +2790,7 @@ async function restoreProducts (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| Record\\&#60;string, string[]\\&#62;\\&#62;",
+    "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.\n\nIf there are no related records that were restored, the promise resolved to `void`.",
@@ -2817,7 +2817,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[RestoreReturn](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)\\&#60;TReturnableLinkableKeys\\&#62;",
+    "type": "[RestoreReturn](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2840,7 +2840,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| Record\\&#60;string, string[]\\&#62;\\&#62;",
+    "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2908,7 +2908,7 @@ async function retrievePriceSet (priceSetId: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "description": "The configurations determining how the product is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -2931,7 +2931,7 @@ async function retrievePriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductDTO\\&#62;",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product.",
@@ -2996,7 +2996,7 @@ async function retrieveCategory (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductCategoryDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product category is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -3019,7 +3019,7 @@ async function retrieveCategory (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCategoryDTO\\&#62;",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product category.",
@@ -3084,7 +3084,7 @@ async function retrieveCollection (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductCollectionDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "description": "The configurations determining how the product collection is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product collection.",
     "optional": true,
     "defaultValue": "",
@@ -3107,7 +3107,7 @@ async function retrieveCollection (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCollectionDTO\\&#62;",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product collection.",
@@ -3172,7 +3172,7 @@ async function retrieveProductOption (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductOptionDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "description": "The configurations determining how the product option is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
     "optional": true,
     "defaultValue": "",
@@ -3195,7 +3195,7 @@ async function retrieveProductOption (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductOptionDTO\\&#62;",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product option.",
@@ -3260,7 +3260,7 @@ async function retrieveProductTag (tagId: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductTagDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "description": "The configurations determining how the product tag is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product tag.",
     "optional": true,
     "defaultValue": "",
@@ -3283,7 +3283,7 @@ async function retrieveProductTag (tagId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTagDTO\\&#62;",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product tag.",
@@ -3348,7 +3348,7 @@ async function retrieveProductType (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductTypeDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product type is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -3371,7 +3371,7 @@ async function retrieveProductType (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTypeDTO\\&#62;",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product type.",
@@ -3436,7 +3436,7 @@ async function retrieveProductVariant (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;ProductVariantDTO\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "description": "The configurations determining how the product variant is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product variant.",
     "optional": true,
     "defaultValue": "",
@@ -3459,7 +3459,7 @@ async function retrieveProductVariant (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariantDTO\\&#62;",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product variant.",
@@ -3506,7 +3506,7 @@ async function deleteProducts (ids: string[]) {
   },
   {
     "name": "config",
-    "type": "[SoftDeleteReturn](../../DAL/interfaces/internal.internal-1.DAL.SoftDeleteReturn.mdx)\\&#60;TReturnableLinkableKeys\\&#62;",
+    "type": "[SoftDeleteReturn](../../DAL/interfaces/internal.internal-1.DAL.SoftDeleteReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
     "description": "Configurations determining which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys` property any of the product's relation attribute names, such as `variant_id`.",
     "optional": true,
     "defaultValue": "",
@@ -3529,7 +3529,7 @@ async function deleteProducts (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| Record\\&#60;string, string[]\\&#62;\\&#62;",
+    "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.\n\nIf there are no related records, the promise resolved to `void`.",
@@ -3593,7 +3593,7 @@ async function updateProduct (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated products.",
@@ -3663,7 +3663,7 @@ async function updateCategory (id: string, name: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCategoryDTO\\&#62;",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The updated product category.",
@@ -3727,7 +3727,7 @@ async function updateCollection (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCollectionDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product collections.",
@@ -3791,7 +3791,7 @@ async function updateProductOption (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductOptionDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product options.",
@@ -3855,7 +3855,7 @@ async function updateProductTag (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTagDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product tags.",
@@ -3919,7 +3919,7 @@ async function updateProductType (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductTypeDTO[]\\&#62;",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product types.",

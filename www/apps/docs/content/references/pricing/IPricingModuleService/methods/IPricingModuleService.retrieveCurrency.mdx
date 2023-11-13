@@ -70,7 +70,7 @@ async function retrieveCurrency (code: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;CurrencyDTO\\&#62;",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currency is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -204,7 +204,7 @@ async function retrieveCurrency (code: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CurrencyDTO\\&#62;",
+    "type": "Promise&#60;[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved currency.",

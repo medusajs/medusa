@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "salesChannelRepository_",
-    "type": "Repository\\&#60;SalesChannel\\&#62; & `\\&#123; addProducts: Method addProducts ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; listProductIdsBySalesChannelIds: Method listProductIdsBySalesChannelIds ; removeProducts: Method removeProducts  \\&#125;`",
+    "type": "Repository&#60;[SalesChannel](SalesChannel.mdx)&#62; & `&#123; addProducts: Method addProducts ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; listProductIdsBySalesChannelIds: Method listProductIdsBySalesChannelIds ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -165,7 +165,7 @@ EntityManager
 
 ### addProducts
 
-`**addProducts**(salesChannelId, productIds): Promise\&#60;SalesChannel\&#62;`
+`**addProducts**(salesChannelId, productIds): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 Add a batch of product to a sales channel
 
@@ -194,12 +194,12 @@ Add a batch of product to a sales channel
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel on which the products have been added",
@@ -212,7 +212,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -244,7 +244,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -253,7 +253,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -262,7 +262,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -273,12 +273,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -291,7 +291,7 @@ ___
 
 ### create
 
-`**create**(data): Promise\&#60;SalesChannel\&#62;`
+`**create**(data): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 Creates a SalesChannel
 
@@ -314,12 +314,12 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created channel",
@@ -332,18 +332,18 @@ ___
 
 ### createDefault
 
-`**createDefault**(): Promise\&#60;SalesChannel\&#62;`
+`**createDefault**(): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 Creates a default sales channel, if this does not already exist.
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel",
@@ -356,7 +356,7 @@ ___
 
 ### delete
 
-`**delete**(salesChannelId): Promise\&#60;void\&#62;`
+`**delete**(salesChannelId): Promise&#60;void&#62;`
 
 Deletes a sales channel from
  This feature is under development and may change in the future.
@@ -378,12 +378,12 @@ To use this feature please enable the corresponding feature flag in your medusa 
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -396,7 +396,7 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector, config?): Promise\&#60;[SalesChannel[], number]\&#62;`
+`**listAndCount**(selector, config?): Promise&#60;[[SalesChannel](SalesChannel.mdx)[], number]&#62;`
 
 Lists sales channels based on the provided parameters and includes the count of
 sales channels that match the query.
@@ -406,7 +406,7 @@ sales channels that match the query.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[QuerySelector](../types/QuerySelector.mdx)\\&#60;SalesChannel\\&#62;",
+    "type": "[QuerySelector](../types/QuerySelector.mdx)&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -415,7 +415,7 @@ sales channels that match the query.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;SalesChannel\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -426,12 +426,12 @@ sales channels that match the query.
 
 #### Returns
 
-Promise\&#60;[SalesChannel[], number]\&#62;
+Promise&#60;[[SalesChannel](SalesChannel.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[SalesChannel[], number]\\&#62;",
+    "type": "Promise&#60;[[SalesChannel](SalesChannel.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the sales channels as\n  the first element and the total count of sales channels that matches the query\n  as the second element.",
@@ -444,7 +444,7 @@ ___
 
 ### listProductIdsBySalesChannelIds
 
-`**listProductIdsBySalesChannelIds**(salesChannelIds): Promise\&#60;\&#123; [salesChannelId: string]: string[];  \&#125;\&#62;`
+`**listProductIdsBySalesChannelIds**(salesChannelIds): Promise&#60;&#123; [salesChannelId: string]: string[];  &#125;&#62;`
 
 List all product ids that belongs to the sales channels ids
 
@@ -464,12 +464,12 @@ List all product ids that belongs to the sales channels ids
 
 #### Returns
 
-Promise\&#60;\&#123; [salesChannelId: string]: string[];  \&#125;\&#62;
+Promise&#60;&#123; [salesChannelId: string]: string[];  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; [salesChannelId: string]: string[];  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; [salesChannelId: string]: string[];  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -482,7 +482,7 @@ ___
 
 ### removeProducts
 
-`**removeProducts**(salesChannelId, productIds): Promise\&#60;SalesChannel\&#62;`
+`**removeProducts**(salesChannelId, productIds): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 Remove a batch of product from a sales channel
 
@@ -511,12 +511,12 @@ Remove a batch of product from a sales channel
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel on which the products have been removed",
@@ -529,7 +529,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(salesChannelId, config?): Promise\&#60;SalesChannel\&#62;`
+`**retrieve**(salesChannelId, config?): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 Retrieve a SalesChannel by id
 
@@ -547,7 +547,7 @@ Retrieve a SalesChannel by id
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;SalesChannel\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "description": "SC config This feature is under development and may change in the future. To use this feature please enable the corresponding feature flag in your medusa backend project.",
     "optional": false,
     "defaultValue": "{}",
@@ -558,12 +558,12 @@ Retrieve a SalesChannel by id
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a sales channel",
@@ -576,7 +576,7 @@ ___
 
 ### retrieveByName
 
-`**retrieveByName**(name, config?): Promise\&#60;unknown\&#62;`
+`**retrieveByName**(name, config?): Promise&#60;unknown&#62;`
 
 Find a sales channel by name.
 
@@ -594,7 +594,7 @@ Find a sales channel by name.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;SalesChannel\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "description": "find config",
     "optional": false,
     "defaultValue": "{}",
@@ -605,12 +605,12 @@ Find a sales channel by name.
 
 #### Returns
 
-Promise\&#60;unknown\&#62;
+Promise&#60;unknown&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;unknown\\&#62;",
+    "type": "Promise&#60;unknown&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a sales channel with matching name",
@@ -623,18 +623,18 @@ ___
 
 ### retrieveDefault
 
-`**retrieveDefault**(): Promise\&#60;SalesChannel\&#62;`
+`**retrieveDefault**(): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 Retrieves the default sales channel.
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel",
@@ -647,7 +647,7 @@ ___
 
 ### retrieve\_
 
-`Protected **retrieve_**(selector, config?): Promise\&#60;SalesChannel\&#62;`
+`Protected **retrieve_**(selector, config?): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 A generic retrieve used to find a sales channel by different attributes.
 
@@ -656,7 +656,7 @@ A generic retrieve used to find a sales channel by different attributes.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;SalesChannel\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "description": "SC selector",
     "optional": false,
     "defaultValue": "",
@@ -665,7 +665,7 @@ A generic retrieve used to find a sales channel by different attributes.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;SalesChannel\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "description": "find config",
     "optional": false,
     "defaultValue": "{}",
@@ -676,12 +676,12 @@ A generic retrieve used to find a sales channel by different attributes.
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a single SC matching the query or throws",
@@ -701,7 +701,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -730,7 +730,7 @@ ___
 
 ### update
 
-`**update**(salesChannelId, data): Promise\&#60;SalesChannel\&#62;`
+`**update**(salesChannelId, data): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 #### Parameters
 
@@ -746,7 +746,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[Partial](../types/Partial.mdx)\\&#60;CreateSalesChannelInput\\&#62;",
+    "type": "[Partial](../types/Partial.mdx)&#60;[CreateSalesChannelInput](../types/CreateSalesChannelInput.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -757,12 +757,12 @@ ___
 
 #### Returns
 
-Promise\&#60;SalesChannel\&#62;
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;SalesChannel\\&#62;",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -775,7 +775,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): SalesChannelService`
+`**withTransaction**(transactionManager?): [SalesChannelService](SalesChannelService.mdx)`
 
 #### Parameters
 

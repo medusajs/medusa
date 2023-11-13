@@ -56,7 +56,7 @@ medusa.admin.shippingOptions
       {
         "name": "admin_only",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, the shipping option can only be used when creating draft orders.",
+        "description": "If set to `true`, the shipping option can only be used when creating draft orders.",
         "optional": true,
         "defaultValue": "false",
         "expandable": false,
@@ -65,7 +65,7 @@ medusa.admin.shippingOptions
       {
         "name": "amount",
         "type": "`number`",
-        "description": "The amount to charge for the Shipping Option. If the \\`price\\_type\\` is set to \\`calculated\\`, this amount will not actually be used.",
+        "description": "The amount to charge for the Shipping Option. If the `price\\_type` is set to `calculated`, this amount will not actually be used.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -120,7 +120,7 @@ medusa.admin.shippingOptions
       {
         "name": "price_type",
         "type": "`string`",
-        "description": "The type of the Shipping Option price. \\`flat\\_rate\\` indicates fixed pricing, whereas \\`calculated\\` indicates that the price will be calculated each time by the fulfillment provider.",
+        "description": "The type of the Shipping Option price. `flat\\_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -199,7 +199,7 @@ medusa.admin.shippingOptions
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminShippingOptionsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsRes](../internal/types/internal.AdminShippingOptionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the shipping option's details.",
@@ -233,7 +233,7 @@ medusa.admin.shippingOptions
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is \\`flat\\_rate\\`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -315,7 +315,7 @@ medusa.admin.shippingOptions
               {
                 "name": "price_type",
                 "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be \\`flat\\_rate\\` for fixed prices or \\`calculated\\` if the Fulfillment Provider can provide price calulations.",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -448,7 +448,7 @@ medusa.admin.shippingOptions
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -558,7 +558,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminShippingOptionsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsListRes](../internal/types/internal.AdminShippingOptionsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
@@ -566,7 +566,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
     "children": [
       {
         "name": "AdminShippingOptionsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; shipping_options: ShippingOption[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; shipping_options: [ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]  &#125;`",
         "description": "The list of shipping options with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -619,7 +619,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is \\`flat\\_rate\\`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -701,7 +701,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               {
                 "name": "price_type",
                 "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be \\`flat\\_rate\\` for fixed prices or \\`calculated\\` if the Fulfillment Provider can provide price calulations.",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -832,7 +832,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminShippingOptionsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsRes](../internal/types/internal.AdminShippingOptionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the shipping option's details.",
@@ -866,7 +866,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is \\`flat\\_rate\\`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -948,7 +948,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               {
                 "name": "price_type",
                 "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be \\`flat\\_rate\\` for fixed prices or \\`calculated\\` if the Fulfillment Provider can provide price calulations.",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1085,7 +1085,7 @@ medusa.admin.shippingOptions
       {
         "name": "admin_only",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, the shipping option can only be used when creating draft orders.",
+        "description": "If set to `true`, the shipping option can only be used when creating draft orders.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -1094,7 +1094,7 @@ medusa.admin.shippingOptions
       {
         "name": "amount",
         "type": "`number`",
-        "description": "The amount to charge for the Shipping Option. If the \\`price\\_type\\` of the shipping option is \\`calculated\\`, this amount will not actually be used.",
+        "description": "The amount to charge for the Shipping Option. If the `price\\_type` of the shipping option is `calculated`, this amount will not actually be used.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -1183,7 +1183,7 @@ medusa.admin.shippingOptions
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminShippingOptionsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsRes](../internal/types/internal.AdminShippingOptionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the shipping option's details.",
@@ -1217,7 +1217,7 @@ medusa.admin.shippingOptions
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is \\`flat\\_rate\\`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1299,7 +1299,7 @@ medusa.admin.shippingOptions
               {
                 "name": "price_type",
                 "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be \\`flat\\_rate\\` for fixed prices or \\`calculated\\` if the Fulfillment Provider can provide price calulations.",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,

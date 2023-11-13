@@ -105,7 +105,7 @@ Provides layer to manipulate users.
   },
   {
     "name": "userRepository_",
-    "type": "Repository\\&#60;User\\&#62;",
+    "type": "Repository&#60;[User](User.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -185,7 +185,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -217,7 +217,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -226,7 +226,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -235,7 +235,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -246,12 +246,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -264,7 +264,7 @@ ___
 
 ### create
 
-`**create**(user, password): Promise\&#60;User\&#62;`
+`**create**(user, password): Promise&#60;[User](User.mdx)&#62;`
 
 Creates a user with username being validated.
 Fails if email is not a valid format.
@@ -294,12 +294,12 @@ Fails if email is not a valid format.
 
 #### Returns
 
-Promise\&#60;User\&#62;
+Promise&#60;[User](User.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;User\\&#62;",
+    "type": "Promise&#60;[User](User.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of create",
@@ -312,7 +312,7 @@ ___
 
 ### delete
 
-`**delete**(userId): Promise\&#60;void\&#62;`
+`**delete**(userId): Promise&#60;void&#62;`
 
 Deletes a user from a given user id.
 
@@ -332,12 +332,12 @@ Deletes a user from a given user id.
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation.",
@@ -350,7 +350,7 @@ ___
 
 ### generateResetPasswordToken
 
-`**generateResetPasswordToken**(userId): Promise\&#60;string\&#62;`
+`**generateResetPasswordToken**(userId): Promise&#60;string&#62;`
 
 Generate a JSON Web token, that will be sent to a user, that wishes to
 reset password.
@@ -374,12 +374,12 @@ is always 15 minutes.
 
 #### Returns
 
-Promise\&#60;string\&#62;
+Promise&#60;string&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string\\&#62;",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the generated JSON web token",
@@ -392,7 +392,7 @@ ___
 
 ### hashPassword\_
 
-`**hashPassword_**(password): Promise\&#60;string\&#62;`
+`**hashPassword_**(password): Promise&#60;string&#62;`
 
 Hashes a password
 
@@ -412,12 +412,12 @@ Hashes a password
 
 #### Returns
 
-Promise\&#60;string\&#62;
+Promise&#60;string&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string\\&#62;",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "hashed password",
@@ -430,7 +430,7 @@ ___
 
 ### list
 
-`**list**(selector, config?): Promise\&#60;User[]\&#62;`
+`**list**(selector, config?): Promise&#60;[User](User.mdx)[]&#62;`
 
 #### Parameters
 
@@ -457,12 +457,12 @@ ___
 
 #### Returns
 
-Promise\&#60;User[]\&#62;
+Promise&#60;[User](User.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;User[]\\&#62;",
+    "type": "Promise&#60;[User](User.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -475,7 +475,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(userId, config?): Promise\&#60;User\&#62;`
+`**retrieve**(userId, config?): Promise&#60;[User](User.mdx)&#62;`
 
 Gets a user by id.
 Throws in case of DB Error and if user was not found.
@@ -494,7 +494,7 @@ Throws in case of DB Error and if user was not found.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;User\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[User](User.mdx)&#62;",
     "description": "query configs",
     "optional": false,
     "defaultValue": "{}",
@@ -505,12 +505,12 @@ Throws in case of DB Error and if user was not found.
 
 #### Returns
 
-Promise\&#60;User\&#62;
+Promise&#60;[User](User.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;User\\&#62;",
+    "type": "Promise&#60;[User](User.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the user document.",
@@ -523,7 +523,7 @@ ___
 
 ### retrieveByApiToken
 
-`**retrieveByApiToken**(apiToken, relations?): Promise\&#60;User\&#62;`
+`**retrieveByApiToken**(apiToken, relations?): Promise&#60;[User](User.mdx)&#62;`
 
 Gets a user by api token.
 Throws in case of DB Error and if user was not found.
@@ -553,12 +553,12 @@ Throws in case of DB Error and if user was not found.
 
 #### Returns
 
-Promise\&#60;User\&#62;
+Promise&#60;[User](User.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;User\\&#62;",
+    "type": "Promise&#60;[User](User.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the user document.",
@@ -571,7 +571,7 @@ ___
 
 ### retrieveByEmail
 
-`**retrieveByEmail**(email, config?): Promise\&#60;User\&#62;`
+`**retrieveByEmail**(email, config?): Promise&#60;[User](User.mdx)&#62;`
 
 Gets a user by email.
 Throws in case of DB Error and if user was not found.
@@ -590,7 +590,7 @@ Throws in case of DB Error and if user was not found.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;User\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[User](User.mdx)&#62;",
     "description": "query config",
     "optional": false,
     "defaultValue": "{}",
@@ -601,12 +601,12 @@ Throws in case of DB Error and if user was not found.
 
 #### Returns
 
-Promise\&#60;User\&#62;
+Promise&#60;[User](User.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;User\\&#62;",
+    "type": "Promise&#60;[User](User.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the user document.",
@@ -619,7 +619,7 @@ ___
 
 ### setPassword\_
 
-`**setPassword_**(userId, password): Promise\&#60;User\&#62;`
+`**setPassword_**(userId, password): Promise&#60;[User](User.mdx)&#62;`
 
 Sets a password for a user
 Fails if no user exists with userId and if the hashing of the new
@@ -650,12 +650,12 @@ password does not work.
 
 #### Returns
 
-Promise\&#60;User\&#62;
+Promise&#60;[User](User.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;User\\&#62;",
+    "type": "Promise&#60;[User](User.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -675,7 +675,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -704,7 +704,7 @@ ___
 
 ### update
 
-`**update**(userId, update): Promise\&#60;User\&#62;`
+`**update**(userId, update): Promise&#60;[User](User.mdx)&#62;`
 
 Updates a user.
 
@@ -733,12 +733,12 @@ Updates a user.
 
 #### Returns
 
-Promise\&#60;User\&#62;
+Promise&#60;[User](User.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;User\\&#62;",
+    "type": "Promise&#60;[User](User.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of create",
@@ -751,7 +751,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): UserService`
+`**withTransaction**(transactionManager?): [UserService](UserService.mdx)`
 
 #### Parameters
 

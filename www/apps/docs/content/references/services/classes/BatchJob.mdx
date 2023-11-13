@@ -138,7 +138,7 @@ A Batch Job indicates an asynchronus task stored in the Medusa backend. Its stat
   },
   {
     "name": "result",
-    "type": "`\\&#123; advancement_count?: number ; count?: number ; errors?: (string \\| BatchJobResultError)[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: BatchJobResultStatDescriptor[]  \\&#125;` & `Record<string, unknown>`",
+    "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../types/BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../types/BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
     "description": "The result of the batch job.",
     "optional": false,
     "defaultValue": "",
@@ -222,7 +222,7 @@ ___
 
 ### toJSON
 
-`**toJSON**(): BatchJob`
+`**toJSON**(): [BatchJob](BatchJob.mdx)`
 
 A Batch Job indicates an asynchronus task stored in the Medusa backend. Its status determines whether it has been executed or not.
 

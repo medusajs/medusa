@@ -91,7 +91,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -100,7 +100,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -109,7 +109,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -123,7 +123,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -157,7 +157,7 @@ remove file from fileservice
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -191,7 +191,7 @@ download file from fileservice as stream
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ReadableStream\\&#62;",
+    "type": "Promise&#60;[ReadableStream](../interfaces/internal.ReadableStream-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "readable stream of the file to download",
@@ -225,7 +225,7 @@ Generate a presigned download url to obtain a file
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string\\&#62;",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "presigned url to download the file",
@@ -259,7 +259,7 @@ upload file to fileservice from stream
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;FileServiceGetUploadStreamResult\\&#62;",
+    "type": "Promise&#60;[FileServiceGetUploadStreamResult](../types/internal.FileServiceGetUploadStreamResult.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -277,7 +277,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -325,7 +325,7 @@ upload file to fileservice
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;FileServiceUploadResult\\&#62;",
+    "type": "Promise&#60;[FileServiceUploadResult](../types/internal.FileServiceUploadResult.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -359,7 +359,7 @@ upload private file to fileservice
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;FileServiceUploadResult\\&#62;",
+    "type": "Promise&#60;[FileServiceUploadResult](../types/internal.FileServiceUploadResult.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

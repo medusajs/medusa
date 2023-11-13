@@ -94,7 +94,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "resources",
-        "type": "`\\&#123; id: string  \\&#125;`[]",
+        "type": "`&#123; id: string  &#125;`[]",
         "description": "The resources to be added to the discount condition",
         "optional": false,
         "defaultValue": "",
@@ -157,7 +157,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -403,7 +403,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the discount's details.",
@@ -657,7 +657,7 @@ medusa.admin.discounts
       {
         "name": "is_disabled",
         "type": "`boolean`",
-        "description": "Whether the discount code is disabled on creation. If set to \\`true\\`, it will not be available for customers.",
+        "description": "Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.",
         "optional": false,
         "defaultValue": "false",
         "expandable": false,
@@ -892,7 +892,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the discount's details.",
@@ -1165,7 +1165,7 @@ medusa.admin.discounts
       {
         "name": "operator",
         "type": "[DiscountConditionOperator](../internal/enums/internal.DiscountConditionOperator.mdx)",
-        "description": "Operator of the condition. \\`in\\` indicates that discountable resources are within the specified resources. \\`not\\_in\\` indicates that discountable resources are everything but the specified resources.",
+        "description": "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not\\_in` indicates that discountable resources are everything but the specified resources.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -1272,7 +1272,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -1551,7 +1551,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -1788,7 +1788,7 @@ medusa.admin.discounts.delete(discountId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the delete operation details.",
@@ -1881,7 +1881,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
@@ -1970,7 +1970,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "resources",
-        "type": "`\\&#123; id: string  \\&#125;`[]",
+        "type": "`&#123; id: string  &#125;`[]",
         "description": "The resources to be removed from the discount condition",
         "optional": false,
         "defaultValue": "",
@@ -2005,7 +2005,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -2253,7 +2253,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -2546,7 +2546,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountConditionsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountConditionsRes](../internal/types/internal.AdminDiscountConditionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the discount condition details.",
@@ -2580,7 +2580,7 @@ medusa.admin.discounts
               {
                 "name": "customer_groups",
                 "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
-                "description": "Customer groups associated with this condition if \\`type\\` is \\`customer\\_groups\\`.",
+                "description": "Customer groups associated with this condition if `type` is `customer\\_groups`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2634,7 +2634,7 @@ medusa.admin.discounts
               {
                 "name": "operator",
                 "type": "[DiscountConditionOperator](../internal/enums/internal.DiscountConditionOperator.mdx)",
-                "description": "The operator of the condition. \\`in\\` indicates that discountable resources are within the specified resources. \\`not\\_in\\` indicates that discountable resources are everything but the specified resources.",
+                "description": "The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not\\_in` indicates that discountable resources are everything but the specified resources.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2643,7 +2643,7 @@ medusa.admin.discounts
               {
                 "name": "product_collections",
                 "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)[]",
-                "description": "Product collections associated with this condition if \\`type\\` is \\`product\\_collections\\`.",
+                "description": "Product collections associated with this condition if `type` is `product\\_collections`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2652,7 +2652,7 @@ medusa.admin.discounts
               {
                 "name": "product_tags",
                 "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
-                "description": "Product tags associated with this condition if \\`type\\` is \\`product\\_tags\\`.",
+                "description": "Product tags associated with this condition if `type` is `product\\_tags`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2661,7 +2661,7 @@ medusa.admin.discounts
               {
                 "name": "product_types",
                 "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
-                "description": "Product types associated with this condition if \\`type\\` is \\`product\\_types\\`.",
+                "description": "Product types associated with this condition if `type` is `product\\_types`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2670,7 +2670,7 @@ medusa.admin.discounts
               {
                 "name": "products",
                 "type": "[Product](../internal/classes/internal.Product.mdx)[]",
-                "description": "products associated with this condition if \\`type\\` is \\`products\\`.",
+                "description": "products associated with this condition if `type` is `products`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2679,7 +2679,7 @@ medusa.admin.discounts
               {
                 "name": "type",
                 "type": "[DiscountConditionType](../internal/enums/internal.internal.DiscountConditionType.mdx)",
-                "description": "The type of the condition. The type affects the available resources associated with the condition. For example, if the type is \\`products\\`, that means the \\`products\\` relation will hold the products associated with this condition and other relations will be empty.",
+                "description": "The type of the condition. The type affects the available resources associated with the condition. For example, if the type is `products`, that means the `products` relation will hold the products associated with this condition and other relations will be empty.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2920,7 +2920,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsListRes](../internal/types/internal.AdminDiscountsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of discounts with pagination fields.",
@@ -2928,7 +2928,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "AdminDiscountsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; discounts: Discount[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; discounts: [Discount](../internal/classes/internal.Discount-1.mdx)[]  &#125;`",
         "description": "The list of discounts with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -3195,7 +3195,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -3432,7 +3432,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -3669,7 +3669,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -3923,7 +3923,7 @@ medusa.admin.discounts
       {
         "name": "is_disabled",
         "type": "`boolean`",
-        "description": "Whether the discount code is disabled on creation. If set to \\`true\\`, it will not be available for customers.",
+        "description": "Whether the discount code is disabled on creation. If set to `true`, it will not be available for customers.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -4130,7 +4130,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -4488,7 +4488,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDiscountsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",

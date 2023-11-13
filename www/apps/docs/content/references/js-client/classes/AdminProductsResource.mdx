@@ -84,7 +84,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `options` property.",
@@ -164,7 +164,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -308,7 +308,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -550,7 +550,7 @@ medusa.admin.products
       {
         "name": "is_giftcard",
         "type": "`boolean`",
-        "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to \\`true\\` will result in a Gift Card being created.",
+        "description": "A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.",
         "optional": false,
         "defaultValue": "false",
         "expandable": false,
@@ -642,7 +642,7 @@ medusa.admin.products
       {
         "name": "status",
         "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
-        "description": "The status of the product. The product is shown to the customer only if its status is \\`published\\`.",
+        "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
         "optional": true,
         "defaultValue": "draft",
         "expandable": false,
@@ -714,7 +714,7 @@ medusa.admin.products
           {
             "name": "value",
             "type": "`string`",
-            "description": "The value of the Tag. If the \\`id\\` is provided, the value of the existing tag will be updated.",
+            "description": "The value of the Tag. If the `id` is provided, the value of the existing tag will be updated.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -878,7 +878,7 @@ medusa.admin.products
           {
             "name": "options",
             "type": "[ProductVariantOptionReq](../internal/classes/internal.ProductVariantOptionReq-2.mdx)[]",
-            "description": "An array of Product Option values that the variant corresponds to. The option values should be added into the array in the same index as in the \\`options\\` field of the product.",
+            "description": "An array of Product Option values that the variant corresponds to. The option values should be added into the array in the same index as in the `options` field of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -886,7 +886,7 @@ medusa.admin.products
               {
                 "name": "value",
                 "type": "`string`",
-                "description": "The value to give for the Product Option at the same index in the Product's \\`options\\` field.",
+                "description": "The value to give for the Product Option at the same index in the Product's `options` field.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -923,7 +923,7 @@ medusa.admin.products
               {
                 "name": "currency_code",
                 "type": "`string`",
-                "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
+                "description": "The 3 character ISO currency code the price will be used in. This is only required if `region\\_id` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -950,7 +950,7 @@ medusa.admin.products
               {
                 "name": "region_id",
                 "type": "`string`",
-                "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
+                "description": "The ID of the Region the price will be used in. This is only required if `currency\\_code` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -1041,7 +1041,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -1121,7 +1121,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -1265,7 +1265,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1597,7 +1597,7 @@ medusa.admin.products
           {
             "name": "currency_code",
             "type": "`string`",
-            "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
+            "description": "The 3 character ISO currency code the price will be used in. This is only required if `region\\_id` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -1624,7 +1624,7 @@ medusa.admin.products
           {
             "name": "region_id",
             "type": "`string`",
-            "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
+            "description": "The ID of the Region the price will be used in. This is only required if `currency\\_code` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -1695,7 +1695,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `variants` property.",
@@ -1775,7 +1775,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -1919,7 +1919,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2086,7 +2086,7 @@ medusa.admin.products.delete(productId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsDeleteRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsDeleteRes](../internal/types/internal.AdminProductsDeleteRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2176,7 +2176,7 @@ Delete a product option. If there are product variants that use this product opt
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsDeleteOptionRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsDeleteOptionRes](../internal/types/internal.AdminProductsDeleteOptionRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2283,7 +2283,7 @@ Delete a product option. If there are product variants that use this product opt
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -2427,7 +2427,7 @@ Delete a product option. If there are product variants that use this product opt
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2605,7 +2605,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsDeleteVariantRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsDeleteVariantRes](../internal/types/internal.AdminProductsDeleteVariantRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -2703,7 +2703,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -2847,7 +2847,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -3414,7 +3414,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsListRes](../internal/types/internal.AdminProductsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
@@ -3422,7 +3422,7 @@ medusa.admin.products
     "children": [
       {
         "name": "AdminProductsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; products: (PricedProduct \\| Product)[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; products: ([PricedProduct](../internal/types/internal.PricedProduct.mdx) \\| [Product](../internal/classes/internal.Product.mdx))[]  &#125;`",
         "description": "The list of products with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -3506,7 +3506,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsListTagsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsListTagsRes](../internal/types/internal.AdminProductsListTagsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of tags.",
@@ -3522,7 +3522,7 @@ medusa.admin.products.listTags().then(({ tags }) => {
         "children": [
           {
             "name": "tags",
-            "type": "[Pick](../internal/types/internal.Pick.mdx)\\&#60;ProductTag, `\"id\"` \\| `\"value\"`\\&#62; & `\\&#123; usage_count: number  \\&#125;`[]",
+            "type": "[Pick](../internal/types/internal.Pick.mdx)&#60;[ProductTag](../internal/classes/internal.ProductTag.mdx), `\"id\"` \\| `\"value\"`&#62; & `&#123; usage_count: number  &#125;`[]",
             "description": "An array of product tags details.",
             "optional": false,
             "defaultValue": "",
@@ -3644,7 +3644,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -3724,7 +3724,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -3868,7 +3868,7 @@ medusa.admin.products.retrieve(productId).then(({ product }) => {
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -4069,7 +4069,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -4149,7 +4149,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -4293,7 +4293,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -4596,7 +4596,7 @@ medusa.admin.products
       {
         "name": "status",
         "type": "[ProductStatus](../internal/enums/internal.ProductStatus.mdx)",
-        "description": "The status of the product. The product is shown to the customer only if its status is \\`published\\`.",
+        "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -4668,7 +4668,7 @@ medusa.admin.products
           {
             "name": "value",
             "type": "`string`",
-            "description": "The value of the Tag. If the \\`id\\` is provided, the value of the existing tag will be updated.",
+            "description": "The value of the Tag. If the `id` is provided, the value of the existing tag will be updated.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -4895,7 +4895,7 @@ medusa.admin.products
               {
                 "name": "currency_code",
                 "type": "`string`",
-                "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
+                "description": "The 3 character ISO currency code the price will be used in. This is only required if `region\\_id` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -4931,7 +4931,7 @@ medusa.admin.products
               {
                 "name": "region_id",
                 "type": "`string`",
-                "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
+                "description": "The ID of the Region the price will be used in. This is only required if `currency\\_code` is not provided.",
                 "optional": true,
                 "defaultValue": "",
                 "expandable": false,
@@ -5022,7 +5022,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -5102,7 +5102,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -5246,7 +5246,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -5445,7 +5445,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `options` property.",
@@ -5525,7 +5525,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -5669,7 +5669,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -6010,7 +6010,7 @@ medusa.admin.products
           {
             "name": "currency_code",
             "type": "`string`",
-            "description": "The 3 character ISO currency code the price will be used in. This is only required if \\`region\\_id\\` is not provided.",
+            "description": "The 3 character ISO currency code the price will be used in. This is only required if `region\\_id` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -6046,7 +6046,7 @@ medusa.admin.products
           {
             "name": "region_id",
             "type": "`string`",
-            "description": "The ID of the Region the price will be used in. This is only required if \\`currency\\_code\\` is not provided.",
+            "description": "The ID of the Region the price will be used in. This is only required if `currency\\_code` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -6117,7 +6117,7 @@ medusa.admin.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductsRes](../internal/types/internal.AdminProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details. You can access the variant under the `variants` property.",
@@ -6197,7 +6197,7 @@ medusa.admin.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -6341,7 +6341,7 @@ medusa.admin.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,

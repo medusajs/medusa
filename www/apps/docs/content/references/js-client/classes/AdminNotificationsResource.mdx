@@ -177,7 +177,7 @@ medusa.admin.notifications
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminNotificationsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminNotificationsListRes](../internal/types/internal.AdminNotificationsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of notifications with pagination fields.",
@@ -185,7 +185,7 @@ medusa.admin.notifications
     "children": [
       {
         "name": "AdminNotificationsListRes",
-        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & `\\&#123; notifications: Notification[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & `&#123; notifications: [Notification](../internal/classes/internal.Notification.mdx)[]  &#125;`",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -409,7 +409,7 @@ medusa.admin.notifications.resend(notificationId).then(({ notification }) => {
       {
         "name": "to",
         "type": "`string`",
-        "description": "A new address or user identifier that the Notification should be sent to. If not provided, the previous \\`to\\` field of the notification will be used.",
+        "description": "A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -433,7 +433,7 @@ medusa.admin.notifications.resend(notificationId).then(({ notification }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminNotificationsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminNotificationsRes](../internal/types/internal.AdminNotificationsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the notification's details.",

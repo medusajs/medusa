@@ -386,7 +386,7 @@ medusa.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreProductsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreProductsListRes](../internal/types/internal.StoreProductsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
@@ -394,7 +394,7 @@ medusa.products
     "children": [
       {
         "name": "StoreProductsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; products: PricedProduct[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; products: [PricedProduct](../internal/types/internal.PricedProduct.mdx)[]  &#125;`",
         "description": "The list of products with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -493,7 +493,7 @@ medusa.products
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -637,7 +637,7 @@ medusa.products
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -807,7 +807,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreProductsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreProductsRes](../internal/types/internal.StoreProductsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product's details.",
@@ -887,7 +887,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -1031,7 +1031,7 @@ medusa.products.retrieve(productId).then(({ product }) => {
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1239,7 +1239,7 @@ medusa.products
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StorePostSearchRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StorePostSearchRes](../internal/types/internal.StorePostSearchRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of search results. The format of the items depends on the search engine installed on the Medusa backend.",
@@ -1247,7 +1247,7 @@ medusa.products
     "children": [
       {
         "name": "StorePostSearchRes",
-        "type": "`\\&#123; hits: unknown[]  \\&#125;` & `Record<string, unknown>`",
+        "type": "`&#123; hits: unknown[]  &#125;` & `Record<string, unknown>`",
         "description": "The list of search results.",
         "optional": false,
         "defaultValue": "",

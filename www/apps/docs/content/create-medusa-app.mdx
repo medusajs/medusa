@@ -60,7 +60,8 @@ In your terminal, run the following command:
 </Tabs>
 
 <Details>
-  <summary>Command Options</summary>
+  <Summary>Command Options</Summary>
+  
   The `create-medusa-app` command can accept the following options:
 
   - `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
@@ -75,7 +76,8 @@ In your terminal, run the following command:
 </Details>
 
 <Details className="border-t-0">
-  <summary>Example: Connect to a Vercel PostgreSQL Database</summary>
+  <Summary>Example: Connect to a Vercel PostgreSQL Database</Summary>
+
   If you want to use a PostgreSQL database hosted on Vercel, you must use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
 
   ```bash
@@ -90,7 +92,8 @@ In your terminal, run the following command:
 </Details>
 
 <Details className="border-t-0">
-  <summary>Example: Connect to a Supabase Database</summary>
+  <Summary>Example: Connect to a Supabase Database</Summary>
+
   If you want to connect to a Supabase database, you must use the `--db-url` option with its value beign the connection URL to your Supabase database. For example:
 
   ```bash
@@ -120,7 +123,7 @@ You'll then be prompted to enter an admin email for your admin user. You'll be u
 
 If you didn't pass the `--with-nextjs-starter` option, you'll be asked if you want to install the [Next.js starter storefront](./starters/nextjs-medusa-starter.mdx) along with the Medusa backend. This will install the storefront under the `<PROJECT_NAME>-storefront` directory, where `<PROJECT_NAME>` is the name of the project you specified in step 2.
 
-If you want to install the storefront, type `y` and press <Kbd>enter</Kbd>. If not, you can use the default value `N` and just press <Kbd>enter</Kbd>.
+If you want to install the storefront, type `y` and press <kbd>enter</kbd>. If not, you can use the default value `N` and just press <kbd>enter</kbd>.
 
 :::note
 

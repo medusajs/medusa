@@ -98,7 +98,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
     "children": [
       {
         "name": "$and",
-        "type": "([FilterableCurrencyProps](../../interfaces/FilterableCurrencyProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableCurrencyProps\\&#62;)[]",
+        "type": "([FilterableCurrencyProps](../../interfaces/FilterableCurrencyProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterableCurrencyProps](../../interfaces/FilterableCurrencyProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -107,7 +107,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
       },
       {
         "name": "$or",
-        "type": "([FilterableCurrencyProps](../../interfaces/FilterableCurrencyProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterableCurrencyProps\\&#62;)[]",
+        "type": "([FilterableCurrencyProps](../../interfaces/FilterableCurrencyProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterableCurrencyProps](../../interfaces/FilterableCurrencyProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -127,7 +127,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;CurrencyDTO\\&#62;",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -261,7 +261,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CurrencyDTO[]\\&#62;",
+    "type": "Promise&#60;[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of currencies.",

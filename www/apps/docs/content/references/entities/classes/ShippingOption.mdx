@@ -23,7 +23,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   {
     "name": "amount",
     "type": "``null`` \\| `number`",
-    "description": "The amount to charge for shipping when the Shipping Option price type is \\`flat\\_rate\\`.",
+    "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -105,7 +105,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   {
     "name": "price_type",
     "type": "[ShippingOptionPriceType](../enums/ShippingOptionPriceType.mdx)",
-    "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be \\`flat\\_rate\\` for fixed prices or \\`calculated\\` if the Fulfillment Provider can provide price calulations.",
+    "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -186,7 +186,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       {
         "name": "products",
         "type": "[Product](Product.mdx)[]",
-        "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation \\`products\\` is expanded.",
+        "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
@@ -204,7 +204,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       {
         "name": "type",
         "type": "[ShippingProfileType](../enums/ShippingProfileType.mdx)",
-        "description": "The type of the Shipping Profile, may be \\`default\\`, \\`gift\\_card\\` or \\`custom\\`.",
+        "description": "The type of the Shipping Profile, may be `default`, `gift\\_card` or `custom`.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -250,7 +250,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       {
         "name": "is_installed",
         "type": "`boolean`",
-        "description": "Whether the fulfillment service is installed in the current version. If a fulfillment service is no longer installed, the \\`is\\_installed\\` attribute is set to \\`false\\`.",
+        "description": "Whether the fulfillment service is installed in the current version. If a fulfillment service is no longer installed, the `is\\_installed` attribute is set to `false`.",
         "optional": false,
         "defaultValue": "true",
         "expandable": false,
@@ -514,7 +514,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
       {
         "name": "type",
         "type": "[RequirementType](../enums/RequirementType.mdx)",
-        "description": "The type of the requirement, this defines how the value will be compared to the Cart's total. \\`min\\_subtotal\\` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the \\`max\\_subtotal\\` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.",
+        "description": "The type of the requirement, this defines how the value will be compared to the Cart's total. `min\\_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max\\_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,

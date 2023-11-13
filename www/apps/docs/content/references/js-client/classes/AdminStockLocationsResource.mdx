@@ -53,7 +53,7 @@ medusa.admin.stockLocations
       {
         "name": "address",
         "type": "[StockLocationAddress](../internal/classes/internal.StockLocationAddress.mdx)",
-        "description": "A new stock location address to create and associate with the stock location. Only required if \\`address\\_id\\` is not provided.",
+        "description": "A new stock location address to create and associate with the stock location. Only required if `address\\_id` is not provided.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -135,7 +135,7 @@ medusa.admin.stockLocations
       {
         "name": "address_id",
         "type": "`string`",
-        "description": "the ID of an existing stock location address to associate with the stock location. Only required if \\`address\\` is not provided.",
+        "description": "the ID of an existing stock location address to associate with the stock location. Only required if `address` is not provided.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -177,7 +177,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminStockLocationsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminStockLocationsRes](../internal/types/internal.AdminStockLocationsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
@@ -335,7 +335,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/types/internal.DeleteResponse-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -537,7 +537,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminStockLocationsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminStockLocationsListRes](../internal/types/internal.AdminStockLocationsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of stock locations with pagination fields.",
@@ -545,7 +545,7 @@ medusa.admin.stockLocations
     "children": [
       {
         "name": "AdminStockLocationsListRes",
-        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & `\\&#123; stock_locations: StockLocationExpandedDTO[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & `&#123; stock_locations: [StockLocationExpandedDTO](../internal/types/internal.StockLocationExpandedDTO.mdx)[]  &#125;`",
         "description": "The list of stock locations with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -722,7 +722,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminStockLocationsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminStockLocationsRes](../internal/types/internal.AdminStockLocationsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",
@@ -1001,7 +1001,7 @@ medusa.admin.stockLocations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminStockLocationsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminStockLocationsRes](../internal/types/internal.AdminStockLocationsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the stock location's details.",

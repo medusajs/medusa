@@ -58,7 +58,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "methodRepository_",
-    "type": "Repository\\&#60;ShippingMethod\\&#62;",
+    "type": "Repository&#60;[ShippingMethod](internal.ShippingMethod-4.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "optionRepository_",
-    "type": "Repository\\&#60;ShippingOption\\&#62; & `\\&#123; upsertShippingProfile: Method upsertShippingProfile  \\&#125;`",
+    "type": "Repository&#60;[ShippingOption](internal.ShippingOption.mdx)&#62; & `&#123; upsertShippingProfile: Method upsertShippingProfile  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ Provides layer to manipulate profiles.
   },
   {
     "name": "requirementRepository_",
-    "type": "Repository\\&#60;ShippingOptionRequirement\\&#62;",
+    "type": "Repository&#60;[ShippingOptionRequirement](internal.internal.ShippingOptionRequirement.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -174,7 +174,7 @@ is allowed.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOption\\&#62;",
+    "type": "Promise&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of update",
@@ -196,7 +196,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -205,7 +205,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -214,7 +214,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -228,7 +228,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -264,7 +264,7 @@ defaults to false.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOption\\&#62;",
+    "type": "Promise&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the create operation",
@@ -316,7 +316,7 @@ Creates a shipping method for a given cart.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethod\\&#62;",
+    "type": "Promise&#60;[ShippingMethod](internal.ShippingMethod-4.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting shipping method.",
@@ -350,7 +350,7 @@ Deletes a profile with a given profile id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| ShippingOption\\&#62;",
+    "type": "Promise&#60;void \\| [ShippingOption](internal.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation.",
@@ -384,7 +384,7 @@ Removes a given shipping method
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethod[]\\&#62;",
+    "type": "Promise&#60;[ShippingMethod](internal.ShippingMethod-4.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "removed shipping methods",
@@ -438,7 +438,7 @@ price type "calculated".
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the price of the shipping option.",
@@ -456,7 +456,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;ShippingOption\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -465,7 +465,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ShippingOption\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "description": "config object",
     "optional": true,
     "defaultValue": "",
@@ -479,7 +479,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOption[]\\&#62;",
+    "type": "Promise&#60;[ShippingOption](internal.ShippingOption.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -497,7 +497,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;ShippingOption\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -506,7 +506,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ShippingOption\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "description": "config object",
     "optional": true,
     "defaultValue": "",
@@ -520,7 +520,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ShippingOption[], number]\\&#62;",
+    "type": "Promise&#60;[[ShippingOption](internal.ShippingOption.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -554,7 +554,7 @@ Removes a requirement from a shipping option
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| ShippingOptionRequirement\\&#62;",
+    "type": "Promise&#60;void \\| [ShippingOptionRequirement](internal.internal.ShippingOptionRequirement.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of update",
@@ -584,7 +584,7 @@ Throws in case of DB Error and if profile was not found.
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ShippingOption\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "description": "the options to get a profile",
     "optional": true,
     "defaultValue": "",
@@ -598,7 +598,7 @@ Throws in case of DB Error and if profile was not found.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOption\\&#62;",
+    "type": "Promise&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the profile document.",
@@ -616,7 +616,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -675,7 +675,7 @@ will throw errors if metadata or product updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOption\\&#62;",
+    "type": "Promise&#60;[ShippingOption](internal.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -719,7 +719,7 @@ and its methods should be copied to an order/swap entity.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| ShippingMethod\\&#62;",
+    "type": "Promise&#60;undefined \\| [ShippingMethod](internal.ShippingMethod-4.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting shipping method",
@@ -760,7 +760,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOption[]\\&#62;",
+    "type": "Promise&#60;[ShippingOption](internal.ShippingOption.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated shipping options",
@@ -805,7 +805,7 @@ match, or when the shipping option requirements are not satisfied.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;`null` \\| ShippingOption\\&#62;",
+    "type": "Promise&#60;`null` \\| [ShippingOption](internal.ShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated shipping option",
@@ -848,7 +848,7 @@ Validates a shipping option price
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOptionPriceType\\&#62;",
+    "type": "Promise&#60;[ShippingOptionPriceType](../enums/internal.internal.ShippingOptionPriceType.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated price",
@@ -891,7 +891,7 @@ Validates a requirement
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingOptionRequirement\\&#62;",
+    "type": "Promise&#60;[ShippingOptionRequirement](internal.internal.ShippingOptionRequirement.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a validated shipping requirement",

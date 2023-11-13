@@ -129,7 +129,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -161,7 +161,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -170,7 +170,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -179,7 +179,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -190,12 +190,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -208,7 +208,7 @@ ___
 
 ### getGiftCardTotals
 
-`**getGiftCardTotals**(giftCardableAmount, «destructured»): Promise\&#60;\&#123; tax_total: number ; total: number  \&#125;\&#62;`
+`**getGiftCardTotals**(giftCardableAmount, «destructured»): Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;`
 
 Calculate and return the gift cards totals
 
@@ -264,12 +264,12 @@ Calculate and return the gift cards totals
 
 #### Returns
 
-Promise\&#60;\&#123; tax_total: number ; total: number  \&#125;\&#62;
+Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; tax_total: number ; total: number  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -282,7 +282,7 @@ ___
 
 ### getGiftCardTransactionsTotals
 
-`**getGiftCardTransactionsTotals**(«destructured»): \&#123; tax_total: number ; total: number  \&#125;`
+`**getGiftCardTransactionsTotals**(«destructured»): &#123; tax_total: number ; total: number  &#125;`
 
 Calculate and return the gift cards totals based on their transactions
 
@@ -667,7 +667,7 @@ ___
 
 ### getLineItemTotals
 
-`**getLineItemTotals**(items, «destructured»): Promise\&#60;\&#123; [lineItemId: string]: LineItemTotals;  \&#125;\&#62;`
+`**getLineItemTotals**(items, «destructured»): Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;`
 
 Calculate and return the items totals for either the legacy calculation or the new calculation
 
@@ -723,12 +723,12 @@ Calculate and return the items totals for either the legacy calculation or the n
 
 #### Returns
 
-Promise\&#60;\&#123; [lineItemId: string]: LineItemTotals;  \&#125;\&#62;
+Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; [lineItemId: string]: LineItemTotals;  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -741,7 +741,7 @@ ___
 
 ### getLineItemTotalsLegacy
 
-`Protected **getLineItemTotalsLegacy**(item, «destructured»): Promise\&#60;LineItemTotals\&#62;`
+`Protected **getLineItemTotalsLegacy**(item, «destructured»): Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;`
 
 Calculate and return the legacy calculated totals using the tax rate
 
@@ -815,12 +815,12 @@ Calculate and return the legacy calculated totals using the tax rate
 
 #### Returns
 
-Promise\&#60;LineItemTotals\&#62;
+Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItemTotals\\&#62;",
+    "type": "Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -833,7 +833,7 @@ ___
 
 ### getLineItemTotals\_
 
-`Protected **getLineItemTotals_**(item, «destructured»): Promise\&#60;LineItemTotals\&#62;`
+`Protected **getLineItemTotals_**(item, «destructured»): Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;`
 
 Calculate and return the totals for an item
 
@@ -916,12 +916,12 @@ Calculate and return the totals for an item
 
 #### Returns
 
-Promise\&#60;LineItemTotals\&#62;
+Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItemTotals\\&#62;",
+    "type": "Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -934,7 +934,7 @@ ___
 
 ### getShippingMethodTotals
 
-`**getShippingMethodTotals**(shippingMethods, «destructured»): Promise\&#60;\&#123; [shippingMethodId: string]: ShippingMethodTotals;  \&#125;\&#62;`
+`**getShippingMethodTotals**(shippingMethods, «destructured»): Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;`
 
 Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
 
@@ -999,12 +999,12 @@ Calculate and return the shipping methods totals for either the legacy calculati
 
 #### Returns
 
-Promise\&#60;\&#123; [shippingMethodId: string]: ShippingMethodTotals;  \&#125;\&#62;
+Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; [shippingMethodId: string]: ShippingMethodTotals;  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1017,7 +1017,7 @@ ___
 
 ### getShippingMethodTotalsLegacy
 
-`Protected **getShippingMethodTotalsLegacy**(shippingMethod, «destructured»): Promise\&#60;ShippingMethodTotals\&#62;`
+`Protected **getShippingMethodTotalsLegacy**(shippingMethod, «destructured»): Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;`
 
 Calculate and return the shipping method totals legacy using the tax rate
 
@@ -1073,12 +1073,12 @@ Calculate and return the shipping method totals legacy using the tax rate
 
 #### Returns
 
-Promise\&#60;ShippingMethodTotals\&#62;
+Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethodTotals\\&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1091,7 +1091,7 @@ ___
 
 ### getShippingMethodTotals\_
 
-`Protected **getShippingMethodTotals_**(shippingMethod, «destructured»): Promise\&#60;ShippingMethodTotals\&#62;`
+`Protected **getShippingMethodTotals_**(shippingMethod, «destructured»): Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;`
 
 Calculate and return the shipping method totals
 
@@ -1156,12 +1156,12 @@ Calculate and return the shipping method totals
 
 #### Returns
 
-Promise\&#60;ShippingMethodTotals\&#62;
+Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethodTotals\\&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1181,7 +1181,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1210,7 +1210,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): NewTotalsService`
+`**withTransaction**(transactionManager?): [NewTotalsService](NewTotalsService.mdx)`
 
 #### Parameters
 

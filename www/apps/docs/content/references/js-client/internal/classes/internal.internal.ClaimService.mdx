@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "addressRepository_",
-    "type": "Repository\\&#60;Address\\&#62;",
+    "type": "Repository&#60;[Address](internal.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "claimRepository_",
-    "type": "Repository\\&#60;ClaimOrder\\&#62;",
+    "type": "Repository&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository\\&#60;LineItem\\&#62; & `\\&#123; findByReturn: Method findByReturn  \\&#125;`",
+    "type": "Repository&#60;[LineItem](internal.LineItem.mdx)&#62; & `&#123; findByReturn: Method findByReturn  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -155,7 +155,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingMethodRepository_",
-    "type": "Repository\\&#60;ShippingMethod\\&#62;",
+    "type": "Repository&#60;[ShippingMethod](internal.ShippingMethod-4.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -294,7 +294,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -303,7 +303,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -312,7 +312,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -326,7 +326,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -358,7 +358,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -390,7 +390,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -426,7 +426,7 @@ shipping address that the new items will be shipped to
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created claim",
@@ -494,7 +494,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created claim",
@@ -530,7 +530,7 @@ ___
   },
   {
     "name": "trackingLinks",
-    "type": "`\\&#123; tracking_number: string  \\&#125;`[]",
+    "type": "`&#123; tracking_number: string  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -571,7 +571,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -619,7 +619,7 @@ Note, it will attempt to return early from each of these places to avoid having 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the refund amount",
@@ -646,7 +646,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ClaimOrder\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -660,7 +660,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder[]\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -692,7 +692,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -721,7 +721,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ClaimOrder\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -735,7 +735,7 @@ Gets an order by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -753,7 +753,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -808,7 +808,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ClaimOrder\\&#62;",
+    "type": "Promise&#60;[ClaimOrder](internal.ClaimOrder.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -840,7 +840,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

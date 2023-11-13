@@ -120,7 +120,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
     "children": [
       {
         "name": "$and",
-        "type": "([FilterablePriceSetMoneyAmountRulesProps](../../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterablePriceSetMoneyAmountRulesProps\\&#62;)[]",
+        "type": "([FilterablePriceSetMoneyAmountRulesProps](../../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterablePriceSetMoneyAmountRulesProps](../../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -129,7 +129,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
       },
       {
         "name": "$or",
-        "type": "([FilterablePriceSetMoneyAmountRulesProps](../../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)\\&#60;FilterablePriceSetMoneyAmountRulesProps\\&#62;)[]",
+        "type": "([FilterablePriceSetMoneyAmountRulesProps](../../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterablePriceSetMoneyAmountRulesProps](../../interfaces/FilterablePriceSetMoneyAmountRulesProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -176,7 +176,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;PriceSetMoneyAmountRulesDTO\\&#62;",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -310,7 +310,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[PriceSetMoneyAmountRulesDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[PriceSetMoneyAmountRulesDTO](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amount rules and their total count.",

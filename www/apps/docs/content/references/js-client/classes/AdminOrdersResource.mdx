@@ -104,7 +104,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -168,7 +168,7 @@ medusa.admin.orders.archive(orderId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -233,7 +233,7 @@ medusa.admin.orders.cancel(orderId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -306,7 +306,7 @@ medusa.admin.orders.cancelClaim(orderId, claimId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
@@ -390,7 +390,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -465,7 +465,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -538,7 +538,7 @@ medusa.admin.orders.cancelSwap(orderId, swapId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
@@ -622,7 +622,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -686,7 +686,7 @@ medusa.admin.orders.capturePayment(orderId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -750,7 +750,7 @@ medusa.admin.orders.complete(orderId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -820,7 +820,7 @@ medusa.admin.orders
       {
         "name": "additional_items",
         "type": "[AdditionalItem](../internal/classes/internal.AdditionalItem-2.mdx)[]",
-        "description": "The new items to send to the Customer. This is only used if the claim's type is \\`replace\\`.",
+        "description": "The new items to send to the Customer. This is only used if the claim's type is `replace`.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -856,7 +856,7 @@ medusa.admin.orders
       {
         "name": "refund_amount",
         "type": "`number`",
-        "description": "The amount to refund the customer. This is used when the claim's type is \\`refund\\`.",
+        "description": "The amount to refund the customer. This is used when the claim's type is `refund`.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -892,7 +892,7 @@ medusa.admin.orders
       {
         "name": "shipping_methods",
         "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-2.mdx)[]",
-        "description": "The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is \\`replace\\`.",
+        "description": "The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is `replace`.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -901,7 +901,7 @@ medusa.admin.orders
       {
         "name": "type",
         "type": "``\"refund\"`` \\| ``\"replace\"``",
-        "description": "The type of the Claim. This will determine how the Claim is treated: \\`replace\\` Claims will result in a Fulfillment with new items being created, while a \\`refund\\` Claim will refund the amount paid for the claimed items.",
+        "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -925,7 +925,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
@@ -1031,7 +1031,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
@@ -1127,7 +1127,7 @@ medusa.admin.orders
       {
         "name": "no_notification",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, no notification will be sent to the customer related to this fulfillment.",
+        "description": "If set to `true`, no notification will be sent to the customer related to this fulfillment.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -1151,7 +1151,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -1257,7 +1257,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -1334,7 +1334,7 @@ medusa.admin.orders
       {
         "name": "allow_backorder",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, swaps can be completed with items out of stock",
+        "description": "If set to `true`, swaps can be completed with items out of stock",
         "optional": true,
         "defaultValue": "true",
         "expandable": false,
@@ -1352,7 +1352,7 @@ medusa.admin.orders
       {
         "name": "no_notification",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, no notification will be sent to the customer related to this Swap.",
+        "description": "If set to `true`, no notification will be sent to the customer related to this Swap.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -1412,7 +1412,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
@@ -1527,7 +1527,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
@@ -1614,7 +1614,7 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {}).then(({ order }) => {
       {
         "name": "no_notification",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, no notification will be sent to the customer related to this Claim.",
+        "description": "If set to `true`, no notification will be sent to the customer related to this Claim.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -1638,7 +1638,7 @@ medusa.admin.orders.fulfillClaim(orderId, claimId, {}).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",
@@ -1729,7 +1729,7 @@ medusa.admin.orders
       {
         "name": "no_notification",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, no notification will be sent to the customer related to this swap.",
+        "description": "If set to `true`, no notification will be sent to the customer related to this swap.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -1753,7 +1753,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
@@ -2032,7 +2032,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersListRes](../internal/types/internal.AdminOrdersListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of orders with pagination fields.",
@@ -2040,7 +2040,7 @@ medusa.admin.orders
     "children": [
       {
         "name": "AdminOrdersListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; orders: Order[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; orders: [Order](../internal/classes/internal.Order.mdx)[]  &#125;`",
         "description": "The list of orders with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -2106,7 +2106,7 @@ medusa.admin.orders.processSwapPayment(orderId, swapId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `swaps` property.",
@@ -2170,7 +2170,7 @@ medusa.admin.orders
       {
         "name": "amount",
         "type": "`number`",
-        "description": "The amount to refund. It should be less than or equal the \\`refundable\\_amount\\` of the order.",
+        "description": "The amount to refund. It should be less than or equal the `refundable\\_amount` of the order.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -2179,7 +2179,7 @@ medusa.admin.orders
       {
         "name": "no_notification",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, no notification will be sent to the customer related to this Refund.",
+        "description": "If set to `true`, no notification will be sent to the customer related to this Refund.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2221,7 +2221,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -2307,7 +2307,7 @@ medusa.admin.orders
       {
         "name": "no_notification",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, no notification will be sent to the customer related to this Return.",
+        "description": "If set to `true`, no notification will be sent to the customer related to this Return.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2367,7 +2367,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the return under the `returns` property.",
@@ -2476,7 +2476,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -2584,7 +2584,7 @@ medusa.admin.orders
       {
         "name": "no_notification",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, no notification will be sent to the customer related to this order.",
+        "description": "If set to `true`, no notification will be sent to the customer related to this order.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2644,7 +2644,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details.",
@@ -2767,7 +2767,7 @@ medusa.admin.orders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrdersRes](../internal/types/internal.AdminOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order's details. You can access the swap under the `claims` property.",

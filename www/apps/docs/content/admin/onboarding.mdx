@@ -4,8 +4,6 @@ description: 'Learn how to build the onboarding widget available in the admin da
 addHowToData: true
 ---
 
-import Details from "@site/src/theme/MDXComponents/Details"
-
 In this guide, you’ll learn how to build the onboarding widget available in the admin dashboard the first time you install a Medusa project.
 
 :::note
@@ -62,7 +60,7 @@ The resources in this section are used for typing, layout, and design purposes, 
 Each of the collapsible elements below hold the path to the file that you should create, and the content of that file. 
 
 <Details>
-  <summary>src/admin/types/icon-type.ts</summary>
+  <Summary>src/admin/types/icon-type.ts</Summary>
   ```tsx title=src/admin/types/icon-type.ts
   import React from "react"
 
@@ -76,7 +74,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <summary>src/admin/components/shared/icons/get-started.tsx</summary>
+  <Summary>src/admin/components/shared/icons/get-started.tsx</Summary>
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/icons/get-started.tsx
@@ -109,7 +107,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <summary>src/admin/components/shared/icons/active-circle-dotted-line.tsx</summary>
+  <Summary>src/admin/components/shared/icons/active-circle-dotted-line.tsx</Summary>
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/icons/dollar-sign-icon.tsx
@@ -154,7 +152,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <summary>src/admin/components/shared/accordion.tsx</summary>
+  <Summary>src/admin/components/shared/accordion.tsx</Summary>
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/accordion.tsx
@@ -285,7 +283,7 @@ Each of the collapsible elements below hold the path to the file that you should
 </Details>
 
 <Details>
-  <summary>src/admin/components/shared/card.tsx</summary>
+  <Summary>src/admin/components/shared/card.tsx</Summary>
   <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/card.tsx
@@ -1118,7 +1116,7 @@ In this section, you’ll create the components for each step in the onboarding 
 Notice that as there are two types of flows, you'll be creating the components for the default flow and for the Next.js flow.
 
 <Details>
-  <summary>ProductsListDefault component</summary>
+  <Summary>ProductsListDefault component</Summary>
   The `ProductsListDefault` component is used in the first step of the onboarding widget's default flow. It allows the user to create a sample product.
 
   Create the file `src/admin/components/onboarding-flow/default/products/products-list.tsx` with the following content:
@@ -1202,7 +1200,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <summary>ProductDetailDefault component</summary>
+  <Summary>ProductDetailDefault component</Summary>
   The `ProductDetailDefault` component is used in the second step of the onboarding's default flow. It shows the user a code snippet to preview the product created in the first step.
 
   Create the file `src/admin/components/onboarding-flow/default/products/product-detail.tsx` with the following content:
@@ -1304,7 +1302,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <summary>OrdersListDefault component</summary>
+  <Summary>OrdersListDefault component</Summary>
   The `OrdersListDefault` component is used in the third step of the onboarding's default flow. It allows the user to create a sample order.
 
   Create the file `src/admin/components/onboarding-flow/default/orders/orders-list.tsx` with the following content:
@@ -1398,7 +1396,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <summary>OrderDetailDefault component</summary>
+  <Summary>OrderDetailDefault component</Summary>
   The `OrderDetailDefault` component is used in the fourth and final step of the onboarding's default flow. It educates the user on the next steps when developing with Medusa.
 
   Create the file `src/admin/components/onboarding-flow/default/orders/order-detail.tsx` with the following content:
@@ -1547,7 +1545,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <summary>ProductsListNextjs component</summary>
+  <Summary>ProductsListNextjs component</Summary>
   The `ProductsListNextjs` component is used in the first step of the onboarding widget's Next.js flow. It allows the user to create sample products.
 
   Create the file `src/admin/components/onboarding-flow/nextjs/products/products-list.tsx` with the following content:
@@ -1643,7 +1641,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <summary>ProductDetailNextjs component</summary>
+  <Summary>ProductDetailNextjs component</Summary>
   The `ProductDetailNextjs` component is used in the second step of the onboarding's Next.js flow. It shows the user a button to preview the product created in the first step using the Next.js starter.
 
   Create the file `src/admin/components/onboarding-flow/nextjs/products/product-detail.tsx` with the following content:
@@ -1710,7 +1708,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <summary>OrdersListNextjs component</summary>
+  <Summary>OrdersListNextjs component</Summary>
   The `OrdersListNextjs` component is used in the third step of the onboarding's Next.js flow. It links the user to the checkout flow in the Next.js storefront so that they can create an order.
 
   Create the file `src/admin/components/onboarding-flow/nextjs/orders/orders-list.tsx` with the following content:
@@ -1788,7 +1786,7 @@ Notice that as there are two types of flows, you'll be creating the components f
 </Details>
 
 <Details>
-  <summary>OrderDetailNextjs component</summary>
+  <Summary>OrderDetailNextjs component</Summary>
   The `OrderDetailNextjs` component is used in the fourth and final step of the onboarding's default flow. It educates the user on the next steps when developing with Medusa.
 
   Create the file `src/admin/components/onboarding-flow/nextjs/orders/order-detail.tsx` with the following content:

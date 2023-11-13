@@ -133,7 +133,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -165,7 +165,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -174,7 +174,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -183,7 +183,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -194,12 +194,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -234,7 +234,7 @@ ___
 
 ### resendNotification
 
-`Abstract **resendNotification**(notification, config, attachmentGenerator): Promise\&#60;ReturnedData\&#62;`
+`Abstract **resendNotification**(notification, config, attachmentGenerator): Promise&#60;[ReturnedData](../types/ReturnedData.mdx)&#62;`
 
 #### Parameters
 
@@ -270,12 +270,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ReturnedData\&#62;
+Promise&#60;[ReturnedData](../types/ReturnedData.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ReturnedData\\&#62;",
+    "type": "Promise&#60;[ReturnedData](../types/ReturnedData.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -288,7 +288,7 @@ ___
 
 ### sendNotification
 
-`Abstract **sendNotification**(event, data, attachmentGenerator): Promise\&#60;ReturnedData\&#62;`
+`Abstract **sendNotification**(event, data, attachmentGenerator): Promise&#60;[ReturnedData](../types/ReturnedData.mdx)&#62;`
 
 #### Parameters
 
@@ -324,12 +324,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ReturnedData\&#62;
+Promise&#60;[ReturnedData](../types/ReturnedData.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ReturnedData\\&#62;",
+    "type": "Promise&#60;[ReturnedData](../types/ReturnedData.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -349,7 +349,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -378,7 +378,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): AbstractNotificationService`
+`**withTransaction**(transactionManager?): [AbstractNotificationService](AbstractNotificationService.mdx)`
 
 #### Parameters
 

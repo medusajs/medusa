@@ -78,7 +78,7 @@ medusa.admin.draftOrders
       {
         "name": "title",
         "type": "`string`",
-        "description": "The title of the line item if \\`variant\\_id\\` is not provided.",
+        "description": "The title of the line item if `variant\\_id` is not provided.",
         "optional": true,
         "defaultValue": "Custom item",
         "expandable": false,
@@ -87,7 +87,7 @@ medusa.admin.draftOrders
       {
         "name": "unit_price",
         "type": "`number`",
-        "description": "The custom price of the line item. If a \\`variant\\_id\\` is supplied, the price provided here will override the variant's price.",
+        "description": "The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -96,7 +96,7 @@ medusa.admin.draftOrders
       {
         "name": "variant_id",
         "type": "`string`",
-        "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the \\`variant\\_id\\` should be omitted.",
+        "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant\\_id` should be omitted.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -120,7 +120,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDraftOrdersRes](../internal/types/internal.AdminDraftOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details",
@@ -253,7 +253,7 @@ medusa.admin.draftOrders
               {
                 "name": "status",
                 "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -394,7 +394,7 @@ medusa.admin.draftOrders
           {
             "name": "title",
             "type": "`string`",
-            "description": "The title of the line item if \\`variant\\_id\\` is not provided.",
+            "description": "The title of the line item if `variant\\_id` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -403,7 +403,7 @@ medusa.admin.draftOrders
           {
             "name": "unit_price",
             "type": "`number`",
-            "description": "The custom price of the line item. If a \\`variant\\_id\\` is supplied, the price provided here will override the variant's price.",
+            "description": "The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -412,7 +412,7 @@ medusa.admin.draftOrders
           {
             "name": "variant_id",
             "type": "`string`",
-            "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the \\`variant\\_id\\` should be omitted.",
+            "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant\\_id` should be omitted.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -496,7 +496,7 @@ medusa.admin.draftOrders
       {
         "name": "status",
         "type": "`string`",
-        "description": "The status of the draft order. The draft order's default status is \\`open\\`. It's changed to \\`completed\\` when its payment is marked as paid.",
+        "description": "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -520,7 +520,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDraftOrdersRes](../internal/types/internal.AdminDraftOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details",
@@ -653,7 +653,7 @@ medusa.admin.draftOrders
               {
                 "name": "status",
                 "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -723,7 +723,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
@@ -853,7 +853,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDraftOrdersListRes](../internal/types/internal.AdminDraftOrdersListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of draft orders with pagination fields.",
@@ -861,7 +861,7 @@ medusa.admin.draftOrders
     "children": [
       {
         "name": "AdminDraftOrdersListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; draft_orders: DraftOrder[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; draft_orders: [DraftOrder](../internal/classes/internal.DraftOrder.mdx)[]  &#125;`",
         "description": "The list of draft orders with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1013,7 +1013,7 @@ medusa.admin.draftOrders
               {
                 "name": "status",
                 "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -1082,7 +1082,7 @@ medusa.admin.draftOrders.markPaid(draftOrderId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPostDraftOrdersDraftOrderRegisterPaymentRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPostDraftOrdersDraftOrderRegisterPaymentRes](../internal/types/internal.AdminPostDraftOrdersDraftOrderRegisterPaymentRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the created order's details.",
@@ -1672,7 +1672,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDraftOrdersRes](../internal/types/internal.AdminDraftOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details",
@@ -1805,7 +1805,7 @@ medusa.admin.draftOrders
               {
                 "name": "status",
                 "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -1873,7 +1873,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDraftOrdersRes](../internal/types/internal.AdminDraftOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details.",
@@ -2006,7 +2006,7 @@ medusa.admin.draftOrders.retrieve(draftOrderId).then(({ draft_order }) => {
               {
                 "name": "status",
                 "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -2170,7 +2170,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDraftOrdersRes](../internal/types/internal.AdminDraftOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details.",
@@ -2303,7 +2303,7 @@ medusa.admin.draftOrders
               {
                 "name": "status",
                 "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,
@@ -2397,7 +2397,7 @@ medusa.admin.draftOrders
       {
         "name": "title",
         "type": "`string`",
-        "description": "The title of the line item if \\`variant\\_id\\` is not provided.",
+        "description": "The title of the line item if `variant\\_id` is not provided.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2406,7 +2406,7 @@ medusa.admin.draftOrders
       {
         "name": "unit_price",
         "type": "`number`",
-        "description": "The custom price of the line item. If a \\`variant\\_id\\` is supplied, the price provided here will override the variant's price.",
+        "description": "The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2430,7 +2430,7 @@ medusa.admin.draftOrders
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminDraftOrdersRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDraftOrdersRes](../internal/types/internal.AdminDraftOrdersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the draft order's details.",
@@ -2563,7 +2563,7 @@ medusa.admin.draftOrders
               {
                 "name": "status",
                 "type": "[DraftOrderStatus](../internal/enums/internal.internal.DraftOrderStatus.mdx)",
-                "description": "The status of the draft order. It's changed to \\`completed\\` when it's transformed to an order.",
+                "description": "The status of the draft order. It's changed to `completed` when it's transformed to an order.",
                 "optional": false,
                 "defaultValue": "open",
                 "expandable": false,

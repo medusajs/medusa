@@ -114,7 +114,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -123,7 +123,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -132,7 +132,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -146,7 +146,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -216,7 +216,7 @@ Calculate and return the gift cards totals
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; tax_total: number ; total: number  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -655,7 +655,7 @@ Calculate and return the items totals for either the legacy calculation or the n
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; [lineItemId: string]: LineItemTotals;  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/internal.LineItemTotals.mdx);  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -743,7 +743,7 @@ Calculate and return the legacy calculated totals using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItemTotals\\&#62;",
+    "type": "Promise&#60;[LineItemTotals](../types/internal.LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -840,7 +840,7 @@ Calculate and return the totals for an item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItemTotals\\&#62;",
+    "type": "Promise&#60;[LineItemTotals](../types/internal.LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -919,7 +919,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; [shippingMethodId: string]: ShippingMethodTotals;  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/internal.ShippingMethodTotals.mdx);  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -989,7 +989,7 @@ Calculate and return the shipping method totals legacy using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethodTotals\\&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/internal.ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1068,7 +1068,7 @@ Calculate and return the shipping method totals
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethodTotals\\&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/internal.ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1086,7 +1086,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",

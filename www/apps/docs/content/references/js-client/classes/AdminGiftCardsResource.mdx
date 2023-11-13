@@ -61,7 +61,7 @@ medusa.admin.giftCards
       {
         "name": "is_disabled",
         "type": "`boolean`",
-        "description": "Whether the Gift Card is disabled on creation. If set to \\`true\\`, the gift card will not be available for customers.",
+        "description": "Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -112,7 +112,7 @@ medusa.admin.giftCards
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminGiftCardsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminGiftCardsRes](../internal/types/internal.AdminGiftCardsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the gift card's details.",
@@ -322,7 +322,7 @@ medusa.admin.giftCards.delete(giftCardId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -450,7 +450,7 @@ medusa.admin.giftCards
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminGiftCardsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminGiftCardsListRes](../internal/types/internal.AdminGiftCardsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of gift cards with pagination fields.",
@@ -458,7 +458,7 @@ medusa.admin.giftCards
     "children": [
       {
         "name": "AdminGiftCardsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; gift_cards: GiftCard[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; gift_cards: [GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]  &#125;`",
         "description": "The list of gift cards with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -687,7 +687,7 @@ medusa.admin.giftCards.retrieve(giftCardId).then(({ gift_card }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminGiftCardsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminGiftCardsRes](../internal/types/internal.AdminGiftCardsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the gift card's details.",
@@ -914,7 +914,7 @@ medusa.admin.giftCards
       {
         "name": "is_disabled",
         "type": "`boolean`",
-        "description": "Whether the Gift Card is disabled on creation. If set to \\`true\\`, the gift card will not be available for customers.",
+        "description": "Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -956,7 +956,7 @@ medusa.admin.giftCards
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminGiftCardsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminGiftCardsRes](../internal/types/internal.AdminGiftCardsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the gift card's details.",

@@ -65,7 +65,7 @@ async function retrieveCollection (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;ProductCollectionDTO\\&#62;",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)&#62;",
     "description": "The configurations determining how the product collection is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product collection.",
     "optional": true,
     "defaultValue": "",
@@ -199,7 +199,7 @@ async function retrieveCollection (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductCollectionDTO\\&#62;",
+    "type": "Promise&#60;[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product collection.",

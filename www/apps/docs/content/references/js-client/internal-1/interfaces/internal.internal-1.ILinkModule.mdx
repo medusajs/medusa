@@ -15,7 +15,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "ModuleJoinerConfig",
-    "type": "[Omit](../../internal/types/internal.Omit.mdx)\\&#60;JoinerServiceConfig, `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`\\&#62; & `\\&#123; databaseConfig?: \\&#123; extraFields?: Record\\&#60;string, \\&#123; defaultValue?: string ; nullable?: boolean ; options?: Record\\&#60;string, unknown\\&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  \\&#125;\\&#62; ; idPrefix?: string ; tableName?: string  \\&#125; ; extends?: \\&#123; fieldAlias?: Record\\&#60;string, string \\| \\&#123; forwardArgumentsOnPath: string[] ; path: string  \\&#125;\\&#62; ; relationship: ModuleJoinerRelationship ; serviceName: string  \\&#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record\\&#60;string, string\\&#62; ; primaryKeys?: string[] ; relationships?: ModuleJoinerRelationship[] ; schema?: string ; serviceName?: string  \\&#125;`",
+    "type": "[Omit](../../internal/types/internal.Omit.mdx)&#60;[JoinerServiceConfig](internal.internal-1.JoinerServiceConfig.mdx), `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`&#62; & `&#123; databaseConfig?: &#123; extraFields?: Record&#60;string, &#123; defaultValue?: string ; nullable?: boolean ; options?: Record&#60;string, unknown&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  &#125;&#62; ; idPrefix?: string ; tableName?: string  &#125; ; extends?: &#123; fieldAlias?: Record&#60;string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;&#62; ; relationship: [ModuleJoinerRelationship](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx) ; serviceName: string  &#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record&#60;string, string&#62; ; primaryKeys?: string[] ; relationships?: [ModuleJoinerRelationship](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx)[] ; schema?: string ; serviceName?: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -33,7 +33,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "primaryKeyOrBulkData",
-    "type": "`string` \\| `string`[] \\| [`string` \\| `string`[], `string`, Record\\&#60;string, unknown\\&#62;?][]",
+    "type": "`string` \\| `string`[] \\| [`string` \\| `string`[], `string`, Record&#60;string, unknown&#62;?][]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;unknown[]\\&#62;",
+    "type": "Promise&#60;unknown[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -106,7 +106,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -156,7 +156,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;unknown[]\\&#62;",
+    "type": "Promise&#60;unknown[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -183,7 +183,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;unknown\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;unknown&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -206,7 +206,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;unknown[]\\&#62;",
+    "type": "Promise&#60;unknown[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -233,7 +233,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)\\&#60;unknown\\&#62;",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;unknown&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -256,7 +256,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[unknown[], number]\\&#62;",
+    "type": "Promise&#60;[unknown[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -306,7 +306,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| Record\\&#60;string, unknown[]\\&#62;\\&#62;",
+    "type": "Promise&#60;void \\| Record&#60;string, unknown[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -356,7 +356,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| Record\\&#60;string, unknown[]\\&#62;\\&#62;",
+    "type": "Promise&#60;void \\| Record&#60;string, unknown[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

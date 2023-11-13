@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "addressRepository_",
-    "type": "Repository\\&#60;Address\\&#62;",
+    "type": "Repository&#60;[Address](Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -184,7 +184,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderRepository_",
-    "type": "Repository\\&#60;Order\\&#62; & `\\&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  \\&#125;`",
+    "type": "Repository&#60;[Order](Order.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -444,7 +444,7 @@ EntityManager
 
 ### addShippingMethod
 
-`**addShippingMethod**(orderId, optionId, data?, config?): Promise\&#60;Order\&#62;`
+`**addShippingMethod**(orderId, optionId, data?, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 #### Parameters
 
@@ -489,12 +489,12 @@ EntityManager
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -507,7 +507,7 @@ ___
 
 ### archive
 
-`**archive**(orderId): Promise\&#60;Order\&#62;`
+`**archive**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Archives an order. It only alloved, if the order has been fulfilled
 and payment has been captured.
@@ -528,12 +528,12 @@ and payment has been captured.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -546,7 +546,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -578,7 +578,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -587,7 +587,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -596,7 +596,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -607,12 +607,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -625,7 +625,7 @@ ___
 
 ### cancel
 
-`**cancel**(orderId): Promise\&#60;Order\&#62;`
+`**cancel**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Cancels an order.
 Throws if fulfillment process has been initiated.
@@ -647,12 +647,12 @@ Throws if payment process has been initiated.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -665,7 +665,7 @@ ___
 
 ### cancelFulfillment
 
-`**cancelFulfillment**(fulfillmentId): Promise\&#60;Order\&#62;`
+`**cancelFulfillment**(fulfillmentId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Cancels a fulfillment (if related to an order)
 
@@ -685,12 +685,12 @@ Cancels a fulfillment (if related to an order)
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated order",
@@ -703,7 +703,7 @@ ___
 
 ### capturePayment
 
-`**capturePayment**(orderId): Promise\&#60;Order\&#62;`
+`**capturePayment**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Captures payment for an order.
 
@@ -723,12 +723,12 @@ Captures payment for an order.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -741,7 +741,7 @@ ___
 
 ### completeOrder
 
-`**completeOrder**(orderId): Promise\&#60;Order\&#62;`
+`**completeOrder**(orderId): Promise&#60;[Order](Order.mdx)&#62;`
 
 #### Parameters
 
@@ -759,12 +759,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -777,7 +777,7 @@ ___
 
 ### createFromCart
 
-`**createFromCart**(cartOrId): Promise\&#60;Order\&#62;`
+`**createFromCart**(cartOrId): Promise&#60;[Order](Order.mdx)&#62;`
 
 Creates an order from a cart
 
@@ -797,12 +797,12 @@ Creates an order from a cart
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the creation result.",
@@ -815,7 +815,7 @@ ___
 
 ### createFulfillment
 
-`**createFulfillment**(orderId, itemsToFulfill, config?): Promise\&#60;Order\&#62;`
+`**createFulfillment**(orderId, itemsToFulfill, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Creates fulfillments for an order.
 In a situation where the order has more than one shipping method,
@@ -883,12 +883,12 @@ to their respective fulfillment provider.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -901,7 +901,7 @@ ___
 
 ### createGiftCardsFromLineItem\_
 
-`Protected **createGiftCardsFromLineItem_**(order, lineItem, manager): Promise\&#60;GiftCard\&#62;[]`
+`Protected **createGiftCardsFromLineItem_**(order, lineItem, manager): Promise&#60;[GiftCard](GiftCard.mdx)&#62;[]`
 
 #### Parameters
 
@@ -937,12 +937,12 @@ ___
 
 #### Returns
 
-Promise\&#60;GiftCard\&#62;[]
+Promise&#60;[GiftCard](GiftCard.mdx)&#62;[]
 
 <ParameterTypes parameters={[
   {
-    "name": "Promise\\&#60;GiftCard\\&#62;[]",
-    "type": "Promise\\&#60;GiftCard\\&#62;[]",
+    "name": "Promise&#60;GiftCard&#62;[]",
+    "type": "Promise&#60;[GiftCard](GiftCard.mdx)&#62;[]",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -955,7 +955,7 @@ ___
 
 ### createRefund
 
-`**createRefund**(orderId, refundAmount, reason, note?, config?): Promise\&#60;Order\&#62;`
+`**createRefund**(orderId, refundAmount, reason, note?, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Refunds a given amount back to the customer.
 
@@ -1020,12 +1020,12 @@ Refunds a given amount back to the customer.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the refund operation.",
@@ -1038,7 +1038,7 @@ ___
 
 ### createShipment
 
-`**createShipment**(orderId, fulfillmentId, trackingLinks?, config?): Promise\&#60;Order\&#62;`
+`**createShipment**(orderId, fulfillmentId, trackingLinks?, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Adds a shipment to the order to indicate that an order has left the
 warehouse. Will ask the fulfillment provider for any documents that may
@@ -1105,12 +1105,12 @@ have been created in regards to the shipment.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting order following the update.",
@@ -1123,7 +1123,7 @@ ___
 
 ### decorateTotals
 
-`**decorateTotals**(order, totalsFields?): Promise\&#60;Order\&#62;`
+`**decorateTotals**(order, totalsFields?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Calculate and attach the different total fields on the object
 
@@ -1152,12 +1152,12 @@ Calculate and attach the different total fields on the object
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1166,7 +1166,7 @@ Promise\&#60;Order\&#62;
   }
 ]} />
 
-`**decorateTotals**(order, context?): Promise\&#60;Order\&#62;`
+`**decorateTotals**(order, context?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Calculate and attach the different total fields on the object
 
@@ -1195,12 +1195,12 @@ Calculate and attach the different total fields on the object
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1213,7 +1213,7 @@ ___
 
 ### decorateTotalsLegacy
 
-`Protected **decorateTotalsLegacy**(order, totalsFields?): Promise\&#60;Order\&#62;`
+`Protected **decorateTotalsLegacy**(order, totalsFields?): Promise&#60;[Order](Order.mdx)&#62;`
 
 #### Parameters
 
@@ -1240,12 +1240,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1258,7 +1258,7 @@ ___
 
 ### getFulfillmentItems
 
-`Protected **getFulfillmentItems**(order, items, transformer): Promise\&#60;LineItem[]\&#62;`
+`Protected **getFulfillmentItems**(order, items, transformer): Promise&#60;[LineItem](LineItem.mdx)[]&#62;`
 
 Retrieves the order line items, given an array of items.
 
@@ -1296,12 +1296,12 @@ Retrieves the order line items, given an array of items.
 
 #### Returns
 
-Promise\&#60;LineItem[]\&#62;
+Promise&#60;[LineItem](LineItem.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem[]\\&#62;",
+    "type": "Promise&#60;[LineItem](LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line items generated by the transformer.",
@@ -1321,7 +1321,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1350,14 +1350,14 @@ ___
 
 ### list
 
-`**list**(selector, config?): Promise\&#60;Order[]\&#62;`
+`**list**(selector, config?): Promise&#60;[Order](Order.mdx)[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;Order\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1366,7 +1366,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -1377,12 +1377,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Order[]\&#62;
+Promise&#60;[Order](Order.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order[]\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1395,14 +1395,14 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector, config?): Promise\&#60;[Order[], number]\&#62;`
+`**listAndCount**(selector, config?): Promise&#60;[[Order](Order.mdx)[], number]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[QuerySelector](../types/QuerySelector.mdx)\\&#60;Order\\&#62;",
+    "type": "[QuerySelector](../types/QuerySelector.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1411,7 +1411,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": false,
     "defaultValue": "",
@@ -1422,12 +1422,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[Order[], number]\&#62;
+Promise&#60;[[Order](Order.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[Order[], number]\\&#62;",
+    "type": "Promise&#60;[[Order](Order.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1440,7 +1440,7 @@ ___
 
 ### registerReturnReceived
 
-`**registerReturnReceived**(orderId, receivedReturn, customRefundAmount?): Promise\&#60;Order\&#62;`
+`**registerReturnReceived**(orderId, receivedReturn, customRefundAmount?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Handles receiving a return. This will create a
 refund to the customer. If the returned items don't match the requested
@@ -1484,12 +1484,12 @@ mismatches.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1502,7 +1502,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(orderId, config?): Promise\&#60;Order\&#62;`
+`**retrieve**(orderId, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Gets an order by id.
 
@@ -1520,7 +1520,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "config of order to retrieve",
     "optional": false,
     "defaultValue": "{}",
@@ -1531,12 +1531,12 @@ Gets an order by id.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1549,7 +1549,7 @@ ___
 
 ### retrieveByCartId
 
-`**retrieveByCartId**(cartId, config?): Promise\&#60;Order\&#62;`
+`**retrieveByCartId**(cartId, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Gets an order by cart id.
 
@@ -1567,7 +1567,7 @@ Gets an order by cart id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "the config to be used to find order",
     "optional": false,
     "defaultValue": "{}",
@@ -1578,12 +1578,12 @@ Gets an order by cart id.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1596,7 +1596,7 @@ ___
 
 ### retrieveByCartIdWithTotals
 
-`**retrieveByCartIdWithTotals**(cartId, options?): Promise\&#60;Order\&#62;`
+`**retrieveByCartIdWithTotals**(cartId, options?): Promise&#60;[Order](Order.mdx)&#62;`
 
 #### Parameters
 
@@ -1612,7 +1612,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1623,12 +1623,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1641,7 +1641,7 @@ ___
 
 ### retrieveByExternalId
 
-`**retrieveByExternalId**(externalId, config?): Promise\&#60;Order\&#62;`
+`**retrieveByExternalId**(externalId, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 Gets an order by id.
 
@@ -1659,7 +1659,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "query config to get order by",
     "optional": false,
     "defaultValue": "{}",
@@ -1670,12 +1670,12 @@ Gets an order by id.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1688,14 +1688,14 @@ ___
 
 ### retrieveLegacy
 
-`Protected **retrieveLegacy**(orderIdOrSelector, config?): Promise\&#60;Order\&#62;`
+`Protected **retrieveLegacy**(orderIdOrSelector, config?): Promise&#60;[Order](Order.mdx)&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "orderIdOrSelector",
-    "type": "`string` \\| [Selector](../types/Selector.mdx)\\&#60;Order\\&#62;",
+    "type": "`string` \\| [Selector](../types/Selector.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1704,7 +1704,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1715,12 +1715,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1733,7 +1733,7 @@ ___
 
 ### retrieveWithTotals
 
-`**retrieveWithTotals**(orderId, options?, context?): Promise\&#60;Order\&#62;`
+`**retrieveWithTotals**(orderId, options?, context?): Promise&#60;[Order](Order.mdx)&#62;`
 
 #### Parameters
 
@@ -1749,7 +1749,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1769,12 +1769,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1794,7 +1794,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1823,14 +1823,14 @@ ___
 
 ### transformQueryForTotals
 
-`Protected **transformQueryForTotals**(config): \&#123; relations: undefined \| string[] ; select: undefined \| keyof Order[] ; totalsToSelect: undefined \| keyof Order[]  \&#125;`
+`Protected **transformQueryForTotals**(config): &#123; relations: undefined \| string[] ; select: undefined \| keyof [Order](Order.mdx)[] ; totalsToSelect: undefined \| keyof [Order](Order.mdx)[]  &#125;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Order](Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1889,7 +1889,7 @@ ___
 
 ### update
 
-`**update**(orderId, update): Promise\&#60;Order\&#62;`
+`**update**(orderId, update): Promise&#60;[Order](Order.mdx)&#62;`
 
 Updates an order. Metadata updates should
 use dedicated method, e.g. `setMetadata` etc. The function
@@ -1920,12 +1920,12 @@ will throw errors if metadata updates are attempted.
 
 #### Returns
 
-Promise\&#60;Order\&#62;
+Promise&#60;[Order](Order.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -1938,7 +1938,7 @@ ___
 
 ### updateBillingAddress
 
-`Protected **updateBillingAddress**(order, address): Promise\&#60;void\&#62;`
+`Protected **updateBillingAddress**(order, address): Promise&#60;void&#62;`
 
 Updates the order's billing address.
 
@@ -1967,12 +1967,12 @@ Updates the order's billing address.
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1985,7 +1985,7 @@ ___
 
 ### updateShippingAddress
 
-`Protected **updateShippingAddress**(order, address): Promise\&#60;void\&#62;`
+`Protected **updateShippingAddress**(order, address): Promise&#60;void&#62;`
 
 Updates the order's shipping address.
 
@@ -2014,12 +2014,12 @@ Updates the order's shipping address.
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -2032,7 +2032,7 @@ ___
 
 ### validateFulfillmentLineItem
 
-`Protected **validateFulfillmentLineItem**(item, quantity): `null` \| LineItem`
+`Protected **validateFulfillmentLineItem**(item, quantity): `null` \| [LineItem](LineItem.mdx)`
 
 Checks that a given quantity of a line item can be fulfilled. Fails if the
 fulfillable quantity is lower than the requested fulfillment quantity.
@@ -2082,7 +2082,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): OrderService`
+`**withTransaction**(transactionManager?): [OrderService](OrderService.mdx)`
 
 #### Parameters
 

@@ -127,7 +127,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -136,7 +136,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -145,7 +145,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -159,7 +159,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -361,7 +361,7 @@ applies to a specific line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineAllocationsMap\\&#62;",
+    "type": "Promise&#60;[LineAllocationsMap](../types/internal.LineAllocationsMap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the allocation map for the line items in the cart or order.",
@@ -404,7 +404,7 @@ Prepares the calculation context for a tax total calculation.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TaxCalculationContext\\&#62;",
+    "type": "Promise&#60;[TaxCalculationContext](../types/internal.internal.TaxCalculationContext.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax calculation context",
@@ -439,7 +439,7 @@ discount types. If discounts aren't present or invalid returns 0.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the total discounts amount",
@@ -491,7 +491,7 @@ Gets the gift card amount on a cart or order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; tax_total: number ; total: number  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the gift card amount applied to the cart or order",
@@ -526,7 +526,7 @@ cards are taxable this amount should exclude taxes.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the gift card amount applied to the cart or order",
@@ -712,7 +712,7 @@ The amount that can be refunded for a given line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item refund amount.",
@@ -765,7 +765,7 @@ taxes into account. This can be controlled through the options.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item total",
@@ -819,7 +819,7 @@ applied to a line item and the amount of tax applied to a line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItemTotals\\&#62;",
+    "type": "Promise&#60;[LineItemTotals](../types/internal.LineItemTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the breakdown of the line item totals",
@@ -898,7 +898,7 @@ apply the discount again before refunding them.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -985,7 +985,7 @@ already provided.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ShippingMethodTotals\\&#62;",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/internal.ShippingMethodTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that breaks down the totals for the shipping method",
@@ -1019,7 +1019,7 @@ Calculates shipping total
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "shipping total",
@@ -1062,7 +1062,7 @@ Calculates subtotal of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -1141,7 +1141,7 @@ Currently based on the Danish tax system
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;`null` \\| number\\&#62;",
+    "type": "Promise&#60;`null` \\| number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "tax total",
@@ -1184,7 +1184,7 @@ Calculates total of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -1236,7 +1236,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",

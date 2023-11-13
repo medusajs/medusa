@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "headersDistinct",
-    "type": "[Dict](internal.Dict.mdx)\\&#60;string[]\\&#62;",
+    "type": "[Dict](internal.Dict.mdx)&#60;string[]&#62;",
     "description": "Similar to `message.headers`, but there is no join logic and the values are always arrays of strings, even for headers received just once. ```js // Prints something like: // // { 'user-agent': ['curl/7.22.0'], // host: ['127.0.0.1:8000'], // accept: ['*'] } console.log(request.headersDistinct); ```",
     "optional": false,
     "defaultValue": "",
@@ -146,7 +146,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "listConfig",
-    "type": "[FindConfig](internal.internal.FindConfig.mdx)\\&#60;unknown\\&#62;",
+    "type": "[FindConfig](internal.internal.FindConfig.mdx)&#60;unknown&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -254,7 +254,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "retrieveConfig",
-    "type": "[FindConfig](internal.internal.FindConfig.mdx)\\&#60;unknown\\&#62;",
+    "type": "[FindConfig](internal.internal.FindConfig.mdx)&#60;unknown&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -299,7 +299,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "trailers",
-    "type": "[Dict](internal.Dict.mdx)\\&#60;string\\&#62;",
+    "type": "[Dict](internal.Dict.mdx)&#60;string&#62;",
     "description": "The request/response trailers object. Only populated at the `'end'` event.",
     "optional": false,
     "defaultValue": "",
@@ -308,7 +308,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "trailersDistinct",
-    "type": "[Dict](internal.Dict.mdx)\\&#60;string[]\\&#62;",
+    "type": "[Dict](internal.Dict.mdx)&#60;string[]&#62;",
     "description": "Similar to `message.trailers`, but there is no join logic and the values are always arrays of strings, even for headers received just once. Only populated at the `'end'` event.",
     "optional": false,
     "defaultValue": "",
@@ -355,7 +355,7 @@ Calls `readable.destroy()` with an `AbortError` and returns a promise that fulfi
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -377,7 +377,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[AsyncIterableIterator](internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
+    "type": "[AsyncIterableIterator](internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -545,7 +545,7 @@ ___
 
 ### addListener
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 Event emitter
 The defined events on documents including:
@@ -594,7 +594,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -633,7 +633,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -672,7 +672,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -711,7 +711,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -750,7 +750,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -789,7 +789,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -828,7 +828,7 @@ The defined events on documents including:
   }
 ]} />
 
-`**addListener**(event, listener): MedusaRequest`
+`**addListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -879,7 +879,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -915,7 +915,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "`T` \\| [ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| [Iterable](internal.Iterable.mdx)\\&#60;T\\&#62; \\| [AsyncIterable](internal.AsyncIterable.mdx)\\&#60;T\\&#62;",
+    "type": "`T` \\| [ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| [Iterable](internal.Iterable.mdx)&#60;T&#62; \\| [AsyncIterable](internal.AsyncIterable.mdx)&#60;T&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1005,7 +1005,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1356,7 +1356,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1379,7 +1379,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for every one of the chunks.",
@@ -1405,7 +1405,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to filter chunks from the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1445,7 +1445,7 @@ ___
 
 ### find
 
-`**find**<TypeParameter T>(fn, options?): Promise\&#60;undefined \| T\&#62;`
+`**find**<TypeParameter T>(fn, options?): Promise&#60;undefined \| T&#62;`
 
 This method is similar to `Array.prototype.find` and calls *fn* on each chunk in the stream
 to find a chunk with a truthy value for *fn*. Once an *fn* call's awaited return value is truthy,
@@ -1457,7 +1457,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => data is T",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => data is T",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1480,7 +1480,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| T\\&#62;",
+    "type": "Promise&#60;undefined \\| T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to the first chunk for which *fn* evaluated with a truthy value,\nor `undefined` if no element was found.",
@@ -1493,14 +1493,14 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 
 v17.5.0
 
-`**find**(fn, options?): Promise\&#60;any\&#62;`
+`**find**(fn, options?): Promise&#60;any&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1523,7 +1523,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any\\&#62;",
+    "type": "Promise&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1547,7 +1547,7 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. May be async. May be a stream or generator.",
     "optional": false,
     "defaultValue": "",
@@ -1603,7 +1603,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `void` \\| Promise\\&#60;void\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `void` \\| Promise&#60;void&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1626,7 +1626,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for when the stream has finished.",
@@ -1736,7 +1736,7 @@ or if the iterator should destroy the stream if the stream emitted an error duri
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[AsyncIterableIterator](internal.AsyncIterableIterator.mdx)\\&#60;any\\&#62;",
+    "type": "[AsyncIterableIterator](internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1856,7 +1856,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -1943,7 +1943,7 @@ ___
 
 ### on
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -1982,7 +1982,7 @@ ___
   }
 ]} />
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2021,7 +2021,7 @@ ___
   }
 ]} />
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2060,7 +2060,7 @@ ___
   }
 ]} />
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2099,7 +2099,7 @@ ___
   }
 ]} />
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2138,7 +2138,7 @@ ___
   }
 ]} />
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2177,7 +2177,7 @@ ___
   }
 ]} />
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2216,7 +2216,7 @@ ___
   }
 ]} />
 
-`**on**(event, listener): MedusaRequest`
+`**on**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2259,7 +2259,7 @@ ___
 
 ### once
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2298,7 +2298,7 @@ ___
   }
 ]} />
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2337,7 +2337,7 @@ ___
   }
 ]} />
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2376,7 +2376,7 @@ ___
   }
 ]} />
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2415,7 +2415,7 @@ ___
   }
 ]} />
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2454,7 +2454,7 @@ ___
   }
 ]} />
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2493,7 +2493,7 @@ ___
   }
 ]} />
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2532,7 +2532,7 @@ ___
   }
 ]} />
 
-`**once**(event, listener): MedusaRequest`
+`**once**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2656,7 +2656,7 @@ ___
 
 ### prependListener
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2695,7 +2695,7 @@ ___
   }
 ]} />
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2734,7 +2734,7 @@ ___
   }
 ]} />
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2773,7 +2773,7 @@ ___
   }
 ]} />
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2812,7 +2812,7 @@ ___
   }
 ]} />
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2851,7 +2851,7 @@ ___
   }
 ]} />
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2890,7 +2890,7 @@ ___
   }
 ]} />
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2929,7 +2929,7 @@ ___
   }
 ]} />
 
-`**prependListener**(event, listener): MedusaRequest`
+`**prependListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -2972,7 +2972,7 @@ ___
 
 ### prependOnceListener
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3011,7 +3011,7 @@ ___
   }
 ]} />
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3050,7 +3050,7 @@ ___
   }
 ]} />
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3089,7 +3089,7 @@ ___
   }
 ]} />
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3128,7 +3128,7 @@ ___
   }
 ]} />
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3167,7 +3167,7 @@ ___
   }
 ]} />
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3206,7 +3206,7 @@ ___
   }
 ]} />
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3245,7 +3245,7 @@ ___
   }
 ]} />
 
-`**prependOnceListener**(event, listener): MedusaRequest`
+`**prependOnceListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3502,7 +3502,7 @@ ___
 
 ### reduce
 
-`**reduce**<TypeParameter T>(fn, initial?, options?): Promise\&#60;T\&#62;`
+`**reduce**<TypeParameter T>(fn, initial?, options?): Promise&#60;T&#62;`
 
 This method calls *fn* on each chunk of the stream in order, passing it the result from the calculation
 on the previous element. It returns a promise for the final value of the reduction.
@@ -3518,7 +3518,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `any`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `T`",
+    "type": "(`previous`: `any`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "a reducer function to call over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -3536,7 +3536,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3550,7 +3550,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;T\\&#62;",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for the final value of the reduction.",
@@ -3563,14 +3563,14 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 
 v17.5.0
 
-`**reduce**<TypeParameter T>(fn, initial, options?): Promise\&#60;T\&#62;`
+`**reduce**<TypeParameter T>(fn, initial, options?): Promise&#60;T&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `T`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `T`",
+    "type": "(`previous`: `T`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3588,7 +3588,7 @@ v17.5.0
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3602,7 +3602,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;T\\&#62;",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3659,7 +3659,7 @@ ___
 
 ### removeListener
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3698,7 +3698,7 @@ ___
   }
 ]} />
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3737,7 +3737,7 @@ ___
   }
 ]} />
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3776,7 +3776,7 @@ ___
   }
 ]} />
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3815,7 +3815,7 @@ ___
   }
 ]} />
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3854,7 +3854,7 @@ ___
   }
 ]} />
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3893,7 +3893,7 @@ ___
   }
 ]} />
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -3932,7 +3932,7 @@ ___
   }
 ]} />
 
-`**removeListener**(event, listener): MedusaRequest`
+`**removeListener**(event, listener): [MedusaRequest](internal.internal.MedusaRequest.mdx)`
 
 #### Parameters
 
@@ -4170,7 +4170,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;) => `boolean` \\| Promise\\&#60;boolean\\&#62;",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -4193,7 +4193,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for at least one of the chunks.",
@@ -4226,7 +4226,7 @@ This method returns a new stream with the first *limit* chunks.
   },
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4267,7 +4267,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[Pick](../types/internal.Pick.mdx)\\&#60;ArrayOptions, `\"signal\"`\\&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4281,7 +4281,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;any[]\\&#62;",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise containing an array with the contents of the stream.",

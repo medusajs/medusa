@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "container_",
-    "type": "[InjectedDependencies](../types/InjectedDependencies-17.mdx) & `\\&#123;\\&#125;`",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-17.mdx) & `&#123;&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "notificationProviderRepository_",
-    "type": "Repository\\&#60;NotificationProvider\\&#62;",
+    "type": "Repository&#60;[NotificationProvider](NotificationProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "notificationRepository_",
-    "type": "Repository\\&#60;Notification\\&#62;",
+    "type": "Repository&#60;[Notification](Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -156,7 +156,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -188,7 +188,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -197,7 +197,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -206,7 +206,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -217,12 +217,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -235,7 +235,7 @@ ___
 
 ### handleEvent
 
-`**handleEvent**(eventName, data): Promise\&#60;undefined \| void \| Notification[]\&#62;`
+`**handleEvent**(eventName, data): Promise&#60;undefined \| void \| [Notification](Notification.mdx)[]&#62;`
 
 Handles an event by relaying the event data to the subscribing providers.
 The result of the notification send will be persisted in the database in
@@ -266,12 +266,12 @@ order to allow for resends. Will log any errors that are encountered.
 
 #### Returns
 
-Promise\&#60;undefined \| void \| Notification[]\&#62;
+Promise&#60;undefined \| void \| [Notification](Notification.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| void \\| Notification[]\\&#62;",
+    "type": "Promise&#60;undefined \\| void \\| [Notification](Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of notification subscribed",
@@ -284,7 +284,7 @@ ___
 
 ### list
 
-`**list**(selector, config?): Promise\&#60;Notification[]\&#62;`
+`**list**(selector, config?): Promise&#60;[Notification](Notification.mdx)[]&#62;`
 
 Retrieves a list of notifications.
 
@@ -293,7 +293,7 @@ Retrieves a list of notifications.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;Notification\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Notification](Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -302,7 +302,7 @@ Retrieves a list of notifications.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Notification\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Notification](Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": false,
     "defaultValue": "",
@@ -313,12 +313,12 @@ Retrieves a list of notifications.
 
 #### Returns
 
-Promise\&#60;Notification[]\&#62;
+Promise&#60;[Notification](Notification.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Notification[]\\&#62;",
+    "type": "Promise&#60;[Notification](Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query.",
@@ -331,7 +331,7 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector, config?): Promise\&#60;[Notification[], number]\&#62;`
+`**listAndCount**(selector, config?): Promise&#60;[[Notification](Notification.mdx)[], number]&#62;`
 
 Retrieves a list of notifications and total count.
 
@@ -340,7 +340,7 @@ Retrieves a list of notifications and total count.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/Selector.mdx)\\&#60;Notification\\&#62;",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Notification](Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -349,7 +349,7 @@ Retrieves a list of notifications and total count.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Notification\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Notification](Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": false,
     "defaultValue": "",
@@ -360,12 +360,12 @@ Retrieves a list of notifications and total count.
 
 #### Returns
 
-Promise\&#60;[Notification[], number]\&#62;
+Promise&#60;[[Notification](Notification.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[Notification[], number]\\&#62;",
+    "type": "Promise&#60;[[Notification](Notification.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query as well as the count.",
@@ -417,7 +417,7 @@ ___
 
 ### registerInstalledProviders
 
-`**registerInstalledProviders**(providerIds): Promise\&#60;void\&#62;`
+`**registerInstalledProviders**(providerIds): Promise&#60;void&#62;`
 
 Takes a list of notification provider ids and persists them in the database.
 
@@ -437,12 +437,12 @@ Takes a list of notification provider ids and persists them in the database.
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -455,7 +455,7 @@ ___
 
 ### resend
 
-`**resend**(id, config?): Promise\&#60;Notification\&#62;`
+`**resend**(id, config?): Promise&#60;[Notification](Notification.mdx)&#62;`
 
 Resends a notification by retrieving a prior notification and calling the
 underlying provider's resendNotification method.
@@ -474,7 +474,7 @@ underlying provider's resendNotification method.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Notification\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Notification](Notification.mdx)&#62;",
     "description": "any configuration that might override the previous send",
     "optional": false,
     "defaultValue": "{}",
@@ -485,12 +485,12 @@ underlying provider's resendNotification method.
 
 #### Returns
 
-Promise\&#60;Notification\&#62;
+Promise&#60;[Notification](Notification.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Notification\\&#62;",
+    "type": "Promise&#60;[Notification](Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created notification",
@@ -503,7 +503,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(id, config?): Promise\&#60;Notification\&#62;`
+`**retrieve**(id, config?): Promise&#60;[Notification](Notification.mdx)&#62;`
 
 Retrieves a notification with a given id
 
@@ -521,7 +521,7 @@ Retrieves a notification with a given id
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;Notification\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Notification](Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": false,
     "defaultValue": "{}",
@@ -532,12 +532,12 @@ Retrieves a notification with a given id
 
 #### Returns
 
-Promise\&#60;Notification\&#62;
+Promise&#60;[Notification](Notification.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Notification\\&#62;",
+    "type": "Promise&#60;[Notification](Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notification",
@@ -550,7 +550,7 @@ ___
 
 ### retrieveProvider\_
 
-`Protected **retrieveProvider_**(id): AbstractNotificationService`
+`Protected **retrieveProvider_**(id): [AbstractNotificationService](AbstractNotificationService.mdx)`
 
 Finds a provider with a given id. Will throw a NOT\_FOUND error if the
 resolution fails.
@@ -589,7 +589,7 @@ ___
 
 ### send
 
-`**send**(event, eventData, providerId): Promise\&#60;undefined \| Notification\&#62;`
+`**send**(event, eventData, providerId): Promise&#60;undefined \| [Notification](Notification.mdx)&#62;`
 
 Sends a notification, by calling the given provider's sendNotification
 method. Persists the Notification in the database.
@@ -628,12 +628,12 @@ method. Persists the Notification in the database.
 
 #### Returns
 
-Promise\&#60;undefined \| Notification\&#62;
+Promise&#60;undefined \| [Notification](Notification.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| Notification\\&#62;",
+    "type": "Promise&#60;undefined \\| [Notification](Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created notification",
@@ -653,7 +653,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -729,7 +729,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): NotificationService`
+`**withTransaction**(transactionManager?): [NotificationService](NotificationService.mdx)`
 
 #### Parameters
 

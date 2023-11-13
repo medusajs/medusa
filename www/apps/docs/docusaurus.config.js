@@ -1,12 +1,9 @@
-// require("dotenv").config()
-// const fs = require("fs")
-// const reverseSidebar = require("./src/utils/reverse-sidebar")
-// const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
+/* eslint-disable @typescript-eslint/no-var-requires */
 import "dotenv/config"
 import fs from "fs"
-import reverseSidebarItems from "./src/utils/reverse-sidebar"
-import excludeSidebarResults from "./src/utils/exclude-sidebar-results"
-import prismTheme from "./src/themes/medusaDocs"
+import { themes as prismThemes } from "prism-react-renderer"
+const reverseSidebarItems = require("./src/utils/reverse-sidebar")
+const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
 
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
 
@@ -33,10 +30,10 @@ const config = {
     async function tailwindPlugin() {
       return {
         name: "docusaurus-tailwindcss",
-        configurePostCss: async (postcssOptions) => {
+        configurePostCss(postcssOptions) {
           // Appends TailwindCSS and AutoPrefixer.
-          postcssOptions.plugins.push(await import("tailwindcss"))
-          postcssOptions.plugins.push(await import("autoprefixer"))
+          postcssOptions.plugins.push(require("tailwindcss"))
+          postcssOptions.plugins.push(require("autoprefixer"))
           return postcssOptions
         },
       }
@@ -139,7 +136,13 @@ const config = {
       defaultLanguage: "ts",
       additionalLanguages: ["bash", "json"],
       plugins: ["line-numbers", "show-language"],
-      theme: prismTheme,
+      theme: {
+        ...prismThemes.vsDark,
+        plain: {
+          ...prismThemes.vsDark.plain,
+          backgroundColor: "#111827",
+        },
+      },
     },
     zoom: {
       selector: ".markdown :not(.no-zoom-img) > img:not(.no-zoom-img)",

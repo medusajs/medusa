@@ -99,7 +99,7 @@ medusa.admin.swaps
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminSwapsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSwapsListRes](../internal/types/internal.AdminSwapsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of swaps with pagination fields.",
@@ -107,7 +107,7 @@ medusa.admin.swaps
     "children": [
       {
         "name": "AdminSwapsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; swaps: Swap[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; swaps: [Swap](../internal/classes/internal.Swap.mdx)[]  &#125;`",
         "description": "The list of swaps with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -304,7 +304,7 @@ medusa.admin.swaps
               {
                 "name": "payment",
                 "type": "[Payment](../internal/classes/internal.Payment.mdx)",
-                "description": "The details of the additional payment authorized by the customer when \\`difference\\_due\\` is positive.",
+                "description": "The details of the additional payment authorized by the customer when `difference\\_due` is positive.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -417,7 +417,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminSwapsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSwapsRes](../internal/types/internal.AdminSwapsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the swap's details.",
@@ -595,7 +595,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               {
                 "name": "payment",
                 "type": "[Payment](../internal/classes/internal.Payment.mdx)",
-                "description": "The details of the additional payment authorized by the customer when \\`difference\\_due\\` is positive.",
+                "description": "The details of the additional payment authorized by the customer when `difference\\_due` is positive.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,

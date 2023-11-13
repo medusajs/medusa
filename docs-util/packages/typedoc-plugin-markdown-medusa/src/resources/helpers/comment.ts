@@ -11,7 +11,7 @@ export default function (theme: MarkdownTheme) {
     for (const part of parts) {
       switch (part.kind) {
         case "text":
-          result.push(escapeChars(part.text))
+          result.push(escapeChars(part.text, false))
           break
         case "code":
           result.push(part.text)

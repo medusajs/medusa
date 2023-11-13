@@ -62,7 +62,7 @@ medusa.admin.returns.cancel(returnId).then(({ order }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminReturnsCancelRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminReturnsCancelRes](../internal/types/internal.AdminReturnsCancelRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the order associated with the return. If the return is associated with a claim or a swap, then it'll be the order\nthat the claim or swap belongs to.",
@@ -678,7 +678,7 @@ medusa.admin.returns
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminReturnsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminReturnsListRes](../internal/types/internal.AdminReturnsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of returns with pagination fields.",
@@ -686,7 +686,7 @@ medusa.admin.returns
     "children": [
       {
         "name": "AdminReturnsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; returns: Return[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; returns: [Return](../internal/classes/internal.Return.mdx)[]  &#125;`",
         "description": "The list of returns with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1016,7 +1016,7 @@ medusa.admin.returns
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminReturnsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminReturnsRes](../internal/types/internal.AdminReturnsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the return's details.",

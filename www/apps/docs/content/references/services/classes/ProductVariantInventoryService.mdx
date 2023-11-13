@@ -138,7 +138,7 @@ ___
 
 ### inventoryService\_
 
-`Protected get**inventoryService_**(): IInventoryService`
+`Protected get**inventoryService_**(): [IInventoryService](../interfaces/IInventoryService.mdx)`
 
 #### Returns
 
@@ -156,7 +156,7 @@ ___
   },
   {
     "name": "adjustInventory",
-    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `adjustment`: `number`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `adjustment`: `number`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -165,7 +165,7 @@ ___
   },
   {
     "name": "confirmInventory",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `quantity`: `number`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;boolean\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `quantity`: `number`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -174,7 +174,7 @@ ___
   },
   {
     "name": "createInventoryItem",
-    "type": "(`input`: [CreateInventoryItemInput](../types/CreateInventoryItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryItemDTO\\&#62;",
+    "type": "(`input`: [CreateInventoryItemInput](../types/CreateInventoryItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -183,7 +183,7 @@ ___
   },
   {
     "name": "createInventoryItems",
-    "type": "(`input`: [CreateInventoryItemInput](../types/CreateInventoryItemInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryItemDTO[]\\&#62;",
+    "type": "(`input`: [CreateInventoryItemInput](../types/CreateInventoryItemInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -192,7 +192,7 @@ ___
   },
   {
     "name": "createInventoryLevel",
-    "type": "(`data`: [CreateInventoryLevelInput](../types/CreateInventoryLevelInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "(`data`: [CreateInventoryLevelInput](../types/CreateInventoryLevelInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -201,7 +201,7 @@ ___
   },
   {
     "name": "createInventoryLevels",
-    "type": "(`data`: [CreateInventoryLevelInput](../types/CreateInventoryLevelInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryLevelDTO[]\\&#62;",
+    "type": "(`data`: [CreateInventoryLevelInput](../types/CreateInventoryLevelInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -210,7 +210,7 @@ ___
   },
   {
     "name": "createReservationItem",
-    "type": "(`input`: [CreateReservationItemInput](../types/CreateReservationItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;ReservationItemDTO\\&#62;",
+    "type": "(`input`: [CreateReservationItemInput](../types/CreateReservationItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -219,7 +219,7 @@ ___
   },
   {
     "name": "createReservationItems",
-    "type": "(`input`: [CreateReservationItemInput](../types/CreateReservationItemInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;ReservationItemDTO[]\\&#62;",
+    "type": "(`input`: [CreateReservationItemInput](../types/CreateReservationItemInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -228,7 +228,7 @@ ___
   },
   {
     "name": "deleteInventoryItem",
-    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -237,7 +237,7 @@ ___
   },
   {
     "name": "deleteInventoryItemLevelByLocationId",
-    "type": "(`locationId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`locationId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -246,7 +246,7 @@ ___
   },
   {
     "name": "deleteInventoryLevel",
-    "type": "(`inventoryLevelId`: `string`, `locationId`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`inventoryLevelId`: `string`, `locationId`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -255,7 +255,7 @@ ___
   },
   {
     "name": "deleteReservationItem",
-    "type": "(`reservationItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`reservationItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -264,7 +264,7 @@ ___
   },
   {
     "name": "deleteReservationItemByLocationId",
-    "type": "(`locationId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`locationId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -273,7 +273,7 @@ ___
   },
   {
     "name": "deleteReservationItemsByLineItem",
-    "type": "(`lineItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`lineItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -282,7 +282,7 @@ ___
   },
   {
     "name": "listInventoryItems",
-    "type": "(`selector`: [FilterableInventoryItemProps](../types/FilterableInventoryItemProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;InventoryItemDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;[InventoryItemDTO[], number]\\&#62;",
+    "type": "(`selector`: [FilterableInventoryItemProps](../types/FilterableInventoryItemProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[[InventoryItemDTO](../types/InventoryItemDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -291,7 +291,7 @@ ___
   },
   {
     "name": "listInventoryLevels",
-    "type": "(`selector`: [FilterableInventoryLevelProps](../types/FilterableInventoryLevelProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;InventoryLevelDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;[InventoryLevelDTO[], number]\\&#62;",
+    "type": "(`selector`: [FilterableInventoryLevelProps](../types/FilterableInventoryLevelProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -300,7 +300,7 @@ ___
   },
   {
     "name": "listReservationItems",
-    "type": "(`selector`: [FilterableReservationItemProps](../types/FilterableReservationItemProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;ReservationItemDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;[ReservationItemDTO[], number]\\&#62;",
+    "type": "(`selector`: [FilterableReservationItemProps](../types/FilterableReservationItemProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[[ReservationItemDTO](../types/ReservationItemDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -309,7 +309,7 @@ ___
   },
   {
     "name": "restoreInventoryItem",
-    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -318,7 +318,7 @@ ___
   },
   {
     "name": "retrieveAvailableQuantity",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;number\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -327,7 +327,7 @@ ___
   },
   {
     "name": "retrieveInventoryItem",
-    "type": "(`inventoryItemId`: `string`, `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;InventoryItemDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryItemDTO\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -336,7 +336,7 @@ ___
   },
   {
     "name": "retrieveInventoryLevel",
-    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -345,7 +345,7 @@ ___
   },
   {
     "name": "retrieveReservationItem",
-    "type": "(`reservationId`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;ReservationItemDTO\\&#62;",
+    "type": "(`reservationId`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -354,7 +354,7 @@ ___
   },
   {
     "name": "retrieveReservedQuantity",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;number\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -363,7 +363,7 @@ ___
   },
   {
     "name": "retrieveStockedQuantity",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;number\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -372,7 +372,7 @@ ___
   },
   {
     "name": "updateInventoryItem",
-    "type": "(`inventoryItemId`: `string`, `input`: [CreateInventoryItemInput](../types/CreateInventoryItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryItemDTO\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `input`: [CreateInventoryItemInput](../types/CreateInventoryItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -381,7 +381,7 @@ ___
   },
   {
     "name": "updateInventoryLevel",
-    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `update`: [UpdateInventoryLevelInput](../types/UpdateInventoryLevelInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryLevelDTO\\&#62;",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `update`: [UpdateInventoryLevelInput](../types/UpdateInventoryLevelInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -390,7 +390,7 @@ ___
   },
   {
     "name": "updateInventoryLevels",
-    "type": "(`updates`: `\\&#123; inventory_item_id: string ; location_id: string  \\&#125;` & [UpdateInventoryLevelInput](../types/UpdateInventoryLevelInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;InventoryLevelDTO[]\\&#62;",
+    "type": "(`updates`: `&#123; inventory_item_id: string ; location_id: string  &#125;` & [UpdateInventoryLevelInput](../types/UpdateInventoryLevelInput.mdx)[], `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/InventoryLevelDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -399,7 +399,7 @@ ___
   },
   {
     "name": "updateReservationItem",
-    "type": "(`reservationItemId`: `string`, `input`: [UpdateReservationItemInput](../types/UpdateReservationItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;ReservationItemDTO\\&#62;",
+    "type": "(`reservationItemId`: `string`, `input`: [UpdateReservationItemInput](../types/UpdateReservationItemInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/ReservationItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -412,7 +412,7 @@ ___
 
 ### stockLocationService\_
 
-`Protected get**stockLocationService_**(): IStockLocationService`
+`Protected get**stockLocationService_**(): [IStockLocationService](../interfaces/IStockLocationService.mdx)`
 
 #### Returns
 
@@ -430,7 +430,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`input`: [CreateStockLocationInput](../types/CreateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`input`: [CreateStockLocationInput](../types/CreateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -439,7 +439,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`id`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`id`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -448,7 +448,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO[]\\&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -457,7 +457,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;[StockLocationDTO[], number]\\&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -466,7 +466,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -475,7 +475,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../types/UpdateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../types/UpdateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -488,7 +488,7 @@ ___
 
 ### adjustInventory
 
-`**adjustInventory**(variantId, locationId, quantity): Promise\&#60;void\&#62;`
+`**adjustInventory**(variantId, locationId, quantity): Promise&#60;void&#62;`
 
 Adjusts inventory of a variant on a location
 
@@ -526,12 +526,12 @@ Adjusts inventory of a variant on a location
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -544,7 +544,7 @@ ___
 
 ### adjustReservationsQuantityByLineItem
 
-`**adjustReservationsQuantityByLineItem**(lineItemId, variantId, locationId, quantity): Promise\&#60;void\&#62;`
+`**adjustReservationsQuantityByLineItem**(lineItemId, variantId, locationId, quantity): Promise&#60;void&#62;`
 
 Adjusts the quantity of reservations for a line item by a given amount.
 
@@ -591,12 +591,12 @@ Adjusts the quantity of reservations for a line item by a given amount.
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -609,7 +609,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -641,7 +641,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -650,7 +650,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -659,7 +659,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -670,12 +670,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -688,7 +688,7 @@ ___
 
 ### attachInventoryItem
 
-`**attachInventoryItem**(attachments): Promise\&#60;ProductVariantInventoryItem[]\&#62;`
+`**attachInventoryItem**(attachments): Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;`
 
 Attach a variant to an inventory item
 
@@ -697,7 +697,7 @@ Attach a variant to an inventory item
 <ParameterTypes parameters={[
   {
     "name": "attachments",
-    "type": "`\\&#123; inventoryItemId: string ; requiredQuantity?: number ; variantId: string  \\&#125;`[]",
+    "type": "`&#123; inventoryItemId: string ; requiredQuantity?: number ; variantId: string  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -708,12 +708,12 @@ Attach a variant to an inventory item
 
 #### Returns
 
-Promise\&#60;ProductVariantInventoryItem[]\&#62;
+Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariantInventoryItem[]\\&#62;",
+    "type": "Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the variant inventory item",
@@ -722,7 +722,7 @@ Promise\&#60;ProductVariantInventoryItem[]\&#62;
   }
 ]} />
 
-`**attachInventoryItem**(variantId, inventoryItemId, requiredQuantity?): Promise\&#60;ProductVariantInventoryItem[]\&#62;`
+`**attachInventoryItem**(variantId, inventoryItemId, requiredQuantity?): Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;`
 
 #### Parameters
 
@@ -758,12 +758,12 @@ Promise\&#60;ProductVariantInventoryItem[]\&#62;
 
 #### Returns
 
-Promise\&#60;ProductVariantInventoryItem[]\&#62;
+Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariantInventoryItem[]\\&#62;",
+    "type": "Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -776,7 +776,7 @@ ___
 
 ### confirmInventory
 
-`**confirmInventory**(variantId, quantity, context?): Promise\&#60;Boolean\&#62;`
+`**confirmInventory**(variantId, quantity, context?): Promise&#60;[Boolean](../index.md#boolean)&#62;`
 
 confirms if requested inventory is available
 
@@ -823,12 +823,12 @@ confirms if requested inventory is available
 
 #### Returns
 
-Promise\&#60;Boolean\&#62;
+Promise&#60;[Boolean](../index.md#boolean)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Boolean\\&#62;",
+    "type": "Promise&#60;[Boolean](../index.md#boolean)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "boolean indicating if inventory is available",
@@ -841,7 +841,7 @@ ___
 
 ### deleteReservationsByLineItem
 
-`**deleteReservationsByLineItem**(lineItemId, variantId, quantity): Promise\&#60;void\&#62;`
+`**deleteReservationsByLineItem**(lineItemId, variantId, quantity): Promise&#60;void&#62;`
 
 delete a reservation of variant quantity
 
@@ -879,12 +879,12 @@ delete a reservation of variant quantity
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -897,7 +897,7 @@ ___
 
 ### detachInventoryItem
 
-`**detachInventoryItem**(inventoryItemId, variantId?): Promise\&#60;void\&#62;`
+`**detachInventoryItem**(inventoryItemId, variantId?): Promise&#60;void&#62;`
 
 Remove a variant from an inventory item
 
@@ -926,12 +926,12 @@ Remove a variant from an inventory item
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -944,7 +944,7 @@ ___
 
 ### getAvailabilityContext
 
-`Private **getAvailabilityContext**(variants, salesChannelId, existingContext?): Promise\&#60;Required\&#60;AvailabilityContext\&#62;\&#62;`
+`Private **getAvailabilityContext**(variants, salesChannelId, existingContext?): Promise&#60;[Required](../types/Required.mdx)&#60;[AvailabilityContext](../types/AvailabilityContext.mdx)&#62;&#62;`
 
 #### Parameters
 
@@ -980,12 +980,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Required\&#60;AvailabilityContext\&#62;\&#62;
+Promise&#60;[Required](../types/Required.mdx)&#60;[AvailabilityContext](../types/AvailabilityContext.mdx)&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Required\\&#60;AvailabilityContext\\&#62;\\&#62;",
+    "type": "Promise&#60;[Required](../types/Required.mdx)&#60;[AvailabilityContext](../types/AvailabilityContext.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -998,7 +998,7 @@ ___
 
 ### getVariantQuantityFromVariantInventoryItems
 
-`**getVariantQuantityFromVariantInventoryItems**(variantInventoryItems, channelId): Promise\&#60;number\&#62;`
+`**getVariantQuantityFromVariantInventoryItems**(variantInventoryItems, channelId): Promise&#60;number&#62;`
 
 Get the quantity of a variant from a list of variantInventoryItems
 The inventory quantity of the variant should be equal to the inventory
@@ -1030,12 +1030,12 @@ the given variant.
 
 #### Returns
 
-Promise\&#60;number\&#62;
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;number\\&#62;",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The available quantity of the variant from the inventoryItems",
@@ -1048,7 +1048,7 @@ ___
 
 ### listByItem
 
-`**listByItem**(itemIds): Promise\&#60;ProductVariantInventoryItem[]\&#62;`
+`**listByItem**(itemIds): Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;`
 
 list registered inventory items
 
@@ -1068,12 +1068,12 @@ list registered inventory items
 
 #### Returns
 
-Promise\&#60;ProductVariantInventoryItem[]\&#62;
+Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariantInventoryItem[]\\&#62;",
+    "type": "Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "list of inventory items",
@@ -1086,7 +1086,7 @@ ___
 
 ### listByVariant
 
-`**listByVariant**(variantId): Promise\&#60;ProductVariantInventoryItem[]\&#62;`
+`**listByVariant**(variantId): Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;`
 
 List inventory items for a specific variant
 
@@ -1106,12 +1106,12 @@ List inventory items for a specific variant
 
 #### Returns
 
-Promise\&#60;ProductVariantInventoryItem[]\&#62;
+Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariantInventoryItem[]\\&#62;",
+    "type": "Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "variant inventory items for the variant id",
@@ -1124,7 +1124,7 @@ ___
 
 ### listInventoryItemsByVariant
 
-`**listInventoryItemsByVariant**(variantId): Promise\&#60;InventoryItemDTO[]\&#62;`
+`**listInventoryItemsByVariant**(variantId): Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;`
 
 lists inventory items for a given variant
 
@@ -1144,12 +1144,12 @@ lists inventory items for a given variant
 
 #### Returns
 
-Promise\&#60;InventoryItemDTO[]\&#62;
+Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;InventoryItemDTO[]\\&#62;",
+    "type": "Promise&#60;[InventoryItemDTO](../types/InventoryItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "lidt of inventory items for the variant",
@@ -1162,7 +1162,7 @@ ___
 
 ### listVariantsByItem
 
-`**listVariantsByItem**(itemId): Promise\&#60;ProductVariant[]\&#62;`
+`**listVariantsByItem**(itemId): Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;`
 
 lists variant by inventory item id
 
@@ -1182,12 +1182,12 @@ lists variant by inventory item id
 
 #### Returns
 
-Promise\&#60;ProductVariant[]\&#62;
+Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant[]\\&#62;",
+    "type": "Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a list of product variants that are associated with the item id",
@@ -1200,7 +1200,7 @@ ___
 
 ### reserveQuantity
 
-`**reserveQuantity**(variantId, quantity, context?): Promise\&#60;void \| ReservationItemDTO[]\&#62;`
+`**reserveQuantity**(variantId, quantity, context?): Promise&#60;void \| [ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;`
 
 Reserves a quantity of a variant
 
@@ -1238,12 +1238,12 @@ Reserves a quantity of a variant
 
 #### Returns
 
-Promise\&#60;void \| ReservationItemDTO[]\&#62;
+Promise&#60;void \| [ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void \\| ReservationItemDTO[]\\&#62;",
+    "type": "Promise&#60;void \\| [ReservationItemDTO](../types/ReservationItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1256,7 +1256,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(inventoryItemId, variantId): Promise\&#60;ProductVariantInventoryItem\&#62;`
+`**retrieve**(inventoryItemId, variantId): Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)&#62;`
 
 Retrieves a product variant inventory item by its inventory item ID and variant ID.
 
@@ -1285,12 +1285,12 @@ Retrieves a product variant inventory item by its inventory item ID and variant 
 
 #### Returns
 
-Promise\&#60;ProductVariantInventoryItem\&#62;
+Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariantInventoryItem\\&#62;",
+    "type": "Promise&#60;[ProductVariantInventoryItem](ProductVariantInventoryItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves with the product variant inventory item.",
@@ -1303,7 +1303,7 @@ ___
 
 ### setProductAvailability
 
-`**setProductAvailability**(products, salesChannelId): Promise\&#60;(Product \| PricedProduct)[]\&#62;`
+`**setProductAvailability**(products, salesChannelId): Promise&#60;([Product](Product.mdx) \| [PricedProduct](../types/PricedProduct.mdx))[]&#62;`
 
 #### Parameters
 
@@ -1330,12 +1330,12 @@ ___
 
 #### Returns
 
-Promise\&#60;(Product \| PricedProduct)[]\&#62;
+Promise&#60;([Product](Product.mdx) \| [PricedProduct](../types/PricedProduct.mdx))[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;(Product \\| PricedProduct)[]\\&#62;",
+    "type": "Promise&#60;([Product](Product.mdx) \\| [PricedProduct](../types/PricedProduct.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1348,7 +1348,7 @@ ___
 
 ### setVariantAvailability
 
-`**setVariantAvailability**(variants, salesChannelId, availabilityContext?): Promise\&#60;ProductVariant[] \| PricedVariant[]\&#62;`
+`**setVariantAvailability**(variants, salesChannelId, availabilityContext?): Promise&#60;[ProductVariant](ProductVariant.mdx)[] \| [PricedVariant](../types/PricedVariant.mdx)[]&#62;`
 
 #### Parameters
 
@@ -1384,12 +1384,12 @@ ___
 
 #### Returns
 
-Promise\&#60;ProductVariant[] \| PricedVariant[]\&#62;
+Promise&#60;[ProductVariant](ProductVariant.mdx)[] \| [PricedVariant](../types/PricedVariant.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant[] \\| PricedVariant[]\\&#62;",
+    "type": "Promise&#60;[ProductVariant](ProductVariant.mdx)[] \\| [PricedVariant](../types/PricedVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1409,7 +1409,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1438,7 +1438,7 @@ ___
 
 ### validateInventoryAtLocation
 
-`**validateInventoryAtLocation**(items, locationId): Promise\&#60;void\&#62;`
+`**validateInventoryAtLocation**(items, locationId): Promise&#60;void&#62;`
 
 Validate stock at a location for fulfillment items
 
@@ -1447,7 +1447,7 @@ Validate stock at a location for fulfillment items
 <ParameterTypes parameters={[
   {
     "name": "items",
-    "type": "[Omit](../types/Omit.mdx)\\&#60;LineItem, `\"beforeInsert\"`\\&#62;[]",
+    "type": "[Omit](../types/Omit.mdx)&#60;[LineItem](LineItem.mdx), `\"beforeInsert\"`&#62;[]",
     "description": "Fulfillment Line items to validate quantities for",
     "optional": false,
     "defaultValue": "",
@@ -1467,12 +1467,12 @@ Validate stock at a location for fulfillment items
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "nothing if successful, throws error if not",
@@ -1485,7 +1485,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): ProductVariantInventoryService`
+`**withTransaction**(transactionManager?): [ProductVariantInventoryService](ProductVariantInventoryService.mdx)`
 
 #### Parameters
 

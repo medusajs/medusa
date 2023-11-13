@@ -16,7 +16,7 @@ Valid string encodings: 'ascii'\|'utf8'\|'utf16le'\|'ucs2'(alias of 'utf16le')\|
 
 `**new BufferConstructor**(str, encoding?)`
 
-Allocates a new buffer containing the given \&#123;str\&#125;.
+Allocates a new buffer containing the given &#123;str&#125;.
 
 #### Parameters
 
@@ -47,7 +47,7 @@ since v10.0.0 - Use `Buffer.from(string[, encoding])` instead.
 
 `**new BufferConstructor**(size)`
 
-Allocates a new buffer of \&#123;size\&#125; octets.
+Allocates a new buffer of &#123;size&#125; octets.
 
 #### Parameters
 
@@ -69,7 +69,7 @@ since v10.0.0 - Use `Buffer.alloc()` instead (also see `Buffer.allocUnsafe()`).
 
 `**new BufferConstructor**(array)`
 
-Allocates a new buffer containing the given \&#123;array\&#125; of octets.
+Allocates a new buffer containing the given &#123;array&#125; of octets.
 
 #### Parameters
 
@@ -92,7 +92,7 @@ since v10.0.0 - Use `Buffer.from(array)` instead.
 `**new BufferConstructor**(arrayBuffer)`
 
 Produces a Buffer backed by the same allocated memory as
-the given \&#123;ArrayBuffer\&#125;/\&#123;SharedArrayBuffer\&#125;.
+the given &#123;ArrayBuffer&#125;/&#123;SharedArrayBuffer&#125;.
 
 #### Parameters
 
@@ -114,7 +114,7 @@ since v10.0.0 - Use `Buffer.from(arrayBuffer[, byteOffset[, length]])` instead.
 
 `**new BufferConstructor**(array)`
 
-Allocates a new buffer containing the given \&#123;array\&#125; of octets.
+Allocates a new buffer containing the given &#123;array&#125; of octets.
 
 #### Parameters
 
@@ -136,7 +136,7 @@ since v10.0.0 - Use `Buffer.from(array)` instead.
 
 `**new BufferConstructor**(buffer)`
 
-Copies the passed \&#123;buffer\&#125; data onto a new \&#123;Buffer\&#125; instance.
+Copies the passed &#123;buffer&#125; data onto a new &#123;Buffer&#125; instance.
 
 #### Parameters
 
@@ -174,7 +174,7 @@ since v10.0.0 - Use `Buffer.from(buffer)` instead.
 
 ### alloc
 
-`**alloc**(size, fill?, encoding?): Buffer`
+`**alloc**(size, fill?, encoding?): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` of `size` bytes. If `fill` is `undefined`, the`Buffer` will be zero-filled.
 
@@ -274,7 +274,7 @@ ___
 
 ### allocUnsafe
 
-`**allocUnsafe**(size): Buffer`
+`**allocUnsafe**(size): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown.
 
@@ -346,7 +346,7 @@ ___
 
 ### allocUnsafeSlow
 
-`**allocUnsafeSlow**(size): Buffer`
+`**allocUnsafeSlow**(size): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown. A zero-length `Buffer` is created if
 `size` is 0.
@@ -563,7 +563,7 @@ ___
 
 ### concat
 
-`**concat**(list, totalLength?): Buffer`
+`**concat**(list, totalLength?): [Buffer](../index.md#buffer)`
 
 Returns a new `Buffer` which is the result of concatenating all the `Buffer`instances in the `list` together.
 
@@ -646,7 +646,7 @@ ___
 
 ### copyBytesFrom
 
-`**copyBytesFrom**(view, offset?, length?): Buffer`
+`**copyBytesFrom**(view, offset?, length?): [Buffer](../index.md#buffer)`
 
 Copies the underlying memory of `view` into a new `Buffer`.
 
@@ -665,7 +665,7 @@ console.log(buf[1]); // 255
   {
     "name": "view",
     "type": "[TypedArray](../types/TypedArray.mdx)",
-    "description": "The \\&#123;TypedArray\\&#125; to copy.",
+    "description": "The &#123;TypedArray&#125; to copy.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -715,7 +715,7 @@ ___
 
 ### from
 
-`**from**(arrayBuffer, byteOffset?, length?): Buffer`
+`**from**(arrayBuffer, byteOffset?, length?): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` using an `array` of bytes in the range `0` – `255`.
 Array entries outside that range will be truncated to fit into it.
@@ -741,7 +741,7 @@ appropriate for `Buffer.from()` variants.
 <ParameterTypes parameters={[
   {
     "name": "arrayBuffer",
-    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)\\&#60;ArrayBuffer \\| SharedArrayBuffer\\&#62;",
+    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;ArrayBuffer \\| [SharedArrayBuffer](../index.md#sharedarraybuffer)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -788,9 +788,9 @@ appropriate for `Buffer.from()` variants.
 
 v5.10.0
 
-`**from**(data): Buffer`
+`**from**(data): [Buffer](../index.md#buffer)`
 
-Creates a new Buffer using the passed \&#123;data\&#125;
+Creates a new Buffer using the passed &#123;data&#125;
 
 #### Parameters
 
@@ -822,14 +822,14 @@ Creates a new Buffer using the passed \&#123;data\&#125;
   }
 ]} />
 
-`**from**(data): Buffer`
+`**from**(data): [Buffer](../index.md#buffer)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)\\&#60;string \\| Uint8Array \\| readonly number[]\\&#62;",
+    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;string \\| Uint8Array \\| readonly number[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -854,18 +854,18 @@ Creates a new Buffer using the passed \&#123;data\&#125;
   }
 ]} />
 
-`**from**(str, encoding?): Buffer`
+`**from**(str, encoding?): [Buffer](../index.md#buffer)`
 
-Creates a new Buffer containing the given JavaScript string \&#123;str\&#125;.
-If provided, the \&#123;encoding\&#125; parameter identifies the character encoding.
-If not provided, \&#123;encoding\&#125; defaults to 'utf8'.
+Creates a new Buffer containing the given JavaScript string &#123;str&#125;.
+If provided, the &#123;encoding&#125; parameter identifies the character encoding.
+If not provided, &#123;encoding&#125; defaults to 'utf8'.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "str",
-    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)\\&#60;string\\&#62; \\| `\\&#123; [toPrimitive]: Method [toPrimitive]  \\&#125;`",
+    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;string&#62; \\| `&#123; [toPrimitive]: Method [toPrimitive]  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1014,9 +1014,9 @@ ___
 
 ### of
 
-`**of**(...items): Buffer`
+`**of**(...items): [Buffer](../index.md#buffer)`
 
-Creates a new Buffer using the passed \&#123;data\&#125;
+Creates a new Buffer using the passed &#123;data&#125;
 
 #### Parameters
 

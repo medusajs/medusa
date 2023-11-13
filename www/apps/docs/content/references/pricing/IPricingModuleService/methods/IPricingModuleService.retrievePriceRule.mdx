@@ -65,7 +65,7 @@ async function retrievePriceRule (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](../../interfaces/FindConfig.mdx)\\&#60;PriceRuleDTO\\&#62;",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[PriceRuleDTO](../../interfaces/PriceRuleDTO.mdx)&#62;",
     "description": "The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price rule.",
     "optional": true,
     "defaultValue": "",
@@ -199,7 +199,7 @@ async function retrievePriceRule (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceRuleDTO\\&#62;",
+    "type": "Promise&#60;[PriceRuleDTO](../../interfaces/PriceRuleDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price rule.",

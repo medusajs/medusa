@@ -6,7 +6,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Primary
 
- **Primary**`<TypeParameter T>`: T extends \&#123; [PrimaryKeyType]?: infer PK  \&#125; ? ReadonlyPrimary\&#60;PK\&#62; : T extends \&#123; _id?: infer PK  \&#125; ? ReadonlyPrimary\&#60;PK\&#62; \| string : T extends \&#123; uuid?: infer PK  \&#125; ? ReadonlyPrimary\&#60;PK\&#62; : T extends \&#123; id?: infer PK  \&#125; ? ReadonlyPrimary\&#60;PK\&#62; : never
+ **Primary**`<TypeParameter T>`: T extends &#123; [PrimaryKeyType]?: infer PK  &#125; ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; : T extends &#123; _id?: infer PK  &#125; ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; \| string : T extends &#123; uuid?: infer PK  &#125; ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; : T extends &#123; id?: infer PK  &#125; ? [ReadonlyPrimary](ReadonlyPrimary.mdx)&#60;PK&#62; : never
 
 ### Type parameters
 

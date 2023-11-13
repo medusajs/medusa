@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "batchJobRepository_",
-    "type": "Repository\\&#60;BatchJob\\&#62;",
+    "type": "Repository&#60;[BatchJob](BatchJob.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "batchJobStatusMapToProps",
-    "type": "Map\\&#60;BatchJobStatus, \\&#123; entityColumnName: string ; eventType: string  \\&#125;\\&#62;",
+    "type": "Map&#60;[BatchJobStatus](../enums/BatchJobStatus.mdx), &#123; entityColumnName: string ; eventType: string  &#125;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -219,7 +219,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -251,7 +251,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -260,7 +260,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -269,7 +269,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -280,12 +280,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -298,7 +298,7 @@ ___
 
 ### cancel
 
-`**cancel**(batchJobOrId): Promise\&#60;BatchJob\&#62;`
+`**cancel**(batchJobOrId): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -316,12 +316,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -334,7 +334,7 @@ ___
 
 ### complete
 
-`**complete**(batchJobOrId): Promise\&#60;BatchJob\&#62;`
+`**complete**(batchJobOrId): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -352,12 +352,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -370,7 +370,7 @@ ___
 
 ### confirm
 
-`**confirm**(batchJobOrId): Promise\&#60;BatchJob\&#62;`
+`**confirm**(batchJobOrId): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -388,12 +388,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -406,7 +406,7 @@ ___
 
 ### create
 
-`**create**(data): Promise\&#60;BatchJob\&#62;`
+`**create**(data): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -424,12 +424,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -442,7 +442,7 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(selector?, config?): Promise\&#60;[BatchJob[], number]\&#62;`
+`**listAndCount**(selector?, config?): Promise&#60;[[BatchJob](BatchJob.mdx)[], number]&#62;`
 
 #### Parameters
 
@@ -458,7 +458,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;BatchJob\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[BatchJob](BatchJob.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -469,12 +469,12 @@ ___
 
 #### Returns
 
-Promise\&#60;[BatchJob[], number]\&#62;
+Promise&#60;[[BatchJob](BatchJob.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[BatchJob[], number]\\&#62;",
+    "type": "Promise&#60;[[BatchJob](BatchJob.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -487,7 +487,7 @@ ___
 
 ### prepareBatchJobForProcessing
 
-`**prepareBatchJobForProcessing**(data, req): Promise\&#60;CreateBatchJobInput\&#62;`
+`**prepareBatchJobForProcessing**(data, req): Promise&#60;[CreateBatchJobInput](../types/CreateBatchJobInput.mdx)&#62;`
 
 #### Parameters
 
@@ -503,7 +503,7 @@ ___
   },
   {
     "name": "req",
-    "type": "Request\\&#60;ParamsDictionary, any, any, ParsedQs, Record\\&#60;string, any\\&#62;\\&#62;",
+    "type": "Request&#60;ParamsDictionary, any, any, ParsedQs, Record&#60;string, any&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -514,12 +514,12 @@ ___
 
 #### Returns
 
-Promise\&#60;CreateBatchJobInput\&#62;
+Promise&#60;[CreateBatchJobInput](../types/CreateBatchJobInput.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CreateBatchJobInput\\&#62;",
+    "type": "Promise&#60;[CreateBatchJobInput](../types/CreateBatchJobInput.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -532,7 +532,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(batchJobId, config?): Promise\&#60;BatchJob\&#62;`
+`**retrieve**(batchJobId, config?): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -548,7 +548,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/FindConfig.mdx)\\&#60;BatchJob\\&#62;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[BatchJob](BatchJob.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -559,12 +559,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -577,7 +577,7 @@ ___
 
 ### setFailed
 
-`**setFailed**(batchJobOrId, error?): Promise\&#60;BatchJob\&#62;`
+`**setFailed**(batchJobOrId, error?): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -604,12 +604,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -622,7 +622,7 @@ ___
 
 ### setPreProcessingDone
 
-`**setPreProcessingDone**(batchJobOrId): Promise\&#60;BatchJob\&#62;`
+`**setPreProcessingDone**(batchJobOrId): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -640,12 +640,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -658,7 +658,7 @@ ___
 
 ### setProcessing
 
-`**setProcessing**(batchJobOrId): Promise\&#60;BatchJob\&#62;`
+`**setProcessing**(batchJobOrId): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -676,12 +676,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -701,7 +701,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -730,7 +730,7 @@ ___
 
 ### update
 
-`**update**(batchJobOrId, data): Promise\&#60;BatchJob\&#62;`
+`**update**(batchJobOrId, data): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -746,7 +746,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[Partial](../types/Partial.mdx)\\&#60;Pick\\&#60;BatchJob, `\"context\"` \\| `\"result\"`\\&#62;\\&#62;",
+    "type": "[Partial](../types/Partial.mdx)&#60;[Pick](../types/Pick.mdx)&#60;[BatchJob](BatchJob.mdx), `\"context\"` \\| `\"result\"`&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -757,12 +757,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -775,7 +775,7 @@ ___
 
 ### updateStatus
 
-`Protected **updateStatus**(batchJobOrId, status): Promise\&#60;BatchJob\&#62;`
+`Protected **updateStatus**(batchJobOrId, status): Promise&#60;[BatchJob](BatchJob.mdx)&#62;`
 
 #### Parameters
 
@@ -802,12 +802,12 @@ ___
 
 #### Returns
 
-Promise\&#60;BatchJob\&#62;
+Promise&#60;[BatchJob](BatchJob.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;BatchJob\\&#62;",
+    "type": "Promise&#60;[BatchJob](BatchJob.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -820,7 +820,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): BatchJobService`
+`**withTransaction**(transactionManager?): [BatchJobService](BatchJobService.mdx)`
 
 #### Parameters
 

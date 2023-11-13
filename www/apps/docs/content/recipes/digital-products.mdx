@@ -136,7 +136,7 @@ For example, if you're selling the Harry Potter movies, you would have a `Produc
 ]} />
 
 <Details>
-  <summary>Example: Create ProductMedia Entity</summary>
+  <Summary>Example: Create ProductMedia Entity</Summary>
   In this example, you’ll create a `ProductMedia` entity that is associated with the `ProductVariant` entity in a one-to-many relation.
 
   To do that, create the file `src/models/product-media.ts` with the following content:
@@ -264,7 +264,7 @@ Creating an API Route also requires creating a service, which is a class that ty
 ]} />
 
 <Details>
-  <summary>Example: List and Create API Routes</summary>
+  <Summary>Example: List and Create API Routes</Summary>
   This example showcases how you can create the list and create API Routes for digital products. These API Routes are chosen in particular as they’re used in later parts of this recipe. You may follow the same instructions to create other necessary API Routes.
 
   Before creating the API Routes, you’ll create the `ProductMediaService`. Create the file `src/services/product-media.ts` with the following content:
@@ -557,7 +557,7 @@ To add an interface that allows the admin user to upload digital products, you c
 ]} />
 
 <Details>
-  <summary>Example: Digital Products Page in Admin</summary>
+  <Summary>Example: Digital Products Page in Admin</Summary>
   In this example, you’ll add a single page that lists the digital products and allows you to create a new one. The implementation will be minimal for the purpose of simplicity, so you can elaborate on it based on your use case.
       
   Before starting off, make sure to install the necessary dependencies in your Medusa backend project:
@@ -936,7 +936,7 @@ Finally, you can send a notification, such as an email, to the customer using th
 }} />
 
 <Details>
-  <summary>Example: Using SendGrid</summary>
+  <Summary>Example: Using SendGrid</Summary>
   :::note
 
   An alternative solution is to create a store download API Route that allows authenticated customers to download products they've purchased, then add the link to the API Route or a storefront page that calls the API Route in the email. Learn how to implement the download API Route [here](#download-product-after-purchase).
@@ -1055,7 +1055,7 @@ In the product detail's page, you can add a button that allows customers to down
 To implement this, create a storefront API Route that allows you to fetch the digital product, then customize the Next.js storefront to show the preview button if a product is digital.
 
 <Details>
-  <summary>Example</summary>
+  <Summary>Example</Summary>
   Before you customize the Next.js storefront, you need to add a store API Route in your backend.
 
   Create the file `src/api/store/product-media/route.ts` with the following content:
@@ -1301,7 +1301,7 @@ In the product details page, additional information related to the product and i
 You can change this section to show information relevant to the product. For example, how many pages are in an e-book, or how the e-book will be delivered to the customer.
 
 <Details>
-  <summary>Example</summary>
+  <Summary>Example</Summary>
   In this example, you'll change the content of the Product Information and Shipping & Returns tabs to show information relevant to the digital product. The Product Information tab will include custom information relevant to digital products, and the Shipping & Returns tab will be changed to "E-book delivery" and will hold details about how the e-book will be delivered to the customer.
 
   One way to store custom information relevant to the digital product is using the `metadata` field. For example, to store the number of pages of an e-book, set the `metadata` field to the following:
@@ -1422,7 +1422,7 @@ You can change this section to show information relevant to the product. For exa
 When a customer purchases a digital product, the shipping form shown during checkout is not relevant. So, you can change its content to instead only ask for the customer's name and email.
 
 <Details>
-  <summary>Example</summary>
+  <Summary>Example</Summary>
   The checkout flow is managed by a checkout context defined in `src/lib/context/checkout-context.tsx`. Change the content of the file to the following:
 
 <!-- eslint-skip -->
@@ -2005,7 +2005,7 @@ When a customer purchases a digital product, the shipping form shown during chec
 After the customer purchases the digital product you can show a download button to allow them to immediately download the product.
 
 <Details>
-  <summary>Example</summary>
+  <Summary>Example</Summary>
   Before you implement the storefront changes, you need to create a new API Route in the backend that ensures that the currently logged-in customer has purchased the digital product and, if so, returns a presigned URL to download it.
 
   Create the file `src/api/store/product-media/download/[variant_id]/route.ts` with the following content:

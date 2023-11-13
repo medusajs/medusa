@@ -104,7 +104,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -440,7 +440,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -776,7 +776,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -1140,7 +1140,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -1476,7 +1476,7 @@ medusa.admin.orderEdits.delete(orderEditId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -1569,7 +1569,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditItemChangeDeleteRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditItemChangeDeleteRes](../internal/types/internal.AdminOrderEditItemChangeDeleteRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -1750,7 +1750,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsListRes](../internal/types/internal.AdminOrderEditsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of order edits with pagination fields.",
@@ -1758,7 +1758,7 @@ medusa.admin.orderEdits
     "children": [
       {
         "name": "AdminOrderEditsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; order_edits: OrderEdit[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; order_edits: [OrderEdit](../internal/classes/internal.OrderEdit.mdx)[]  &#125;`",
         "description": "The list of order edits with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -2125,7 +2125,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -2463,7 +2463,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -2844,7 +2844,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -3203,7 +3203,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -3572,7 +3572,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminOrderEditsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",

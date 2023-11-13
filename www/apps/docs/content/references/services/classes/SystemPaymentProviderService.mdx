@@ -111,7 +111,7 @@ EntityManager
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -143,7 +143,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -152,7 +152,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -161,7 +161,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -172,12 +172,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -190,7 +190,7 @@ ___
 
 ### authorizePayment
 
-`**authorizePayment**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**authorizePayment**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -208,12 +208,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -226,7 +226,7 @@ ___
 
 ### cancelPayment
 
-`**cancelPayment**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**cancelPayment**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -244,12 +244,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -262,7 +262,7 @@ ___
 
 ### capturePayment
 
-`**capturePayment**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**capturePayment**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -280,12 +280,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -298,7 +298,7 @@ ___
 
 ### createPayment
 
-`**createPayment**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**createPayment**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -316,12 +316,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -334,7 +334,7 @@ ___
 
 ### deletePayment
 
-`**deletePayment**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**deletePayment**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -352,12 +352,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -370,7 +370,7 @@ ___
 
 ### getPaymentData
 
-`**getPaymentData**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**getPaymentData**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -388,12 +388,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -406,7 +406,7 @@ ___
 
 ### getStatus
 
-`**getStatus**(_): Promise\&#60;string\&#62;`
+`**getStatus**(_): Promise&#60;string&#62;`
 
 #### Parameters
 
@@ -424,12 +424,12 @@ ___
 
 #### Returns
 
-Promise\&#60;string\&#62;
+Promise&#60;string&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string\\&#62;",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -442,7 +442,7 @@ ___
 
 ### refundPayment
 
-`**refundPayment**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**refundPayment**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -460,12 +460,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -485,7 +485,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -514,7 +514,7 @@ ___
 
 ### updatePayment
 
-`**updatePayment**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**updatePayment**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -532,12 +532,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -550,7 +550,7 @@ ___
 
 ### updatePaymentData
 
-`**updatePaymentData**(_): Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;`
+`**updatePaymentData**(_): Promise&#60;Record&#60;string, unknown&#62;&#62;`
 
 #### Parameters
 
@@ -568,12 +568,12 @@ ___
 
 #### Returns
 
-Promise\&#60;Record\&#60;string, unknown\&#62;\&#62;
+Promise&#60;Record&#60;string, unknown&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Record\\&#60;string, unknown\\&#62;\\&#62;",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -586,7 +586,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): SystemPaymentProviderService`
+`**withTransaction**(transactionManager?): [SystemPaymentProviderService](SystemPaymentProviderService.mdx)`
 
 #### Parameters
 

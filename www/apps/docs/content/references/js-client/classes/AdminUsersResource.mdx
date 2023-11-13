@@ -66,7 +66,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUserRes](../internal/types/internal.AdminUserRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -82,7 +82,7 @@ medusa.admin.users
         "children": [
           {
             "name": "user",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), `\"password_hash\"`&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -231,7 +231,7 @@ medusa.admin.users.delete(userId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -304,7 +304,7 @@ medusa.admin.users.list().then(({ users }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUsersListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUsersListRes](../internal/types/internal.AdminUsersListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of users.",
@@ -320,7 +320,7 @@ medusa.admin.users.list().then(({ users }) => {
         "children": [
           {
             "name": "users",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;[]",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), `\"password_hash\"`&#62;[]",
             "description": "An array of users details.",
             "optional": false,
             "defaultValue": "",
@@ -503,7 +503,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUserRes](../internal/types/internal.AdminUserRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -519,7 +519,7 @@ medusa.admin.users
         "children": [
           {
             "name": "user",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), `\"password_hash\"`&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -668,7 +668,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUserRes](../internal/types/internal.AdminUserRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -684,7 +684,7 @@ medusa.admin.users.retrieve(userId).then(({ user }) => {
         "children": [
           {
             "name": "user",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), `\"password_hash\"`&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",
@@ -852,7 +852,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;void\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the token is generated successfully.",
@@ -965,7 +965,7 @@ medusa.admin.users
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminUserRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUserRes](../internal/types/internal.AdminUserRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the user's details.",
@@ -981,7 +981,7 @@ medusa.admin.users
         "children": [
           {
             "name": "user",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)\\&#60;User, `\"password_hash\"`\\&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[User](../internal/classes/internal.User.mdx), `\"password_hash\"`&#62;",
             "description": "User details.",
             "optional": false,
             "defaultValue": "",

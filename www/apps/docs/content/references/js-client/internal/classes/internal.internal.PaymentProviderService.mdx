@@ -85,7 +85,7 @@ Helps retrieve payment providers
   },
   {
     "name": "paymentProviderRepository_",
-    "type": "Repository\\&#60;PaymentProvider\\&#62;",
+    "type": "Repository&#60;[PaymentProvider](internal.PaymentProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ Helps retrieve payment providers
   },
   {
     "name": "paymentRepository_",
-    "type": "Repository\\&#60;Payment\\&#62;",
+    "type": "Repository&#60;[Payment](internal.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ Helps retrieve payment providers
   },
   {
     "name": "paymentSessionRepository_",
-    "type": "Repository\\&#60;PaymentSession\\&#62;",
+    "type": "Repository&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ Helps retrieve payment providers
   },
   {
     "name": "refundRepository_",
-    "type": "Repository\\&#60;Refund\\&#62;",
+    "type": "Repository&#60;[Refund](internal.Refund.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -188,7 +188,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -197,7 +197,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -206,7 +206,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -220,7 +220,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -261,7 +261,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| PaymentSession\\&#62;",
+    "type": "Promise&#60;undefined \\| [PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -313,7 +313,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "paymentObj",
-    "type": "[Partial](../types/internal.Partial.mdx)\\&#60;Payment\\&#62; & `\\&#123; id: string  \\&#125;`",
+    "type": "[Partial](../types/internal.Partial.mdx)&#60;[Payment](internal.Payment.mdx)&#62; & `&#123; id: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -327,7 +327,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Payment\\&#62;",
+    "type": "Promise&#60;[Payment](internal.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -345,7 +345,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "paymentObj",
-    "type": "[Partial](../types/internal.Partial.mdx)\\&#60;Payment\\&#62; & `\\&#123; id: string  \\&#125;`",
+    "type": "[Partial](../types/internal.Partial.mdx)&#60;[Payment](internal.Payment.mdx)&#62; & `&#123; id: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -359,7 +359,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Payment\\&#62;",
+    "type": "Promise&#60;[Payment](internal.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -391,7 +391,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Payment\\&#62;",
+    "type": "Promise&#60;[Payment](internal.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -404,7 +404,7 @@ ___
 
 ### createSession
 
-`**createSession**(providerId, cart): Promise\&#60;PaymentSession\&#62;`
+`**createSession**(providerId, cart): Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;`
 
 #### Parameters
 
@@ -434,7 +434,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSession\\&#62;",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -445,7 +445,7 @@ ___
 
 #### Deprecated
 
-`**createSession**(sessionInput): Promise\&#60;PaymentSession\&#62;`
+`**createSession**(sessionInput): Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;`
 
 Creates a payment session with the given provider.
 
@@ -468,7 +468,7 @@ Creates a payment session with the given provider.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSession\\&#62;",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -500,7 +500,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| PaymentSession\\&#62;",
+    "type": "Promise&#60;undefined \\| [PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -532,7 +532,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSessionStatus\\&#62;",
+    "type": "Promise&#60;[PaymentSessionStatus](../enums/internal.internal.PaymentSessionStatus.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -550,7 +550,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentProvider[]\\&#62;",
+    "type": "Promise&#60;[PaymentProvider](internal.PaymentProvider.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -570,7 +570,7 @@ List all the payments according to the given selector and config.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;Payment\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Payment](internal.Payment.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -579,7 +579,7 @@ List all the payments according to the given selector and config.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Payment\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Payment](internal.Payment.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -593,7 +593,7 @@ List all the payments according to the given selector and config.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Payment[]\\&#62;",
+    "type": "Promise&#60;[Payment](internal.Payment.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -613,7 +613,7 @@ Process the collected data. Can be used every time we need to process some colle
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`undefined` \\| `\\&#123; customer?: \\&#123; id?: string  \\&#125;  \\&#125;`",
+    "type": "`undefined` \\| `&#123; customer?: &#123; id?: string  &#125;  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -636,7 +636,7 @@ Process the collected data. Can be used every time we need to process some colle
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -707,7 +707,7 @@ This means, that we delete the current one and create a new.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSession\\&#62;",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment session",
@@ -766,7 +766,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Refund\\&#62;",
+    "type": "Promise&#60;[Refund](internal.Refund.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -825,7 +825,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Refund\\&#62;",
+    "type": "Promise&#60;[Refund](internal.Refund.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -857,7 +857,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -900,7 +900,7 @@ Retrieve a payment entity with the given id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Payment\\&#62;",
+    "type": "Promise&#60;[Payment](internal.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -961,7 +961,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Refund\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Refund](internal.Refund.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -975,7 +975,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Refund\\&#62;",
+    "type": "Promise&#60;[Refund](internal.Refund.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1018,7 +1018,7 @@ Return the payment session for the given id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSession\\&#62;",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1124,7 +1124,7 @@ Create or update a Payment session data.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSession\\&#62;",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1142,7 +1142,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1215,7 +1215,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Payment\\&#62;",
+    "type": "Promise&#60;[Payment](internal.Payment.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1285,7 +1285,7 @@ Update a payment session with the given provider.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSession\\&#62;",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment session",
@@ -1326,7 +1326,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSession\\&#62;",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

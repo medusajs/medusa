@@ -66,7 +66,7 @@ medusa.admin.priceLists
       {
         "name": "override",
         "type": "`boolean`",
-        "description": "If set to \\`true\\`, the prices will replace all existing prices associated with the Price List.",
+        "description": "If set to `true`, the prices will replace all existing prices associated with the Price List.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -92,7 +92,7 @@ medusa.admin.priceLists
           {
             "name": "currency_code",
             "type": "`string`",
-            "description": "The 3 character ISO currency code for which the price will be used. This is only required if \\`region\\_id\\` is not provided.",
+            "description": "The 3 character ISO currency code for which the price will be used. This is only required if `region\\_id` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -128,7 +128,7 @@ medusa.admin.priceLists
           {
             "name": "region_id",
             "type": "`string`",
-            "description": "The ID of the Region for which the price is used. This is only required if \\`currecny\\_code\\` is not provided.",
+            "description": "The ID of the Region for which the price is used. This is only required if `currecny\\_code` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -163,7 +163,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListRes](../internal/types/internal.AdminPriceListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the price list's details.",
@@ -288,7 +288,7 @@ medusa.admin.priceLists
               {
                 "name": "type",
                 "type": "[PriceListType](../internal/enums/internal.PriceListType.mdx)",
-                "description": "The type of Price List. This can be one of either \\`sale\\` or \\`override\\`.",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
                 "optional": false,
                 "defaultValue": "sale",
                 "expandable": false,
@@ -425,7 +425,7 @@ medusa.admin.priceLists
           {
             "name": "currency_code",
             "type": "`string`",
-            "description": "The 3 character ISO currency code for which the price will be used. This is only required if \\`region\\_id\\` is not provided.",
+            "description": "The 3 character ISO currency code for which the price will be used. This is only required if `region\\_id` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -452,7 +452,7 @@ medusa.admin.priceLists
           {
             "name": "region_id",
             "type": "`string`",
-            "description": "The ID of the Region for which the price is used. This is only required if \\`currecny\\_code\\` is not provided.",
+            "description": "The ID of the Region for which the price is used. This is only required if `currecny\\_code` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -481,7 +481,7 @@ medusa.admin.priceLists
       {
         "name": "status",
         "type": "[PriceListStatus](../internal/enums/internal.PriceListStatus.mdx)",
-        "description": "The status of the Price List. If the status is set to \\`draft\\`, the prices created in the price list will not be available of the customer.",
+        "description": "The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -552,7 +552,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListRes](../internal/types/internal.AdminPriceListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the price list details.",
@@ -677,7 +677,7 @@ medusa.admin.priceLists
               {
                 "name": "type",
                 "type": "[PriceListType](../internal/enums/internal.PriceListType.mdx)",
-                "description": "The type of Price List. This can be one of either \\`sale\\` or \\`override\\`.",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
                 "optional": false,
                 "defaultValue": "sale",
                 "expandable": false,
@@ -745,7 +745,7 @@ medusa.admin.priceLists.delete(priceListId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;DeleteResponse\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -850,7 +850,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListDeleteBatchRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListDeleteBatchRes](../internal/types/internal.AdminPriceListDeleteBatchRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -885,7 +885,7 @@ medusa.admin.priceLists
           {
             "name": "object",
             "type": "`string`",
-            "description": "The type of the object that was deleted. A price is also named \\`money-amount\\`.",
+            "description": "The type of the object that was deleted. A price is also named `money-amount`.",
             "optional": false,
             "defaultValue": "money-amount",
             "expandable": false,
@@ -953,7 +953,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListDeleteBatchRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListDeleteBatchRes](../internal/types/internal.AdminPriceListDeleteBatchRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -988,7 +988,7 @@ medusa.admin.priceLists
           {
             "name": "object",
             "type": "`string`",
-            "description": "The type of the object that was deleted. A price is also named \\`money-amount\\`.",
+            "description": "The type of the object that was deleted. A price is also named `money-amount`.",
             "optional": false,
             "defaultValue": "money-amount",
             "expandable": false,
@@ -1068,7 +1068,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListDeleteBatchRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListDeleteBatchRes](../internal/types/internal.AdminPriceListDeleteBatchRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -1103,7 +1103,7 @@ medusa.admin.priceLists
           {
             "name": "object",
             "type": "`string`",
-            "description": "The type of the object that was deleted. A price is also named \\`money-amount\\`.",
+            "description": "The type of the object that was deleted. A price is also named `money-amount`.",
             "optional": false,
             "defaultValue": "money-amount",
             "expandable": false,
@@ -1171,7 +1171,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListDeleteBatchRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListDeleteBatchRes](../internal/types/internal.AdminPriceListDeleteBatchRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -1206,7 +1206,7 @@ medusa.admin.priceLists
           {
             "name": "object",
             "type": "`string`",
-            "description": "The type of the object that was deleted. A price is also named \\`money-amount\\`.",
+            "description": "The type of the object that was deleted. A price is also named `money-amount`.",
             "optional": false,
             "defaultValue": "money-amount",
             "expandable": false,
@@ -1573,7 +1573,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListsListRes](../internal/types/internal.AdminPriceListsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of price lists with pagination fields.",
@@ -1581,7 +1581,7 @@ medusa.admin.priceLists
     "children": [
       {
         "name": "AdminPriceListsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; price_lists: PriceList[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; price_lists: [PriceList](../internal/classes/internal.PriceList.mdx)[]  &#125;`",
         "description": "The list of price lists with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1725,7 +1725,7 @@ medusa.admin.priceLists
               {
                 "name": "type",
                 "type": "[PriceListType](../internal/enums/internal.PriceListType.mdx)",
-                "description": "The type of Price List. This can be one of either \\`sale\\` or \\`override\\`.",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
                 "optional": false,
                 "defaultValue": "sale",
                 "expandable": false,
@@ -2149,7 +2149,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListsProductsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListsProductsListRes](../internal/types/internal.AdminPriceListsProductsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of products with pagination fields.",
@@ -2157,7 +2157,7 @@ medusa.admin.priceLists
     "children": [
       {
         "name": "AdminPriceListsProductsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; products: Product[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; products: [Product](../internal/classes/internal.Product.mdx)[]  &#125;`",
         "description": "The list of products with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -2256,7 +2256,7 @@ medusa.admin.priceLists
               {
                 "name": "discountable",
                 "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to \\`false\\`.",
+                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
                 "optional": false,
                 "defaultValue": "true",
                 "expandable": false,
@@ -2400,7 +2400,7 @@ medusa.admin.priceLists
               {
                 "name": "profiles",
                 "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation \\`profiles\\` is expanded.",
+                "description": "Available if the relation `profiles` is expanded.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2567,7 +2567,7 @@ medusa.admin.priceLists.retrieve(priceListId).then(({ price_list }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListRes](../internal/types/internal.AdminPriceListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the price list details.",
@@ -2692,7 +2692,7 @@ medusa.admin.priceLists.retrieve(priceListId).then(({ price_list }) => {
               {
                 "name": "type",
                 "type": "[PriceListType](../internal/enums/internal.PriceListType.mdx)",
-                "description": "The type of Price List. This can be one of either \\`sale\\` or \\`override\\`.",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
                 "optional": false,
                 "defaultValue": "sale",
                 "expandable": false,
@@ -2832,7 +2832,7 @@ medusa.admin.priceLists
           {
             "name": "currency_code",
             "type": "`string`",
-            "description": "The 3 character ISO currency code for which the price will be used. This is only required if \\`region\\_id\\` is not provided.",
+            "description": "The 3 character ISO currency code for which the price will be used. This is only required if `region\\_id` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -2868,7 +2868,7 @@ medusa.admin.priceLists
           {
             "name": "region_id",
             "type": "`string`",
-            "description": "The ID of the Region for which the price is used. This is only required if \\`currecny\\_code\\` is not provided.",
+            "description": "The ID of the Region for which the price is used. This is only required if `currecny\\_code` is not provided.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -2897,7 +2897,7 @@ medusa.admin.priceLists
       {
         "name": "status",
         "type": "[PriceListStatus](../internal/enums/internal.PriceListStatus.mdx)",
-        "description": "The status of the Price List. If the status is set to \\`draft\\`, the prices created in the price list will not be available of the customer.",
+        "description": "The status of the Price List. If the status is set to `draft`, the prices created in the price list will not be available of the customer.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -2968,7 +2968,7 @@ medusa.admin.priceLists
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminPriceListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPriceListRes](../internal/types/internal.AdminPriceListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the price list details.",
@@ -3093,7 +3093,7 @@ medusa.admin.priceLists
               {
                 "name": "type",
                 "type": "[PriceListType](../internal/enums/internal.PriceListType.mdx)",
-                "description": "The type of Price List. This can be one of either \\`sale\\` or \\`override\\`.",
+                "description": "The type of Price List. This can be one of either `sale` or `override`.",
                 "optional": false,
                 "defaultValue": "sale",
                 "expandable": false,

@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "addressRepository_",
-    "type": "Repository\\&#60;Address\\&#62;",
+    "type": "Repository&#60;[Address](internal.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -173,7 +173,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderRepository_",
-    "type": "Repository\\&#60;Order\\&#62; & `\\&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  \\&#125;`",
+    "type": "Repository&#60;[Order](internal.Order.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -475,7 +475,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -510,7 +510,7 @@ and payment has been captured.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -532,7 +532,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -541,7 +541,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -550,7 +550,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -564,7 +564,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -600,7 +600,7 @@ Throws if payment process has been initiated.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -634,7 +634,7 @@ Cancels a fulfillment (if related to an order)
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated order",
@@ -668,7 +668,7 @@ Captures payment for an order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -700,7 +700,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -734,7 +734,7 @@ Creates an order from a cart
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the creation result.",
@@ -816,7 +816,7 @@ to their respective fulfillment provider.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the update operation.",
@@ -865,8 +865,8 @@ ___
 
 <ParameterTypes parameters={[
   {
-    "name": "Promise\\&#60;GiftCard\\&#62;[]",
-    "type": "Promise\\&#60;GiftCard\\&#62;[]",
+    "name": "Promise&#60;GiftCard&#62;[]",
+    "type": "Promise&#60;[GiftCard](internal.GiftCard-1.mdx)&#62;[]",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -945,7 +945,7 @@ Refunds a given amount back to the customer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the refund operation.",
@@ -1026,7 +1026,7 @@ have been created in regards to the shipment.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting order following the update.",
@@ -1039,7 +1039,7 @@ ___
 
 ### decorateTotals
 
-`**decorateTotals**(order, totalsFields?): Promise\&#60;Order\&#62;`
+`**decorateTotals**(order, totalsFields?): Promise&#60;[Order](internal.Order.mdx)&#62;`
 
 #### Parameters
 
@@ -1069,7 +1069,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1078,7 +1078,7 @@ ___
   }
 ]} />
 
-`**decorateTotals**(order, context?): Promise\&#60;Order\&#62;`
+`**decorateTotals**(order, context?): Promise&#60;[Order](internal.Order.mdx)&#62;`
 
 #### Parameters
 
@@ -1108,7 +1108,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1149,7 +1149,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1201,7 +1201,7 @@ Retrieves the order line items, given an array of items.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem[]\\&#62;",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line items generated by the transformer.",
@@ -1219,7 +1219,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;Order\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1228,7 +1228,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": true,
     "defaultValue": "",
@@ -1242,7 +1242,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order[]\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1260,7 +1260,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[QuerySelector](../types/internal.internal.QuerySelector.mdx)\\&#60;Order\\&#62;",
+    "type": "[QuerySelector](../types/internal.internal.QuerySelector.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1269,7 +1269,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": true,
     "defaultValue": "",
@@ -1283,7 +1283,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[Order[], number]\\&#62;",
+    "type": "Promise&#60;[[Order](internal.Order.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1341,7 +1341,7 @@ mismatches.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1370,7 +1370,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "config of order to retrieve",
     "optional": true,
     "defaultValue": "",
@@ -1384,7 +1384,7 @@ Gets an order by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1413,7 +1413,7 @@ Gets an order by cart id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "the config to be used to find order",
     "optional": true,
     "defaultValue": "",
@@ -1427,7 +1427,7 @@ Gets an order by cart id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1454,7 +1454,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1468,7 +1468,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1497,7 +1497,7 @@ Gets an order by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "query config to get order by",
     "optional": true,
     "defaultValue": "",
@@ -1511,7 +1511,7 @@ Gets an order by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the order document",
@@ -1529,7 +1529,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "orderIdOrSelector",
-    "type": "`string` \\| [Selector](../types/internal.internal.Selector.mdx)\\&#60;Order\\&#62;",
+    "type": "`string` \\| [Selector](../types/internal.internal.Selector.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1538,7 +1538,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1552,7 +1552,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1579,7 +1579,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1602,7 +1602,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1620,7 +1620,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1652,7 +1652,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;Order\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Order](internal.Order.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1741,7 +1741,7 @@ will throw errors if metadata updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Order\\&#62;",
+    "type": "Promise&#60;[Order](internal.Order.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -1784,7 +1784,7 @@ Updates the order's billing address.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1827,7 +1827,7 @@ Updates the order's shipping address.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",

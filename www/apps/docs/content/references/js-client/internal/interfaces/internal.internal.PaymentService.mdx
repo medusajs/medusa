@@ -93,7 +93,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +102,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -111,7 +111,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -125,7 +125,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -168,7 +168,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;\\&#123; data: Data ; status: PaymentSessionStatus  \\&#125;\\&#62;",
+    "type": "Promise&#60;&#123; data: [Data](../types/internal.internal.Data.mdx) ; status: [PaymentSessionStatus](../enums/internal.internal.PaymentSessionStatus.mdx)  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -206,7 +206,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -244,7 +244,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -261,7 +261,7 @@ ___
 
 ### createPayment
 
-`**createPayment**(context): Promise\&#60;PaymentSessionResponse\&#62;`
+`**createPayment**(context): Promise&#60;[PaymentSessionResponse](../types/internal.internal.PaymentSessionResponse.mdx)&#62;`
 
 This will be
 
@@ -284,7 +284,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSessionResponse\\&#62;",
+    "type": "Promise&#60;[PaymentSessionResponse](../types/internal.internal.PaymentSessionResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -297,7 +297,7 @@ This will be
 
 in the near future use PaymentProcessor.initiatePayment instead
 
-`**createPayment**(cart): Promise\&#60;Data\&#62;`
+`**createPayment**(cart): Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;`
 
 This will be
 
@@ -320,7 +320,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -358,7 +358,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -414,7 +414,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -452,7 +452,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PaymentSessionStatus\\&#62;",
+    "type": "Promise&#60;[PaymentSessionStatus](../enums/internal.internal.PaymentSessionStatus.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -499,7 +499,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -537,7 +537,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -575,7 +575,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data[]\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -597,7 +597,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -624,7 +624,7 @@ ___
 
 ### updatePayment
 
-`**updatePayment**(paymentSessionData, context): Promise\&#60;Data \| PaymentSessionResponse\&#62;`
+`**updatePayment**(paymentSessionData, context): Promise&#60;[Data](../types/internal.internal.Data.mdx) \| [PaymentSessionResponse](../types/internal.internal.PaymentSessionResponse.mdx)&#62;`
 
 #### Parameters
 
@@ -654,7 +654,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data \\| PaymentSessionResponse\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx) \\| [PaymentSessionResponse](../types/internal.internal.PaymentSessionResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -663,7 +663,7 @@ ___
   }
 ]} />
 
-`**updatePayment**(paymentSessionData, cart): Promise\&#60;Data\&#62;`
+`**updatePayment**(paymentSessionData, cart): Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;`
 
 This will be
 
@@ -695,7 +695,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -742,7 +742,7 @@ This will be
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;Data\\&#62;",
+    "type": "Promise&#60;[Data](../types/internal.internal.Data.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

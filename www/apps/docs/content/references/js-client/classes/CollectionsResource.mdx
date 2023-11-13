@@ -195,7 +195,7 @@ medusa.collections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCollectionsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCollectionsListRes](../internal/types/internal.StoreCollectionsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product collections with pagination fields.",
@@ -203,7 +203,7 @@ medusa.collections
     "children": [
       {
         "name": "StoreCollectionsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; collections: ProductCollection[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; collections: [ProductCollection](../internal/classes/internal.ProductCollection.mdx)[]  &#125;`",
         "description": "The list of product collections with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -368,7 +368,7 @@ medusa.collections.retrieve(collectionId).then(({ collection }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreCollectionsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCollectionsRes](../internal/types/internal.StoreCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the collection's details.",

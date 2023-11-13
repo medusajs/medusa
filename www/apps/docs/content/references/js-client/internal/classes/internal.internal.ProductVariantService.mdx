@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "cartRepository_",
-    "type": "Repository\\&#60;Cart\\&#62; & `\\&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  \\&#125;`",
+    "type": "Repository&#60;[Cart](internal.Cart.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "moneyAmountRepository_",
-    "type": "Repository\\&#60;MoneyAmount\\&#62; & `\\&#123; addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  \\&#125;`",
+    "type": "Repository&#60;[MoneyAmount](internal.internal.MoneyAmount.mdx)&#62; & `&#123; addPriceListPrices: Method addPriceListPrices ; createProductVariantMoneyAmounts: Method createProductVariantMoneyAmounts ; deletePriceListPrices: Method deletePriceListPrices ; deleteVariantPricesNotIn: Method deleteVariantPricesNotIn ; findCurrencyMoneyAmounts: Method findCurrencyMoneyAmounts ; findManyForVariantInPriceList: Method findManyForVariantInPriceList ; findManyForVariantInRegion: Method findManyForVariantInRegion ; findManyForVariantsInRegion: Method findManyForVariantsInRegion ; findRegionMoneyAmounts: Method findRegionMoneyAmounts ; findVariantPricesNotIn: Method findVariantPricesNotIn ; getPricesForVariantInRegion: Method getPricesForVariantInRegion ; insertBulk: Method insertBulk ; updatePriceListPrices: Method updatePriceListPrices ; upsertVariantCurrencyPrice: Method upsertVariantCurrencyPrice  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productOptionValueRepository_",
-    "type": "Repository\\&#60;ProductOptionValue\\&#62;",
+    "type": "Repository&#60;[ProductOptionValue](internal.internal.ProductOptionValue.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productRepository_",
-    "type": "Repository\\&#60;Product\\&#62; & `\\&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  \\&#125;`",
+    "type": "Repository&#60;[Product](internal.Product.mdx)&#62; & `&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantRepository_",
-    "type": "Repository\\&#60;ProductVariant\\&#62;",
+    "type": "Repository&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -229,7 +229,7 @@ Option value must be of type string or number.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductOptionValue\\&#62;",
+    "type": "Promise&#60;[ProductOptionValue](internal.internal.ProductOptionValue.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation.",
@@ -251,7 +251,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -260,7 +260,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -269,7 +269,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -283,7 +283,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -327,7 +327,7 @@ to ensure that the variant can in fact be created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TOutput\\&#62;",
+    "type": "Promise&#60;TOutput&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the creation result.",
@@ -362,7 +362,7 @@ Will never fail due to delete being idempotent.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "empty promise",
@@ -406,7 +406,7 @@ Will never fail due to delete being idempotent.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "empty promise",
@@ -427,7 +427,7 @@ variants that match the query.
 <ParameterTypes parameters={[
   {
     "name": "variantRepo",
-    "type": "Repository\\&#60;ProductVariant\\&#62;",
+    "type": "Repository&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "description": "the variant repository",
     "optional": false,
     "defaultValue": "",
@@ -459,7 +459,7 @@ variants that match the query.
 <ParameterTypes parameters={[
   {
     "name": "SelectQueryBuilder",
-    "type": "SelectQueryBuilder\\&#60;ProductVariant\\&#62;",
+    "type": "SelectQueryBuilder&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the products as the first element and the total\n  count of products that matches the query as the second element.",
@@ -504,7 +504,7 @@ currency price exists the function will throw an error.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;`null` \\| number\\&#62;",
+    "type": "Promise&#60;`null` \\| number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the price specific to the region",
@@ -547,7 +547,7 @@ Check if the variant is assigned to at least one of the provided sales channels.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;boolean\\&#62;",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -574,7 +574,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ProductVariant\\&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval",
     "optional": true,
     "defaultValue": "",
@@ -588,7 +588,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant[]\\&#62;",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -615,7 +615,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ProductVariant\\&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval",
     "optional": true,
     "defaultValue": "",
@@ -629,7 +629,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[ProductVariant[], number]\\&#62;",
+    "type": "Promise&#60;[[ProductVariant](internal.internal.ProductVariant.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -658,7 +658,7 @@ Gets a product variant by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ProductVariant\\&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval.",
     "optional": true,
     "defaultValue": "",
@@ -672,7 +672,7 @@ Gets a product variant by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant\\&#62;",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product document.",
@@ -701,7 +701,7 @@ Gets a product variant by id.
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;ProductVariant\\&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62; & [PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "query config object for variant retrieval.",
     "optional": true,
     "defaultValue": "",
@@ -715,7 +715,7 @@ Gets a product variant by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant\\&#62;",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product document.",
@@ -756,7 +756,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;MoneyAmount\\&#62;",
+    "type": "Promise&#60;[MoneyAmount](internal.internal.MoneyAmount.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -802,7 +802,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;MoneyAmount\\&#62;",
+    "type": "Promise&#60;[MoneyAmount](internal.internal.MoneyAmount.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -825,7 +825,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -852,7 +852,7 @@ ___
 
 ### update
 
-`**update**(variantData): Promise\&#60;ProductVariant[]\&#62;`
+`**update**(variantData): Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)[]&#62;`
 
 Updates a collection of variant.
 
@@ -861,7 +861,7 @@ Updates a collection of variant.
 <ParameterTypes parameters={[
   {
     "name": "variantData",
-    "type": "`\\&#123; updateData: UpdateProductVariantInput ; variant: ProductVariant  \\&#125;`[]",
+    "type": "`&#123; updateData: [UpdateProductVariantInput](../types/internal.UpdateProductVariantInput.mdx) ; variant: [ProductVariant](internal.internal.ProductVariant.mdx)  &#125;`[]",
     "description": "a collection of variant and the data to update.",
     "optional": false,
     "defaultValue": "",
@@ -875,7 +875,7 @@ Updates a collection of variant.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant[]\\&#62;",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -884,7 +884,7 @@ Updates a collection of variant.
   }
 ]} />
 
-`**update**(variantOrVariantId, update): Promise\&#60;ProductVariant\&#62;`
+`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;`
 
 Updates a variant.
 Price updates should use dedicated methods.
@@ -895,7 +895,7 @@ The function will throw, if price updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "variantOrVariantId",
-    "type": "`string` \\| [Partial](../types/internal.Partial.mdx)\\&#60;ProductVariant\\&#62;",
+    "type": "`string` \\| [Partial](../types/internal.Partial.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "description": "variant or id of a variant.",
     "optional": false,
     "defaultValue": "",
@@ -918,7 +918,7 @@ The function will throw, if price updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant\\&#62;",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -927,14 +927,14 @@ The function will throw, if price updates are attempted.
   }
 ]} />
 
-`**update**(variantOrVariantId, update): Promise\&#60;ProductVariant\&#62;`
+`**update**(variantOrVariantId, update): Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "variantOrVariantId",
-    "type": "`string` \\| [Partial](../types/internal.Partial.mdx)\\&#60;ProductVariant\\&#62;",
+    "type": "`string` \\| [Partial](../types/internal.Partial.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -957,7 +957,7 @@ The function will throw, if price updates are attempted.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant\\&#62;",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -989,7 +989,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductVariant[]\\&#62;",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1042,7 +1042,7 @@ Option value must be of type string or number.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;ProductOptionValue\\&#62;",
+    "type": "Promise&#60;[ProductOptionValue](internal.internal.ProductOptionValue.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation.",
@@ -1055,7 +1055,7 @@ ___
 
 ### updateVariantPrices
 
-`**updateVariantPrices**(data): Promise\&#60;void\&#62;`
+`**updateVariantPrices**(data): Promise&#60;void&#62;`
 
 Updates variant/prices collection.
 Deletes any prices that are not in the update object, and is not associated with a price list.
@@ -1079,7 +1079,7 @@ Deletes any prices that are not in the update object, and is not associated with
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "empty promise",
@@ -1088,7 +1088,7 @@ Deletes any prices that are not in the update object, and is not associated with
   }
 ]} />
 
-`**updateVariantPrices**(variantId, prices): Promise\&#60;void\&#62;`
+`**updateVariantPrices**(variantId, prices): Promise&#60;void&#62;`
 
 Updates a variant's prices.
 Deletes any prices that are not in the update object, and is not associated with a price list.
@@ -1121,7 +1121,7 @@ Deletes any prices that are not in the update object, and is not associated with
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "empty promise",
@@ -1153,7 +1153,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1171,7 +1171,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`\\&#123; price: WithRequiredProperty\\&#60;ProductVariantPrice, `\"currency_code\"`\\&#62; ; variantId: string  \\&#125;`[]",
+    "type": "`&#123; price: [WithRequiredProperty](../types/internal.internal.WithRequiredProperty.mdx)&#60;[ProductVariantPrice](../types/internal.ProductVariantPrice.mdx), `\"currency_code\"`&#62; ; variantId: string  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1185,7 +1185,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1217,7 +1217,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

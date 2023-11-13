@@ -122,7 +122,7 @@ ___
 
 ### stockLocationService\_
 
-`Protected get**stockLocationService_**(): IStockLocationService`
+`Protected get**stockLocationService_**(): [IStockLocationService](../interfaces/IStockLocationService.mdx)`
 
 #### Returns
 
@@ -140,7 +140,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`input`: [CreateStockLocationInput](../types/CreateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`input`: [CreateStockLocationInput](../types/CreateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -149,7 +149,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`id`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;void\\&#62;",
+    "type": "(`id`: `string`, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -158,7 +158,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO[]\\&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -167,7 +167,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;[StockLocationDTO[], number]\\&#62;",
+    "type": "(`selector`: [FilterableStockLocationProps](../types/FilterableStockLocationProps.mdx), `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../types/StockLocationDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -176,7 +176,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)\\&#60;StockLocationDTO\\&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../interfaces/FindConfig-1.mdx)&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -185,7 +185,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../types/UpdateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise\\&#60;StockLocationDTO\\&#62;",
+    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../types/UpdateStockLocationInput.mdx), `context?`: [SharedContext](../types/SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -198,7 +198,7 @@ ___
 
 ### associateLocation
 
-`**associateLocation**(salesChannelId, locationId): Promise\&#60;void\&#62;`
+`**associateLocation**(salesChannelId, locationId): Promise&#60;void&#62;`
 
 Associates a sales channel with a stock location.
 
@@ -227,12 +227,12 @@ Associates a sales channel with a stock location.
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves when the association has been created.",
@@ -245,7 +245,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise\&#60;TResult\&#62;`
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -277,7 +277,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -286,7 +286,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -295,7 +295,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -306,12 +306,12 @@ transaction manager is created.
 
 #### Returns
 
-Promise\&#60;TResult\&#62;
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -324,7 +324,7 @@ ___
 
 ### listLocationIds
 
-`**listLocationIds**(salesChannelId): Promise\&#60;string[]\&#62;`
+`**listLocationIds**(salesChannelId): Promise&#60;string[]&#62;`
 
 Lists the stock locations associated with a sales channel.
 
@@ -344,12 +344,12 @@ Lists the stock locations associated with a sales channel.
 
 #### Returns
 
-Promise\&#60;string[]\&#62;
+Promise&#60;string[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string[]\\&#62;",
+    "type": "Promise&#60;string[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves with an array of location IDs.",
@@ -362,7 +362,7 @@ ___
 
 ### listSalesChannelIds
 
-`**listSalesChannelIds**(locationId): Promise\&#60;string[]\&#62;`
+`**listSalesChannelIds**(locationId): Promise&#60;string[]&#62;`
 
 Lists the sales channels associated with a stock location.
 
@@ -382,12 +382,12 @@ Lists the sales channels associated with a stock location.
 
 #### Returns
 
-Promise\&#60;string[]\&#62;
+Promise&#60;string[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;string[]\\&#62;",
+    "type": "Promise&#60;string[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves with an array of sales channel IDs.",
@@ -400,7 +400,7 @@ ___
 
 ### removeLocation
 
-`**removeLocation**(locationId, salesChannelId?): Promise\&#60;void\&#62;`
+`**removeLocation**(locationId, salesChannelId?): Promise&#60;void&#62;`
 
 Removes an association between a sales channel and a stock location.
 
@@ -429,12 +429,12 @@ Removes an association between a sales channel and a stock location.
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves when the association has been removed.",
@@ -454,7 +454,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -483,7 +483,7 @@ ___
 
 ### withTransaction
 
-`**withTransaction**(transactionManager?): SalesChannelLocationService`
+`**withTransaction**(transactionManager?): [SalesChannelLocationService](SalesChannelLocationService.mdx)`
 
 #### Parameters
 

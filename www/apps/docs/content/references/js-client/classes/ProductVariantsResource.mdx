@@ -206,7 +206,7 @@ medusa.product.variants
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreVariantsListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreVariantsListRes](../internal/types/internal.StoreVariantsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product variants.",
@@ -231,7 +231,7 @@ medusa.product.variants
               {
                 "name": "allow_backorder",
                 "type": "`boolean`",
-                "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
+                "description": "Whether the Product Variant should be purchasable when `inventory\\_quantity` is 0.",
                 "optional": false,
                 "defaultValue": "false",
                 "expandable": false,
@@ -638,7 +638,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;StoreVariantsRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreVariantsRes](../internal/types/internal.StoreVariantsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product variant's details.",
@@ -663,7 +663,7 @@ medusa.product.variants.retrieve(productVariantId).then(({ variant }) => {
               {
                 "name": "allow_backorder",
                 "type": "`boolean`",
-                "description": "Whether the Product Variant should be purchasable when \\`inventory\\_quantity\\` is 0.",
+                "description": "Whether the Product Variant should be purchasable when `inventory\\_quantity` is 0.",
                 "optional": false,
                 "defaultValue": "false",
                 "expandable": false,

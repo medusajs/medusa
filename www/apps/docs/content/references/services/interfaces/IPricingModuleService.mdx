@@ -10,7 +10,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### addPrices
 
-`**addPrices**(data, sharedContext?): Promise\&#60;PriceSetDTO\&#62;`
+`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method adds prices to a price set.
 
@@ -110,12 +110,12 @@ async function addPricesToPriceSet (priceSetId: string) {
 
 #### Returns
 
-Promise\&#60;PriceSetDTO\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The price set that the prices were added to.",
@@ -124,7 +124,7 @@ Promise\&#60;PriceSetDTO\&#62;
   }
 ]} />
 
-`**addPrices**(data, sharedContext?): Promise\&#60;PriceSetDTO[]\&#62;`
+`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;`
 
 This method adds prices to multiple price sets.
 
@@ -224,12 +224,12 @@ async function addPricesToPriceSet (priceSetId: string) {
 
 #### Returns
 
-Promise\&#60;PriceSetDTO[]\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of the price sets that prices were added to.",
@@ -242,7 +242,7 @@ ___
 
 ### addRules
 
-`**addRules**(data, sharedContext?): Promise\&#60;PriceSetDTO\&#62;`
+`**addRules**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method adds rules to a price set.
 
@@ -292,12 +292,12 @@ async function addRulesToPriceSet (priceSetId: string) {
 
 #### Returns
 
-Promise\&#60;PriceSetDTO\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The price set that the rules were added to.",
@@ -306,7 +306,7 @@ Promise\&#60;PriceSetDTO\&#62;
   }
 ]} />
 
-`**addRules**(data, sharedContext?): Promise\&#60;PriceSetDTO[]\&#62;`
+`**addRules**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;`
 
 This method adds rules to multiple price sets.
 
@@ -356,12 +356,12 @@ async function addRulesToPriceSet (priceSetId: string) {
 
 #### Returns
 
-Promise\&#60;PriceSetDTO[]\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of the price sets that the rules were added to.",
@@ -374,7 +374,7 @@ ___
 
 ### calculatePrices
 
-`**calculatePrices**(filters, context?, sharedContext?): Promise\&#60;CalculatedPriceSetDTO\&#62;`
+`**calculatePrices**(filters, context?, sharedContext?): Promise&#60;[CalculatedPriceSetDTO](CalculatedPriceSetDTO.mdx)&#62;`
 
 This method is used to calculate prices based on the provided filters and context.
 
@@ -482,12 +482,12 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
 
 #### Returns
 
-Promise\&#60;CalculatedPriceSetDTO\&#62;
+Promise&#60;[CalculatedPriceSetDTO](CalculatedPriceSetDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CalculatedPriceSetDTO\\&#62;",
+    "type": "Promise&#60;[CalculatedPriceSetDTO](CalculatedPriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The calculated price matching the context and filters provided.",
@@ -500,7 +500,7 @@ ___
 
 ### create
 
-`**create**(data, sharedContext?): Promise\&#60;PriceSetDTO\&#62;`
+`**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method is used to create a new price set.
 
@@ -603,12 +603,12 @@ async function createPriceSet() {
 
 #### Returns
 
-Promise\&#60;PriceSetDTO\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created price set.",
@@ -617,7 +617,7 @@ Promise\&#60;PriceSetDTO\&#62;
   }
 ]} />
 
-`**create**(data, sharedContext?): Promise\&#60;PriceSetDTO[]\&#62;`
+`**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;`
 
 This method is used to create multiple price sets.
 
@@ -717,12 +717,12 @@ async function createPriceSets() {
 
 #### Returns
 
-Promise\&#60;PriceSetDTO[]\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price sets.",
@@ -735,7 +735,7 @@ ___
 
 ### createCurrencies
 
-`**createCurrencies**(data, sharedContext?): Promise\&#60;CurrencyDTO[]\&#62;`
+`**createCurrencies**(data, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;`
 
 This method is used to create new currencies.
 
@@ -785,12 +785,12 @@ async function createCurrencies() {
 
 #### Returns
 
-Promise\&#60;CurrencyDTO[]\&#62;
+Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CurrencyDTO[]\\&#62;",
+    "type": "Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created currencies.",
@@ -803,7 +803,7 @@ ___
 
 ### createMoneyAmounts
 
-`**createMoneyAmounts**(data, sharedContext?): Promise\&#60;MoneyAmountDTO[]\&#62;`
+`**createMoneyAmounts**(data, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;`
 
 This method creates money amounts.
 
@@ -857,12 +857,12 @@ async function retrieveMoneyAmounts() {
 
 #### Returns
 
-Promise\&#60;MoneyAmountDTO[]\&#62;
+Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;MoneyAmountDTO[]\\&#62;",
+    "type": "Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created money amounts.",
@@ -875,7 +875,7 @@ ___
 
 ### createPriceRules
 
-`**createPriceRules**(data, sharedContext?): Promise\&#60;PriceRuleDTO[]\&#62;`
+`**createPriceRules**(data, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
 
 This method is used to create new price rules based on the provided data.
 
@@ -936,12 +936,12 @@ async function createPriceRules (
 
 #### Returns
 
-Promise\&#60;PriceRuleDTO[]\&#62;
+Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceRuleDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price rules.",
@@ -954,7 +954,7 @@ ___
 
 ### createPriceSetMoneyAmountRules
 
-`**createPriceSetMoneyAmountRules**(data, sharedContext?): Promise\&#60;PriceSetMoneyAmountRulesDTO[]\&#62;`
+`**createPriceSetMoneyAmountRules**(data, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;`
 
 This method is used to create new price set money amount rules. A price set money amount rule creates an association between a price set money amount and
 a rule type.
@@ -1006,12 +1006,12 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
 
 #### Returns
 
-Promise\&#60;PriceSetMoneyAmountRulesDTO[]\&#62;
+Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetMoneyAmountRulesDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price set money amount rules.",
@@ -1024,7 +1024,7 @@ ___
 
 ### createRuleTypes
 
-`**createRuleTypes**(data, sharedContext?): Promise\&#60;RuleTypeDTO[]\&#62;`
+`**createRuleTypes**(data, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;`
 
 This method is used to create new rule types.
 
@@ -1072,12 +1072,12 @@ async function createRuleTypes() {
 
 #### Returns
 
-Promise\&#60;RuleTypeDTO[]\&#62;
+Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;RuleTypeDTO[]\\&#62;",
+    "type": "Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created rule types.",
@@ -1090,7 +1090,7 @@ ___
 
 ### delete
 
-`**delete**(ids, sharedContext?): Promise\&#60;void\&#62;`
+`**delete**(ids, sharedContext?): Promise&#60;void&#62;`
 
 This method deletes price sets by their IDs.
 
@@ -1133,12 +1133,12 @@ async function removePriceSetRule (priceSetIds: string[]) {
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the price sets are successfully deleted.",
@@ -1151,7 +1151,7 @@ ___
 
 ### deleteCurrencies
 
-`**deleteCurrencies**(currencyCodes, sharedContext?): Promise\&#60;void\&#62;`
+`**deleteCurrencies**(currencyCodes, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete currencies based on their currency code.
 
@@ -1192,12 +1192,12 @@ async function deleteCurrencies() {
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the currencies are deleted.",
@@ -1210,7 +1210,7 @@ ___
 
 ### deleteMoneyAmounts
 
-`**deleteMoneyAmounts**(ids, sharedContext?): Promise\&#60;void\&#62;`
+`**deleteMoneyAmounts**(ids, sharedContext?): Promise&#60;void&#62;`
 
 This method deletes money amounts by their IDs.
 
@@ -1255,12 +1255,12 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the money amounts are successfully deleted.",
@@ -1273,7 +1273,7 @@ ___
 
 ### deletePriceRules
 
-`**deletePriceRules**(priceRuleIds, sharedContext?): Promise\&#60;void\&#62;`
+`**deletePriceRules**(priceRuleIds, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete price rules based on the specified IDs.
 
@@ -1318,12 +1318,12 @@ async function deletePriceRules (
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the price rules are deleted.",
@@ -1336,7 +1336,7 @@ ___
 
 ### deletePriceSetMoneyAmountRules
 
-`**deletePriceSetMoneyAmountRules**(ids, sharedContext?): Promise\&#60;void\&#62;`
+`**deletePriceSetMoneyAmountRules**(ids, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete price set money amount rules based on the specified IDs.
 
@@ -1379,12 +1379,12 @@ async function deletePriceSetMoneyAmountRule (id: string) {
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the price set money amount rules are deleted.",
@@ -1397,7 +1397,7 @@ ___
 
 ### deleteRuleTypes
 
-`**deleteRuleTypes**(ruleTypeIds, sharedContext?): Promise\&#60;void\&#62;`
+`**deleteRuleTypes**(ruleTypeIds, sharedContext?): Promise&#60;void&#62;`
 
 This method is used to delete rule types based on the provided IDs.
 
@@ -1440,12 +1440,12 @@ async function deleteRuleTypes (ruleTypeId: string) {
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the rule types are deleted.",
@@ -1458,7 +1458,7 @@ ___
 
 ### list
 
-`**list**(filters?, config?, sharedContext?): Promise\&#60;PriceSetDTO[]\&#62;`
+`**list**(filters?, config?, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
 
@@ -1580,7 +1580,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;",
     "description": "The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
     "optional": true,
     "defaultValue": "",
@@ -1600,12 +1600,12 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 
 #### Returns
 
-Promise\&#60;PriceSetDTO[]\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price sets.",
@@ -1618,7 +1618,7 @@ ___
 
 ### listAndCount
 
-`**listAndCount**(filters?, config?, sharedContext?): Promise\&#60;[PriceSetDTO[], number]\&#62;`
+`**listAndCount**(filters?, config?, sharedContext?): Promise&#60;[[PriceSetDTO](PriceSetDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price sets along with the total count of available price sets satisfying the provided filters.
 
@@ -1740,7 +1740,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;",
     "description": "The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
     "optional": true,
     "defaultValue": "",
@@ -1760,12 +1760,12 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 
 #### Returns
 
-Promise\&#60;[PriceSetDTO[], number]\&#62;
+Promise&#60;[[PriceSetDTO](PriceSetDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[PriceSetDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[PriceSetDTO](PriceSetDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price sets along with their total count.",
@@ -1778,7 +1778,7 @@ ___
 
 ### listAndCountCurrencies
 
-`**listAndCountCurrencies**(filters?, config?, sharedContext?): Promise\&#60;[CurrencyDTO[], number]\&#62;`
+`**listAndCountCurrencies**(filters?, config?, sharedContext?): Promise&#60;[[CurrencyDTO](CurrencyDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of currencies along with the total count of available currencies satisfying the provided filters.
 
@@ -1866,7 +1866,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;CurrencyDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -1886,12 +1886,12 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 
 #### Returns
 
-Promise\&#60;[CurrencyDTO[], number]\&#62;
+Promise&#60;[[CurrencyDTO](CurrencyDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[CurrencyDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[CurrencyDTO](CurrencyDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of currencies along with the total count.",
@@ -1904,7 +1904,7 @@ ___
 
 ### listAndCountMoneyAmounts
 
-`**listAndCountMoneyAmounts**(filters?, config?, sharedContext?): Promise\&#60;[MoneyAmountDTO[], number]\&#62;`
+`**listAndCountMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[[MoneyAmountDTO](MoneyAmountDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of money amounts along with the total count of available money amounts satisfying the provided filters.
 
@@ -2024,7 +2024,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;MoneyAmountDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
@@ -2044,12 +2044,12 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 
 #### Returns
 
-Promise\&#60;[MoneyAmountDTO[], number]\&#62;
+Promise&#60;[[MoneyAmountDTO](MoneyAmountDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[MoneyAmountDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[MoneyAmountDTO](MoneyAmountDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of money amounts along with their total count.",
@@ -2062,7 +2062,7 @@ ___
 
 ### listAndCountPriceRules
 
-`**listAndCountPriceRules**(filters?, config?, sharedContext?): Promise\&#60;[PriceRuleDTO[], number]\&#62;`
+`**listAndCountPriceRules**(filters?, config?, sharedContext?): Promise&#60;[[PriceRuleDTO](PriceRuleDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price rules along with the total count of available price rules satisfying the provided filters.
 
@@ -2171,7 +2171,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceRuleDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;",
     "description": "The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price rule.",
     "optional": true,
     "defaultValue": "",
@@ -2191,12 +2191,12 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 
 #### Returns
 
-Promise\&#60;[PriceRuleDTO[], number]\&#62;
+Promise&#60;[[PriceRuleDTO](PriceRuleDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[PriceRuleDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[PriceRuleDTO](PriceRuleDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price rules along with their total count.",
@@ -2209,7 +2209,7 @@ ___
 
 ### listAndCountPriceSetMoneyAmountRules
 
-`**listAndCountPriceSetMoneyAmountRules**(filters?, config?, sharedContext?): Promise\&#60;[PriceSetMoneyAmountRulesDTO[], number]\&#62;`
+`**listAndCountPriceSetMoneyAmountRules**(filters?, config?, sharedContext?): Promise&#60;[[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price set money amount rules along with the total count of
 available price set money amount rules satisfying the provided filters.
@@ -2319,7 +2319,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetMoneyAmountRulesDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -2339,12 +2339,12 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 
 #### Returns
 
-Promise\&#60;[PriceSetMoneyAmountRulesDTO[], number]\&#62;
+Promise&#60;[[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[PriceSetMoneyAmountRulesDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amount rules and their total count.",
@@ -2357,7 +2357,7 @@ ___
 
 ### listAndCountPriceSetMoneyAmounts
 
-`**listAndCountPriceSetMoneyAmounts**(filters?, config?, sharedContext?): Promise\&#60;[PriceSetMoneyAmountDTO[], number]\&#62;`
+`**listAndCountPriceSetMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of price set money amounts along with the total count of
 available price set money amounts satisfying the provided filters.
@@ -2467,7 +2467,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetMoneyAmountDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount.",
     "optional": true,
     "defaultValue": "",
@@ -2487,12 +2487,12 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 
 #### Returns
 
-Promise\&#60;[PriceSetMoneyAmountDTO[], number]\&#62;
+Promise&#60;[[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[PriceSetMoneyAmountDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amounts and their total count.",
@@ -2505,7 +2505,7 @@ ___
 
 ### listAndCountRuleTypes
 
-`**listAndCountRuleTypes**(filters?, config?, sharedContext?): Promise\&#60;[RuleTypeDTO[], number]\&#62;`
+`**listAndCountRuleTypes**(filters?, config?, sharedContext?): Promise&#60;[[RuleTypeDTO](RuleTypeDTO.mdx)[], number]&#62;`
 
 This method is used to retrieve a paginated list of rule types along with the total count of available rule types satisfying the provided filters.
 
@@ -2620,7 +2620,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;RuleTypeDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a rule type.",
     "optional": true,
     "defaultValue": "",
@@ -2640,12 +2640,12 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 
 #### Returns
 
-Promise\&#60;[RuleTypeDTO[], number]\&#62;
+Promise&#60;[[RuleTypeDTO](RuleTypeDTO.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;[RuleTypeDTO[], number]\\&#62;",
+    "type": "Promise&#60;[[RuleTypeDTO](RuleTypeDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of rule types along with their total count.",
@@ -2658,7 +2658,7 @@ ___
 
 ### listCurrencies
 
-`**listCurrencies**(filters?, config?, sharedContext?): Promise\&#60;CurrencyDTO[]\&#62;`
+`**listCurrencies**(filters?, config?, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of currencies based on optional filters and configuration.
 
@@ -2746,7 +2746,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;CurrencyDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -2766,12 +2766,12 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 
 #### Returns
 
-Promise\&#60;CurrencyDTO[]\&#62;
+Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CurrencyDTO[]\\&#62;",
+    "type": "Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of currencies.",
@@ -2784,7 +2784,7 @@ ___
 
 ### listMoneyAmounts
 
-`**listMoneyAmounts**(filters?, config?, sharedContext?): Promise\&#60;MoneyAmountDTO[]\&#62;`
+`**listMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of money amounts based on optional filters and configuration.
 
@@ -2904,7 +2904,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;MoneyAmountDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
@@ -2924,12 +2924,12 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 
 #### Returns
 
-Promise\&#60;MoneyAmountDTO[]\&#62;
+Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;MoneyAmountDTO[]\\&#62;",
+    "type": "Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of money amounts.",
@@ -2942,7 +2942,7 @@ ___
 
 ### listPriceRules
 
-`**listPriceRules**(filters?, config?, sharedContext?): Promise\&#60;PriceRuleDTO[]\&#62;`
+`**listPriceRules**(filters?, config?, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price rules based on optional filters and configuration.
 
@@ -3051,7 +3051,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceRuleDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;",
     "description": "The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price rule.",
     "optional": true,
     "defaultValue": "",
@@ -3071,12 +3071,12 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 
 #### Returns
 
-Promise\&#60;PriceRuleDTO[]\&#62;
+Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceRuleDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price rules.",
@@ -3089,7 +3089,7 @@ ___
 
 ### listPriceSetMoneyAmountRules
 
-`**listPriceSetMoneyAmountRules**(filters?, config?, sharedContext?): Promise\&#60;PriceSetMoneyAmountRulesDTO[]\&#62;`
+`**listPriceSetMoneyAmountRules**(filters?, config?, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price set money amount rules based on optional filters and configuration.
 
@@ -3198,7 +3198,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetMoneyAmountRulesDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -3218,12 +3218,12 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 
 #### Returns
 
-Promise\&#60;PriceSetMoneyAmountRulesDTO[]\&#62;
+Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetMoneyAmountRulesDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amount rules.",
@@ -3236,7 +3236,7 @@ ___
 
 ### listPriceSetMoneyAmounts
 
-`**listPriceSetMoneyAmounts**(filters?, config?, sharedContext?): Promise\&#60;PriceSetMoneyAmountDTO[]\&#62;`
+`**listPriceSetMoneyAmounts**(filters?, config?, sharedContext?): Promise&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of price set money amounts based on optional filters and configuration.
 
@@ -3345,7 +3345,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetMoneyAmountDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount.",
     "optional": true,
     "defaultValue": "",
@@ -3365,12 +3365,12 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 
 #### Returns
 
-Promise\&#60;PriceSetMoneyAmountDTO[]\&#62;
+Promise&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetMoneyAmountDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetMoneyAmountDTO](PriceSetMoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amounts.",
@@ -3383,7 +3383,7 @@ ___
 
 ### listRuleTypes
 
-`**listRuleTypes**(filters?, config?, sharedContext?): Promise\&#60;RuleTypeDTO[]\&#62;`
+`**listRuleTypes**(filters?, config?, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;`
 
 This method is used to retrieve a paginated list of rule types based on optional filters and configuration.
 
@@ -3498,7 +3498,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;RuleTypeDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a rule type.",
     "optional": true,
     "defaultValue": "",
@@ -3518,12 +3518,12 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 
 #### Returns
 
-Promise\&#60;RuleTypeDTO[]\&#62;
+Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;RuleTypeDTO[]\\&#62;",
+    "type": "Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of rule types.",
@@ -3536,7 +3536,7 @@ ___
 
 ### removeRules
 
-`**removeRules**(data, sharedContext?): Promise\&#60;void\&#62;`
+`**removeRules**(data, sharedContext?): Promise&#60;void&#62;`
 
 This method remove rules from a price set.
 
@@ -3584,12 +3584,12 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
 
 #### Returns
 
-Promise\&#60;void\&#62;
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;void\\&#62;",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when rules are successfully removed.",
@@ -3602,7 +3602,7 @@ ___
 
 ### retrieve
 
-`**retrieve**(id, config?, sharedContext?): Promise\&#60;PriceSetDTO\&#62;`
+`**retrieve**(id, config?, sharedContext?): Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;`
 
 This method is used to retrieves a price set by its ID.
 
@@ -3661,7 +3661,7 @@ async function retrievePriceSet (priceSetId: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;",
     "description": "The configurations determining how the price set is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
     "optional": true,
     "defaultValue": "",
@@ -3681,12 +3681,12 @@ async function retrievePriceSet (priceSetId: string) {
 
 #### Returns
 
-Promise\&#60;PriceSetDTO\&#62;
+Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetDTO\\&#62;",
+    "type": "Promise&#60;[PriceSetDTO](PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price set.",
@@ -3699,7 +3699,7 @@ ___
 
 ### retrieveCurrency
 
-`**retrieveCurrency**(code, config?, sharedContext?): Promise\&#60;CurrencyDTO\&#62;`
+`**retrieveCurrency**(code, config?, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;`
 
 This method retrieves a currency by its code and and optionally based on the provided configurations.
 
@@ -3758,7 +3758,7 @@ async function retrieveCurrency (code: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;CurrencyDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currency is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -3778,12 +3778,12 @@ async function retrieveCurrency (code: string) {
 
 #### Returns
 
-Promise\&#60;CurrencyDTO\&#62;
+Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CurrencyDTO\\&#62;",
+    "type": "Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved currency.",
@@ -3796,7 +3796,7 @@ ___
 
 ### retrieveMoneyAmount
 
-`**retrieveMoneyAmount**(id, config?, sharedContext?): Promise\&#60;MoneyAmountDTO\&#62;`
+`**retrieveMoneyAmount**(id, config?, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;`
 
 This method retrieves a money amount by its ID.
 
@@ -3855,7 +3855,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;MoneyAmountDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how a money amount is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
@@ -3875,12 +3875,12 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
 
 #### Returns
 
-Promise\&#60;MoneyAmountDTO\&#62;
+Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;MoneyAmountDTO\\&#62;",
+    "type": "Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved money amount.",
@@ -3893,7 +3893,7 @@ ___
 
 ### retrievePriceRule
 
-`**retrievePriceRule**(id, config?, sharedContext?): Promise\&#60;PriceRuleDTO\&#62;`
+`**retrievePriceRule**(id, config?, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;`
 
 This method is used to retrieve a price rule by its ID.
 
@@ -3947,7 +3947,7 @@ async function retrievePriceRule (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceRuleDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;",
     "description": "The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price rule.",
     "optional": true,
     "defaultValue": "",
@@ -3967,12 +3967,12 @@ async function retrievePriceRule (id: string) {
 
 #### Returns
 
-Promise\&#60;PriceRuleDTO\&#62;
+Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceRuleDTO\\&#62;",
+    "type": "Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price rule.",
@@ -3985,7 +3985,7 @@ ___
 
 ### retrievePriceSetMoneyAmountRules
 
-`**retrievePriceSetMoneyAmountRules**(id, config?, sharedContext?): Promise\&#60;PriceSetMoneyAmountRulesDTO\&#62;`
+`**retrievePriceSetMoneyAmountRules**(id, config?, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;`
 
 This method is used to a price set money amount rule by its ID based on the provided configuration.
 
@@ -4039,7 +4039,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;PriceSetMoneyAmountRulesDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -4059,12 +4059,12 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 
 #### Returns
 
-Promise\&#60;PriceSetMoneyAmountRulesDTO\&#62;
+Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetMoneyAmountRulesDTO\\&#62;",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price set money amount rule.",
@@ -4077,7 +4077,7 @@ ___
 
 ### retrieveRuleType
 
-`**retrieveRuleType**(id, config?, sharedContext?): Promise\&#60;RuleTypeDTO\&#62;`
+`**retrieveRuleType**(id, config?, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;`
 
 This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.
 
@@ -4131,7 +4131,7 @@ async function retrieveRuleType (ruleTypeId: string) {
   },
   {
     "name": "config",
-    "type": "[FindConfig](FindConfig-1.mdx)\\&#60;RuleTypeDTO\\&#62;",
+    "type": "[FindConfig](FindConfig-1.mdx)&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the rule type is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a rule type.",
     "optional": true,
     "defaultValue": "",
@@ -4151,12 +4151,12 @@ async function retrieveRuleType (ruleTypeId: string) {
 
 #### Returns
 
-Promise\&#60;RuleTypeDTO\&#62;
+Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;RuleTypeDTO\\&#62;",
+    "type": "Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved rule type.",
@@ -4169,7 +4169,7 @@ ___
 
 ### updateCurrencies
 
-`**updateCurrencies**(data, sharedContext?): Promise\&#60;CurrencyDTO[]\&#62;`
+`**updateCurrencies**(data, sharedContext?): Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;`
 
 This method is used to update existing currencies with the provided data. In each currency object, the currency code must be provided to identify which currency to update.
 
@@ -4217,12 +4217,12 @@ async function updateCurrencies() {
 
 #### Returns
 
-Promise\&#60;CurrencyDTO[]\&#62;
+Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;CurrencyDTO[]\\&#62;",
+    "type": "Promise&#60;[CurrencyDTO](CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated currencies.",
@@ -4235,7 +4235,7 @@ ___
 
 ### updateMoneyAmounts
 
-`**updateMoneyAmounts**(data, sharedContext?): Promise\&#60;MoneyAmountDTO[]\&#62;`
+`**updateMoneyAmounts**(data, sharedContext?): Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;`
 
 This method updates existing money amounts.
 
@@ -4285,12 +4285,12 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 
 #### Returns
 
-Promise\&#60;MoneyAmountDTO[]\&#62;
+Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;MoneyAmountDTO[]\\&#62;",
+    "type": "Promise&#60;[MoneyAmountDTO](MoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated money amounts.",
@@ -4303,7 +4303,7 @@ ___
 
 ### updatePriceRules
 
-`**updatePriceRules**(data, sharedContext?): Promise\&#60;PriceRuleDTO[]\&#62;`
+`**updatePriceRules**(data, sharedContext?): Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;`
 
 This method is used to update price rules, each with their provided data.
 
@@ -4356,12 +4356,12 @@ async function updatePriceRules (
 
 #### Returns
 
-Promise\&#60;PriceRuleDTO[]\&#62;
+Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceRuleDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceRuleDTO](PriceRuleDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated price rules.",
@@ -4374,7 +4374,7 @@ ___
 
 ### updatePriceSetMoneyAmountRules
 
-`**updatePriceSetMoneyAmountRules**(data, sharedContext?): Promise\&#60;PriceSetMoneyAmountRulesDTO[]\&#62;`
+`**updatePriceSetMoneyAmountRules**(data, sharedContext?): Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;`
 
 This method is used to update price set money amount rules, each with their provided data.
 
@@ -4424,12 +4424,12 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
 
 #### Returns
 
-Promise\&#60;PriceSetMoneyAmountRulesDTO[]\&#62;
+Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;PriceSetMoneyAmountRulesDTO[]\\&#62;",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated price set money amount rules.",
@@ -4442,7 +4442,7 @@ ___
 
 ### updateRuleTypes
 
-`**updateRuleTypes**(data, sharedContext?): Promise\&#60;RuleTypeDTO[]\&#62;`
+`**updateRuleTypes**(data, sharedContext?): Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;`
 
 This method is used to update existing rule types with the provided data.
 
@@ -4492,12 +4492,12 @@ async function updateRuleTypes (ruleTypeId: string) {
 
 #### Returns
 
-Promise\&#60;RuleTypeDTO[]\&#62;
+Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;RuleTypeDTO[]\\&#62;",
+    "type": "Promise&#60;[RuleTypeDTO](RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated rule types.",

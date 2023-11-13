@@ -127,7 +127,7 @@ medusa.admin.currencies
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminCurrenciesListRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCurrenciesListRes](../internal/types/internal.AdminCurrenciesListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of currencies with pagination fields.",
@@ -135,7 +135,7 @@ medusa.admin.currencies
     "children": [
       {
         "name": "AdminCurrenciesListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `\\&#123; currencies: Currency[]  \\&#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; currencies: [Currency](../internal/classes/internal.Currency.mdx)[]  &#125;`",
         "description": "List of currencies with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -299,7 +299,7 @@ medusa.admin.currencies
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)\\&#60;AdminCurrenciesRes\\&#62;",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCurrenciesRes](../internal/types/internal.AdminCurrenciesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the currency's details.",

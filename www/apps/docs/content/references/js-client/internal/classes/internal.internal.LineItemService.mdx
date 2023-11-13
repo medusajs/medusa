@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "cartRepository_",
-    "type": "Repository\\&#60;Cart\\&#62; & `\\&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  \\&#125;`",
+    "type": "Repository&#60;[Cart](internal.Cart.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "itemTaxLineRepo_",
-    "type": "Repository\\&#60;LineItemTaxLine\\&#62; & `\\&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  \\&#125;`",
+    "type": "Repository&#60;[LineItemTaxLine](internal.internal.LineItemTaxLine.mdx)&#62; & `&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "Repository\\&#60;LineItem\\&#62; & `\\&#123; findByReturn: Method findByReturn  \\&#125;`",
+    "type": "Repository&#60;[LineItem](internal.LineItem.mdx)&#62; & `&#123; findByReturn: Method findByReturn  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -177,7 +177,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: EntityManager) => Promise\\&#60;TResult\\&#62;",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -186,7 +186,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -195,7 +195,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => Promise\\&#60;void \\| TResult\\&#62;",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -209,7 +209,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -236,7 +236,7 @@ ___
   },
   {
     "name": "data",
-    "type": "DeepPartial\\&#60;LineItem\\&#62;",
+    "type": "DeepPartial&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -268,7 +268,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem[]\\&#62;",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -302,7 +302,7 @@ Create a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created line item",
@@ -346,7 +346,7 @@ return.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem[]\\&#62;",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created line items",
@@ -366,7 +366,7 @@ Create a line item tax line.
 <ParameterTypes parameters={[
   {
     "name": "args",
-    "type": "DeepPartial\\&#60;LineItemTaxLine\\&#62;",
+    "type": "DeepPartial&#60;[LineItemTaxLine](internal.internal.LineItemTaxLine.mdx)&#62;",
     "description": "tax line partial passed to the repo create method",
     "optional": false,
     "defaultValue": "",
@@ -414,7 +414,7 @@ Deletes a line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| `null` \\| LineItem\\&#62;",
+    "type": "Promise&#60;undefined \\| `null` \\| [LineItem](internal.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -446,7 +446,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;undefined \\| `null` \\| LineItem\\&#62;",
+    "type": "Promise&#60;undefined \\| `null` \\| [LineItem](internal.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -512,7 +512,7 @@ Generate a single or multiple line item without persisting the data into the db
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;TResult\\&#62;",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -620,7 +620,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[GenerateLineItemContext](../types/internal.GenerateLineItemContext.mdx) & `\\&#123; variantPricing: ProductVariantPricing  \\&#125;`",
+    "type": "[GenerateLineItemContext](../types/internal.GenerateLineItemContext.mdx) & `&#123; variantPricing: [ProductVariantPricing](../types/internal.ProductVariantPricing.mdx)  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -634,7 +634,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem\\&#62;",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -652,7 +652,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[Selector](../types/internal.internal.Selector.mdx)\\&#60;LineItem\\&#62;",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -661,7 +661,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)\\&#60;LineItem\\&#62;",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -675,7 +675,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem[]\\&#62;",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -718,7 +718,7 @@ Retrieves a line item by its id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem\\&#62;",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item",
@@ -736,7 +736,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `\\&#123; code: string  \\&#125;`",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -770,7 +770,7 @@ Updates a line item
 <ParameterTypes parameters={[
   {
     "name": "idOrSelector",
-    "type": "`string` \\| [Selector](../types/internal.internal.Selector.mdx)\\&#60;LineItem\\&#62;",
+    "type": "`string` \\| [Selector](../types/internal.internal.Selector.mdx)&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "description": "the id or selector of the line item(s) to update",
     "optional": false,
     "defaultValue": "",
@@ -779,7 +779,7 @@ Updates a line item
   },
   {
     "name": "data",
-    "type": "[Partial](../types/internal.Partial.mdx)\\&#60;LineItem\\&#62;",
+    "type": "[Partial](../types/internal.Partial.mdx)&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "description": "the properties to update the line item(s)",
     "optional": false,
     "defaultValue": "",
@@ -793,7 +793,7 @@ Updates a line item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "Promise\\&#60;LineItem[]\\&#62;",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated line item(s)",

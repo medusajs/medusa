@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "extends",
-    "type": "`\\&#123; relationship: JoinerRelationship ; serviceName: string  \\&#125;`[]",
+    "type": "`&#123; relationship: [JoinerRelationship](../types/internal.internal-1.JoinerRelationship.mdx) ; serviceName: string  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,8 +38,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "fieldAlias",
-    "type": "`Record<string, string \\| \\&#123; forwardArgumentsOnPath: string[] ; path: string  \\&#125;>`",
-    "description": "alias for deeper nested relationships (e.g. \\&#123; 'price': 'prices.calculated\\_price\\_set.amount' \\&#125;)",
+    "type": "`Record<string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;>`",
+    "description": "alias for deeper nested relationships (e.g. &#123; 'price': 'prices.calculated\\_price\\_set.amount' &#125;)",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
