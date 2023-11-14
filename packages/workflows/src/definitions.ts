@@ -16,8 +16,8 @@ export enum Workflows {
   CreatePriceList = "create-price-list",
   UpdatePriceLists = "update-price-lists",
   DeletePriceLists = "delete-price-lists",
-  RemovePriceListProducts = "remove-price-list-products",
-  RemovePriceListVariants = "remove-price-list-variants",
+  RemovePriceListProductPrices = "remove-price-list-products",
+  RemovePriceListVariantPrices = "remove-price-list-variants",
   RemovePriceListPrices = "remove-price-list-prices",
 }
 

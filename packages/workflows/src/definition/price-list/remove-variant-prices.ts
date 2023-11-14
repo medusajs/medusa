@@ -58,7 +58,7 @@ const handlers = new Map([
 ])
 
 WorkflowManager.register(
-  Workflows.RemovePriceListVariants,
+  Workflows.RemovePriceListVariantPrices,
   workflowSteps,
   handlers
 )
@@ -67,7 +67,7 @@ export const removePriceListVariantPrices = exportWorkflow<
   WorkflowTypes.PriceListWorkflow.RemovePriceListVariantsWorkflowInputDTO,
   string[]
 >(
-  Workflows.RemovePriceListVariants,
+  Workflows.RemovePriceListVariantPrices,
   RemoveVariantPricesActions.removePriceListPriceSetPrices,
   async (data) => data
 )
