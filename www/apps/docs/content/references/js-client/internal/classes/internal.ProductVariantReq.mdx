@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs with additional information.",
     "optional": true,
     "defaultValue": "",
@@ -110,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "options",
-    "type": "[`ProductVariantOptionReq`](internal.ProductVariantOptionReq-2.mdx)[]",
+    "type": "[ProductVariantOptionReq](internal.ProductVariantOptionReq-2.mdx)[]",
     "description": "An array of Product Option values that the variant corresponds to. The option values should be added into the array in the same index as in the `options` field of the product.",
     "optional": true,
     "defaultValue": "",
@@ -128,7 +128,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "prices",
-    "type": "[`ProductVariantPricesCreateReq`](internal.ProductVariantPricesCreateReq.mdx)[]",
+    "type": "[ProductVariantPricesCreateReq](internal.ProductVariantPricesCreateReq.mdx)[]",
     "description": "An array of product variant prices. A product variant can have different prices for each region or currency code.",
     "optional": false,
     "defaultValue": "",

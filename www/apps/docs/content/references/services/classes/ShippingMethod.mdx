@@ -12,7 +12,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
 
 ### constructor
 
-**new ShippingMethod**()
+`**new ShippingMethod**()`
 
 A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of.
 
@@ -21,7 +21,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -39,7 +39,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "claim_order",
-    "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+    "type": "[ClaimOrder](ClaimOrder.mdx)",
     "description": "The details of the claim that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +57,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "return_order",
-    "type": "[`Return`](Return.mdx)",
+    "type": "[Return](Return.mdx)",
     "description": "The details of the return that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "shipping_option",
-    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "type": "[ShippingOption](ShippingOption.mdx)",
     "description": "The details of the shipping option the method was created from.",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "swap",
-    "type": "[`Swap`](Swap.mdx)",
+    "type": "[Swap](Swap.mdx)",
     "description": "The details of the swap that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "tax_lines",
-    "type": "[`ShippingMethodTaxLine`](ShippingMethodTaxLine.mdx)[]",
+    "type": "[ShippingMethodTaxLine](ShippingMethodTaxLine.mdx)[]",
     "description": "The details of the tax lines applied on the shipping method.",
     "optional": false,
     "defaultValue": "",
@@ -206,7 +206,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

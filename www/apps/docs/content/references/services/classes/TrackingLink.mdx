@@ -12,7 +12,7 @@ A tracking link holds information about tracking numbers for a Fulfillment. Trac
 
 ### constructor
 
-**new TrackingLink**()
+`**new TrackingLink**()`
 
 A tracking link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment. Typically, the tracking link is provided from the third-party service integrated through the used fulfillment provider.
 
@@ -39,7 +39,7 @@ A tracking link holds information about tracking numbers for a Fulfillment. Trac
   },
   {
     "name": "fulfillment",
-    "type": "[`Fulfillment`](Fulfillment.mdx)",
+    "type": "[Fulfillment](Fulfillment.mdx)",
     "description": "The details of the fulfillment that the tracking link belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A tracking link holds information about tracking numbers for a Fulfillment. Trac
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -115,7 +115,7 @@ A tracking link holds information about tracking numbers for a Fulfillment. Trac
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

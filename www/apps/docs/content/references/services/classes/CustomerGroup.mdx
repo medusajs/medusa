@@ -12,7 +12,7 @@ A customer group that can be used to organize customers into groups of similar t
 
 ### constructor
 
-**new CustomerGroup**()
+`**new CustomerGroup**()`
 
 A customer group that can be used to organize customers into groups of similar traits.
 
@@ -30,7 +30,7 @@ A customer group that can be used to organize customers into groups of similar t
   },
   {
     "name": "customers",
-    "type": "[`Customer`](Customer.mdx)[]",
+    "type": "[Customer](Customer.mdx)[]",
     "description": "The details of the customers that belong to the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +57,7 @@ A customer group that can be used to organize customers into groups of similar t
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A customer group that can be used to organize customers into groups of similar t
   },
   {
     "name": "price_lists",
-    "type": "[`PriceList`](PriceList.mdx)[]",
+    "type": "[PriceList](PriceList.mdx)[]",
     "description": "The price lists that are associated with the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -97,7 +97,7 @@ A customer group that can be used to organize customers into groups of similar t
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

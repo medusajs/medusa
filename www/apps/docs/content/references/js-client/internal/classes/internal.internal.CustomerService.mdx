@@ -13,7 +13,7 @@ Provides layer to manipulate customers.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "addressRepository_",
-    "type": "`Repository`<[`Address`](internal.Address.mdx)\\>",
+    "type": "Repository&#60;[Address](internal.Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "customerRepository_",
-    "type": "`Repository`<[`Customer`](internal.Customer.mdx)\\> & { `listAndCount`: Method listAndCount  }",
+    "type": "Repository&#60;[Customer](internal.Customer.mdx)&#62; & `&#123; listAndCount: Method listAndCount  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ Provides layer to manipulate customers.
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -166,7 +166,7 @@ Provides layer to manipulate customers.
   },
   {
     "name": "address",
-    "type": "[`AddressCreatePayload`](internal.AddressCreatePayload.mdx)",
+    "type": "[AddressCreatePayload](internal.AddressCreatePayload.mdx)",
     "description": "Address fields used when creating an address.",
     "optional": false,
     "defaultValue": "",
@@ -180,7 +180,7 @@ Provides layer to manipulate customers.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx) \\| [`Address`](internal.Address.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx) \\| [Address](internal.Address.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -202,7 +202,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -211,7 +211,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -220,7 +220,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -234,7 +234,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -254,7 +254,7 @@ Return the total number of documents in database
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the count operation",
@@ -277,7 +277,7 @@ used to hold details of customers.
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[`CreateCustomerInput`](../types/internal.CreateCustomerInput.mdx)",
+    "type": "[CreateCustomerInput](../types/internal.CreateCustomerInput.mdx)",
     "description": "the customer to create",
     "optional": false,
     "defaultValue": "",
@@ -291,7 +291,7 @@ used to hold details of customers.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of create",
@@ -325,7 +325,7 @@ Deletes a customer from a given customer id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| [`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;void \\| [Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation.",
@@ -363,7 +363,7 @@ which is always 15 minutes.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`string`\\>",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the generated JSON web token",
@@ -397,7 +397,7 @@ Hashes a password
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`string`\\>",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "hashed password",
@@ -415,7 +415,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Customer`](internal.Customer.mdx)\\> & { `groups?`: `string`[] ; `q?`: `string`  }",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Customer](internal.Customer.mdx)&#62; & `&#123; groups?: string[] ; q?: string  &#125;`",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -424,7 +424,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -438,7 +438,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)[]\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -456,7 +456,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Customer`](internal.Customer.mdx)\\> & { `groups?`: `string`[] ; `q?`: `string`  }",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Customer](internal.Customer.mdx)&#62; & `&#123; groups?: string[] ; q?: string  &#125;`",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -465,7 +465,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -479,7 +479,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Customer`](internal.Customer.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[Customer](internal.Customer.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -506,7 +506,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -520,7 +520,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)[]\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -561,7 +561,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -590,7 +590,7 @@ Gets a customer by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -604,7 +604,7 @@ Gets a customer by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -633,7 +633,7 @@ Gets a registered customer by email.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -647,7 +647,7 @@ Gets a registered customer by email.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -678,7 +678,7 @@ Gets a customer by phone.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "the config object containing query settings",
     "optional": true,
     "defaultValue": "",
@@ -692,7 +692,7 @@ Gets a customer by phone.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the customer document.",
@@ -719,7 +719,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -733,7 +733,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -760,7 +760,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Customer](internal.Customer.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -774,7 +774,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -792,7 +792,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -835,7 +835,7 @@ Updates a customer.
   },
   {
     "name": "update",
-    "type": "[`UpdateCustomerInput`](../types/internal.UpdateCustomerInput.mdx)",
+    "type": "[UpdateCustomerInput](../types/internal.UpdateCustomerInput.mdx)",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -849,7 +849,7 @@ Updates a customer.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](internal.Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](internal.Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -885,7 +885,7 @@ ___
   },
   {
     "name": "address",
-    "type": "[`StorePostCustomersCustomerAddressesAddressReq`](internal.StorePostCustomersCustomerAddressesAddressReq.mdx)",
+    "type": "[StorePostCustomersCustomerAddressesAddressReq](internal.StorePostCustomersCustomerAddressesAddressReq.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -899,7 +899,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Address`](internal.Address.mdx)\\>",
+    "type": "Promise&#60;[Address](internal.Address.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -919,7 +919,7 @@ Updates the customers' billing address.
 <ParameterTypes parameters={[
   {
     "name": "customer",
-    "type": "[`Customer`](internal.Customer.mdx)",
+    "type": "[Customer](internal.Customer.mdx)",
     "description": "the Customer to update",
     "optional": false,
     "defaultValue": "",
@@ -928,7 +928,7 @@ Updates the customers' billing address.
   },
   {
     "name": "addressOrId",
-    "type": "`undefined` \\| `string` \\| `DeepPartial`<[`Address`](internal.Address.mdx)\\>",
+    "type": "`undefined` \\| `string` \\| DeepPartial&#60;[Address](internal.Address.mdx)&#62;",
     "description": "the value to set the billing address to",
     "optional": false,
     "defaultValue": "",
@@ -942,7 +942,7 @@ Updates the customers' billing address.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -960,7 +960,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -974,7 +974,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "CustomerService",
-    "type": "[`CustomerService`](internal.internal.CustomerService.mdx)",
+    "type": "[CustomerService](internal.internal.CustomerService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

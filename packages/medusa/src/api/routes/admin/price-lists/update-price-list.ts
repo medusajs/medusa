@@ -1,5 +1,5 @@
 import { WorkflowTypes } from "@medusajs/types"
-import { MedusaV2Flag } from "@medusajs/utils"
+import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
 import { UpdatePriceLists } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
@@ -15,11 +15,7 @@ import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import PriceListService from "../../../../services/price-list"
-import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { validator } from "../../../../utils/validator"
 import { listAndCountPriceListPricingModule } from "./get-price-list"

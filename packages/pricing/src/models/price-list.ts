@@ -13,7 +13,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { PriceListStatus, PriceListType } from "@medusajs/types"
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import PriceListRule from "./price-list-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"

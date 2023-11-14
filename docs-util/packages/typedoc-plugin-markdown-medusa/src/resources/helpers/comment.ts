@@ -3,6 +3,7 @@ import * as Handlebars from "handlebars"
 import * as Path from "path"
 import { CommentDisplayPart } from "typedoc/dist/lib/models/comments/comment"
 import { MarkdownTheme } from "../../theme"
+import { escapeChars } from "../../utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper("comment", function (parts: CommentDisplayPart[]) {
@@ -10,6 +11,8 @@ export default function (theme: MarkdownTheme) {
     for (const part of parts) {
       switch (part.kind) {
         case "text":
+          result.push(escapeChars(part.text, false))
+          break
         case "code":
           result.push(part.text)
           break

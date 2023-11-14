@@ -58,7 +58,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "payload",
-    "type": "[`AdminPostPublishableApiKeySalesChannelsBatchReq`](../internal/classes/internal.AdminPostPublishableApiKeySalesChannelsBatchReq.mdx)",
+    "type": "[AdminPostPublishableApiKeySalesChannelsBatchReq](../internal/classes/internal.AdminPostPublishableApiKeySalesChannelsBatchReq.mdx)",
     "description": "The sales channels to add.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ medusa.admin.publishableApiKeys
     "children": [
       {
         "name": "sales_channel_ids",
-        "type": "[`ProductBatchSalesChannel`](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the sales channels to add to the publishable API key",
         "optional": false,
         "defaultValue": "",
@@ -87,7 +87,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -101,7 +101,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysRes`](../internal/types/internal.AdminPublishableApiKeysRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../internal/types/internal.AdminPublishableApiKeysRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
@@ -117,7 +117,7 @@ medusa.admin.publishableApiKeys
         "children": [
           {
             "name": "publishable_api_key",
-            "type": "[`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)",
+            "type": "[PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)",
             "description": "Publishable API key details.",
             "optional": false,
             "defaultValue": "",
@@ -220,7 +220,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostPublishableApiKeysReq`](../internal/classes/internal.AdminPostPublishableApiKeysReq.mdx)",
+    "type": "[AdminPostPublishableApiKeysReq](../internal/classes/internal.AdminPostPublishableApiKeysReq.mdx)",
     "description": "The publishable API key to be created.",
     "optional": false,
     "defaultValue": "",
@@ -239,7 +239,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -253,7 +253,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysRes`](../internal/types/internal.AdminPublishableApiKeysRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../internal/types/internal.AdminPublishableApiKeysRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
@@ -269,7 +269,7 @@ medusa.admin.publishableApiKeys
         "children": [
           {
             "name": "publishable_api_key",
-            "type": "[`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)",
+            "type": "[PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)",
             "description": "Publishable API key details.",
             "optional": false,
             "defaultValue": "",
@@ -379,7 +379,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -393,7 +393,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the delete operation's details.",
@@ -469,7 +469,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "payload",
-    "type": "[`AdminDeletePublishableApiKeySalesChannelsBatchReq`](../internal/classes/internal.AdminDeletePublishableApiKeySalesChannelsBatchReq.mdx)",
+    "type": "[AdminDeletePublishableApiKeySalesChannelsBatchReq](../internal/classes/internal.AdminDeletePublishableApiKeySalesChannelsBatchReq.mdx)",
     "description": "The sales channels to delete from the publishable API key.",
     "optional": false,
     "defaultValue": "",
@@ -477,7 +477,7 @@ medusa.admin.publishableApiKeys
     "children": [
       {
         "name": "sales_channel_ids",
-        "type": "[`ProductBatchSalesChannel`](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the sales channels to remove from the publishable API key",
         "optional": false,
         "defaultValue": "",
@@ -498,7 +498,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -512,7 +512,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysRes`](../internal/types/internal.AdminPublishableApiKeysRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../internal/types/internal.AdminPublishableApiKeysRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
@@ -528,7 +528,7 @@ medusa.admin.publishableApiKeys
         "children": [
           {
             "name": "publishable_api_key",
-            "type": "[`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)",
+            "type": "[PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)",
             "description": "Publishable API key details.",
             "optional": false,
             "defaultValue": "",
@@ -647,7 +647,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`GetPublishableApiKeysParams`](../internal/classes/internal.GetPublishableApiKeysParams.mdx)",
+    "type": "[GetPublishableApiKeysParams](../internal/classes/internal.GetPublishableApiKeysParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved publishable API keys.",
     "optional": true,
     "defaultValue": "",
@@ -702,7 +702,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -716,7 +716,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysListRes`](../internal/types/internal.AdminPublishableApiKeysListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysListRes](../internal/types/internal.AdminPublishableApiKeysListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of publishable API keys with pagination fields.",
@@ -724,7 +724,7 @@ medusa.admin.publishableApiKeys
     "children": [
       {
         "name": "AdminPublishableApiKeysListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `publishable_api_keys`: [`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; publishable_api_keys: [PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)[]  &#125;`",
         "description": "The list of publishable API keys with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -759,7 +759,7 @@ medusa.admin.publishableApiKeys
           },
           {
             "name": "publishable_api_keys",
-            "type": "[`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)[]",
+            "type": "[PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)[]",
             "description": "An array of publishable API keys details.",
             "optional": false,
             "defaultValue": "",
@@ -869,7 +869,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "query",
-    "type": "[`GetPublishableApiKeySalesChannelsParams`](../internal/classes/internal.GetPublishableApiKeySalesChannelsParams.mdx)",
+    "type": "[GetPublishableApiKeySalesChannelsParams](../internal/classes/internal.GetPublishableApiKeySalesChannelsParams.mdx)",
     "description": "Filters to apply on the retrieved sales channels.",
     "optional": true,
     "defaultValue": "",
@@ -924,7 +924,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -938,7 +938,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysListSalesChannelsRes`](../internal/types/internal.AdminPublishableApiKeysListSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysListSalesChannelsRes](../internal/types/internal.AdminPublishableApiKeysListSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of sales channels.",
@@ -954,7 +954,7 @@ medusa.admin.publishableApiKeys
         "children": [
           {
             "name": "sales_channels",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
             "description": "An array of sales channels details.",
             "optional": false,
             "defaultValue": "",
@@ -1007,7 +1007,7 @@ medusa.admin.publishableApiKeys
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -1016,7 +1016,7 @@ medusa.admin.publishableApiKeys
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1082,7 +1082,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "query",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1091,7 +1091,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1105,7 +1105,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysRes`](../internal/types/internal.AdminPublishableApiKeysRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../internal/types/internal.AdminPublishableApiKeysRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishable API key's details.",
@@ -1121,7 +1121,7 @@ medusa.admin.publishableApiKeys
         "children": [
           {
             "name": "publishable_api_key",
-            "type": "[`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)",
+            "type": "[PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)",
             "description": "Publishable API key details.",
             "optional": false,
             "defaultValue": "",
@@ -1231,7 +1231,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1245,7 +1245,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysRes`](../internal/types/internal.AdminPublishableApiKeysRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../internal/types/internal.AdminPublishableApiKeysRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
@@ -1261,7 +1261,7 @@ medusa.admin.publishableApiKeys
         "children": [
           {
             "name": "publishable_api_key",
-            "type": "[`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)",
+            "type": "[PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)",
             "description": "Publishable API key details.",
             "optional": false,
             "defaultValue": "",
@@ -1373,7 +1373,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "payload",
-    "type": "[`AdminPostPublishableApiKeysPublishableApiKeyReq`](../internal/classes/internal.AdminPostPublishableApiKeysPublishableApiKeyReq.mdx)",
+    "type": "[AdminPostPublishableApiKeysPublishableApiKeyReq](../internal/classes/internal.AdminPostPublishableApiKeysPublishableApiKeyReq.mdx)",
     "description": "The attributes to update in the publishable API key.",
     "optional": false,
     "defaultValue": "",
@@ -1392,7 +1392,7 @@ medusa.admin.publishableApiKeys
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1406,7 +1406,7 @@ medusa.admin.publishableApiKeys
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPublishableApiKeysRes`](../internal/types/internal.AdminPublishableApiKeysRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPublishableApiKeysRes](../internal/types/internal.AdminPublishableApiKeysRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the publishbale API key's details.",
@@ -1422,7 +1422,7 @@ medusa.admin.publishableApiKeys
         "children": [
           {
             "name": "publishable_api_key",
-            "type": "[`PublishableApiKey`](../internal/classes/internal.PublishableApiKey.mdx)",
+            "type": "[PublishableApiKey](../internal/classes/internal.PublishableApiKey.mdx)",
             "description": "Publishable API key details.",
             "optional": false,
             "defaultValue": "",

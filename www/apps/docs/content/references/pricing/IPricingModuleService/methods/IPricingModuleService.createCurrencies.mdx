@@ -41,7 +41,7 @@ async function createCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)[]",
+    "type": "[CreateCurrencyDTO](../../interfaces/CreateCurrencyDTO.mdx)[]",
     "description": "The currencies to create.",
     "optional": false,
     "defaultValue": "",
@@ -87,7 +87,7 @@ async function createCurrencies() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -147,7 +147,7 @@ async function createCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]\\>",
+    "type": "Promise&#60;[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created currencies.",
@@ -155,7 +155,7 @@ async function createCurrencies() {
     "children": [
       {
         "name": "CurrencyDTO[]",
-        "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]",
+        "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",

@@ -67,7 +67,7 @@ Country details
   },
   {
     "name": "region",
-    "type": "[`Region`](Region.mdx)",
+    "type": "[Region](Region.mdx)",
     "description": "The details of the region the country is associated with.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ Country details
       },
       {
         "name": "countries",
-        "type": "[`Country`](Country.mdx)[]",
+        "type": "[Country](Country.mdx)[]",
         "description": "The details of the countries included in this region.",
         "optional": false,
         "defaultValue": "",
@@ -102,7 +102,7 @@ Country details
       },
       {
         "name": "currency",
-        "type": "[`Currency`](Currency.mdx)",
+        "type": "[Currency](Currency.mdx)",
         "description": "The details of the currency used in the region.",
         "optional": false,
         "defaultValue": "",
@@ -129,7 +129,7 @@ Country details
       },
       {
         "name": "fulfillment_providers",
-        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
+        "type": "[FulfillmentProvider](FulfillmentProvider.mdx)[]",
         "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
         "optional": false,
         "defaultValue": "",
@@ -166,7 +166,7 @@ Country details
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -184,7 +184,7 @@ Country details
       },
       {
         "name": "payment_providers",
-        "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
+        "type": "[PaymentProvider](PaymentProvider.mdx)[]",
         "description": "The details of the payment providers that can be used to process payments in the region.",
         "optional": false,
         "defaultValue": "",
@@ -202,7 +202,7 @@ Country details
       },
       {
         "name": "tax_provider",
-        "type": "[`TaxProvider`](TaxProvider.mdx)",
+        "type": "[TaxProvider](TaxProvider.mdx)",
         "description": "The details of the tax provider used in the region.",
         "optional": false,
         "defaultValue": "",
@@ -229,7 +229,7 @@ Country details
       },
       {
         "name": "tax_rates",
-        "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
+        "type": "``null`` \\| [TaxRate](TaxRate.mdx)[]",
         "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",

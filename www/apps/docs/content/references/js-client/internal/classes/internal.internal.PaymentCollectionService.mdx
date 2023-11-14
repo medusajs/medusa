@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "customerService_",
-    "type": "[`CustomerService`](internal.internal.CustomerService.mdx)",
+    "type": "[CustomerService](internal.internal.CustomerService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "paymentCollectionRepository_",
-    "type": "`Repository`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\> & { `getPaymentCollectionIdByPaymentId`: Method getPaymentCollectionIdByPaymentId ; `getPaymentCollectionIdBySessionId`: Method getPaymentCollectionIdBySessionId  }",
+    "type": "Repository&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62; & `&#123; getPaymentCollectionIdByPaymentId: Method getPaymentCollectionIdByPaymentId ; getPaymentCollectionIdBySessionId: Method getPaymentCollectionIdBySessionId  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "paymentProviderService_",
-    "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
+    "type": "[PaymentProviderService](internal.internal.PaymentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -155,7 +155,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -177,7 +177,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -186,7 +186,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -195,7 +195,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -209,7 +209,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -247,7 +247,7 @@ Authorizes the payment sessions of a payment collection.
   },
   {
     "name": "context",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "additional data required by payment providers",
     "optional": true,
     "defaultValue": "",
@@ -261,7 +261,7 @@ Authorizes the payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection and its payment session.",
@@ -281,7 +281,7 @@ Creates a new payment collection.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreatePaymentCollectionInput`](../types/internal.CreatePaymentCollectionInput.mdx)",
+    "type": "[CreatePaymentCollectionInput](../types/internal.CreatePaymentCollectionInput.mdx)",
     "description": "info to create the payment collection",
     "optional": false,
     "defaultValue": "",
@@ -295,7 +295,7 @@ Creates a new payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection created.",
@@ -329,7 +329,7 @@ Deletes a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| [`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;undefined \\| [PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection removed.",
@@ -363,7 +363,7 @@ Marks a payment collection as authorized bypassing the payment flow.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment session authorized.",
@@ -415,7 +415,7 @@ Removes and recreate a payment session of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentSession`](internal.PaymentSession.mdx)\\>",
+    "type": "Promise&#60;[PaymentSession](internal.PaymentSession.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the new payment session created.",
@@ -444,7 +444,7 @@ Retrieves a payment collection by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "description": "the config to retrieve the payment collection",
     "optional": true,
     "defaultValue": "",
@@ -458,7 +458,7 @@ Retrieves a payment collection by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection.",
@@ -487,7 +487,7 @@ Manages a single payment sessions of a payment collection.
   },
   {
     "name": "sessionInput",
-    "type": "[`PaymentCollectionsSessionsInput`](../types/internal.PaymentCollectionsSessionsInput.mdx)",
+    "type": "[PaymentCollectionsSessionsInput](../types/internal.PaymentCollectionsSessionsInput.mdx)",
     "description": "object containing payment session info",
     "optional": false,
     "defaultValue": "",
@@ -510,7 +510,7 @@ Manages a single payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection and its payment session.",
@@ -530,7 +530,7 @@ Manages multiple payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "paymentCollectionOrId",
-    "type": "`string` \\| [`PaymentCollection`](internal.PaymentCollection.mdx)",
+    "type": "`string` \\| [PaymentCollection](internal.PaymentCollection.mdx)",
     "description": "the id of the payment collection",
     "optional": false,
     "defaultValue": "",
@@ -539,7 +539,7 @@ Manages multiple payment sessions of a payment collection.
   },
   {
     "name": "sessionsInput",
-    "type": "[`PaymentCollectionsSessionsBatchInput`](../types/internal.PaymentCollectionsSessionsBatchInput.mdx)[]",
+    "type": "[PaymentCollectionsSessionsBatchInput](../types/internal.PaymentCollectionsSessionsBatchInput.mdx)[]",
     "description": "array containing payment session info",
     "optional": false,
     "defaultValue": "",
@@ -562,7 +562,7 @@ Manages multiple payment sessions of a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection and its payment sessions.",
@@ -580,7 +580,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -623,7 +623,7 @@ Updates a payment collection.
   },
   {
     "name": "data",
-    "type": "`DeepPartial`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "DeepPartial&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "description": "info to be updated",
     "optional": false,
     "defaultValue": "",
@@ -637,7 +637,7 @@ Updates a payment collection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentCollection`](internal.PaymentCollection.mdx)\\>",
+    "type": "Promise&#60;[PaymentCollection](internal.PaymentCollection.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the payment collection updated.",
@@ -655,7 +655,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -669,7 +669,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "default",
-    "type": "[`PaymentCollectionService`](internal.internal.PaymentCollectionService.mdx)",
+    "type": "[PaymentCollectionService](internal.internal.PaymentCollectionService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

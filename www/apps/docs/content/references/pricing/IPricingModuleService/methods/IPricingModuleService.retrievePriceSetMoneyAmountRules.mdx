@@ -65,7 +65,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +139,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -199,7 +199,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetMoneyAmountRulesDTO`](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price set money amount rule.",
@@ -216,7 +216,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
       },
       {
         "name": "price_set_money_amount",
-        "type": "[`PriceSetMoneyAmountDTO`](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+        "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
         "description": "The associated price set money amount. It may only be available if the relation `price_set_money_amount` is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -233,7 +233,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
           },
           {
             "name": "money_amount",
-            "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)",
+            "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)",
             "description": "The money amount associated with the price set money amount. It may only be available if the relation `money_amount` is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -242,7 +242,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
           },
           {
             "name": "price_rules",
-            "type": "[`PriceRuleDTO`](../../interfaces/PriceRuleDTO.mdx)[]",
+            "type": "[PriceRuleDTO](../../interfaces/PriceRuleDTO.mdx)[]",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -251,7 +251,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
           },
           {
             "name": "price_set",
-            "type": "[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)",
+            "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)",
             "description": "The price set associated with the price set money amount. It may only be available if the relation `price_set` is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -280,7 +280,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
       },
       {
         "name": "rule_type",
-        "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)",
+        "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)",
         "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -316,7 +316,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
           {
             "name": "rule_attribute",
             "type": "`string`",
-            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,

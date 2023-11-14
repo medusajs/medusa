@@ -7,13 +7,13 @@ import {
   FindConfig,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  PriceListType,
   PriceSetDTO,
   PricingContext,
   PricingFilters,
   PricingTypes,
   RuleTypeDTO,
 } from "@medusajs/types"
+import { PriceListType } from "@medusajs/utils"
 
 import {
   Currency,

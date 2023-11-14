@@ -12,7 +12,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
 
 ### constructor
 
-**new MoneyAmount**()
+`**new MoneyAmount**()`
 
 A Money Amount represent a price amount, for example, a product variant's price or a price in a price list. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used, the amount will be in the currency defined for the Region.
 
@@ -39,7 +39,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
   },
   {
     "name": "currency",
-    "type": "[`Currency`](Currency.mdx)",
+    "type": "[Currency](Currency.mdx)",
     "description": "The details of the currency that the money amount may belong to.",
     "optional": true,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
   },
   {
     "name": "price_list",
-    "type": "``null`` \\| [`PriceList`](PriceList.mdx)",
+    "type": "``null`` \\| [PriceList](PriceList.mdx)",
     "description": "The details of the price list that the money amount may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -111,7 +111,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
   },
   {
     "name": "region",
-    "type": "[`Region`](Region.mdx)",
+    "type": "[Region](Region.mdx)",
     "description": "The details of the region that the money amount may belong to.",
     "optional": true,
     "defaultValue": "",
@@ -138,7 +138,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
   },
   {
     "name": "variant",
-    "type": "[`ProductVariant`](ProductVariant.mdx)",
+    "type": "[ProductVariant](ProductVariant.mdx)",
     "description": "The details of the product variant that the money amount may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -156,7 +156,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
   },
   {
     "name": "variants",
-    "type": "[`ProductVariant`](ProductVariant.mdx)[]",
+    "type": "[ProductVariant](ProductVariant.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -169,7 +169,7 @@ A Money Amount represent a price amount, for example, a product variant's price 
 
 ### afterLoad
 
-`Private` **afterLoad**(): `void`
+`Private **afterLoad**(): void`
 
 #### Returns
 
@@ -191,7 +191,7 @@ ___
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `undefined` \| `void`
+`Private **beforeInsert**(): undefined \| void`
 
 #### Returns
 
@@ -213,7 +213,7 @@ ___
 
 ### beforeUpdate
 
-`Private` **beforeUpdate**(): `void`
+`Private **beforeUpdate**(): void`
 
 #### Returns
 

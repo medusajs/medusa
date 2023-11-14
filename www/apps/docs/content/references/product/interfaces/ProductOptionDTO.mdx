@@ -31,7 +31,7 @@ A product option's data.
   },
   {
     "name": "metadata",
-    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "type": "``null`` \\| `Record<string, unknown>`",
     "description": "Holds custom data in key-value pairs.",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ A product option's data.
   },
   {
     "name": "product",
-    "type": "[`ProductDTO`](ProductDTO.mdx)",
+    "type": "[ProductDTO](ProductDTO.mdx)",
     "description": "The associated product. It may only be available if the `product` relation is expanded.",
     "optional": false,
     "defaultValue": "",
@@ -48,7 +48,7 @@ A product option's data.
     "children": [
       {
         "name": "categories",
-        "type": "``null`` \\| [`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+        "type": "``null`` \\| [ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
         "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
         "optional": true,
         "defaultValue": "",
@@ -57,7 +57,7 @@ A product option's data.
       },
       {
         "name": "collection",
-        "type": "[`ProductCollectionDTO`](ProductCollectionDTO.mdx)",
+        "type": "[ProductCollectionDTO](ProductCollectionDTO.mdx)",
         "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -92,7 +92,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -101,7 +101,7 @@ A product option's data.
           },
           {
             "name": "products",
-            "type": "[`ProductDTO`](ProductDTO.mdx)[]",
+            "type": "[ProductDTO](ProductDTO.mdx)[]",
             "description": "The associated products. It may only be available if the `products` relation is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -202,7 +202,7 @@ A product option's data.
       },
       {
         "name": "images",
-        "type": "[`ProductImageDTO`](ProductImageDTO.mdx)[]",
+        "type": "[ProductImageDTO](ProductImageDTO.mdx)[]",
         "description": "The associated product images. It may only be available if the `images` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -228,7 +228,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -275,7 +275,7 @@ A product option's data.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "",
         "optional": true,
         "defaultValue": "",
@@ -293,7 +293,7 @@ A product option's data.
       },
       {
         "name": "options",
-        "type": "[`ProductOptionDTO`](ProductOptionDTO.mdx)[]",
+        "type": "[ProductOptionDTO](ProductOptionDTO.mdx)[]",
         "description": "The associated product options. It may only be available if the `options` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -319,7 +319,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -328,7 +328,7 @@ A product option's data.
           },
           {
             "name": "product",
-            "type": "[`ProductDTO`](ProductDTO.mdx)",
+            "type": "[ProductDTO](ProductDTO.mdx)",
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -346,7 +346,7 @@ A product option's data.
           },
           {
             "name": "values",
-            "type": "[`ProductOptionValueDTO`](ProductOptionValueDTO.mdx)[]",
+            "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)[]",
             "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -366,7 +366,7 @@ A product option's data.
       },
       {
         "name": "status",
-        "type": "[`ProductStatus`](../enums/ProductStatus.mdx)",
+        "type": "[ProductStatus](../enums/ProductStatus.mdx)",
         "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
         "optional": false,
         "defaultValue": "",
@@ -421,7 +421,7 @@ A product option's data.
       },
       {
         "name": "tags",
-        "type": "[`ProductTagDTO`](ProductTagDTO.mdx)[]",
+        "type": "[ProductTagDTO](ProductTagDTO.mdx)[]",
         "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -438,7 +438,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -447,7 +447,7 @@ A product option's data.
           },
           {
             "name": "products",
-            "type": "[`ProductDTO`](ProductDTO.mdx)[]",
+            "type": "[ProductDTO](ProductDTO.mdx)[]",
             "description": "The associated products. It may only be available if the `products` relation is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -485,7 +485,7 @@ A product option's data.
       },
       {
         "name": "type",
-        "type": "[`ProductTypeDTO`](ProductTypeDTO.mdx)[]",
+        "type": "[ProductTypeDTO](ProductTypeDTO.mdx)[]",
         "description": "The associated product type. It may only be available if the `type` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -511,7 +511,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -540,7 +540,7 @@ A product option's data.
       },
       {
         "name": "variants",
-        "type": "[`ProductVariantDTO`](ProductVariantDTO.mdx)[]",
+        "type": "[ProductVariantDTO](ProductVariantDTO.mdx)[]",
         "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -656,7 +656,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -674,7 +674,7 @@ A product option's data.
           },
           {
             "name": "options",
-            "type": "[`ProductOptionValueDTO`](ProductOptionValueDTO.mdx)",
+            "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)",
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -692,7 +692,7 @@ A product option's data.
           },
           {
             "name": "product",
-            "type": "[`ProductDTO`](ProductDTO.mdx)",
+            "type": "[ProductDTO](ProductDTO.mdx)",
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -804,7 +804,7 @@ A product option's data.
   },
   {
     "name": "values",
-    "type": "[`ProductOptionValueDTO`](ProductOptionValueDTO.mdx)[]",
+    "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)[]",
     "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
     "optional": false,
     "defaultValue": "",
@@ -830,7 +830,7 @@ A product option's data.
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "type": "``null`` \\| `Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -839,7 +839,7 @@ A product option's data.
       },
       {
         "name": "option",
-        "type": "[`ProductOptionDTO`](ProductOptionDTO.mdx)",
+        "type": "[ProductOptionDTO](ProductOptionDTO.mdx)",
         "description": "The associated product option. It may only be available if the `option` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -865,7 +865,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -874,7 +874,7 @@ A product option's data.
           },
           {
             "name": "product",
-            "type": "[`ProductDTO`](ProductDTO.mdx)",
+            "type": "[ProductDTO](ProductDTO.mdx)",
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -892,7 +892,7 @@ A product option's data.
           },
           {
             "name": "values",
-            "type": "[`ProductOptionValueDTO`](ProductOptionValueDTO.mdx)[]",
+            "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)[]",
             "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -912,7 +912,7 @@ A product option's data.
       },
       {
         "name": "variant",
-        "type": "[`ProductVariantDTO`](ProductVariantDTO.mdx)",
+        "type": "[ProductVariantDTO](ProductVariantDTO.mdx)",
         "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -1028,7 +1028,7 @@ A product option's data.
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -1046,7 +1046,7 @@ A product option's data.
           },
           {
             "name": "options",
-            "type": "[`ProductOptionValueDTO`](ProductOptionValueDTO.mdx)",
+            "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)",
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -1064,7 +1064,7 @@ A product option's data.
           },
           {
             "name": "product",
-            "type": "[`ProductDTO`](ProductDTO.mdx)",
+            "type": "[ProductDTO](ProductDTO.mdx)",
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
