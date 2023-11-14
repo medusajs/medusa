@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-require("dotenv").config()
-const fs = require("fs")
-const reverseSidebar = require("./src/utils/reverse-sidebar")
+import "dotenv/config"
+import fs from "fs"
+import { themes as prismThemes } from "prism-react-renderer"
+const reverseSidebarItems = require("./src/utils/reverse-sidebar")
 const excludeSidebarResults = require("./src/utils/exclude-sidebar-results")
 
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
@@ -17,6 +18,13 @@ const config = {
   favicon: "img/favicon.ico",
   organizationName: "medusajs",
   projectName: "medusajs/www",
+  markdown: {
+    mdx1Compat: {
+      comments: true,
+      admonitions: false,
+      headingIds: false,
+    },
+  },
   plugins: [
     require.resolve("docusaurus-plugin-image-zoom"),
     async function tailwindPlugin() {
@@ -125,9 +133,16 @@ const config = {
         process.env.AI_API_ASSISTANT_RECAPTCHA_SITE_KEY || "temp",
     },
     prism: {
-      defaultLanguage: "js",
+      defaultLanguage: "ts",
+      additionalLanguages: ["bash", "json"],
       plugins: ["line-numbers", "show-language"],
-      theme: require("./src/themes/medusaDocs"),
+      theme: {
+        ...prismThemes.vsDark,
+        plain: {
+          ...prismThemes.vsDark.plain,
+          backgroundColor: "#111827",
+        },
+      },
     },
     zoom: {
       selector: ".markdown :not(.no-zoom-img) > img:not(.no-zoom-img)",
@@ -258,7 +273,7 @@ const config = {
             ...args
           }) {
             const sidebarItems = await defaultSidebarItemsGenerator(args)
-            return reverseSidebar(
+            return reverseSidebarItems(
               excludeSidebarResults(sidebarItems, args.item),
               args.item
             )
@@ -282,4 +297,4 @@ if (Object.keys(announcementBar).length) {
   config.themeConfig.announcementBar = announcementBar
 }
 
-module.exports = config
+export default config

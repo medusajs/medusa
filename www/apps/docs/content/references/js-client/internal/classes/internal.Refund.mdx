@@ -49,7 +49,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "The details of the order this refund was created for.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "payment",
-    "type": "[`Payment`](internal.Payment.mdx)",
+    "type": "[Payment](internal.Payment.mdx)",
     "description": "The details of the payment associated with the refund.",
     "optional": false,
     "defaultValue": "",

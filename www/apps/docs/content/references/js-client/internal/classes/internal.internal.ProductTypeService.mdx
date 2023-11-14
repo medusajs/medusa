@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "typeRepository_",
-    "type": "`Repository`<[`ProductType`](internal.ProductType.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }",
+    "type": "Repository&#60;[ProductType](internal.ProductType.mdx)&#62; & `&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -96,7 +96,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -105,7 +105,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -114,7 +114,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -128,7 +128,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -148,7 +148,7 @@ Lists product types
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`ProductType`](internal.ProductType.mdx)\\> & { `discount_condition_id?`: `string` ; `q?`: `string`  }",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ProductType](internal.ProductType.mdx)&#62; & `&#123; discount_condition_id?: string ; q?: string  &#125;`",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -157,7 +157,7 @@ Lists product types
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductType`](internal.ProductType.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductType](internal.ProductType.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": true,
     "defaultValue": "",
@@ -171,7 +171,7 @@ Lists product types
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductType`](internal.ProductType.mdx)[]\\>",
+    "type": "Promise&#60;[ProductType](internal.ProductType.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -191,7 +191,7 @@ Lists product types and adds count.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`ProductType`](internal.ProductType.mdx)\\> & { `discount_condition_id?`: `string` ; `q?`: `string`  }",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ProductType](internal.ProductType.mdx)&#62; & `&#123; discount_condition_id?: string ; q?: string  &#125;`",
     "description": "the query object for find",
     "optional": true,
     "defaultValue": "",
@@ -200,7 +200,7 @@ Lists product types and adds count.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductType`](internal.ProductType.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductType](internal.ProductType.mdx)&#62;",
     "description": "the config to be used for find",
     "optional": true,
     "defaultValue": "",
@@ -214,7 +214,7 @@ Lists product types and adds count.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductType`](internal.ProductType.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductType](internal.ProductType.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -244,7 +244,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductType`](internal.ProductType.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductType](internal.ProductType.mdx)&#62;",
     "description": "object that defines what should be included in the query response",
     "optional": true,
     "defaultValue": "",
@@ -258,7 +258,7 @@ Throws in case of DB Error and if product was not found.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductType`](internal.ProductType.mdx)\\>",
+    "type": "Promise&#60;[ProductType](internal.ProductType.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find one operation.",
@@ -276,7 +276,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -308,7 +308,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -322,7 +322,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ProductTypeService",
-    "type": "[`ProductTypeService`](internal.internal.ProductTypeService.mdx)",
+    "type": "[ProductTypeService](internal.internal.ProductTypeService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -49,7 +49,7 @@ Configuration for the Axios `request` method.
   },
   {
     "name": "instance",
-    "type": "[`AxiosInstance`](internal.AxiosInstance.mdx)",
+    "type": "[AxiosInstance](internal.AxiosInstance.mdx)",
     "description": "The instance of the axios object to which the interceptor is attached.",
     "optional": true,
     "defaultValue": "",
@@ -85,7 +85,7 @@ Configuration for the Axios `request` method.
   },
   {
     "name": "onRetryAttempt",
-    "type": "(`err`: [`AxiosError`](internal.AxiosError.mdx)<`any`, `any`\\>) => `void`",
+    "type": "(`err`: [AxiosError](internal.AxiosError.mdx)&#60;any, any&#62;) => `void`",
     "description": "Function to invoke when a retry attempt is made.",
     "optional": true,
     "defaultValue": "",
@@ -112,7 +112,7 @@ Configuration for the Axios `request` method.
   },
   {
     "name": "shouldRetry",
-    "type": "(`err`: [`AxiosError`](internal.AxiosError.mdx)<`any`, `any`\\>) => `boolean`",
+    "type": "(`err`: [AxiosError](internal.AxiosError.mdx)&#60;any, any&#62;) => `boolean`",
     "description": "Function to invoke which determines if you should retry",
     "optional": true,
     "defaultValue": "",

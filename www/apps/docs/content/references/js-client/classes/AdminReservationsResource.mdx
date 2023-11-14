@@ -47,7 +47,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostReservationsReq`](../internal/classes/internal.AdminPostReservationsReq.mdx)",
+    "type": "[AdminPostReservationsReq](../internal/classes/internal.AdminPostReservationsReq.mdx)",
     "description": "The reservation to be created.",
     "optional": false,
     "defaultValue": "",
@@ -91,7 +91,7 @@ medusa.admin.reservations
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -111,7 +111,7 @@ medusa.admin.reservations
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -125,7 +125,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsRes`](../internal/types/internal.AdminReservationsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminReservationsRes](../internal/types/internal.AdminReservationsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
@@ -141,7 +141,7 @@ medusa.admin.reservations
         "children": [
           {
             "name": "reservation",
-            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)",
+            "type": "[ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)",
             "description": "Reservation details.",
             "optional": false,
             "defaultValue": "",
@@ -221,7 +221,7 @@ medusa.admin.reservations
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -287,7 +287,7 @@ medusa.admin.reservations
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -301,7 +301,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -396,7 +396,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetReservationsParams`](../internal/classes/internal.AdminGetReservationsParams.mdx)",
+    "type": "[AdminGetReservationsParams](../internal/classes/internal.AdminGetReservationsParams.mdx)",
     "description": "Filters and pagination parameters to apply on the retrieved reservations.",
     "optional": true,
     "defaultValue": "",
@@ -404,7 +404,7 @@ medusa.admin.reservations
     "children": [
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the reservations' `created_at` field.",
         "optional": true,
         "defaultValue": "",
@@ -459,7 +459,7 @@ medusa.admin.reservations
       },
       {
         "name": "description",
-        "type": "`string` \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "String filters tp apply on the reservations' `description` field.",
         "optional": true,
         "defaultValue": "",
@@ -531,7 +531,7 @@ medusa.admin.reservations
       },
       {
         "name": "quantity",
-        "type": "[`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "[NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Numerical filters to apply on the reservations' `quantity` field.",
         "optional": true,
         "defaultValue": "",
@@ -579,7 +579,7 @@ medusa.admin.reservations
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -593,7 +593,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsListRes`](../internal/types/internal.AdminReservationsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminReservationsListRes](../internal/types/internal.AdminReservationsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of reservations with pagination fields.",
@@ -601,7 +601,7 @@ medusa.admin.reservations
     "children": [
       {
         "name": "AdminReservationsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `reservations`: [`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; reservations: [ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)[]  &#125;`",
         "description": "The list of reservations with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -636,7 +636,7 @@ medusa.admin.reservations
           },
           {
             "name": "reservations",
-            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)[]",
+            "type": "[ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)[]",
             "description": "An array of reservations details.",
             "optional": false,
             "defaultValue": "",
@@ -716,7 +716,7 @@ medusa.admin.reservations
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -780,7 +780,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -794,7 +794,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsRes`](../internal/types/internal.AdminReservationsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminReservationsRes](../internal/types/internal.AdminReservationsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
@@ -810,7 +810,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
         "children": [
           {
             "name": "reservation",
-            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)",
+            "type": "[ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)",
             "description": "Reservation details.",
             "optional": false,
             "defaultValue": "",
@@ -890,7 +890,7 @@ medusa.admin.reservations.retrieve(reservationId).then(({ reservation }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -958,7 +958,7 @@ medusa.admin.reservations
   },
   {
     "name": "payload",
-    "type": "[`AdminPostReservationsReservationReq`](../internal/classes/internal.AdminPostReservationsReservationReq.mdx)",
+    "type": "[AdminPostReservationsReservationReq](../internal/classes/internal.AdminPostReservationsReservationReq.mdx)",
     "description": "The attributes to update in the reservation.",
     "optional": false,
     "defaultValue": "",
@@ -984,7 +984,7 @@ medusa.admin.reservations
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -1004,7 +1004,7 @@ medusa.admin.reservations
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1018,7 +1018,7 @@ medusa.admin.reservations
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminReservationsRes`](../internal/types/internal.AdminReservationsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminReservationsRes](../internal/types/internal.AdminReservationsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the reservation's details.",
@@ -1034,7 +1034,7 @@ medusa.admin.reservations
         "children": [
           {
             "name": "reservation",
-            "type": "[`ReservationItemDTO`](../internal/types/internal.ReservationItemDTO.mdx)",
+            "type": "[ReservationItemDTO](../internal/types/internal.ReservationItemDTO.mdx)",
             "description": "Reservation details.",
             "optional": false,
             "defaultValue": "",
@@ -1114,7 +1114,7 @@ medusa.admin.reservations
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",

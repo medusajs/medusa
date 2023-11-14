@@ -65,7 +65,7 @@ async function retrieveProductType (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product type is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +139,7 @@ async function retrieveProductType (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -199,7 +199,7 @@ async function retrieveProductType (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product type.",
@@ -225,7 +225,7 @@ async function retrieveProductType (id: string) {
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "type": "``null`` \\| `Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",

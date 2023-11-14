@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).includes
 
-**includes**(`value`, `byteOffset?`, `encoding?`): `boolean`
+`**includes**(value, byteOffset?, encoding?): boolean`
 
 Equivalent to `buf.indexOf() !== -1`.
 
@@ -38,7 +38,7 @@ console.log(buf.includes('this', 4));
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| [`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "`string` \\| `number` \\| [Buffer](../../variables/Buffer-1.mdx)",
     "description": "What to search for.",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ console.log(buf.includes('this', 4));
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "If `value` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",

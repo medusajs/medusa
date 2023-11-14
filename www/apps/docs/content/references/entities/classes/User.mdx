@@ -76,7 +76,7 @@ A User is an administrator who can manage store settings and data.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ A User is an administrator who can manage store settings and data.
   },
   {
     "name": "role",
-    "type": "[`UserRoles`](../enums/UserRoles.mdx)",
+    "type": "[UserRoles](../enums/UserRoles.mdx)",
     "description": "The user's role. These roles don't provide any different privileges.",
     "optional": false,
     "defaultValue": "member",

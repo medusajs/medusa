@@ -117,7 +117,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableRuleTypeProps`](../../interfaces/FilterableRuleTypeProps.mdx)",
+    "type": "[FilterableRuleTypeProps](../../interfaces/FilterableRuleTypeProps.mdx)",
     "description": "The filters to apply on the retrieved rule types.",
     "optional": true,
     "defaultValue": "",
@@ -125,7 +125,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
     "children": [
       {
         "name": "$and",
-        "type": "([`FilterableRuleTypeProps`](../../interfaces/FilterableRuleTypeProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableRuleTypeProps`](../../interfaces/FilterableRuleTypeProps.mdx)\\>)[]",
+        "type": "([FilterableRuleTypeProps](../../interfaces/FilterableRuleTypeProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterableRuleTypeProps](../../interfaces/FilterableRuleTypeProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -134,7 +134,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
       },
       {
         "name": "$or",
-        "type": "([`FilterableRuleTypeProps`](../../interfaces/FilterableRuleTypeProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableRuleTypeProps`](../../interfaces/FilterableRuleTypeProps.mdx)\\>)[]",
+        "type": "([FilterableRuleTypeProps](../../interfaces/FilterableRuleTypeProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterableRuleTypeProps](../../interfaces/FilterableRuleTypeProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
@@ -172,7 +172,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a rule type.",
     "optional": true,
     "defaultValue": "",
@@ -246,7 +246,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -306,7 +306,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of rule types.",
@@ -314,7 +314,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
     "children": [
       {
         "name": "RuleTypeDTO[]",
-        "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]",
+        "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -350,7 +350,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
           {
             "name": "rule_attribute",
             "type": "`string`",
-            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,

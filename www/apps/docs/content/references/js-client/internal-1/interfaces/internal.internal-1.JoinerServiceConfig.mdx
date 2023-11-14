@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "alias",
-    "type": "[`JoinerServiceConfigAlias`](internal.internal-1.JoinerServiceConfigAlias.mdx) \\| [`JoinerServiceConfigAlias`](internal.internal-1.JoinerServiceConfigAlias.mdx)[]",
+    "type": "[JoinerServiceConfigAlias](internal.internal-1.JoinerServiceConfigAlias.mdx) \\| [JoinerServiceConfigAlias](internal.internal-1.JoinerServiceConfigAlias.mdx)[]",
     "description": "Property name to use as entrypoint to the service",
     "optional": true,
     "defaultValue": "",
@@ -20,7 +20,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "args",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Extra arguments to pass to the remoteFetchData callback",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "extends",
-    "type": "{ `relationship`: [`JoinerRelationship`](../types/internal.internal-1.JoinerRelationship.mdx) ; `serviceName`: `string`  }[]",
+    "type": "`&#123; relationship: [JoinerRelationship](../types/internal.internal-1.JoinerRelationship.mdx) ; serviceName: string  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,8 +38,8 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "fieldAlias",
-    "type": "Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\>",
-    "description": "alias for deeper nested relationships (e.g. { 'price': 'prices.calculated_price_set.amount' })",
+    "type": "`Record<string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;>`",
+    "description": "alias for deeper nested relationships (e.g. &#123; 'price': 'prices.calculated\\_price\\_set.amount' &#125;)",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "relationships",
-    "type": "[`JoinerRelationship`](../types/internal.internal-1.JoinerRelationship.mdx)[]",
+    "type": "[JoinerRelationship](../types/internal.internal-1.JoinerRelationship.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",

@@ -12,14 +12,14 @@ Provides layer to manipulate product categories.
 
 ### constructor
 
-**new ProductCategoryService**(`«destructured»`)
+`**new ProductCategoryService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-27.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-27.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -33,7 +33,7 @@ Provides layer to manipulate product categories.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -51,7 +51,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -60,7 +60,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](EventBusService.mdx)",
+    "type": "[EventBusService](EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -69,7 +69,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -78,7 +78,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "productCategoryRepo_",
-    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "type": "TreeRepository&#60;[ProductCategory](ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -87,7 +87,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -136,16 +136,16 @@ Provides layer to manipulate product categories.
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -158,7 +158,7 @@ Provides layer to manipulate product categories.
 
 ### addProducts
 
-**addProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
+`**addProducts**(productCategoryId, productIds): Promise&#60;void&#62;`
 
 Add a batch of product to a product category
 
@@ -187,12 +187,12 @@ Add a batch of product to a product category
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category on which the products have been added",
@@ -205,7 +205,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -237,7 +237,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -246,7 +246,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -255,7 +255,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -266,12 +266,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -284,7 +284,7 @@ ___
 
 ### create
 
-**create**(`productCategoryInput`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+`**create**(productCategoryInput): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Creates a product category
 
@@ -293,7 +293,7 @@ Creates a product category
 <ParameterTypes parameters={[
   {
     "name": "productCategoryInput",
-    "type": "[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx)",
+    "type": "[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx)",
     "description": "parameters to create a product category",
     "optional": false,
     "defaultValue": "",
@@ -304,12 +304,12 @@ Creates a product category
 
 #### Returns
 
-`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created product category",
@@ -322,7 +322,7 @@ ___
 
 ### delete
 
-**delete**(`productCategoryId`): `Promise`<`void`\>
+`**delete**(productCategoryId): Promise&#60;void&#62;`
 
 Deletes a product category
 
@@ -342,12 +342,12 @@ Deletes a product category
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise",
@@ -360,14 +360,14 @@ ___
 
 ### fetchReorderConditions
 
-`Protected` **fetchReorderConditions**(`productCategory`, `input`, `shouldDeleteElement?`): [`ReorderConditions`](../types/ReorderConditions.mdx)
+`Protected **fetchReorderConditions**(productCategory, input, shouldDeleteElement?): [ReorderConditions](../types/ReorderConditions.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "productCategory",
-    "type": "[`ProductCategory`](ProductCategory.mdx)",
+    "type": "[ProductCategory](ProductCategory.mdx)",
     "description": "A product category can be used to categorize products into a hierarchy of categories.",
     "optional": false,
     "defaultValue": "",
@@ -376,7 +376,7 @@ ___
   },
   {
     "name": "input",
-    "type": "[`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)",
+    "type": "[UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -396,7 +396,7 @@ ___
 
 #### Returns
 
-[`ReorderConditions`](../types/ReorderConditions.mdx)
+[ReorderConditions](../types/ReorderConditions.mdx)
 
 <ParameterTypes parameters={[
   {
@@ -414,7 +414,7 @@ ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`, `treeSelector?`): `Promise`<[[`ProductCategory`](ProductCategory.mdx)[], `number`]\>
+`**listAndCount**(selector, config?, treeSelector?): Promise&#60;[[ProductCategory](ProductCategory.mdx)[], number]&#62;`
 
 Lists product category based on the provided parameters and includes the count of
 product category that match the query.
@@ -424,7 +424,7 @@ product category that match the query.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`TreeQuerySelector`](../types/TreeQuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[TreeQuerySelector](../types/TreeQuerySelector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "Filter options for product category.",
     "optional": false,
     "defaultValue": "",
@@ -433,7 +433,7 @@ product category that match the query.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "Configuration for query.",
     "optional": false,
     "defaultValue": "",
@@ -442,7 +442,7 @@ product category that match the query.
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/QuerySelector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "Filter options for product category tree relations",
     "optional": false,
     "defaultValue": "{}",
@@ -453,12 +453,12 @@ product category that match the query.
 
 #### Returns
 
-`Promise`<[[`ProductCategory`](ProductCategory.mdx)[], `number`]\>
+Promise&#60;[[ProductCategory](ProductCategory.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductCategory`](ProductCategory.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductCategory](ProductCategory.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the product category as\n  the first element and the total count of product category that matches the query\n  as the second element.",
@@ -471,14 +471,14 @@ ___
 
 ### performReordering
 
-`Protected` **performReordering**(`repository`, `conditions`): `Promise`<`void`\>
+`Protected **performReordering**(repository, conditions): Promise&#60;void&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "repository",
-    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "type": "TreeRepository&#60;[ProductCategory](ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -487,7 +487,7 @@ ___
   },
   {
     "name": "conditions",
-    "type": "[`ReorderConditions`](../types/ReorderConditions.mdx)",
+    "type": "[ReorderConditions](../types/ReorderConditions.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -498,12 +498,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -516,7 +516,7 @@ ___
 
 ### removeProducts
 
-**removeProducts**(`productCategoryId`, `productIds`): `Promise`<`void`\>
+`**removeProducts**(productCategoryId, productIds): Promise&#60;void&#62;`
 
 Remove a batch of product from a product category
 
@@ -545,12 +545,12 @@ Remove a batch of product from a product category
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category on which the products have been removed",
@@ -563,7 +563,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`productCategoryId`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+`**retrieve**(productCategoryId, config?, selector?, treeSelector?): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Retrieves a product category by id.
 
@@ -581,7 +581,7 @@ Retrieves a product category by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "the config of the product category to retrieve.",
     "optional": false,
     "defaultValue": "{}",
@@ -590,7 +590,7 @@ Retrieves a product category by id.
   },
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -599,7 +599,7 @@ Retrieves a product category by id.
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/QuerySelector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -610,12 +610,12 @@ Retrieves a product category by id.
 
 #### Returns
 
-`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category.",
@@ -628,7 +628,7 @@ ___
 
 ### retrieveByHandle
 
-**retrieveByHandle**(`handle`, `config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+`**retrieveByHandle**(handle, config?, selector?, treeSelector?): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Retrieves a product category by handle.
 
@@ -646,7 +646,7 @@ Retrieves a product category by handle.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "the config of the product category to retrieve.",
     "optional": false,
     "defaultValue": "{}",
@@ -655,7 +655,7 @@ Retrieves a product category by handle.
   },
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -664,7 +664,7 @@ Retrieves a product category by handle.
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/QuerySelector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -675,12 +675,12 @@ Retrieves a product category by handle.
 
 #### Returns
 
-`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category.",
@@ -693,7 +693,7 @@ ___
 
 ### retrieve\_
 
-`Protected` **retrieve_**(`config?`, `selector?`, `treeSelector?`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+`Protected **retrieve_**(config?, selector?, treeSelector?): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 A generic retrieve for fining product categories by different attributes.
 
@@ -702,7 +702,7 @@ A generic retrieve for fining product categories by different attributes.
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "the config of the product category to retrieve.",
     "optional": false,
     "defaultValue": "{}",
@@ -711,7 +711,7 @@ A generic retrieve for fining product categories by different attributes.
   },
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -720,7 +720,7 @@ A generic retrieve for fining product categories by different attributes.
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../types/QuerySelector.mdx)<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/QuerySelector.mdx)&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -731,12 +731,12 @@ A generic retrieve for fining product categories by different attributes.
 
 #### Returns
 
-`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category.",
@@ -749,14 +749,14 @@ ___
 
 ### shiftSiblings
 
-`Protected` **shiftSiblings**(`repository`, `conditions`): `Promise`<`void`\>
+`Protected **shiftSiblings**(repository, conditions): Promise&#60;void&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "repository",
-    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "type": "TreeRepository&#60;[ProductCategory](ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -765,7 +765,7 @@ ___
   },
   {
     "name": "conditions",
-    "type": "[`ReorderConditions`](../types/ReorderConditions.mdx)",
+    "type": "[ReorderConditions](../types/ReorderConditions.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -776,12 +776,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -794,14 +794,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -830,17 +830,17 @@ ___
 
 ### transformParentIdToEntity
 
-`Protected` **transformParentIdToEntity**(`productCategoryInput`): `Promise`<[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)\>
+`Protected **transformParentIdToEntity**(productCategoryInput): Promise&#60;[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx) \| [UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)&#62;`
 
-Accepts an input object and transforms product_category_id
-into product_category entity.
+Accepts an input object and transforms product\_category\_id
+into product\_category entity.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "productCategoryInput",
-    "type": "[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \\| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)",
+    "type": "[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)",
     "description": "params used to create/update",
     "optional": false,
     "defaultValue": "",
@@ -851,12 +851,12 @@ into product_category entity.
 
 #### Returns
 
-`Promise`<[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)\>
+Promise&#60;[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx) \| [UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CreateProductCategoryInput`](../types/CreateProductCategoryInput.mdx) \\| [`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)\\>",
+    "type": "Promise&#60;[CreateProductCategoryInput](../types/CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "transformed productCategoryInput",
@@ -869,7 +869,7 @@ ___
 
 ### update
 
-**update**(`productCategoryId`, `productCategoryInput`): `Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+`**update**(productCategoryId, productCategoryInput): Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;`
 
 Updates a product category
 
@@ -887,7 +887,7 @@ Updates a product category
   },
   {
     "name": "productCategoryInput",
-    "type": "[`UpdateProductCategoryInput`](../types/UpdateProductCategoryInput.mdx)",
+    "type": "[UpdateProductCategoryInput](../types/UpdateProductCategoryInput.mdx)",
     "description": "parameters to update in product category",
     "optional": false,
     "defaultValue": "",
@@ -898,12 +898,12 @@ Updates a product category
 
 #### Returns
 
-`Promise`<[`ProductCategory`](ProductCategory.mdx)\>
+Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated product category",
@@ -916,14 +916,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`ProductCategoryService`](ProductCategoryService.mdx)
+`**withTransaction**(transactionManager?): [ProductCategoryService](ProductCategoryService.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -934,12 +934,12 @@ ___
 
 #### Returns
 
-[`ProductCategoryService`](ProductCategoryService.mdx)
+[ProductCategoryService](ProductCategoryService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "ProductCategoryService",
-    "type": "[`ProductCategoryService`](ProductCategoryService.mdx)",
+    "type": "[ProductCategoryService](ProductCategoryService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -12,7 +12,7 @@ A Product Collection allows grouping together products for promotional purposes.
 
 ### constructor
 
-**new ProductCollection**()
+`**new ProductCollection**()`
 
 A Product Collection allows grouping together products for promotional purposes. For example, an admin can create a Summer collection, add products to it, and showcase it on the storefront.
 
@@ -57,7 +57,7 @@ A Product Collection allows grouping together products for promotional purposes.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ A Product Collection allows grouping together products for promotional purposes.
   },
   {
     "name": "products",
-    "type": "[`Product`](Product.mdx)[]",
+    "type": "[Product](Product.mdx)[]",
     "description": "The details of the products that belong to this product collection.",
     "optional": false,
     "defaultValue": "",
@@ -97,7 +97,7 @@ A Product Collection allows grouping together products for promotional purposes.
 
 ### createHandleIfNotProvided
 
-`Private` **createHandleIfNotProvided**(): `void`
+`Private **createHandleIfNotProvided**(): void`
 
 #### Returns
 

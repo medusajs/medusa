@@ -12,7 +12,7 @@ This represents the association between a discount condition and a product colle
 
 ### constructor
 
-**new DiscountConditionProductCollection**()
+`**new DiscountConditionProductCollection**()`
 
 This represents the association between a discount condition and a product collection
 
@@ -39,7 +39,7 @@ This represents the association between a discount condition and a product colle
   },
   {
     "name": "discount_condition",
-    "type": "[`DiscountCondition`](DiscountCondition.mdx)",
+    "type": "[DiscountCondition](DiscountCondition.mdx)",
     "description": "The details of the discount condition.",
     "optional": true,
     "defaultValue": "",
@@ -48,7 +48,7 @@ This represents the association between a discount condition and a product colle
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +57,7 @@ This represents the association between a discount condition and a product colle
   },
   {
     "name": "product_collection",
-    "type": "[`ProductCollection`](ProductCollection.mdx)",
+    "type": "[ProductCollection](ProductCollection.mdx)",
     "description": "The details of the product collection.",
     "optional": true,
     "defaultValue": "",

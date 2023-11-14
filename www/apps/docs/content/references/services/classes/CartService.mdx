@@ -10,14 +10,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new CartService**(`«destructured»`)
+`**new CartService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-3.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-3.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "addressRepository_",
-    "type": "`Repository`<[`Address`](Address.mdx)\\>",
+    "type": "Repository&#60;[Address](Address.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "cartRepository_",
-    "type": "`Repository`<[`Cart`](Cart.mdx)\\> & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }",
+    "type": "Repository&#60;[Cart](Cart.mdx)&#62; & `&#123; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "customShippingOptionService_",
-    "type": "[`CustomShippingOptionService`](CustomShippingOptionService.mdx)",
+    "type": "[CustomShippingOptionService](CustomShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "customerService_",
-    "type": "[`CustomerService`](CustomerService.mdx)",
+    "type": "[CustomerService](CustomerService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "discountService_",
-    "type": "[`DiscountService`](DiscountService.mdx)",
+    "type": "[DiscountService](DiscountService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBus_",
-    "type": "[`EventBusService`](EventBusService.mdx)",
+    "type": "[EventBusService](EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "type": "[FlagRouter](FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "giftCardService_",
-    "type": "[`GiftCardService`](GiftCardService.mdx)",
+    "type": "[GiftCardService](GiftCardService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemAdjustmentService_",
-    "type": "[`LineItemAdjustmentService`](LineItemAdjustmentService.mdx)",
+    "type": "[LineItemAdjustmentService](LineItemAdjustmentService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemRepository_",
-    "type": "`Repository`<[`LineItem`](LineItem.mdx)\\> & { `findByReturn`: Method findByReturn  }",
+    "type": "Repository&#60;[LineItem](LineItem.mdx)&#62; & `&#123; findByReturn: Method findByReturn  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemService_",
-    "type": "[`LineItemService`](LineItemService.mdx)",
+    "type": "[LineItemService](LineItemService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -166,7 +166,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "newTotalsService_",
-    "type": "[`NewTotalsService`](NewTotalsService.mdx)",
+    "type": "[NewTotalsService](NewTotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "paymentProviderService_",
-    "type": "[`PaymentProviderService`](PaymentProviderService.mdx)",
+    "type": "[PaymentProviderService](PaymentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -184,7 +184,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "paymentSessionRepository_",
-    "type": "`Repository`<[`PaymentSession`](PaymentSession.mdx)\\>",
+    "type": "Repository&#60;[PaymentSession](PaymentSession.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -193,7 +193,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "priceSelectionStrategy_",
-    "type": "[`IPriceSelectionStrategy`](../interfaces/IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../interfaces/IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -202,7 +202,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "pricingService_",
-    "type": "[`PricingService`](PricingService.mdx)",
+    "type": "[PricingService](PricingService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -211,7 +211,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productService_",
-    "type": "[`ProductService`](ProductService.mdx)",
+    "type": "[ProductService](ProductService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -220,7 +220,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantInventoryService_",
-    "type": "[`ProductVariantInventoryService`](ProductVariantInventoryService.mdx)",
+    "type": "[ProductVariantInventoryService](ProductVariantInventoryService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -229,7 +229,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantService_",
-    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "type": "[ProductVariantService](ProductVariantService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -238,7 +238,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "regionService_",
-    "type": "[`RegionService`](RegionService.mdx)",
+    "type": "[RegionService](RegionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -247,7 +247,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "salesChannelService_",
-    "type": "[`SalesChannelService`](SalesChannelService.mdx)",
+    "type": "[SalesChannelService](SalesChannelService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -256,7 +256,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingMethodRepository_",
-    "type": "`Repository`<[`ShippingMethod`](ShippingMethod.mdx)\\>",
+    "type": "Repository&#60;[ShippingMethod](ShippingMethod.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -265,7 +265,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingOptionService_",
-    "type": "[`ShippingOptionService`](ShippingOptionService.mdx)",
+    "type": "[ShippingOptionService](ShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -274,7 +274,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingProfileService_",
-    "type": "[`ShippingProfileService`](ShippingProfileService.mdx)",
+    "type": "[ShippingProfileService](ShippingProfileService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -283,7 +283,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "storeService_",
-    "type": "[`StoreService`](StoreService.mdx)",
+    "type": "[StoreService](StoreService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -292,7 +292,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxProviderService_",
-    "type": "[`TaxProviderService`](TaxProviderService.mdx)",
+    "type": "[TaxProviderService](TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -301,7 +301,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "totalsService_",
-    "type": "[`TotalsService`](TotalsService.mdx)",
+    "type": "[TotalsService](TotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -310,7 +310,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -359,16 +359,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -381,7 +381,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### addLineItem
 
-**addLineItem**(`cartId`, `lineItem`, `config?`): `Promise`<`void`\>
+`**addLineItem**(cartId, lineItem, config?): Promise&#60;void&#62;`
 
 Adds a line item to the cart.
 
@@ -399,7 +399,7 @@ Adds a line item to the cart.
   },
   {
     "name": "lineItem",
-    "type": "[`LineItem`](LineItem.mdx)",
+    "type": "[LineItem](LineItem.mdx)",
     "description": "the line item to add.",
     "optional": false,
     "defaultValue": "",
@@ -428,12 +428,12 @@ Adds a line item to the cart.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -450,10 +450,10 @@ ___
 
 ### addOrUpdateLineItems
 
-**addOrUpdateLineItems**(`cartId`, `lineItems`, `config?`): `Promise`<`void`\>
+`**addOrUpdateLineItems**(cartId, lineItems, config?): Promise&#60;void&#62;`
 
 Adds or update one or multiple line items to the cart. It also update all existing items in the cart
-to have has_shipping to false. Finally, the adjustments will be updated.
+to have has\_shipping to false. Finally, the adjustments will be updated.
 
 #### Parameters
 
@@ -469,7 +469,7 @@ to have has_shipping to false. Finally, the adjustments will be updated.
   },
   {
     "name": "lineItems",
-    "type": "[`LineItem`](LineItem.mdx) \\| [`LineItem`](LineItem.mdx)[]",
+    "type": "[LineItem](LineItem.mdx) \\| [LineItem](LineItem.mdx)[]",
     "description": "the line items to add.",
     "optional": false,
     "defaultValue": "",
@@ -498,12 +498,12 @@ to have has_shipping to false. Finally, the adjustments will be updated.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -516,7 +516,7 @@ ___
 
 ### addShippingMethod
 
-**addShippingMethod**(`cartOrId`, `optionId`, `data?`): `Promise`<[`Cart`](Cart.mdx)\>
+`**addShippingMethod**(cartOrId, optionId, data?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Adds the shipping method to the list of shipping methods associated with
 the cart. Shipping Methods are the ways that an order is shipped, whereas a
@@ -529,7 +529,7 @@ shop.
 <ParameterTypes parameters={[
   {
     "name": "cartOrId",
-    "type": "`string` \\| [`Cart`](Cart.mdx)",
+    "type": "`string` \\| [Cart](Cart.mdx)",
     "description": "the id of the cart to add shipping method to",
     "optional": false,
     "defaultValue": "",
@@ -547,7 +547,7 @@ shop.
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the fulmillment data for the method",
     "optional": false,
     "defaultValue": "{}",
@@ -558,12 +558,12 @@ shop.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -576,7 +576,7 @@ ___
 
 ### adjustFreeShipping\_
 
-`Protected` **adjustFreeShipping_**(`cart`, `shouldAdd`): `Promise`<`void`\>
+`Protected **adjustFreeShipping_**(cart, shouldAdd): Promise&#60;void&#62;`
 
 Ensures shipping total on cart is correct in regards to a potential free
 shipping discount
@@ -588,7 +588,7 @@ if a free shipping was present, we set shipping methods to original amount
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "the cart to adjust free shipping for",
     "optional": false,
     "defaultValue": "",
@@ -608,12 +608,12 @@ if a free shipping was present, we set shipping methods to original amount
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "void",
@@ -626,7 +626,7 @@ ___
 
 ### applyDiscount
 
-**applyDiscount**(`cart`, `discountCode`): `Promise`<`void`\>
+`**applyDiscount**(cart, discountCode): Promise&#60;void&#62;`
 
 Updates the cart's discounts.
 If discount besides free shipping is already applied, this
@@ -638,7 +638,7 @@ Throws if discount regions does not include the cart region
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -658,12 +658,12 @@ Throws if discount regions does not include the cart region
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -676,7 +676,7 @@ ___
 
 ### applyDiscounts
 
-**applyDiscounts**(`cart`, `discountCodes`): `Promise`<`void`\>
+`**applyDiscounts**(cart, discountCodes): Promise&#60;void&#62;`
 
 Updates the cart's discounts.
 If discount besides free shipping is already applied, this
@@ -688,7 +688,7 @@ Throws if discount regions does not include the cart region
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -708,12 +708,12 @@ Throws if discount regions does not include the cart region
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -726,14 +726,14 @@ ___
 
 ### applyGiftCard\_
 
-`Protected` **applyGiftCard_**(`cart`, `code`): `Promise`<`void`\>
+`Protected **applyGiftCard_**(cart, code): Promise&#60;void&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
     "optional": false,
     "defaultValue": "",
@@ -753,12 +753,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -771,7 +771,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -803,7 +803,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -812,7 +812,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -821,7 +821,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -832,12 +832,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -850,7 +850,7 @@ ___
 
 ### authorizePayment
 
-**authorizePayment**(`cartId`, `context?`): `Promise`<[`Cart`](Cart.mdx)\>
+`**authorizePayment**(cartId, context?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Authorizes a payment for a cart.
 Will authorize with chosen payment provider. This will return
@@ -872,7 +872,7 @@ set the payment on the cart.
   },
   {
     "name": "context",
-    "type": "Record<`string`, `unknown`\\> & { `cart_id`: `string`  }",
+    "type": "`Record<string, unknown>` & `&#123; cart_id: string  &#125;`",
     "description": "object containing whatever is relevant for authorizing the payment with the payment provider. As an example, this could be IP address or similar for fraud handling.",
     "optional": false,
     "defaultValue": "",
@@ -883,12 +883,12 @@ set the payment on the cart.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart",
@@ -901,7 +901,7 @@ ___
 
 ### create
 
-**create**(`data`): `Promise`<[`Cart`](Cart.mdx)\>
+`**create**(data): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Creates a cart.
 
@@ -910,7 +910,7 @@ Creates a cart.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CartCreateProps`](../types/CartCreateProps.mdx)",
+    "type": "[CartCreateProps](../types/CartCreateProps.mdx)",
     "description": "the data to create the cart with",
     "optional": false,
     "defaultValue": "",
@@ -921,12 +921,12 @@ Creates a cart.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the create operation",
@@ -939,7 +939,7 @@ ___
 
 ### createOrFetchGuestCustomerFromEmail\_
 
-`Protected` **createOrFetchGuestCustomerFromEmail_**(`email`): `Promise`<[`Customer`](Customer.mdx)\>
+`Protected **createOrFetchGuestCustomerFromEmail_**(email): Promise&#60;[Customer](Customer.mdx)&#62;`
 
 Creates or fetches a user based on an email.
 
@@ -959,12 +959,12 @@ Creates or fetches a user based on an email.
 
 #### Returns
 
-`Promise`<[`Customer`](Customer.mdx)\>
+Promise&#60;[Customer](Customer.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Customer`](Customer.mdx)\\>",
+    "type": "Promise&#60;[Customer](Customer.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resultign customer object",
@@ -977,14 +977,14 @@ ___
 
 ### createTaxLines
 
-**createTaxLines**(`cartOrId`): `Promise`<`void`\>
+`**createTaxLines**(cartOrId): Promise&#60;void&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "cartOrId",
-    "type": "`string` \\| [`Cart`](Cart.mdx)",
+    "type": "`string` \\| [Cart](Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -995,12 +995,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1013,14 +1013,14 @@ ___
 
 ### decorateTotals
 
-**decorateTotals**(`cart`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.mdx)<[`Cart`](Cart.mdx), ``"total"``\>\>
+`**decorateTotals**(cart, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
     "optional": false,
     "defaultValue": "",
@@ -1029,7 +1029,7 @@ ___
   },
   {
     "name": "totalsConfig",
-    "type": "[`TotalsConfig`](../types/TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../types/TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1040,12 +1040,12 @@ ___
 
 #### Returns
 
-`Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.mdx)<[`Cart`](Cart.mdx), ``"total"``\>\>
+Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.mdx)<[`Cart`](Cart.mdx), ``\"total\"``\\>\\>",
+    "type": "Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `\"total\"`&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1058,14 +1058,14 @@ ___
 
 ### decorateTotals\_
 
-`Protected` **decorateTotals_**(`cart`, `totalsToSelect`, `options?`): `Promise`<[`Cart`](Cart.mdx)\>
+`Protected **decorateTotals_**(cart, totalsToSelect, options?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1074,7 +1074,7 @@ ___
   },
   {
     "name": "totalsToSelect",
-    "type": "[`TotalField`](../types/TotalField.mdx)[]",
+    "type": "[TotalField](../types/TotalField.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1083,7 +1083,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[`TotalsConfig`](../types/TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../types/TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1094,12 +1094,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1116,7 +1116,7 @@ ___
 
 ### delete
 
-**delete**(`cartId`): `Promise`<[`Cart`](Cart.mdx)\>
+`**delete**(cartId): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Deletes a cart from the database. Completed carts cannot be deleted.
 
@@ -1136,12 +1136,12 @@ Deletes a cart from the database. Completed carts cannot be deleted.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the deleted cart or undefined if the cart was not found.",
@@ -1154,7 +1154,7 @@ ___
 
 ### deletePaymentSession
 
-**deletePaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
+`**deletePaymentSession**(cartId, providerId): Promise&#60;void&#62;`
 
 Removes a payment session from the cart.
 
@@ -1183,12 +1183,12 @@ Removes a payment session from the cart.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart.",
@@ -1201,7 +1201,7 @@ ___
 
 ### deleteTaxLines
 
-**deleteTaxLines**(`id`): `Promise`<`void`\>
+`**deleteTaxLines**(id): Promise&#60;void&#62;`
 
 #### Parameters
 
@@ -1219,12 +1219,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1237,7 +1237,7 @@ ___
 
 ### findCustomShippingOption
 
-**findCustomShippingOption**(`cartCustomShippingOptions`, `optionId`): `undefined` \| [`CustomShippingOption`](CustomShippingOption.mdx)
+`**findCustomShippingOption**(cartCustomShippingOptions, optionId): undefined \| [CustomShippingOption](CustomShippingOption.mdx)`
 
 Finds the cart's custom shipping options based on the passed option id.
 throws if custom options is not empty and no shipping option corresponds to optionId
@@ -1247,7 +1247,7 @@ throws if custom options is not empty and no shipping option corresponds to opti
 <ParameterTypes parameters={[
   {
     "name": "cartCustomShippingOptions",
-    "type": "[`CustomShippingOption`](CustomShippingOption.mdx)[]",
+    "type": "[CustomShippingOption](CustomShippingOption.mdx)[]",
     "description": "the cart's custom shipping options",
     "optional": false,
     "defaultValue": "",
@@ -1267,12 +1267,12 @@ throws if custom options is not empty and no shipping option corresponds to opti
 
 #### Returns
 
-`undefined` \| [`CustomShippingOption`](CustomShippingOption.mdx)
+`undefined` \| [CustomShippingOption](CustomShippingOption.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "undefined \\| CustomShippingOption",
-    "type": "`undefined` \\| [`CustomShippingOption`](CustomShippingOption.mdx)",
+    "type": "`undefined` \\| [CustomShippingOption](CustomShippingOption.mdx)",
     "optional": true,
     "defaultValue": "",
     "description": "custom shipping option",
@@ -1285,14 +1285,14 @@ ___
 
 ### getTotalsRelations
 
-`Private` **getTotalsRelations**(`config`): `string`[]
+`Private **getTotalsRelations**(config): string[]`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1321,7 +1321,7 @@ ___
 
 ### getValidatedSalesChannel
 
-`Protected` **getValidatedSalesChannel**(`salesChannelId?`): `Promise`<[`SalesChannel`](SalesChannel.mdx)\>
+`Protected **getValidatedSalesChannel**(salesChannelId?): Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;`
 
 #### Parameters
 
@@ -1339,12 +1339,12 @@ ___
 
 #### Returns
 
-`Promise`<[`SalesChannel`](SalesChannel.mdx)\>
+Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1357,14 +1357,14 @@ ___
 
 ### list
 
-**list**(`selector`, `config?`): `Promise`<[`Cart`](Cart.mdx)[]\>
+`**list**(selector, config?): Promise&#60;[Cart](Cart.mdx)[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableCartProps`](FilterableCartProps.mdx)",
+    "type": "[FilterableCartProps](FilterableCartProps.mdx)",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -1373,7 +1373,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62;",
     "description": "config object",
     "optional": false,
     "defaultValue": "{}",
@@ -1384,12 +1384,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)[]\>
+Promise&#60;[Cart](Cart.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)[]\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -1402,7 +1402,7 @@ ___
 
 ### onSalesChannelChange
 
-`Protected` **onSalesChannelChange**(`cart`, `newSalesChannelId`): `Promise`<`void`\>
+`Protected **onSalesChannelChange**(cart, newSalesChannelId): Promise&#60;void&#62;`
 
 Remove the cart line item that does not belongs to the newly assigned sales channel
 
@@ -1411,7 +1411,7 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The cart being updated",
     "optional": false,
     "defaultValue": "",
@@ -1431,12 +1431,12 @@ Remove the cart line item that does not belongs to the newly assigned sales chan
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "void",
@@ -1449,14 +1449,14 @@ ___
 
 ### refreshAdjustments\_
 
-`Protected` **refreshAdjustments_**(`cart`): `Promise`<`void`\>
+`Protected **refreshAdjustments_**(cart): Promise&#60;void&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
     "optional": false,
     "defaultValue": "",
@@ -1467,12 +1467,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1485,7 +1485,7 @@ ___
 
 ### refreshPaymentSession
 
-**refreshPaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
+`**refreshPaymentSession**(cartId, providerId): Promise&#60;void&#62;`
 
 Refreshes a payment session on a cart
 
@@ -1514,12 +1514,12 @@ Refreshes a payment session on a cart
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart.",
@@ -1532,7 +1532,7 @@ ___
 
 ### removeDiscount
 
-**removeDiscount**(`cartId`, `discountCode`): `Promise`<[`Cart`](Cart.mdx)\>
+`**removeDiscount**(cartId, discountCode): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Removes a discount based on a discount code.
 
@@ -1561,12 +1561,12 @@ Removes a discount based on a discount code.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart",
@@ -1579,7 +1579,7 @@ ___
 
 ### removeLineItem
 
-**removeLineItem**(`cartId`, `lineItemId`): `Promise`<[`Cart`](Cart.mdx)\>
+`**removeLineItem**(cartId, lineItemId): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Removes a line item from the cart.
 
@@ -1608,12 +1608,12 @@ Removes a line item from the cart.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1626,7 +1626,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`Cart`](Cart.mdx)\>
+`**retrieve**(cartId, options?, totalsConfig?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Gets a cart by id.
 
@@ -1644,7 +1644,7 @@ Gets a cart by id.
   },
   {
     "name": "options",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62;",
     "description": "the options to get a cart",
     "optional": false,
     "defaultValue": "{}",
@@ -1653,7 +1653,7 @@ Gets a cart by id.
   },
   {
     "name": "totalsConfig",
-    "type": "[`TotalsConfig`](../types/TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../types/TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1664,12 +1664,12 @@ Gets a cart by id.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the cart document.",
@@ -1682,7 +1682,7 @@ ___
 
 ### retrieveLegacy
 
-`Protected` **retrieveLegacy**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`Cart`](Cart.mdx)\>
+`Protected **retrieveLegacy**(cartId, options?, totalsConfig?): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 #### Parameters
 
@@ -1698,7 +1698,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1707,7 +1707,7 @@ ___
   },
   {
     "name": "totalsConfig",
-    "type": "[`TotalsConfig`](../types/TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../types/TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1718,12 +1718,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1738,7 +1738,7 @@ ___
 
 ### retrieveWithTotals
 
-**retrieveWithTotals**(`cartId`, `options?`, `totalsConfig?`): `Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.mdx)<[`Cart`](Cart.mdx), ``"total"``\>\>
+`**retrieveWithTotals**(cartId, options?, totalsConfig?): Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;`
 
 #### Parameters
 
@@ -1754,7 +1754,7 @@ ___
   },
   {
     "name": "options",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1763,7 +1763,7 @@ ___
   },
   {
     "name": "totalsConfig",
-    "type": "[`TotalsConfig`](../types/TotalsConfig.mdx)",
+    "type": "[TotalsConfig](../types/TotalsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1774,12 +1774,12 @@ ___
 
 #### Returns
 
-`Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.mdx)<[`Cart`](Cart.mdx), ``"total"``\>\>
+Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `"total"`&#62;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`WithRequiredProperty`](../types/WithRequiredProperty.mdx)<[`Cart`](Cart.mdx), ``\"total\"``\\>\\>",
+    "type": "Promise&#60;[WithRequiredProperty](../types/WithRequiredProperty.mdx)&#60;[Cart](Cart.mdx), `\"total\"`&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1792,7 +1792,7 @@ ___
 
 ### setMetadata
 
-**setMetadata**(`cartId`, `key`, `value`): `Promise`<[`Cart`](Cart.mdx)\>
+`**setMetadata**(cartId, key, value): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Dedicated method to set metadata for a cart.
 To ensure that plugins does not overwrite each
@@ -1832,12 +1832,12 @@ others metadata fields, setMetadata is provided.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the updated result.",
@@ -1850,7 +1850,7 @@ ___
 
 ### setPaymentSession
 
-**setPaymentSession**(`cartId`, `providerId`): `Promise`<`void`\>
+`**setPaymentSession**(cartId, providerId): Promise&#60;void&#62;`
 
 Selects a payment session for a cart and creates a payment object in the external provider system
 
@@ -1879,12 +1879,12 @@ Selects a payment session for a cart and creates a payment object in the externa
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1897,7 +1897,7 @@ ___
 
 ### setPaymentSessions
 
-**setPaymentSessions**(`cartOrCartId`): `Promise`<`void`\>
+`**setPaymentSessions**(cartOrCartId): Promise&#60;void&#62;`
 
 Creates, updates and sets payment sessions associated with the cart. The
 first time the method is called payment sessions will be created for each
@@ -1910,7 +1910,7 @@ that are not available for the cart's region.
 <ParameterTypes parameters={[
   {
     "name": "cartOrCartId",
-    "type": "`string` \\| [`Cart`](Cart.mdx)",
+    "type": "`string` \\| [Cart](Cart.mdx)",
     "description": "the id of the cart to set payment session for",
     "optional": false,
     "defaultValue": "",
@@ -1921,12 +1921,12 @@ that are not available for the cart's region.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation.",
@@ -1939,7 +1939,7 @@ ___
 
 ### setRegion\_
 
-`Protected` **setRegion_**(`cart`, `regionId`, `countryCode`): `Promise`<`void`\>
+`Protected **setRegion_**(cart, regionId, countryCode): Promise&#60;void&#62;`
 
 Set's the region of a cart.
 
@@ -1948,7 +1948,7 @@ Set's the region of a cart.
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "the cart to set region on",
     "optional": false,
     "defaultValue": "",
@@ -1977,12 +1977,12 @@ Set's the region of a cart.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -1995,14 +1995,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2031,14 +2031,14 @@ ___
 
 ### transformQueryForTotals\_
 
-`Protected` **transformQueryForTotals_**(`config`): [`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\> & { `totalsToSelect`: [`TotalField`](../types/TotalField.mdx)[]  }
+`Protected **transformQueryForTotals_**(config): [FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & &#123; totalsToSelect: [TotalField](../types/TotalField.mdx)[]  &#125;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2049,12 +2049,12 @@ ___
 
 #### Returns
 
-[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\> & { `totalsToSelect`: [`TotalField`](../types/TotalField.mdx)[]  }
+[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & `&#123; totalsToSelect: [TotalField](../types/TotalField.mdx)[]  &#125;`
 
 <ParameterTypes parameters={[
   {
-    "name": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\> & { `totalsToSelect`: [`TotalField`](../types/TotalField.mdx)[]  }",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Cart`](Cart.mdx)\\> & { `totalsToSelect`: [`TotalField`](../types/TotalField.mdx)[]  }",
+    "name": "FindConfig&#60;Cart&#62; & &#123; totalsToSelect: TotalField[]  &#125;",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Cart](Cart.mdx)&#62; & `&#123; totalsToSelect: [TotalField](../types/TotalField.mdx)[]  &#125;`",
     "optional": true,
     "defaultValue": "",
     "description": "",
@@ -2067,14 +2067,14 @@ ___
 
 ### update
 
-**update**(`cartOrId`, `data`): `Promise`<[`Cart`](Cart.mdx)\>
+`**update**(cartOrId, data): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "cartOrId",
-    "type": "`string` \\| [`Cart`](Cart.mdx)",
+    "type": "`string` \\| [Cart](Cart.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2083,7 +2083,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[`CartUpdateProps`](../types/CartUpdateProps.mdx)",
+    "type": "[CartUpdateProps](../types/CartUpdateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2094,12 +2094,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2112,7 +2112,7 @@ ___
 
 ### updateBillingAddress\_
 
-`Protected` **updateBillingAddress_**(`cart`, `addressOrId`, `addrRepo`): `Promise`<`void`\>
+`Protected **updateBillingAddress_**(cart, addressOrId, addrRepo): Promise&#60;void&#62;`
 
 Updates the cart's billing address.
 
@@ -2121,7 +2121,7 @@ Updates the cart's billing address.
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -2130,7 +2130,7 @@ Updates the cart's billing address.
   },
   {
     "name": "addressOrId",
-    "type": "`string` \\| [`AddressPayload`](AddressPayload.mdx) \\| [`Partial`](../types/Partial.mdx)<[`Address`](Address.mdx)\\>",
+    "type": "`string` \\| [AddressPayload](AddressPayload.mdx) \\| [Partial](../types/Partial.mdx)&#60;[Address](Address.mdx)&#62;",
     "description": "the value to set the billing address to",
     "optional": false,
     "defaultValue": "",
@@ -2139,7 +2139,7 @@ Updates the cart's billing address.
   },
   {
     "name": "addrRepo",
-    "type": "`Repository`<[`Address`](Address.mdx)\\>",
+    "type": "Repository&#60;[Address](Address.mdx)&#62;",
     "description": "the repository to use for address updates",
     "optional": false,
     "defaultValue": "",
@@ -2150,12 +2150,12 @@ Updates the cart's billing address.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -2168,7 +2168,7 @@ ___
 
 ### updateCustomerId\_
 
-`Protected` **updateCustomerId_**(`cart`, `customerId`): `Promise`<`void`\>
+`Protected **updateCustomerId_**(cart, customerId): Promise&#60;void&#62;`
 
 Sets the customer id of a cart
 
@@ -2177,7 +2177,7 @@ Sets the customer id of a cart
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "the cart to add email to",
     "optional": false,
     "defaultValue": "",
@@ -2197,12 +2197,12 @@ Sets the customer id of a cart
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -2215,7 +2215,7 @@ ___
 
 ### updateLineItem
 
-**updateLineItem**(`cartId`, `lineItemId`, `update`): `Promise`<[`Cart`](Cart.mdx)\>
+`**updateLineItem**(cartId, lineItemId, update): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Updates a cart's existing line item.
 
@@ -2242,7 +2242,7 @@ Updates a cart's existing line item.
   },
   {
     "name": "update",
-    "type": "[`LineItemUpdate`](../types/LineItemUpdate.mdx)",
+    "type": "[LineItemUpdate](../types/LineItemUpdate.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2253,12 +2253,12 @@ Updates a cart's existing line item.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -2271,7 +2271,7 @@ ___
 
 ### updatePaymentSession
 
-**updatePaymentSession**(`cartId`, `update`): `Promise`<[`Cart`](Cart.mdx)\>
+`**updatePaymentSession**(cartId, update): Promise&#60;[Cart](Cart.mdx)&#62;`
 
 Updates the currently selected payment session.
 
@@ -2289,7 +2289,7 @@ Updates the currently selected payment session.
   },
   {
     "name": "update",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the data to update the payment session with",
     "optional": false,
     "defaultValue": "",
@@ -2300,12 +2300,12 @@ Updates the currently selected payment session.
 
 #### Returns
 
-`Promise`<[`Cart`](Cart.mdx)\>
+Promise&#60;[Cart](Cart.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Cart`](Cart.mdx)\\>",
+    "type": "Promise&#60;[Cart](Cart.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the resulting cart",
@@ -2318,7 +2318,7 @@ ___
 
 ### updateShippingAddress\_
 
-`Protected` **updateShippingAddress_**(`cart`, `addressOrId`, `addrRepo`): `Promise`<`void`\>
+`Protected **updateShippingAddress_**(cart, addressOrId, addrRepo): Promise&#60;void&#62;`
 
 Updates the cart's shipping address.
 
@@ -2327,7 +2327,7 @@ Updates the cart's shipping address.
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "the cart to update",
     "optional": false,
     "defaultValue": "",
@@ -2336,7 +2336,7 @@ Updates the cart's shipping address.
   },
   {
     "name": "addressOrId",
-    "type": "`string` \\| [`AddressPayload`](AddressPayload.mdx) \\| [`Partial`](../types/Partial.mdx)<[`Address`](Address.mdx)\\>",
+    "type": "`string` \\| [AddressPayload](AddressPayload.mdx) \\| [Partial](../types/Partial.mdx)&#60;[Address](Address.mdx)&#62;",
     "description": "the value to set the shipping address to",
     "optional": false,
     "defaultValue": "",
@@ -2345,7 +2345,7 @@ Updates the cart's shipping address.
   },
   {
     "name": "addrRepo",
-    "type": "`Repository`<[`Address`](Address.mdx)\\>",
+    "type": "Repository&#60;[Address](Address.mdx)&#62;",
     "description": "the repository to use for address updates",
     "optional": false,
     "defaultValue": "",
@@ -2356,12 +2356,12 @@ Updates the cart's shipping address.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -2374,14 +2374,14 @@ ___
 
 ### updateUnitPrices\_
 
-`Protected` **updateUnitPrices_**(`cart`, `regionId?`, `customer_id?`): `Promise`<`void`\>
+`Protected **updateUnitPrices_**(cart, regionId?, customer_id?): Promise&#60;void&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
     "optional": false,
     "defaultValue": "",
@@ -2410,12 +2410,12 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2428,7 +2428,7 @@ ___
 
 ### validateLineItem
 
-`Protected` **validateLineItem**(`sales_channel_id`, `lineItem`): `Promise`<`boolean`\>
+`Protected **validateLineItem**(sales_channel_id, lineItem): Promise&#60;boolean&#62;`
 
 Check if line item's variant belongs to the cart's sales channel.
 
@@ -2455,7 +2455,7 @@ Check if line item's variant belongs to the cart's sales channel.
   },
   {
     "name": "lineItem",
-    "type": "[`LineItemValidateData`](../types/LineItemValidateData.mdx)",
+    "type": "[LineItemValidateData](../types/LineItemValidateData.mdx)",
     "description": "the line item being added",
     "optional": false,
     "defaultValue": "",
@@ -2466,12 +2466,12 @@ Check if line item's variant belongs to the cart's sales channel.
 
 #### Returns
 
-`Promise`<`boolean`\>
+Promise&#60;boolean&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a boolean indicating validation result",
@@ -2484,7 +2484,7 @@ ___
 
 ### validateLineItemShipping\_
 
-`Protected` **validateLineItemShipping_**(`shippingMethods`, `lineItemShippingProfiledId`): `boolean`
+`Protected **validateLineItemShipping_**(shippingMethods, lineItemShippingProfiledId): boolean`
 
 Checks if a given line item has a shipping method that can fulfill it.
 Returns true if all products in the cart can be fulfilled with the current
@@ -2495,7 +2495,7 @@ shipping methods.
 <ParameterTypes parameters={[
   {
     "name": "shippingMethods",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](ShippingMethod.mdx)[]",
     "description": "the set of shipping methods to check from",
     "optional": false,
     "defaultValue": "",
@@ -2533,14 +2533,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`CartService`](CartService.mdx)
+`**withTransaction**(transactionManager?): [CartService](CartService.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2551,12 +2551,12 @@ ___
 
 #### Returns
 
-[`CartService`](CartService.mdx)
+[CartService](CartService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "CartService",
-    "type": "[`CartService`](CartService.mdx)",
+    "type": "[CartService](CartService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

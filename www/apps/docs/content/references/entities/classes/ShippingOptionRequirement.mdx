@@ -40,7 +40,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
   },
   {
     "name": "shipping_option",
-    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "type": "[ShippingOption](ShippingOption.mdx)",
     "description": "The details of the shipping option that the requirements belong to.",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       {
         "name": "amount",
         "type": "``null`` \\| `number`",
-        "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+        "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -75,7 +75,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
         "optional": false,
         "defaultValue": "",
@@ -121,7 +121,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -139,8 +139,8 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "price_type",
-        "type": "[`ShippingOptionPriceType`](../enums/ShippingOptionPriceType.mdx)",
-        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+        "type": "[ShippingOptionPriceType](../enums/ShippingOptionPriceType.mdx)",
+        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -148,7 +148,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "profile",
-        "type": "[`ShippingProfile`](ShippingProfile.mdx)",
+        "type": "[ShippingProfile](ShippingProfile.mdx)",
         "description": "The details of the shipping profile that the shipping option belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -166,7 +166,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "provider",
-        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
+        "type": "[FulfillmentProvider](FulfillmentProvider.mdx)",
         "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
         "optional": false,
         "defaultValue": "",
@@ -184,7 +184,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this shipping option can be used in.",
         "optional": false,
         "defaultValue": "",
@@ -202,7 +202,7 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
       },
       {
         "name": "requirements",
-        "type": "[`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)[]",
+        "type": "[ShippingOptionRequirement](ShippingOptionRequirement.mdx)[]",
         "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
         "optional": false,
         "defaultValue": "",
@@ -231,8 +231,8 @@ A shipping option requirement defines conditions that a Cart must satisfy for th
   },
   {
     "name": "type",
-    "type": "[`RequirementType`](../enums/RequirementType.mdx)",
-    "description": "The type of the requirement, this defines how the value will be compared to the Cart's total. `min_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.",
+    "type": "[RequirementType](../enums/RequirementType.mdx)",
+    "description": "The type of the requirement, this defines how the value will be compared to the Cart's total. `min\\_subtotal` requirements define the minimum subtotal that is needed for the Shipping Option to be available, while the `max\\_subtotal` defines the maximum subtotal that the Cart can have for the Shipping Option to be available.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

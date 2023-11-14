@@ -45,7 +45,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -59,7 +59,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPaymentRes`](../internal/types/internal.AdminPaymentRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPaymentRes](../internal/types/internal.AdminPaymentRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the payment's details.",
@@ -75,7 +75,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
         "children": [
           {
             "name": "payment",
-            "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+            "type": "[Payment](../internal/classes/internal.Payment.mdx)",
             "description": "Payment details",
             "optional": false,
             "defaultValue": "",
@@ -119,7 +119,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart that the payment session was potentially created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -146,7 +146,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency of the payment.",
                 "optional": false,
                 "defaultValue": "",
@@ -164,7 +164,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
               },
               {
                 "name": "data",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
                 "optional": false,
                 "defaultValue": "",
@@ -191,7 +191,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -200,7 +200,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that the payment session was potentially created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -227,7 +227,7 @@ medusa.admin.payments.capturePayment(paymentId).then(({ payment }) => {
               },
               {
                 "name": "swap",
-                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+                "type": "[Swap](../internal/classes/internal.Swap.mdx)",
                 "description": "The details of the swap that this payment was potentially created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -297,7 +297,7 @@ medusa.admin.payments
   },
   {
     "name": "payload",
-    "type": "[`AdminPostPaymentRefundsReq`](../internal/classes/internal.AdminPostPaymentRefundsReq.mdx)",
+    "type": "[AdminPostPaymentRefundsReq](../internal/classes/internal.AdminPostPaymentRefundsReq.mdx)",
     "description": "The refund to be created.",
     "optional": false,
     "defaultValue": "",
@@ -323,7 +323,7 @@ medusa.admin.payments
       },
       {
         "name": "reason",
-        "type": "[`RefundReason`](../internal/enums/internal.RefundReason.mdx)",
+        "type": "[RefundReason](../internal/enums/internal.RefundReason.mdx)",
         "description": "The reason for the Refund.",
         "optional": false,
         "defaultValue": "",
@@ -380,7 +380,7 @@ medusa.admin.payments
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -394,7 +394,7 @@ medusa.admin.payments
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminRefundRes`](../internal/types/internal.AdminRefundRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminRefundRes](../internal/types/internal.AdminRefundRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the refund's details.",
@@ -410,7 +410,7 @@ medusa.admin.payments
         "children": [
           {
             "name": "refund",
-            "type": "[`Refund`](../internal/classes/internal.Refund.mdx)",
+            "type": "[Refund](../internal/classes/internal.Refund.mdx)",
             "description": "Refund details.",
             "optional": false,
             "defaultValue": "",
@@ -454,7 +454,7 @@ medusa.admin.payments
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -472,7 +472,7 @@ medusa.admin.payments
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order this refund was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -490,7 +490,7 @@ medusa.admin.payments
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the refund.",
                 "optional": false,
                 "defaultValue": "",
@@ -563,7 +563,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
   },
   {
     "name": "query",
-    "type": "[`GetPaymentsParams`](../internal/classes/internal.GetPaymentsParams.mdx)",
+    "type": "[GetPaymentsParams](../internal/classes/internal.GetPaymentsParams.mdx)",
     "description": "Configurations to apply on the retrieved payment.",
     "optional": true,
     "defaultValue": "",
@@ -591,7 +591,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -605,7 +605,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminPaymentRes`](../internal/types/internal.AdminPaymentRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminPaymentRes](../internal/types/internal.AdminPaymentRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the payment's details.",
@@ -621,7 +621,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
         "children": [
           {
             "name": "payment",
-            "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+            "type": "[Payment](../internal/classes/internal.Payment.mdx)",
             "description": "Payment details",
             "optional": false,
             "defaultValue": "",
@@ -665,7 +665,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart that the payment session was potentially created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -692,7 +692,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency of the payment.",
                 "optional": false,
                 "defaultValue": "",
@@ -710,7 +710,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
               },
               {
                 "name": "data",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
                 "optional": false,
                 "defaultValue": "",
@@ -737,7 +737,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -746,7 +746,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that the payment session was potentially created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -773,7 +773,7 @@ medusa.admin.payments.retrieve(paymentId).then(({ payment }) => {
               },
               {
                 "name": "swap",
-                "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+                "type": "[Swap](../internal/classes/internal.Swap.mdx)",
                 "description": "The details of the swap that this payment was potentially created for.",
                 "optional": false,
                 "defaultValue": "",

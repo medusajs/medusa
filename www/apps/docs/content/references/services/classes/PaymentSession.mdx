@@ -12,7 +12,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
 
 ### constructor
 
-**new PaymentSession**()
+`**new PaymentSession**()`
 
 A Payment Session is created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, which is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for payment processing such as capture or refund. Payment sessions can also be used as part of payment collections.
 
@@ -30,7 +30,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
   },
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart that the payment session was created for.",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +57,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The data required for the Payment Provider to identify, modify and process the Payment Session. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
   {
     "name": "status",
     "type": "`string`",
-    "description": "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires_more` to indicate that further actions are to be completed by the Customer.",
+    "description": "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires\\_more` to indicate that further actions are to be completed by the Customer.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -142,7 +142,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

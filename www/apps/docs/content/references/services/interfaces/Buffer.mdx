@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "buffer",
-    "type": "[`ArrayBufferLike`](../types/ArrayBufferLike.mdx)",
+    "type": "[ArrayBufferLike](../types/ArrayBufferLike.mdx)",
     "description": "The ArrayBuffer instance referenced by the array.",
     "optional": false,
     "defaultValue": "",
@@ -69,16 +69,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### [iterator]
 
-**[iterator]**(): [`IterableIterator`](IterableIterator.mdx)<`number`\>
+`**[iterator]**(): [IterableIterator](IterableIterator.mdx)&#60;number&#62;`
 
 #### Returns
 
-[`IterableIterator`](IterableIterator.mdx)<`number`\>
+[IterableIterator](IterableIterator.mdx)&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "IterableIterator",
-    "type": "[`IterableIterator`](IterableIterator.mdx)<`number`\\>",
+    "type": "[IterableIterator](IterableIterator.mdx)&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -91,7 +91,7 @@ ___
 
 ### at
 
-**at**(`index`): `undefined` \| `number`
+`**at**(index): undefined \| number`
 
 Returns the item located at the specified index.
 
@@ -129,14 +129,14 @@ ___
 
 ### compare
 
-**compare**(`target`, `targetStart?`, `targetEnd?`, `sourceStart?`, `sourceEnd?`): ``0`` \| ``1`` \| ``-1``
+`**compare**(target, targetStart?, targetEnd?, sourceStart?, sourceEnd?): `0` \| `1` \| `-1``
 
 Compares `buf` with `target` and returns a number indicating whether `buf`comes before, after, or is the same as `target` in sort order.
 Comparison is based on the actual sequence of bytes in each `Buffer`.
 
 * `0` is returned if `target` is the same as `buf`
-* `1` is returned if `target` should come _before_`buf` when sorted.
-* `-1` is returned if `target` should come _after_`buf` when sorted.
+* `1` is returned if `target` should come \_before\_`buf` when sorted.
+* `-1` is returned if `target` should come \_after\_`buf` when sorted.
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -183,7 +183,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
 <ParameterTypes parameters={[
   {
     "name": "target",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "A `Buffer` or Uint8Array with which to compare `buf`.",
     "optional": false,
     "defaultValue": "",
@@ -234,7 +234,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
 
 <ParameterTypes parameters={[
   {
-    "name": "``0`` \\| ``1`` \\| ``-1``",
+    "name": "`0` \\| `1` \\| `-1`",
     "type": "``0`` \\| ``1`` \\| ``-1``",
     "optional": true,
     "defaultValue": "",
@@ -252,11 +252,11 @@ ___
 
 ### copy
 
-**copy**(`target`, `targetStart?`, `sourceStart?`, `sourceEnd?`): `number`
+`**copy**(target, targetStart?, sourceStart?, sourceEnd?): number`
 
 Copies data from a region of `buf` to a region in `target`, even if the `target`memory region overlaps with `buf`.
 
-[`TypedArray.prototype.set()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/set) performs the same operation, and is available
+[`TypedArray.prototype.set()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/TypedArray/set) performs the same operation, and is available
 for all TypedArrays, including Node.js `Buffer`s, although it takes
 different function arguments.
 
@@ -305,7 +305,7 @@ console.log(buf.toString());
 <ParameterTypes parameters={[
   {
     "name": "target",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "A `Buffer` or Uint8Array to copy into.",
     "optional": false,
     "defaultValue": "",
@@ -365,7 +365,7 @@ ___
 
 ### copyWithin
 
-**copyWithin**(`target`, `start`, `end?`): [`Buffer`](../index.md#buffer)
+`**copyWithin**(target, start, end?): [Buffer](../index.md#buffer)`
 
 Returns the this object after copying a section of the array identified by start and end
 to the same array starting at position target
@@ -404,12 +404,12 @@ to the same array starting at position target
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -422,9 +422,9 @@ ___
 
 ### entries
 
-**entries**(): [`IterableIterator`](IterableIterator.mdx)<[`number`, `number`]\>
+`**entries**(): [IterableIterator](IterableIterator.mdx)&#60;[number, number]&#62;`
 
-Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `[index, byte]` pairs from the contents
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) of `[index, byte]` pairs from the contents
 of `buf`.
 
 ```js
@@ -448,12 +448,12 @@ for (const pair of buf.entries()) {
 
 #### Returns
 
-[`IterableIterator`](IterableIterator.mdx)<[`number`, `number`]\>
+[IterableIterator](IterableIterator.mdx)&#60;[number, number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "IterableIterator",
-    "type": "[`IterableIterator`](IterableIterator.mdx)<[`number`, `number`]\\>",
+    "type": "[IterableIterator](IterableIterator.mdx)&#60;[number, number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -470,7 +470,7 @@ ___
 
 ### equals
 
-**equals**(`otherBuffer`): `boolean`
+`**equals**(otherBuffer): boolean`
 
 Returns `true` if both `buf` and `otherBuffer` have exactly the same bytes,`false` otherwise. Equivalent to `buf.compare(otherBuffer) === 0`.
 
@@ -492,7 +492,7 @@ console.log(buf1.equals(buf3));
 <ParameterTypes parameters={[
   {
     "name": "otherBuffer",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "A `Buffer` or Uint8Array with which to compare `buf`.",
     "optional": false,
     "defaultValue": "",
@@ -525,7 +525,7 @@ ___
 
 ### every
 
-**every**(`predicate`, `thisArg?`): `boolean`
+`**every**(predicate, thisArg?): boolean`
 
 Determines whether all the members of an array satisfy the specified test.
 
@@ -534,7 +534,7 @@ Determines whether all the members of an array satisfy the specified test.
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `unknown`",
     "description": "A function that accepts up to three arguments. The every method calls the predicate function for each element in the array until the predicate returns a value which is coercible to the Boolean value false, or until the end of the array.",
     "optional": false,
     "defaultValue": "",
@@ -572,7 +572,7 @@ ___
 
 ### fill
 
-**fill**(`value`, `offset?`, `end?`, `encoding?`): [`Buffer`](../index.md#buffer)
+`**fill**(value, offset?, end?, encoding?): [Buffer](../index.md#buffer)`
 
 Fills `buf` with the specified `value`. If the `offset` and `end` are not given,
 the entire `buf` will be filled:
@@ -631,7 +631,7 @@ console.log(buf.fill('zz', 'hex'));
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "The value with which to fill `buf`. Empty value (string, Uint8Array, Buffer) is coerced to `0`.",
     "optional": false,
     "defaultValue": "",
@@ -658,7 +658,7 @@ console.log(buf.fill('zz', 'hex'));
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "The encoding for `value` if `value` is a string.",
     "optional": true,
     "defaultValue": "",
@@ -669,12 +669,12 @@ console.log(buf.fill('zz', 'hex'));
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",
@@ -691,7 +691,7 @@ ___
 
 ### filter
 
-**filter**(`predicate`, `thisArg?`): `Uint8Array`
+`**filter**(predicate, thisArg?): Uint8Array`
 
 Returns the elements of an array that meet the condition specified in a callback function.
 
@@ -700,7 +700,7 @@ Returns the elements of an array that meet the condition specified in a callback
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `any`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `any`",
     "description": "A function that accepts up to three arguments. The filter method calls the predicate function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
@@ -720,12 +720,12 @@ Returns the elements of an array that meet the condition specified in a callback
 
 #### Returns
 
-`Uint8Array`
+Uint8Array
 
 <ParameterTypes parameters={[
   {
     "name": "Uint8Array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -738,7 +738,7 @@ ___
 
 ### find
 
-**find**(`predicate`, `thisArg?`): `undefined` \| `number`
+`**find**(predicate, thisArg?): undefined \| number`
 
 Returns the value of the first element in the array where predicate is true, and undefined
 otherwise.
@@ -748,7 +748,7 @@ otherwise.
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`",
+    "type": "(`value`: `number`, `index`: `number`, `obj`: Uint8Array) => `boolean`",
     "description": "find calls predicate once for each element of the array, in ascending order, until it finds one where predicate returns true. If such an element is found, find immediately returns that element value. Otherwise, find returns undefined.",
     "optional": false,
     "defaultValue": "",
@@ -786,7 +786,7 @@ ___
 
 ### findIndex
 
-**findIndex**(`predicate`, `thisArg?`): `number`
+`**findIndex**(predicate, thisArg?): number`
 
 Returns the index of the first element in the array where predicate is true, and -1
 otherwise.
@@ -796,7 +796,7 @@ otherwise.
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`",
+    "type": "(`value`: `number`, `index`: `number`, `obj`: Uint8Array) => `boolean`",
     "description": "find calls predicate once for each element of the array, in ascending order, until it finds one where predicate returns true. If such an element is found, findIndex immediately returns that element index. Otherwise, findIndex returns -1.",
     "optional": false,
     "defaultValue": "",
@@ -834,7 +834,7 @@ ___
 
 ### findLast
 
-**findLast**<`S`\>(`predicate`, `thisArg?`): `undefined` \| `S`
+`**findLast**<TypeParameter S>(predicate, thisArg?): undefined \| S`
 
 Returns the value of the last element in the array where predicate is true, and undefined
 otherwise.
@@ -856,7 +856,7 @@ otherwise.
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => value is S",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => value is S",
     "description": "findLast calls predicate once for each element of the array, in descending order, until it finds one where predicate returns true. If such an element is found, findLast immediately returns that element value. Otherwise, findLast returns undefined.",
     "optional": false,
     "defaultValue": "",
@@ -890,14 +890,14 @@ otherwise.
   }
 ]} />
 
-**findLast**(`predicate`, `thisArg?`): `undefined` \| `number`
+`**findLast**(predicate, thisArg?): undefined \| number`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `unknown`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -935,7 +935,7 @@ ___
 
 ### findLastIndex
 
-**findLastIndex**(`predicate`, `thisArg?`): `number`
+`**findLastIndex**(predicate, thisArg?): number`
 
 Returns the index of the last element in the array where predicate is true, and -1
 otherwise.
@@ -945,7 +945,7 @@ otherwise.
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `unknown`",
     "description": "findLastIndex calls predicate once for each element of the array, in descending order, until it finds one where predicate returns true. If such an element is found, findLastIndex immediately returns that element index. Otherwise, findLastIndex returns -1.",
     "optional": false,
     "defaultValue": "",
@@ -983,7 +983,7 @@ ___
 
 ### forEach
 
-**forEach**(`callbackfn`, `thisArg?`): `void`
+`**forEach**(callbackfn, thisArg?): void`
 
 Performs the specified action for each element in an array.
 
@@ -992,7 +992,7 @@ Performs the specified action for each element in an array.
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `void`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `void`",
     "description": "A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
@@ -1030,7 +1030,7 @@ ___
 
 ### includes
 
-**includes**(`value`, `byteOffset?`, `encoding?`): `boolean`
+`**includes**(value, byteOffset?, encoding?): boolean`
 
 Equivalent to `buf.indexOf() !== -1`.
 
@@ -1060,7 +1060,7 @@ console.log(buf.includes('this', 4));
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| [`Buffer`](../index.md#buffer)",
+    "type": "`string` \\| `number` \\| [Buffer](../index.md#buffer)",
     "description": "What to search for.",
     "optional": false,
     "defaultValue": "",
@@ -1078,7 +1078,7 @@ console.log(buf.includes('this', 4));
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "If `value` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",
@@ -1111,12 +1111,12 @@ ___
 
 ### indexOf
 
-**indexOf**(`value`, `byteOffset?`, `encoding?`): `number`
+`**indexOf**(value, byteOffset?, encoding?): number`
 
 If `value` is:
 
 * a string, `value` is interpreted according to the character encoding in`encoding`.
-* a `Buffer` or [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), `value` will be used in its entirety.
+* a `Buffer` or [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Uint8Array), `value` will be used in its entirety.
 To compare a partial `Buffer`, use `buf.subarray`.
 * a number, `value` will be interpreted as an unsigned 8-bit integer
 value between `0` and `255`.
@@ -1152,7 +1152,7 @@ an integer between 0 and 255.
 
 If `byteOffset` is not a number, it will be coerced to a number. If the result
 of coercion is `NaN` or `0`, then the entire buffer will be searched. This
-behavior matches [`String.prototype.indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf).
+behavior matches [`String.prototype.indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/String/indexOf).
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -1180,7 +1180,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "What to search for.",
     "optional": false,
     "defaultValue": "",
@@ -1198,7 +1198,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`.",
     "optional": true,
     "defaultValue": "",
@@ -1231,7 +1231,7 @@ ___
 
 ### join
 
-**join**(`separator?`): `string`
+`**join**(separator?): string`
 
 Adds all the elements of an array separated by the specified separator string.
 
@@ -1269,9 +1269,9 @@ ___
 
 ### keys
 
-**keys**(): [`IterableIterator`](IterableIterator.mdx)<`number`\>
+`**keys**(): [IterableIterator](IterableIterator.mdx)&#60;number&#62;`
 
-Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `buf` keys (indices).
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) of `buf` keys (indices).
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -1292,12 +1292,12 @@ for (const key of buf.keys()) {
 
 #### Returns
 
-[`IterableIterator`](IterableIterator.mdx)<`number`\>
+[IterableIterator](IterableIterator.mdx)&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "IterableIterator",
-    "type": "[`IterableIterator`](IterableIterator.mdx)<`number`\\>",
+    "type": "[IterableIterator](IterableIterator.mdx)&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1314,7 +1314,7 @@ ___
 
 ### lastIndexOf
 
-**lastIndexOf**(`value`, `byteOffset?`, `encoding?`): `number`
+`**lastIndexOf**(value, byteOffset?, encoding?): number`
 
 Identical to `buf.indexOf()`, except the last occurrence of `value` is found
 rather than the first occurrence.
@@ -1352,7 +1352,7 @@ an integer between 0 and 255.
 
 If `byteOffset` is not a number, it will be coerced to a number. Any arguments
 that coerce to `NaN`, like `{}` or `undefined`, will search the whole buffer.
-This behavior matches [`String.prototype.lastIndexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/lastIndexOf).
+This behavior matches [`String.prototype.lastIndexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/String/lastIndexOf).
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -1382,7 +1382,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "What to search for.",
     "optional": false,
     "defaultValue": "",
@@ -1400,7 +1400,7 @@ If `value` is an empty string or empty `Buffer`, `byteOffset` will be returned.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`.",
     "optional": true,
     "defaultValue": "",
@@ -1433,7 +1433,7 @@ ___
 
 ### map
 
-**map**(`callbackfn`, `thisArg?`): `Uint8Array`
+`**map**(callbackfn, thisArg?): Uint8Array`
 
 Calls a defined callback function on each element of an array, and returns an array that
 contains the results.
@@ -1443,7 +1443,7 @@ contains the results.
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `number`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `number`",
     "description": "A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
@@ -1463,12 +1463,12 @@ contains the results.
 
 #### Returns
 
-`Uint8Array`
+Uint8Array
 
 <ParameterTypes parameters={[
   {
     "name": "Uint8Array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1481,7 +1481,7 @@ ___
 
 ### readBigInt64BE
 
-**readBigInt64BE**(`offset?`): `bigint`
+`**readBigInt64BE**(offset?): bigint`
 
 Reads a signed, big-endian 64-bit integer from `buf` at the specified `offset`.
 
@@ -1526,7 +1526,7 @@ ___
 
 ### readBigInt64LE
 
-**readBigInt64LE**(`offset?`): `bigint`
+`**readBigInt64LE**(offset?): bigint`
 
 Reads a signed, little-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1571,7 +1571,7 @@ ___
 
 ### readBigUInt64BE
 
-**readBigUInt64BE**(`offset?`): `bigint`
+`**readBigUInt64BE**(offset?): bigint`
 
 Reads an unsigned, big-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1624,7 +1624,7 @@ ___
 
 ### readBigUInt64LE
 
-**readBigUInt64LE**(`offset?`): `bigint`
+`**readBigUInt64LE**(offset?): bigint`
 
 Reads an unsigned, little-endian 64-bit integer from `buf` at the specified`offset`.
 
@@ -1677,7 +1677,7 @@ ___
 
 ### readBigUint64BE
 
-**readBigUint64BE**(`offset?`): `bigint`
+`**readBigUint64BE**(offset?): bigint`
 
 #### Parameters
 
@@ -1721,7 +1721,7 @@ ___
 
 ### readBigUint64LE
 
-**readBigUint64LE**(`offset?`): `bigint`
+`**readBigUint64LE**(offset?): bigint`
 
 #### Parameters
 
@@ -1765,7 +1765,7 @@ ___
 
 ### readDoubleBE
 
-**readDoubleBE**(`offset?`): `number`
+`**readDoubleBE**(offset?): number`
 
 Reads a 64-bit, big-endian double from `buf` at the specified `offset`.
 
@@ -1816,7 +1816,7 @@ ___
 
 ### readDoubleLE
 
-**readDoubleLE**(`offset?`): `number`
+`**readDoubleLE**(offset?): number`
 
 Reads a 64-bit, little-endian double from `buf` at the specified `offset`.
 
@@ -1869,7 +1869,7 @@ ___
 
 ### readFloatBE
 
-**readFloatBE**(`offset?`): `number`
+`**readFloatBE**(offset?): number`
 
 Reads a 32-bit, big-endian float from `buf` at the specified `offset`.
 
@@ -1920,7 +1920,7 @@ ___
 
 ### readFloatLE
 
-**readFloatLE**(`offset?`): `number`
+`**readFloatLE**(offset?): number`
 
 Reads a 32-bit, little-endian float from `buf` at the specified `offset`.
 
@@ -1973,7 +1973,7 @@ ___
 
 ### readInt16BE
 
-**readInt16BE**(`offset?`): `number`
+`**readInt16BE**(offset?): number`
 
 Reads a signed, big-endian 16-bit integer from `buf` at the specified `offset`.
 
@@ -2026,7 +2026,7 @@ ___
 
 ### readInt16LE
 
-**readInt16LE**(`offset?`): `number`
+`**readInt16LE**(offset?): number`
 
 Reads a signed, little-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -2081,7 +2081,7 @@ ___
 
 ### readInt32BE
 
-**readInt32BE**(`offset?`): `number`
+`**readInt32BE**(offset?): number`
 
 Reads a signed, big-endian 32-bit integer from `buf` at the specified `offset`.
 
@@ -2134,7 +2134,7 @@ ___
 
 ### readInt32LE
 
-**readInt32LE**(`offset?`): `number`
+`**readInt32LE**(offset?): number`
 
 Reads a signed, little-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2189,7 +2189,7 @@ ___
 
 ### readInt8
 
-**readInt8**(`offset?`): `number`
+`**readInt8**(offset?): number`
 
 Reads a signed 8-bit integer from `buf` at the specified `offset`.
 
@@ -2246,7 +2246,7 @@ ___
 
 ### readIntBE
 
-**readIntBE**(`offset`, `byteLength`): `number`
+`**readIntBE**(offset, byteLength): number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as a big-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
@@ -2311,7 +2311,7 @@ ___
 
 ### readIntLE
 
-**readIntLE**(`offset`, `byteLength`): `number`
+`**readIntLE**(offset, byteLength): number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as a little-endian, two's complement signed value
 supporting up to 48 bits of accuracy.
@@ -2372,7 +2372,7 @@ ___
 
 ### readUInt16BE
 
-**readUInt16BE**(`offset?`): `number`
+`**readUInt16BE**(offset?): number`
 
 Reads an unsigned, big-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -2427,7 +2427,7 @@ ___
 
 ### readUInt16LE
 
-**readUInt16LE**(`offset?`): `number`
+`**readUInt16LE**(offset?): number`
 
 Reads an unsigned, little-endian 16-bit integer from `buf` at the specified`offset`.
 
@@ -2484,7 +2484,7 @@ ___
 
 ### readUInt32BE
 
-**readUInt32BE**(`offset?`): `number`
+`**readUInt32BE**(offset?): number`
 
 Reads an unsigned, big-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2537,7 +2537,7 @@ ___
 
 ### readUInt32LE
 
-**readUInt32LE**(`offset?`): `number`
+`**readUInt32LE**(offset?): number`
 
 Reads an unsigned, little-endian 32-bit integer from `buf` at the specified`offset`.
 
@@ -2592,7 +2592,7 @@ ___
 
 ### readUInt8
 
-**readUInt8**(`offset?`): `number`
+`**readUInt8**(offset?): number`
 
 Reads an unsigned 8-bit integer from `buf` at the specified `offset`.
 
@@ -2649,7 +2649,7 @@ ___
 
 ### readUIntBE
 
-**readUIntBE**(`offset`, `byteLength`): `number`
+`**readUIntBE**(offset, byteLength): number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as an unsigned big-endian integer supporting
 up to 48 bits of accuracy.
@@ -2714,7 +2714,7 @@ ___
 
 ### readUIntLE
 
-**readUIntLE**(`offset`, `byteLength`): `number`
+`**readUIntLE**(offset, byteLength): number`
 
 Reads `byteLength` number of bytes from `buf` at the specified `offset`and interprets the result as an unsigned, little-endian integer supporting
 up to 48 bits of accuracy.
@@ -2777,7 +2777,7 @@ ___
 
 ### readUint16BE
 
-**readUint16BE**(`offset?`): `number`
+`**readUint16BE**(offset?): number`
 
 #### Parameters
 
@@ -2821,7 +2821,7 @@ ___
 
 ### readUint16LE
 
-**readUint16LE**(`offset?`): `number`
+`**readUint16LE**(offset?): number`
 
 #### Parameters
 
@@ -2865,7 +2865,7 @@ ___
 
 ### readUint32BE
 
-**readUint32BE**(`offset?`): `number`
+`**readUint32BE**(offset?): number`
 
 #### Parameters
 
@@ -2909,7 +2909,7 @@ ___
 
 ### readUint32LE
 
-**readUint32LE**(`offset?`): `number`
+`**readUint32LE**(offset?): number`
 
 #### Parameters
 
@@ -2953,7 +2953,7 @@ ___
 
 ### readUint8
 
-**readUint8**(`offset?`): `number`
+`**readUint8**(offset?): number`
 
 #### Parameters
 
@@ -2997,7 +2997,7 @@ ___
 
 ### readUintBE
 
-**readUintBE**(`offset`, `byteLength`): `number`
+`**readUintBE**(offset, byteLength): number`
 
 #### Parameters
 
@@ -3050,7 +3050,7 @@ ___
 
 ### readUintLE
 
-**readUintLE**(`offset`, `byteLength`): `number`
+`**readUintLE**(offset, byteLength): number`
 
 #### Parameters
 
@@ -3103,7 +3103,7 @@ ___
 
 ### reduce
 
-**reduce**(`callbackfn`): `number`
+`**reduce**(callbackfn): number`
 
 Calls the specified callback function for all the elements in an array. The return value of
 the callback function is the accumulated result, and is provided as an argument in the next
@@ -3114,7 +3114,7 @@ call to the callback function.
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
+    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `number`",
     "description": "A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
@@ -3139,14 +3139,14 @@ call to the callback function.
   }
 ]} />
 
-**reduce**(`callbackfn`, `initialValue`): `number`
+`**reduce**(callbackfn, initialValue): number`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
+    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3180,7 +3180,7 @@ call to the callback function.
   }
 ]} />
 
-**reduce**<`U`\>(`callbackfn`, `initialValue`): `U`
+`**reduce**<TypeParameter U>(callbackfn, initialValue): U`
 
 Calls the specified callback function for all the elements in an array. The return value of
 the callback function is the accumulated result, and is provided as an argument in the next
@@ -3203,7 +3203,7 @@ call to the callback function.
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `U`",
+    "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `U`",
     "description": "A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
@@ -3231,7 +3231,7 @@ ___
 
 ### reduceRight
 
-**reduceRight**(`callbackfn`): `number`
+`**reduceRight**(callbackfn): number`
 
 Calls the specified callback function for all the elements in an array, in descending order.
 The return value of the callback function is the accumulated result, and is provided as an
@@ -3242,7 +3242,7 @@ argument in the next call to the callback function.
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
+    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `number`",
     "description": "A function that accepts up to four arguments. The reduceRight method calls the callbackfn function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
@@ -3267,14 +3267,14 @@ argument in the next call to the callback function.
   }
 ]} />
 
-**reduceRight**(`callbackfn`, `initialValue`): `number`
+`**reduceRight**(callbackfn, initialValue): number`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `number`",
+    "type": "(`previousValue`: `number`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `number`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3308,7 +3308,7 @@ argument in the next call to the callback function.
   }
 ]} />
 
-**reduceRight**<`U`\>(`callbackfn`, `initialValue`): `U`
+`**reduceRight**<TypeParameter U>(callbackfn, initialValue): U`
 
 Calls the specified callback function for all the elements in an array, in descending order.
 The return value of the callback function is the accumulated result, and is provided as an
@@ -3331,7 +3331,7 @@ argument in the next call to the callback function.
 <ParameterTypes parameters={[
   {
     "name": "callbackfn",
-    "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: `Uint8Array`) => `U`",
+    "type": "(`previousValue`: `U`, `currentValue`: `number`, `currentIndex`: `number`, `array`: Uint8Array) => `U`",
     "description": "A function that accepts up to four arguments. The reduceRight method calls the callbackfn function one time for each element in the array.",
     "optional": false,
     "defaultValue": "",
@@ -3359,16 +3359,16 @@ ___
 
 ### reverse
 
-**reverse**(): [`Buffer`](../index.md#buffer)
+`**reverse**(): [Buffer](../index.md#buffer)`
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3381,7 +3381,7 @@ ___
 
 ### set
 
-**set**(`array`, `offset?`): `void`
+`**set**(array, offset?): void`
 
 Sets a value or an array of values.
 
@@ -3390,7 +3390,7 @@ Sets a value or an array of values.
 <ParameterTypes parameters={[
   {
     "name": "array",
-    "type": "[`ArrayLike`](ArrayLike.mdx)<`number`\\>",
+    "type": "[ArrayLike](ArrayLike.mdx)&#60;number&#62;",
     "description": "A typed or untyped array of values to set.",
     "optional": false,
     "defaultValue": "",
@@ -3428,7 +3428,7 @@ ___
 
 ### slice
 
-**slice**(`start?`, `end?`): [`Buffer`](../index.md#buffer)
+`**slice**(start?, end?): [Buffer](../index.md#buffer)`
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -3483,12 +3483,12 @@ console.log(buf.toString());
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3509,7 +3509,7 @@ ___
 
 ### some
 
-**some**(`predicate`, `thisArg?`): `boolean`
+`**some**(predicate, thisArg?): boolean`
 
 Determines whether the specified callback function returns true for any element of an array.
 
@@ -3518,7 +3518,7 @@ Determines whether the specified callback function returns true for any element 
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `unknown`",
     "description": "A function that accepts up to three arguments. The some method calls the predicate function for each element in the array until the predicate returns a value which is coercible to the Boolean value true, or until the end of the array.",
     "optional": false,
     "defaultValue": "",
@@ -3556,7 +3556,7 @@ ___
 
 ### sort
 
-**sort**(`compareFn?`): [`Buffer`](../index.md#buffer)
+`**sort**(compareFn?): [Buffer](../index.md#buffer)`
 
 Sorts an array.
 
@@ -3576,12 +3576,12 @@ Sorts an array.
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3594,7 +3594,7 @@ ___
 
 ### subarray
 
-**subarray**(`start?`, `end?`): [`Buffer`](../index.md#buffer)
+`**subarray**(start?, end?): [Buffer](../index.md#buffer)`
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -3602,7 +3602,7 @@ offset and cropped by the `start` and `end` indices.
 Specifying `end` greater than `buf.length` will return the same result as
 that of `end` equal to `buf.length`.
 
-This method is inherited from [`TypedArray.prototype.subarray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/subarray).
+This method is inherited from [`TypedArray.prototype.subarray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/TypedArray/subarray).
 
 Modifying the new `Buffer` slice will modify the memory in the original `Buffer`because the allocated memory of the two objects overlap.
 
@@ -3676,12 +3676,12 @@ console.log(buf.subarray(-5, -2).toString());
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3698,10 +3698,10 @@ ___
 
 ### swap16
 
-**swap16**(): [`Buffer`](../index.md#buffer)
+`**swap16**(): [Buffer](../index.md#buffer)`
 
 Interprets `buf` as an array of unsigned 16-bit integers and swaps the
-byte order _in-place_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 2.
+byte order \_in-place\_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 2.
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -3734,12 +3734,12 @@ buf.swap16(); // Convert to big-endian UTF-16 text.
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",
@@ -3756,10 +3756,10 @@ ___
 
 ### swap32
 
-**swap32**(): [`Buffer`](../index.md#buffer)
+`**swap32**(): [Buffer](../index.md#buffer)`
 
 Interprets `buf` as an array of unsigned 32-bit integers and swaps the
-byte order _in-place_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 4.
+byte order \_in-place\_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 4.
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -3782,12 +3782,12 @@ buf2.swap32();
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",
@@ -3804,9 +3804,9 @@ ___
 
 ### swap64
 
-**swap64**(): [`Buffer`](../index.md#buffer)
+`**swap64**(): [Buffer](../index.md#buffer)`
 
-Interprets `buf` as an array of 64-bit numbers and swaps byte order _in-place_.
+Interprets `buf` as an array of 64-bit numbers and swaps byte order \_in-place\_.
 Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 8.
 
 ```js
@@ -3830,12 +3830,12 @@ buf2.swap64();
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",
@@ -3852,9 +3852,9 @@ ___
 
 ### toJSON
 
-**toJSON**(): { `data`: `number`[] ; `type`: ``"Buffer"``  }
+`**toJSON**(): &#123; data: number[] ; type: `"Buffer"`  &#125;`
 
-Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) implicitly calls
+Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/JSON/stringify) implicitly calls
 this function when stringifying a `Buffer` instance.
 
 `Buffer.from()` accepts objects in the format returned from this method.
@@ -3885,7 +3885,7 @@ console.log(copy);
 
 <ParameterTypes parameters={[
   {
-    "name": "`object`",
+    "name": "object",
     "type": "`object`",
     "optional": true,
     "defaultValue": "",
@@ -3924,7 +3924,7 @@ ___
 
 ### toLocaleString
 
-**toLocaleString**(): `string`
+`**toLocaleString**(): string`
 
 Converts a number to a string by using the current locale.
 
@@ -3948,18 +3948,18 @@ ___
 
 ### toReversed
 
-**toReversed**(): `Uint8Array`
+`**toReversed**(): Uint8Array`
 
 Copies the array and returns the copy with the elements in reverse order.
 
 #### Returns
 
-`Uint8Array`
+Uint8Array
 
 <ParameterTypes parameters={[
   {
     "name": "Uint8Array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3972,7 +3972,7 @@ ___
 
 ### toSorted
 
-**toSorted**(`compareFn?`): `Uint8Array`
+`**toSorted**(compareFn?): Uint8Array`
 
 Copies and sorts the array.
 
@@ -3992,12 +3992,12 @@ Copies and sorts the array.
 
 #### Returns
 
-`Uint8Array`
+Uint8Array
 
 <ParameterTypes parameters={[
   {
     "name": "Uint8Array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4010,7 +4010,7 @@ ___
 
 ### toString
 
-**toString**(`encoding?`, `start?`, `end?`): `string`
+`**toString**(encoding?, start?, end?): string`
 
 Decodes `buf` to a string according to the specified character encoding in`encoding`. `start` and `end` may be passed to decode only a subset of `buf`.
 
@@ -4050,7 +4050,7 @@ console.log(buf2.toString(undefined, 0, 3));
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "The character encoding to use.",
     "optional": true,
     "defaultValue": "",
@@ -4101,18 +4101,18 @@ ___
 
 ### valueOf
 
-**valueOf**(): `Uint8Array`
+`**valueOf**(): Uint8Array`
 
 Returns the primitive value of the specified object.
 
 #### Returns
 
-`Uint8Array`
+Uint8Array
 
 <ParameterTypes parameters={[
   {
     "name": "Uint8Array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4125,9 +4125,9 @@ ___
 
 ### values
 
-**values**(): [`IterableIterator`](IterableIterator.mdx)<`number`\>
+`**values**(): [IterableIterator](IterableIterator.mdx)&#60;number&#62;`
 
-Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) for `buf` values (bytes). This function is
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) for `buf` values (bytes). This function is
 called automatically when a `Buffer` is used in a `for..of` statement.
 
 ```js
@@ -4160,12 +4160,12 @@ for (const value of buf) {
 
 #### Returns
 
-[`IterableIterator`](IterableIterator.mdx)<`number`\>
+[IterableIterator](IterableIterator.mdx)&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "IterableIterator",
-    "type": "[`IterableIterator`](IterableIterator.mdx)<`number`\\>",
+    "type": "[IterableIterator](IterableIterator.mdx)&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4182,7 +4182,7 @@ ___
 
 ### with
 
-**with**(`index`, `value`): `Uint8Array`
+`**with**(index, value): Uint8Array`
 
 Copies the array and inserts the given number at the provided index.
 
@@ -4211,12 +4211,12 @@ Copies the array and inserts the given number at the provided index.
 
 #### Returns
 
-`Uint8Array`
+Uint8Array
 
 <ParameterTypes parameters={[
   {
     "name": "Uint8Array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "optional": false,
     "defaultValue": "",
     "description": "A copy of the original array with the inserted value.",
@@ -4229,7 +4229,7 @@ ___
 
 ### write
 
-**write**(`string`, `encoding?`): `number`
+`**write**(string, encoding?): number`
 
 Writes `string` to `buf` at `offset` according to the character encoding in`encoding`. The `length` parameter is the number of bytes to write. If `buf` did
 not contain enough space to fit the entire string, only part of `string` will be
@@ -4267,7 +4267,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "The character encoding of `string`.",
     "optional": true,
     "defaultValue": "",
@@ -4296,7 +4296,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 
 v0.1.90
 
-**write**(`string`, `offset`, `encoding?`): `number`
+`**write**(string, offset, encoding?): number`
 
 #### Parameters
 
@@ -4321,7 +4321,7 @@ v0.1.90
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4346,7 +4346,7 @@ v0.1.90
   }
 ]} />
 
-**write**(`string`, `offset`, `length`, `encoding?`): `number`
+`**write**(string, offset, length, encoding?): number`
 
 #### Parameters
 
@@ -4380,7 +4380,7 @@ v0.1.90
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4409,7 +4409,7 @@ ___
 
 ### writeBigInt64BE
 
-**writeBigInt64BE**(`value`, `offset?`): `number`
+`**writeBigInt64BE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian.
 
@@ -4473,7 +4473,7 @@ ___
 
 ### writeBigInt64LE
 
-**writeBigInt64LE**(`value`, `offset?`): `number`
+`**writeBigInt64LE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian.
 
@@ -4537,7 +4537,7 @@ ___
 
 ### writeBigUInt64BE
 
-**writeBigUInt64BE**(`value`, `offset?`): `number`
+`**writeBigUInt64BE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian.
 
@@ -4601,7 +4601,7 @@ ___
 
 ### writeBigUInt64LE
 
-**writeBigUInt64LE**(`value`, `offset?`): `number`
+`**writeBigUInt64LE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian
 
@@ -4665,7 +4665,7 @@ ___
 
 ### writeBigUint64BE
 
-**writeBigUint64BE**(`value`, `offset?`): `number`
+`**writeBigUint64BE**(value, offset?): number`
 
 #### Parameters
 
@@ -4718,7 +4718,7 @@ ___
 
 ### writeBigUint64LE
 
-**writeBigUint64LE**(`value`, `offset?`): `number`
+`**writeBigUint64LE**(value, offset?): number`
 
 #### Parameters
 
@@ -4771,7 +4771,7 @@ ___
 
 ### writeDoubleBE
 
-**writeDoubleBE**(`value`, `offset?`): `number`
+`**writeDoubleBE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
@@ -4834,7 +4834,7 @@ ___
 
 ### writeDoubleLE
 
-**writeDoubleLE**(`value`, `offset?`): `number`
+`**writeDoubleLE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a JavaScript number. Behavior is undefined when `value` is anything
 other than a JavaScript number.
@@ -4897,7 +4897,7 @@ ___
 
 ### writeFloatBE
 
-**writeFloatBE**(`value`, `offset?`): `number`
+`**writeFloatBE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
@@ -4960,7 +4960,7 @@ ___
 
 ### writeFloatLE
 
-**writeFloatLE**(`value`, `offset?`): `number`
+`**writeFloatLE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. Behavior is
 undefined when `value` is anything other than a JavaScript number.
@@ -5023,7 +5023,7 @@ ___
 
 ### writeInt16BE
 
-**writeInt16BE**(`value`, `offset?`): `number`
+`**writeInt16BE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian.  The `value`must be a valid signed 16-bit integer. Behavior is undefined when `value` is
 anything other than a signed 16-bit integer.
@@ -5088,7 +5088,7 @@ ___
 
 ### writeInt16LE
 
-**writeInt16LE**(`value`, `offset?`): `number`
+`**writeInt16LE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian.  The `value`must be a valid signed 16-bit integer. Behavior is undefined when `value` is
 anything other than a signed 16-bit integer.
@@ -5153,7 +5153,7 @@ ___
 
 ### writeInt32BE
 
-**writeInt32BE**(`value`, `offset?`): `number`
+`**writeInt32BE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid signed 32-bit integer. Behavior is undefined when `value` is
 anything other than a signed 32-bit integer.
@@ -5218,7 +5218,7 @@ ___
 
 ### writeInt32LE
 
-**writeInt32LE**(`value`, `offset?`): `number`
+`**writeInt32LE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid signed 32-bit integer. Behavior is undefined when `value` is
 anything other than a signed 32-bit integer.
@@ -5283,7 +5283,7 @@ ___
 
 ### writeInt8
 
-**writeInt8**(`value`, `offset?`): `number`
+`**writeInt8**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset`. `value` must be a valid
 signed 8-bit integer. Behavior is undefined when `value` is anything other than
@@ -5350,7 +5350,7 @@ ___
 
 ### writeIntBE
 
-**writeIntBE**(`value`, `offset`, `byteLength`): `number`
+`**writeIntBE**(value, offset, byteLength): number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as big-endian. Supports up to 48 bits of accuracy. Behavior is undefined when`value` is anything other than a
 signed integer.
@@ -5422,7 +5422,7 @@ ___
 
 ### writeIntLE
 
-**writeIntLE**(`value`, `offset`, `byteLength`): `number`
+`**writeIntLE**(value, offset, byteLength): number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than a signed integer.
@@ -5494,7 +5494,7 @@ ___
 
 ### writeUInt16BE
 
-**writeUInt16BE**(`value`, `offset?`): `number`
+`**writeUInt16BE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid unsigned 16-bit integer. Behavior is undefined when `value`is anything other than an
 unsigned 16-bit integer.
@@ -5560,7 +5560,7 @@ ___
 
 ### writeUInt16LE
 
-**writeUInt16LE**(`value`, `offset?`): `number`
+`**writeUInt16LE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid unsigned 16-bit integer. Behavior is undefined when `value` is
 anything other than an unsigned 16-bit integer.
@@ -5626,7 +5626,7 @@ ___
 
 ### writeUInt32BE
 
-**writeUInt32BE**(`value`, `offset?`): `number`
+`**writeUInt32BE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as big-endian. The `value`must be a valid unsigned 32-bit integer. Behavior is undefined when `value`is anything other than an
 unsigned 32-bit integer.
@@ -5691,7 +5691,7 @@ ___
 
 ### writeUInt32LE
 
-**writeUInt32LE**(`value`, `offset?`): `number`
+`**writeUInt32LE**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset` as little-endian. The `value`must be a valid unsigned 32-bit integer. Behavior is undefined when `value` is
 anything other than an unsigned 32-bit integer.
@@ -5756,7 +5756,7 @@ ___
 
 ### writeUInt8
 
-**writeUInt8**(`value`, `offset?`): `number`
+`**writeUInt8**(value, offset?): number`
 
 Writes `value` to `buf` at the specified `offset`. `value` must be a
 valid unsigned 8-bit integer. Behavior is undefined when `value` is anything
@@ -5825,7 +5825,7 @@ ___
 
 ### writeUIntBE
 
-**writeUIntBE**(`value`, `offset`, `byteLength`): `number`
+`**writeUIntBE**(value, offset, byteLength): number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as big-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than an unsigned integer.
@@ -5899,7 +5899,7 @@ ___
 
 ### writeUIntLE
 
-**writeUIntLE**(`value`, `offset`, `byteLength`): `number`
+`**writeUIntLE**(value, offset, byteLength): number`
 
 Writes `byteLength` bytes of `value` to `buf` at the specified `offset`as little-endian. Supports up to 48 bits of accuracy. Behavior is undefined
 when `value` is anything other than an unsigned integer.
@@ -5973,7 +5973,7 @@ ___
 
 ### writeUint16BE
 
-**writeUint16BE**(`value`, `offset?`): `number`
+`**writeUint16BE**(value, offset?): number`
 
 #### Parameters
 
@@ -6026,7 +6026,7 @@ ___
 
 ### writeUint16LE
 
-**writeUint16LE**(`value`, `offset?`): `number`
+`**writeUint16LE**(value, offset?): number`
 
 #### Parameters
 
@@ -6079,7 +6079,7 @@ ___
 
 ### writeUint32BE
 
-**writeUint32BE**(`value`, `offset?`): `number`
+`**writeUint32BE**(value, offset?): number`
 
 #### Parameters
 
@@ -6132,7 +6132,7 @@ ___
 
 ### writeUint32LE
 
-**writeUint32LE**(`value`, `offset?`): `number`
+`**writeUint32LE**(value, offset?): number`
 
 #### Parameters
 
@@ -6185,7 +6185,7 @@ ___
 
 ### writeUint8
 
-**writeUint8**(`value`, `offset?`): `number`
+`**writeUint8**(value, offset?): number`
 
 #### Parameters
 
@@ -6238,7 +6238,7 @@ ___
 
 ### writeUintBE
 
-**writeUintBE**(`value`, `offset`, `byteLength`): `number`
+`**writeUintBE**(value, offset, byteLength): number`
 
 #### Parameters
 
@@ -6300,7 +6300,7 @@ ___
 
 ### writeUintLE
 
-**writeUintLE**(`value`, `offset`, `byteLength`): `number`
+`**writeUintLE**(value, offset, byteLength): number`
 
 #### Parameters
 

@@ -41,7 +41,7 @@ async function updateProductOption (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductOptionDTO`](../../interfaces/UpdateProductOptionDTO.mdx)[]",
+    "type": "[UpdateProductOptionDTO](../../interfaces/UpdateProductOptionDTO.mdx)[]",
     "description": "The product options to be updated, each holding the attributes that should be updated in the product option.",
     "optional": false,
     "defaultValue": "",
@@ -78,7 +78,7 @@ async function updateProductOption (id: string, title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -138,7 +138,7 @@ async function updateProductOption (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product options.",
@@ -146,7 +146,7 @@ async function updateProductOption (id: string, title: string) {
     "children": [
       {
         "name": "ProductOptionDTO[]",
-        "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]",
+        "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -172,7 +172,7 @@ async function updateProductOption (id: string, title: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -181,7 +181,7 @@ async function updateProductOption (id: string, title: string) {
           },
           {
             "name": "product",
-            "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)",
+            "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)",
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -199,7 +199,7 @@ async function updateProductOption (id: string, title: string) {
           },
           {
             "name": "values",
-            "type": "[`ProductOptionValueDTO`](../../interfaces/ProductOptionValueDTO.mdx)[]",
+            "type": "[ProductOptionValueDTO](../../interfaces/ProductOptionValueDTO.mdx)[]",
             "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
             "optional": false,
             "defaultValue": "",

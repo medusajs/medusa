@@ -13,7 +13,7 @@ Base abstract entity for all entities
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim.",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ Base abstract entity for all entities
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ Base abstract entity for all entities
   },
   {
     "name": "shipping_option",
-    "type": "[`ShippingOption`](internal.ShippingOption.mdx)",
+    "type": "[ShippingOption](internal.ShippingOption.mdx)",
     "description": "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
     "optional": false,
     "defaultValue": "",

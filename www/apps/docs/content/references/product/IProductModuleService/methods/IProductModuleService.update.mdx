@@ -41,7 +41,7 @@ async function updateProduct (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductDTO`](../../interfaces/UpdateProductDTO.mdx)[]",
+    "type": "[UpdateProductDTO](../../interfaces/UpdateProductDTO.mdx)[]",
     "description": "The products to be updated, each holding the attributes that should be updated in the product.",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ async function updateProduct (id: string, title: string) {
     "children": [
       {
         "name": "categories",
-        "type": "{ `id`: `string`  }[]",
+        "type": "`&#123; id: string  &#125;`[]",
         "description": "The product categories to associate with the product.",
         "optional": true,
         "defaultValue": "",
@@ -131,7 +131,7 @@ async function updateProduct (id: string, title: string) {
       },
       {
         "name": "images",
-        "type": "`string`[] \\| { `id?`: `string` ; `url`: `string`  }[]",
+        "type": "`string`[] \\| `&#123; id?: string ; url: string  &#125;`[]",
         "description": "The product's images. If an array of strings is supplied, each string will be a URL and a `ProductImage` will be created and associated with the product. If an array of objects is supplied, you can pass along the ID of an existing `ProductImage`.",
         "optional": true,
         "defaultValue": "",
@@ -167,7 +167,7 @@ async function updateProduct (id: string, title: string) {
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -185,7 +185,7 @@ async function updateProduct (id: string, title: string) {
       },
       {
         "name": "options",
-        "type": "[`CreateProductOptionDTO`](../../interfaces/CreateProductOptionDTO.mdx)[]",
+        "type": "[CreateProductOptionDTO](../../interfaces/CreateProductOptionDTO.mdx)[]",
         "description": "The product options to be created and associated with the product.",
         "optional": true,
         "defaultValue": "",
@@ -222,7 +222,7 @@ async function updateProduct (id: string, title: string) {
       },
       {
         "name": "status",
-        "type": "[`ProductStatus`](../../enums/ProductStatus.mdx)",
+        "type": "[ProductStatus](../../enums/ProductStatus.mdx)",
         "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
         "optional": true,
         "defaultValue": "",
@@ -277,7 +277,7 @@ async function updateProduct (id: string, title: string) {
       },
       {
         "name": "tags",
-        "type": "[`CreateProductTagDTO`](../../interfaces/CreateProductTagDTO.mdx)[]",
+        "type": "[CreateProductTagDTO](../../interfaces/CreateProductTagDTO.mdx)[]",
         "description": "The product tags to be created and associated with the product.",
         "optional": true,
         "defaultValue": "",
@@ -314,7 +314,7 @@ async function updateProduct (id: string, title: string) {
       },
       {
         "name": "type",
-        "type": "[`CreateProductTypeDTO`](../../interfaces/CreateProductTypeDTO.mdx)",
+        "type": "[CreateProductTypeDTO](../../interfaces/CreateProductTypeDTO.mdx)",
         "description": "The product type to create and associate with the product.",
         "optional": true,
         "defaultValue": "",
@@ -331,7 +331,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -360,7 +360,7 @@ async function updateProduct (id: string, title: string) {
       },
       {
         "name": "variants",
-        "type": "([`CreateProductVariantDTO`](../../interfaces/CreateProductVariantDTO.mdx) \\| [`UpdateProductVariantDTO`](../../interfaces/UpdateProductVariantDTO.mdx))[]",
+        "type": "([CreateProductVariantDTO](../../interfaces/CreateProductVariantDTO.mdx) \\| [UpdateProductVariantDTO](../../interfaces/UpdateProductVariantDTO.mdx))[]",
         "description": "The product variants to be created and associated with the product. You can also update existing product variants associated with the product.",
         "optional": true,
         "defaultValue": "",
@@ -389,7 +389,7 @@ async function updateProduct (id: string, title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -449,7 +449,7 @@ async function updateProduct (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductDTO`](../../interfaces/ProductDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductDTO](../../interfaces/ProductDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated products.",
@@ -457,7 +457,7 @@ async function updateProduct (id: string, title: string) {
     "children": [
       {
         "name": "ProductDTO[]",
-        "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)[]",
+        "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -465,7 +465,7 @@ async function updateProduct (id: string, title: string) {
         "children": [
           {
             "name": "categories",
-            "type": "``null`` \\| [`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "``null`` \\| [ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -474,7 +474,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "collection",
-            "type": "[`ProductCollectionDTO`](../../interfaces/ProductCollectionDTO.mdx)",
+            "type": "[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)",
             "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -564,7 +564,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "images",
-            "type": "[`ProductImageDTO`](../../interfaces/ProductImageDTO.mdx)[]",
+            "type": "[ProductImageDTO](../../interfaces/ProductImageDTO.mdx)[]",
             "description": "The associated product images. It may only be available if the `images` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -600,7 +600,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -618,7 +618,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "options",
-            "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]",
+            "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]",
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -636,7 +636,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "status",
-            "type": "[`ProductStatus`](../../enums/ProductStatus.mdx)",
+            "type": "[ProductStatus](../../enums/ProductStatus.mdx)",
             "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
             "optional": false,
             "defaultValue": "",
@@ -654,7 +654,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "tags",
-            "type": "[`ProductTagDTO`](../../interfaces/ProductTagDTO.mdx)[]",
+            "type": "[ProductTagDTO](../../interfaces/ProductTagDTO.mdx)[]",
             "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -681,7 +681,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "type",
-            "type": "[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]",
+            "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
             "description": "The associated product type. It may only be available if the `type` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -699,7 +699,7 @@ async function updateProduct (id: string, title: string) {
           },
           {
             "name": "variants",
-            "type": "[`ProductVariantDTO`](../../interfaces/ProductVariantDTO.mdx)[]",
+            "type": "[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)[]",
             "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
             "optional": false,
             "defaultValue": "",

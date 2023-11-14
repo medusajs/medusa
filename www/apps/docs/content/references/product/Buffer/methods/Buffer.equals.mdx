@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).equals
 
-**equals**(`otherBuffer`): `boolean`
+`**equals**(otherBuffer): boolean`
 
 Returns `true` if both `buf` and `otherBuffer` have exactly the same bytes,`false` otherwise. Equivalent to `buf.compare(otherBuffer) === 0`.
 
@@ -30,7 +30,7 @@ console.log(buf1.equals(buf3));
 <ParameterTypes parameters={[
   {
     "name": "otherBuffer",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "A `Buffer` or Uint8Array with which to compare `buf`.",
     "optional": false,
     "defaultValue": "",

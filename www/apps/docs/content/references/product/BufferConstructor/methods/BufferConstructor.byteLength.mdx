@@ -8,10 +8,10 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [BufferConstructor](../../interfaces/BufferConstructor.mdx).byteLength
 
-**byteLength**(`string`, `encoding?`): `number`
+`**byteLength**(string, encoding?): number`
 
 Returns the byte length of a string when encoded using `encoding`.
-This is not the same as [`String.prototype.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length), which does not account
+This is not the same as [`String.prototype.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/String/length), which does not account
 for the encoding that is used to convert the string into bytes.
 
 For `'base64'`, `'base64url'`, and `'hex'`, this function assumes valid input.
@@ -30,16 +30,16 @@ console.log(`${str}: ${str.length} characters, ` +
 ```
 
 When `string` is a
-`Buffer`/[`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView)/[`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/-
-Reference/Global_Objects/TypedArray)/[`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)/[`SharedArrayBuffer`](https://develop-
-er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), the byte length as reported by `.byteLength`is returned.
+`Buffer`/[`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/DataView)/[`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/-
+Reference/Global\_Objects/TypedArray)/[`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/ArrayBuffer)/[`SharedArrayBuffer`](https://develop-
+er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/SharedArrayBuffer), the byte length as reported by `.byteLength`is returned.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "string",
-    "type": "`string` \\| `ArrayBuffer` \\| [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx) \\| [`ArrayBufferView`](../../types/ArrayBufferView.mdx)",
+    "type": "`string` \\| `ArrayBuffer` \\| [SharedArrayBuffer](../../variables/SharedArrayBuffer-1.mdx) \\| [ArrayBufferView](../../types/ArrayBufferView.mdx)",
     "description": "A value to calculate the length of.",
     "optional": false,
     "defaultValue": "",
@@ -48,7 +48,7 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuf
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "If `string` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",

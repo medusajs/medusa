@@ -12,7 +12,7 @@ A Shipping Method Tax Line represents the taxes applied on a shipping method in 
 
 ### constructor
 
-**new ShippingMethodTaxLine**()
+`**new ShippingMethodTaxLine**()`
 
 A Shipping Method Tax Line represents the taxes applied on a shipping method in a cart.
 
@@ -48,7 +48,7 @@ A Shipping Method Tax Line represents the taxes applied on a shipping method in 
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A Shipping Method Tax Line represents the taxes applied on a shipping method in 
   },
   {
     "name": "shipping_method",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+    "type": "[ShippingMethod](ShippingMethod.mdx)",
     "description": "The details of the associated shipping method.",
     "optional": false,
     "defaultValue": "",
@@ -106,7 +106,7 @@ A Shipping Method Tax Line represents the taxes applied on a shipping method in 
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

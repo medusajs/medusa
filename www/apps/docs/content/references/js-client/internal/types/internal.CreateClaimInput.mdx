@@ -6,14 +6,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # CreateClaimInput
 
- **CreateClaimInput**: `Object`
-
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "additional_items",
-    "type": "[`CreateClaimItemAdditionalItemInput`](internal.CreateClaimItemAdditionalItemInput.mdx)[]",
+    "type": "[CreateClaimItemAdditionalItemInput](internal.CreateClaimItemAdditionalItemInput.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -22,7 +20,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "claim_items",
-    "type": "[`CreateClaimItemInput`](internal.CreateClaimItemInput.mdx)[]",
+    "type": "[CreateClaimItemInput](internal.CreateClaimItemInput.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "order",
-    "type": "[`Order`](../classes/internal.Order.mdx)",
+    "type": "[Order](../classes/internal.Order.mdx)",
     "description": "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "return_shipping",
-    "type": "[`CreateClaimReturnShippingInput`](internal.CreateClaimReturnShippingInput.mdx)",
+    "type": "[CreateClaimReturnShippingInput](internal.CreateClaimReturnShippingInput.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -94,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_address",
-    "type": "[`AddressPayload`](../classes/internal.AddressPayload.mdx)",
+    "type": "[AddressPayload](../classes/internal.AddressPayload.mdx)",
     "description": "Address fields used when creating/updating an address.",
     "optional": true,
     "defaultValue": "",
@@ -112,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_methods",
-    "type": "[`CreateClaimShippingMethodInput`](internal.CreateClaimShippingMethodInput.mdx)[]",
+    "type": "[CreateClaimShippingMethodInput](internal.CreateClaimShippingMethodInput.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -121,7 +119,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "type",
-    "type": "[`ClaimTypeValue`](internal.ClaimTypeValue.mdx)",
+    "type": "[ClaimTypeValue](internal.ClaimTypeValue.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
