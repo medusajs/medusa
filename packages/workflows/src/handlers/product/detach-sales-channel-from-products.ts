@@ -1,5 +1,6 @@
 import { WorkflowArguments } from "../../helper"
 import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
+import { Modules } from "@medusajs/modules-sdk"
 
 type ProductHandle = string
 type SalesChannelId = string
@@ -46,7 +47,7 @@ export async function detachSalesChannelFromProducts({
       productIds.forEach((id) =>
         promises.push(
           remoteLink.dismiss({
-            productService: {
+            [Modules.PRODUCT]: {
               product_id: id,
             },
             salesChannelService: {
