@@ -7,7 +7,7 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
 
 export type StepFunction<
   TInput extends unknown[] = unknown[],
-  TOutput extends unknown = unknown
+  TOutput = unknown
 > = {
   (...inputs: StepReturn<TInput[number]>[]): StepReturn<TOutput>
 } & StepReturn<TOutput>
@@ -29,9 +29,7 @@ export type CreateWorkflowComposerContext = {
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
-  stepBinder: <TOutput extends unknown = unknown>(
-    fn: StepFunctionResult
-  ) => StepReturn<TOutput>
+  stepBinder: <TOutput = unknown>(fn: StepFunctionResult) => StepReturn<TOutput>
   parallelizeBinder: <TOutput extends StepReturn[] = StepReturn[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput

@@ -7,13 +7,13 @@ import {
   SymbolWorkflowStepReturn,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
+import { transform } from "./transform"
 import {
   CreateWorkflowComposerContext,
   StepFunction,
   StepFunctionResult,
   StepReturn,
 } from "./type"
-import { transform } from "./transform"
 
 interface ApplyStepOptions<TStepInput extends StepReturn[]> {
   stepName: string
@@ -22,7 +22,7 @@ interface ApplyStepOptions<TStepInput extends StepReturn[]> {
   compensateFn?: Function
 }
 
-function applyStep<TStepInput extends StepReturn[], TResult extends unknown>({
+function applyStep<TStepInput extends StepReturn[], TResult>({
   stepName,
   stepInputs,
   invokeFn,
