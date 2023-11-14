@@ -7,7 +7,6 @@ import {
   OneToMany,
   OptionalProps,
   PrimaryKey,
-  Property,
   Unique,
 } from "@mikro-orm/core"
 
@@ -16,7 +15,7 @@ import PriceList from "./price-list"
 import PriceListRuleValue from "./price-list-rule-value"
 import RuleType from "./rule-type"
 
-type OptionalFields = "id" | "priority"
+type OptionalFields = "id"
 type OptionalRelations = "rule_type" | "price_list"
 
 @Entity()
@@ -42,9 +41,6 @@ export default class PriceListRule {
     cascade: [Cascade.REMOVE],
   })
   price_list_rule_values = new Collection<PriceListRuleValue>(this)
-
-  @Property({ columnType: "integer", default: 0 })
-  priority: number
 
   @ManyToOne({
     entity: () => PriceList,

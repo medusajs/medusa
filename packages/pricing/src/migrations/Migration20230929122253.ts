@@ -107,7 +107,7 @@ export class Migration20230929122253 extends Migration {
     )
 
     this.addSql(
-      'create table "price_list_rule" ("id" text not null, "rule_type_id" text not null, "value" text not null, "priority" integer not null default 0, "price_list_id" text not null, constraint "price_list_rule_pkey" primary key ("id"));'
+      'create table "price_list_rule" ("id" text not null, "rule_type_id" text not null, "value" text not null, "price_list_id" text not null, constraint "price_list_rule_pkey" primary key ("id"));'
     )
 
     this.addSql(

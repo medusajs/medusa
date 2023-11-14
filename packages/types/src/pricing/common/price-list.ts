@@ -83,7 +83,6 @@ export interface FilterablePriceListRuleValueProps
 export interface PriceListRuleDTO {
   id: string
   value: string
-  priority: number
   rule_type: RuleTypeDTO
   price_list: PriceListDTO
   price_list_rule_values?: PriceListRuleValueDTO[]
