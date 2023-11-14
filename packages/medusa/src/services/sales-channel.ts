@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm"
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
@@ -14,7 +14,6 @@ import { SalesChannelRepository } from "../repositories/sales-channel"
 import { buildQuery } from "../utils"
 import EventBusService from "./event-bus"
 import StoreService from "./store"
-import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -395,7 +394,7 @@ class SalesChannelService extends TransactionBaseService {
       )
 
       const isIsolatedSalesChannelDomainFlagOn =
-        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+        this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
 
       await salesChannelRepo.addProducts(
         salesChannelId,

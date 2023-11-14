@@ -2,6 +2,7 @@ import {
   buildRelations,
   buildSelects,
   FlagRouter,
+  MedusaV2Flag,
   objectToStringPath,
   promiseAll,
 } from "@medusajs/utils"
@@ -45,7 +46,6 @@ import { buildQuery, isString, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import { CreateProductVariantInput } from "../types/product-variant"
 import SalesChannelService from "./sales-channel"
-import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -183,7 +183,7 @@ class ProductService extends TransactionBaseService {
       config.relations?.includes("sales_channels")
 
     if (
-      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
       hasSalesChannelsRelation
     ) {
       config.relations = config.relations?.filter((r) => r !== "sales_channels")
@@ -208,7 +208,7 @@ class ProductService extends TransactionBaseService {
     }
 
     if (
-      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
       hasSalesChannelsRelation
     ) {
       await this.decorateProductsWithSalesChannels(products)
@@ -339,7 +339,7 @@ class ProductService extends TransactionBaseService {
       config.relations?.includes("sales_channels")
 
     if (
-      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
       hasSalesChannelsRelation
     ) {
       config.relations = config.relations?.filter((r) => r !== "sales_channels")
@@ -364,7 +364,7 @@ class ProductService extends TransactionBaseService {
     }
 
     if (
-      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key) &&
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
       hasSalesChannelsRelation
     ) {
       await this.decorateProductsWithSalesChannels([product])
@@ -522,7 +522,7 @@ class ProductService extends TransactionBaseService {
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
-        !this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+        !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -552,7 +552,7 @@ class ProductService extends TransactionBaseService {
 
       if (
         isDefined(salesChannels) &&
-        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+        this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
       ) {
         if (salesChannels?.length) {
           await Promise.all(
@@ -710,7 +710,7 @@ class ProductService extends TransactionBaseService {
 
       if (
         this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
-        !this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
+        !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
       ) {
         if (isDefined(salesChannels)) {
           product.sales_channels = []
@@ -733,9 +733,7 @@ class ProductService extends TransactionBaseService {
 
       const result = await productRepo.save(product)
 
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
-      ) {
+      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
         if (salesChannels?.length) {
           await promiseAll(
             salesChannels?.map(

@@ -1,9 +1,5 @@
 import { WorkflowArguments } from "../../helper"
-import {
-  IsolateSalesChannelDomainFeatureFlag,
-  MedusaV2Flag,
-  promiseAll,
-} from "@medusajs/utils"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 
 type ProductHandle = string
 type SalesChannelId = string
