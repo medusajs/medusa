@@ -24,8 +24,8 @@ export function transform<
   TStepReturnInput extends [...StepReturn<TTransformerInput[number][]>] = [
     ...StepReturn<TTransformerInput[number][]>
   ],
-  A extends unknown = unknown,
-  TOutput extends unknown = unknown
+  A = unknown,
+  TOutput = unknown
 >(
   values: [...TStepReturnInput],
   funcA: Func1<TTransformerInput, A>,
