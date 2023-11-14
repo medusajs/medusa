@@ -201,6 +201,7 @@ export class SubscriberLoader {
 
     for (const e of events) {
       eventBusService.subscribe(e, subscriber as Subscriber<unknown>, {
+        ...(config.context ?? {}),
         subscriberId,
       })
     }
