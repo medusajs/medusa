@@ -157,6 +157,24 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "status": {
           "name": "status",
           "type": "text",
@@ -168,6 +186,20 @@
           "enumItems": [
             "active",
             "draft"
+          ],
+          "mappedType": "enum"
+        },
+        "type": {
+          "name": "type",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'sale'",
+          "enumItems": [
+            "sale",
+            "override"
           ],
           "mappedType": "enum"
         },
@@ -200,11 +232,52 @@
           "nullable": false,
           "default": "0",
           "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "price_list",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_price_list_deleted_at",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "price_list_pkey",
           "columnNames": [
@@ -851,6 +924,16 @@
           "keyName": "IDX_price_list_rule_price_list_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "keyName": "IDX_price_list_rule_rule_type_id_price_list_id_unique",
+          "columnNames": [
+            "price_list_id",
+            "rule_type_id"
+          ],
+          "composite": true,
+          "primary": false,
+          "unique": true
         },
         {
           "keyName": "price_list_rule_pkey",

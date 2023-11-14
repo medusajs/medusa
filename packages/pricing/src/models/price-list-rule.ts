@@ -8,6 +8,7 @@ import {
   OptionalProps,
   PrimaryKey,
   Property,
+  Unique,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
@@ -19,6 +20,10 @@ type OptionalFields = "id" | "priority"
 type OptionalRelations = "rule_type" | "price_list"
 
 @Entity()
+@Unique({
+  name: "IDX_price_list_rule_rule_type_id_price_list_id_unique",
+  properties: ["price_list", "rule_type"],
+})
 export default class PriceListRule {
   [OptionalProps]: OptionalFields | OptionalRelations
 

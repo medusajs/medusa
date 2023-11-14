@@ -2,18 +2,14 @@ import {
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
   IPricingModuleService,
-  PriceListType,
   PricingTypes,
 } from "@medusajs/types"
-
+import { PriceListType } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { PriceSet } from "@models"
-
 import { initialize } from "../../../../src"
-
-import { DB_URL, MikroOrmWrapper } from "../../../utils"
-
 import { seedPriceData } from "../../../__fixtures__/seed-price-data"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 

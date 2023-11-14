@@ -1,5 +1,5 @@
 import { Context, DAL } from "@medusajs/types"
-import { DALUtils, MedusaError } from "@medusajs/utils"
+import { DALUtils, MedusaError, arrayDifference } from "@medusajs/utils"
 import {
   LoadStrategy,
   FilterQuery as MikroFilterQuery,
@@ -109,6 +109,20 @@ export class PriceListRuleValueRepository extends DALUtils.MikroOrmBaseRepositor
       context
     )
 
+    const dataAndExistingIdDifference = arrayDifference(
+      data.map((d) => d.id),
+      existingPriceValues.map((pv) => pv.id)
+    )
+
+    if (dataAndExistingIdDifference.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `PriceListRuleValue with id(s) "${dataAndExistingIdDifference.join(
+          ", "
+        )}" not found`
+      )
+    }
+
     const existingValuesMap = new Map(
       existingPriceValues.map<[string, PriceListRuleValue]>((priceValue) => [
         priceValue.id,
@@ -117,14 +131,7 @@ export class PriceListRuleValueRepository extends DALUtils.MikroOrmBaseRepositor
     )
 
     const priceValues = data.map((priceRuleValueData) => {
-      const existingPriceValue = existingValuesMap.get(priceRuleValueData.id)
-
-      if (!existingPriceValue) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `PriceListRuleValue with id "${priceRuleValueData.id}" not found`
-        )
-      }
+      const existingPriceValue = existingValuesMap.get(priceRuleValueData.id)!
 
       return manager.assign(existingPriceValue, priceRuleValueData)
     })
