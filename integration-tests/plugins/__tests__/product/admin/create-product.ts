@@ -61,33 +61,6 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
     await db.teardown()
   })
 
-  it("should create price set for variants", async () => {
-    const api = useApi()! as AxiosInstance
-
-    const pricingModuleService: IPricingModuleService = appContainer.resolve(
-      "pricingModuleService"
-    )
-
-    const data = {
-      title: "test product",
-      options: [{ title: "test-option" }],
-      variants: [
-        {
-          title: "test variant",
-          prices: [],
-          options: [{ value: "test-option" }],
-        },
-      ],
-    }
-
-    let response = await api.post("/admin/products", data, adminHeaders)
-
-    expect(response.status).toEqual(200)
-
-    const [priceSets, count] = await pricingModuleService.listAndCount()
-    expect(count).toEqual(1)
-  })
-
   it("should create prices with region_id and currency_code context", async () => {
     const api = useApi()! as AxiosInstance
 
@@ -141,5 +114,32 @@ describe("[Product & Pricing Module] POST /admin/products", () => {
         ]),
       }),
     })
+  })
+
+  it("should create price set for variants", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const pricingModuleService: IPricingModuleService = appContainer.resolve(
+      "pricingModuleService"
+    )
+
+    const data = {
+      title: "test product",
+      options: [{ title: "test-option" }],
+      variants: [
+        {
+          title: "test variant",
+          prices: [],
+          options: [{ value: "test-option" }],
+        },
+      ],
+    }
+
+    let response = await api.post("/admin/products", data, adminHeaders)
+
+    expect(response.status).toEqual(200)
+
+    const [priceSets, count] = await pricingModuleService.listAndCount()
+    expect(count).toEqual(1)
   })
 })

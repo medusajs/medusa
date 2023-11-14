@@ -242,8 +242,6 @@ describe("[Product & Pricing Module] POST /admin/price-lists", () => {
       `/store/products/${product.id}?currency_code=usd`
     )
 
-    console.warn(response.data.product.variants[0].prices)
-
     expect(response.status).toEqual(200)
     expect(response.data.product.variants[0].prices).toEqual([
       expect.objectContaining({
@@ -263,7 +261,7 @@ describe("[Product & Pricing Module] POST /admin/price-lists", () => {
     )
   })
 
-  it.only("should list prices from price-list with customer groups", async () => {
+  it("should list prices from price-list with customer groups", async () => {
     const api = useApi()! as AxiosInstance
 
     await simpleCustomerFactory(dbConnection, {
