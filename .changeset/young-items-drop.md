@@ -1,9 +1,9 @@
 ---
 "@medusajs/workflows": patch
-"@medusajs/pricing": patch
+"@medusajs/product": patch
 "@medusajs/medusa": patch
 "@medusajs/types": patch
 "@medusajs/utils": patch
 ---
 
-feat(medusa,types,workflows,utils): PricingModule Integration of PriceLists into Core
+feat(medusa,types,workflows,utils,product): PricingModule Integration of PriceLists into Core
