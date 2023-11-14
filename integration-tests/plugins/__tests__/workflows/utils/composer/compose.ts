@@ -672,14 +672,14 @@ describe("Workflow composer", function () {
   })
 
   it("should transform the values before forward them to the next step", async () => {
-    const mockStep1Fn = jest.fn((obj, context) => {
+    const mockStep1Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
         property: "property",
       }
       return ret
     })
 
-    const mockStep2Fn = jest.fn((obj, context) => {
+    const mockStep2Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
         sum: "sum = " + obj.sum,
         ...obj,
@@ -687,7 +687,7 @@ describe("Workflow composer", function () {
       return ret
     })
 
-    const mockStep3Fn = jest.fn((context, param) => {
+    const mockStep3Fn = jest.fn().mockImplementation((context, param) => {
       const ret = {
         avg: "avg = " + param.avg,
         ...param,
