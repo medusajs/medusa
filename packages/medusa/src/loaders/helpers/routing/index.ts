@@ -735,6 +735,10 @@ export class RoutesLoader {
      */
 
     for (const route of routes) {
+      if (!route.middlewares || !route.middlewares.length) {
+        continue
+      }
+
       const methods = (
         Array.isArray(route.method) ? route.method : [route.method]
       ).filter(Boolean) as MiddlewareVerb[]
