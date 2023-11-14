@@ -165,35 +165,30 @@ export default async (req: Request, res) => {
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   const validated = req.validatedQuery
+  let priceLists
+  let count
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    const [priceLists, count] = await listAndCountPriceListPricingModule({
+    ;[priceLists, count] = await listAndCountPriceListPricingModule({
       req,
       list: true,
-    })
-
-    res.json({
-      price_lists: priceLists,
-      count,
-      offset: validated.offset,
-      limit: validated.limit,
     })
   } else {
     const priceListService: PriceListService =
       req.scope.resolve("priceListService")
 
-    const [priceLists, count] = await priceListService.listAndCount(
+    ;[priceLists, count] = await priceListService.listAndCount(
       req.filterableFields,
       req.listConfig
     )
-
-    res.json({
-      price_lists: priceLists,
-      count,
-      offset: validated.offset,
-      limit: validated.limit,
-    })
   }
+
+  res.json({
+    price_lists: priceLists,
+    count,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 /**
