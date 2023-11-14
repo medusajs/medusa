@@ -24,7 +24,7 @@ export interface IInventoryService {
   __joinerConfig(): ModuleJoinerConfig
 
   /**
-   * This method is used to retrieve a paginated list of inventory items based on optional filters and configuration.
+   * This method is used to retrieve a paginated list of inventory items along with the total count of available inventory items satisfying the provided filters.
    * @param {FilterableInventoryItemProps} selector - The filters to apply on the retrieved inventory items.
    * @param {FindConfig<InventoryItemDTO>} config - 
    * The configurations determining how the inventory items are retrieved. Its properties, such as `select` or `relations`, accept the
@@ -129,7 +129,7 @@ export interface IInventoryService {
   ): Promise<[InventoryItemDTO[], number]>
 
   /**
-   * This method is used to retrieve a paginated list of reservation items based on optional filters and configuration.
+   * This method is used to retrieve a paginated list of reservation items along with the total count of available reservation items satisfying the provided filters.
    * @param {FilterableReservationItemProps} selector - The filters to apply on the retrieved reservation items.
    * @param {FindConfig<ReservationItemDTO>} config - 
    * The configurations determining how the reservation items are retrieved. Its properties, such as `select` or `relations`, accept the
@@ -234,7 +234,7 @@ export interface IInventoryService {
   ): Promise<[ReservationItemDTO[], number]>
 
   /**
-   * This method is used to retrieve a paginated list of inventory levels based on optional filters and configuration.
+   * This method is used to retrieve a paginated list of inventory levels along with the total count of available inventory levels satisfying the provided filters.
    * @param {FilterableInventoryLevelProps} selector - The filters to apply on the retrieved inventory levels.
    * @param {FindConfig<InventoryLevelDTO>} config - 
    * The configurations determining how the inventory levels are retrieved. Its properties, such as `select` or `relations`, accept the
