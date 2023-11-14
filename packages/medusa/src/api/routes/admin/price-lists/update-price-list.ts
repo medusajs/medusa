@@ -1,6 +1,6 @@
 import { WorkflowTypes } from "@medusajs/types"
 import { MedusaV2Flag, PriceListStatus, PriceListType } from "@medusajs/utils"
-import { UpdatePriceLists } from "@medusajs/workflows"
+import { updatePriceLists } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -97,7 +97,7 @@ export default async (req, res) => {
   )
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    const updateVariantsWorkflow = UpdatePriceLists.updatePriceLists(req.scope)
+    const updateVariantsWorkflow = updatePriceLists(req.scope)
 
     const input = {
       price_lists: [

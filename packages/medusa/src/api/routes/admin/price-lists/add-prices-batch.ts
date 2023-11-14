@@ -1,5 +1,5 @@
 import { MedusaV2Flag } from "@medusajs/utils"
-import { UpdatePriceLists } from "@medusajs/workflows"
+import { updatePriceLists } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { EntityManager } from "typeorm"
@@ -96,7 +96,7 @@ export default async (req, res) => {
   const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    const updateVariantsWorkflow = UpdatePriceLists.updatePriceLists(req.scope)
+    const updateVariantsWorkflow = updatePriceLists(req.scope)
 
     const input = {
       price_lists: [

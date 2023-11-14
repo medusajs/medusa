@@ -3,9 +3,8 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
-import { Workflows } from "@medusajs/workflows"
+import { removePriceListProductPrices, Workflows } from "@medusajs/workflows"
 import { FlagRouter } from "@medusajs/utils"
-import { removePriceListProductPrices } from "@medusajs/workflows/dist/definition/price-list/remove-product-prices"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/products/prices/batch
