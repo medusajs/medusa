@@ -136,7 +136,8 @@ export class PricingRepository
       ps: "price_set",
     })
       .select({
-        id: "ps.id",
+        id: "ma.id",
+        price_set_id: "ps.id",
         amount: "ma.amount",
         min_quantity: "ma.min_quantity",
         max_quantity: "ma.max_quantity",

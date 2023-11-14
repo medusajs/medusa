@@ -106,7 +106,9 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [{ id: "money-amount-USD", amount: "500" }],
+          money_amounts: [
+            expect.objectContaining({ id: "money-amount-USD", amount: "500" }),
+          ],
         },
       ])
     })
@@ -160,7 +162,7 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [{ id: "money-amount-USD" }],
+          money_amounts: [expect.objectContaining({ id: "money-amount-USD" })],
         },
       ])
     })

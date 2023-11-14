@@ -2943,9 +2943,9 @@ export interface IPricingModuleService {
   ): Promise<void>
 
   addPriceListPrices(
-    data: AddPriceListPricesDTO,
+    data: AddPriceListPricesDTO[],
     sharedContext?: Context
-  ): Promise<PriceListDTO>
+  ): Promise<PriceListDTO[]>
 
   setPriceListRules(
     data: SetPriceListRulesDTO,

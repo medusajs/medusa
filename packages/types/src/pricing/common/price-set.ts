@@ -1,10 +1,6 @@
-import { BaseFilterable } from "../../dal"
-import {
-  CreateMoneyAmountDTO,
-  FilterableMoneyAmountProps,
-  MoneyAmountDTO,
-} from "./money-amount"
-import { RuleTypeDTO } from "./rule-type"
+import { BaseFilterable } from "../../dal";
+import { CreateMoneyAmountDTO, FilterableMoneyAmountProps, MoneyAmountDTO } from "./money-amount";
+import { RuleTypeDTO } from "./rule-type";
 
 /**
  * @interface
@@ -60,6 +56,7 @@ export interface PriceSetDTO {
  */
 export interface CalculatedPriceSetDTO {
   id: string
+  price_set_id: string
   amount: string | null
   currency_code: string | null
   min_quantity: string | null

@@ -2,6 +2,7 @@ import {
   AddPricesDTO,
   Context,
   CreateMoneyAmountDTO,
+  CreatePriceListRuleDTO,
   DAL,
   FindConfig,
   InternalModuleDeclaration,
@@ -42,7 +43,6 @@ import {
   RuleTypeService,
 } from "@services"
 
-import { CreatePriceListRuleDTO } from "@medusajs/types"
 import {
   groupBy,
   InjectManager,
@@ -147,7 +147,7 @@ export default class PricingModuleService<
       pricingContext,
       sharedContext
     )
-    const pricesSetPricesMap = groupBy(results, "id")
+    const pricesSetPricesMap = groupBy(results, "price_set_id")
 
     const calculatedPrices = pricingFilters.id.map(
       (priceSetId: string): PricingTypes.CalculatedPriceSet => {
@@ -1721,17 +1721,10 @@ export default class PricingModuleService<
 
   @InjectManager("baseRepository_")
   async addPriceListPrices(
-    data: PricingTypes.AddPriceListPricesDTO,
+    data: PricingTypes.AddPriceListPricesDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<PricingTypes.PriceListDTO> {
-    const [priceList] = await this.addPriceListPrices_([data], sharedContext)
-
-    return this.baseRepository_.serialize<PricingTypes.PriceListDTO>(
-      priceList,
-      {
-        populate: true,
-      }
-    )
+  ): Promise<PricingTypes.PriceListDTO[]> {
+    return await this.addPriceListPrices_(data, sharedContext)
   }
 
   @InjectTransactionManager("baseRepository_")
@@ -1764,20 +1757,19 @@ export default class PricingModuleService<
             sharedContext
           )
 
-          await this.priceSetMoneyAmountService_.create(
+          const psma = await this.priceSetMoneyAmountService_.create(
             [
               {
                 price_set: price.price_set_id,
-                money_amount: moneyAmount,
+                money_amount: moneyAmount.id,
                 title: "test",
-                number_rules: 0,
                 price_list: priceList.id,
               },
-            ] as unknown as PricingTypes.CreatePriceSetMoneyAmountDTO[],
+            ],
             sharedContext
           )
 
-          return moneyAmount
+          return psma
         })
       )
     }
