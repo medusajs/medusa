@@ -7,8 +7,10 @@ import {
   SymbolWorkflowStepReturn,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
+import { transform } from "./transform"
 import {
   CreateWorkflowComposerContext,
+  StepBinderReturn,
   StepFunction,
   StepFunctionResult,
   StepInput,
@@ -38,7 +40,7 @@ function applyStep({
       invoke: async (transactionContext) => {
         const { invoke: invokeRes } = transactionContext
 
-        // Garb all previous invoke results by step name
+        // Grab all previous invoke results by step name
         let previousResultResults = await promiseAll(
           stepInputs.map(async (stepInput) => {
             if (stepInput?.__type === SymbolInputReference) {
@@ -93,10 +95,25 @@ function applyStep({
     })
     this.handlers.set(stepName, handler)
 
-    return {
+    const ret = {
       __type: SymbolWorkflowStep,
       __step__: stepName,
-    }
+    } as StepBinderReturn
+
+    const proxy = new Proxy(ret, {
+      get: function (target, prop: string, receiver) {
+        if (target[prop]) {
+          return target[prop]
+        }
+
+        return transform(target[prop], (context) => {
+          const { invoke } = context
+          return invoke[ret.__step__]?.output?.[prop]
+        })
+      },
+    })
+
+    return proxy
   }
 }
 

@@ -24,6 +24,11 @@ export type StepTransformer<T = unknown> = {
   __result: T
 }
 
+export type StepBinderReturn = {
+  __type: Symbol
+  __step__: string
+}
+
 export type CreateWorkflowComposerContext = {
   workflowId: string
   flow: OrchestratorBuilder
