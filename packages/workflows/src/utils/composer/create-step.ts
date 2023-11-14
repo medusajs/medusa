@@ -202,10 +202,3 @@ export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
 
   return returnFn as unknown as StepFunction<TInvokeInput, TInvokeResult>
 }
-
-/*
-  type invoke and compensate
-  apply transaction context to the this of the above function
-  transaction context should only contain container, metadata, context
-  convention prop name for invoke returning compensation data. "compensateInput"
- */
