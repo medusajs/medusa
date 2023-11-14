@@ -9,9 +9,9 @@ import {
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
-export function createWorkflow<TData = unknown, TResult = unknown>(
+export function createWorkflow<TData extends unknown, TResult extends unknown>(
   name: string,
-  composer: Function
+  composer: (input: StepReturn<TData>) => StepReturn<TResult>
 ) {
   const handlers: WorkflowHandler = new Map()
 

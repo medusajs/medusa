@@ -62,7 +62,7 @@ const step4 = createStep(
 
 const workflow = createWorkflow(
   "workflow1",
-  function (input: StepReturn<WorkflowInput>) {
+  function (input: StepReturn<WorkflowInput>): StepReturn<step3Return> {
     const ret1 = step1(input)
     const test = ret1.test
     const ret2 = step2(test)
@@ -93,5 +93,5 @@ const workflow = createWorkflow(
 workflow()
   .run({ input: { cart_id: "test" } })
   .then((res) => {
-    console.log(res)
+    console.log(res.result.test)
   })
