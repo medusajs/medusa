@@ -3,21 +3,68 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
-import { StepFunction, StepReturn } from "./type"
+import { StepReturn } from "./type"
+
+type Func1<T extends any[], U> = (context: any, ...inputs: T) => U | Promise<U>
+type Func<T extends any, U> = (context: any, input: T) => U | Promise<U>
+
+export function transform<
+  TTransformerInput extends unknown[] = unknown[],
+  TStepReturnInput extends StepReturn<TTransformerInput[number][]> = StepReturn<
+    TTransformerInput[number][]
+  >,
+  TOutput extends unknown = unknown
+>(
+  values: [...TStepReturnInput],
+  funcA: Func1<TTransformerInput, TOutput>
+): StepReturn<TOutput>
 
 export function transform<
   TTransformerInput extends unknown[] = unknown[],
   TStepReturnInput extends [...StepReturn<TTransformerInput[number][]>] = [
-    ...StepReturn<TTransformerInput[number]>[]
+    ...StepReturn<TTransformerInput[number][]>
   ],
+  A extends unknown = unknown,
   TOutput extends unknown = unknown
 >(
   values: [...TStepReturnInput],
-  ...functions: ((
-    context: any,
-    ...stepInputs: TTransformerInput
-  ) => Promise<TOutput>)[]
-): StepReturn<TOutput> {
+  funcA: Func1<TTransformerInput, A>,
+  funcB: Func<A, TOutput>
+): StepReturn<TOutput>
+
+export function transform<
+  TTransformerInput extends unknown[] = unknown[],
+  TStepReturnInput extends [...StepReturn<TTransformerInput>] = [
+    ...StepReturn<TTransformerInput>
+  ],
+  A extends unknown = unknown,
+  B extends unknown = unknown,
+  TOutput extends unknown = unknown
+>(
+  values: [...TStepReturnInput],
+  funcA: Func1<TTransformerInput, A>,
+  funcB: Func<A, B>,
+  funcC: Func<B, TOutput>
+): StepReturn<TOutput>
+
+export function transform<
+  TTransformerInput extends unknown[] = unknown[],
+  TStepReturnInput extends [...StepReturn<TTransformerInput[number][]>] = [
+    ...StepReturn<TTransformerInput[number][]>
+  ],
+  A extends unknown = unknown,
+  B extends unknown = unknown,
+  C extends unknown = unknown,
+  TOutput extends unknown = unknown
+>(
+  values: [...TStepReturnInput],
+  funcA: Func1<TTransformerInput, A>,
+  funcB: Func<A, B>,
+  funcC: Func<B, C>,
+  funcD: Func<C, TOutput>
+): StepReturn<TOutput>
+
+export function transform(values: any, ...functions: Function[]): unknown {
   const returnFn = async function (context: any): Promise<any> {
     const { invoke } = context
 
@@ -50,5 +97,5 @@ export function transform<
   returnFn.__type = SymbolWorkflowStepTransformer
   returnFn.__value = undefined
 
-  return returnFn as unknown as StepFunction<TStepReturnInput, TOutput>
+  return returnFn
 }

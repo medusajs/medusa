@@ -15,7 +15,6 @@ export type StepFunction<
 export type StepReturnProperties<T = unknown> = {
   __type: Symbol
   __step__: string
-  __returnProperties?: string
   __value?: T
 }
 
@@ -24,6 +23,8 @@ export type StepReturn<T = unknown> = T extends object
       [Key in keyof T]: StepReturn<T[Key]>
     } & StepReturnProperties<T>
   : StepReturnProperties<T>
+
+export type UnwrapStepReturn<T> = T extends StepReturn<infer U> ? U : T
 
 export type CreateWorkflowComposerContext = {
   workflowId: string
