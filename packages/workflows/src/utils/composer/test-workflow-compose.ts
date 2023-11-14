@@ -71,18 +71,16 @@ const workflow = createWorkflow(
     const ret3 = step3(ret2)
     const ret4 = step4(ret2)
 
-    const ret1_2 = step1(input)
-
     const ret4Transformed = transform(
       [ret4, ret3],
       async (input, input2): Promise<{ test: string }> => {
-        return { test: input.depth.test2 }
+        return { test: input.test }
       },
-      function (input) {
-        return { foo: "value2" }
+      async (input, input2): Promise<{ test: string }> => {
+        return { test: input.test }
       }
     )
-    const v = ret4Transformed.foo
+    const v = ret4Transformed.test
 
     return ret3
   }
