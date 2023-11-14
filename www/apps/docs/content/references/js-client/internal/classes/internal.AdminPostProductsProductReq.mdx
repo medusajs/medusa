@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "categories",
-    "type": "[`ProductProductCategoryReq`](internal.ProductProductCategoryReq.mdx)[]",
+    "type": "[ProductProductCategoryReq](internal.ProductProductCategoryReq.mdx)[]",
     "description": "Product categories to add the Product to.",
     "optional": true,
     "defaultValue": "",
@@ -102,7 +102,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs with additional information.",
     "optional": true,
     "defaultValue": "",
@@ -129,7 +129,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "sales_channels",
-    "type": "``null`` \\| [`ProductSalesChannelReq`](internal.ProductSalesChannelReq.mdx)[]",
+    "type": "``null`` \\| [ProductSalesChannelReq](internal.ProductSalesChannelReq.mdx)[]",
     "description": "Sales channels to associate the Product with.",
     "optional": true,
     "defaultValue": "",
@@ -138,7 +138,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "status",
-    "type": "[`ProductStatus`](../enums/internal.ProductStatus.mdx)",
+    "type": "[ProductStatus](../enums/internal.ProductStatus.mdx)",
     "description": "The status of the product. The product is shown to the customer only if its status is `published`.",
     "optional": true,
     "defaultValue": "",
@@ -156,7 +156,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "tags",
-    "type": "[`ProductTagReq`](internal.ProductTagReq.mdx)[]",
+    "type": "[ProductTagReq](internal.ProductTagReq.mdx)[]",
     "description": "Product Tags to associate the Product with.",
     "optional": true,
     "defaultValue": "",
@@ -183,7 +183,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "type",
-    "type": "[`ProductTypeReq`](internal.ProductTypeReq.mdx)",
+    "type": "[ProductTypeReq](internal.ProductTypeReq.mdx)",
     "description": "The Product Type to associate the Product with.",
     "optional": true,
     "defaultValue": "",
@@ -192,7 +192,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "variants",
-    "type": "[`ProductVariantReq`](internal.ProductVariantReq-1.mdx)[]",
+    "type": "[ProductVariantReq](internal.ProductVariantReq-1.mdx)[]",
     "description": "An array of Product Variants to create with the Product. Each product variant must have a unique combination of Product Option values.",
     "optional": true,
     "defaultValue": "",

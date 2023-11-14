@@ -13,7 +13,7 @@ A price set to create.
 <ParameterTypes parameters={[
   {
     "name": "prices",
-    "type": "[`CreatePricesDTO`](CreatePricesDTO.mdx)[]",
+    "type": "[CreatePricesDTO](CreatePricesDTO.mdx)[]",
     "description": "The prices to create and add to this price set.",
     "optional": true,
     "defaultValue": "",
@@ -30,7 +30,7 @@ A price set to create.
       },
       {
         "name": "currency",
-        "type": "[`CreateCurrencyDTO`](CreateCurrencyDTO.mdx)",
+        "type": "[CreateCurrencyDTO](CreateCurrencyDTO.mdx)",
         "description": "The currency of this money amount.",
         "optional": true,
         "defaultValue": "",
@@ -112,7 +112,7 @@ A price set to create.
       },
       {
         "name": "rules",
-        "type": "Record<`string`, `string`\\>",
+        "type": "`Record<string, string>`",
         "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
         "optional": false,
         "defaultValue": "",
@@ -123,7 +123,7 @@ A price set to create.
   },
   {
     "name": "rules",
-    "type": "{ `rule_attribute`: `string`  }[]",
+    "type": "`&#123; rule_attribute: string  &#125;`[]",
     "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
     "optional": true,
     "defaultValue": "",

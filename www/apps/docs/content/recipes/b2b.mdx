@@ -266,62 +266,60 @@ Medusa allows you to create custom API Routes exposed as REST APIs.
   }
 }} />
 
-<details>
-<summary>
-Example Implementation
-</summary>
+<Details>
+  <Summary>Example Implementation</Summary>
 
-For example, create the following API Route that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
+  For example, create the following API Route that allows you to check the customer’s group and whether it has the `is_b2b` flag enabled:
+      
+  ```ts title=src/api/store/customers/is-b2b/route.ts
+  import type { 
+    CustomerService, 
+    MedusaRequest, 
+    MedusaResponse,
+  } from "@medusajs/medusa"
+
+  export const GET = async (
+    req: MedusaRequest, 
+    res: MedusaResponse
+  ) => {
+    const customerService: CustomerService = req.scope.resolve(
+      "customerService"
+    )
+
+    const customer = await customerService
+      .retrieve(req.user.customer_id, {
+        relations: ["groups"],
+      })
+
+    const is_b2b = customer.groups.some(
+      (group) => group.metadata.is_b2b === "true"
+    )
     
-```ts title=src/api/store/customers/is-b2b/route.ts
-import type { 
-  CustomerService, 
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
-
-export const GET = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const customerService: CustomerService = req.scope.resolve(
-    "customerService"
-  )
-
-  const customer = await customerService
-    .retrieve(req.user.customer_id, {
-      relations: ["groups"],
+    return res.json({
+      is_b2b,
     })
+  }
+  ```
 
-  const is_b2b = customer.groups.some(
-    (group) => group.metadata.is_b2b === "true"
-  )
-  
-  return res.json({
-    is_b2b,
-  })
-}
-```
+  Then add the `requireCustomerAuthentication` middleware in `src/api/middlewares.ts` that ensures only authenticated customer can access this API Route:
 
-Then add the `requireCustomerAuthentication` middleware in `src/api/middlewares.ts` that ensures only authenticated customer can access this API Route:
+  ```ts title=src/api/middlewares.ts
+  import { 
+    requireCustomerAuthentication, 
+    type MiddlewaresConfig,
+  } from "@medusajs/medusa"
 
-```ts title=src/api/middlewares.ts
-import { 
-  requireCustomerAuthentication, 
-  type MiddlewaresConfig,
-} from "@medusajs/medusa"
+  export const config: MiddlewaresConfig = {
+    routes: [
+      {
+        matcher: "/store/customers/is-b2b",
+        middlewares: [requireCustomerAuthentication()],
+      },
+    ],
+  }
+  ```
 
-export const config: MiddlewaresConfig = {
-  routes: [
-    {
-      matcher: "/store/customers/is-b2b",
-      middlewares: [requireCustomerAuthentication()],
-    },
-  ],
-}
-```
-
-</details>
+</Details>
 
 ---
 

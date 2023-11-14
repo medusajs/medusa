@@ -6,7 +6,7 @@ import Heading from "@theme/Heading"
 import MDXContent from "@theme/MDXContent"
 import type { Props } from "@theme/DocItem/Content"
 import { DocContextValue } from "@medusajs/docs"
-import { Badge, type BadgeVariant } from "docs-ui"
+import { Badge, BadgeVariant } from "docs-ui"
 
 /**
  Title can be declared inside md content or declared through
@@ -33,7 +33,6 @@ export default function DocItemContent({ children }: Props): JSX.Element {
     frontMatter: { badge },
   } = useDoc() as DocContextValue
   const syntheticTitle = useSyntheticTitle()
-
   return (
     <div className={clsx(ThemeClassNames.docs.docMarkdown, "markdown")}>
       {syntheticTitle && (

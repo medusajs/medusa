@@ -44,7 +44,7 @@ async function updatePriceRules (
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdatePriceRuleDTO`](../../interfaces/UpdatePriceRuleDTO.mdx)[]",
+    "type": "[UpdatePriceRuleDTO](../../interfaces/UpdatePriceRuleDTO.mdx)[]",
     "description": "The price rules to update, each having attributes that should be updated in a price rule.",
     "optional": false,
     "defaultValue": "",
@@ -117,7 +117,7 @@ async function updatePriceRules (
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -177,7 +177,7 @@ async function updatePriceRules (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceRuleDTO`](../../interfaces/PriceRuleDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceRuleDTO](../../interfaces/PriceRuleDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated price rules.",
@@ -185,7 +185,7 @@ async function updatePriceRules (
     "children": [
       {
         "name": "PriceRuleDTO[]",
-        "type": "[`PriceRuleDTO`](../../interfaces/PriceRuleDTO.mdx)[]",
+        "type": "[PriceRuleDTO](../../interfaces/PriceRuleDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -211,7 +211,7 @@ async function updatePriceRules (
           },
           {
             "name": "price_set",
-            "type": "[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)",
+            "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)",
             "description": "The associated price set. It may only be available if the relation `price_set` is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -247,7 +247,7 @@ async function updatePriceRules (
           },
           {
             "name": "rule_type",
-            "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)",
+            "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)",
             "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
             "optional": false,
             "defaultValue": "",

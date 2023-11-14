@@ -1484,7 +1484,7 @@ module.exports = {
             },
             {
               type: "ref",
-              id: "references/services/classes/AuthService",
+              id: "references/services/classes/AbstractBatchJobStrategy",
               label: "Services Reference",
             },
             {

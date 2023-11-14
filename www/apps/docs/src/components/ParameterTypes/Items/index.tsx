@@ -1,5 +1,4 @@
 import {
-  Badge,
   DetailsSummary,
   ExpandableNotice,
   FeatureFlagNotice,
@@ -70,7 +69,7 @@ const ParameterTypesItems = ({
       !details && getBorderForGroupName()
     )
   }
-  function getSummary(parameter: Parameter, key: number, nested = true) {
+  function getSummary(parameter: Parameter, nested = true) {
     return (
       <DetailsSummary
         subtitle={
@@ -173,7 +172,7 @@ const ParameterTypesItems = ({
           <>
             {parameter.children?.length > 0 && (
               <Details
-                summary={getSummary(parameter, key)}
+                summary={getSummary(parameter)}
                 key={key}
                 className={clsx(getItemClassNames())}
                 heightAnimation={true}
@@ -187,7 +186,7 @@ const ParameterTypesItems = ({
               </Details>
             )}
             {(parameter.children?.length || 0) === 0 &&
-              getSummary(parameter, key, false)}
+              getSummary(parameter, false)}
           </>
         )
       })}

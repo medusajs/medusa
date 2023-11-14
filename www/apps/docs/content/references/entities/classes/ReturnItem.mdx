@@ -22,7 +22,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "item",
-    "type": "[`LineItem`](LineItem.mdx)",
+    "type": "[LineItem](LineItem.mdx)",
     "description": "The details of the line item in the original order to be returned.",
     "optional": false,
     "defaultValue": "",
@@ -30,7 +30,7 @@ A return item represents a line item in an order that is to be returned. It incl
     "children": [
       {
         "name": "adjustments",
-        "type": "[`LineItemAdjustment`](LineItemAdjustment.mdx)[]",
+        "type": "[LineItemAdjustment](LineItemAdjustment.mdx)[]",
         "description": "The details of the item's adjustments, which are available when a discount is applied on the item.",
         "optional": false,
         "defaultValue": "",
@@ -48,7 +48,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "cart",
-        "type": "[`Cart`](Cart.mdx)",
+        "type": "[Cart](Cart.mdx)",
         "description": "The details of the cart that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -66,7 +66,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "claim_order",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+        "type": "[ClaimOrder](ClaimOrder.mdx)",
         "description": "The details of the claim that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -148,7 +148,7 @@ A return item represents a line item in an order that is to be returned. It incl
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "Indicates if the line item unit_price include tax",
+        "description": "Indicates if the line item unit\\_price include tax",
         "optional": false,
         "defaultValue": "false",
         "expandable": false,
@@ -175,7 +175,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -184,7 +184,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -193,7 +193,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "order_edit",
-        "type": "``null`` \\| [`OrderEdit`](OrderEdit.mdx)",
+        "type": "``null`` \\| [OrderEdit](OrderEdit.mdx)",
         "description": "The details of the order edit.",
         "optional": true,
         "defaultValue": "",
@@ -319,7 +319,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "swap",
-        "type": "[`Swap`](Swap.mdx)",
+        "type": "[Swap](Swap.mdx)",
         "description": "The details of the swap that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -337,7 +337,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "tax_lines",
-        "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)[]",
+        "type": "[LineItemTaxLine](LineItemTaxLine.mdx)[]",
         "description": "The details of the item's tax lines.",
         "optional": false,
         "defaultValue": "",
@@ -400,7 +400,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "variant",
-        "type": "[`ProductVariant`](ProductVariant.mdx)",
+        "type": "[ProductVariant](ProductVariant.mdx)",
         "description": "The details of the product variant that this item was created from.",
         "optional": false,
         "defaultValue": "",
@@ -429,7 +429,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -456,7 +456,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "reason",
-    "type": "[`ReturnReason`](ReturnReason.mdx)",
+    "type": "[ReturnReason](ReturnReason.mdx)",
     "description": "The details of the reason for returning the item.",
     "optional": false,
     "defaultValue": "",
@@ -509,7 +509,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -518,7 +518,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "parent_return_reason",
-        "type": "``null`` \\| [`ReturnReason`](ReturnReason.mdx)",
+        "type": "``null`` \\| [ReturnReason](ReturnReason.mdx)",
         "description": "The details of the parent reason.",
         "optional": false,
         "defaultValue": "",
@@ -536,7 +536,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "return_reason_children",
-        "type": "[`ReturnReason`](ReturnReason.mdx)[]",
+        "type": "[ReturnReason](ReturnReason.mdx)[]",
         "description": "The details of the child reasons.",
         "optional": false,
         "defaultValue": "",
@@ -601,7 +601,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "return_order",
-    "type": "[`Return`](Return.mdx)",
+    "type": "[Return](Return.mdx)",
     "description": "Details of the Return that the Return Item belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -609,7 +609,7 @@ A return item represents a line item in an order that is to be returned. It incl
     "children": [
       {
         "name": "claim_order",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+        "type": "[ClaimOrder](ClaimOrder.mdx)",
         "description": "The details of the claim that the return may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -654,7 +654,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "items",
-        "type": "[`ReturnItem`](ReturnItem.mdx)[]",
+        "type": "[ReturnItem](ReturnItem.mdx)[]",
         "description": "The details of the items that the customer is returning.",
         "optional": false,
         "defaultValue": "",
@@ -672,7 +672,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "type": "``null`` \\| `Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -690,7 +690,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the return was created for.",
         "optional": false,
         "defaultValue": "",
@@ -726,7 +726,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "shipping_data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
         "optional": false,
         "defaultValue": "",
@@ -735,7 +735,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "shipping_method",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+        "type": "[ShippingMethod](ShippingMethod.mdx)",
         "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
         "optional": false,
         "defaultValue": "",
@@ -744,7 +744,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "status",
-        "type": "[`ReturnStatus`](../enums/ReturnStatus.mdx)",
+        "type": "[ReturnStatus](../enums/ReturnStatus.mdx)",
         "description": "Status of the Return.",
         "optional": false,
         "defaultValue": "requested",
@@ -753,7 +753,7 @@ A return item represents a line item in an order that is to be returned. It incl
       },
       {
         "name": "swap",
-        "type": "[`Swap`](Swap.mdx)",
+        "type": "[Swap](Swap.mdx)",
         "description": "The details of the swap that the return may belong to.",
         "optional": false,
         "defaultValue": "",

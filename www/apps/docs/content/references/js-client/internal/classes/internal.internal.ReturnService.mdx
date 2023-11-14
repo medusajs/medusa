@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
+    "type": "[FlagRouter](internal.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "fulfillmentProviderService_",
-    "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
+    "type": "[FulfillmentProviderService](internal.internal.FulfillmentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemService_",
-    "type": "[`LineItemService`](internal.internal.LineItemService.mdx)",
+    "type": "[LineItemService](internal.internal.LineItemService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderService_",
-    "type": "[`OrderService`](internal.internal.OrderService.mdx)",
+    "type": "[OrderService](internal.internal.OrderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantInventoryService_",
-    "type": "[`ProductVariantInventoryService`](internal.internal.ProductVariantInventoryService.mdx)",
+    "type": "[ProductVariantInventoryService](internal.internal.ProductVariantInventoryService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "returnItemRepository_",
-    "type": "`Repository`<[`ReturnItem`](internal.internal.ReturnItem.mdx)\\>",
+    "type": "Repository&#60;[ReturnItem](internal.internal.ReturnItem.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "returnReasonService_",
-    "type": "[`ReturnReasonService`](internal.internal.ReturnReasonService.mdx)",
+    "type": "[ReturnReasonService](internal.internal.ReturnReasonService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "returnRepository_",
-    "type": "`Repository`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Repository&#60;[Return](internal.Return.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -119,7 +119,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shippingOptionService_",
-    "type": "[`ShippingOptionService`](internal.internal.ShippingOptionService.mdx)",
+    "type": "[ShippingOptionService](internal.internal.ShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -128,7 +128,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxProviderService_",
-    "type": "[`TaxProviderService`](internal.internal.TaxProviderService.mdx)",
+    "type": "[TaxProviderService](internal.internal.TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -137,7 +137,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "totalsService_",
-    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "type": "[TotalsService](internal.internal.TotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -146,7 +146,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -164,7 +164,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -186,7 +186,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -195,7 +195,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -204,7 +204,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -218,7 +218,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -252,7 +252,7 @@ Cancels a return if possible. Returns can be canceled if it has not been receive
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Return",
@@ -274,8 +274,8 @@ the return lines and the shipping cost.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateReturnInput`](../types/internal.CreateReturnInput.mdx)",
-    "description": "data to use for the return e.g. shipping_method, items or refund_amount",
+    "type": "[CreateReturnInput](../types/internal.CreateReturnInput.mdx)",
+    "description": "data to use for the return e.g. shipping\\_method, items or refund\\_amount",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -288,7 +288,7 @@ the return lines and the shipping cost.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created return",
@@ -320,7 +320,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -340,7 +340,7 @@ Retrieves the order line items, given an array of items
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "the order to get line items from",
     "optional": false,
     "defaultValue": "",
@@ -349,7 +349,7 @@ Retrieves the order line items, given an array of items
   },
   {
     "name": "items",
-    "type": "[`OrdersReturnItem`](internal.OrdersReturnItem.mdx)[]",
+    "type": "[OrdersReturnItem](internal.OrdersReturnItem.mdx)[]",
     "description": "the items to get",
     "optional": false,
     "defaultValue": "",
@@ -358,7 +358,7 @@ Retrieves the order line items, given an array of items
   },
   {
     "name": "transformer",
-    "type": "[`Transformer`](../types/internal.Transformer.mdx)",
+    "type": "[Transformer](../types/internal.Transformer.mdx)",
     "description": "a function to apply to each of the items retrieved from the order, should return a line item. If the transformer returns an undefined value the line item will be filtered from the returned array.",
     "optional": false,
     "defaultValue": "",
@@ -372,7 +372,7 @@ Retrieves the order line items, given an array of items
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItem`](internal.LineItem.mdx) & { `note?`: `string` ; `reason_id?`: `string`  }[]\\>",
+    "type": "Promise&#60;[LineItem](internal.LineItem.mdx) & &#123; note?: string ; reason_id?: string  &#125;[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line items generated by the transformer.",
@@ -390,7 +390,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Return`](internal.Return.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Return](internal.Return.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -399,7 +399,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Return`](internal.Return.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Return](internal.Return.mdx)&#62;",
     "description": "the config object for find",
     "optional": true,
     "defaultValue": "",
@@ -413,7 +413,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)[]\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -431,7 +431,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Return`](internal.Return.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Return](internal.Return.mdx)&#62;",
     "description": "the query object for find",
     "optional": false,
     "defaultValue": "",
@@ -440,7 +440,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Return`](internal.Return.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Return](internal.Return.mdx)&#62;",
     "description": "the config object for find",
     "optional": true,
     "defaultValue": "",
@@ -454,7 +454,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Return`](internal.Return.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[Return](internal.Return.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -469,7 +469,7 @@ ___
 
 Registers a previously requested return as received. This will create a
 refund to the customer. If the returned items don't match the requested
-items the return status will be updated to requires_action. This behaviour
+items the return status will be updated to requires\_action. This behaviour
 is useful in situations where a custom refund amount is requested, but the
 returned items are not matching the requested items. Setting the
 allowMismatch argument to true, will process the return, ignoring any
@@ -489,7 +489,7 @@ mismatches.
   },
   {
     "name": "receivedItems",
-    "type": "[`OrdersReturnItem`](internal.OrdersReturnItem.mdx)[]",
+    "type": "[OrdersReturnItem](internal.OrdersReturnItem.mdx)[]",
     "description": "the items received after return.",
     "optional": false,
     "defaultValue": "",
@@ -539,7 +539,7 @@ mismatches.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -568,7 +568,7 @@ Retrieves a return by its id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Return`](internal.Return.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Return](internal.Return.mdx)&#62;",
     "description": "the config object",
     "optional": true,
     "defaultValue": "",
@@ -582,7 +582,7 @@ Retrieves a return by its id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the return",
@@ -623,7 +623,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -641,7 +641,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -682,7 +682,7 @@ ___
   },
   {
     "name": "update",
-    "type": "[`UpdateReturnInput`](../types/internal.UpdateReturnInput.mdx)",
+    "type": "[UpdateReturnInput](../types/internal.UpdateReturnInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -696,7 +696,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Return`](internal.Return.mdx)\\>",
+    "type": "Promise&#60;[Return](internal.Return.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -718,7 +718,7 @@ the quantity that is requested to be returned.
 <ParameterTypes parameters={[
   {
     "name": "item",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "the line item to check has sufficient returnable quantity.",
     "optional": true,
     "defaultValue": "",
@@ -768,7 +768,7 @@ the quantity that is requested to be returned.
 <ParameterTypes parameters={[
   {
     "name": "DeepPartial",
-    "type": "`DeepPartial`<[`LineItem`](internal.LineItem.mdx)\\>",
+    "type": "DeepPartial&#60;[LineItem](internal.LineItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a line item where the quantity is set to the requested\n  return quantity.",
@@ -782,15 +782,15 @@ ___
 ### validateReturnStatuses
 
 Checks that an order has the statuses necessary to complete a return.
-fulfillment_status cannot be not_fulfilled or returned.
-payment_status must be captured.
+fulfillment\_status cannot be not\_fulfilled or returned.
+payment\_status must be captured.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "the order to check statuses on",
     "optional": false,
     "defaultValue": "",
@@ -826,7 +826,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -840,7 +840,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReturnService",
-    "type": "[`ReturnService`](internal.internal.ReturnService.mdx)",
+    "type": "[ReturnService](internal.internal.ReturnService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

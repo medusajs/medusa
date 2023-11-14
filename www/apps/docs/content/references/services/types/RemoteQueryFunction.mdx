@@ -6,18 +6,18 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # RemoteQueryFunction
 
- **RemoteQueryFunction**: (`query`: `string` \| [`RemoteJoinerQuery`](../interfaces/RemoteJoinerQuery.mdx) \| `object`, `variables?`: Record<`string`, `unknown`\>) => `Promise`<`any`\> \| ``null``
+ **RemoteQueryFunction**: (query: string \| [RemoteJoinerQuery](../interfaces/RemoteJoinerQuery.mdx) \| object, variables?: Record&#60;string, unknown&#62;) => Promise&#60;any&#62; \| `null`
 
-#### Type declaration
+### Type declaration
 
-(`query`, `variables?`): `Promise`<`any`\> \| ``null``
+`(query, variables?): Promise&#60;any&#62; \| `null``
 
 ##### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "`string` \\| [`RemoteJoinerQuery`](../interfaces/RemoteJoinerQuery.mdx) \\| `object`",
+    "type": "`string` \\| [RemoteJoinerQuery](../interfaces/RemoteJoinerQuery.mdx) \\| `object`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -26,7 +26,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "variables",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -37,12 +37,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ##### Returns
 
-`Promise`<`any`\> \| ``null``
+Promise&#60;any&#62; \| ``null``
 
 <ParameterTypes parameters={[
   {
-    "name": "Promise<any\\> \\| ``null``",
-    "type": "`Promise`<`any`\\> \\| ``null``",
+    "name": "Promise&#60;any&#62; \\| `null`",
+    "type": "Promise&#60;any&#62; \\| ``null``",
     "optional": true,
     "defaultValue": "",
     "description": "",

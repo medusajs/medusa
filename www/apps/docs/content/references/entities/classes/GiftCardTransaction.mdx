@@ -31,7 +31,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
   },
   {
     "name": "gift_card",
-    "type": "[`GiftCard`](GiftCard.mdx)",
+    "type": "[GiftCard](GiftCard.mdx)",
     "description": "The details of the gift card associated used in this transaction.",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +102,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -111,7 +111,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the gift card was purchased in.",
         "optional": false,
         "defaultValue": "",
@@ -129,7 +129,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this gift card is available in.",
         "optional": false,
         "defaultValue": "",
@@ -203,7 +203,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that the gift card was used for payment.",
     "optional": false,
     "defaultValue": "",
@@ -211,7 +211,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
     "children": [
       {
         "name": "billing_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the billing address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -238,7 +238,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "cart",
-        "type": "[`Cart`](Cart.mdx)",
+        "type": "[Cart](Cart.mdx)",
         "description": "The details of the cart associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -256,7 +256,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "claims",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)[]",
+        "type": "[ClaimOrder](ClaimOrder.mdx)[]",
         "description": "The details of the claims created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -274,7 +274,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "currency",
-        "type": "[`Currency`](Currency.mdx)",
+        "type": "[Currency](Currency.mdx)",
         "description": "The details of the currency used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -292,7 +292,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "customer",
-        "type": "[`Customer`](Customer.mdx)",
+        "type": "[Customer](Customer.mdx)",
         "description": "The details of the customer associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -319,7 +319,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "discounts",
-        "type": "[`Discount`](Discount.mdx)[]",
+        "type": "[Discount](Discount.mdx)[]",
         "description": "The details of the discounts applied on the order.",
         "optional": false,
         "defaultValue": "",
@@ -337,7 +337,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "draft_order",
-        "type": "[`DraftOrder`](DraftOrder.mdx)",
+        "type": "[DraftOrder](DraftOrder.mdx)",
         "description": "The details of the draft order this order was created from.",
         "optional": false,
         "defaultValue": "",
@@ -355,7 +355,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "edits",
-        "type": "[`OrderEdit`](OrderEdit.mdx)[]",
+        "type": "[OrderEdit](OrderEdit.mdx)[]",
         "description": "The details of the order edits done on the order.",
         "optional": false,
         "defaultValue": "",
@@ -382,7 +382,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "fulfillment_status",
-        "type": "[`FulfillmentStatus`](../enums/FulfillmentStatus.mdx)",
+        "type": "[FulfillmentStatus](../enums/FulfillmentStatus.mdx)",
         "description": "The order's fulfillment status",
         "optional": false,
         "defaultValue": "not_fulfilled",
@@ -391,7 +391,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "fulfillments",
-        "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+        "type": "[Fulfillment](Fulfillment.mdx)[]",
         "description": "The details of the fulfillments created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -418,7 +418,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "gift_card_transactions",
-        "type": "[`GiftCardTransaction`](GiftCardTransaction.mdx)[]",
+        "type": "[GiftCardTransaction](GiftCardTransaction.mdx)[]",
         "description": "The gift card transactions made in the order.",
         "optional": false,
         "defaultValue": "",
@@ -427,7 +427,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "gift_cards",
-        "type": "[`GiftCard`](GiftCard.mdx)[]",
+        "type": "[GiftCard](GiftCard.mdx)[]",
         "description": "The details of the gift card used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -463,7 +463,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the line items that belong to the order.",
         "optional": false,
         "defaultValue": "",
@@ -472,7 +472,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -508,7 +508,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "payment_status",
-        "type": "[`PaymentStatus`](../enums/PaymentStatus.mdx)",
+        "type": "[PaymentStatus](../enums/PaymentStatus.mdx)",
         "description": "The order's payment status",
         "optional": false,
         "defaultValue": "not_paid",
@@ -517,7 +517,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "payments",
-        "type": "[`Payment`](Payment.mdx)[]",
+        "type": "[Payment](Payment.mdx)[]",
         "description": "The details of the payments used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -553,7 +553,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "refunds",
-        "type": "[`Refund`](Refund.mdx)[]",
+        "type": "[Refund](Refund.mdx)[]",
         "description": "The details of the refunds created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -562,7 +562,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this order was created in.",
         "optional": false,
         "defaultValue": "",
@@ -580,7 +580,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "returnable_items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
         "optional": true,
         "defaultValue": "",
@@ -589,7 +589,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "returns",
-        "type": "[`Return`](Return.mdx)[]",
+        "type": "[Return](Return.mdx)[]",
         "description": "The details of the returns created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -598,7 +598,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "sales_channel",
-        "type": "[`SalesChannel`](SalesChannel.mdx)",
+        "type": "[SalesChannel](SalesChannel.mdx)",
         "description": "The details of the sales channel this order belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -616,7 +616,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "shipping_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the shipping address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -634,7 +634,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "shipping_methods",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -661,7 +661,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "status",
-        "type": "[`OrderStatus`](../enums/OrderStatus.mdx)",
+        "type": "[OrderStatus](../enums/OrderStatus.mdx)",
         "description": "The order's status",
         "optional": false,
         "defaultValue": "pending",
@@ -679,7 +679,7 @@ Gift Card Transactions are created once a Customer uses a Gift Card to pay for t
       },
       {
         "name": "swaps",
-        "type": "[`Swap`](Swap.mdx)[]",
+        "type": "[Swap](Swap.mdx)[]",
         "description": "The details of the swaps created for the order.",
         "optional": false,
         "defaultValue": "",

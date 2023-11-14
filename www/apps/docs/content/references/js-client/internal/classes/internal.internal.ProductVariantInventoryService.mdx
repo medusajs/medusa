@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBusService_",
-    "type": "[`IEventBusService`](../interfaces/internal.IEventBusService.mdx)",
+    "type": "[IEventBusService](../interfaces/internal.IEventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantService_",
-    "type": "[`ProductVariantService`](internal.internal.ProductVariantService.mdx)",
+    "type": "[ProductVariantService](internal.internal.ProductVariantService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "salesChannelInventoryService_",
-    "type": "[`SalesChannelInventoryService`](internal.internal.SalesChannelInventoryService.mdx)",
+    "type": "[SalesChannelInventoryService](internal.internal.SalesChannelInventoryService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "salesChannelLocationService_",
-    "type": "[`SalesChannelLocationService`](internal.internal.SalesChannelLocationService.mdx)",
+    "type": "[SalesChannelLocationService](internal.internal.SalesChannelLocationService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -128,7 +128,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "__joinerConfig",
-    "type": "() => [`ModuleJoinerConfig`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerConfig.mdx)",
+    "type": "() => [ModuleJoinerConfig](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -137,7 +137,7 @@ ___
   },
   {
     "name": "adjustInventory",
-    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `adjustment`: `number`, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)\\>",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `adjustment`: `number`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -146,7 +146,7 @@ ___
   },
   {
     "name": "confirmInventory",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `quantity`: `number`, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`boolean`\\>",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `quantity`: `number`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -155,7 +155,7 @@ ___
   },
   {
     "name": "createInventoryItem",
-    "type": "(`input`: [`CreateInventoryItemInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)\\>",
+    "type": "(`input`: [CreateInventoryItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -164,7 +164,7 @@ ___
   },
   {
     "name": "createInventoryItems",
-    "type": "(`input`: [`CreateInventoryItemInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)[]\\>",
+    "type": "(`input`: [CreateInventoryItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -173,7 +173,7 @@ ___
   },
   {
     "name": "createInventoryLevel",
-    "type": "(`data`: [`CreateInventoryLevelInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)\\>",
+    "type": "(`data`: [CreateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -182,7 +182,7 @@ ___
   },
   {
     "name": "createInventoryLevels",
-    "type": "(`data`: [`CreateInventoryLevelInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)[]\\>",
+    "type": "(`data`: [CreateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -191,7 +191,7 @@ ___
   },
   {
     "name": "createReservationItem",
-    "type": "(`input`: [`CreateReservationItemInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/internal.ReservationItemDTO.mdx)\\>",
+    "type": "(`input`: [CreateReservationItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -200,7 +200,7 @@ ___
   },
   {
     "name": "createReservationItems",
-    "type": "(`input`: [`CreateReservationItemInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/internal.ReservationItemDTO.mdx)[]\\>",
+    "type": "(`input`: [CreateReservationItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -209,7 +209,7 @@ ___
   },
   {
     "name": "deleteInventoryItem",
-    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -218,7 +218,7 @@ ___
   },
   {
     "name": "deleteInventoryItemLevelByLocationId",
-    "type": "(`locationId`: `string` \\| `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`locationId`: `string` \\| `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -227,7 +227,7 @@ ___
   },
   {
     "name": "deleteInventoryLevel",
-    "type": "(`inventoryLevelId`: `string`, `locationId`: `string`, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`inventoryLevelId`: `string`, `locationId`: `string`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -236,7 +236,7 @@ ___
   },
   {
     "name": "deleteReservationItem",
-    "type": "(`reservationItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`reservationItemId`: `string` \\| `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -245,7 +245,7 @@ ___
   },
   {
     "name": "deleteReservationItemByLocationId",
-    "type": "(`locationId`: `string` \\| `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`locationId`: `string` \\| `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -254,7 +254,7 @@ ___
   },
   {
     "name": "deleteReservationItemsByLineItem",
-    "type": "(`lineItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`lineItemId`: `string` \\| `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -263,7 +263,7 @@ ___
   },
   {
     "name": "listInventoryItems",
-    "type": "(`selector`: [`FilterableInventoryItemProps`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableInventoryItemProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)[], `number`]\\>",
+    "type": "(`selector`: [FilterableInventoryItemProps](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableInventoryItemProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -272,7 +272,7 @@ ___
   },
   {
     "name": "listInventoryLevels",
-    "type": "(`selector`: [`FilterableInventoryLevelProps`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableInventoryLevelProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)[], `number`]\\>",
+    "type": "(`selector`: [FilterableInventoryLevelProps](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableInventoryLevelProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -281,7 +281,7 @@ ___
   },
   {
     "name": "listReservationItems",
-    "type": "(`selector`: [`FilterableReservationItemProps`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableReservationItemProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ReservationItemDTO`](../types/internal.ReservationItemDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[[`ReservationItemDTO`](../types/internal.ReservationItemDTO.mdx)[], `number`]\\>",
+    "type": "(`selector`: [FilterableReservationItemProps](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableReservationItemProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -290,7 +290,7 @@ ___
   },
   {
     "name": "restoreInventoryItem",
-    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`inventoryItemId`: `string` \\| `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -299,7 +299,7 @@ ___
   },
   {
     "name": "retrieveAvailableQuantity",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`number`\\>",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -308,7 +308,7 @@ ___
   },
   {
     "name": "retrieveInventoryItem",
-    "type": "(`inventoryItemId`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)\\>",
+    "type": "(`inventoryItemId`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -317,7 +317,7 @@ ___
   },
   {
     "name": "retrieveInventoryLevel",
-    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)\\>",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -326,7 +326,7 @@ ___
   },
   {
     "name": "retrieveReservationItem",
-    "type": "(`reservationId`: `string`, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/internal.ReservationItemDTO.mdx)\\>",
+    "type": "(`reservationId`: `string`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -335,7 +335,7 @@ ___
   },
   {
     "name": "retrieveReservedQuantity",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`number`\\>",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -344,7 +344,7 @@ ___
   },
   {
     "name": "retrieveStockedQuantity",
-    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`number`\\>",
+    "type": "(`inventoryItemId`: `string`, `locationIds`: `string`[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;number&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -353,7 +353,7 @@ ___
   },
   {
     "name": "updateInventoryItem",
-    "type": "(`inventoryItemId`: `string`, `input`: [`CreateInventoryItemInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)\\>",
+    "type": "(`inventoryItemId`: `string`, `input`: [CreateInventoryItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -362,7 +362,7 @@ ___
   },
   {
     "name": "updateInventoryLevel",
-    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `update`: [`UpdateInventoryLevelInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)\\>",
+    "type": "(`inventoryItemId`: `string`, `locationId`: `string`, `update`: [UpdateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -371,7 +371,7 @@ ___
   },
   {
     "name": "updateInventoryLevels",
-    "type": "(`updates`: { `inventory_item_id`: `string` ; `location_id`: `string`  } & [`UpdateInventoryLevelInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx)[], `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`InventoryLevelDTO`](../types/internal.InventoryLevelDTO.mdx)[]\\>",
+    "type": "(`updates`: `&#123; inventory_item_id: string ; location_id: string  &#125;` & [UpdateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx)[], `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -380,7 +380,7 @@ ___
   },
   {
     "name": "updateReservationItem",
-    "type": "(`reservationItemId`: `string`, `input`: [`UpdateReservationItemInput`](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateReservationItemInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`ReservationItemDTO`](../types/internal.ReservationItemDTO.mdx)\\>",
+    "type": "(`reservationItemId`: `string`, `input`: [UpdateReservationItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateReservationItemInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -398,7 +398,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "__joinerConfig",
-    "type": "() => [`ModuleJoinerConfig`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerConfig.mdx)",
+    "type": "() => [ModuleJoinerConfig](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -407,7 +407,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`input`: [`CreateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "(`input`: [CreateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -416,7 +416,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`id`: `string`, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<`void`\\>",
+    "type": "(`id`: `string`, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -425,7 +425,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`selector`: [`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[]\\>",
+    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -434,7 +434,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`selector`: [`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[], `number`]\\>",
+    "type": "(`selector`: [FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -443,7 +443,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>, `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;, `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -452,7 +452,7 @@ ___
   },
   {
     "name": "update",
-    "type": "(`id`: `string`, `input`: [`UpdateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx), `context?`: [`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => `Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "(`id`: `string`, `input`: [UpdateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx), `context?`: [SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)) => Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -504,7 +504,7 @@ Adjusts inventory of a variant on a location
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -565,7 +565,7 @@ Adjusts the quantity of reservations for a line item by a given amount.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -587,7 +587,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -596,7 +596,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -605,7 +605,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -619,7 +619,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -632,7 +632,7 @@ ___
 
 ### attachInventoryItem
 
-**attachInventoryItem**(`attachments`): `Promise`<[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]\>
+`**attachInventoryItem**(attachments): Promise&#60;[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]&#62;`
 
 Attach a variant to an inventory item
 
@@ -641,7 +641,7 @@ Attach a variant to an inventory item
 <ParameterTypes parameters={[
   {
     "name": "attachments",
-    "type": "{ `inventoryItemId`: `string` ; `requiredQuantity?`: `number` ; `variantId`: `string`  }[]",
+    "type": "`&#123; inventoryItemId: string ; requiredQuantity?: number ; variantId: string  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -655,7 +655,7 @@ Attach a variant to an inventory item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the variant inventory item",
@@ -664,7 +664,7 @@ Attach a variant to an inventory item
   }
 ]} />
 
-**attachInventoryItem**(`variantId`, `inventoryItemId`, `requiredQuantity?`): `Promise`<[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]\>
+`**attachInventoryItem**(variantId, inventoryItemId, requiredQuantity?): Promise&#60;[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]&#62;`
 
 #### Parameters
 
@@ -703,7 +703,7 @@ Attach a variant to an inventory item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -764,7 +764,7 @@ confirms if requested inventory is available
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Boolean`](../../modules/internal.mdx#boolean)\\>",
+    "type": "Promise&#60;[Boolean](../../modules/internal.mdx#boolean)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "boolean indicating if inventory is available",
@@ -816,7 +816,7 @@ delete a reservation of variant quantity
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -859,7 +859,7 @@ Remove a variant from an inventory item
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -882,7 +882,7 @@ the given variant.
 <ParameterTypes parameters={[
   {
     "name": "variantInventoryItems",
-    "type": "[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]",
+    "type": "[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]",
     "description": "List of inventoryItems for a given variant, These must all be for the same variant",
     "optional": false,
     "defaultValue": "",
@@ -905,7 +905,7 @@ the given variant.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The available quantity of the variant from the inventoryItems",
@@ -939,7 +939,7 @@ list registered inventory items
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "list of inventory items",
@@ -973,7 +973,7 @@ List inventory items for a specific variant
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "variant inventory items for the variant id",
@@ -1007,7 +1007,7 @@ lists inventory items for a given variant
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`InventoryItemDTO`](../types/internal.InventoryItemDTO.mdx)[]\\>",
+    "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "lidt of inventory items for the variant",
@@ -1041,7 +1041,7 @@ lists variant by inventory item id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariant`](internal.internal.ProductVariant.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a list of product variants that are associated with the item id",
@@ -1079,7 +1079,7 @@ Reserves a quantity of a variant
   },
   {
     "name": "context",
-    "type": "[`ReserveQuantityContext`](../types/internal.ReserveQuantityContext.mdx)",
+    "type": "[ReserveQuantityContext](../types/internal.ReserveQuantityContext.mdx)",
     "description": "optional parameters",
     "optional": true,
     "defaultValue": "",
@@ -1093,7 +1093,7 @@ Reserves a quantity of a variant
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| [`ReservationItemDTO`](../types/internal.ReservationItemDTO.mdx)[]\\>",
+    "type": "Promise&#60;void \\| [ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1136,7 +1136,7 @@ Retrieves a product variant inventory item by its inventory item ID and variant 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)\\>",
+    "type": "Promise&#60;[ProductVariantInventoryItem](internal.internal.ProductVariantInventoryItem.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A promise that resolves with the product variant inventory item.",
@@ -1154,7 +1154,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "products",
-    "type": "([`Product`](internal.Product.mdx) \\| [`PricedProduct`](../types/internal.PricedProduct.mdx))[]",
+    "type": "([Product](internal.Product.mdx) \\| [PricedProduct](../types/internal.PricedProduct.mdx))[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1177,7 +1177,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<([`Product`](internal.Product.mdx) \\| [`PricedProduct`](../types/internal.PricedProduct.mdx))[]\\>",
+    "type": "Promise&#60;([Product](internal.Product.mdx) \\| [PricedProduct](../types/internal.PricedProduct.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1195,7 +1195,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "variants",
-    "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)[] \\| [`PricedVariant`](../types/internal.PricedVariant.mdx)[]",
+    "type": "[ProductVariant](internal.internal.ProductVariant.mdx)[] \\| [PricedVariant](../types/internal.PricedVariant.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1213,7 +1213,7 @@ ___
   },
   {
     "name": "availabilityContext",
-    "type": "[`AvailabilityContext`](../types/internal.AvailabilityContext.mdx)",
+    "type": "[AvailabilityContext](../types/internal.AvailabilityContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1227,7 +1227,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariant`](internal.internal.ProductVariant.mdx)[] \\| [`PricedVariant`](../types/internal.PricedVariant.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariant](internal.internal.ProductVariant.mdx)[] \\| [PricedVariant](../types/internal.PricedVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1245,7 +1245,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1279,7 +1279,7 @@ Validate stock at a location for fulfillment items
 <ParameterTypes parameters={[
   {
     "name": "items",
-    "type": "[`Omit`](../types/internal.Omit.mdx)<[`LineItem`](internal.LineItem.mdx), ``\"beforeInsert\"``\\>[]",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[LineItem](internal.LineItem.mdx), `\"beforeInsert\"`&#62;[]",
     "description": "Fulfillment Line items to validate quantities for",
     "optional": false,
     "defaultValue": "",
@@ -1302,7 +1302,7 @@ Validate stock at a location for fulfillment items
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "nothing if successful, throws error if not",
@@ -1320,7 +1320,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1334,7 +1334,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ProductVariantInventoryService",
-    "type": "[`ProductVariantInventoryService`](internal.internal.ProductVariantInventoryService.mdx)",
+    "type": "[ProductVariantInventoryService](internal.internal.ProductVariantInventoryService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
