@@ -10,24 +10,51 @@ import {
 import { transform } from "./transform"
 import {
   CreateWorkflowComposerContext,
+  StepExecutionContext,
   StepFunction,
   StepFunctionResult,
   StepReturn,
 } from "./type"
 
-interface ApplyStepOptions<TStepInput extends StepReturn[]> {
+type InvokeFn<TInput extends unknown[], O> = (
+  context: StepExecutionContext,
+  ...args: TInput
+) => Promise<O>
+
+type CompensateFn<T> = (
+  context: StepExecutionContext,
+  arg: T
+) => Promise<unknown>
+
+interface ApplyStepOptions<
+  TStepInputs extends StepReturn[],
+  TInvokeInput extends unknown[],
+  TOutput
+> {
   stepName: string
-  stepInputs: TStepInput
-  invokeFn: Function
-  compensateFn?: Function
+  stepInputs: TStepInputs
+  invokeFn: InvokeFn<TInvokeInput, TOutput>
+  compensateFn?: CompensateFn<
+    TOutput extends { compensateInput: infer CompensateInput }
+      ? TOutput["compensateInput"]
+      : TOutput
+  >
 }
 
-function applyStep<TStepInput extends StepReturn[], TResult>({
+function applyStep<
+  TStepInputs extends StepReturn[],
+  TInvokeInput extends unknown[],
+  TResult
+>({
   stepName,
   stepInputs,
   invokeFn,
   compensateFn,
-}: ApplyStepOptions<TStepInput>): StepFunctionResult<TResult> {
+}: ApplyStepOptions<
+  TStepInputs,
+  TInvokeInput,
+  TResult
+>): StepFunctionResult<TResult> {
   return function (this: CreateWorkflowComposerContext) {
     if (!this.workflowId) {
       throw new Error(
@@ -68,6 +95,12 @@ function applyStep<TStepInput extends StepReturn[], TResult>({
         )
         previousResultResults = previousResultResults.flat()
 
+        const executionContext: StepExecutionContext = {
+          container: transactionContext.container,
+          metadata: transactionContext.metadata,
+          context: transactionContext.context,
+        }
+
         const args = [transactionContext, ...previousResultResults]
 
         const output = await invokeFn.apply(this, args)
@@ -79,8 +112,16 @@ function applyStep<TStepInput extends StepReturn[], TResult>({
       },
       compensate: compensateFn
         ? async (transactionContext) => {
-            const invokeResult = transactionContext.invoke[stepName].output
-            const args = [transactionContext, invokeResult]
+            const executionContext: StepExecutionContext = {
+              container: transactionContext.container,
+              metadata: transactionContext.metadata,
+              context: transactionContext.context,
+            }
+
+            const invokeResult =
+              transactionContext.invoke[stepName].output?.compensateInput
+
+            const args = [executionContext, invokeResult]
             const output = await compensateFn.apply(this, args)
             return {
               output,
@@ -118,11 +159,12 @@ function applyStep<TStepInput extends StepReturn[], TResult>({
 
 export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
   name: string,
-  invokeFn: (
-    context: any,
-    ...stepInputs: [...TInvokeInput]
-  ) => Promise<TInvokeResult>,
-  compensateFn?: Function
+  invokeFn: InvokeFn<TInvokeInput, TInvokeResult>,
+  compensateFn?: CompensateFn<
+    TInvokeResult extends { compensateInput: infer CompensateInput }
+      ? TInvokeResult["compensateInput"]
+      : TInvokeResult
+  >
 ): StepFunction<TInvokeInput, TInvokeResult> {
   const stepName = name ?? invokeFn.name
 
@@ -142,7 +184,11 @@ export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
     ).stepBinder
 
     return stepBinder<TInvokeResult>(
-      applyStep<[...StepReturn<TInvokeInput[number]>[]], TInvokeResult>({
+      applyStep<
+        [...StepReturn<TInvokeInput[number]>[]],
+        TInvokeInput,
+        TInvokeResult
+      >({
         stepName,
         stepInputs,
         invokeFn,
@@ -156,3 +202,10 @@ export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
 
   return returnFn as unknown as StepFunction<TInvokeInput, TInvokeResult>
 }
+
+/*
+  type invoke and compensate
+  apply transaction context to the this of the above function
+  transaction context should only contain container, metadata, context
+  convention prop name for invoke returning compensation data. "compensateInput"
+ */

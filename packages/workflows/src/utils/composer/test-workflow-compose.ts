@@ -23,11 +23,14 @@ interface Step4Input {
 
 const step1 = createStep(
   "step1",
-  async (
-    context: any,
+  async function (
+    context,
     input: Step1Input
-  ): Promise<{ test: "test"; foo: "bar" }> => {
-    return { test: "test", foo: "bar" }
+  ): Promise<{ test: "test"; foo: "bar"; compensateInput: { foo: string } }> {
+    return { test: "test", foo: "bar", compensateInput: { foo: "test" } }
+  },
+  async function (context, input) {
+    return input.foo
   }
 )
 

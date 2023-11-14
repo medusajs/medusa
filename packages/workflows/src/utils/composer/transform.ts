@@ -3,19 +3,22 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
-import { StepReturn } from "./type"
+import { StepExecutionContext, StepReturn } from "./type"
 
 type Func1Multiple<T extends any[], U> = (
-  context: any,
+  context: StepExecutionContext,
   ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
 ) => U | Promise<U>
 
 type Func1Single<T extends any, U> = (
-  context: any,
-  input: T extends StepReturn<infer U> ? U : T
+  input: T extends StepReturn<infer U> ? U : T,
+  context: StepExecutionContext
 ) => U | Promise<U>
 
-type Func<T extends any, U> = (context: any, input: T) => U | Promise<U>
+type Func<T extends any, U> = (
+  context: StepExecutionContext,
+  input: T
+) => U | Promise<U>
 
 export function transform<T extends any, TOutput extends unknown = unknown>(
   values: T,
