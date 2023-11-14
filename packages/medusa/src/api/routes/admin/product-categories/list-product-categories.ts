@@ -37,7 +37,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       medusa.admin.productCategories.list()
  *       .then(({ product_categories, limit, offset, count }) => {
  *         console.log(product_categories.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -89,31 +89,54 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product categories.
+ *
+ * @property {number} limit - Limit the number of product categories returned in the list. The default is `100`.
+ */
 export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   limit: 100,
   offset: 0,
 }) {
+  /**
+   * Search term to search product categories' names and handles.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Handle to filter product categories by.
+   */
   @IsString()
   @IsOptional()
   handle?: string
 
+  /**
+   * Whether to include child product categories in the response.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   include_descendants_tree?: boolean
 
+  /**
+   * Filter product categories by whether they're internal.
+   */
   @IsString()
   @IsOptional()
   is_internal?: boolean
 
+  /**
+   * Filter product categories by whether they're active.
+   */
   @IsString()
   @IsOptional()
   is_active?: boolean
 
+  /**
+   * Filter product categories by their associated parent ID.
+   */
   @IsString()
   @IsOptional()
   @Transform(({ value }) => {

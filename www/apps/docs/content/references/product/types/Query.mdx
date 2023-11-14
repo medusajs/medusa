@@ -6,9 +6,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Query
 
- **Query**<`T`\>: `T` extends `object` ? `T` extends [`Scalar`](Scalar.mdx) ? `never` : [`FilterQuery`](FilterQuery.mdx)<`T`\> : [`FilterValue`](FilterValue.mdx)<`T`\>
+ **Query**`<TypeParameter T>`: T extends object ? T extends [Scalar](Scalar.mdx) ? never : [FilterQuery](FilterQuery.mdx)&#60;T&#62; : [FilterValue](FilterValue.mdx)&#60;T&#62;
 
-#### Type parameters
+### Type parameters
 
 <ParameterTypes parameters={[
   {
@@ -17,6 +17,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

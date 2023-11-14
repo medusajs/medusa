@@ -1,5 +1,23 @@
 # Change Log
 
+## 9.0.11
+
+### Patch Changes
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+- Updated dependencies [[`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298)]:
+  - @medusajs/medusa-js@6.1.4
+
+## 9.0.10
+
+### Patch Changes
+
+- [#5480](https://github.com/medusajs/medusa/pull/5480) [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): admin get product should return prices when expected
+
 ## 9.0.9
 
 ### Patch Changes

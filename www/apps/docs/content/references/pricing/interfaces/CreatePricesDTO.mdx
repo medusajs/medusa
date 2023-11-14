@@ -17,14 +17,16 @@ The prices to create part of a price set.
     "description": "The amount of this money amount.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "currency",
-    "type": "[`CreateCurrencyDTO`](CreateCurrencyDTO.mdx)",
+    "type": "[CreateCurrencyDTO](CreateCurrencyDTO.mdx)",
     "description": "The currency of this money amount.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "code",
@@ -32,6 +34,7 @@ The prices to create part of a price set.
         "description": "The code of the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -40,6 +43,7 @@ The prices to create part of a price set.
         "description": "The name of the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -48,6 +52,7 @@ The prices to create part of a price set.
         "description": "The symbol of the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -56,6 +61,7 @@ The prices to create part of a price set.
         "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -66,6 +72,7 @@ The prices to create part of a price set.
     "description": "The currency code of this money amount.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -74,30 +81,34 @@ The prices to create part of a price set.
     "description": "The ID of the money amount.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "max_quantity",
-    "type": "`number`",
+    "type": "``null`` \\| `number`",
     "description": "The maximum quantity required to be purchased for this money amount to be applied.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "min_quantity",
-    "type": "`number`",
+    "type": "``null`` \\| `number`",
     "description": "The minimum quantity required to be purchased for this money amount to be applied.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "rules",
-    "type": "Record<`string`, `string`\\>",
+    "type": "`Record<string, string>`",
     "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -56,7 +56,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -83,71 +83,71 @@ Before you can start making changes to an order, you have to create a new order 
 To do that, send a request to the [Create an OrderEdit API Route](https://docs.medusajs.com/api/admin#order-edits_postorderedits):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orderEdits.create({
-  order_id, // required
-})
-.then(({ order_edit }) => {
-  console.log(order_edit.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateOrderEdit } from "medusa-react"
-
-const OrderEdit = () => {
-  const createOrderEdit = useAdminCreateOrderEdit()
-
-  const handleCreateOrderEdit = (orderId: string) => {
-    createOrderEdit.mutate({
-      order_id: orderId,
+    ```ts
+    medusa.admin.orderEdits.create({
+      order_id, // required
     })
-  }
-  
-  // ...
-}
+    .then(({ order_edit }) => {
+      console.log(order_edit.id)
+    })
+    ```
 
-export default OrderEdit
-```
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    ```tsx
+    import { useAdminCreateOrderEdit } from "medusa-react"
 
-```ts
-fetch(`<BACKEND_URL>/admin/order-edits`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    order_id,
-  }),
-})
-.then((response) => response.json())
-.then(({ order_edit }) => {
-  console.log(order_edit.id)
-})
-```
+    const OrderEdit = () => {
+      const createOrderEdit = useAdminCreateOrderEdit()
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      const handleCreateOrderEdit = (orderId: string) => {
+        createOrderEdit.mutate({
+          order_id: orderId,
+        })
+      }
+      
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/order-edits' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "order_id": "<ORDER_ID>"
-}'
-```
+    export default OrderEdit
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/order-edits`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        order_id,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order_edit }) => {
+      console.log(order_edit.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/order-edits' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "order_id": "<ORDER_ID>"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route has one required request body parameter `order_id` which is the ID of the order this edit is being created for.
@@ -177,76 +177,76 @@ You can only make changes to items that have not been fulfilled yet in the order
 To add a new item to the original order, send a request to the [Add Line Item API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditseditlineitems):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orderEdits.addLineItem(orderEditId, {
-  quantity: 1,
-  variant_id,
-})
-.then(({ order_edit }) => {
-  console.log(order_edit.changes)
-})
-```
+    ```ts
+    medusa.admin.orderEdits.addLineItem(orderEditId, {
+      quantity: 1,
+      variant_id,
+    })
+    .then(({ order_edit }) => {
+      console.log(order_edit.changes)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrderEditAddLineItem } from "medusa-react"
+    ```tsx
+    import { useAdminOrderEditAddLineItem } from "medusa-react"
 
-const OrderEdit = () => {
-  const addLineItem = useAdminOrderEditAddLineItem(orderEditId)
+    const OrderEdit = () => {
+      const addLineItem = useAdminOrderEditAddLineItem(orderEditId)
 
-  const handleAddLineItem = 
-    (quantity: number, variantId: string) => {
-      addLineItem.mutate({
-        quantity,
-        variant_id: variantId,
-      })
+      const handleAddLineItem = 
+        (quantity: number, variantId: string) => {
+          addLineItem.mutate({
+            quantity,
+            variant_id: variantId,
+          })
+        }
+      
+      // ...
     }
-  
-  // ...
-}
 
-export default OrderEdit
-```
+    export default OrderEdit
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    quantity: 1,
-    variant_id,
-  }),
-})
-.then((response) => response.json())
-.then(({ order_edit }) => {
-  console.log(order_edit.changes)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quantity: 1,
+        variant_id,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order_edit }) => {
+      console.log(order_edit.changes)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "quantity": 1,
-    "variant_id": "<VARIANT_ID>"
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "quantity": 1,
+        "variant_id": "<VARIANT_ID>"
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the order edit as a path parameter.
@@ -262,76 +262,75 @@ You can edit an item’s quantity in the original order.
 To update an item, send a request to the [Update Line Item API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditseditlineitemslineitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orderEdits.updateLineItem(orderEditId, itemId, {
-  quantity: 2,
-})
-.then(({ order_edit }) => {
-  console.log(order_edit.changes)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminOrderEditUpdateLineItem } from "medusa-react"
-
-const OrderEdit = () => {
-  const updateLineItem = useAdminOrderEditUpdateLineItem(
-    orderEditId, 
-    itemId
-  )
-  
-  const handleUpdateLineItem = (quantity: number) => {
-    updateLineItem.mutate({
-      quantity,
+    ```ts
+    medusa.admin.orderEdits.updateLineItem(orderEditId, itemId, {
+      quantity: 2,
     })
-  }
+    .then(({ order_edit }) => {
+      console.log(order_edit.changes)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default OrderEdit
-```
+    ```tsx
+    import { useAdminOrderEditUpdateLineItem } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const OrderEdit = () => {
+      const updateLineItem = useAdminOrderEditUpdateLineItem(
+        orderEditId, 
+        itemId
+      )
+      
+      const handleUpdateLineItem = (quantity: number) => {
+        updateLineItem.mutate({
+          quantity,
+        })
+      }
+
+      // ...
+    }
+
+    export default OrderEdit
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    quantity: 2,
-  }),
-})
-.then((response) => response.json())
-.then(({ order_edit }) => {
-  console.log(order_edit.changes)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        quantity: 2,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order_edit }) => {
+      console.log(order_edit.changes)
+    })
+    ```
+    </TabItem>
+    <TabItem value="curl" label="cURL">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "quantity": 2
+    }'
+    ```
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "quantity": 2
-}'
-```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the order edit and the ID of the item in the original order as path parameters.
@@ -345,62 +344,62 @@ This request returns the Order Edit object. You can access returned item changes
 You can remove an item from the original order by sending a request to the [Remove Line Item API Route](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsordereditlineitemslineitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orderEdits.removeLineItem(orderEditId, itemId)
-.then(({ order_edit }) => {
-  console.log(order_edit.changes)
-})
-```
+    ```ts
+    medusa.admin.orderEdits.removeLineItem(orderEditId, itemId)
+    .then(({ order_edit }) => {
+      console.log(order_edit.changes)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrderEditDeleteLineItem } from "medusa-react"
+    ```tsx
+    import { useAdminOrderEditDeleteLineItem } from "medusa-react"
 
-const OrderEdit = () => {
-  const removeLineItem = useAdminOrderEditDeleteLineItem(
-    orderEditId, 
-    itemId
-  )
-  
-  const handleRemoveLineItem = () => {
-    removeLineItem.mutate()
-  }
+    const OrderEdit = () => {
+      const removeLineItem = useAdminOrderEditDeleteLineItem(
+        orderEditId, 
+        itemId
+      )
+      
+      const handleRemoveLineItem = () => {
+        removeLineItem.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default OrderEdit
-```
+    export default OrderEdit
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
-  method: "DELETE",
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ order_edit }) => {
-  console.log(order_edit.changes)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/items/${itemId}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ order_edit }) => {
+      console.log(order_edit.changes)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/items/<ITEM_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the order edit’s ID and the ID of the item in the original order as path parameters.
@@ -416,65 +415,65 @@ A merchant might make a mistake while making a change to the original order’s 
 To revert an item change, send a request to the [Delete Item Change API Route](https://docs.medusajs.com/api/admin#order-edits_deleteordereditsorderedititemchange):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orderEdits.deleteItemChange(orderEditId, changeId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```ts
+    medusa.admin.orderEdits.deleteItemChange(orderEditId, changeId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeleteOrderEditItemChange } from "medusa-react"
+    ```tsx
+    import { useAdminDeleteOrderEditItemChange } from "medusa-react"
 
-const OrderEdit = () => {
-  const deleteItemChange = useAdminDeleteOrderEditItemChange(
-    orderEditId, 
-    itemChangeId
-  )
-  
-  const handleDeleteItemChange = () => {
-    deleteItemChange.mutate()
-  }
+    const OrderEdit = () => {
+      const deleteItemChange = useAdminDeleteOrderEditItemChange(
+        orderEditId, 
+        itemChangeId
+      )
+      
+      const handleDeleteItemChange = () => {
+        deleteItemChange.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default OrderEdit
-```
+    export default OrderEdit
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(
-  `<BACKEND_URL>/admin/order-edits/${orderEditId}/changes/${changeId}`,
-  {
-    method: "DELETE",
-    credentials: "include",
-  }
-)
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id, object, deleted)
-})
-```
+    ```ts
+    fetch(
+      `<BACKEND_URL>/admin/order-edits/${orderEditId}/changes/${changeId}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id, object, deleted)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/changes/<CHANGE_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/changes/<CHANGE_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the order edit’s ID and the item change’s ID as path parameters.
@@ -494,67 +493,67 @@ After an Order Edit is created and all the item changes are added, it must be mo
 To move an Order Edit into the request state, send a request to the [Request Confirmation API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsordereditrequest):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orderEdits.requestConfirmation(orderEditId)
-.then(({ order_edit }) => {
-  console.log(
-    order_edit.requested_at, 
-    order_edit.requested_by
-  )
-})
-```
+    ```ts
+    medusa.admin.orderEdits.requestConfirmation(orderEditId)
+    .then(({ order_edit }) => {
+      console.log(
+        order_edit.requested_at, 
+        order_edit.requested_by
+      )
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { 
-  useAdminRequestOrderEditConfirmation,
-} from "medusa-react"
+    ```tsx
+    import { 
+      useAdminRequestOrderEditConfirmation,
+    } from "medusa-react"
 
-const OrderEdit = () => {
-  const requestOrderConfirmation = 
-    useAdminRequestOrderEditConfirmation(
-      orderEditId
-    )
-  
-  const handleRequestConfirmation = () => {
-    requestOrderConfirmation.mutate()
-  }
+    const OrderEdit = () => {
+      const requestOrderConfirmation = 
+        useAdminRequestOrderEditConfirmation(
+          orderEditId
+        )
+      
+      const handleRequestConfirmation = () => {
+        requestOrderConfirmation.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default OrderEdit
-```
+    export default OrderEdit
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/request`, {
-  method: "POST",
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ order_edit }) => {
-  console.log(order_edit.requested_at, order_edit.requested_by)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/request`, {
+      method: "POST",
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ order_edit }) => {
+      console.log(order_edit.requested_at, order_edit.requested_by)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/request' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/request' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the order edit’s ID as a path parameter.
@@ -590,59 +589,59 @@ This section covers how the Admin API can be used to force-confirm the Order Edi
 To confirm an Order Edit, send a request to the [Confirm Order Edit API Route](https://docs.medusajs.com/api/admin#order-edits_postordereditsordereditconfirm):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orderEdits.confirm(orderEditId)
-.then(({ order_edit }) => {
-  console.log(order_edit.confirmed_at, order_edit.confirmed_by)
-})
-```
+    ```ts
+    medusa.admin.orderEdits.confirm(orderEditId)
+    .then(({ order_edit }) => {
+      console.log(order_edit.confirmed_at, order_edit.confirmed_by)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminConfirmOrderEdit } from "medusa-react"
+    ```tsx
+    import { useAdminConfirmOrderEdit } from "medusa-react"
 
-const OrderEdit = () => {
-  const confirmOrderEdit = useAdminConfirmOrderEdit(orderEditId)
-  
-  const handleConfirmOrderEdit = () => {
-    confirmOrderEdit.mutate()
-  }
+    const OrderEdit = () => {
+      const confirmOrderEdit = useAdminConfirmOrderEdit(orderEditId)
+      
+      const handleConfirmOrderEdit = () => {
+        confirmOrderEdit.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default OrderEdit
-```
+    export default OrderEdit
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/confirm`, {
-  method: "POST",
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ order_edit }) => {
-  console.log(order_edit.confirmed_at, order_edit.confirmed_by)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/order-edits/${orderEditId}/confirm`, {
+      method: "POST",
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ order_edit }) => {
+      console.log(order_edit.confirmed_at, order_edit.confirmed_by)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/confirm' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/order-edits/<ORDER_EDIT_ID>/confirm' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request accepts the order edit ID as a path parameter.
@@ -673,59 +672,59 @@ You can learn how to allow customers to authorize payment on the storefront in [
 If the payment is authorized by the customer, it can be captured by sending a request to the [Capture Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.payments.capturePayment(paymentId)
-.then(({ payment }) => {
-  console.log(payment.captured_at)
-})
-```
+    ```ts
+    medusa.admin.payments.capturePayment(paymentId)
+    .then(({ payment }) => {
+      console.log(payment.captured_at)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminPaymentsCapturePayment } from "medusa-react"
+    ```tsx
+    import { useAdminPaymentsCapturePayment } from "medusa-react"
 
-const OrderEditPayment = () => {
-  const capturePayment = useAdminPaymentsCapturePayment(
-    paymentId
-  )
-  
-  const handleCapturePayment = () => {
-    capturePayment.mutate()
-  }
+    const OrderEditPayment = () => {
+      const capturePayment = useAdminPaymentsCapturePayment(
+        paymentId
+      )
+      
+      const handleCapturePayment = () => {
+        capturePayment.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default OrderEditPayment
-```
+    export default OrderEditPayment
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/payments/${paymentId}/capture`, {
-  method: "POST",
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ payment }) => {
-  console.log(payment.captured_at)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/payments/${paymentId}/capture`, {
+      method: "POST",
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ payment }) => {
+      console.log(payment.captured_at)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/capture' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/capture' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the payment as a path parameter. The payment can be retrieved from the order by accessing the array property `order.payments`.
@@ -739,80 +738,80 @@ When the total after the order edit is less than the original order total, the m
 To refund the difference to the customer, send a request to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-import { RefundReason } from "@medusajs/medusa"
-// ...
+    ```ts
+    import { RefundReason } from "@medusajs/medusa"
+    // ...
 
-medusa.admin.payments.refundPayment(paymentId, {
-  amount,
-  reason: RefundReason.DISCOUNT, // for example
-})
-.then(({ refund }) => {
-  console.log(refund.id)
-})
-```
+    medusa.admin.payments.refundPayment(paymentId, {
+      amount,
+      reason: RefundReason.DISCOUNT, // for example
+    })
+    .then(({ refund }) => {
+      console.log(refund.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminPaymentsRefundPayment } from "medusa-react"
-import { RefundReason } from "@medusajs/medusa"
+    ```tsx
+    import { useAdminPaymentsRefundPayment } from "medusa-react"
+    import { RefundReason } from "@medusajs/medusa"
 
-const OrderEditPayment = () => {
-  const refundPayment = useAdminPaymentsRefundPayment(paymentId)
-  
-  const handleRefundPayment = 
-    (amount: number, reason: RefundReason) => {
-      refundPayment.mutate({
-        amount,
-        reason,
-      })
+    const OrderEditPayment = () => {
+      const refundPayment = useAdminPaymentsRefundPayment(paymentId)
+      
+      const handleRefundPayment = 
+        (amount: number, reason: RefundReason) => {
+          refundPayment.mutate({
+            amount,
+            reason,
+          })
+        }
+
+      // ...
     }
 
-  // ...
-}
+    export default OrderEditPayment
+    ```
 
-export default OrderEditPayment
-```
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/payments/${paymentId}/refund`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount,
+        reason: "discount",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ refund }) => {
+      console.log(refund.id)
+    })
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/payments/${paymentId}/refund`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    amount,
-    reason: "discount",
-  }),
-})
-.then((response) => response.json())
-.then(({ refund }) => {
-  console.log(refund.id)
-})
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/refund' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "amount": 1000,
+        "reason": "discount"
+    }'
+    ```
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/payments/<PAYMENT_ID>/refund' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "amount": 1000,
-    "reason": "discount"
-}'
-```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the ID of the payment as a path parameter. The payment can be retrieved from the order by accessing the array property `order.payments`.

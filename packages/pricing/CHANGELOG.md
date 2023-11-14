@@ -1,5 +1,28 @@
 # @medusajs/pricing
 
+## 0.1.3
+
+### Patch Changes
+
+- [#5533](https://github.com/medusajs/medusa/pull/5533) [`f88d75b0a`](https://github.com/medusajs/medusa/commit/f88d75b0a7621ff9788a24775fa53d4c2987b52d) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(product, pricing, utils): Transaction issues and reference issues + refactoring
+
+- Updated dependencies [[`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298), [`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/types@1.11.6
+  - @medusajs/modules-sdk@1.12.3
+  - @medusajs/utils@1.10.5
+
+## 0.1.2
+
+### Patch Changes
+
+- [#5304](https://github.com/medusajs/medusa/pull/5304) [`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): add migration script for pricing module
+
+- [#5468](https://github.com/medusajs/medusa/pull/5468) [`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, modules-sdk, modules): Module loading was missing the expected dependencies and remote query reference fix
+
+- Updated dependencies [[`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641), [`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9)]:
+  - @medusajs/types@1.11.5
+  - @medusajs/modules-sdk@1.12.2
+
 ## 0.1.1
 
 ### Patch Changes

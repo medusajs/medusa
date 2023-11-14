@@ -1,5 +1,48 @@
 # @medusajs/admin-ui
 
+## 2.1.7
+
+### Patch Changes
+
+- [#5566](https://github.com/medusajs/medusa/pull/5566) [`d7e188722`](https://github.com/medusajs/medusa/commit/d7e1887221467929175e7c69b3064dc7e6c967d8) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Fixes an issue where using the bulk editor with comma as the decimal separator would convert the input to NaN
+
+- [#5596](https://github.com/medusajs/medusa/pull/5596) [`e3f1da92d`](https://github.com/medusajs/medusa/commit/e3f1da92db1a5bb07ae8d79a90f0d1d04f9bfee3) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui,ui): Align @types/react versions
+
+- [#5530](https://github.com/medusajs/medusa/pull/5530) [`8e48be58e`](https://github.com/medusajs/medusa/commit/8e48be58efe9bfffd0f3f5af098ef2a4cefc4b2d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Fixes an issue where regions were not scrollable in tax settings view, also adds a IntersectionObserver to ensure that we load all regions as the user scrolls. The current implementation was capped at loading 20 regions.
+
+- [#5535](https://github.com/medusajs/medusa/pull/5535) [`f7e982988`](https://github.com/medusajs/medusa/commit/f7e98298815b0ffb4ce1b6d2d2e1f26ca5e01049) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Fix issue were Price List domain would fetch all products on initial load"
+
+- [#5548](https://github.com/medusajs/medusa/pull/5548) [`b4e8adfcf`](https://github.com/medusajs/medusa/commit/b4e8adfcf9c71f97a2a0b4ad8f0632e213fe7123) Thanks [@rick-lam](https://github.com/rick-lam)! - fix(admin-ui): Admin UI: Invalid Request Header
+
+- Updated dependencies [[`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298), [`e3f1da92d`](https://github.com/medusajs/medusa/commit/e3f1da92db1a5bb07ae8d79a90f0d1d04f9bfee3)]:
+  - medusa-react@9.0.11
+  - @medusajs/ui@2.2.1
+
+## 2.1.6
+
+### Patch Changes
+
+- [#5456](https://github.com/medusajs/medusa/pull/5456) [`ea2ee343f`](https://github.com/medusajs/medusa/commit/ea2ee343f0f2bee347d0e2a3ece2eb3252564c67) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): PriceList bulk editor fixes
+
+- [#5467](https://github.com/medusajs/medusa/pull/5467) [`f08a295ad`](https://github.com/medusajs/medusa/commit/f08a295ad4e2886b9df5c4c4471c0f4e004fc1d9) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(admin-ui): fix analytics config not being saved in invite form
+
+- [#5288](https://github.com/medusajs/medusa/pull/5288) [`2057d3b24`](https://github.com/medusajs/medusa/commit/2057d3b24733680571ff977130b3e23bcc12d733) Thanks [@pepijn-vanvlaanderen](https://github.com/pepijn-vanvlaanderen)! - Fixes crash on the batch job activity card when using a custom batch job.
+
+- [#5442](https://github.com/medusajs/medusa/pull/5442) [`ca05436fc`](https://github.com/medusajs/medusa/commit/ca05436fc1d03c2f6512b2b9399eadafb3d5d721) Thanks [@huuduc2312](https://github.com/huuduc2312)! - feat(admin-ui): add Vietnamese translation
+
+- [#5428](https://github.com/medusajs/medusa/pull/5428) [`ebba93e03`](https://github.com/medusajs/medusa/commit/ebba93e03d223fb3a79276090f7cfad612d70243) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Update status type in API payload definition
+
+- [#5356](https://github.com/medusajs/medusa/pull/5356) [`397da6c2b`](https://github.com/medusajs/medusa/commit/397da6c2ba39532ebf09b91d61ca2b7f1c4b8126) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): TIP in shipping option creation
+
+- [#5480](https://github.com/medusajs/medusa/pull/5480) [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): admin get product should return prices when expected
+
+- [#5484](https://github.com/medusajs/medusa/pull/5484) [`b69f18257`](https://github.com/medusajs/medusa/commit/b69f1825711a9d62da4e2ab4f1900eff473ec8e2) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Make Webpack config more fault tolerant. Removes loader that would throw if dependency was missing source maps
+
+- [#5315](https://github.com/medusajs/medusa/pull/5315) [`4ce8279d2`](https://github.com/medusajs/medusa/commit/4ce8279d2527fa691c3ca043b914ebb85cb4ac55) Thanks [@ram-you](https://github.com/ram-you)! - Enhanced 'activity-drawer' visibility with z-index adjustment
+
+- Updated dependencies [[`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1)]:
+  - medusa-react@9.0.10
+
 ## 2.1.5
 
 ### Patch Changes

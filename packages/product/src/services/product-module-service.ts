@@ -61,9 +61,8 @@ import {
   mapObjectTo,
   MedusaContext,
   MedusaError,
+  promiseAll,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
 import {
   entityNameToLinkableKeysMap,
   joinerConfig,
@@ -277,7 +276,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(tags)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createTags(
     data: ProductTypes.CreateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -290,7 +289,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTags))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateTags(
     data: ProductTypes.UpdateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -303,7 +302,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTags))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteTags(
     productTagIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -356,7 +355,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(types)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createTypes(
     data: ProductTypes.CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -369,7 +368,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTypes))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateTypes(
     data: ProductTypes.UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -382,7 +381,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTypes))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteTypes(
     productTypeIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -436,7 +435,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(productOptions)), count]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createOptions(
     data: ProductTypes.CreateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -453,7 +452,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateOptions(
     data: ProductTypes.UpdateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -470,7 +469,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteOptions(
     productOptionIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -523,7 +522,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(collections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createCollections(
     data: ProductTypes.CreateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -543,7 +542,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCollections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateCollections(
     data: ProductTypes.UpdateProductCollectionDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -563,7 +562,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCollections))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteCollections(
     productCollectionIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -611,7 +610,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async createCategory(
     data: CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -629,7 +628,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCategory))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async updateCategory(
     categoryId: string,
     data: UpdateProductCategoryDTO,
@@ -649,7 +648,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCategory))
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async deleteCategory(
     categoryId: string,
     @MedusaContext() sharedContext: Context = {}
@@ -677,6 +676,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
+  @InjectManager("baseRepository_")
   async create(
     data: ProductTypes.CreateProductDTO[],
     sharedContext?: Context
@@ -698,6 +698,7 @@ export default class ProductModuleService<
     return createdProducts
   }
 
+  @InjectManager("baseRepository_")
   async update(
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -720,7 +721,7 @@ export default class ProductModuleService<
     return updatedProducts
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async create_(
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -734,7 +735,7 @@ export default class ProductModuleService<
       ProductTypes.CreateProductOptionDTO[]
     >()
 
-    const productsData = await Promise.all(
+    const productsData = await promiseAll(
       data.map(async (product) => {
         const productData = { ...product }
         if (!productData.handle) {
@@ -816,7 +817,7 @@ export default class ProductModuleService<
       })
     }
 
-    await Promise.all(
+    await promiseAll(
       [...productVariantsMap].map(async ([handle, variants]) => {
         return await this.productVariantService_.create(
           productByHandleMap.get(handle)!,
@@ -829,7 +830,7 @@ export default class ProductModuleService<
     return products
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async update_(
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -859,14 +860,11 @@ export default class ProductModuleService<
       )[]
     >()
 
-    const productOptionsMap = new Map<
-      string,
-      ProductTypes.CreateProductOptionDTO[]
-    >()
+    const productOptionsMap = new Map<string, TProductOption[]>()
 
-    const productsData = await Promise.all(
+    const productsData = await promiseAll(
       data.map(async (product) => {
-        const { variants, options, ...productData } = product
+        const { variants, ...productData } = product
 
         if (!isDefined(productData.id)) {
           throw new MedusaError(
@@ -876,7 +874,6 @@ export default class ProductModuleService<
         }
 
         productVariantsMap.set(productData.id, variants ?? [])
-        productOptionsMap.set(productData.id, options ?? [])
 
         if (productData.is_giftcard) {
           productData.discountable = false
@@ -894,6 +891,15 @@ export default class ProductModuleService<
           productData,
           sharedContext
         )
+        await this.upsertAndAssignOptionsToProductData(
+          productData,
+          sharedContext
+        )
+
+        productOptionsMap.set(
+          productData.id,
+          (productData.options ?? []) as TProductOption[]
+        )
 
         return productData as UpdateProductDTO
       })
@@ -906,20 +912,6 @@ export default class ProductModuleService<
 
     const productByIdMap = new Map<string, TProduct>(
       products.map((product) => [product.id, product])
-    )
-
-    const productOptionsData = [...productOptionsMap]
-      .map(([id, options]) =>
-        options.map((option) => ({
-          ...option,
-          product: productByIdMap.get(id)!,
-        }))
-      )
-      .flat()
-
-    const productOptions = await this.productOptionService_.create(
-      productOptionsData,
-      sharedContext
     )
 
     const productVariantIdsToDelete: string[] = []
@@ -937,6 +929,7 @@ export default class ProductModuleService<
       const variantsToCreate: ProductTypes.CreateProductVariantDTO[] = []
       const variantsToUpdate: ProductTypes.UpdateProductVariantDTO[] = []
       const existingVariants = existingProductVariantsMap.get(productId)
+      const productOptions = productOptionsMap.get(productId)!
 
       variants.forEach((variant) => {
         const isVariantIdDefined = "id" in variant && isDefined(variant.id)
@@ -955,7 +948,7 @@ export default class ProductModuleService<
           }
         })
 
-        if (variantOptions) {
+        if (variantOptions?.length) {
           variant.options = variantOptions
         }
       })
@@ -1005,9 +998,21 @@ export default class ProductModuleService<
       )
     }
 
-    await Promise.all(promises)
+    await promiseAll(promises)
 
     return products
+  }
+
+  protected async upsertAndAssignOptionsToProductData(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
+    sharedContext: Context = {}
+  ) {
+    if (productData.options?.length) {
+      productData.options = await this.productOptionService_.upsert(
+        productData.options,
+        sharedContext
+      )
+    }
   }
 
   protected async upsertAndAssignImagesToProductData(
@@ -1060,7 +1065,7 @@ export default class ProductModuleService<
     }
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async delete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -1075,6 +1080,7 @@ export default class ProductModuleService<
     )
   }
 
+  @InjectManager("baseRepository_")
   async softDelete<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1116,7 +1122,7 @@ export default class ProductModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   protected async softDelete_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -1124,6 +1130,7 @@ export default class ProductModuleService<
     return await this.productService_.softDelete(productIds, sharedContext)
   }
 
+  @InjectManager("baseRepository_")
   async restore<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1152,7 +1159,7 @@ export default class ProductModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectManager("baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async restoreVariants<
     TReturnableLinkableKeys extends string = Lowercase<
       keyof typeof LinkableKeys
@@ -1179,7 +1186,7 @@ export default class ProductModuleService<
     return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager("baseRepository_")
   async restore_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}

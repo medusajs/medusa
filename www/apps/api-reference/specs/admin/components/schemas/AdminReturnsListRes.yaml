@@ -1,4 +1,5 @@
 type: object
+description: The list of returns with pagination fields.
 x-expanded-relation:
   field: returns
   relations:

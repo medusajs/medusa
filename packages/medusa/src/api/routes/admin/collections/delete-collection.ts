@@ -23,7 +23,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       medusa.admin.collections.delete(collectionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

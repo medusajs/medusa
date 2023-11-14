@@ -22,7 +22,7 @@ import RegionService from "../../../../services/region"
  *       medusa.admin.regions.retrieveFulfillmentOptions(regionId)
  *       .then(({ fulfillment_options }) => {
  *         console.log(fulfillment_options.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

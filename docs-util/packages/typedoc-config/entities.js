@@ -8,22 +8,24 @@ module.exports = {
   ...globalTypedocOptions,
   entryPoints: [path.join(pathPrefix, "packages/medusa/src/models/index.ts")],
   out: [path.join(pathPrefix, "www/apps/docs/content/references/entities")],
-  tsconfig: path.join(pathPrefix, "packages/medusa/tsconfig.json"),
+  tsconfig: path.join(__dirname, "extended-tsconfig", "medusa.json"),
   name: "Entities Reference",
   indexTitle: "Entities Reference",
-  entryDocument: "_index.mdx",
+  entryDocument: "index.mdx",
   hideInPageTOC: true,
   hideBreadcrumbs: true,
-  plugin: [...globalTypedocOptions.plugin, "typedoc-plugin-frontmatter"],
-  frontmatterData: {
-    displayed_sidebar: "entitiesSidebar",
-  },
   formatting: {
     "*": {
       showCommentsAsHeader: true,
       sections: {
         member_sources_definedIn: false,
         reflection_hierarchy: false,
+        member_sources_inheritedFrom: false,
+        member_sources_implementationOf: false,
+        reflection_implementedBy: false,
+        member_signature_sources: false,
+        reflection_callable: false,
+        reflection_indexable: false,
       },
       parameterStyle: "component",
       parameterComponent: "ParameterTypes",
@@ -34,8 +36,15 @@ module.exports = {
         Constructors: false,
         Methods: false,
       },
+      frontmatterData: {
+        displayed_sidebar: "entitiesSidebar",
+      },
+    },
+    "(Order|Swap|Cart|LineItem)": {
+      maxLevel: 1,
     },
   },
   objectLiteralTypeDeclarationStyle: "component",
   mdxOutput: true,
+  maxLevel: 2,
 }

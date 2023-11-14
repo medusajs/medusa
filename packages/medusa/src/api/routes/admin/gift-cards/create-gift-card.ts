@@ -30,7 +30,7 @@ import { EntityManager } from "typeorm"
  *       })
  *       .then(({ gift_card }) => {
  *         console.log(gift_card.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -98,7 +98,8 @@ export default async (req, res) => {
  *     description: The value (excluding VAT) that the Gift Card should represent.
  *   is_disabled:
  *     type: boolean
- *     description: Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.
+ *     description: >-
+ *       Whether the Gift Card is disabled on creation. If set to `true`, the gift card will not be available for customers.
  *   ends_at:
  *     type: string
  *     format: date-time

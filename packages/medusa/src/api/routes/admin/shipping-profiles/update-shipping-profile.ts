@@ -41,7 +41,7 @@ import {
  *       })
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

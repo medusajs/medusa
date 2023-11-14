@@ -13,18 +13,20 @@ Filters to apply on a currency.
 <ParameterTypes parameters={[
   {
     "name": "$and",
-    "type": "([`FilterableCurrencyProps`](FilterableCurrencyProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableCurrencyProps`](FilterableCurrencyProps.mdx)\\>)[]",
+    "type": "([FilterableCurrencyProps](FilterableCurrencyProps.mdx) \\| [BaseFilterable](BaseFilterable.mdx)&#60;[FilterableCurrencyProps](FilterableCurrencyProps.mdx)&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "$or",
-    "type": "([`FilterableCurrencyProps`](FilterableCurrencyProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableCurrencyProps`](FilterableCurrencyProps.mdx)\\>)[]",
+    "type": "([FilterableCurrencyProps](FilterableCurrencyProps.mdx) \\| [BaseFilterable](BaseFilterable.mdx)&#60;[FilterableCurrencyProps](FilterableCurrencyProps.mdx)&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -33,6 +35,7 @@ Filters to apply on a currency.
     "description": "The codes to filter the currencies by.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -16,4 +16,4 @@ medusa.admin.priceLists.create({
 })
 .then(({ price_list }) => {
   console.log(price_list.id);
-});
+})

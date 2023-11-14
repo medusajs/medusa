@@ -41,10 +41,11 @@ async function updateRuleTypes (ruleTypeId: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateRuleTypeDTO`](../../interfaces/UpdateRuleTypeDTO.mdx)[]",
+    "type": "[UpdateRuleTypeDTO](../../interfaces/UpdateRuleTypeDTO.mdx)[]",
     "description": "The rule types to update, each having the attributes that should be updated in a rule type.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "default_priority",
@@ -52,6 +53,7 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -60,6 +62,7 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "The ID of the rule type to update.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -68,24 +71,27 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "The display name of the rule type.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "rule_attribute",
         "type": "`string`",
-        "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+        "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -93,6 +99,7 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -101,6 +108,7 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -109,6 +117,7 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -117,6 +126,7 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -125,6 +135,7 @@ async function updateRuleTypes (ruleTypeId: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -136,17 +147,19 @@ async function updateRuleTypes (ruleTypeId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated rule types.",
+    "expandable": false,
     "children": [
       {
         "name": "RuleTypeDTO[]",
-        "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]",
+        "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "default_priority",
@@ -154,6 +167,7 @@ async function updateRuleTypes (ruleTypeId: string) {
             "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -162,6 +176,7 @@ async function updateRuleTypes (ruleTypeId: string) {
             "description": "The ID of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -170,14 +185,16 @@ async function updateRuleTypes (ruleTypeId: string) {
             "description": "The display name of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "rule_attribute",
             "type": "`string`",
-            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

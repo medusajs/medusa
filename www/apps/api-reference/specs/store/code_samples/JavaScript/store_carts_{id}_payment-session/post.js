@@ -5,4 +5,4 @@ medusa.carts.setPaymentSession(cartId, {
 })
 .then(({ cart }) => {
   console.log(cart.id);
-});
+})

@@ -19,7 +19,7 @@ import _ from "lodash"
  *       medusa.admin.auth.getSession()
  *       .then(({ user }) => {
  *         console.log(user.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

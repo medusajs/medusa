@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test:integration": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit",
+    "test:integration": "node --expose-gc ./../../node_modules/.bin/jest --silent=false --runInBand --bail --detectOpenHandles --logHeapUsage --clearMocks --no-compilation-cache --forceExit",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
@@ -13,6 +13,8 @@
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/inventory": "workspace:^",
     "@medusajs/medusa": "workspace:*",
+    "@medusajs/modules-sdk": "workspace:^",
+    "@medusajs/pricing": "workspace:^",
     "@medusajs/product": "workspace:^",
     "faker": "^5.5.3",
     "medusa-fulfillment-webshipper": "workspace:*",

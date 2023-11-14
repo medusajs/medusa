@@ -28,7 +28,7 @@ import { defaultAdminProductCategoryRelations } from "."
  *       medusa.admin.productCategories.retrieve(productCategoryId)
  *       .then(({ product_category }) => {
  *         console.log(product_category.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

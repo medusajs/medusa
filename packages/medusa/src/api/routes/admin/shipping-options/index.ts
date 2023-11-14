@@ -55,6 +55,7 @@ export const defaultRelations = ["region", "profile", "requirements"]
 /**
  * @schema AdminShippingOptionsListRes
  * type: object
+ * description: "The list of shipping options with pagination fields."
  * x-expanded-relations:
  *   field: shipping_options
  *   relations:
@@ -92,6 +93,7 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
 /**
  * @schema AdminShippingOptionsRes
  * type: object
+ * description: "The shipping option's details."
  * x-expanded-relations:
  *   field: shipping_option
  *   relations:
@@ -139,4 +141,3 @@ export * from "./delete-shipping-option"
 export * from "./get-shipping-option"
 export * from "./list-shipping-options"
 export * from "./update-shipping-option"
-

@@ -351,26 +351,26 @@ import TabItem from '@theme/TabItem';
 
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.uploads.create(file) // file is an instance of File
-.then(({ uploads }) => {
-  const key = uploads[0].key
-})
-```
+    ```ts
+    medusa.admin.uploads.create(file) // file is an instance of File
+    .then(({ uploads }) => {
+      const key = uploads[0].key
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/uploads' \
-  -H 'Authorization: Bearer <API_TOKEN>' \
-  -H 'Content-Type: text/csv' \
-  -F 'files=@"<FILE_PATH_1>"'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/uploads' \
+      -H 'Authorization: Bearer <API_TOKEN>' \
+      -H 'Content-Type: text/csv' \
+      -F 'files=@"<FILE_PATH_1>"'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 ~~~
 

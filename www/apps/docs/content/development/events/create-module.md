@@ -62,7 +62,7 @@ In the class you must implement the `emit` method. You can optionally implement 
 
 ### Note About the eventToSubscribersMap Property
 
-The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler methods are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. They map keys are the event names, whereas the value of each key is an array of subscribed handler methods.
+The `AbstractEventBusModuleService` implements two methods for handling subscription: `subscribe` and `unsubscribe`. In these methods, the subscribed handler methods are managed within a class property `eventToSubscribersMap`, which is a JavaScript Map. The map's keys are the event names, whereas the value of each key is an array of subscribed handler methods.
 
 In your custom implementation, you can use this property to manage the subscribed handler methods. For example, you can get the subscribers of a method using the `get` method of the map:
 
@@ -107,7 +107,7 @@ The `emit` method has two different signatures:
 1. The first signature accepts three parameters. The first parameter is `eventName` being a required string indicating the name of the event to trigger. The second parameter is `data` being the optional data to send to subscribers of that event. The third optional parameter `options` which can be used to pass options specific to the event bus.
 2. The second signature accepts one parameter, which is an array of objects having three properties: `eventName`, `data`, and `options`. These are the same as the parameters that can be passed in the first signature. This signature allows emitting more than one event.
 
-The `options` parameter depends on the event bus integrating. For example, the Redis event bus accept the following options:
+The `options` parameter depends on the event bus integration. For example, the Redis event bus accepts the following options:
 
 ```ts title=services/event-bus-custom.ts
 type JobData<T> = {

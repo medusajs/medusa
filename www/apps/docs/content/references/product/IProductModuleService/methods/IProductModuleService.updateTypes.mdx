@@ -41,10 +41,11 @@ async function updateProductType (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductTypeDTO`](../../interfaces/UpdateProductTypeDTO.mdx)[]",
+    "type": "[UpdateProductTypeDTO](../../interfaces/UpdateProductTypeDTO.mdx)[]",
     "description": "The product types to be updated, each having the attributes that should be updated in the product type.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "id",
@@ -52,14 +53,16 @@ async function updateProductType (id: string, value: string) {
         "description": "The ID of the product type to update.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -68,16 +71,18 @@ async function updateProductType (id: string, value: string) {
         "description": "The new value of the product type.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -85,6 +90,7 @@ async function updateProductType (id: string, value: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -93,6 +99,7 @@ async function updateProductType (id: string, value: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -101,6 +108,7 @@ async function updateProductType (id: string, value: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -109,6 +117,7 @@ async function updateProductType (id: string, value: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -117,6 +126,7 @@ async function updateProductType (id: string, value: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -128,17 +138,19 @@ async function updateProductType (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product types.",
+    "expandable": false,
     "children": [
       {
         "name": "ProductTypeDTO[]",
-        "type": "[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]",
+        "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "deleted_at",
@@ -146,6 +158,7 @@ async function updateProductType (id: string, value: string) {
             "description": "When the product type was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -154,14 +167,16 @@ async function updateProductType (id: string, value: string) {
             "description": "The ID of the product type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -170,6 +185,7 @@ async function updateProductType (id: string, value: string) {
             "description": "The value of the product type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

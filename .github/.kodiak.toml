@@ -10,6 +10,7 @@ delete_branch_on_merge = true
 optimistic_updates = false
 prioritize_ready_to_merge = true
 notify_on_conflict = true
+dont_wait_on_status_checks = ["Vercel – api-reference", "Vercel – docs-ui", "Vercel – medusa-docs"]
 
 [merge.message]
 title = "pull_request_title"

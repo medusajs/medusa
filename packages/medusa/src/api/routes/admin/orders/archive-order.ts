@@ -26,7 +26,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       medusa.admin.orders.archive(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

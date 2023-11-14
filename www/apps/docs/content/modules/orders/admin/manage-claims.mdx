@@ -40,7 +40,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -61,72 +61,72 @@ You can learn more about [authenticating as an admin user in the API reference](
 To view an order’s claims, you can retrieve the order using the [Get Order API Route](https://docs.medusajs.com/api/admin#orders_getordersorder) and access the order’s claims:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.retrieve(orderId)
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+    ```ts
+    medusa.admin.orders.retrieve(orderId)
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrder } from "medusa-react"
+    ```tsx
+    import { useAdminOrder } from "medusa-react"
 
-const Order = () => {
-  const { 
-    order, 
-    isLoading, 
-  } = useAdminOrder(orderId)
- 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {order && (
-        <>
-          <span>{order.display_id}</span>
-          {order.claims?.length > 0 && (
-            <ul>
-              {order.claims.map((claim) => (
-                <li key={claim.id}>{claim.id}</li>
-              ))}
-            </ul>
+    const Order = () => {
+      const { 
+        order, 
+        isLoading, 
+      } = useAdminOrder(orderId)
+    
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {order && (
+            <>
+              <span>{order.display_id}</span>
+              {order.claims?.length > 0 && (
+                <ul>
+                  {order.claims.map((claim) => (
+                    <li key={claim.id}>{claim.id}</li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
-        </>
-      )}
-      
-    </div>
-  )
-}
+          
+        </div>
+      )
+    }
 
-export default Order
-```
+    export default Order
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request requires the order’s ID as a path parameter.
@@ -140,35 +140,10 @@ The request returns the order as an object. In that object, you can access an ar
 You can create a claim by sending a request to the [Create Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaims):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.createClaim(orderId, {
-  type: "refund",
-  claim_items: [
-    {
-      item_id,
-      quantity: 1,
-    },
-  ],
-})
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateClaim } from "medusa-react"
-
-const CreateClaim = () => {
-  const createClaim = useAdminCreateClaim(orderId)
-  // ...
-
-  const handleCreate = () => {
-    createClaim.mutate({
+    ```ts
+    medusa.admin.orders.createClaim(orderId, {
       type: "refund",
       claim_items: [
         {
@@ -177,59 +152,84 @@ const CreateClaim = () => {
         },
       ],
     })
-  }
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateClaim
-```
+    ```tsx
+    import { useAdminCreateClaim } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreateClaim = () => {
+      const createClaim = useAdminCreateClaim(orderId)
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    type: "refund",
-    claim_items: [
-      {
-        item_id,
-        quantity: 1,
-      },
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "type": "refund",
-    "claim_items": [
-      {
-        "item_id": "<ITEM_ID>",
-        "quantity": 1
+      const handleCreate = () => {
+        createClaim.mutate({
+          type: "refund",
+          claim_items: [
+            {
+              item_id,
+              quantity: 1,
+            },
+          ],
+        })
       }
-    ]
-}'
-```
 
-</TabItem>
+      // ...
+    }
+
+    export default CreateClaim
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: "refund",
+        claim_items: [
+          {
+            item_id,
+            quantity: 1,
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "type": "refund",
+        "claim_items": [
+          {
+            "item_id": "<ITEM_ID>",
+            "quantity": 1
+          }
+        ]
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the order ID to be passed as a path parameter.
@@ -258,76 +258,76 @@ The request returns the updated order as an object. You can access the order’s
 You can update a claim by sending a request to the [Update Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaim):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.updateClaim(orderId, claimId, {
-  no_notification: true,
-})
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateClaim } from "medusa-react"
-
-const UpdateClaim = () => {
-  const updateClaim = useAdminUpdateClaim(orderId)
-  // ...
-
-  const handleUpdate = () => {
-    updateClaim.mutate({
-      claim_id,
+    ```ts
+    medusa.admin.orders.updateClaim(orderId, claimId, {
       no_notification: true,
     })
-  }
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default UpdateClaim
-```
+    ```tsx
+    import { useAdminUpdateClaim } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const UpdateClaim = () => {
+      const updateClaim = useAdminUpdateClaim(orderId)
+      // ...
 
-```ts
-fetch(
-  `<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}`,
-  {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      no_notification: true,
-    }),
-  }
-)
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+      const handleUpdate = () => {
+        updateClaim.mutate({
+          claim_id,
+          no_notification: true,
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "no_notification": true
-}'
-```
+    export default UpdateClaim
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(
+      `<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}`,
+      {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          no_notification: true,
+        }),
+      }
+    )
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "no_notification": true
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the ID of the order and the claim to be passed as path parameters.
@@ -349,63 +349,63 @@ Fulfillments are available on a claim object under the `fulfillments` property, 
 You can create a fulfillment for a claim by sending a request to the [Create Claim Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimfulfillments):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.fulfillClaim(orderId, claimId, {
-})
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminFulfillClaim } from "medusa-react"
-
-const FulfillClaim = () => {
-  const fulfillClaim = useAdminFulfillClaim(orderId)
-  // ...
-
-  const handleFulfill = () => {
-    fulfillClaim.mutate({
-      claim_id,
+    ```ts
+    medusa.admin.orders.fulfillClaim(orderId, claimId, {
     })
-  }
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default FulfillClaim
-```
+    ```tsx
+    import { useAdminFulfillClaim } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const FulfillClaim = () => {
+      const fulfillClaim = useAdminFulfillClaim(orderId)
+      // ...
+
+      const handleFulfill = () => {
+        fulfillClaim.mutate({
+          claim_id,
+        })
+      }
+
+      // ...
+    }
+
+    export default FulfillClaim
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/fulfillments`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/fulfillments`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order and claim IDs as path parameters.
@@ -419,75 +419,75 @@ The request returns the updated order as an object. You can access the order’s
 You can create a shipment for a claim by sending a request to the [Create Claim Shipment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderclaimsclaimshipments):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.createClaimShipment(orderId, claimId, {
-  fulfillment_id,
-})
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateClaimShipment } from "medusa-react"
-
-const CreateShipment = () => {
-  const createShipment = useAdminCreateClaimShipment(orderId)
-  // ...
-
-  const handleCreate = () => {
-    createShipment.mutate({
-      claim_id,
+    ```ts
+    medusa.admin.orders.createClaimShipment(orderId, claimId, {
       fulfillment_id,
     })
-  }
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateShipment
-```
+    ```tsx
+    import { useAdminCreateClaimShipment } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreateShipment = () => {
+      const createShipment = useAdminCreateClaimShipment(orderId)
+      // ...
+
+      const handleCreate = () => {
+        createShipment.mutate({
+          claim_id,
+          fulfillment_id,
+        })
+      }
+
+      // ...
+    }
+
+    export default CreateShipment
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/shipments`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    fulfillment_id,
-  }),
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/shipments`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fulfillment_id,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/shipments' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "fulfillment_id": "<FUL_ID>"
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/shipments' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "fulfillment_id": "<FUL_ID>"
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order and claim IDs as path parameters.
@@ -511,69 +511,69 @@ You can’t cancel a fulfillment that has a shipment
 You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersclaimfulfillmentscancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.cancelClaimFulfillment(
-  orderId,
-  claimId,
-  fulfillmentId
-)
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCancelClaimFulfillment } from "medusa-react"
-
-const CancelFulfillment = () => {
-  const cancelFulfillment = useAdminCancelClaimFulfillment(
-    orderId
-  )
-  // ...
-
-  const handleCancel = () => {
-    cancelFulfillment.mutate({
-      claim_id,
-      fulfillment_id,
+    ```ts
+    medusa.admin.orders.cancelClaimFulfillment(
+      orderId,
+      claimId,
+      fulfillmentId
+    )
+    .then(({ order }) => {
+      console.log(order.claims)
     })
-  }
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CancelFulfillment
-```
+    ```tsx
+    import { useAdminCancelClaimFulfillment } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CancelFulfillment = () => {
+      const cancelFulfillment = useAdminCancelClaimFulfillment(
+        orderId
+      )
+      // ...
+
+      const handleCancel = () => {
+        cancelFulfillment.mutate({
+          claim_id,
+          fulfillment_id,
+        })
+      }
+
+      // ...
+    }
+
+    export default CancelFulfillment
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/fulfillments/${fulfillmentId}/cancel`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/fulfillments/${fulfillmentId}/cancel`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments/<FUL_ID>/cancel' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/fulfillments/<FUL_ID>/cancel' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order, claim, and fulfillment IDs to be passed as path parameters.
@@ -595,60 +595,60 @@ You can’t cancel a claim that has been refunded. You must also cancel the clai
 You can cancel a claim by sending a request to the [Cancel Claim API Route](https://docs.medusajs.com/api/admin#orders_postordersclaimcancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.cancelClaim(orderId, claimId)
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+    ```ts
+    medusa.admin.orders.cancelClaim(orderId, claimId)
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminCancelClaim } from "medusa-react"
+    ```tsx
+    import { useAdminCancelClaim } from "medusa-react"
 
-const CancelClaim = () => {
-  const cancelClaim = useAdminCancelClaim(orderId)
-  // ...
+    const CancelClaim = () => {
+      const cancelClaim = useAdminCancelClaim(orderId)
+      // ...
 
-  const handleCancel = () => {
-    cancelClaim.mutate(claimId)
-  }
+      const handleCancel = () => {
+        cancelClaim.mutate(claimId)
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default CancelClaim
-```
+    export default CancelClaim
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/cancel`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.claims)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/claims/${claimId}/cancel`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.claims)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/cancel' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/claims/<CLAIM_ID>/cancel' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order and claim IDs as path parameters.

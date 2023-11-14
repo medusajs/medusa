@@ -5,7 +5,13 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { ReturnReason } from "./ReturnReason"
 
+/**
+ * The return reason's details.
+ */
 export interface AdminReturnReasonsRes {
+  /**
+   * The return reason's details.
+   */
   return_reason: SetRelation<
     ReturnReason,
     "parent_return_reason" | "return_reason_children"

@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostPaymentCollectionsBatchSessionsReq {
   /**
-   * An array of payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted.
+   * Payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted.
    */
   sessions: Array<{
     /**

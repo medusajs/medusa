@@ -13,8 +13,17 @@ export type TaxLinesMaps = {
  * plugin.
  */
 export type TaxServiceRate = {
+  /**
+   * The tax rate.
+   */
   rate?: number | null
+  /**
+   * The tax rate's name.
+   */
   name: string
+  /**
+   * The tax rate's code.
+   */
   code: string | null
 }
 

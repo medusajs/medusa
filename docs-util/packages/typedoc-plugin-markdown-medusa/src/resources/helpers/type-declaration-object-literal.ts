@@ -10,7 +10,8 @@ export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "typeDeclarationMembers",
     function (this: DeclarationReflection[]) {
-      const { parameterComponent } = theme.getFormattingOptionsForLocation()
+      const { parameterComponent, maxLevel } =
+        theme.getFormattingOptionsForLocation()
       const comments = this.map(
         (param) => !!param.comment?.hasVisibleComponent()
       )
@@ -29,7 +30,11 @@ export default function (theme: MarkdownTheme) {
           break
         }
         case "component": {
-          result = getComponentMarkdownContent(properties, parameterComponent)
+          result = getComponentMarkdownContent(
+            properties,
+            parameterComponent,
+            maxLevel
+          )
           break
         }
         case "table": {
@@ -52,10 +57,11 @@ function getListMarkdownContent(properties: DeclarationReflection[]) {
 
 function getComponentMarkdownContent(
   properties: DeclarationReflection[],
-  parameterComponent?: string
+  parameterComponent?: string,
+  maxLevel?: number | undefined
 ) {
   const parameters = properties.map((property) =>
-    reflectionFormatter(property, "component")
+    reflectionFormatter(property, "component", 1, maxLevel)
   )
 
   return `<${parameterComponent} parameters={${JSON.stringify(

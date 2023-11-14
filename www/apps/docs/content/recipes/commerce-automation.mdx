@@ -100,85 +100,83 @@ Medusa also provides official notification plugins that integrate with third-par
   },
 ]} />
 
-<details>
-<summary>
-Example: Sending an email for new notes
-</summary>
-    
-Here’s an example of a subscriber that uses the SendGrid plugin to send an email to the customer when the order has a new note:
+<Details>
+  <Summary>Example: Sending an email for new notes</Summary>
 
-```ts title=src/subscribers/new-note.ts
-import {
-  EventBusService,
-  NoteService,
-  OrderService,
-} from "@medusajs/medusa"
+  Here’s an example of a subscriber that uses the SendGrid plugin to send an email to the customer when the order has a new note:
 
-type InjectedDependencies = {
-  eventBusService: EventBusService
-  sendgridService: any
-  noteService: NoteService
-  orderService: OrderService
-}
+  ```ts title=src/subscribers/new-note.ts
+  import {
+    EventBusService,
+    NoteService,
+    OrderService,
+  } from "@medusajs/medusa"
 
-class NewNoteSubscriber {
-  protected sendGridService_: any
-  protected noteService_: NoteService
-  protected orderService_: OrderService
-
-  constructor({
-    eventBusService,
-    sendgridService,
-    noteService,
-    orderService,
-  }: InjectedDependencies) {
-    this.noteService_ = noteService
-    this.orderService_ = orderService
-    this.sendGridService_ = sendgridService
-    eventBusService.subscribe(
-      "note.created", 
-      this.handleNoteCreated
-    )
+  type InjectedDependencies = {
+    eventBusService: EventBusService
+    sendgridService: any
+    noteService: NoteService
+    orderService: OrderService
   }
 
-  handleNoteCreated = async (data) => {
-    // retrieve note by id
-    const note = await this.noteService_.retrieve(data.id, {
-      relations: ["author"],
-    })
+  class NewNoteSubscriber {
+    protected sendGridService_: any
+    protected noteService_: NoteService
+    protected orderService_: OrderService
 
-    if (!note || note.resource_type !== "order") {
-      return
+    constructor({
+      eventBusService,
+      sendgridService,
+      noteService,
+      orderService,
+    }: InjectedDependencies) {
+      this.noteService_ = noteService
+      this.orderService_ = orderService
+      this.sendGridService_ = sendgridService
+      eventBusService.subscribe(
+        "note.created", 
+        this.handleNoteCreated
+      )
     }
 
-    // retrieve note's order
-    const order = await this.orderService_.retrieve(
-      note.resource_id
-    )
+    handleNoteCreated = async (data) => {
+      // retrieve note by id
+      const note = await this.noteService_.retrieve(data.id, {
+        relations: ["author"],
+      })
 
-    if (!order) {
-      return
+      if (!note || note.resource_type !== "order") {
+        return
+      }
+
+      // retrieve note's order
+      const order = await this.orderService_.retrieve(
+        note.resource_id
+      )
+
+      if (!order) {
+        return
+      }
+
+      this.sendGridService_.sendEmail({
+        templateId: "order-update",
+        from: "hello@medusajs.com",
+        to: order.email,
+        dynamic_template_data: {
+          // any data necessary for your template...
+          note_text: note.value,
+          note_author: note.author.first_name,
+          note_date: note.created_at,
+          order_id: order.display_id,
+        },
+      })
     }
-
-    this.sendGridService_.sendEmail({
-      templateId: "order-update",
-      from: "hello@medusajs.com",
-      to: order.email,
-      dynamic_template_data: {
-        // any data necessary for your template...
-        note_text: note.value,
-        note_author: note.author.first_name,
-        note_date: note.created_at,
-        order_id: order.display_id,
-      },
-    })
   }
-}
 
-export default NewNoteSubscriber
-```
+  export default NewNoteSubscriber
+  ```
 
-</details> 
+</Details> 
 
 ---
 
@@ -198,75 +196,73 @@ You can implement automatic synchronization in Medusa using scheduled jobs. A sc
   }
 }} />
 
-<details>
-<summary>
-Example: Synchronizing products with a third-party service
-</summary>
+<Details>
+  <Summary>Example: Synchronizing products with a third-party service</Summary>
 
-Here’s an example of synchronizing products with a third party service using a [loader](../development/loaders/create.md):
+  Here’s an example of synchronizing products with a third party service using a [loader](../development/loaders/create.md):
 
-```ts title=src/loaders/sync-products.ts
-import { 
-  Logger,
-  ProductService,
-  StoreService,
-} from "@medusajs/medusa"
-import { 
-  ProductSelector,
-} from "@medusajs/medusa/dist/types/product"
-import { AwilixContainer } from "awilix"
+  ```ts title=src/loaders/sync-products.ts
+  import { 
+    Logger,
+    ProductService,
+    StoreService,
+  } from "@medusajs/medusa"
+  import { 
+    ProductSelector,
+  } from "@medusajs/medusa/dist/types/product"
+  import { AwilixContainer } from "awilix"
 
-export default async (
-  container: AwilixContainer,
-  config: Record<string, unknown>
-): Promise<void> => {
-  const logger = container.resolve<Logger>("logger")
-  logger.info("Synchronizing products...")
-  const productService = container.resolve<ProductService>(
-    "productService"
-  )
-  const storeService = container.resolve<StoreService>(
-    "storeService"
-  )
-  // retrieve store to get last sync date
-  const store = await storeService.retrieve()
+  export default async (
+    container: AwilixContainer,
+    config: Record<string, unknown>
+  ): Promise<void> => {
+    const logger = container.resolve<Logger>("logger")
+    logger.info("Synchronizing products...")
+    const productService = container.resolve<ProductService>(
+      "productService"
+    )
+    const storeService = container.resolve<StoreService>(
+      "storeService"
+    )
+    // retrieve store to get last sync date
+    const store = await storeService.retrieve()
 
-  const productFilters: ProductSelector = {}
+    const productFilters: ProductSelector = {}
 
-  if (store.metadata.last_sync_date) {
-    productFilters.updated_at = {
-      gt: new Date(
-        store.metadata.last_sync_date as string
-      ),
+    if (store.metadata.last_sync_date) {
+      productFilters.updated_at = {
+        gt: new Date(
+          store.metadata.last_sync_date as string
+        ),
+      }
     }
+
+    const updatedProducts = await productService.list(
+      productFilters
+    )
+    
+    updatedProducts.forEach((product) => {
+      // assuming client is an initialized connection
+      // with a third-party service
+      client.sync(product)
+    })
+
+    await storeService.update({
+      metadata: {
+        last_sync_date: new Date(),
+      },
+    })
+    
+    logger.info("Finish synchronizing products")
   }
+  ```
 
-  const updatedProducts = await productService.list(
-    productFilters
-  )
-  
-  updatedProducts.forEach((product) => {
-    // assuming client is an initialized connection
-    // with a third-party service
-    client.sync(product)
-  })
+  Notice that here it’s assumed that:
 
-  await storeService.update({
-    metadata: {
-      last_sync_date: new Date(),
-    },
-  })
-  
-  logger.info("Finish synchronizing products")
-}
-```
+  1. The last update date is stored in the `Store`'s metadata object. You can instead use a custom entity to handle this.
+  2. The connection to the third-party service is assumed to be available and handled within the `client` variable.
 
-Notice that here it’s assumed that:
-
-1. The last update date is stored in the `Store`'s metadata object. You can instead use a custom entity to handle this.
-2. The connection to the third-party service is assumed to be available and handled within the `client` variable.
-
-</details>
+</Details>
 
 ---
 
@@ -419,88 +415,86 @@ For example, if you're grouping customers with over twenty orders, you can use a
   },
 ]} />
 
-<details>
-<summary>
-Example: Add customer to VIP group
-</summary>
+<Details>
+  <Summary>Example: Add customer to VIP group</Summary>
 
-Here’s an example of a subscriber that listens to the `order.placed` event and checks if the customer should be added to the VIP customer group based on their number of orders:
+  Here’s an example of a subscriber that listens to the `order.placed` event and checks if the customer should be added to the VIP customer group based on their number of orders:
 
-```ts title=src/subscribers/add-custom-to-vip.ts
-import { 
-  CustomerGroupService, 
-  CustomerService,
-  EventBusService,
-  OrderService,
-} from "@medusajs/medusa"
+  ```ts title=src/subscribers/add-custom-to-vip.ts
+  import { 
+    CustomerGroupService, 
+    CustomerService,
+    EventBusService,
+    OrderService,
+  } from "@medusajs/medusa"
 
-type InjectedDependencies = {
-  orderService: OrderService
-  customerService: CustomerService
-  customerGroupService: CustomerGroupService
-  eventBusService: EventBusService
-}
-
-class AddCustomerToVipSubscriber {
-  protected orderService_: OrderService
-  protected customerService_: CustomerService
-  protected customerGroupService_: CustomerGroupService
-
-  constructor({
-    orderService,
-    customerService,
-    customerGroupService,
-    eventBusService,
-  }: InjectedDependencies) {
-    this.orderService_ = orderService
-    this.customerService_ = customerService
-    this.customerGroupService_ = customerGroupService
-    eventBusService.subscribe(
-      "order.placed",
-      this.handleOrderPlaced
-    )
+  type InjectedDependencies = {
+    orderService: OrderService
+    customerService: CustomerService
+    customerGroupService: CustomerGroupService
+    eventBusService: EventBusService
   }
 
-  handleOrderPlaced = async ({ id }) => {
-    // check if VIP group exists
-    const vipGroup = await this.customerGroupService_.list({
-      name: "VIP",
-    }, {
-      relations: ["customers"],
-    })
-    if (!vipGroup.length) {
-      return
-    }
+  class AddCustomerToVipSubscriber {
+    protected orderService_: OrderService
+    protected customerService_: CustomerService
+    protected customerGroupService_: CustomerGroupService
 
-    // retrieve order and its customer
-    const order = await this.orderService_.retrieve(id)
-
-    if (!order || !order.customer_id || 
-      vipGroup[0].customers.find(
-        (customer) => customer.id === order.customer_id
-      ) !== undefined) {
-      return
-    }
-
-    // retrieve orders of this customer
-    const [, count] = await this.orderService_.listAndCount({
-      customer_id: order.customer_id,
-    })
-
-    if (count >= 20) {
-      // add customer to VIP group
-      this.customerGroupService_.addCustomers(
-        vipGroup[0].id,
-        order.customer_id
+    constructor({
+      orderService,
+      customerService,
+      customerGroupService,
+      eventBusService,
+    }: InjectedDependencies) {
+      this.orderService_ = orderService
+      this.customerService_ = customerService
+      this.customerGroupService_ = customerGroupService
+      eventBusService.subscribe(
+        "order.placed",
+        this.handleOrderPlaced
       )
     }
+
+    handleOrderPlaced = async ({ id }) => {
+      // check if VIP group exists
+      const vipGroup = await this.customerGroupService_.list({
+        name: "VIP",
+      }, {
+        relations: ["customers"],
+      })
+      if (!vipGroup.length) {
+        return
+      }
+
+      // retrieve order and its customer
+      const order = await this.orderService_.retrieve(id)
+
+      if (!order || !order.customer_id || 
+        vipGroup[0].customers.find(
+          (customer) => customer.id === order.customer_id
+        ) !== undefined) {
+        return
+      }
+
+      // retrieve orders of this customer
+      const [, count] = await this.orderService_.listAndCount({
+        customer_id: order.customer_id,
+      })
+
+      if (count >= 20) {
+        // add customer to VIP group
+        this.customerGroupService_.addCustomers(
+          vipGroup[0].id,
+          order.customer_id
+        )
+      }
+    }
   }
-}
 
-export default AddCustomerToVipSubscriber
-```
+  export default AddCustomerToVipSubscriber
+  ```
 
-</details>
+</Details>
     
 
 ---
@@ -543,105 +537,103 @@ You can alternatively have a Scheduled Job that checks if the number of new prod
   },
 ]} />
 
-<details>
-<summary>
-Example: Sending a newsletter email after adding ten products
-</summary>
+<Details>
+  <Summary>Example: Sending a newsletter email after adding ten products</Summary>
 
-Here’s an example of listening to the `product.created` event in a subscriber and send a newsletter if the condition is met:
+  Here’s an example of listening to the `product.created` event in a subscriber and send a newsletter if the condition is met:
 
-```ts title=src/subscribers/send-products-newsletter.ts
-import { 
-  CustomerService, 
-  EventBusService, 
-  NoteService, 
-  OrderService, 
-  ProductService, 
-  StoreService,
-} from "@medusajs/medusa"
-import { 
-  ProductSelector,
-} from "@medusajs/medusa/dist/types/product"
+  ```ts title=src/subscribers/send-products-newsletter.ts
+  import { 
+    CustomerService, 
+    EventBusService, 
+    NoteService, 
+    OrderService, 
+    ProductService, 
+    StoreService,
+  } from "@medusajs/medusa"
+  import { 
+    ProductSelector,
+  } from "@medusajs/medusa/dist/types/product"
 
-type InjectedDependencies = {
-  eventBusService: EventBusService
-  sendgridService: any
-  productService: ProductService
-  storeService: StoreService
-  customerService: CustomerService
-}
-
-class SendProductsNewsletterSubscriber {
-  protected sendGridService_: any
-  protected productService_: ProductService
-  protected storeService_: StoreService
-  protected customerService_: CustomerService
-
-  constructor({
-    eventBusService,
-    sendgridService,
-    productService,
-    storeService,
-    customerService,
-  }: InjectedDependencies) {
-    this.productService_ = productService
-    this.sendGridService_ = sendgridService
-    this.storeService_ = storeService
-    this.customerService_ = customerService
-    eventBusService.subscribe(
-      "product.created", 
-      this.handleProductCreated
-    )
+  type InjectedDependencies = {
+    eventBusService: EventBusService
+    sendgridService: any
+    productService: ProductService
+    storeService: StoreService
+    customerService: CustomerService
   }
 
-  handleProductCreated = async ({ id }) => {
-    // retrieve store to have access to last send date
-    const store = await this.storeService_.retrieve()
-    
-    const productFilters: ProductSelector = {}
-    if (store.metadata.last_send_date) {
-      productFilters.created_at = {
-        gt: new Date(store.metadata.last_send_date as string),
+  class SendProductsNewsletterSubscriber {
+    protected sendGridService_: any
+    protected productService_: ProductService
+    protected storeService_: StoreService
+    protected customerService_: CustomerService
+
+    constructor({
+      eventBusService,
+      sendgridService,
+      productService,
+      storeService,
+      customerService,
+    }: InjectedDependencies) {
+      this.productService_ = productService
+      this.sendGridService_ = sendgridService
+      this.storeService_ = storeService
+      this.customerService_ = customerService
+      eventBusService.subscribe(
+        "product.created", 
+        this.handleProductCreated
+      )
+    }
+
+    handleProductCreated = async ({ id }) => {
+      // retrieve store to have access to last send date
+      const store = await this.storeService_.retrieve()
+      
+      const productFilters: ProductSelector = {}
+      if (store.metadata.last_send_date) {
+        productFilters.created_at = {
+          gt: new Date(store.metadata.last_send_date as string),
+        }
+      }
+
+      const products = await this.productService_.list(
+        productFilters
+      )
+
+      if (products.length > 10) {
+        // get subscribed customers
+        const customers = await this.customerService_.list({
+          metadata: {
+            is_subscribed: true,
+          },
+        })
+        this.sendGridService_.sendEmail({
+          templateId: "product-newsletter",
+          from: "hello@medusajs.com",
+          to: customers.map((customer) => ({
+            name: customer.first_name,
+            email: customer.email,
+          })),
+          dynamic_template_data: {
+            // any data necessary for your template...
+            products,
+          },
+        })
+
+        await this.storeService_.update({
+          metadata: {
+            last_send_date: new Date(),
+          },
+        })
       }
     }
-
-    const products = await this.productService_.list(
-      productFilters
-    )
-
-    if (products.length > 10) {
-      // get subscribed customers
-      const customers = await this.customerService_.list({
-        metadata: {
-          is_subscribed: true,
-        },
-      })
-      this.sendGridService_.sendEmail({
-        templateId: "product-newsletter",
-        from: "hello@medusajs.com",
-        to: customers.map((customer) => ({
-          name: customer.first_name,
-          email: customer.email,
-        })),
-        dynamic_template_data: {
-          // any data necessary for your template...
-          products,
-        },
-      })
-
-      await this.storeService_.update({
-        metadata: {
-          last_send_date: new Date(),
-        },
-      })
-    }
   }
-}
 
-export default SendProductsNewsletterSubscriber
-```
+  export default SendProductsNewsletterSubscriber
+  ```
 
-</details>
+</Details>
 
 ---
 
