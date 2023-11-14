@@ -13,8 +13,8 @@ import {
 } from "@mikro-orm/core"
 
 import Currency from "./currency"
-import PriceSet from "./price-set"
 import { PriceSetMoneyAmount } from "./index"
+import PriceSet from "./price-set"
 
 @Entity()
 class MoneyAmount {
@@ -49,7 +49,7 @@ class MoneyAmount {
   })
   currency?: Currency
 
-  @Property({ columnType: "numeric", nullable: true })
+  @Property({ columnType: "numeric", nullable: true, serializer: Number })
   amount?: number
 
   @Property({ columnType: "numeric", nullable: true })

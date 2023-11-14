@@ -248,7 +248,7 @@ describe("PriceList Service", () => {
                 id: expect.any(String),
               }),
               money_amount: expect.objectContaining({
-                amount: "400",
+                amount: 400,
                 currency_code: "EUR",
               }),
             }),
@@ -349,7 +349,7 @@ describe("PriceList Service", () => {
                 id: expect.any(String),
               }),
               money_amount: expect.objectContaining({
-                amount: "400",
+                amount: 400,
                 currency_code: "EUR",
               }),
             }),
