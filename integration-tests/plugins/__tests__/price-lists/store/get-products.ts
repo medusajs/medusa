@@ -2,6 +2,8 @@ import { useApi } from "../../../../environment-helpers/use-api"
 import { getContainer } from "../../../../environment-helpers/use-container"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import {
+  simpleCustomerFactory,
+  simpleCustomerGroupFactory,
   simpleProductFactory,
   simpleRegionFactory,
 } from "../../../../factories"
@@ -16,6 +18,7 @@ import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app
 import adminSeeder from "../../../../helpers/admin-seeder"
 import { createDefaultRuleTypes } from "../../../helpers/create-default-rule-types"
 import { createVariantPriceSet } from "../../../helpers/create-variant-price-set"
+import { AxiosInstance } from "axios"
 
 jest.setTimeout(50000)
 
@@ -135,17 +138,196 @@ describe("[Product & Pricing Module] POST /admin/price-lists", () => {
     expect(response.data.product.variants[0].prices).toEqual([
       expect.objectContaining({
         currency_code: "usd",
+        amount: 3000,
+        min_quantity: null,
+        max_quantity: null,
+        price_list_id: null,
+      }),
+      expect.objectContaining({
+        currency_code: "usd",
         amount: 2500,
         min_quantity: null,
         max_quantity: null,
         price_list_id: priceListId,
       }),
+    ])
+    expect(response.data.product.variants[0]).toEqual(
+      expect.objectContaining({
+        original_price: 3000,
+        calculated_price: 2500,
+        calculated_price_type: "sale",
+      })
+    )
+  })
+
+  it("should list product and prices from price-list created in the api", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const priceListResponse = await api.post(
+      `/admin/price-lists`,
+      {
+        name: "test price list",
+        description: "test",
+        status: PriceListStatus.ACTIVE,
+        type: PriceListType.SALE,
+        prices: [
+          {
+            amount: 2500,
+            currency_code: "usd",
+            variant_id: variant.id,
+          },
+        ],
+      },
+      adminHeaders
+    )
+
+    let response = await api.get(
+      `/store/products/${product.id}?currency_code=usd`
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product.variants[0].prices).toHaveLength(2)
+    expect(response.data.product.variants[0].prices).toEqual([
       expect.objectContaining({
         currency_code: "usd",
         amount: 3000,
         min_quantity: null,
         max_quantity: null,
         price_list_id: null,
+      }),
+      expect.objectContaining({
+        currency_code: "usd",
+        amount: 2500,
+        min_quantity: null,
+        max_quantity: null,
+        price_list_id: priceListResponse.data.price_list.id,
+      }),
+    ])
+    expect(response.data.product.variants[0]).toEqual(
+      expect.objectContaining({
+        original_price: 3000,
+        calculated_price: 2500,
+        calculated_price_type: "sale",
+      })
+    )
+  })
+
+  it("should not list prices from price-list with customer groups if not logged in", async () => {
+    const api = useApi()! as AxiosInstance
+
+    const { id: customerGroupId } = await simpleCustomerGroupFactory(
+      dbConnection
+    )
+
+    const priceListResponse = await api.post(
+      `/admin/price-lists`,
+      {
+        name: "test price list",
+        description: "test",
+        status: PriceListStatus.ACTIVE,
+        type: PriceListType.SALE,
+        prices: [
+          {
+            amount: 2500,
+            currency_code: "usd",
+            variant_id: variant.id,
+          },
+        ],
+        customer_groups: [{ id: customerGroupId }],
+      },
+      adminHeaders
+    )
+
+    let response = await api.get(
+      `/store/products/${product.id}?currency_code=usd`
+    )
+
+    console.warn(response.data.product.variants[0].prices)
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product.variants[0].prices).toEqual([
+      expect.objectContaining({
+        currency_code: "usd",
+        amount: 3000,
+        min_quantity: null,
+        max_quantity: null,
+        price_list_id: null,
+      }),
+    ])
+    expect(response.data.product.variants[0]).toEqual(
+      expect.objectContaining({
+        original_price: 3000,
+        calculated_price: 3000,
+        calculated_price_type: null,
+      })
+    )
+  })
+
+  it.only("should list prices from price-list with customer groups", async () => {
+    const api = useApi()! as AxiosInstance
+
+    await simpleCustomerFactory(dbConnection, {
+      id: "test-customer-5-pl",
+      email: "test5@email-pl.com",
+      first_name: "John",
+      last_name: "Deere",
+      password_hash:
+        "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+      has_account: true,
+      groups: [{ id: "customer-group-1" }],
+    })
+
+    const authResponse = await api.post("/store/auth", {
+      email: "test5@email-pl.com",
+      password: "test",
+    })
+
+    const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+    const priceListResponse = await api.post(
+      `/admin/price-lists`,
+      {
+        name: "test price list",
+        description: "test",
+        status: PriceListStatus.ACTIVE,
+        type: PriceListType.SALE,
+        prices: [
+          {
+            amount: 2500,
+            currency_code: "usd",
+            variant_id: variant.id,
+          },
+        ],
+        customer_groups: [{ id: "customer-group-1" }],
+      },
+      adminHeaders
+    )
+
+    let response = await api.get(
+      `/store/products/${product.id}?currency_code=usd`,
+      {
+        headers: {
+          Cookie: authCookie,
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.product.variants[0].prices).toHaveLength(2)
+    expect(response.data.product.variants[0].prices).toEqual([
+      expect.objectContaining({
+        currency_code: "usd",
+        amount: 3000,
+        min_quantity: null,
+        max_quantity: null,
+        price_list_id: null,
+      }),
+      expect.objectContaining({
+        currency_code: "usd",
+        amount: 2500,
+        min_quantity: null,
+        max_quantity: null,
+        price_list_id: priceListResponse.data.price_list.id,
       }),
     ])
     expect(response.data.product.variants[0]).toEqual(
