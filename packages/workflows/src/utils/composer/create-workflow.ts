@@ -1,6 +1,6 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
-import { FlowRunOptions, exportWorkflow } from "../../helper"
-import { CreateWorkflowComposerContext } from "./index"
+import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
+import { CreateWorkflowComposerContext, StepReturn } from "./index"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
@@ -9,7 +9,10 @@ import {
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
-export function createWorkflow(name: string, composer: Function) {
+export function createWorkflow<TData extends unknown, TResult extends unknown>(
+  name: string,
+  composer: (input: StepReturn<TData>) => StepReturn<TResult>
+) {
   const handlers: WorkflowHandler = new Map()
 
   if (WorkflowManager.getWorkflow(name)) {
@@ -32,9 +35,10 @@ export function createWorkflow(name: string, composer: Function) {
 
   global[SymbolMedusaWorkflowComposerContext] = context
 
-  const valueHolder = {
-    value: {},
+  const valueHolder: StepReturn = {
+    __value: {},
     __type: SymbolInputReference,
+    __step__: "",
   }
 
   const returnedStep = composer.apply(context, [valueHolder])
@@ -43,30 +47,26 @@ export function createWorkflow(name: string, composer: Function) {
 
   WorkflowManager.update(name, context.flow, handlers)
 
-  const workflow = exportWorkflow(name)
+  const workflow = exportWorkflow<TData, TResult>(name)
 
-  return (...args) => {
-    const workflow_ = workflow(...args)
+  return <TDataOverride = undefined, TResultOverride = undefined>(...args) => {
+    const workflow_ = workflow<TDataOverride, TResultOverride>(...args)
     const originalRun = workflow_.run
 
-    workflow_.run = (async <
-      TDataOverride = undefined,
-      TResultOverride = undefined
-    >(
-      input: FlowRunOptions<
-        TDataOverride extends undefined ? unknown : TDataOverride
+    workflow_.run = (async (
+      args?: FlowRunOptions<
+        TDataOverride extends undefined ? TData : TDataOverride
       >
-    ) => {
-      input.resultFrom ??=
+    ): Promise<WorkflowResult<TResult>> => {
+      args ??= {}
+      args.resultFrom ??=
         returnedStep?.__type === SymbolWorkflowStep
           ? returnedStep.__step__
-          : returnedStep?.__type === SymbolInputReference
-          ? input?.input
           : undefined
 
       // Forwards the input to the ref object on composer.apply
-      valueHolder.value = input?.input as any
-      return await originalRun(input)
+      valueHolder.__value = args?.input as any
+      return (await originalRun(args)) as unknown as WorkflowResult<TResult>
     }) as any
     return workflow_
   }

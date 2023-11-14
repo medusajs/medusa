@@ -10,25 +10,24 @@ import {
 import { transform } from "./transform"
 import {
   CreateWorkflowComposerContext,
-  StepBinderReturn,
   StepFunction,
   StepFunctionResult,
-  StepInput,
+  StepReturn,
 } from "./type"
 
-interface ApplyStepOptions {
+interface ApplyStepOptions<TStepInput extends StepReturn[]> {
   stepName: string
-  stepInputs: StepInput[]
+  stepInputs: TStepInput
   invokeFn: Function
   compensateFn?: Function
 }
 
-function applyStep({
+function applyStep<TStepInput extends StepReturn[], TResult>({
   stepName,
   stepInputs,
   invokeFn,
   compensateFn,
-}: ApplyStepOptions): StepFunctionResult {
+}: ApplyStepOptions<TStepInput>): StepFunctionResult<TResult> {
   return function (this: CreateWorkflowComposerContext) {
     if (!this.workflowId) {
       throw new Error(
@@ -40,11 +39,11 @@ function applyStep({
       invoke: async (transactionContext) => {
         const { invoke: invokeRes } = transactionContext
 
-        // Grab all previous invoke results by step name
+        // Garb all previous invoke results by step name and or transformers
         let previousResultResults = await promiseAll(
           stepInputs.map(async (stepInput) => {
             if (stepInput?.__type === SymbolInputReference) {
-              return stepInput.value
+              return stepInput.__value
             }
 
             const stepInputs_ = Array.isArray(stepInput)
@@ -54,8 +53,8 @@ function applyStep({
             return await promiseAll(
               stepInputs_.map(async (st) => {
                 if (st?.__type === SymbolWorkflowStepTransformer) {
-                  if (isDefined(st.__result)) {
-                    return st.__result
+                  if (isDefined(st.__value)) {
+                    return st.__value
                   }
                   return await st(transactionContext)
                 }
@@ -98,33 +97,38 @@ function applyStep({
     const ret = {
       __type: SymbolWorkflowStep,
       __step__: stepName,
-    } as StepBinderReturn
+      __returnProperties: [],
+    }
 
-    const proxy = new Proxy(ret, {
-      get: function (target, prop: string, receiver) {
+    return new Proxy(ret, {
+      get(target: any, prop: string | symbol, receiver: any): any {
         if (target[prop]) {
           return target[prop]
         }
 
+        // @ts-ignore
         return transform(target[prop], (context) => {
           const { invoke } = context
           return invoke[ret.__step__]?.output?.[prop]
         })
       },
     })
-
-    return proxy
   }
 }
 
-export function createStep(
+export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
   name: string,
-  invokeFn: Function,
+  invokeFn: (
+    context: any,
+    ...stepInputs: [...TInvokeInput]
+  ) => Promise<TInvokeResult>,
   compensateFn?: Function
-): StepFunction {
+): StepFunction<TInvokeInput, TInvokeResult> {
   const stepName = name ?? invokeFn.name
 
-  const returnFn = function (...stepInputs: StepInput[]) {
+  const returnFn = function (
+    ...stepInputs: [...StepReturn<TInvokeInput[number]>[]]
+  ): StepReturn<TInvokeResult> {
     if (!global[SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
@@ -137,8 +141,8 @@ export function createStep(
       ] as CreateWorkflowComposerContext
     ).stepBinder
 
-    return stepBinder(
-      applyStep({
+    return stepBinder<TInvokeResult>(
+      applyStep<[...StepReturn<TInvokeInput[number]>[]], TInvokeResult>({
         stepName,
         stepInputs,
         invokeFn,
@@ -150,5 +154,5 @@ export function createStep(
   returnFn.__type = SymbolWorkflowStepBind
   returnFn.__step__ = stepName
 
-  return returnFn
+  return returnFn as unknown as StepFunction<TInvokeInput, TInvokeResult>
 }

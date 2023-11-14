@@ -1,29 +1,30 @@
-import { CreateWorkflowComposerContext, StepFunction } from "./type"
+import { CreateWorkflowComposerContext, StepReturn } from "./type"
 import { SymbolMedusaWorkflowComposerContext } from "./symbol"
 
-export function parallelize(...steps: StepFunction[]) {
+export function parallelize<TResult extends StepReturn[]>(
+  ...steps: TResult
+): TResult {
   if (!global[SymbolMedusaWorkflowComposerContext]) {
     throw new Error(
       "parallelize must be used inside a createWorkflow definition"
     )
   }
 
-  const globalParallelize = (
+  const parallelizeBinder = (
     global[SymbolMedusaWorkflowComposerContext] as CreateWorkflowComposerContext
   ).parallelizeBinder
 
-  const resultSteps = steps.map((step) => ({
-    __type: step.__type,
-    __step__: step.__step__,
-  }))
+  const resultSteps = steps.map((step) => step)
 
-  return globalParallelize(function (this: CreateWorkflowComposerContext) {
+  return parallelizeBinder<TResult>(function (
+    this: CreateWorkflowComposerContext
+  ) {
     const stepOntoMerge = steps.shift()!
     this.flow.mergeActions(
       stepOntoMerge.__step__,
       ...steps.map((step) => step.__step__)
     )
 
-    return resultSteps
+    return resultSteps as unknown as TResult
   })
 }
