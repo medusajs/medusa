@@ -5,15 +5,13 @@ export class DropNonNullConstraintPriceList1699371074198
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      ALTER TABLE IF EXISTS price_list
-      ALTER COLUMN name DROP NOT NULL;
+      ALTER TABLE IF EXISTS price_list ALTER COLUMN name DROP NOT NULL;
     `)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      ALTER TABLE IF EXISTS price_list
-      ALTER COLUMN name DROP NOT NULL;
+      ALTER TABLE IF EXISTS price_list ALTER COLUMN name SET NOT NULL;
     `)
   }
 }
