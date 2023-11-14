@@ -16,6 +16,7 @@ import ConnectionErrorSection from './troubleshooting/database-errors/_connectio
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
 import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 import InvalidTokenError from './troubleshooting/create-medusa-app-errors/_no-browser-token-error.md'
+import PostgresDockerError from './troubleshooting/database-errors/_docker.md'
 
 # Install Medusa with create-medusa-app
 
@@ -219,6 +220,10 @@ Based on what you're building, you can find a development path for you in the Re
     {
       title: 'Error: EADDRINUSE',
       content: <EaddrinuseSection />
+    },
+    {
+      title: "Can't Connect to PostgreSQL Docker Container",
+      content: <PostgresDockerError />
     },
     {
       title: "EAGAIN error",
