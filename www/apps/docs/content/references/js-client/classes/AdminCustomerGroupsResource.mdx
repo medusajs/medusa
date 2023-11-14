@@ -37,7 +37,7 @@ Add a list of customers to a customer group.
   },
   {
     "name": "payload",
-    "type": "[`AdminPostCustomerGroupsGroupCustomersBatchReq`](../internal/classes/internal.AdminPostCustomerGroupsGroupCustomersBatchReq.mdx)",
+    "type": "[AdminPostCustomerGroupsGroupCustomersBatchReq](../internal/classes/internal.AdminPostCustomerGroupsGroupCustomersBatchReq.mdx)",
     "description": "The customers to add to the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -45,7 +45,7 @@ Add a list of customers to a customer group.
     "children": [
       {
         "name": "customer_ids",
-        "type": "[`CustomerGroupsBatchCustomer`](../internal/classes/internal.CustomerGroupsBatchCustomer.mdx)[]",
+        "type": "[CustomerGroupsBatchCustomer](../internal/classes/internal.CustomerGroupsBatchCustomer.mdx)[]",
         "description": "The ids of the customers to add",
         "optional": false,
         "defaultValue": "",
@@ -66,7 +66,7 @@ Add a list of customers to a customer group.
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -80,7 +80,7 @@ Add a list of customers to a customer group.
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminCustomerGroupsRes`](../internal/types/internal.AdminCustomerGroupsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../internal/types/internal.AdminCustomerGroupsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
@@ -96,7 +96,7 @@ Add a list of customers to a customer group.
         "children": [
           {
             "name": "customer_group",
-            "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)",
+            "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)",
             "description": "Customer group details.",
             "optional": false,
             "defaultValue": "",
@@ -113,7 +113,7 @@ Add a list of customers to a customer group.
               },
               {
                 "name": "customers",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)[]",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)[]",
                 "description": "The details of the customers that belong to the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -140,7 +140,7 @@ Add a list of customers to a customer group.
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -158,7 +158,7 @@ Add a list of customers to a customer group.
               },
               {
                 "name": "price_lists",
-                "type": "[`PriceList`](../internal/classes/internal.PriceList.mdx)[]",
+                "type": "[PriceList](../internal/classes/internal.PriceList.mdx)[]",
                 "description": "The price lists that are associated with the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -208,7 +208,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostCustomerGroupsReq`](../internal/classes/internal.AdminPostCustomerGroupsReq.mdx)",
+    "type": "[AdminPostCustomerGroupsReq](../internal/classes/internal.AdminPostCustomerGroupsReq.mdx)",
     "description": "The data of the customer group to create.",
     "optional": false,
     "defaultValue": "",
@@ -216,7 +216,7 @@ medusa.admin.customerGroups
     "children": [
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Metadata of the customer group.",
         "optional": true,
         "defaultValue": "",
@@ -236,7 +236,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -250,7 +250,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminCustomerGroupsRes`](../internal/types/internal.AdminCustomerGroupsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../internal/types/internal.AdminCustomerGroupsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
@@ -266,7 +266,7 @@ medusa.admin.customerGroups
         "children": [
           {
             "name": "customer_group",
-            "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)",
+            "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)",
             "description": "Customer group details.",
             "optional": false,
             "defaultValue": "",
@@ -283,7 +283,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "customers",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)[]",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)[]",
                 "description": "The details of the customers that belong to the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -310,7 +310,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -328,7 +328,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "price_lists",
-                "type": "[`PriceList`](../internal/classes/internal.PriceList.mdx)[]",
+                "type": "[PriceList](../internal/classes/internal.PriceList.mdx)[]",
                 "description": "The price lists that are associated with the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -385,7 +385,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -399,7 +399,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
@@ -494,7 +494,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetCustomerGroupsParams`](../internal/classes/internal.AdminGetCustomerGroupsParams.mdx)",
+    "type": "[AdminGetCustomerGroupsParams](../internal/classes/internal.AdminGetCustomerGroupsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved customer groups.",
     "optional": true,
     "defaultValue": "",
@@ -502,7 +502,7 @@ medusa.admin.customerGroups
     "children": [
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the customer groups' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -566,7 +566,7 @@ medusa.admin.customerGroups
       },
       {
         "name": "id",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "IDs to filter customer groups by.",
         "optional": true,
         "defaultValue": "",
@@ -620,7 +620,7 @@ medusa.admin.customerGroups
       },
       {
         "name": "updated_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the customer groups' `update_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -668,7 +668,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -682,7 +682,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminCustomerGroupsListRes`](../internal/types/internal.AdminCustomerGroupsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsListRes](../internal/types/internal.AdminCustomerGroupsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of customer groups with pagination fields.",
@@ -690,7 +690,7 @@ medusa.admin.customerGroups
     "children": [
       {
         "name": "AdminCustomerGroupsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `customer_groups`: [`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; customer_groups: [CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]  &#125;`",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -725,7 +725,7 @@ medusa.admin.customerGroups
           },
           {
             "name": "customer_groups",
-            "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+            "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
             "description": "An array of customer group details.",
             "optional": false,
             "defaultValue": "",
@@ -742,7 +742,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "customers",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)[]",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)[]",
                 "description": "The details of the customers that belong to the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -769,7 +769,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -787,7 +787,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "price_lists",
-                "type": "[`PriceList`](../internal/classes/internal.PriceList.mdx)[]",
+                "type": "[PriceList](../internal/classes/internal.PriceList.mdx)[]",
                 "description": "The price lists that are associated with the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -844,7 +844,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "query",
-    "type": "[`AdminGetCustomersParams`](../internal/classes/internal.AdminGetCustomersParams.mdx)",
+    "type": "[AdminGetCustomersParams](../internal/classes/internal.AdminGetCustomersParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved customers.",
     "optional": true,
     "defaultValue": "",
@@ -908,7 +908,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -922,7 +922,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminCustomersListRes`](../internal/types/internal.AdminCustomersListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomersListRes](../internal/types/internal.AdminCustomersListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of customers with pagination fields.",
@@ -930,7 +930,7 @@ medusa.admin.customerGroups
     "children": [
       {
         "name": "AdminCustomersListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `customers`: [`Customer`](../internal/classes/internal.Customer.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; customers: [Customer](../internal/classes/internal.Customer.mdx)[]  &#125;`",
         "description": "The list of customers with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -965,7 +965,7 @@ medusa.admin.customerGroups
           },
           {
             "name": "customers",
-            "type": "[`Customer`](../internal/classes/internal.Customer.mdx)[]",
+            "type": "[Customer](../internal/classes/internal.Customer.mdx)[]",
             "description": "An array of customer details.",
             "optional": false,
             "defaultValue": "",
@@ -973,7 +973,7 @@ medusa.admin.customerGroups
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -1027,7 +1027,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "groups",
-                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
                 "description": "The customer groups the customer belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1063,7 +1063,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1072,7 +1072,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "orders",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "type": "[Order](../internal/classes/internal.Order.mdx)[]",
                 "description": "The details of the orders this customer placed.",
                 "optional": false,
                 "defaultValue": "",
@@ -1090,7 +1090,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "shipping_addresses",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "type": "[Address](../internal/classes/internal.Address.mdx)[]",
                 "description": "The details of the shipping addresses associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -1153,7 +1153,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteCustomerGroupsGroupCustomerBatchReq`](../internal/classes/internal.AdminDeleteCustomerGroupsGroupCustomerBatchReq.mdx)",
+    "type": "[AdminDeleteCustomerGroupsGroupCustomerBatchReq](../internal/classes/internal.AdminDeleteCustomerGroupsGroupCustomerBatchReq.mdx)",
     "description": "The customers to remove from the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -1161,7 +1161,7 @@ medusa.admin.customerGroups
     "children": [
       {
         "name": "customer_ids",
-        "type": "[`CustomerGroupsBatchCustomer`](../internal/classes/internal.CustomerGroupsBatchCustomer.mdx)[]",
+        "type": "[CustomerGroupsBatchCustomer](../internal/classes/internal.CustomerGroupsBatchCustomer.mdx)[]",
         "description": "The ids of the customers to remove",
         "optional": false,
         "defaultValue": "",
@@ -1182,7 +1182,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1196,7 +1196,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminCustomerGroupsRes`](../internal/types/internal.AdminCustomerGroupsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../internal/types/internal.AdminCustomerGroupsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
@@ -1212,7 +1212,7 @@ medusa.admin.customerGroups
         "children": [
           {
             "name": "customer_group",
-            "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)",
+            "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)",
             "description": "Customer group details.",
             "optional": false,
             "defaultValue": "",
@@ -1229,7 +1229,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "customers",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)[]",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)[]",
                 "description": "The details of the customers that belong to the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -1256,7 +1256,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1274,7 +1274,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "price_lists",
-                "type": "[`PriceList`](../internal/classes/internal.PriceList.mdx)[]",
+                "type": "[PriceList](../internal/classes/internal.PriceList.mdx)[]",
                 "description": "The price lists that are associated with the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -1331,7 +1331,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "query",
-    "type": "[`AdminGetCustomerGroupsGroupParams`](../internal/classes/internal.AdminGetCustomerGroupsGroupParams.mdx)",
+    "type": "[AdminGetCustomerGroupsGroupParams](../internal/classes/internal.AdminGetCustomerGroupsGroupParams.mdx)",
     "description": "Configurations to apply on the retrieved customer group.",
     "optional": true,
     "defaultValue": "",
@@ -1359,7 +1359,7 @@ medusa.admin.customerGroups
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1373,7 +1373,7 @@ medusa.admin.customerGroups
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminCustomerGroupsRes`](../internal/types/internal.AdminCustomerGroupsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../internal/types/internal.AdminCustomerGroupsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
@@ -1389,7 +1389,7 @@ medusa.admin.customerGroups
         "children": [
           {
             "name": "customer_group",
-            "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)",
+            "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)",
             "description": "Customer group details.",
             "optional": false,
             "defaultValue": "",
@@ -1406,7 +1406,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "customers",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)[]",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)[]",
                 "description": "The details of the customers that belong to the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -1433,7 +1433,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1451,7 +1451,7 @@ medusa.admin.customerGroups
               },
               {
                 "name": "price_lists",
-                "type": "[`PriceList`](../internal/classes/internal.PriceList.mdx)[]",
+                "type": "[PriceList](../internal/classes/internal.PriceList.mdx)[]",
                 "description": "The price lists that are associated with the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -1495,7 +1495,7 @@ Update a customer group's details.
   },
   {
     "name": "payload",
-    "type": "[`AdminPostCustomerGroupsGroupReq`](../internal/classes/internal.AdminPostCustomerGroupsGroupReq.mdx)",
+    "type": "[AdminPostCustomerGroupsGroupReq](../internal/classes/internal.AdminPostCustomerGroupsGroupReq.mdx)",
     "description": "The attributes to update in the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -1503,7 +1503,7 @@ Update a customer group's details.
     "children": [
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Metadata of the customer group.",
         "optional": true,
         "defaultValue": "",
@@ -1523,7 +1523,7 @@ Update a customer group's details.
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1537,7 +1537,7 @@ Update a customer group's details.
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminCustomerGroupsRes`](../internal/types/internal.AdminCustomerGroupsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCustomerGroupsRes](../internal/types/internal.AdminCustomerGroupsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer group's details.",
@@ -1553,7 +1553,7 @@ Update a customer group's details.
         "children": [
           {
             "name": "customer_group",
-            "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)",
+            "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)",
             "description": "Customer group details.",
             "optional": false,
             "defaultValue": "",
@@ -1570,7 +1570,7 @@ Update a customer group's details.
               },
               {
                 "name": "customers",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)[]",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)[]",
                 "description": "The details of the customers that belong to the customer group.",
                 "optional": false,
                 "defaultValue": "",
@@ -1597,7 +1597,7 @@ Update a customer group's details.
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1615,7 +1615,7 @@ Update a customer group's details.
               },
               {
                 "name": "price_lists",
-                "type": "[`PriceList`](../internal/classes/internal.PriceList.mdx)[]",
+                "type": "[PriceList](../internal/classes/internal.PriceList.mdx)[]",
                 "description": "The price lists that are associated with the customer group.",
                 "optional": false,
                 "defaultValue": "",

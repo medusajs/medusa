@@ -6,9 +6,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ProjectConfigOptions
 
- **ProjectConfigOptions**: `Object`
-
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
@@ -40,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "database_extra",
-    "type": "Record<`string`, `unknown`\\> & { `ssl`: { `rejectUnauthorized`: ``false``  }  }",
+    "type": "`Record<string, unknown>` & `&#123; ssl: &#123; rejectUnauthorized: `false`  &#125;  &#125;`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -85,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "http_compression",
-    "type": "[`HttpCompressionOptions`](internal.internal-1.CommonTypes.HttpCompressionOptions.mdx)",
+    "type": "[HttpCompressionOptions](internal.internal-1.CommonTypes.HttpCompressionOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -130,7 +128,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "session_options",
-    "type": "[`SessionOptions`](../../internal/types/internal.SessionOptions.mdx)",
+    "type": "[SessionOptions](../../internal/types/internal.SessionOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",

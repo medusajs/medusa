@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).fill
 
-**fill**(`value`, `offset?`, `end?`, `encoding?`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**fill**(value, offset?, end?, encoding?): [Buffer](../../variables/Buffer-1.mdx)`
 
 Fills `buf` with the specified `value`. If the `offset` and `end` are not given,
 the entire `buf` will be filled:
@@ -67,7 +67,7 @@ console.log(buf.fill('zz', 'hex'));
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "The value with which to fill `buf`. Empty value (string, Uint8Array, Buffer) is coerced to `0`.",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ console.log(buf.fill('zz', 'hex'));
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "The encoding for `value` if `value` is a string.",
     "optional": true,
     "defaultValue": "",
@@ -105,12 +105,12 @@ console.log(buf.fill('zz', 'hex'));
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",

@@ -2,8 +2,8 @@ import React from "react"
 import Translate from "@docusaurus/Translate"
 import { ThemeClassNames } from "@docusaurus/theme-common"
 import type { Props } from "@theme/EditThisPage"
-import clsx from "clsx"
 import { Button } from "docs-ui"
+import clsx from "clsx"
 
 export default function EditThisPage({ editUrl }: Props): JSX.Element {
   return (

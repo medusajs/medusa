@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The optional key-value map with additional details about the Line Item.",
     "optional": true,
     "defaultValue": "",
@@ -30,7 +30,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "title",
     "type": "`string`",
-    "description": "The title of the line item if `variant_id` is not provided.",
+    "description": "The title of the line item if `variant\\_id` is not provided.",
     "optional": true,
     "defaultValue": "Custom item",
     "expandable": false,
@@ -39,7 +39,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "unit_price",
     "type": "`number`",
-    "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
+    "description": "The custom price of the line item. If a `variant\\_id` is supplied, the price provided here will override the variant's price.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -48,7 +48,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "variant_id",
     "type": "`string`",
-    "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.",
+    "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant\\_id` should be omitted.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,

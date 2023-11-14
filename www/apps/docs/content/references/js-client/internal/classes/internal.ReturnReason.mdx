@@ -58,7 +58,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
   },
   {
     "name": "parent_return_reason",
-    "type": "``null`` \\| [`ReturnReason`](internal.ReturnReason.mdx)",
+    "type": "``null`` \\| [ReturnReason](internal.ReturnReason.mdx)",
     "description": "The details of the parent reason.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
   },
   {
     "name": "return_reason_children",
-    "type": "[`ReturnReason`](internal.ReturnReason.mdx)[]",
+    "type": "[ReturnReason](internal.ReturnReason.mdx)[]",
     "description": "The details of the child reasons.",
     "optional": false,
     "defaultValue": "",

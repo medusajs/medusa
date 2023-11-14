@@ -10,12 +10,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Represents a Stock Location
 
-#### Type declaration
+### Type declaration
 
 <ParameterTypes parameters={[
   {
     "name": "address",
-    "type": "[`StockLocationAddressDTO`](StockLocationAddressDTO.mdx)",
+    "type": "[StockLocationAddressDTO](StockLocationAddressDTO.mdx)",
     "description": "The Address of the Stock Location",
     "optional": true,
     "defaultValue": "",
@@ -60,7 +60,7 @@ Represents a Stock Location
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\> \\| ``null``",
+    "type": "`Record<string, unknown>` \\| ``null``",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",

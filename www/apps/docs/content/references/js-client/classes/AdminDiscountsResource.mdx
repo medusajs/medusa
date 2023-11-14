@@ -86,7 +86,7 @@ medusa.admin.discounts
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDiscountsDiscountConditionsConditionBatchReq`](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionBatchReq.mdx)",
+    "type": "[AdminPostDiscountsDiscountConditionsConditionBatchReq](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionBatchReq.mdx)",
     "description": "The resources to add to the discount condition.",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "resources",
-        "type": "{ `id`: `string`  }[]",
+        "type": "`&#123; id: string  &#125;`[]",
         "description": "The resources to be added to the discount condition",
         "optional": false,
         "defaultValue": "",
@@ -115,7 +115,7 @@ medusa.admin.discounts
   },
   {
     "name": "query",
-    "type": "[`AdminPostDiscountsDiscountConditionsConditionBatchParams`](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionBatchParams.mdx)",
+    "type": "[AdminPostDiscountsDiscountConditionsConditionBatchParams](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionBatchParams.mdx)",
     "description": "Configurations to apply on the retrieved discount.",
     "optional": true,
     "defaultValue": "",
@@ -143,7 +143,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -157,7 +157,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -173,7 +173,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -244,7 +244,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -253,7 +253,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -271,7 +271,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -280,7 +280,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -389,7 +389,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -403,7 +403,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the discount's details.",
@@ -419,7 +419,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -490,7 +490,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -499,7 +499,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -517,7 +517,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -526,7 +526,7 @@ medusa.admin.discounts.addRegion(discountId, regionId).then(({ discount }) => {
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -630,7 +630,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostDiscountsReq`](../internal/classes/internal.AdminPostDiscountsReq.mdx)",
+    "type": "[AdminPostDiscountsReq](../internal/classes/internal.AdminPostDiscountsReq.mdx)",
     "description": "The discount to create.",
     "optional": false,
     "defaultValue": "",
@@ -674,7 +674,7 @@ medusa.admin.discounts
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs to hold additional information.",
         "optional": true,
         "defaultValue": "",
@@ -692,7 +692,7 @@ medusa.admin.discounts
       },
       {
         "name": "rule",
-        "type": "[`AdminPostDiscountsDiscountRule`](../internal/classes/internal.AdminPostDiscountsDiscountRule.mdx)",
+        "type": "[AdminPostDiscountsDiscountRule](../internal/classes/internal.AdminPostDiscountsDiscountRule.mdx)",
         "description": "The discount rule that defines how discounts are calculated",
         "optional": false,
         "defaultValue": "",
@@ -700,7 +700,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "allocation",
-            "type": "[`AllocationType`](../internal/enums/internal.internal.AllocationType.mdx)",
+            "type": "[AllocationType](../internal/enums/internal.internal.AllocationType.mdx)",
             "description": "The discount rule's allocation.",
             "optional": false,
             "defaultValue": "",
@@ -728,7 +728,7 @@ medusa.admin.discounts
           },
           {
             "name": "conditions",
-            "type": "[`AdminCreateCondition`](../internal/classes/internal.internal.AdminCreateCondition.mdx)[]",
+            "type": "[AdminCreateCondition](../internal/classes/internal.internal.AdminCreateCondition.mdx)[]",
             "description": "The discount rule's conditions.",
             "optional": true,
             "defaultValue": "",
@@ -745,7 +745,7 @@ medusa.admin.discounts
               },
               {
                 "name": "operator",
-                "type": "[`DiscountConditionOperator`](../internal/enums/internal.DiscountConditionOperator.mdx)",
+                "type": "[DiscountConditionOperator](../internal/enums/internal.DiscountConditionOperator.mdx)",
                 "description": "The operator of the discount condition.",
                 "optional": false,
                 "defaultValue": "",
@@ -801,7 +801,7 @@ medusa.admin.discounts
           },
           {
             "name": "type",
-            "type": "[`DiscountRuleType`](../internal/enums/internal.internal.DiscountRuleType.mdx)",
+            "type": "[DiscountRuleType](../internal/enums/internal.internal.DiscountRuleType.mdx)",
             "description": "The discount rule's type.",
             "optional": false,
             "defaultValue": "",
@@ -878,7 +878,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -892,7 +892,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the discount's details.",
@@ -908,7 +908,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -979,7 +979,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -988,7 +988,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -1006,7 +1006,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1015,7 +1015,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -1147,7 +1147,7 @@ medusa.admin.discounts
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDiscountsDiscountConditions`](../internal/classes/internal.AdminPostDiscountsDiscountConditions.mdx)",
+    "type": "[AdminPostDiscountsDiscountConditions](../internal/classes/internal.AdminPostDiscountsDiscountConditions.mdx)",
     "description": "The discount condition to create.",
     "optional": false,
     "defaultValue": "",
@@ -1164,8 +1164,8 @@ medusa.admin.discounts
       },
       {
         "name": "operator",
-        "type": "[`DiscountConditionOperator`](../internal/enums/internal.DiscountConditionOperator.mdx)",
-        "description": "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that discountable resources are everything but the specified resources.",
+        "type": "[DiscountConditionOperator](../internal/enums/internal.DiscountConditionOperator.mdx)",
+        "description": "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not\\_in` indicates that discountable resources are everything but the specified resources.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -1230,7 +1230,7 @@ medusa.admin.discounts
   },
   {
     "name": "query",
-    "type": "[`AdminPostDiscountsDiscountConditionsParams`](../internal/classes/internal.AdminPostDiscountsDiscountConditionsParams.mdx)",
+    "type": "[AdminPostDiscountsDiscountConditionsParams](../internal/classes/internal.AdminPostDiscountsDiscountConditionsParams.mdx)",
     "description": "Configurations to apply on the returned discount.",
     "optional": false,
     "defaultValue": "{}",
@@ -1258,7 +1258,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1272,7 +1272,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -1288,7 +1288,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -1359,7 +1359,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1368,7 +1368,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -1386,7 +1386,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1395,7 +1395,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -1500,7 +1500,7 @@ medusa.admin.discounts
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDiscountsDiscountDynamicCodesReq`](../internal/classes/internal.AdminPostDiscountsDiscountDynamicCodesReq.mdx)",
+    "type": "[AdminPostDiscountsDiscountDynamicCodesReq](../internal/classes/internal.AdminPostDiscountsDiscountDynamicCodesReq.mdx)",
     "description": "The dynamic code to create.",
     "optional": false,
     "defaultValue": "",
@@ -1517,7 +1517,7 @@ medusa.admin.discounts
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs to hold additional information.",
         "optional": true,
         "defaultValue": "",
@@ -1537,7 +1537,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1551,7 +1551,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -1567,7 +1567,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -1638,7 +1638,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1647,7 +1647,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -1665,7 +1665,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -1674,7 +1674,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -1774,7 +1774,7 @@ medusa.admin.discounts.delete(discountId).then(({ id, object, deleted }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1788,7 +1788,7 @@ medusa.admin.discounts.delete(discountId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the delete operation details.",
@@ -1867,7 +1867,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1881,7 +1881,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
@@ -1962,7 +1962,7 @@ medusa.admin.discounts
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteDiscountsDiscountConditionsConditionBatchReq`](../internal/classes/internal.AdminDeleteDiscountsDiscountConditionsConditionBatchReq.mdx)",
+    "type": "[AdminDeleteDiscountsDiscountConditionsConditionBatchReq](../internal/classes/internal.AdminDeleteDiscountsDiscountConditionsConditionBatchReq.mdx)",
     "description": "The resources to remove.",
     "optional": false,
     "defaultValue": "",
@@ -1970,7 +1970,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "resources",
-        "type": "{ `id`: `string`  }[]",
+        "type": "`&#123; id: string  &#125;`[]",
         "description": "The resources to be removed from the discount condition",
         "optional": false,
         "defaultValue": "",
@@ -1991,7 +1991,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2005,7 +2005,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -2021,7 +2021,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -2092,7 +2092,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2101,7 +2101,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -2119,7 +2119,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -2128,7 +2128,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -2239,7 +2239,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2253,7 +2253,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -2269,7 +2269,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -2340,7 +2340,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2349,7 +2349,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -2367,7 +2367,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -2376,7 +2376,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -2504,7 +2504,7 @@ medusa.admin.discounts
   },
   {
     "name": "query",
-    "type": "[`AdminGetDiscountsDiscountConditionsConditionParams`](../internal/classes/internal.AdminGetDiscountsDiscountConditionsConditionParams.mdx)",
+    "type": "[AdminGetDiscountsDiscountConditionsConditionParams](../internal/classes/internal.AdminGetDiscountsDiscountConditionsConditionParams.mdx)",
     "description": "Configurations to apply on the retrieved discount condition.",
     "optional": true,
     "defaultValue": "",
@@ -2532,7 +2532,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2546,7 +2546,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountConditionsRes`](../internal/types/internal.AdminDiscountConditionsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountConditionsRes](../internal/types/internal.AdminDiscountConditionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the discount condition details.",
@@ -2562,7 +2562,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount_condition",
-            "type": "[`DiscountCondition`](../internal/classes/internal.DiscountCondition.mdx)",
+            "type": "[DiscountCondition](../internal/classes/internal.DiscountCondition.mdx)",
             "description": "Discount condition details.",
             "optional": false,
             "defaultValue": "",
@@ -2579,8 +2579,8 @@ medusa.admin.discounts
               },
               {
                 "name": "customer_groups",
-                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
-                "description": "Customer groups associated with this condition if `type` is `customer_groups`.",
+                "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "description": "Customer groups associated with this condition if `type` is `customer\\_groups`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2597,7 +2597,7 @@ medusa.admin.discounts
               },
               {
                 "name": "discount_rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule associated with the condition.",
                 "optional": false,
                 "defaultValue": "",
@@ -2624,7 +2624,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2633,8 +2633,8 @@ medusa.admin.discounts
               },
               {
                 "name": "operator",
-                "type": "[`DiscountConditionOperator`](../internal/enums/internal.DiscountConditionOperator.mdx)",
-                "description": "The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that discountable resources are everything but the specified resources.",
+                "type": "[DiscountConditionOperator](../internal/enums/internal.DiscountConditionOperator.mdx)",
+                "description": "The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not\\_in` indicates that discountable resources are everything but the specified resources.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -2642,8 +2642,8 @@ medusa.admin.discounts
               },
               {
                 "name": "product_collections",
-                "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)[]",
-                "description": "Product collections associated with this condition if `type` is `product_collections`.",
+                "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)[]",
+                "description": "Product collections associated with this condition if `type` is `product\\_collections`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2651,8 +2651,8 @@ medusa.admin.discounts
               },
               {
                 "name": "product_tags",
-                "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
-                "description": "Product tags associated with this condition if `type` is `product_tags`.",
+                "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
+                "description": "Product tags associated with this condition if `type` is `product\\_tags`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2660,8 +2660,8 @@ medusa.admin.discounts
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
-                "description": "Product types associated with this condition if `type` is `product_types`.",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
+                "description": "Product types associated with this condition if `type` is `product\\_types`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -2669,7 +2669,7 @@ medusa.admin.discounts
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "products associated with this condition if `type` is `products`.",
                 "optional": false,
                 "defaultValue": "",
@@ -2678,7 +2678,7 @@ medusa.admin.discounts
               },
               {
                 "name": "type",
-                "type": "[`DiscountConditionType`](../internal/enums/internal.internal.DiscountConditionType.mdx)",
+                "type": "[DiscountConditionType](../internal/enums/internal.internal.DiscountConditionType.mdx)",
                 "description": "The type of the condition. The type affects the available resources associated with the condition. For example, if the type is `products`, that means the `products` relation will hold the products associated with this condition and other relations will be empty.",
                 "optional": false,
                 "defaultValue": "",
@@ -2758,7 +2758,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetDiscountsParams`](../internal/classes/internal.AdminGetDiscountsParams.mdx)",
+    "type": "[AdminGetDiscountsParams](../internal/classes/internal.AdminGetDiscountsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved discounts.",
     "optional": true,
     "defaultValue": "",
@@ -2829,7 +2829,7 @@ medusa.admin.discounts
       },
       {
         "name": "rule",
-        "type": "[`AdminGetDiscountsDiscountRuleParams`](../internal/classes/internal.AdminGetDiscountsDiscountRuleParams.mdx)",
+        "type": "[AdminGetDiscountsDiscountRuleParams](../internal/classes/internal.AdminGetDiscountsDiscountRuleParams.mdx)",
         "description": "Filter discounts by their associated rule.",
         "optional": true,
         "defaultValue": "",
@@ -2837,7 +2837,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "allocation",
-            "type": "[`AllocationType`](../internal/enums/internal.internal.AllocationType.mdx)",
+            "type": "[AllocationType](../internal/enums/internal.internal.AllocationType.mdx)",
             "description": "Allocation to filter discount rules by.",
             "optional": true,
             "defaultValue": "",
@@ -2865,7 +2865,7 @@ medusa.admin.discounts
           },
           {
             "name": "type",
-            "type": "[`DiscountRuleType`](../internal/enums/internal.internal.DiscountRuleType.mdx)",
+            "type": "[DiscountRuleType](../internal/enums/internal.internal.DiscountRuleType.mdx)",
             "description": "Type to filter discount rules by.",
             "optional": true,
             "defaultValue": "",
@@ -2906,7 +2906,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2920,7 +2920,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsListRes`](../internal/types/internal.AdminDiscountsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsListRes](../internal/types/internal.AdminDiscountsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of discounts with pagination fields.",
@@ -2928,7 +2928,7 @@ medusa.admin.discounts
     "children": [
       {
         "name": "AdminDiscountsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `discounts`: [`Discount`](../internal/classes/internal.Discount-1.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; discounts: [Discount](../internal/classes/internal.Discount-1.mdx)[]  &#125;`",
         "description": "The list of discounts with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -2963,7 +2963,7 @@ medusa.admin.discounts
           },
           {
             "name": "discounts",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
             "description": "The list of discounts.",
             "optional": false,
             "defaultValue": "",
@@ -3034,7 +3034,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3043,7 +3043,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -3061,7 +3061,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3070,7 +3070,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -3181,7 +3181,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3195,7 +3195,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -3211,7 +3211,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -3282,7 +3282,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3291,7 +3291,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -3309,7 +3309,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3318,7 +3318,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -3418,7 +3418,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3432,7 +3432,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -3448,7 +3448,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -3519,7 +3519,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3528,7 +3528,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -3546,7 +3546,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3555,7 +3555,7 @@ medusa.admin.discounts.retrieve(discountId).then(({ discount }) => {
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -3655,7 +3655,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3669,7 +3669,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -3685,7 +3685,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -3756,7 +3756,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3765,7 +3765,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -3783,7 +3783,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -3792,7 +3792,7 @@ medusa.admin.discounts.retrieveByCode(code).then(({ discount }) => {
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -3896,7 +3896,7 @@ medusa.admin.discounts
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDiscountsDiscountReq`](../internal/classes/internal.AdminPostDiscountsDiscountReq.mdx)",
+    "type": "[AdminPostDiscountsDiscountReq](../internal/classes/internal.AdminPostDiscountsDiscountReq.mdx)",
     "description": "The attributes to update in the discount.",
     "optional": false,
     "defaultValue": "",
@@ -3931,7 +3931,7 @@ medusa.admin.discounts
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An object containing metadata of the discount",
         "optional": true,
         "defaultValue": "",
@@ -3949,7 +3949,7 @@ medusa.admin.discounts
       },
       {
         "name": "rule",
-        "type": "[`AdminUpdateDiscountRule`](../internal/classes/internal.AdminUpdateDiscountRule.mdx)",
+        "type": "[AdminUpdateDiscountRule](../internal/classes/internal.AdminUpdateDiscountRule.mdx)",
         "description": "The discount rule that defines how discounts are calculated",
         "optional": true,
         "defaultValue": "",
@@ -3957,7 +3957,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "allocation",
-            "type": "[`AllocationType`](../internal/enums/internal.internal.AllocationType.mdx)",
+            "type": "[AllocationType](../internal/enums/internal.internal.AllocationType.mdx)",
             "description": "The discount rule's allocation.",
             "optional": true,
             "defaultValue": "",
@@ -3985,7 +3985,7 @@ medusa.admin.discounts
           },
           {
             "name": "conditions",
-            "type": "[`AdminUpsertCondition`](../internal/classes/internal.internal.AdminUpsertCondition.mdx)[]",
+            "type": "[AdminUpsertCondition](../internal/classes/internal.internal.AdminUpsertCondition.mdx)[]",
             "description": "The discount rule's discount conditions.",
             "optional": true,
             "defaultValue": "",
@@ -4011,7 +4011,7 @@ medusa.admin.discounts
               },
               {
                 "name": "operator",
-                "type": "[`DiscountConditionOperator`](../internal/enums/internal.DiscountConditionOperator.mdx)",
+                "type": "[DiscountConditionOperator](../internal/enums/internal.DiscountConditionOperator.mdx)",
                 "description": "The discount condition's operator.",
                 "optional": false,
                 "defaultValue": "",
@@ -4116,7 +4116,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -4130,7 +4130,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -4146,7 +4146,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -4217,7 +4217,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -4226,7 +4226,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -4244,7 +4244,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -4253,7 +4253,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",
@@ -4391,7 +4391,7 @@ medusa.admin.discounts
   },
   {
     "name": "payload",
-    "type": "[`AdminPostDiscountsDiscountConditionsCondition`](../internal/classes/internal.AdminPostDiscountsDiscountConditionsCondition.mdx)",
+    "type": "[AdminPostDiscountsDiscountConditionsCondition](../internal/classes/internal.AdminPostDiscountsDiscountConditionsCondition.mdx)",
     "description": "The attributes to update in the discount condition.",
     "optional": false,
     "defaultValue": "",
@@ -4446,7 +4446,7 @@ medusa.admin.discounts
   },
   {
     "name": "query",
-    "type": "[`AdminPostDiscountsDiscountConditionsConditionParams`](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionParams.mdx)",
+    "type": "[AdminPostDiscountsDiscountConditionsConditionParams](../internal/classes/internal.AdminPostDiscountsDiscountConditionsConditionParams.mdx)",
     "description": "Configurations to apply on the returned discount.",
     "optional": false,
     "defaultValue": "{}",
@@ -4474,7 +4474,7 @@ medusa.admin.discounts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -4488,7 +4488,7 @@ medusa.admin.discounts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminDiscountsRes`](../internal/types/internal.AdminDiscountsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDiscountsRes](../internal/types/internal.AdminDiscountsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the discount.",
@@ -4504,7 +4504,7 @@ medusa.admin.discounts
         "children": [
           {
             "name": "discount",
-            "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+            "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
             "description": "Discount details.",
             "optional": false,
             "defaultValue": "",
@@ -4575,7 +4575,7 @@ medusa.admin.discounts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -4584,7 +4584,7 @@ medusa.admin.discounts
               },
               {
                 "name": "parent_discount",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)",
                 "description": "The details of the parent discount that this discount was created from.",
                 "optional": false,
                 "defaultValue": "",
@@ -4602,7 +4602,7 @@ medusa.admin.discounts
               },
               {
                 "name": "regions",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+                "type": "[Region](../internal/classes/internal.Region.mdx)[]",
                 "description": "The details of the regions in which the Discount can be used.",
                 "optional": false,
                 "defaultValue": "",
@@ -4611,7 +4611,7 @@ medusa.admin.discounts
               },
               {
                 "name": "rule",
-                "type": "[`DiscountRule`](../internal/classes/internal.internal.DiscountRule.mdx)",
+                "type": "[DiscountRule](../internal/classes/internal.internal.DiscountRule.mdx)",
                 "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
                 "optional": false,
                 "defaultValue": "",

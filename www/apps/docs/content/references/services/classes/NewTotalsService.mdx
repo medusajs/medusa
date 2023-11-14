@@ -10,14 +10,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new NewTotalsService**(`«destructured»`)
+`**new NewTotalsService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-15.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-15.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "type": "[FlagRouter](FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxCalculationStrategy_",
-    "type": "[`ITaxCalculationStrategy`](../interfaces/ITaxCalculationStrategy.mdx)",
+    "type": "[ITaxCalculationStrategy](../interfaces/ITaxCalculationStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxProviderService_",
-    "type": "[`TaxProviderService`](TaxProviderService.mdx)",
+    "type": "[TaxProviderService](TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -107,16 +107,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -129,7 +129,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -161,7 +161,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -170,7 +170,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -179,7 +179,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -190,12 +190,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -208,7 +208,7 @@ ___
 
 ### getGiftCardTotals
 
-**getGiftCardTotals**(`giftCardableAmount`, `«destructured»`): `Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
+`**getGiftCardTotals**(giftCardableAmount, «destructured»): Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;`
 
 Calculate and return the gift cards totals
 
@@ -235,7 +235,7 @@ Calculate and return the gift cards totals
   },
   {
     "name": "__namedParameters.giftCardTransactions",
-    "type": "[`GiftCardTransaction`](../types/GiftCardTransaction-1.mdx)[]",
+    "type": "[GiftCardTransaction](../types/GiftCardTransaction-1.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -244,7 +244,7 @@ Calculate and return the gift cards totals
   },
   {
     "name": "__namedParameters.giftCards",
-    "type": "[`GiftCard`](GiftCard.mdx)[]",
+    "type": "[GiftCard](GiftCard.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -253,7 +253,7 @@ Calculate and return the gift cards totals
   },
   {
     "name": "__namedParameters.region",
-    "type": "[`Region`](Region.mdx)",
+    "type": "[Region](Region.mdx)",
     "description": "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
     "optional": false,
     "defaultValue": "",
@@ -264,12 +264,12 @@ Calculate and return the gift cards totals
 
 #### Returns
 
-`Promise`<{ `tax_total`: `number` ; `total`: `number`  }\>
+Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `tax_total`: `number` ; `total`: `number`  }\\>",
+    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -282,7 +282,7 @@ ___
 
 ### getGiftCardTransactionsTotals
 
-**getGiftCardTransactionsTotals**(`«destructured»`): { `tax_total`: `number` ; `total`: `number`  }
+`**getGiftCardTransactionsTotals**(«destructured»): &#123; tax_total: number ; total: number  &#125;`
 
 Calculate and return the gift cards totals based on their transactions
 
@@ -300,7 +300,7 @@ Calculate and return the gift cards totals based on their transactions
   },
   {
     "name": "__namedParameters.giftCardTransactions",
-    "type": "[`GiftCardTransaction`](../types/GiftCardTransaction-1.mdx)[]",
+    "type": "[GiftCardTransaction](../types/GiftCardTransaction-1.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -342,7 +342,7 @@ Calculate and return the gift cards totals based on their transactions
 
 <ParameterTypes parameters={[
   {
-    "name": "`object`",
+    "name": "object",
     "type": "`object`",
     "optional": true,
     "defaultValue": "",
@@ -377,7 +377,7 @@ ___
 
 ### getGiftCardableAmount
 
-**getGiftCardableAmount**(`«destructured»`): `number`
+`**getGiftCardableAmount**(«destructured»): number`
 
 #### Parameters
 
@@ -458,7 +458,7 @@ ___
 
 ### getLineItemRefund
 
-**getLineItemRefund**(`lineItem`, `«destructured»`): `number`
+`**getLineItemRefund**(lineItem, «destructured»): number`
 
 Return the amount that can be refund on a line item
 
@@ -503,7 +503,7 @@ Return the amount that can be refund on a line item
   },
   {
     "name": "lineItem.tax_lines",
-    "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)[]",
+    "type": "[LineItemTaxLine](LineItemTaxLine.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -530,7 +530,7 @@ Return the amount that can be refund on a line item
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -568,7 +568,7 @@ ___
 
 ### getLineItemRefundLegacy
 
-`Protected` **getLineItemRefundLegacy**(`lineItem`, `«destructured»`): `number`
+`Protected **getLineItemRefundLegacy**(lineItem, «destructured»): number`
 
 #### Parameters
 
@@ -629,7 +629,7 @@ ___
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -667,7 +667,7 @@ ___
 
 ### getLineItemTotals
 
-**getLineItemTotals**(`items`, `«destructured»`): `Promise`<{ `[lineItemId: string]`: [`LineItemTotals`](../types/LineItemTotals.mdx);  }\>
+`**getLineItemTotals**(items, «destructured»): Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;`
 
 Calculate and return the items totals for either the legacy calculation or the new calculation
 
@@ -676,7 +676,7 @@ Calculate and return the items totals for either the legacy calculation or the n
 <ParameterTypes parameters={[
   {
     "name": "items",
-    "type": "[`LineItem`](LineItem.mdx) \\| [`LineItem`](LineItem.mdx)[]",
+    "type": "[LineItem](LineItem.mdx) \\| [LineItem](LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -694,7 +694,7 @@ Calculate and return the items totals for either the legacy calculation or the n
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -723,12 +723,12 @@ Calculate and return the items totals for either the legacy calculation or the n
 
 #### Returns
 
-`Promise`<{ `[lineItemId: string]`: [`LineItemTotals`](../types/LineItemTotals.mdx);  }\>
+Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `[lineItemId: string]`: [`LineItemTotals`](../types/LineItemTotals.mdx);  }\\>",
+    "type": "Promise&#60;&#123; [lineItemId: string]: [LineItemTotals](../types/LineItemTotals.mdx);  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -741,7 +741,7 @@ ___
 
 ### getLineItemTotalsLegacy
 
-`Protected` **getLineItemTotalsLegacy**(`item`, `«destructured»`): `Promise`<[`LineItemTotals`](../types/LineItemTotals.mdx)\>
+`Protected **getLineItemTotalsLegacy**(item, «destructured»): Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;`
 
 Calculate and return the legacy calculated totals using the tax rate
 
@@ -750,7 +750,7 @@ Calculate and return the legacy calculated totals using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "item",
-    "type": "[`LineItem`](LineItem.mdx)",
+    "type": "[LineItem](LineItem.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -768,7 +768,7 @@ Calculate and return the legacy calculated totals using the tax rate
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -786,7 +786,7 @@ Calculate and return the legacy calculated totals using the tax rate
   },
   {
     "name": "__namedParameters.lineItemAllocation.discount",
-    "type": "[`DiscountAllocation`](../types/DiscountAllocation.mdx)",
+    "type": "[DiscountAllocation](../types/DiscountAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -795,7 +795,7 @@ Calculate and return the legacy calculated totals using the tax rate
   },
   {
     "name": "__namedParameters.lineItemAllocation.gift_card",
-    "type": "[`GiftCardAllocation`](../types/GiftCardAllocation.mdx)",
+    "type": "[GiftCardAllocation](../types/GiftCardAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -815,12 +815,12 @@ Calculate and return the legacy calculated totals using the tax rate
 
 #### Returns
 
-`Promise`<[`LineItemTotals`](../types/LineItemTotals.mdx)\>
+Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemTotals`](../types/LineItemTotals.mdx)\\>",
+    "type": "Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -833,7 +833,7 @@ ___
 
 ### getLineItemTotals\_
 
-`Protected` **getLineItemTotals_**(`item`, `«destructured»`): `Promise`<[`LineItemTotals`](../types/LineItemTotals.mdx)\>
+`Protected **getLineItemTotals_**(item, «destructured»): Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;`
 
 Calculate and return the totals for an item
 
@@ -842,7 +842,7 @@ Calculate and return the totals for an item
 <ParameterTypes parameters={[
   {
     "name": "item",
-    "type": "[`LineItem`](LineItem.mdx)",
+    "type": "[LineItem](LineItem.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -860,7 +860,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -887,7 +887,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.lineItemAllocation.discount",
-    "type": "[`DiscountAllocation`](../types/DiscountAllocation.mdx)",
+    "type": "[DiscountAllocation](../types/DiscountAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -896,7 +896,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.lineItemAllocation.gift_card",
-    "type": "[`GiftCardAllocation`](../types/GiftCardAllocation.mdx)",
+    "type": "[GiftCardAllocation](../types/GiftCardAllocation.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -905,7 +905,7 @@ Calculate and return the totals for an item
   },
   {
     "name": "__namedParameters.taxLines",
-    "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)[]",
+    "type": "[LineItemTaxLine](LineItemTaxLine.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -916,12 +916,12 @@ Calculate and return the totals for an item
 
 #### Returns
 
-`Promise`<[`LineItemTotals`](../types/LineItemTotals.mdx)\>
+Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemTotals`](../types/LineItemTotals.mdx)\\>",
+    "type": "Promise&#60;[LineItemTotals](../types/LineItemTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -934,7 +934,7 @@ ___
 
 ### getShippingMethodTotals
 
-**getShippingMethodTotals**(`shippingMethods`, `«destructured»`): `Promise`<{ `[shippingMethodId: string]`: [`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx);  }\>
+`**getShippingMethodTotals**(shippingMethods, «destructured»): Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;`
 
 Calculate and return the shipping methods totals for either the legacy calculation or the new calculation
 
@@ -943,7 +943,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
 <ParameterTypes parameters={[
   {
     "name": "shippingMethods",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx) \\| [`ShippingMethod`](ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](ShippingMethod.mdx) \\| [ShippingMethod](ShippingMethod.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -961,7 +961,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -970,7 +970,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
   },
   {
     "name": "__namedParameters.discounts",
-    "type": "[`Discount`](Discount.mdx)[]",
+    "type": "[Discount](Discount.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -999,12 +999,12 @@ Calculate and return the shipping methods totals for either the legacy calculati
 
 #### Returns
 
-`Promise`<{ `[shippingMethodId: string]`: [`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx);  }\>
+Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `[shippingMethodId: string]`: [`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx);  }\\>",
+    "type": "Promise&#60;&#123; [shippingMethodId: string]: [ShippingMethodTotals](../types/ShippingMethodTotals.mdx);  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1017,7 +1017,7 @@ ___
 
 ### getShippingMethodTotalsLegacy
 
-`Protected` **getShippingMethodTotalsLegacy**(`shippingMethod`, `«destructured»`): `Promise`<[`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx)\>
+`Protected **getShippingMethodTotalsLegacy**(shippingMethod, «destructured»): Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;`
 
 Calculate and return the shipping method totals legacy using the tax rate
 
@@ -1026,7 +1026,7 @@ Calculate and return the shipping method totals legacy using the tax rate
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+    "type": "[ShippingMethod](ShippingMethod.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1044,7 +1044,7 @@ Calculate and return the shipping method totals legacy using the tax rate
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1053,7 +1053,7 @@ Calculate and return the shipping method totals legacy using the tax rate
   },
   {
     "name": "__namedParameters.discounts",
-    "type": "[`Discount`](Discount.mdx)[]",
+    "type": "[Discount](Discount.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1073,12 +1073,12 @@ Calculate and return the shipping method totals legacy using the tax rate
 
 #### Returns
 
-`Promise`<[`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx)\>
+Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx)\\>",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1091,7 +1091,7 @@ ___
 
 ### getShippingMethodTotals\_
 
-`Protected` **getShippingMethodTotals_**(`shippingMethod`, `«destructured»`): `Promise`<[`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx)\>
+`Protected **getShippingMethodTotals_**(shippingMethod, «destructured»): Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;`
 
 Calculate and return the shipping method totals
 
@@ -1100,7 +1100,7 @@ Calculate and return the shipping method totals
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+    "type": "[ShippingMethod](ShippingMethod.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1118,7 +1118,7 @@ Calculate and return the shipping method totals
   },
   {
     "name": "__namedParameters.calculationContext",
-    "type": "[`TaxCalculationContext`](../types/TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/TaxCalculationContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1127,7 +1127,7 @@ Calculate and return the shipping method totals
   },
   {
     "name": "__namedParameters.discounts",
-    "type": "[`Discount`](Discount.mdx)[]",
+    "type": "[Discount](Discount.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1145,7 +1145,7 @@ Calculate and return the shipping method totals
   },
   {
     "name": "__namedParameters.taxLines",
-    "type": "[`ShippingMethodTaxLine`](ShippingMethodTaxLine.mdx)[]",
+    "type": "[ShippingMethodTaxLine](ShippingMethodTaxLine.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1156,12 +1156,12 @@ Calculate and return the shipping method totals
 
 #### Returns
 
-`Promise`<[`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx)\>
+Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ShippingMethodTotals`](../types/ShippingMethodTotals.mdx)\\>",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/ShippingMethodTotals.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1174,14 +1174,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1210,14 +1210,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`NewTotalsService`](NewTotalsService.mdx)
+`**withTransaction**(transactionManager?): [NewTotalsService](NewTotalsService.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1228,12 +1228,12 @@ ___
 
 #### Returns
 
-[`NewTotalsService`](NewTotalsService.mdx)
+[NewTotalsService](NewTotalsService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "default",
-    "type": "[`NewTotalsService`](NewTotalsService.mdx)",
+    "type": "[NewTotalsService](NewTotalsService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
