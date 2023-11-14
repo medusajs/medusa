@@ -10,7 +10,7 @@ import { Workflows } from "../../definitions"
 
 export enum RemoveProductPricesActions {
   prepare = "prepare",
-  removePriceSetPrices = "removePriceSetPrices",
+  removePriceListPriceSetPrices = "removePriceListPriceSetPrices",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
@@ -18,7 +18,7 @@ const workflowSteps: TransactionStepsDefinition = {
     action: RemoveProductPricesActions.prepare,
     noCompensation: true,
     next: {
-      action: RemoveProductPricesActions.removePriceSetPrices,
+      action: RemoveProductPricesActions.removePriceListPriceSetPrices,
       noCompensation: true,
     },
   },
@@ -41,7 +41,7 @@ const handlers = new Map([
     },
   ],
   [
-    RemoveProductPricesActions.removePriceSetPrices,
+    RemoveProductPricesActions.removePriceListPriceSetPrices,
     {
       invoke: pipe(
         {
@@ -68,6 +68,6 @@ export const removePriceListProductPrices = exportWorkflow<
   string[]
 >(
   Workflows.RemovePriceListProducts,
-  RemoveProductPricesActions.removePriceSetPrices,
+  RemoveProductPricesActions.removePriceListPriceSetPrices,
   async (data) => data
 )
