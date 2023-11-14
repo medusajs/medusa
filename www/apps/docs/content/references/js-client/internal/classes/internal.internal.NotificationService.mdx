@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "container_",
-    "type": "[`InjectedDependencies`](../types/internal.InjectedDependencies-16.mdx) & {}",
+    "type": "[InjectedDependencies](../types/internal.InjectedDependencies-16.mdx) & `&#123;&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "logger_",
-    "type": "[`Logger`](../types/internal.internal.Logger.mdx)",
+    "type": "[Logger](../types/internal.internal.Logger.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "notificationProviderRepository_",
-    "type": "`Repository`<[`NotificationProvider`](internal.NotificationProvider.mdx)\\>",
+    "type": "Repository&#60;[NotificationProvider](internal.NotificationProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "notificationRepository_",
-    "type": "`Repository`<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "Repository&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -119,7 +119,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -141,7 +141,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -150,7 +150,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -159,7 +159,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -173,7 +173,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -204,7 +204,7 @@ order to allow for resends. Will log any errors that are encountered.
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the data the event was sent with",
     "optional": false,
     "defaultValue": "",
@@ -218,7 +218,7 @@ order to allow for resends. Will log any errors that are encountered.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| `void` \\| [`Notification`](internal.Notification.mdx)[]\\>",
+    "type": "Promise&#60;undefined \\| void \\| [Notification](internal.Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of notification subscribed",
@@ -238,7 +238,7 @@ Retrieves a list of notifications.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -247,7 +247,7 @@ Retrieves a list of notifications.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": true,
     "defaultValue": "",
@@ -261,7 +261,7 @@ Retrieves a list of notifications.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Notification`](internal.Notification.mdx)[]\\>",
+    "type": "Promise&#60;[Notification](internal.Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query.",
@@ -281,7 +281,7 @@ Retrieves a list of notifications and total count.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -290,7 +290,7 @@ Retrieves a list of notifications and total count.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": true,
     "defaultValue": "",
@@ -304,7 +304,7 @@ Retrieves a list of notifications and total count.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Notification`](internal.Notification.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[Notification](internal.Notification.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query as well as the count.",
@@ -373,7 +373,7 @@ Takes a list of notification provider ids and persists them in the database.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -403,7 +403,7 @@ underlying provider's resendNotification method.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "any configuration that might override the previous send",
     "optional": true,
     "defaultValue": "",
@@ -417,7 +417,7 @@ underlying provider's resendNotification method.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "Promise&#60;[Notification](internal.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created notification",
@@ -446,7 +446,7 @@ Retrieves a notification with a given id
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": true,
     "defaultValue": "",
@@ -460,7 +460,7 @@ Retrieves a notification with a given id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "Promise&#60;[Notification](internal.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notification",
@@ -473,7 +473,7 @@ ___
 
 ### retrieveProvider\_
 
-Finds a provider with a given id. Will throw a NOT_FOUND error if the
+Finds a provider with a given id. Will throw a NOT\_FOUND error if the
 resolution fails.
 
 #### Parameters
@@ -495,7 +495,7 @@ resolution fails.
 <ParameterTypes parameters={[
   {
     "name": "AbstractNotificationService",
-    "type": "[`AbstractNotificationService`](internal.internal.AbstractNotificationService.mdx)",
+    "type": "[AbstractNotificationService](internal.internal.AbstractNotificationService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "the notification provider",
@@ -525,7 +525,7 @@ method. Persists the Notification in the database.
   },
   {
     "name": "eventData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the data the event was sent with",
     "optional": false,
     "defaultValue": "",
@@ -548,7 +548,7 @@ method. Persists the Notification in the database.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| [`Notification`](internal.Notification.mdx)\\>",
+    "type": "Promise&#60;undefined \\| [Notification](internal.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created notification",
@@ -566,7 +566,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -641,7 +641,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -655,7 +655,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "NotificationService",
-    "type": "[`NotificationService`](internal.internal.NotificationService.mdx)",
+    "type": "[NotificationService](internal.internal.NotificationService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -12,7 +12,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
 
 ### constructor
 
-**new ReturnReason**()
+`**new ReturnReason**()`
 
 A Return Reason is a value defined by an admin. It can be used on Return Items in order to indicate why a Line Item was returned.
 
@@ -66,7 +66,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
   },
   {
     "name": "parent_return_reason",
-    "type": "``null`` \\| [`ReturnReason`](ReturnReason.mdx)",
+    "type": "``null`` \\| [ReturnReason](ReturnReason.mdx)",
     "description": "The details of the parent reason.",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
   },
   {
     "name": "return_reason_children",
-    "type": "[`ReturnReason`](ReturnReason.mdx)[]",
+    "type": "[ReturnReason](ReturnReason.mdx)[]",
     "description": "The details of the child reasons.",
     "optional": false,
     "defaultValue": "",
@@ -124,7 +124,7 @@ A Return Reason is a value defined by an admin. It can be used on Return Items i
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

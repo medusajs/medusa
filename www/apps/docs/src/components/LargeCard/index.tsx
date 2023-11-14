@@ -3,11 +3,10 @@ import clsx from "clsx"
 import Link from "@docusaurus/Link"
 import { Badge } from "docs-ui"
 import BorderedIcon from "../BorderedIcon"
+import { IconProps } from "@medusajs/icons/dist/types"
 
 type LargeCardProps = {
-  // TODO change to React.FC<IconProps>
-  // once react versions are resolved
-  Icon: any
+  Icon: React.FC<IconProps>
   image: {
     light: string
     dark?: string

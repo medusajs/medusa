@@ -31,7 +31,7 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
 <ParameterTypes parameters={[
   {
     "name": "onfulfilled",
-    "type": "``null`` \\| (`value`: `T`) => `TResult1` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult1`\\>",
+    "type": "``null`` \\| (`value`: `T`) => `TResult1` \\| [PromiseLike](internal.PromiseLike.mdx)&#60;TResult1&#62;",
     "description": "The callback to execute when the Promise is resolved.",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
   },
   {
     "name": "onrejected",
-    "type": "``null`` \\| (`reason`: `any`) => `TResult2` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult2`\\>",
+    "type": "``null`` \\| (`reason`: `any`) => `TResult2` \\| [PromiseLike](internal.PromiseLike.mdx)&#60;TResult2&#62;",
     "description": "The callback to execute when the Promise is rejected.",
     "optional": true,
     "defaultValue": "",
@@ -54,7 +54,7 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
 <ParameterTypes parameters={[
   {
     "name": "PromiseLike",
-    "type": "[`PromiseLike`](internal.PromiseLike.mdx)<`TResult1` \\| `TResult2`\\>",
+    "type": "[PromiseLike](internal.PromiseLike.mdx)&#60;TResult1 \\| TResult2&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A Promise for the completion of which ever callback is executed.",

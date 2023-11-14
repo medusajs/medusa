@@ -33,7 +33,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -47,7 +47,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreReturnReasonsListRes`](../internal/types/internal.StoreReturnReasonsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreReturnReasonsListRes](../internal/types/internal.StoreReturnReasonsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of return reasons.",
@@ -63,7 +63,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
         "children": [
           {
             "name": "return_reasons",
-            "type": "[`ReturnReason`](../internal/classes/internal.ReturnReason.mdx)[]",
+            "type": "[ReturnReason](../internal/classes/internal.ReturnReason.mdx)[]",
             "description": "An array of return reasons details.",
             "optional": false,
             "defaultValue": "",
@@ -116,7 +116,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -125,7 +125,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
               },
               {
                 "name": "parent_return_reason",
-                "type": "``null`` \\| [`ReturnReason`](../internal/classes/internal.ReturnReason.mdx)",
+                "type": "``null`` \\| [ReturnReason](../internal/classes/internal.ReturnReason.mdx)",
                 "description": "The details of the parent reason.",
                 "optional": false,
                 "defaultValue": "",
@@ -143,7 +143,7 @@ medusa.returnReasons.list().then(({ return_reasons }) => {
               },
               {
                 "name": "return_reason_children",
-                "type": "[`ReturnReason`](../internal/classes/internal.ReturnReason.mdx)[]",
+                "type": "[ReturnReason](../internal/classes/internal.ReturnReason.mdx)[]",
                 "description": "The details of the child reasons.",
                 "optional": false,
                 "defaultValue": "",
@@ -206,7 +206,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -220,7 +220,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreReturnReasonsRes`](../internal/types/internal.StoreReturnReasonsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreReturnReasonsRes](../internal/types/internal.StoreReturnReasonsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the return reason's details.",
@@ -236,7 +236,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
         "children": [
           {
             "name": "return_reason",
-            "type": "[`ReturnReason`](../internal/classes/internal.ReturnReason.mdx)",
+            "type": "[ReturnReason](../internal/classes/internal.ReturnReason.mdx)",
             "description": "Return reason details.",
             "optional": false,
             "defaultValue": "",
@@ -289,7 +289,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -298,7 +298,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
               },
               {
                 "name": "parent_return_reason",
-                "type": "``null`` \\| [`ReturnReason`](../internal/classes/internal.ReturnReason.mdx)",
+                "type": "``null`` \\| [ReturnReason](../internal/classes/internal.ReturnReason.mdx)",
                 "description": "The details of the parent reason.",
                 "optional": false,
                 "defaultValue": "",
@@ -316,7 +316,7 @@ medusa.returnReasons.retrieve(reasonId).then(({ return_reason }) => {
               },
               {
                 "name": "return_reason_children",
-                "type": "[`ReturnReason`](../internal/classes/internal.ReturnReason.mdx)[]",
+                "type": "[ReturnReason](../internal/classes/internal.ReturnReason.mdx)[]",
                 "description": "The details of the child reasons.",
                 "optional": false,
                 "defaultValue": "",

@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [BufferConstructor](../../interfaces/BufferConstructor.mdx).compare
 
-**compare**(`buf1`, `buf2`): ``0`` \| ``1`` \| ``-1``
+`**compare**(buf1, buf2): `0` \| `1` \| `-1``
 
 Compares `buf1` to `buf2`, typically for the purpose of sorting arrays of`Buffer` instances. This is equivalent to calling `buf1.compare(buf2)`.
 
@@ -29,7 +29,7 @@ console.log(arr.sort(Buffer.compare));
 <ParameterTypes parameters={[
   {
     "name": "buf1",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -38,7 +38,7 @@ console.log(arr.sort(Buffer.compare));
   },
   {
     "name": "buf2",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -53,7 +53,7 @@ console.log(arr.sort(Buffer.compare));
 
 <ParameterTypes parameters={[
   {
-    "name": "``0`` \\| ``1`` \\| ``-1``",
+    "name": "`0` \\| `1` \\| `-1`",
     "type": "``0`` \\| ``1`` \\| ``-1``",
     "optional": true,
     "defaultValue": "",

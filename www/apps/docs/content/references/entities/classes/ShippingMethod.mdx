@@ -13,7 +13,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -21,7 +21,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
     "children": [
       {
         "name": "billing_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the billing address associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -48,7 +48,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "context",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The context of the cart which can include info like IP or user agent.",
         "optional": false,
         "defaultValue": "",
@@ -66,7 +66,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "customer",
-        "type": "[`Customer`](Customer.mdx)",
+        "type": "[Customer](Customer.mdx)",
         "description": "The details of the customer the cart belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -102,7 +102,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "discounts",
-        "type": "[`Discount`](Discount.mdx)[]",
+        "type": "[Discount](Discount.mdx)[]",
         "description": "An array of details of all discounts applied to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -138,7 +138,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "gift_cards",
-        "type": "[`GiftCard`](GiftCard.mdx)[]",
+        "type": "[GiftCard](GiftCard.mdx)[]",
         "description": "An array of details of all gift cards applied to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -174,7 +174,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The line items added to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -183,7 +183,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -201,7 +201,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payment",
-        "type": "[`Payment`](Payment.mdx)",
+        "type": "[Payment](Payment.mdx)",
         "description": "The details of the payment associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -228,7 +228,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payment_session",
-        "type": "``null`` \\| [`PaymentSession`](PaymentSession.mdx)",
+        "type": "``null`` \\| [PaymentSession](PaymentSession.mdx)",
         "description": "The details of the selected payment session in the cart.",
         "optional": false,
         "defaultValue": "",
@@ -237,7 +237,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payment_sessions",
-        "type": "[`PaymentSession`](PaymentSession.mdx)[]",
+        "type": "[PaymentSession](PaymentSession.mdx)[]",
         "description": "The details of all payment sessions created on the cart.",
         "optional": false,
         "defaultValue": "",
@@ -273,7 +273,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -291,7 +291,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "sales_channel",
-        "type": "[`SalesChannel`](SalesChannel.mdx)",
+        "type": "[SalesChannel](SalesChannel.mdx)",
         "description": "The details of the sales channel associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -309,7 +309,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_address",
-        "type": "``null`` \\| [`Address`](Address.mdx)",
+        "type": "``null`` \\| [Address](Address.mdx)",
         "description": "The details of the shipping address associated with the cart.",
         "optional": false,
         "defaultValue": "",
@@ -327,7 +327,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_methods",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods added to the cart.",
         "optional": false,
         "defaultValue": "",
@@ -381,7 +381,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "type",
-        "type": "[`CartType`](../enums/CartType.mdx)",
+        "type": "[CartType](../enums/CartType.mdx)",
         "description": "The cart's type.",
         "optional": false,
         "defaultValue": "default",
@@ -410,7 +410,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "claim_order",
-    "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+    "type": "[ClaimOrder](ClaimOrder.mdx)",
     "description": "The details of the claim that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -418,7 +418,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
     "children": [
       {
         "name": "additional_items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the new items to be shipped when the claim's type is `replace`",
         "optional": false,
         "defaultValue": "",
@@ -436,7 +436,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "claim_items",
-        "type": "[`ClaimItem`](ClaimItem.mdx)[]",
+        "type": "[ClaimItem](ClaimItem.mdx)[]",
         "description": "The details of the items that should be replaced or refunded.",
         "optional": false,
         "defaultValue": "",
@@ -463,7 +463,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "fulfillment_status",
-        "type": "[`ClaimFulfillmentStatus`](../enums/ClaimFulfillmentStatus.mdx)",
+        "type": "[ClaimFulfillmentStatus](../enums/ClaimFulfillmentStatus.mdx)",
         "description": "The claim's fulfillment status",
         "optional": false,
         "defaultValue": "not_fulfilled",
@@ -472,7 +472,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "fulfillments",
-        "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+        "type": "[Fulfillment](Fulfillment.mdx)[]",
         "description": "The fulfillments of the new items to be shipped",
         "optional": false,
         "defaultValue": "",
@@ -499,7 +499,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -517,7 +517,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that this claim was created for.",
         "optional": false,
         "defaultValue": "",
@@ -535,7 +535,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payment_status",
-        "type": "[`ClaimPaymentStatus`](../enums/ClaimPaymentStatus.mdx)",
+        "type": "[ClaimPaymentStatus](../enums/ClaimPaymentStatus.mdx)",
         "description": "The status of the claim's payment",
         "optional": false,
         "defaultValue": "na",
@@ -553,7 +553,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "return_order",
-        "type": "[`Return`](Return.mdx)",
+        "type": "[Return](Return.mdx)",
         "description": "The details of the return associated with the claim if the claim's type is `replace`.",
         "optional": false,
         "defaultValue": "",
@@ -562,7 +562,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the address that new items should be shipped to.",
         "optional": false,
         "defaultValue": "",
@@ -580,7 +580,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_methods",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods that the claim order will be shipped with.",
         "optional": false,
         "defaultValue": "",
@@ -589,7 +589,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "type",
-        "type": "[`ClaimType`](../enums/ClaimType.mdx)",
+        "type": "[ClaimType](../enums/ClaimType.mdx)",
         "description": "The claim's type",
         "optional": false,
         "defaultValue": "",
@@ -618,7 +618,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Additional data that the Fulfillment Provider needs to fulfill the shipment. This is used in combination with the Shipping Options data, and may contain information such as a drop point id.",
     "optional": false,
     "defaultValue": "",
@@ -646,7 +646,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -654,7 +654,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
     "children": [
       {
         "name": "billing_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the billing address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -681,7 +681,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "cart",
-        "type": "[`Cart`](Cart.mdx)",
+        "type": "[Cart](Cart.mdx)",
         "description": "The details of the cart associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -699,7 +699,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "claims",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)[]",
+        "type": "[ClaimOrder](ClaimOrder.mdx)[]",
         "description": "The details of the claims created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -717,7 +717,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "currency",
-        "type": "[`Currency`](Currency.mdx)",
+        "type": "[Currency](Currency.mdx)",
         "description": "The details of the currency used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -735,7 +735,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "customer",
-        "type": "[`Customer`](Customer.mdx)",
+        "type": "[Customer](Customer.mdx)",
         "description": "The details of the customer associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -762,7 +762,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "discounts",
-        "type": "[`Discount`](Discount.mdx)[]",
+        "type": "[Discount](Discount.mdx)[]",
         "description": "The details of the discounts applied on the order.",
         "optional": false,
         "defaultValue": "",
@@ -780,7 +780,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "draft_order",
-        "type": "[`DraftOrder`](DraftOrder.mdx)",
+        "type": "[DraftOrder](DraftOrder.mdx)",
         "description": "The details of the draft order this order was created from.",
         "optional": false,
         "defaultValue": "",
@@ -798,7 +798,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "edits",
-        "type": "[`OrderEdit`](OrderEdit.mdx)[]",
+        "type": "[OrderEdit](OrderEdit.mdx)[]",
         "description": "The details of the order edits done on the order.",
         "optional": false,
         "defaultValue": "",
@@ -825,7 +825,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "fulfillment_status",
-        "type": "[`FulfillmentStatus`](../enums/FulfillmentStatus.mdx)",
+        "type": "[FulfillmentStatus](../enums/FulfillmentStatus.mdx)",
         "description": "The order's fulfillment status",
         "optional": false,
         "defaultValue": "not_fulfilled",
@@ -834,7 +834,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "fulfillments",
-        "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+        "type": "[Fulfillment](Fulfillment.mdx)[]",
         "description": "The details of the fulfillments created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -861,7 +861,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "gift_card_transactions",
-        "type": "[`GiftCardTransaction`](GiftCardTransaction.mdx)[]",
+        "type": "[GiftCardTransaction](GiftCardTransaction.mdx)[]",
         "description": "The gift card transactions made in the order.",
         "optional": false,
         "defaultValue": "",
@@ -870,7 +870,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "gift_cards",
-        "type": "[`GiftCard`](GiftCard.mdx)[]",
+        "type": "[GiftCard](GiftCard.mdx)[]",
         "description": "The details of the gift card used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -906,7 +906,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the line items that belong to the order.",
         "optional": false,
         "defaultValue": "",
@@ -915,7 +915,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -951,7 +951,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payment_status",
-        "type": "[`PaymentStatus`](../enums/PaymentStatus.mdx)",
+        "type": "[PaymentStatus](../enums/PaymentStatus.mdx)",
         "description": "The order's payment status",
         "optional": false,
         "defaultValue": "not_paid",
@@ -960,7 +960,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payments",
-        "type": "[`Payment`](Payment.mdx)[]",
+        "type": "[Payment](Payment.mdx)[]",
         "description": "The details of the payments used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -996,7 +996,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "refunds",
-        "type": "[`Refund`](Refund.mdx)[]",
+        "type": "[Refund](Refund.mdx)[]",
         "description": "The details of the refunds created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1005,7 +1005,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this order was created in.",
         "optional": false,
         "defaultValue": "",
@@ -1023,7 +1023,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "returnable_items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
         "optional": true,
         "defaultValue": "",
@@ -1032,7 +1032,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "returns",
-        "type": "[`Return`](Return.mdx)[]",
+        "type": "[Return](Return.mdx)[]",
         "description": "The details of the returns created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1041,7 +1041,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "sales_channel",
-        "type": "[`SalesChannel`](SalesChannel.mdx)",
+        "type": "[SalesChannel](SalesChannel.mdx)",
         "description": "The details of the sales channel this order belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -1059,7 +1059,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the shipping address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -1077,7 +1077,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_methods",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -1104,7 +1104,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "status",
-        "type": "[`OrderStatus`](../enums/OrderStatus.mdx)",
+        "type": "[OrderStatus](../enums/OrderStatus.mdx)",
         "description": "The order's status",
         "optional": false,
         "defaultValue": "pending",
@@ -1122,7 +1122,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "swaps",
-        "type": "[`Swap`](Swap.mdx)[]",
+        "type": "[Swap](Swap.mdx)[]",
         "description": "The details of the swaps created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -1196,7 +1196,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "return_order",
-    "type": "[`Return`](Return.mdx)",
+    "type": "[Return](Return.mdx)",
     "description": "The details of the return that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -1204,7 +1204,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
     "children": [
       {
         "name": "claim_order",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+        "type": "[ClaimOrder](ClaimOrder.mdx)",
         "description": "The details of the claim that the return may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -1249,7 +1249,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "items",
-        "type": "[`ReturnItem`](ReturnItem.mdx)[]",
+        "type": "[ReturnItem](ReturnItem.mdx)[]",
         "description": "The details of the items that the customer is returning.",
         "optional": false,
         "defaultValue": "",
@@ -1267,7 +1267,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "type": "``null`` \\| `Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -1285,7 +1285,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the return was created for.",
         "optional": false,
         "defaultValue": "",
@@ -1321,7 +1321,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Data about the return shipment as provided by the Fulfilment Provider that handles the return shipment.",
         "optional": false,
         "defaultValue": "",
@@ -1330,7 +1330,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_method",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+        "type": "[ShippingMethod](ShippingMethod.mdx)",
         "description": "The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.",
         "optional": false,
         "defaultValue": "",
@@ -1339,7 +1339,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "status",
-        "type": "[`ReturnStatus`](../enums/ReturnStatus.mdx)",
+        "type": "[ReturnStatus](../enums/ReturnStatus.mdx)",
         "description": "Status of the Return.",
         "optional": false,
         "defaultValue": "requested",
@@ -1348,7 +1348,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "swap",
-        "type": "[`Swap`](Swap.mdx)",
+        "type": "[Swap](Swap.mdx)",
         "description": "The details of the swap that the return may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -1377,7 +1377,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "shipping_option",
-    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "type": "[ShippingOption](ShippingOption.mdx)",
     "description": "The details of the shipping option the method was created from.",
     "optional": false,
     "defaultValue": "",
@@ -1395,7 +1395,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       {
         "name": "amount",
         "type": "``null`` \\| `number`",
-        "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+        "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -1412,7 +1412,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
         "optional": false,
         "defaultValue": "",
@@ -1458,7 +1458,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -1476,8 +1476,8 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "price_type",
-        "type": "[`ShippingOptionPriceType`](../enums/ShippingOptionPriceType.mdx)",
-        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+        "type": "[ShippingOptionPriceType](../enums/ShippingOptionPriceType.mdx)",
+        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -1485,7 +1485,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "profile",
-        "type": "[`ShippingProfile`](ShippingProfile.mdx)",
+        "type": "[ShippingProfile](ShippingProfile.mdx)",
         "description": "The details of the shipping profile that the shipping option belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -1503,7 +1503,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "provider",
-        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
+        "type": "[FulfillmentProvider](FulfillmentProvider.mdx)",
         "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
         "optional": false,
         "defaultValue": "",
@@ -1521,7 +1521,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this shipping option can be used in.",
         "optional": false,
         "defaultValue": "",
@@ -1539,7 +1539,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "requirements",
-        "type": "[`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)[]",
+        "type": "[ShippingOptionRequirement](ShippingOptionRequirement.mdx)[]",
         "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
         "optional": false,
         "defaultValue": "",
@@ -1577,7 +1577,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "swap",
-    "type": "[`Swap`](Swap.mdx)",
+    "type": "[Swap](Swap.mdx)",
     "description": "The details of the swap that the shipping method is used in.",
     "optional": false,
     "defaultValue": "",
@@ -1585,7 +1585,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
     "children": [
       {
         "name": "additional_items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the new products to send to the customer, represented as line items.",
         "optional": false,
         "defaultValue": "",
@@ -1612,7 +1612,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "cart",
-        "type": "[`Cart`](Cart.mdx)",
+        "type": "[Cart](Cart.mdx)",
         "description": "The details of the cart that the customer uses to complete the swap.",
         "optional": false,
         "defaultValue": "",
@@ -1666,7 +1666,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "fulfillment_status",
-        "type": "[`SwapFulfillmentStatus`](../enums/SwapFulfillmentStatus.mdx)",
+        "type": "[SwapFulfillmentStatus](../enums/SwapFulfillmentStatus.mdx)",
         "description": "The status of the Fulfillment of the Swap.",
         "optional": false,
         "defaultValue": "",
@@ -1675,7 +1675,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "fulfillments",
-        "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+        "type": "[Fulfillment](Fulfillment.mdx)[]",
         "description": "The details of the fulfillments that are used to send the new items to the customer.",
         "optional": false,
         "defaultValue": "",
@@ -1702,7 +1702,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -1720,7 +1720,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the swap belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -1738,8 +1738,8 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payment",
-        "type": "[`Payment`](Payment.mdx)",
-        "description": "The details of the additional payment authorized by the customer when `difference_due` is positive.",
+        "type": "[Payment](Payment.mdx)",
+        "description": "The details of the additional payment authorized by the customer when `difference\\_due` is positive.",
         "optional": false,
         "defaultValue": "",
         "expandable": true,
@@ -1747,7 +1747,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "payment_status",
-        "type": "[`SwapPaymentStatus`](../enums/SwapPaymentStatus.mdx)",
+        "type": "[SwapPaymentStatus](../enums/SwapPaymentStatus.mdx)",
         "description": "The status of the Payment of the Swap. The payment may either refer to the refund of an amount or the authorization of a new amount.",
         "optional": false,
         "defaultValue": "",
@@ -1756,7 +1756,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "return_order",
-        "type": "[`Return`](Return.mdx)",
+        "type": "[Return](Return.mdx)",
         "description": "The details of the return that belongs to the swap, which holds the details on the items being returned.",
         "optional": false,
         "defaultValue": "",
@@ -1765,7 +1765,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the shipping address that the new items should be sent to.",
         "optional": false,
         "defaultValue": "",
@@ -1783,7 +1783,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_methods",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods used to fulfill the additional items purchased.",
         "optional": false,
         "defaultValue": "",
@@ -1812,7 +1812,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "tax_lines",
-    "type": "[`ShippingMethodTaxLine`](ShippingMethodTaxLine.mdx)[]",
+    "type": "[ShippingMethodTaxLine](ShippingMethodTaxLine.mdx)[]",
     "description": "The details of the tax lines applied on the shipping method.",
     "optional": false,
     "defaultValue": "",
@@ -1847,7 +1847,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -1874,7 +1874,7 @@ A Shipping Method represents a way in which an Order or Return can be shipped. S
       },
       {
         "name": "shipping_method",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)",
+        "type": "[ShippingMethod](ShippingMethod.mdx)",
         "description": "The details of the associated shipping method.",
         "optional": false,
         "defaultValue": "",

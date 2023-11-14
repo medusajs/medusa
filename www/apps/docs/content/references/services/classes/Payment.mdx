@@ -12,7 +12,7 @@ A payment is originally created from a payment session. Once a payment session i
 
 ### constructor
 
-**new Payment**()
+`**new Payment**()`
 
 A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.
 
@@ -57,7 +57,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart that the payment session was potentially created for.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "currency",
-    "type": "[`Currency`](Currency.mdx)",
+    "type": "[Currency](Currency.mdx)",
     "description": "The details of the currency of the payment.",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +102,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
     "optional": false,
     "defaultValue": "",
@@ -129,7 +129,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -138,7 +138,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order that the payment session was potentially created for.",
     "optional": false,
     "defaultValue": "",
@@ -165,7 +165,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "swap",
-    "type": "[`Swap`](Swap.mdx)",
+    "type": "[Swap](Swap.mdx)",
     "description": "The details of the swap that this payment was potentially created for.",
     "optional": false,
     "defaultValue": "",
@@ -196,7 +196,7 @@ A payment is originally created from a payment session. Once a payment session i
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

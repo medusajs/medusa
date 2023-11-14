@@ -13,7 +13,7 @@ Allows retrieval of prices.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Allows retrieval of prices.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Allows retrieval of prices.
   },
   {
     "name": "featureFlagRouter",
-    "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
+    "type": "[FlagRouter](internal.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ Allows retrieval of prices.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ Allows retrieval of prices.
   },
   {
     "name": "priceSelectionStrategy",
-    "type": "[`IPriceSelectionStrategy`](../interfaces/internal.internal.IPriceSelectionStrategy.mdx)",
+    "type": "[IPriceSelectionStrategy](../interfaces/internal.internal.IPriceSelectionStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ Allows retrieval of prices.
   },
   {
     "name": "productVariantService",
-    "type": "[`ProductVariantService`](internal.internal.ProductVariantService.mdx)",
+    "type": "[ProductVariantService](internal.internal.ProductVariantService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ Allows retrieval of prices.
   },
   {
     "name": "regionService",
-    "type": "[`RegionService`](internal.internal.RegionService.mdx)",
+    "type": "[RegionService](internal.internal.RegionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ Allows retrieval of prices.
   },
   {
     "name": "taxProviderService",
-    "type": "[`TaxProviderService`](internal.internal.TaxProviderService.mdx)",
+    "type": "[TaxProviderService](internal.internal.TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ Allows retrieval of prices.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ Allows retrieval of prices.
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -166,7 +166,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "addPrices",
-    "type": "(`data`: [`AddPricesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx), `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>(`data`: [`AddPricesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "(`data`: [AddPricesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx), `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;(`data`: [AddPricesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ ___
   },
   {
     "name": "addRules",
-    "type": "(`data`: [`AddRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx), `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>(`data`: [`AddRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "(`data`: [AddRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx), `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;(`data`: [AddRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -184,7 +184,7 @@ ___
   },
   {
     "name": "calculatePrices",
-    "type": "(`filters`: [`PricingFilters`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingFilters.mdx), `context?`: [`PricingContext`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingContext.mdx), `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`CalculatedPriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CalculatedPriceSetDTO.mdx)\\>",
+    "type": "(`filters`: [PricingFilters](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingFilters.mdx), `context?`: [PricingContext](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingContext.mdx), `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[CalculatedPriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CalculatedPriceSetDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -193,7 +193,7 @@ ___
   },
   {
     "name": "create",
-    "type": "(`data`: [`CreatePriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx), `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>(`data`: [`CreatePriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "(`data`: [CreatePriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx), `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;(`data`: [CreatePriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -202,7 +202,7 @@ ___
   },
   {
     "name": "createCurrencies",
-    "type": "(`data`: [`CreateCurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateCurrencyDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]\\>",
+    "type": "(`data`: [CreateCurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -211,7 +211,7 @@ ___
   },
   {
     "name": "createMoneyAmounts",
-    "type": "(`data`: [`CreateMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateMoneyAmountDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]\\>",
+    "type": "(`data`: [CreateMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -220,7 +220,7 @@ ___
   },
   {
     "name": "createPriceRules",
-    "type": "(`data`: [`CreatePriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceRuleDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]\\>",
+    "type": "(`data`: [CreatePriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -229,7 +229,7 @@ ___
   },
   {
     "name": "createPriceSetMoneyAmountRules",
-    "type": "(`data`: [`CreatePriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "type": "(`data`: [CreatePriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -238,7 +238,7 @@ ___
   },
   {
     "name": "createRuleTypes",
-    "type": "(`data`: [`CreateRuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateRuleTypeDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]\\>",
+    "type": "(`data`: [CreateRuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -247,7 +247,7 @@ ___
   },
   {
     "name": "delete",
-    "type": "(`ids`: `string`[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<`void`\\>",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -256,7 +256,7 @@ ___
   },
   {
     "name": "deleteCurrencies",
-    "type": "(`currencyCodes`: `string`[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<`void`\\>",
+    "type": "(`currencyCodes`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -265,7 +265,7 @@ ___
   },
   {
     "name": "deleteMoneyAmounts",
-    "type": "(`ids`: `string`[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<`void`\\>",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -274,7 +274,7 @@ ___
   },
   {
     "name": "deletePriceRules",
-    "type": "(`priceRuleIds`: `string`[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<`void`\\>",
+    "type": "(`priceRuleIds`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -283,7 +283,7 @@ ___
   },
   {
     "name": "deletePriceSetMoneyAmountRules",
-    "type": "(`ids`: `string`[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<`void`\\>",
+    "type": "(`ids`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -292,7 +292,7 @@ ___
   },
   {
     "name": "deleteRuleTypes",
-    "type": "(`ruleTypeIds`: `string`[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<`void`\\>",
+    "type": "(`ruleTypeIds`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -301,7 +301,7 @@ ___
   },
   {
     "name": "list",
-    "type": "(`filters?`: [`FilterablePriceSetProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "(`filters?`: [FilterablePriceSetProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -310,7 +310,7 @@ ___
   },
   {
     "name": "listAndCount",
-    "type": "(`filters?`: [`FilterablePriceSetProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[], `number`]\\>",
+    "type": "(`filters?`: [FilterablePriceSetProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -319,7 +319,7 @@ ___
   },
   {
     "name": "listAndCountCurrencies",
-    "type": "(`filters?`: [`FilterableCurrencyProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[], `number`]\\>",
+    "type": "(`filters?`: [FilterableCurrencyProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -328,7 +328,7 @@ ___
   },
   {
     "name": "listAndCountMoneyAmounts",
-    "type": "(`filters?`: [`FilterableMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[], `number`]\\>",
+    "type": "(`filters?`: [FilterableMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -337,7 +337,7 @@ ___
   },
   {
     "name": "listAndCountPriceRules",
-    "type": "(`filters?`: [`FilterablePriceRuleProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[], `number`]\\>",
+    "type": "(`filters?`: [FilterablePriceRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -346,7 +346,7 @@ ___
   },
   {
     "name": "listAndCountPriceSetMoneyAmountRules",
-    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountRulesProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[], `number`]\\>",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -355,7 +355,7 @@ ___
   },
   {
     "name": "listAndCountPriceSetMoneyAmounts",
-    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[], `number`]\\>",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -364,7 +364,7 @@ ___
   },
   {
     "name": "listAndCountRuleTypes",
-    "type": "(`filters?`: [`FilterableRuleTypeProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[], `number`]\\>",
+    "type": "(`filters?`: [FilterableRuleTypeProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[], number]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -373,7 +373,7 @@ ___
   },
   {
     "name": "listCurrencies",
-    "type": "(`filters?`: [`FilterableCurrencyProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]\\>",
+    "type": "(`filters?`: [FilterableCurrencyProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -382,7 +382,7 @@ ___
   },
   {
     "name": "listMoneyAmounts",
-    "type": "(`filters?`: [`FilterableMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]\\>",
+    "type": "(`filters?`: [FilterableMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -391,7 +391,7 @@ ___
   },
   {
     "name": "listPriceRules",
-    "type": "(`filters?`: [`FilterablePriceRuleProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]\\>",
+    "type": "(`filters?`: [FilterablePriceRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -400,7 +400,7 @@ ___
   },
   {
     "name": "listPriceSetMoneyAmountRules",
-    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountRulesProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountRulesProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -409,7 +409,7 @@ ___
   },
   {
     "name": "listPriceSetMoneyAmounts",
-    "type": "(`filters?`: [`FilterablePriceSetMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[]\\>",
+    "type": "(`filters?`: [FilterablePriceSetMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -418,7 +418,7 @@ ___
   },
   {
     "name": "listRuleTypes",
-    "type": "(`filters?`: [`FilterableRuleTypeProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx), `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]\\>",
+    "type": "(`filters?`: [FilterableRuleTypeProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -427,7 +427,7 @@ ___
   },
   {
     "name": "removeRules",
-    "type": "(`data`: [`RemovePriceSetRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RemovePriceSetRulesDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<`void`\\>",
+    "type": "(`data`: [RemovePriceSetRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RemovePriceSetRulesDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -436,7 +436,7 @@ ___
   },
   {
     "name": "retrieve",
-    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -445,7 +445,7 @@ ___
   },
   {
     "name": "retrieveCurrency",
-    "type": "(`code`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>",
+    "type": "(`code`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -454,7 +454,7 @@ ___
   },
   {
     "name": "retrieveMoneyAmount",
-    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -463,7 +463,7 @@ ___
   },
   {
     "name": "retrievePriceRule",
-    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -472,7 +472,7 @@ ___
   },
   {
     "name": "retrievePriceSetMoneyAmountRules",
-    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -481,7 +481,7 @@ ___
   },
   {
     "name": "retrieveRuleType",
-    "type": "(`id`: `string`, `config?`: [`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>, `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -490,7 +490,7 @@ ___
   },
   {
     "name": "updateCurrencies",
-    "type": "(`data`: [`UpdateCurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateCurrencyDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]\\>",
+    "type": "(`data`: [UpdateCurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -499,7 +499,7 @@ ___
   },
   {
     "name": "updateMoneyAmounts",
-    "type": "(`data`: [`UpdateMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateMoneyAmountDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]\\>",
+    "type": "(`data`: [UpdateMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -508,7 +508,7 @@ ___
   },
   {
     "name": "updatePriceRules",
-    "type": "(`data`: [`UpdatePriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceRuleDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]\\>",
+    "type": "(`data`: [UpdatePriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -517,7 +517,7 @@ ___
   },
   {
     "name": "updatePriceSetMoneyAmountRules",
-    "type": "(`data`: [`UpdatePriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "type": "(`data`: [UpdatePriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceSetMoneyAmountRulesDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -526,7 +526,7 @@ ___
   },
   {
     "name": "updateRuleTypes",
-    "type": "(`data`: [`UpdateRuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateRuleTypeDTO.mdx)[], `sharedContext?`: [`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => `Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]\\>",
+    "type": "(`data`: [UpdateRuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateRuleTypeDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -544,7 +544,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "RemoteQueryFunction",
-    "type": "(`query`: `string` \\| [`RemoteJoinerQuery`](../../internal-1/interfaces/internal.internal-1.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: Record<`string`, `unknown`\\>) => `Promise`<`any`\\> \\| ``null``",
+    "type": "(`query`: `string` \\| [RemoteJoinerQuery](../../internal-1/interfaces/internal.internal-1.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: `Record<string, unknown>`) => Promise&#60;any&#62; \\| ``null``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -566,7 +566,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -575,7 +575,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -584,7 +584,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -598,7 +598,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -618,7 +618,7 @@ Gets the prices for a product variant
 <ParameterTypes parameters={[
   {
     "name": "variantPricing",
-    "type": "[`ProductVariantPricing`](../types/internal.ProductVariantPricing.mdx)",
+    "type": "[ProductVariantPricing](../types/internal.ProductVariantPricing.mdx)",
     "description": "the prices retrieved from a variant",
     "optional": false,
     "defaultValue": "",
@@ -627,7 +627,7 @@ Gets the prices for a product variant
   },
   {
     "name": "productRates",
-    "type": "[`TaxServiceRate`](../types/internal.TaxServiceRate.mdx)[]",
+    "type": "[TaxServiceRate](../types/internal.TaxServiceRate.mdx)[]",
     "description": "the tax rates that the product has applied",
     "optional": false,
     "defaultValue": "",
@@ -662,7 +662,7 @@ selection.
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -676,7 +676,7 @@ selection.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PricingContext`](../types/internal.PricingContext.mdx)\\>",
+    "type": "Promise&#60;[PricingContext](../types/internal.PricingContext.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The pricing context",
@@ -697,7 +697,7 @@ be fetched.
 <ParameterTypes parameters={[
   {
     "name": "product",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`Product`](internal.Product.mdx), ``\"id\"`` \\| ``\"variants\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[Product](internal.Product.mdx), `\"id\"` \\| `\"variants\"`&#62;",
     "description": "the product to get pricing for.",
     "optional": false,
     "defaultValue": "",
@@ -706,7 +706,7 @@ be fetched.
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -720,7 +720,7 @@ be fetched.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, [`ProductVariantPricing`](../types/internal.ProductVariantPricing.mdx)\\>\\>",
+    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../types/internal.ProductVariantPricing.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A map of variant ids to their corresponding prices",
@@ -749,7 +749,7 @@ Gets all the variant prices for a product by the product id
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -763,7 +763,7 @@ Gets all the variant prices for a product by the product id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, [`ProductVariantPricing`](../types/internal.ProductVariantPricing.mdx)\\>\\>",
+    "type": "Promise&#60;Record&#60;string, [ProductVariantPricing](../types/internal.ProductVariantPricing.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A map of variant ids to their corresponding prices",
@@ -783,7 +783,7 @@ Gets the prices for a product variant.
 <ParameterTypes parameters={[
   {
     "name": "variant",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ProductVariant`](internal.internal.ProductVariant.mdx), ``\"product_id\"`` \\| ``\"id\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx), `\"product_id\"` \\| `\"id\"`&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -792,7 +792,7 @@ Gets the prices for a product variant.
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx) \\| [`PricingContext`](../types/internal.PricingContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx) \\| [PricingContext](../types/internal.PricingContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -806,7 +806,7 @@ Gets the prices for a product variant.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantPricing`](../types/internal.ProductVariantPricing.mdx)\\>",
+    "type": "Promise&#60;[ProductVariantPricing](../types/internal.ProductVariantPricing.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The product variant prices",
@@ -835,7 +835,7 @@ Gets the prices for a product variant by a variant id.
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx) \\| [`PricingContext`](../types/internal.PricingContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx) \\| [PricingContext](../types/internal.PricingContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -849,7 +849,7 @@ Gets the prices for a product variant by a variant id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantPricing`](../types/internal.ProductVariantPricing.mdx)\\>",
+    "type": "Promise&#60;[ProductVariantPricing](../types/internal.ProductVariantPricing.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The product variant prices",
@@ -873,7 +873,7 @@ Gets the prices for a collection of variants.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "{ `quantity?`: `number` ; `variantId`: `string`  }[]",
+    "type": "`&#123; quantity?: number ; variantId: string  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -882,7 +882,7 @@ Gets the prices for a collection of variants.
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx) \\| [`PricingContext`](../types/internal.PricingContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx) \\| [PricingContext](../types/internal.PricingContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -896,7 +896,7 @@ Gets the prices for a collection of variants.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `[variant_id: string]`: [`ProductVariantPricing`](../types/internal.ProductVariantPricing.mdx);  }\\>",
+    "type": "Promise&#60;&#123; [variant_id: string]: [ProductVariantPricing](../types/internal.ProductVariantPricing.mdx);  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The product variant prices",
@@ -916,7 +916,7 @@ Gets the prices for a shipping option.
 <ParameterTypes parameters={[
   {
     "name": "shippingOption",
-    "type": "[`ShippingOption`](internal.ShippingOption.mdx)",
+    "type": "[ShippingOption](internal.ShippingOption.mdx)",
     "description": "the shipping option to get prices for",
     "optional": false,
     "defaultValue": "",
@@ -925,7 +925,7 @@ Gets the prices for a shipping option.
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx) \\| [`PricingContext`](../types/internal.PricingContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx) \\| [PricingContext](../types/internal.PricingContext.mdx)",
     "description": "the price selection context to use",
     "optional": false,
     "defaultValue": "",
@@ -939,7 +939,7 @@ Gets the prices for a shipping option.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PricedShippingOption`](../types/internal.PricedShippingOption.mdx)\\>",
+    "type": "Promise&#60;[PricedShippingOption](../types/internal.PricedShippingOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The shipping option prices",
@@ -957,7 +957,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "products",
-    "type": "[`Product`](internal.Product.mdx)[]",
+    "type": "[Product](internal.Product.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -971,7 +971,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<([`Product`](internal.Product.mdx) \\| [`PricedProduct`](../types/internal.PricedProduct.mdx))[]\\>",
+    "type": "Promise&#60;([Product](internal.Product.mdx) \\| [PricedProduct](../types/internal.PricedProduct.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -989,7 +989,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "variants",
-    "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)[]",
+    "type": "[ProductVariant](internal.internal.ProductVariant.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -998,7 +998,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1012,7 +1012,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PricedVariant`](../types/internal.PricedVariant.mdx)[]\\>",
+    "type": "Promise&#60;[PricedVariant](../types/internal.PricedVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1032,7 +1032,7 @@ Set additional prices on a list of products.
 <ParameterTypes parameters={[
   {
     "name": "products",
-    "type": "[`Product`](internal.Product.mdx)[]",
+    "type": "[Product](internal.Product.mdx)[]",
     "description": "list of products on which to set additional prices",
     "optional": false,
     "defaultValue": "",
@@ -1041,7 +1041,7 @@ Set additional prices on a list of products.
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": true,
     "defaultValue": "",
@@ -1055,7 +1055,7 @@ Set additional prices on a list of products.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<([`Product`](internal.Product.mdx) \\| [`PricedProduct`](../types/internal.PricedProduct.mdx))[]\\>",
+    "type": "Promise&#60;([Product](internal.Product.mdx) \\| [PricedProduct](../types/internal.PricedProduct.mdx))[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A list of products with variants decorated with prices",
@@ -1075,7 +1075,7 @@ Set additional prices on a list of shipping options.
 <ParameterTypes parameters={[
   {
     "name": "shippingOptions",
-    "type": "[`ShippingOption`](internal.ShippingOption.mdx)[]",
+    "type": "[ShippingOption](internal.ShippingOption.mdx)[]",
     "description": "list of shipping options on which to set additional prices",
     "optional": false,
     "defaultValue": "",
@@ -1084,7 +1084,7 @@ Set additional prices on a list of shipping options.
   },
   {
     "name": "context",
-    "type": "[`Omit`](../types/internal.Omit.mdx)<[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx), ``\"region_id\"``\\>",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx), `\"region_id\"`&#62;",
     "description": "the price selection context to use",
     "optional": true,
     "defaultValue": "",
@@ -1098,7 +1098,7 @@ Set additional prices on a list of shipping options.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PricedShippingOption`](../types/internal.PricedShippingOption.mdx)[]\\>",
+    "type": "Promise&#60;[PricedShippingOption](../types/internal.PricedShippingOption.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A list of shipping options with prices",
@@ -1118,7 +1118,7 @@ Set additional prices on a list of product variants.
 <ParameterTypes parameters={[
   {
     "name": "variants",
-    "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)[]",
+    "type": "[ProductVariant](internal.internal.ProductVariant.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1127,7 +1127,7 @@ Set additional prices on a list of product variants.
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../types/internal.internal.PriceSelectionContext.mdx)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "the price selection context to use",
     "optional": true,
     "defaultValue": "",
@@ -1141,7 +1141,7 @@ Set additional prices on a list of product variants.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PricedVariant`](../types/internal.PricedVariant.mdx)[]\\>",
+    "type": "Promise&#60;[PricedVariant](../types/internal.PricedVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A list of products with variants decorated with prices",
@@ -1159,7 +1159,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1191,7 +1191,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1205,7 +1205,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "PricingService",
-    "type": "[`PricingService`](internal.internal.PricingService.mdx)",
+    "type": "[PricingService](internal.internal.PricingService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

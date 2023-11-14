@@ -8,14 +8,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).compare
 
-**compare**(`target`, `targetStart?`, `targetEnd?`, `sourceStart?`, `sourceEnd?`): ``0`` \| ``1`` \| ``-1``
+`**compare**(target, targetStart?, targetEnd?, sourceStart?, sourceEnd?): `0` \| `1` \| `-1``
 
 Compares `buf` with `target` and returns a number indicating whether `buf`comes before, after, or is the same as `target` in sort order.
 Comparison is based on the actual sequence of bytes in each `Buffer`.
 
 * `0` is returned if `target` is the same as `buf`
-* `1` is returned if `target` should come _before_`buf` when sorted.
-* `-1` is returned if `target` should come _after_`buf` when sorted.
+* `1` is returned if `target` should come \_before\_`buf` when sorted.
+* `-1` is returned if `target` should come \_after\_`buf` when sorted.
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -62,7 +62,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
 <ParameterTypes parameters={[
   {
     "name": "target",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "A `Buffer` or Uint8Array with which to compare `buf`.",
     "optional": false,
     "defaultValue": "",
@@ -113,7 +113,7 @@ console.log(buf1.compare(buf2, 5, 6, 5));
 
 <ParameterTypes parameters={[
   {
-    "name": "``0`` \\| ``1`` \\| ``-1``",
+    "name": "`0` \\| `1` \\| `-1`",
     "type": "``0`` \\| ``1`` \\| ``-1``",
     "optional": true,
     "defaultValue": "",

@@ -4,9 +4,9 @@ import { ThemeClassNames } from "@docusaurus/theme-common"
 import { useDocsSidebar } from "@docusaurus/theme-common/internal"
 import { useLocation } from "@docusaurus/router"
 import DocSidebar from "@theme/DocSidebar"
-import type { Props } from "@theme/DocPage/Layout/Sidebar"
-import { SwitchTransition, CSSTransition } from "react-transition-group"
-import { useSidebar } from "@site/src/providers/Sidebar"
+import type { Props } from "@theme/DocRoot/Layout/Sidebar"
+import { useSidebar } from "../../../../providers/Sidebar"
+import { CSSTransition, SwitchTransition } from "react-transition-group"
 
 // Reset sidebar state when sidebar changes
 // Use React key to unmount/remount the children
@@ -20,7 +20,7 @@ function ResetOnSidebarChange({ children }: { children: ReactNode }) {
   )
 }
 
-export default function DocPageLayoutSidebar({
+export default function DocRootLayoutSidebar({
   sidebar,
   hiddenSidebarContainer,
 }: Props): JSX.Element {

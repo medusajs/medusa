@@ -40,7 +40,7 @@ A Product Option defines properties that may vary between different variants of 
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ A Product Option defines properties that may vary between different variants of 
   },
   {
     "name": "product",
-    "type": "[`Product`](internal.Product.mdx)",
+    "type": "[Product](internal.Product.mdx)",
     "description": "The details of the product that this product option belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ A Product Option defines properties that may vary between different variants of 
   },
   {
     "name": "values",
-    "type": "[`ProductOptionValue`](internal.internal.ProductOptionValue.mdx)[]",
+    "type": "[ProductOptionValue](internal.internal.ProductOptionValue.mdx)[]",
     "description": "The details of the values of the product option.",
     "optional": false,
     "defaultValue": "",

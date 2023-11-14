@@ -65,7 +65,7 @@ async function retrieveProductOption (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)&#62;",
     "description": "The configurations determining how the product option is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +139,7 @@ async function retrieveProductOption (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -199,7 +199,7 @@ async function retrieveProductOption (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product option.",
@@ -225,7 +225,7 @@ async function retrieveProductOption (id: string) {
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "type": "``null`` \\| `Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -234,7 +234,7 @@ async function retrieveProductOption (id: string) {
       },
       {
         "name": "product",
-        "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)",
+        "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)",
         "description": "The associated product. It may only be available if the `product` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -242,7 +242,7 @@ async function retrieveProductOption (id: string) {
         "children": [
           {
             "name": "categories",
-            "type": "``null`` \\| [`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "``null`` \\| [ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -251,7 +251,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "collection",
-            "type": "[`ProductCollectionDTO`](../../interfaces/ProductCollectionDTO.mdx)",
+            "type": "[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)",
             "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -341,7 +341,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "images",
-            "type": "[`ProductImageDTO`](../../interfaces/ProductImageDTO.mdx)[]",
+            "type": "[ProductImageDTO](../../interfaces/ProductImageDTO.mdx)[]",
             "description": "The associated product images. It may only be available if the `images` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -377,7 +377,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "metadata",
-            "type": "Record<`string`, `unknown`\\>",
+            "type": "`Record<string, unknown>`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -395,7 +395,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "options",
-            "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]",
+            "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]",
             "description": "The associated product options. It may only be available if the `options` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -413,7 +413,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "status",
-            "type": "[`ProductStatus`](../../enums/ProductStatus.mdx)",
+            "type": "[ProductStatus](../../enums/ProductStatus.mdx)",
             "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
             "optional": false,
             "defaultValue": "",
@@ -431,7 +431,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "tags",
-            "type": "[`ProductTagDTO`](../../interfaces/ProductTagDTO.mdx)[]",
+            "type": "[ProductTagDTO](../../interfaces/ProductTagDTO.mdx)[]",
             "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -458,7 +458,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "type",
-            "type": "[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]",
+            "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
             "description": "The associated product type. It may only be available if the `type` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -476,7 +476,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "variants",
-            "type": "[`ProductVariantDTO`](../../interfaces/ProductVariantDTO.mdx)[]",
+            "type": "[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)[]",
             "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -514,7 +514,7 @@ async function retrieveProductOption (id: string) {
       },
       {
         "name": "values",
-        "type": "[`ProductOptionValueDTO`](../../interfaces/ProductOptionValueDTO.mdx)[]",
+        "type": "[ProductOptionValueDTO](../../interfaces/ProductOptionValueDTO.mdx)[]",
         "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -540,7 +540,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -549,7 +549,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "option",
-            "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)",
+            "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)",
             "description": "The associated product option. It may only be available if the `option` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -567,7 +567,7 @@ async function retrieveProductOption (id: string) {
           },
           {
             "name": "variant",
-            "type": "[`ProductVariantDTO`](../../interfaces/ProductVariantDTO.mdx)",
+            "type": "[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)",
             "description": "The associated product variant. It may only be available if the `variant` relation is expanded.",
             "optional": false,
             "defaultValue": "",

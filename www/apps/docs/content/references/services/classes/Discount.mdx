@@ -12,7 +12,7 @@ A discount can be applied to a cart for promotional purposes.
 
 ### constructor
 
-**new Discount**()
+`**new Discount**()`
 
 A discount can be applied to a cart for promotional purposes.
 
@@ -84,7 +84,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "parent_discount",
-    "type": "[`Discount`](Discount.mdx)",
+    "type": "[Discount](Discount.mdx)",
     "description": "The details of the parent discount that this discount was created from.",
     "optional": false,
     "defaultValue": "",
@@ -111,7 +111,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "regions",
-    "type": "[`Region`](Region.mdx)[]",
+    "type": "[Region](Region.mdx)[]",
     "description": "The details of the regions in which the Discount can be used.",
     "optional": false,
     "defaultValue": "",
@@ -120,7 +120,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "rule",
-    "type": "[`DiscountRule`](DiscountRule.mdx)",
+    "type": "[DiscountRule](DiscountRule.mdx)",
     "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
     "optional": false,
     "defaultValue": "",
@@ -187,7 +187,7 @@ A discount can be applied to a cart for promotional purposes.
 
 ### upperCaseCodeAndTrim
 
-`Private` **upperCaseCodeAndTrim**(): `void`
+`Private **upperCaseCodeAndTrim**(): void`
 
 #### Returns
 

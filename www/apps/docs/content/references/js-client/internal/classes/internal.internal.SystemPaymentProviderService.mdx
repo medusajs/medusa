@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -96,7 +96,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -105,7 +105,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -114,7 +114,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -128,7 +128,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -160,7 +160,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -192,7 +192,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -224,7 +224,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -256,7 +256,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -288,7 +288,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -320,7 +320,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -352,7 +352,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`string`\\>",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -384,7 +384,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -402,7 +402,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -448,7 +448,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -480,7 +480,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\>\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -498,7 +498,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -512,7 +512,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "SystemProviderService",
-    "type": "[`SystemPaymentProviderService`](internal.internal.SystemPaymentProviderService.mdx)",
+    "type": "[SystemPaymentProviderService](internal.internal.SystemPaymentProviderService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
