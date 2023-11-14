@@ -1,7 +1,7 @@
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { removePriceListVariantPrices } from "@medusajs/workflows"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
-import { FlagRouter } from "@medusajs/utils"
-import { removePriceListVariantPrices, Workflows } from "@medusajs/workflows"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/variants/{variant_id}/prices
@@ -64,13 +64,13 @@ export default async (req, res) => {
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const manager: EntityManager = req.scope.resolve("manager")
 
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.RemovePriceListVariants,
-  })
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
+  )
 
   let deletedPriceIds: string[] = []
 
-  if (isWorkflowEnabled) {
+  if (isMedusaV2FlagEnabled) {
     const deletePriceListProductsWorkflow = removePriceListVariantPrices(
       req.scope
     )

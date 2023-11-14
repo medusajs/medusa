@@ -39,10 +39,6 @@ module.exports = {
     medusa_v2: enableMedusaV2,
     workflows: {
       [Workflows.CreateCart]: true,
-      [Workflows.CreatePriceList]: true,
-      [Workflows.RemovePriceListProducts]: true,
-      [Workflows.RemovePriceListPrices]: true,
-      [Workflows.RemovePriceListVariants]: true,
     },
   },
   modules: {

@@ -1,11 +1,9 @@
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
+import { removePriceListProductPrices } from "@medusajs/workflows/dist/definition/price-list/remove-price-list-prices"
 import { ArrayNotEmpty, IsString } from "class-validator"
-
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
-import { FlagRouter } from "@medusajs/utils"
-import { Workflows } from "@medusajs/workflows"
-import { removePriceListProductPrices } from "@medusajs/workflows/dist/definition/price-list/remove-price-list-prices"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/prices/batch
@@ -87,11 +85,12 @@ export default async (req, res) => {
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
-    workflows: Workflows.RemovePriceListPrices,
-  })
 
-  if (isWorkflowEnabled) {
+  const isMedusaV2FlagEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
+  )
+
+  if (isMedusaV2FlagEnabled) {
     const deletePriceListPricesWorkflow = removePriceListProductPrices(
       req.scope
     )
