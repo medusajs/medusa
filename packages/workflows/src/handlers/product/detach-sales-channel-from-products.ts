@@ -37,24 +37,24 @@ export async function detachSalesChannelFromProducts({
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const remoteLink = container.resolve("remoteLink")
-    const links: any[] = []
+    const promises: Promise<unknown>[] = []
 
     for (const [
       salesChannelId,
       productIds,
     ] of salesChannelIdProductIdsMap.entries()) {
       productIds.forEach((id) =>
-        links.push({
-          productService: {
-            product_id: id,
-          },
-          salesChannelService: {
-            sales_channel_id: salesChannelId,
-          },
-        })
+        promises.push(
+          remoteLink.dismiss({
+            productService: {
+              product_id: id,
+            },
+            salesChannelService: {
+              sales_channel_id: salesChannelId,
+            },
+          })
+        )
       )
-
-      await remoteLink.delete(links)
     }
 
     return

@@ -571,7 +571,7 @@ describe("/admin/products", () => {
 
       const response = await api
         .post(
-          `/admin/products/${toUpdateWithSalesChannels}`,
+          `/admin/products/${toUpdateWithSalesChannels}?expand=sales_channels`,
           payload,
           adminHeaders
         )

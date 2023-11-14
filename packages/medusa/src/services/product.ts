@@ -1111,7 +1111,7 @@ class ProductService extends TransactionBaseService {
 
   /**
    * Temporary method to join sales channels of a product using RemoteQuery while
-   * IsolatedSalesChannelDomain FF is on.
+   * MedusaV2 FF is on.
    *
    * @param products
    * @private
@@ -1130,7 +1130,7 @@ class ProductService extends TransactionBaseService {
 
   /**
    * Temporary method to fetch sales channels of a product using RemoteQuery while
-   * IsolatedSalesChannelDomain FF is on.
+   * MedusaV2 FF is on.
    *
    * @param productIds
    * @private
