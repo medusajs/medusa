@@ -22,8 +22,7 @@ const adminHeaders = {
 }
 
 const env = {
-  MEDUSA_FF_ISOLATE_PRICING_DOMAIN: true,
-  MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN: true,
+  MEDUSA_FF_MEDUSA_V2: true,
 }
 
 describe("[Product & Pricing Module] GET /admin/price-lists/:id/products", () => {
