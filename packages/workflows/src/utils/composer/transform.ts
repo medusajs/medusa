@@ -97,11 +97,11 @@ export function transform(
       invoke: context.invoke,
     } as any
 
-    values = !!values ? (Array.isArray(values) ? values : [values]) : values
+    values = Array.isArray(values) ? values : [values]
     const stepValues = values?.map((value: any) => {
       let returnVal
       if (value?.__type === SymbolInputReference) {
-        returnVal = value.value
+        returnVal = value.__value
       } else if (value?.__type === SymbolWorkflowStep) {
         returnVal = invoke[value.__step__]?.output
       } else {
@@ -116,11 +116,8 @@ export function transform(
     for (let i = 0; i < functions.length; i++) {
       const fn = functions[i]
 
-      const fnInput = i === 0 ? stepValues ?? [] : [finalResult]
-      finalResult = await fn.apply(
-        fn,
-        fnInput.length ? [...fnInput, executionContext] : [executionContext]
-      )
+      const fnInput = i === 0 ? stepValues : [finalResult]
+      finalResult = await fn.apply(fn, [...fnInput, context])
     }
 
     returnFn.__value = finalResult
