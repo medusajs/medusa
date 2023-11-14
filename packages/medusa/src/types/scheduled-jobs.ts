@@ -15,8 +15,8 @@ export type ScheduledJobConfig<T = unknown> = {
   data?: T
 }
 
-export type ScheduledJobHandler<T = unknown> = (
-  container: MedusaContainer,
-  pluginOptions?: Record<string, unknown>,
+export type ScheduledJobArgs<T = unknown> = {
+  container: MedusaContainer
   data?: T
-) => Promise<void>
+  pluginOptions?: Record<string, unknown>
+}

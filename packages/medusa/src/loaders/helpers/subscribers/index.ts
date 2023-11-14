@@ -40,7 +40,10 @@ export class SubscriberLoader {
     this.activityId_ = activityId
   }
 
-  private validateSubscriber(subscriber: any): subscriber is {
+  private validateSubscriber(
+    subscriber: any,
+    path: string
+  ): subscriber is {
     default: SubscriberHandler<unknown>
     config: SubscriberConfig
   } {
@@ -50,6 +53,7 @@ export class SubscriberLoader {
       /**
        * If the handler is not a function, we can't use it
        */
+      logger.warn(`The subscriber in ${path} is not a function.`)
       return false
     }
 
@@ -59,7 +63,7 @@ export class SubscriberLoader {
       /**
        * If the subscriber is missing a config, we can't use it
        */
-      logger.warn(`The subscriber is missing a config. Skipping registration.`)
+      logger.warn(`The subscriber in ${path} is missing a config.`)
       return false
     }
 
@@ -69,13 +73,9 @@ export class SubscriberLoader {
        * In production we throw an error, else we log a warning
        */
       if (process.env.NODE_ENV === "production") {
-        throw new Error(
-          "The subscriber is missing an event. Skipping registration."
-        )
+        throw new Error(`The subscriber in ${path} is missing an event.`)
       } else {
-        logger.warn(
-          `The subscriber is missing an event. Skipping registration.`
-        )
+        logger.warn(`The subscriber in ${path} is missing an event.`)
       }
 
       return false
@@ -89,6 +89,9 @@ export class SubscriberLoader {
       /**
        * If the subscribers event is not a string or an array of strings, we can't use it
        */
+      logger.warn(
+        `The subscriber in ${path} has an invalid event. The event must be a string or an array of strings.`
+      )
       return false
     }
 
@@ -97,7 +100,7 @@ export class SubscriberLoader {
 
   private async createDescriptor(absolutePath: string, entry: string) {
     return await import(absolutePath).then((module_) => {
-      const isValid = this.validateSubscriber(module_)
+      const isValid = this.validateSubscriber(module_, absolutePath)
 
       if (!isValid) {
         return

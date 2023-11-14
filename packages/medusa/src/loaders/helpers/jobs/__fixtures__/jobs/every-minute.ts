@@ -1,9 +1,6 @@
-import { MedusaContainer } from "@medusajs/types"
+import { ScheduledJobArgs } from "../../../../../types/scheduled-jobs"
 
-export default async function (
-  container: MedusaContainer,
-  pluginOptions: Record<string, unknown>
-) {
+export default async function ({ container, pluginOptions }: ScheduledJobArgs) {
   // noop
   return {}
 }

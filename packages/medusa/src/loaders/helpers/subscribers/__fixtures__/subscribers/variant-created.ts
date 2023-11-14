@@ -1,7 +1,15 @@
 import { ProductVariantService } from "../../../../../services"
-import { SubscriberConfig } from "../../../../../types/subscribers"
+import {
+  SubscriberArgs,
+  SubscriberConfig,
+} from "../../../../../types/subscribers"
 
-export default async function () {
+export default async function ({
+  data,
+  eventName,
+  container,
+  pluginOptions,
+}: SubscriberArgs) {
   return Promise.resolve()
 }
 

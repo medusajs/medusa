@@ -3,10 +3,14 @@ import { readdir } from "fs/promises"
 import { join } from "path"
 import JobSchedulerService from "../../../services/job-scheduler"
 import {
+  ScheduledJobArgs,
   ScheduledJobConfig,
-  ScheduledJobHandler,
 } from "../../../types/scheduled-jobs"
 import logger from "../../logger"
+
+type ScheduledJobHandler<T = unknown> = (
+  args: ScheduledJobArgs<T>
+) => Promise<void>
 
 type ScheduledJobModule = {
   config: ScheduledJobConfig
@@ -35,35 +39,39 @@ export default class ScheduledJobsLoader {
     this.container_ = container
   }
 
-  private validateJob(job: any): job is {
+  private validateJob(
+    job: any,
+    path: string
+  ): job is {
     default: ScheduledJobHandler
     config: ScheduledJobConfig
   } {
     const handler = job.default
 
     if (!handler || typeof handler !== "function") {
+      logger.warn(`The job in ${path} is not a function.`)
       return false
     }
 
     const config = job.config
 
     if (!config) {
-      logger.warn(`The job is missing a config. Skipping registration.`)
+      logger.warn(`The job in ${path} is missing a config.`)
       return false
     }
 
     if (!config.schedule) {
-      logger.warn(`The job is missing a schedule. Skipping registration.`)
+      logger.warn(`The job in ${path} is missing a schedule.`)
       return false
     }
 
     if (!config.name) {
-      logger.warn(`The job is missing a name. Skipping registration.`)
+      logger.warn(`The job in ${path} is missing a name.`)
       return false
     }
 
     if (config.data && typeof config.data !== "object") {
-      logger.warn(`The job data is not an object. Skipping registration.`)
+      logger.warn(`The job data in ${path} is not an object.`)
       return false
     }
 
@@ -72,7 +80,7 @@ export default class ScheduledJobsLoader {
 
   private async createDescriptor(absolutePath: string, entry: string) {
     return await import(absolutePath).then((module_) => {
-      const isValid = this.validateJob(module_)
+      const isValid = this.validateJob(module_, absolutePath)
 
       if (!isValid) {
         return
@@ -128,7 +136,11 @@ export default class ScheduledJobsLoader {
         const { name, data = {}, schedule } = job.config
 
         const handler = async () => {
-          await job.handler(this.container_, this.pluginOptions_)
+          await job.handler({
+            container: this.container_,
+            data,
+            pluginOptions: this.pluginOptions_,
+          })
         }
 
         await jobSchedulerService.create(name, data, schedule, handler, {
