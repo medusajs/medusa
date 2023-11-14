@@ -12,7 +12,7 @@ Idempotency Key is used to continue a process in case of any failure that might 
 
 ### constructor
 
-**new IdempotencyKey**()
+`**new IdempotencyKey**()`
 
 Idempotency Key is used to continue a process in case of any failure that might occur.
 
@@ -75,7 +75,7 @@ Idempotency Key is used to continue a process in case of any failure that might 
   },
   {
     "name": "request_params",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The parameters passed to the request",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ Idempotency Key is used to continue a process in case of any failure that might 
   },
   {
     "name": "response_body",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The response's body",
     "optional": false,
     "defaultValue": "",
@@ -115,7 +115,7 @@ Idempotency Key is used to continue a process in case of any failure that might 
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

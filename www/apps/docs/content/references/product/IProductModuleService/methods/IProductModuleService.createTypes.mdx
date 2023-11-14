@@ -40,7 +40,7 @@ async function createProductType (value: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductTypeDTO`](../../interfaces/CreateProductTypeDTO.mdx)[]",
+    "type": "[CreateProductTypeDTO](../../interfaces/CreateProductTypeDTO.mdx)[]",
     "description": "The product types to be created.",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +57,7 @@ async function createProductType (value: string) {
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -77,7 +77,7 @@ async function createProductType (value: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -137,7 +137,7 @@ async function createProductType (value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product types.",
@@ -145,7 +145,7 @@ async function createProductType (value: string) {
     "children": [
       {
         "name": "ProductTypeDTO[]",
-        "type": "[`ProductTypeDTO`](../../interfaces/ProductTypeDTO.mdx)[]",
+        "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
@@ -171,7 +171,7 @@ async function createProductType (value: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",

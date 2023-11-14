@@ -12,7 +12,7 @@ Custom Shipping Options are overridden Shipping Options. Admins can attach a Cus
 
 ### constructor
 
-**new CustomShippingOption**()
+`**new CustomShippingOption**()`
 
 Custom Shipping Options are overridden Shipping Options. Admins can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option.
 
@@ -21,7 +21,7 @@ Custom Shipping Options are overridden Shipping Options. Admins can attach a Cus
 <ParameterTypes parameters={[
   {
     "name": "cart",
-    "type": "[`Cart`](Cart.mdx)",
+    "type": "[Cart](Cart.mdx)",
     "description": "The details of the cart this shipping option belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ Custom Shipping Options are overridden Shipping Options. Admins can attach a Cus
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ Custom Shipping Options are overridden Shipping Options. Admins can attach a Cus
   },
   {
     "name": "shipping_option",
-    "type": "[`ShippingOption`](ShippingOption.mdx)",
+    "type": "[ShippingOption](ShippingOption.mdx)",
     "description": "The details of the overridden shipping options.",
     "optional": false,
     "defaultValue": "",
@@ -115,7 +115,7 @@ Custom Shipping Options are overridden Shipping Options. Admins can attach a Cus
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "billing_address",
-    "type": "`string` \\| [`AddressPayload`](internal.AddressPayload.mdx)",
+    "type": "`string` \\| [AddressPayload](internal.AddressPayload.mdx)",
     "description": "The Address to be used for billing purposes.",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "discounts",
-    "type": "[`Discount`](internal.Discount-2.mdx)[]",
+    "type": "[Discount](internal.Discount-2.mdx)[]",
     "description": "The discounts to add to the draft order",
     "optional": true,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "items",
-    "type": "[`Item`](internal.Item-3.mdx)[]",
+    "type": "[Item](internal.Item-3.mdx)[]",
     "description": "The draft order's line items.",
     "optional": true,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The optional key-value map with additional details about the Draft Order.",
     "optional": true,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_address",
-    "type": "`string` \\| [`AddressPayload`](internal.AddressPayload.mdx)",
+    "type": "`string` \\| [AddressPayload](internal.AddressPayload.mdx)",
     "description": "The Address to be used for shipping purposes.",
     "optional": true,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_methods",
-    "type": "[`ShippingMethod`](internal.ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](internal.ShippingMethod.mdx)[]",
     "description": "The shipping methods for the draft order",
     "optional": false,
     "defaultValue": "",

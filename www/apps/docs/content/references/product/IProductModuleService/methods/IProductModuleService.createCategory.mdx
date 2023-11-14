@@ -39,7 +39,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductCategoryDTO`](../../interfaces/CreateProductCategoryDTO.mdx)",
+    "type": "[CreateProductCategoryDTO](../../interfaces/CreateProductCategoryDTO.mdx)",
     "description": "The product category to be created.",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -112,7 +112,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -172,7 +172,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created product category.",
@@ -180,7 +180,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
     "children": [
       {
         "name": "category_children",
-        "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+        "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
         "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -188,7 +188,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -260,7 +260,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -352,7 +352,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
       },
       {
         "name": "parent_category",
-        "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+        "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
         "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
         "optional": true,
         "defaultValue": "",
@@ -360,7 +360,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -432,7 +432,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",

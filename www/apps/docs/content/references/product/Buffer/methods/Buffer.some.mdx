@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).some
 
-**some**(`predicate`, `thisArg?`): `boolean`
+`**some**(predicate, thisArg?): boolean`
 
 Determines whether the specified callback function returns true for any element of an array.
 
@@ -17,7 +17,7 @@ Determines whether the specified callback function returns true for any element 
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+    "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `unknown`",
     "description": "A function that accepts up to three arguments. The some method calls the predicate function for each element in the array until the predicate returns a value which is coercible to the Boolean value true, or until the end of the array.",
     "optional": false,
     "defaultValue": "",
@@ -25,7 +25,7 @@ Determines whether the specified callback function returns true for any element 
     "children": [
       {
         "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `array`: `Uint8Array`) => `unknown`",
+        "type": "(`value`: `number`, `index`: `number`, `array`: Uint8Array) => `unknown`",
         "description": "",
         "optional": false,
         "defaultValue": "",

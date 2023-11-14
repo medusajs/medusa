@@ -22,7 +22,7 @@ A region holds settings specific to a geographical location, including the curre
   },
   {
     "name": "countries",
-    "type": "[`Country`](internal.internal.Country.mdx)[]",
+    "type": "[Country](internal.internal.Country.mdx)[]",
     "description": "The details of the countries included in this region.",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +40,7 @@ A region holds settings specific to a geographical location, including the curre
   },
   {
     "name": "currency",
-    "type": "[`Currency`](internal.Currency.mdx)",
+    "type": "[Currency](internal.Currency.mdx)",
     "description": "The details of the currency used in the region.",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A region holds settings specific to a geographical location, including the curre
   },
   {
     "name": "fulfillment_providers",
-    "type": "[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)[]",
+    "type": "[FulfillmentProvider](internal.internal.FulfillmentProvider.mdx)[]",
     "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
     "optional": false,
     "defaultValue": "",
@@ -104,7 +104,7 @@ A region holds settings specific to a geographical location, including the curre
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -122,7 +122,7 @@ A region holds settings specific to a geographical location, including the curre
   },
   {
     "name": "payment_providers",
-    "type": "[`PaymentProvider`](internal.PaymentProvider.mdx)[]",
+    "type": "[PaymentProvider](internal.PaymentProvider.mdx)[]",
     "description": "The details of the payment providers that can be used to process payments in the region.",
     "optional": false,
     "defaultValue": "",
@@ -140,7 +140,7 @@ A region holds settings specific to a geographical location, including the curre
   },
   {
     "name": "tax_provider",
-    "type": "[`TaxProvider`](internal.TaxProvider.mdx)",
+    "type": "[TaxProvider](internal.TaxProvider.mdx)",
     "description": "The details of the tax provider used in the region.",
     "optional": false,
     "defaultValue": "",
@@ -167,7 +167,7 @@ A region holds settings specific to a geographical location, including the curre
   },
   {
     "name": "tax_rates",
-    "type": "``null`` \\| [`TaxRate`](internal.TaxRate.mdx)[]",
+    "type": "``null`` \\| [TaxRate](internal.TaxRate.mdx)[]",
     "description": "The details of the tax rates used in the region, aside from the default rate.",
     "optional": false,
     "defaultValue": "",

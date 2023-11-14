@@ -13,7 +13,7 @@ A claim item is an item created as part of a claim. It references an item in the
 <ParameterTypes parameters={[
   {
     "name": "claim_order",
-    "type": "[`ClaimOrder`](internal.ClaimOrder.mdx)",
+    "type": "[ClaimOrder](internal.ClaimOrder.mdx)",
     "description": "The details of the claim this item belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ A claim item is an item created as part of a claim. It references an item in the
   },
   {
     "name": "images",
-    "type": "[`ClaimImage`](internal.internal.ClaimImage.mdx)[]",
+    "type": "[ClaimImage](internal.internal.ClaimImage.mdx)[]",
     "description": "The claim images that are attached to the claim item.",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A claim item is an item created as part of a claim. It references an item in the
   },
   {
     "name": "item",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "The details of the line item in the original order that this claim item refers to.",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ A claim item is an item created as part of a claim. It references an item in the
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ A claim item is an item created as part of a claim. It references an item in the
   },
   {
     "name": "reason",
-    "type": "[`ClaimReason`](../enums/internal.internal.ClaimReason.mdx)",
+    "type": "[ClaimReason](../enums/internal.internal.ClaimReason.mdx)",
     "description": "The reason for the claim",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ A claim item is an item created as part of a claim. It references an item in the
   },
   {
     "name": "tags",
-    "type": "[`ClaimTag`](internal.internal.ClaimTag.mdx)[]",
+    "type": "[ClaimTag](internal.internal.ClaimTag.mdx)[]",
     "description": "User defined tags for easy filtering and grouping.",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ A claim item is an item created as part of a claim. It references an item in the
   },
   {
     "name": "variant",
-    "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)",
+    "type": "[ProductVariant](internal.internal.ProductVariant.mdx)",
     "description": "The details of the product variant to potentially replace the item in the original order.",
     "optional": false,
     "defaultValue": "",

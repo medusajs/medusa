@@ -22,7 +22,7 @@ A price set money amount's data.
   },
   {
     "name": "money_amount",
-    "type": "[`MoneyAmountDTO`](MoneyAmountDTO.mdx)",
+    "type": "[MoneyAmountDTO](MoneyAmountDTO.mdx)",
     "description": "The money amount associated with the price set money amount. It may only be available if the relation `money_amount` is expanded.",
     "optional": true,
     "defaultValue": "",
@@ -39,7 +39,7 @@ A price set money amount's data.
       },
       {
         "name": "currency",
-        "type": "[`CurrencyDTO`](CurrencyDTO.mdx)",
+        "type": "[CurrencyDTO](CurrencyDTO.mdx)",
         "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
         "optional": true,
         "defaultValue": "",
@@ -123,7 +123,7 @@ A price set money amount's data.
   },
   {
     "name": "price_rules",
-    "type": "[`PriceRuleDTO`](PriceRuleDTO.mdx)[]",
+    "type": "[PriceRuleDTO](PriceRuleDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -149,7 +149,7 @@ A price set money amount's data.
       },
       {
         "name": "price_set",
-        "type": "[`PriceSetDTO`](PriceSetDTO.mdx)",
+        "type": "[PriceSetDTO](PriceSetDTO.mdx)",
         "description": "The associated price set. It may only be available if the relation `price_set` is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -166,7 +166,7 @@ A price set money amount's data.
           },
           {
             "name": "money_amounts",
-            "type": "[`MoneyAmountDTO`](MoneyAmountDTO.mdx)[]",
+            "type": "[MoneyAmountDTO](MoneyAmountDTO.mdx)[]",
             "description": "The prices that belong to this price set.",
             "optional": true,
             "defaultValue": "",
@@ -175,7 +175,7 @@ A price set money amount's data.
           },
           {
             "name": "rule_types",
-            "type": "[`RuleTypeDTO`](RuleTypeDTO.mdx)[]",
+            "type": "[RuleTypeDTO](RuleTypeDTO.mdx)[]",
             "description": "The rule types applied on this price set.",
             "optional": true,
             "defaultValue": "",
@@ -213,7 +213,7 @@ A price set money amount's data.
       },
       {
         "name": "rule_type",
-        "type": "[`RuleTypeDTO`](RuleTypeDTO.mdx)",
+        "type": "[RuleTypeDTO](RuleTypeDTO.mdx)",
         "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -249,7 +249,7 @@ A price set money amount's data.
           {
             "name": "rule_attribute",
             "type": "`string`",
-            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -279,7 +279,7 @@ A price set money amount's data.
   },
   {
     "name": "price_set",
-    "type": "[`PriceSetDTO`](PriceSetDTO.mdx)",
+    "type": "[PriceSetDTO](PriceSetDTO.mdx)",
     "description": "The price set associated with the price set money amount. It may only be available if the relation `price_set` is expanded.",
     "optional": true,
     "defaultValue": "",
@@ -296,7 +296,7 @@ A price set money amount's data.
       },
       {
         "name": "money_amounts",
-        "type": "[`MoneyAmountDTO`](MoneyAmountDTO.mdx)[]",
+        "type": "[MoneyAmountDTO](MoneyAmountDTO.mdx)[]",
         "description": "The prices that belong to this price set.",
         "optional": true,
         "defaultValue": "",
@@ -313,7 +313,7 @@ A price set money amount's data.
           },
           {
             "name": "currency",
-            "type": "[`CurrencyDTO`](CurrencyDTO.mdx)",
+            "type": "[CurrencyDTO](CurrencyDTO.mdx)",
             "description": "The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.",
             "optional": true,
             "defaultValue": "",
@@ -360,7 +360,7 @@ A price set money amount's data.
       },
       {
         "name": "rule_types",
-        "type": "[`RuleTypeDTO`](RuleTypeDTO.mdx)[]",
+        "type": "[RuleTypeDTO](RuleTypeDTO.mdx)[]",
         "description": "The rule types applied on this price set.",
         "optional": true,
         "defaultValue": "",
@@ -396,7 +396,7 @@ A price set money amount's data.
           {
             "name": "rule_attribute",
             "type": "`string`",
-            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
