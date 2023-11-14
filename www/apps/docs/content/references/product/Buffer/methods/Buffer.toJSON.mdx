@@ -8,9 +8,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).toJSON
 
-**toJSON**(): { `data`: `number`[] ; `type`: ``"Buffer"``  }
+`**toJSON**(): &#123; data: number[] ; type: `"Buffer"`  &#125;`
 
-Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) implicitly calls
+Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/JSON/stringify) implicitly calls
 this function when stringifying a `Buffer` instance.
 
 `Buffer.from()` accepts objects in the format returned from this method.
@@ -41,7 +41,7 @@ console.log(copy);
 
 <ParameterTypes parameters={[
   {
-    "name": "`object`",
+    "name": "object",
     "type": "`object`",
     "optional": true,
     "defaultValue": "",

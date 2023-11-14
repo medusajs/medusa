@@ -31,7 +31,8 @@ export default function (theme: MarkdownTheme) {
           (reflection.parent?.kindOf(ReflectionKind.Enum) ? " = " : ": ") +
           Handlebars.helpers.type.call(
             reflectionType ? reflectionType : reflection,
-            "object"
+            "object",
+            false
           )
         )
       }
@@ -43,11 +44,7 @@ export default function (theme: MarkdownTheme) {
         `${this.flags.isRest ? "... " : ""} **${escapeChars(this.name)}**`
       )
       if (this instanceof DeclarationReflection && this.typeParameters) {
-        md.push(
-          `<${this.typeParameters
-            .map((typeParameter) => `\`${typeParameter.name}\``)
-            .join(", ")}\\>`
-        )
+        md.push(`\`<${this.typeParameters.join(", ")}>\``)
       }
 
       md.push(getType(this))

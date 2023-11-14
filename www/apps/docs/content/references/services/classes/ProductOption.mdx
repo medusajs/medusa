@@ -12,7 +12,7 @@ A Product Option defines properties that may vary between different variants of 
 
 ### constructor
 
-**new ProductOption**()
+`**new ProductOption**()`
 
 A Product Option defines properties that may vary between different variants of a Product. Common Product Options are "Size" and "Color". Admins are free to create any product options.
 
@@ -48,7 +48,7 @@ A Product Option defines properties that may vary between different variants of 
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +57,7 @@ A Product Option defines properties that may vary between different variants of 
   },
   {
     "name": "product",
-    "type": "[`Product`](Product.mdx)",
+    "type": "[Product](Product.mdx)",
     "description": "The details of the product that this product option belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A Product Option defines properties that may vary between different variants of 
   },
   {
     "name": "values",
-    "type": "[`ProductOptionValue`](ProductOptionValue.mdx)[]",
+    "type": "[ProductOptionValue](ProductOptionValue.mdx)[]",
     "description": "The details of the values of the product option.",
     "optional": false,
     "defaultValue": "",
@@ -106,7 +106,7 @@ A Product Option defines properties that may vary between different variants of 
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

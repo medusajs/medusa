@@ -143,52 +143,52 @@ export default (rootDirectory) => {
 Then, create an object that will hold the CORS configurations. Based on whether it's storefront or admin CORS options, you pass it the respective configuration from `projectConfig`:
 
 <Tabs groupId="endpoint-type" isCodeTabs={true}>
-<TabItem value="storefront" label="Storefront CORS" default>
+  <TabItem value="storefront" label="Storefront CORS" default>
 
-```ts
-const storeCorsOptions = {
-  origin: projectConfig.store_cors.split(","),
-  credentials: true,
-}
-```
+    ```ts
+    const storeCorsOptions = {
+      origin: projectConfig.store_cors.split(","),
+      credentials: true,
+    }
+    ```
 
-</TabItem>
-<TabItem value="admin" label="Admin CORS">
+  </TabItem>
+  <TabItem value="admin" label="Admin CORS">
 
-```ts
-const adminCorsOptions = {
-  origin: projectConfig.admin_cors.split(","),
-  credentials: true,
-}
-```
+    ```ts
+    const adminCorsOptions = {
+      origin: projectConfig.admin_cors.split(","),
+      credentials: true,
+    }
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 Finally, you can either pass the `cors` middleware for a specific route, or pass it to the entire router:
 
 <Tabs groupId="pass-type" isCodeTabs={true}>
-<TabItem value="single" label="Pass to Endpoint" default>
+  <TabItem value="single" label="Pass to Endpoint" default>
 
-```ts
-adminRouter.options("/admin/hello", cors(adminCorsOptions))
-adminRouter.get(
-  "/admin/hello",
-  cors(adminCorsOptions),
-  (req, res) => {
-    // ...
-  }
-)
-```
+    ```ts
+    adminRouter.options("/admin/hello", cors(adminCorsOptions))
+    adminRouter.get(
+      "/admin/hello",
+      cors(adminCorsOptions),
+      (req, res) => {
+        // ...
+      }
+    )
+    ```
 
-</TabItem>
-<TabItem value="router" label="Pass to Router">
+  </TabItem>
+  <TabItem value="router" label="Pass to Router">
 
-```ts
-adminRouter.use(cors(adminCorsOptions))
-```
+    ```ts
+    adminRouter.use(cors(adminCorsOptions))
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---
@@ -252,43 +252,43 @@ import { requireCustomerAuthentication } from "@medusajs/medusa"
 Then, pass the middleware to either a single route or an entire router:
 
 <Tabs groupId="pass-type" isCodeTabs={true}>
-<TabItem value="single" label="Pass to Endpoint" default>
+  <TabItem value="single" label="Pass to Endpoint" default>
 
-```ts
-// only necessary if you're passing cors options per route
-router.options("/store/hello", cors(storeCorsOptions))
-router.get(
-  "/store/hello",
-  cors(storeCorsOptions),
-  requireCustomerAuthentication(), 
-  // authenticateCustomer()
-  async (req, res) => {
-    // access current customer
-    const id = req.user.customer_id
-    // if you're using authenticateCustomer middleware
-    // check if id is set first
+    ```ts
+    // only necessary if you're passing cors options per route
+    router.options("/store/hello", cors(storeCorsOptions))
+    router.get(
+      "/store/hello",
+      cors(storeCorsOptions),
+      requireCustomerAuthentication(), 
+      // authenticateCustomer()
+      async (req, res) => {
+        // access current customer
+        const id = req.user.customer_id
+        // if you're using authenticateCustomer middleware
+        // check if id is set first
 
-    const customerService = req.scope.resolve("customerService")
-      
-    const customer = await customerService.retrieve(id)
-    // ...
-  }
-)
-```
+        const customerService = req.scope.resolve("customerService")
+          
+        const customer = await customerService.retrieve(id)
+        // ...
+      }
+    )
+    ```
 
-</TabItem>
-<TabItem value="router" label="Pass to Router">
+  </TabItem>
+  <TabItem value="router" label="Pass to Router">
 
-```ts
-storeRouter.use(requireCustomerAuthentication())
-// all routes added to storeRouter are now protected
-// the logged in customer can be accessed using:
-// req.user.customer_id
+    ```ts
+    storeRouter.use(requireCustomerAuthentication())
+    // all routes added to storeRouter are now protected
+    // the logged in customer can be accessed using:
+    // req.user.customer_id
 
-// storeRouter.use(authenticateCustomer())
-```
+    // storeRouter.use(authenticateCustomer())
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ### Protect Admin Routes
@@ -304,37 +304,37 @@ import { authenticate } from "@medusajs/medusa"
 Then, pass the middleware to either a single route or an entire router:
 
 <Tabs groupId="pass-type" isCodeTabs={true}>
-<TabItem value="single" label="Pass to Endpoint" default>
+  <TabItem value="single" label="Pass to Endpoint" default>
 
-```ts
-// only necessary if you're passing cors options per route
-adminRouter.options("/admin/hello", cors(adminCorsOptions))
-adminRouter.get(
-  "/admin/hello", 
-  cors(adminCorsOptions), 
-  authenticate(),
-  async (req, res) => {
-    // access current user
-    const id = req.user.userId
-    const userService = req.scope.resolve("userService")
-      
-    const user = await userService.retrieve(id)
-    // ...
-  }
-)
-```
+    ```ts
+    // only necessary if you're passing cors options per route
+    adminRouter.options("/admin/hello", cors(adminCorsOptions))
+    adminRouter.get(
+      "/admin/hello", 
+      cors(adminCorsOptions), 
+      authenticate(),
+      async (req, res) => {
+        // access current user
+        const id = req.user.userId
+        const userService = req.scope.resolve("userService")
+          
+        const user = await userService.retrieve(id)
+        // ...
+      }
+    )
+    ```
 
-</TabItem>
-<TabItem value="router" label="Pass to Router">
+  </TabItem>
+  <TabItem value="router" label="Pass to Router">
 
-```ts
-adminRouter.use(authenticate())
-// all routes added to adminRouter are now protected
-// the logged in user can be accessed using:
-// req.user.userId
-```
+    ```ts
+    adminRouter.use(authenticate())
+    // all routes added to adminRouter are now protected
+    // the logged in user can be accessed using:
+    // req.user.userId
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---
@@ -628,318 +628,318 @@ This section services as an example of creating endpoints that perform Create, R
 You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Services](../services/create-service.mdx#example-services-with-crud-operations) documentation to learn how to create the custom entities and services used in this example.
 
 <Tabs groupId="files" isCodeTabs={true}>
-<TabItem value="index" label="src/api/index.ts" default>
+  <TabItem value="index" label="src/api/index.ts" default>
 
-```ts
-import express, { Router } from "express"
-import adminRoutes from "./admin"
-import storeRoutes from "./store"
-import { errorHandler } from "@medusajs/medusa"
+    ```ts
+    import express, { Router } from "express"
+    import adminRoutes from "./admin"
+    import storeRoutes from "./store"
+    import { errorHandler } from "@medusajs/medusa"
 
-export default (rootDirectory, options) => {
-  const router = Router()
+    export default (rootDirectory, options) => {
+      const router = Router()
 
-  router.use(express.json())
-  router.use(express.urlencoded({ extended: true }))
+      router.use(express.json())
+      router.use(express.urlencoded({ extended: true }))
 
-  adminRoutes(router, options)
-  storeRoutes(router, options)
+      adminRoutes(router, options)
+      storeRoutes(router, options)
 
-  router.use(errorHandler())
+      router.use(errorHandler())
 
-  return router
-}
-```
+      return router
+    }
+    ```
 
-</TabItem>
-<TabItem value="admin" label="src/api/admin.ts">
+  </TabItem>
+  <TabItem value="admin" label="src/api/admin.ts">
 
-```ts
-import { Router } from "express"
-import PostService from "../services/post"
-import { 
-  ConfigModule, 
-} from "@medusajs/medusa/dist/types/global"
-import cors from "cors"
-import { authenticate, wrapHandler } from "@medusajs/medusa"
-import AuthorService from "../services/author"
+    ```ts
+    import { Router } from "express"
+    import PostService from "../services/post"
+    import { 
+      ConfigModule, 
+    } from "@medusajs/medusa/dist/types/global"
+    import cors from "cors"
+    import { authenticate, wrapHandler } from "@medusajs/medusa"
+    import AuthorService from "../services/author"
 
-export default function adminRoutes(
-  router: Router,
-  options: ConfigModule
-) {
-  const { projectConfig } = options
+    export default function adminRoutes(
+      router: Router,
+      options: ConfigModule
+    ) {
+      const { projectConfig } = options
 
-  const corsOptions = {
-    origin: projectConfig.admin_cors.split(","),
-    credentials: true,
-  }
-
-  const adminRouter = Router()
-
-  router.use("/admin/blog", adminRouter)
-
-  adminRouter.use(cors(corsOptions))
-  adminRouter.use(authenticate())
-
-  // it's recommended to define the routes
-  // in separate files. They're done in
-  // the same file here for simplicity
-
-
-  // list all blog posts
-  adminRouter.get(
-    "/posts",
-    wrapHandler(async (req, res) => {
-      const postService: PostService = req.scope.resolve(
-        "postService"
-      )
-
-      res.json({
-        posts: await postService.list(),
-      })
-  }))
-
-
-  // retrieve a single blog post
-  adminRouter.get(
-    "/posts/:id",
-    wrapHandler(async (req, res) => {
-      const postService: PostService = req.scope.resolve(
-        "postService"
-      )
-
-      const post = await postService.retrieve(req.params.id)
-
-      res.json({
-        post,
-      })
-  }))
-
-  // create a blog post
-  adminRouter.post(
-    "/posts",
-    wrapHandler(async (req, res) => {
-      const postService: PostService = req.scope.resolve(
-        "postService"
-      )
-
-      // basic validation of request body
-      if (!req.body.title || !req.body.author_id) {
-        throw new Error("`title` and `author_id` are required.")
+      const corsOptions = {
+        origin: projectConfig.admin_cors.split(","),
+        credentials: true,
       }
 
-      const post = await postService.create(req.body)
+      const adminRouter = Router()
 
-      res.json({
-        post,
-      })
-  }))
+      router.use("/admin/blog", adminRouter)
 
-  // update a blog post
-  adminRouter.post(
-    "/posts/:id",
-    wrapHandler(async (req, res) => {
-      const postService: PostService = req.scope.resolve(
-        "postService"
-      )
+      adminRouter.use(cors(corsOptions))
+      adminRouter.use(authenticate())
 
-      // basic validation of request body
-      if (req.body.id) {
-        throw new Error("Can't update post ID")
+      // it's recommended to define the routes
+      // in separate files. They're done in
+      // the same file here for simplicity
+
+
+      // list all blog posts
+      adminRouter.get(
+        "/posts",
+        wrapHandler(async (req, res) => {
+          const postService: PostService = req.scope.resolve(
+            "postService"
+          )
+
+          res.json({
+            posts: await postService.list(),
+          })
+      }))
+
+
+      // retrieve a single blog post
+      adminRouter.get(
+        "/posts/:id",
+        wrapHandler(async (req, res) => {
+          const postService: PostService = req.scope.resolve(
+            "postService"
+          )
+
+          const post = await postService.retrieve(req.params.id)
+
+          res.json({
+            post,
+          })
+      }))
+
+      // create a blog post
+      adminRouter.post(
+        "/posts",
+        wrapHandler(async (req, res) => {
+          const postService: PostService = req.scope.resolve(
+            "postService"
+          )
+
+          // basic validation of request body
+          if (!req.body.title || !req.body.author_id) {
+            throw new Error("`title` and `author_id` are required.")
+          }
+
+          const post = await postService.create(req.body)
+
+          res.json({
+            post,
+          })
+      }))
+
+      // update a blog post
+      adminRouter.post(
+        "/posts/:id",
+        wrapHandler(async (req, res) => {
+          const postService: PostService = req.scope.resolve(
+            "postService"
+          )
+
+          // basic validation of request body
+          if (req.body.id) {
+            throw new Error("Can't update post ID")
+          }
+
+          const post = await postService.update(
+            req.params.id,
+            req.body
+          )
+
+          res.json({
+            post,
+          })
+      }))
+
+      // delete a blog post
+      adminRouter.delete(
+        "/posts/:id",
+        wrapHandler(async (req, res) => {
+          const postService: PostService = req.scope.resolve(
+            "postService"
+          )
+
+          await postService.delete(req.params.id)
+
+          res.status(200).end()
+      }))
+
+      // list all blog authors
+      adminRouter.get(
+        "/authors", 
+        wrapHandler(async (req, res) => {
+          const authorService: AuthorService = req.scope.resolve(
+            "authorService"
+          )
+
+          res.json({
+            authors: await authorService.list(),
+          })
+      }))
+
+      // retrieve a single blog author
+      adminRouter.get(
+        "/authors/:id",
+        wrapHandler(async (req, res) => {
+          const authorService: AuthorService = req.scope.resolve(
+            "authorService"
+          )
+
+          res.json({
+            post: await authorService.retrieve(req.params.id),
+          })
+      }))
+
+      // create a blog author
+      adminRouter.post(
+        "/authors",
+        wrapHandler(async (req, res) => {
+          const authorService: AuthorService = req.scope.resolve(
+            "authorService"
+          )
+
+          // basic validation of request body
+          if (!req.body.name) {
+            throw new Error("`name` is required.")
+          }
+
+          const author = await authorService.create(req.body)
+
+          res.json({
+            author,
+          })
+      }))
+
+      // update a blog author
+      adminRouter.post(
+        "/authors/:id",
+        wrapHandler(async (req, res) => {
+          const authorService: AuthorService = req.scope.resolve(
+            "authorService"
+          )
+
+          // basic validation of request body
+          if (req.body.id) {
+            throw new Error("Can't update author ID")
+          }
+
+          const author = await authorService.update(
+            req.params.id,
+            req.body
+          )
+
+          res.json({
+            author,
+          })
+      }))
+
+      // delete a blog author
+      adminRouter.delete(
+        "/authors/:id",
+        wrapHandler(async (req, res) => {
+          const authorService: AuthorService = req.scope.resolve(
+            "authorService"
+          )
+
+          await authorService.delete(req.params.id)
+
+          res.status(200).end()
+      }))
+    }
+    ```
+
+  </TabItem>
+  <TabItem value="store" label="src/api/store.ts">
+
+    ```ts
+    import { Router } from "express"
+    import { 
+      ConfigModule, 
+    } from "@medusajs/medusa/dist/types/global"
+    import PostService from "../services/post"
+    import cors from "cors"
+    import AuthorService from "../services/author"
+    import { wrapHandler } from "@medusajs/medusa"
+
+    export default function storeRoutes(
+      router: Router,
+      options: ConfigModule
+    ) {
+      const { projectConfig } = options
+
+      const storeCorsOptions = {
+        origin: projectConfig.store_cors.split(","),
+        credentials: true,
       }
 
-      const post = await postService.update(
-        req.params.id,
-        req.body
-      )
+      const storeRouter = Router()
+      router.use("/store/blog", storeRouter)
 
-      res.json({
-        post,
-      })
-  }))
+      storeRouter.use(cors(storeCorsOptions))
+      
+      // list all blog posts
+      storeRouter.get(
+        "/posts",
+        wrapHandler(async (req, res) => {
+          const postService: PostService = req.scope.resolve(
+            "postService"
+          )
 
-  // delete a blog post
-  adminRouter.delete(
-    "/posts/:id",
-    wrapHandler(async (req, res) => {
-      const postService: PostService = req.scope.resolve(
-        "postService"
-      )
+          res.json({
+            posts: await postService.list(),
+          })
+      }))
 
-      await postService.delete(req.params.id)
+      // retrieve a single blog post
+      storeRouter.get(
+        "/posts/:id",
+        wrapHandler(async (req, res) => {
+          const postService: PostService = req.scope.resolve(
+            "postService"
+          )
 
-      res.status(200).end()
-  }))
+          res.json({
+            post: await postService.retrieve(req.params.id),
+          })
+      }))
 
-  // list all blog authors
-  adminRouter.get(
-    "/authors", 
-    wrapHandler(async (req, res) => {
-      const authorService: AuthorService = req.scope.resolve(
-        "authorService"
-      )
+      // list all blog authors
+      storeRouter.get(
+        "/authors",
+        wrapHandler(async (req, res) => {
+          const authorService: AuthorService = req.scope.resolve(
+            "authorService"
+          )
 
-      res.json({
-        authors: await authorService.list(),
-      })
-  }))
+          res.json({
+            authors: await authorService.list(),
+          })
+      }))
 
-  // retrieve a single blog author
-  adminRouter.get(
-    "/authors/:id",
-    wrapHandler(async (req, res) => {
-      const authorService: AuthorService = req.scope.resolve(
-        "authorService"
-      )
+      // retrieve a single blog author
+      storeRouter.get(
+        "/authors/:id",
+        wrapHandler(async (req, res) => {
+          const authorService: AuthorService = req.scope.resolve(
+            "authorService"
+          )
 
-      res.json({
-        post: await authorService.retrieve(req.params.id),
-      })
-  }))
+          res.json({
+            post: await authorService.retrieve(req.params.id),
+          })
+      }))
+    }
+    ```
 
-  // create a blog author
-  adminRouter.post(
-    "/authors",
-    wrapHandler(async (req, res) => {
-      const authorService: AuthorService = req.scope.resolve(
-        "authorService"
-      )
-
-      // basic validation of request body
-      if (!req.body.name) {
-        throw new Error("`name` is required.")
-      }
-
-      const author = await authorService.create(req.body)
-
-      res.json({
-        author,
-      })
-  }))
-
-  // update a blog author
-  adminRouter.post(
-    "/authors/:id",
-    wrapHandler(async (req, res) => {
-      const authorService: AuthorService = req.scope.resolve(
-        "authorService"
-      )
-
-      // basic validation of request body
-      if (req.body.id) {
-        throw new Error("Can't update author ID")
-      }
-
-      const author = await authorService.update(
-        req.params.id,
-        req.body
-      )
-
-      res.json({
-        author,
-      })
-  }))
-
-  // delete a blog author
-  adminRouter.delete(
-    "/authors/:id",
-    wrapHandler(async (req, res) => {
-      const authorService: AuthorService = req.scope.resolve(
-        "authorService"
-      )
-
-      await authorService.delete(req.params.id)
-
-      res.status(200).end()
-  }))
-}
-```
-
-</TabItem>
-<TabItem value="store" label="src/api/store.ts">
-
-```ts
-import { Router } from "express"
-import { 
-  ConfigModule, 
-} from "@medusajs/medusa/dist/types/global"
-import PostService from "../services/post"
-import cors from "cors"
-import AuthorService from "../services/author"
-import { wrapHandler } from "@medusajs/medusa"
-
-export default function storeRoutes(
-  router: Router,
-  options: ConfigModule
-) {
-  const { projectConfig } = options
-
-  const storeCorsOptions = {
-    origin: projectConfig.store_cors.split(","),
-    credentials: true,
-  }
-
-  const storeRouter = Router()
-  router.use("/store/blog", storeRouter)
-
-  storeRouter.use(cors(storeCorsOptions))
-  
-  // list all blog posts
-  storeRouter.get(
-    "/posts",
-    wrapHandler(async (req, res) => {
-      const postService: PostService = req.scope.resolve(
-        "postService"
-      )
-
-      res.json({
-        posts: await postService.list(),
-      })
-  }))
-
-  // retrieve a single blog post
-  storeRouter.get(
-    "/posts/:id",
-    wrapHandler(async (req, res) => {
-      const postService: PostService = req.scope.resolve(
-        "postService"
-      )
-
-      res.json({
-        post: await postService.retrieve(req.params.id),
-      })
-  }))
-
-  // list all blog authors
-  storeRouter.get(
-    "/authors",
-    wrapHandler(async (req, res) => {
-      const authorService: AuthorService = req.scope.resolve(
-        "authorService"
-      )
-
-      res.json({
-        authors: await authorService.list(),
-      })
-  }))
-
-  // retrieve a single blog author
-  storeRouter.get(
-    "/authors/:id",
-    wrapHandler(async (req, res) => {
-      const authorService: AuthorService = req.scope.resolve(
-        "authorService"
-      )
-
-      res.json({
-        post: await authorService.retrieve(req.params.id),
-      })
-  }))
-}
-```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---

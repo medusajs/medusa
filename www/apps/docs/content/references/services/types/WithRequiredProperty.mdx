@@ -6,11 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # WithRequiredProperty
 
- **WithRequiredProperty**<`T`, `K`\>: `T` & { [Property in K]-?: T[Property] }
+ **WithRequiredProperty**`<TypeParameter T, TypeParameter K>`: T & &#123; [Property in K]-?: T[Property] &#125;
 
 Utility type used to remove some optional attributes (coming from K) from a type T
 
-#### Type parameters
+### Type parameters
 
 <ParameterTypes parameters={[
   {

@@ -47,7 +47,7 @@ medusa.admin.shippingOptions
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostShippingOptionsReq`](../internal/classes/internal.AdminPostShippingOptionsReq.mdx)",
+    "type": "[AdminPostShippingOptionsReq](../internal/classes/internal.AdminPostShippingOptionsReq.mdx)",
     "description": "The shipping option to create.",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ medusa.admin.shippingOptions
       {
         "name": "amount",
         "type": "`number`",
-        "description": "The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used.",
+        "description": "The amount to charge for the Shipping Option. If the `price\\_type` is set to `calculated`, this amount will not actually be used.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -101,7 +101,7 @@ medusa.admin.shippingOptions
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -120,7 +120,7 @@ medusa.admin.shippingOptions
       {
         "name": "price_type",
         "type": "`string`",
-        "description": "The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.",
+        "description": "The type of the Shipping Option price. `flat\\_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -155,7 +155,7 @@ medusa.admin.shippingOptions
       },
       {
         "name": "requirements",
-        "type": "[`OptionRequirement`](../internal/classes/internal.OptionRequirement.mdx)[]",
+        "type": "[OptionRequirement](../internal/classes/internal.OptionRequirement.mdx)[]",
         "description": "The requirements that must be satisfied for the Shipping Option to be available.",
         "optional": true,
         "defaultValue": "",
@@ -185,7 +185,7 @@ medusa.admin.shippingOptions
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -199,7 +199,7 @@ medusa.admin.shippingOptions
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingOptionsRes`](../internal/types/internal.AdminShippingOptionsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsRes](../internal/types/internal.AdminShippingOptionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the shipping option's details.",
@@ -215,7 +215,7 @@ medusa.admin.shippingOptions
         "children": [
           {
             "name": "shipping_option",
-            "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)",
+            "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)",
             "description": "Shipping option details.",
             "optional": false,
             "defaultValue": "",
@@ -233,7 +233,7 @@ medusa.admin.shippingOptions
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -250,7 +250,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "data",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
                 "optional": false,
                 "defaultValue": "",
@@ -296,7 +296,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -314,8 +314,8 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "price_type",
-                "type": "[`ShippingOptionPriceType`](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+                "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -323,7 +323,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the shipping option belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -341,7 +341,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "provider",
-                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
+                "type": "[FulfillmentProvider](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
                 "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
                 "optional": false,
                 "defaultValue": "",
@@ -359,7 +359,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this shipping option can be used in.",
                 "optional": false,
                 "defaultValue": "",
@@ -377,7 +377,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "requirements",
-                "type": "[`ShippingOptionRequirement`](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
+                "type": "[ShippingOptionRequirement](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
                 "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -434,7 +434,7 @@ medusa.admin.shippingOptions
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -448,7 +448,7 @@ medusa.admin.shippingOptions
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -507,7 +507,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetShippingOptionsParams`](../internal/classes/internal.AdminGetShippingOptionsParams.mdx)",
+    "type": "[AdminGetShippingOptionsParams](../internal/classes/internal.AdminGetShippingOptionsParams.mdx)",
     "description": "Filters to apply on the retrieved shipping options.",
     "optional": true,
     "defaultValue": "",
@@ -544,7 +544,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -558,7 +558,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingOptionsListRes`](../internal/types/internal.AdminShippingOptionsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsListRes](../internal/types/internal.AdminShippingOptionsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of shipping options.",
@@ -566,7 +566,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
     "children": [
       {
         "name": "AdminShippingOptionsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `shipping_options`: [`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; shipping_options: [ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]  &#125;`",
         "description": "The list of shipping options with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -601,7 +601,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
           },
           {
             "name": "shipping_options",
-            "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+            "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
             "description": "An array of shipping options details.",
             "optional": false,
             "defaultValue": "",
@@ -619,7 +619,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -636,7 +636,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "data",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
                 "optional": false,
                 "defaultValue": "",
@@ -682,7 +682,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -700,8 +700,8 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "price_type",
-                "type": "[`ShippingOptionPriceType`](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+                "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -709,7 +709,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the shipping option belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -727,7 +727,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "provider",
-                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
+                "type": "[FulfillmentProvider](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
                 "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
                 "optional": false,
                 "defaultValue": "",
@@ -745,7 +745,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this shipping option can be used in.",
                 "optional": false,
                 "defaultValue": "",
@@ -763,7 +763,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "requirements",
-                "type": "[`ShippingOptionRequirement`](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
+                "type": "[ShippingOptionRequirement](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
                 "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -818,7 +818,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -832,7 +832,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingOptionsRes`](../internal/types/internal.AdminShippingOptionsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsRes](../internal/types/internal.AdminShippingOptionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the shipping option's details.",
@@ -848,7 +848,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
         "children": [
           {
             "name": "shipping_option",
-            "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)",
+            "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)",
             "description": "Shipping option details.",
             "optional": false,
             "defaultValue": "",
@@ -866,7 +866,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -883,7 +883,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "data",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
                 "optional": false,
                 "defaultValue": "",
@@ -929,7 +929,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -947,8 +947,8 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "price_type",
-                "type": "[`ShippingOptionPriceType`](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+                "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -956,7 +956,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the shipping option belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -974,7 +974,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "provider",
-                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
+                "type": "[FulfillmentProvider](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
                 "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
                 "optional": false,
                 "defaultValue": "",
@@ -992,7 +992,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this shipping option can be used in.",
                 "optional": false,
                 "defaultValue": "",
@@ -1010,7 +1010,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "requirements",
-                "type": "[`ShippingOptionRequirement`](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
+                "type": "[ShippingOptionRequirement](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
                 "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1076,7 +1076,7 @@ medusa.admin.shippingOptions
   },
   {
     "name": "payload",
-    "type": "[`AdminPostShippingOptionsOptionReq`](../internal/classes/internal.AdminPostShippingOptionsOptionReq.mdx)",
+    "type": "[AdminPostShippingOptionsOptionReq](../internal/classes/internal.AdminPostShippingOptionsOptionReq.mdx)",
     "description": "The attributes to update in the shipping option.",
     "optional": false,
     "defaultValue": "",
@@ -1094,7 +1094,7 @@ medusa.admin.shippingOptions
       {
         "name": "amount",
         "type": "`number`",
-        "description": "The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used.",
+        "description": "The amount to charge for the Shipping Option. If the `price\\_type` of the shipping option is `calculated`, this amount will not actually be used.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -1112,7 +1112,7 @@ medusa.admin.shippingOptions
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -1130,7 +1130,7 @@ medusa.admin.shippingOptions
       },
       {
         "name": "requirements",
-        "type": "[`OptionRequirement`](../internal/classes/internal.OptionRequirement-1.mdx)[]",
+        "type": "[OptionRequirement](../internal/classes/internal.OptionRequirement-1.mdx)[]",
         "description": "The requirements that must be satisfied for the Shipping Option to be available.",
         "optional": false,
         "defaultValue": "",
@@ -1169,7 +1169,7 @@ medusa.admin.shippingOptions
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1183,7 +1183,7 @@ medusa.admin.shippingOptions
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminShippingOptionsRes`](../internal/types/internal.AdminShippingOptionsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminShippingOptionsRes](../internal/types/internal.AdminShippingOptionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the shipping option's details.",
@@ -1199,7 +1199,7 @@ medusa.admin.shippingOptions
         "children": [
           {
             "name": "shipping_option",
-            "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)",
+            "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)",
             "description": "Shipping option details.",
             "optional": false,
             "defaultValue": "",
@@ -1217,7 +1217,7 @@ medusa.admin.shippingOptions
               {
                 "name": "amount",
                 "type": "``null`` \\| `number`",
-                "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+                "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1234,7 +1234,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "data",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
                 "optional": false,
                 "defaultValue": "",
@@ -1280,7 +1280,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1298,8 +1298,8 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "price_type",
-                "type": "[`ShippingOptionPriceType`](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
-                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+                "type": "[ShippingOptionPriceType](../internal/enums/internal.internal.ShippingOptionPriceType.mdx)",
+                "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1307,7 +1307,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "profile",
-                "type": "[`ShippingProfile`](../internal/classes/internal.ShippingProfile.mdx)",
+                "type": "[ShippingProfile](../internal/classes/internal.ShippingProfile.mdx)",
                 "description": "The details of the shipping profile that the shipping option belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1325,7 +1325,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "provider",
-                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
+                "type": "[FulfillmentProvider](../internal/classes/internal.internal.FulfillmentProvider.mdx)",
                 "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
                 "optional": false,
                 "defaultValue": "",
@@ -1343,7 +1343,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this shipping option can be used in.",
                 "optional": false,
                 "defaultValue": "",
@@ -1361,7 +1361,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "requirements",
-                "type": "[`ShippingOptionRequirement`](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
+                "type": "[ShippingOptionRequirement](../internal/classes/internal.internal.ShippingOptionRequirement.mdx)[]",
                 "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
                 "optional": false,
                 "defaultValue": "",

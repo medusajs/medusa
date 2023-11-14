@@ -23,11 +23,7 @@ v0.1.26
 
 ## Implements
 
-- [`WritableStream`](../interfaces/internal.WritableStream.mdx)
-
-## Implemented by
-
-- [`Duplex`](internal.Duplex.mdx)
+- [WritableStream](../interfaces/internal.WritableStream.mdx)
 
 ## Properties
 
@@ -52,7 +48,7 @@ v0.1.26
   },
   {
     "name": "errored",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "Returns error if the stream has been destroyed with an error.",
     "optional": false,
     "defaultValue": "",
@@ -133,7 +129,7 @@ v0.1.26
   },
   {
     "name": "captureRejectionSymbol",
-    "type": "typeof [`captureRejectionSymbol`](internal.Socket.mdx#capturerejectionsymbol)",
+    "type": "typeof [captureRejectionSymbol](internal.Socket.mdx#capturerejectionsymbol)",
     "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
     "optional": false,
     "defaultValue": "",
@@ -143,7 +139,7 @@ v0.1.26
   {
     "name": "captureRejections",
     "type": "`boolean`",
-    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data\\_structures#Boolean\\_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -152,7 +148,7 @@ v0.1.26
   {
     "name": "defaultMaxListeners",
     "type": "`number`",
-    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for \\_all\\_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects \\_all\\_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -160,7 +156,7 @@ v0.1.26
   },
   {
     "name": "errorMonitor",
-    "type": "typeof [`errorMonitor`](internal.Socket.mdx#errormonitor)",
+    "type": "typeof [errorMonitor](internal.Socket.mdx#errormonitor)",
     "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
     "optional": false,
     "defaultValue": "",
@@ -178,7 +174,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -228,7 +224,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -260,7 +256,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -269,7 +265,7 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -301,7 +297,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -342,7 +338,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -351,7 +347,7 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -383,7 +379,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "chunks",
-    "type": "{ `chunk`: `any` ; `encoding`: [`BufferEncoding`](../types/internal.BufferEncoding.mdx)  }[]",
+    "type": "`&#123; chunk: any ; encoding: [BufferEncoding](../types/internal.BufferEncoding.mdx)  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -392,7 +388,7 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -419,7 +415,7 @@ ___
 
 ### addListener
 
-**addListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Event emitter
 The defined events on documents including:
@@ -458,7 +454,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -467,7 +463,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -497,7 +493,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -506,7 +502,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -522,7 +518,7 @@ The defined events on documents including:
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -536,7 +532,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -545,7 +541,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -575,7 +571,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -584,7 +580,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -600,7 +596,7 @@ The defined events on documents including:
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -614,7 +610,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -623,7 +619,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -639,7 +635,7 @@ The defined events on documents including:
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -653,7 +649,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -662,7 +658,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**addListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -692,7 +688,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -710,7 +706,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ComposeFnParam`](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [`Iterable`](../interfaces/internal.Iterable.mdx)<`T`\\> \\| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\\>",
+    "type": "[ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [Iterable](../interfaces/internal.Iterable.mdx)&#60;T&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;T&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -728,7 +724,7 @@ ___
   },
   {
     "name": "options.signal",
-    "type": "`AbortSignal`",
+    "type": "AbortSignal",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -797,7 +793,7 @@ but instead implement `writable._destroy()`.
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "Optional, an error to emit with `'error'` event.",
     "optional": true,
     "defaultValue": "",
@@ -811,7 +807,7 @@ but instead implement `writable._destroy()`.
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -828,7 +824,7 @@ ___
 
 ### emit
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -900,7 +896,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 
 v0.1.26
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -930,7 +926,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `err`): `boolean`
+`**emit**(event, err): boolean`
 
 #### Parameters
 
@@ -946,7 +942,7 @@ v0.1.26
   },
   {
     "name": "err",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -969,7 +965,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -999,7 +995,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `src`): `boolean`
+`**emit**(event, src): boolean`
 
 #### Parameters
 
@@ -1015,7 +1011,7 @@ v0.1.26
   },
   {
     "name": "src",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1038,7 +1034,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `src`): `boolean`
+`**emit**(event, src): boolean`
 
 #### Parameters
 
@@ -1054,7 +1050,7 @@ v0.1.26
   },
   {
     "name": "src",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1077,7 +1073,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `...args`): `boolean`
+`**emit**(event, ...args): boolean`
 
 #### Parameters
 
@@ -1120,7 +1116,7 @@ ___
 
 ### end
 
-**end**(`cb?`): [`WritableBase`](internal.WritableBase.mdx)
+`**end**(cb?): [WritableBase](internal.WritableBase.mdx)`
 
 Calling the `writable.end()` method signals that no more data will be written
 to the `Writable`. The optional `chunk` and `encoding` arguments allow one
@@ -1157,7 +1153,7 @@ file.end('world!');
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1170,7 +1166,7 @@ file.end('world!');
 
 v0.9.4
 
-**end**(`chunk`, `cb?`): [`WritableBase`](internal.WritableBase.mdx)
+`**end**(chunk, cb?): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1200,7 +1196,7 @@ v0.9.4
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1209,7 +1205,7 @@ v0.9.4
   }
 ]} />
 
-**end**(`chunk`, `encoding`, `cb?`): [`WritableBase`](internal.WritableBase.mdx)
+`**end**(chunk, encoding, cb?): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1225,7 +1221,7 @@ v0.9.4
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1248,7 +1244,7 @@ v0.9.4
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1450,7 +1446,7 @@ Alias for `emitter.removeListener()`.
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1467,7 +1463,7 @@ ___
 
 ### on
 
-**on**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -1524,7 +1520,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1537,7 +1533,7 @@ myEE.emit('foo');
 
 v0.1.101
 
-**on**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1567,7 +1563,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1576,7 +1572,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1592,7 +1588,7 @@ v0.1.101
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1606,7 +1602,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1615,7 +1611,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1645,7 +1641,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1654,7 +1650,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1670,7 +1666,7 @@ v0.1.101
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1684,7 +1680,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1693,7 +1689,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1709,7 +1705,7 @@ v0.1.101
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1723,7 +1719,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1732,7 +1728,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**on**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1762,7 +1758,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1775,7 +1771,7 @@ ___
 
 ### once
 
-**once**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -1830,7 +1826,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1843,7 +1839,7 @@ myEE.emit('foo');
 
 v0.3.0
 
-**once**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1873,7 +1869,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1882,7 +1878,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1898,7 +1894,7 @@ v0.3.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1912,7 +1908,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1921,7 +1917,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1951,7 +1947,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1960,7 +1956,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -1976,7 +1972,7 @@ v0.3.0
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1990,7 +1986,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1999,7 +1995,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2015,7 +2011,7 @@ v0.3.0
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2029,7 +2025,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2038,7 +2034,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**once**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2068,7 +2064,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2121,9 +2117,9 @@ ___
 
 ### prependListener
 
-**prependListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
-Adds the `listener` function to the _beginning_ of the listeners array for the
+Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
 already been added. Multiple calls passing the same combination of `eventName`and `listener` will result in the `listener` being added, and called, multiple
 times.
@@ -2164,7 +2160,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2177,7 +2173,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-**prependListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2207,7 +2203,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2216,7 +2212,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2232,7 +2228,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2246,7 +2242,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2255,7 +2251,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2285,7 +2281,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2294,7 +2290,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2310,7 +2306,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2324,7 +2320,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2333,7 +2329,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2349,7 +2345,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2363,7 +2359,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2372,7 +2368,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2402,7 +2398,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2415,9 +2411,9 @@ ___
 
 ### prependOnceListener
 
-**prependOnceListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
-Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
+Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
 
 ```js
@@ -2456,7 +2452,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2469,7 +2465,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-**prependOnceListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2499,7 +2495,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2508,7 +2504,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2524,7 +2520,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2538,7 +2534,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2547,7 +2543,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2577,7 +2573,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2586,7 +2582,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2602,7 +2598,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2616,7 +2612,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2625,7 +2621,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2641,7 +2637,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2655,7 +2651,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2664,7 +2660,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**prependOnceListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2694,7 +2690,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2798,7 +2794,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2815,7 +2811,7 @@ ___
 
 ### removeListener
 
-**removeListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -2834,7 +2830,7 @@ listener array for the specified `eventName`, then `removeListener()` must be
 called multiple times to remove each instance.
 
 Once an event is emitted, all listeners attached to it at the
-time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls _after_ emitting and _before_ the last listener finishes execution
+time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls \_after\_ emitting and \_before\_ the last listener finishes execution
 will not remove them from`emit()` in progress. Subsequent events behave as expected.
 
 ```js
@@ -2870,7 +2866,7 @@ myEmitter.emit('event');
 ```
 
 Because listeners are managed using an internal array, calling this will
-change the position indices of any listener registered _after_ the listener
+change the position indices of any listener registered \_after\_ the listener
 being removed. This will not impact the order in which listeners are called,
 but it means that any copies of the listener array as returned by
 the `emitter.listeners()` method will need to be recreated.
@@ -2925,7 +2921,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2938,7 +2934,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v0.1.26
 
-**removeListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2968,7 +2964,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2977,7 +2973,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -2993,7 +2989,7 @@ v0.1.26
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3007,7 +3003,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3016,7 +3012,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3046,7 +3042,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3055,7 +3051,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3071,7 +3067,7 @@ v0.1.26
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3085,7 +3081,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3094,7 +3090,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3110,7 +3106,7 @@ v0.1.26
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3124,7 +3120,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3133,7 +3129,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`WritableBase`](internal.WritableBase.mdx)
+`**removeListener**(event, listener): [WritableBase](internal.WritableBase.mdx)`
 
 #### Parameters
 
@@ -3163,7 +3159,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3183,7 +3179,7 @@ The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Wr
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "The new default encoding",
     "optional": false,
     "defaultValue": "",
@@ -3197,7 +3193,7 @@ The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Wr
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3240,7 +3236,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableBase",
-    "type": "[`WritableBase`](internal.WritableBase.mdx)",
+    "type": "[WritableBase](internal.WritableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3310,7 +3306,7 @@ ___
 
 ### write
 
-**write**(`chunk`, `callback?`): `boolean`
+`**write**(chunk, callback?): boolean`
 
 The `writable.write()` method writes some data to the stream, and calls the
 supplied `callback` once the data has been fully handled. If an error
@@ -3375,7 +3371,7 @@ A `Writable` stream in object mode will always ignore the `encoding` argument.
   },
   {
     "name": "callback",
-    "type": "(`error`: `undefined` \\| ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error`: `undefined` \\| ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "Callback for when this chunk of data is flushed.",
     "optional": true,
     "defaultValue": "",
@@ -3402,7 +3398,7 @@ A `Writable` stream in object mode will always ignore the `encoding` argument.
 
 v0.9.4
 
-**write**(`chunk`, `encoding`, `callback?`): `boolean`
+`**write**(chunk, encoding, callback?): boolean`
 
 #### Parameters
 
@@ -3418,7 +3414,7 @@ v0.9.4
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3427,7 +3423,7 @@ v0.9.4
   },
   {
     "name": "callback",
-    "type": "(`error`: `undefined` \\| ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error`: `undefined` \\| ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3489,7 +3485,7 @@ function example(signal) {
 <ParameterTypes parameters={[
   {
     "name": "signal",
-    "type": "`AbortSignal`",
+    "type": "AbortSignal",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3498,7 +3494,7 @@ function example(signal) {
   },
   {
     "name": "resource",
-    "type": "(`event`: `Event`) => `void`",
+    "type": "(`event`: Event) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3559,7 +3555,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3630,7 +3626,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3678,7 +3674,7 @@ console.log(listenerCount(myEmitter, 'event'));
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx)",
     "description": "The emitter to query",
     "optional": false,
     "defaultValue": "",
@@ -3782,7 +3778,7 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3800,7 +3796,7 @@ process.nextTick(() => ac.abort());
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3814,7 +3810,7 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](../interfaces/internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "that iterates `eventName` events emitted by the `emitter`",
@@ -3831,7 +3827,7 @@ ___
 
 ### once
 
-`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -3915,7 +3911,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`_NodeEventTarget`](../interfaces/internal._NodeEventTarget.mdx)",
+    "type": "[_NodeEventTarget](../interfaces/internal._NodeEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3933,7 +3929,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3947,7 +3943,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3960,14 +3956,14 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 
 v11.13.0, v10.16.0
 
-`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3985,7 +3981,7 @@ v11.13.0, v10.16.0
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3999,7 +3995,7 @@ v11.13.0, v10.16.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4035,7 +4031,7 @@ setMaxListeners(5, target, emitter);
   },
   {
     "name": "eventTargets",
-    "type": "([`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx))[]",
+    "type": "([EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx))[]",
     "description": "",
     "optional": false,
     "defaultValue": "",

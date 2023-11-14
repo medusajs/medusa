@@ -12,7 +12,7 @@ A store holds the main settings of the commerce shop. By default, only one store
 
 ### constructor
 
-**new Store**()
+`**new Store**()`
 
 A store holds the main settings of the commerce shop. By default, only one store is created and used within the Medusa backend. It holds settings related to the name of the store, available currencies, and more.
 
@@ -30,7 +30,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   },
   {
     "name": "currencies",
-    "type": "[`Currency`](Currency.mdx)[]",
+    "type": "[Currency](Currency.mdx)[]",
     "description": "The details of the enabled currencies in the store.",
     "optional": false,
     "defaultValue": "",
@@ -39,7 +39,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   },
   {
     "name": "default_currency",
-    "type": "[`Currency`](Currency.mdx)",
+    "type": "[Currency](Currency.mdx)",
     "description": "The details of the store's default currency.",
     "optional": false,
     "defaultValue": "usd",
@@ -66,7 +66,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   },
   {
     "name": "default_sales_channel",
-    "type": "[`SalesChannel`](SalesChannel.mdx)",
+    "type": "[SalesChannel](SalesChannel.mdx)",
     "description": "The details of the store's default sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -102,7 +102,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   },
   {
     "name": "metadata",
-    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "type": "``null`` \\| `Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   {
     "name": "payment_link_template",
     "type": "``null`` \\| `string`",
-    "description": "A template to generate Payment links from. Use {{cart_id}} to include the payment's `cart_id` in the link.",
+    "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -130,7 +130,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   {
     "name": "swap_link_template",
     "type": "``null`` \\| `string`",
-    "description": "A template to generate Swap links from. Use {{cart_id}} to include the Swap's `cart_id` in the link.",
+    "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -151,7 +151,7 @@ A store holds the main settings of the commerce shop. By default, only one store
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

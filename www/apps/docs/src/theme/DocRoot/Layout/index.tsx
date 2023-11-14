@@ -1,27 +1,26 @@
 import React from "react"
 import { useDocsSidebar } from "@docusaurus/theme-common/internal"
-import Layout from "@theme/Layout"
 import BackToTopButton from "@theme/BackToTopButton"
-import DocPageLayoutSidebar from "@theme/DocPage/Layout/Sidebar"
-import DocPageLayoutMain from "@theme/DocPage/Layout/Main"
-import type { Props } from "@theme/DocPage/Layout"
-import clsx from "clsx"
-import { useSidebar } from "../../../providers/Sidebar"
+import DocRootLayoutSidebar from "@theme/DocRoot/Layout/Sidebar"
+import DocRootLayoutMain from "@theme/DocRoot/Layout/Main"
+import type { Props } from "@theme/DocRoot/Layout"
+
 import useOnboarding from "../../../hooks/use-onboarding"
 import useCurrentLearningPath from "../../../hooks/use-current-learning-path"
+import { useSidebar } from "../../../providers/Sidebar"
+import clsx from "clsx"
 
-export default function DocPageLayout({ children }: Props): JSX.Element {
+export default function DocRootLayout({ children }: Props): JSX.Element {
   const sidebar = useDocsSidebar()
   const sidebarContext = useSidebar()
   useOnboarding()
   useCurrentLearningPath()
-
   return (
-    <Layout wrapperClassName={clsx("flex flex-[1_0_auto]")}>
+    <div className={clsx("flex flex-[1_0_auto]")}>
       <BackToTopButton />
       <div className={clsx("flex w-full flex-[1_0]")}>
         {sidebar && (
-          <DocPageLayoutSidebar
+          <DocRootLayoutSidebar
             sidebar={sidebar.items}
             hiddenSidebarContainer={sidebarContext?.hiddenSidebarContainer}
             setHiddenSidebarContainer={
@@ -29,12 +28,12 @@ export default function DocPageLayout({ children }: Props): JSX.Element {
             }
           />
         )}
-        <DocPageLayoutMain
+        <DocRootLayoutMain
           hiddenSidebarContainer={sidebarContext?.hiddenSidebarContainer}
         >
           {children}
-        </DocPageLayoutMain>
+        </DocRootLayoutMain>
       </div>
-    </Layout>
+    </div>
   )
 }
