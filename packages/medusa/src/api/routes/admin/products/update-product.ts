@@ -315,17 +315,6 @@ async function getProductWithIsolatedProductModule(req, id) {
     product: {
       __args: variables,
       ...defaultAdminProductRemoteQueryObject,
-      sales_channels: {
-        fields: [
-          "id",
-          "name",
-          "description",
-          "is_disabled",
-          "created_at",
-          "updated_at",
-          "deleted_at",
-        ],
-      },
     },
   }
 

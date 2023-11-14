@@ -164,7 +164,6 @@ export default async (req, res) => {
 
 async function getProductWithIsolatedProductModule(req, id: string) {
   const remoteQuery = req.scope.resolve("remoteQuery")
-  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
 
   const variables = { id }
 
@@ -172,17 +171,6 @@ async function getProductWithIsolatedProductModule(req, id: string) {
     product: {
       __args: variables,
       ...defaultStoreProductRemoteQueryObject,
-      sales_channels: {
-        fields: [
-          "id",
-          "name",
-          "description",
-          "is_disabled",
-          "created_at",
-          "updated_at",
-          "deleted_at",
-        ],
-      },
     },
   }
 
