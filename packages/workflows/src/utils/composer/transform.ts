@@ -36,6 +36,11 @@ export function transform<
   ...functions: [Func1Multiple<T, A>, Func<A, TOutput>]
 ): StepReturn<TOutput>
 
+export function transform<T extends any, A, TOutput extends unknown = unknown>(
+  values: T,
+  ...functions: [Func1Single<T, A>, Func<A, TOutput>]
+): StepReturn<TOutput>
+
 export function transform<
   T extends any[],
   A,
@@ -44,6 +49,16 @@ export function transform<
 >(
   values: [...T],
   ...functions: [Func1Multiple<T, A>, Func<A, B>, Func<B, TOutput>]
+): StepReturn<TOutput>
+
+export function transform<
+  T extends any,
+  A,
+  B,
+  TOutput extends unknown = unknown
+>(
+  values: T,
+  ...functions: [Func1Single<T, A>, Func<A, B>, Func<B, TOutput>]
 ): StepReturn<TOutput>
 
 export function transform<
@@ -58,6 +73,17 @@ export function transform<
 ): StepReturn<TOutput>
 
 export function transform<
+  T extends any,
+  A,
+  B,
+  C,
+  TOutput extends unknown = unknown
+>(
+  values: T,
+  ...functions: [Func1Single<T, A>, Func<A, B>, Func<B, C>, Func<C, TOutput>]
+): StepReturn<TOutput>
+
+export function transform<
   T extends any[],
   A,
   B,
@@ -68,6 +94,24 @@ export function transform<
   values: [...T],
   ...func: [
     Func1Multiple<T, A>,
+    Func<A, B>,
+    Func<B, C>,
+    Func<C, D>,
+    Func<D, TOutput>
+  ]
+): StepReturn<TOutput>
+
+export function transform<
+  T extends any,
+  A,
+  B,
+  C,
+  D,
+  TOutput extends unknown = unknown
+>(
+  values: T,
+  ...func: [
+    Func1Single<T, A>,
     Func<A, B>,
     Func<B, C>,
     Func<C, D>,
