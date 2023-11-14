@@ -35,7 +35,7 @@ const step1 = createStep(
 
 const step2 = createStep(
   "step2",
-  async (context: any, input: Step2Input): Promise<{ test: "test" }> => {
+  async (input: Step2Input, context: any): Promise<{ test: "test" }> => {
     return { test: "test" }
   }
 )
@@ -43,7 +43,7 @@ const step2 = createStep(
 type step3Return = { test: "test2" }
 const step3 = createStep(
   "step3",
-  async (context: any, input: Step3Input): Promise<step3Return> => {
+  async (input: Step3Input): Promise<step3Return> => {
     return { test: "test2" }
   }
 )
@@ -52,7 +52,7 @@ type step4Return = { test: "test2"; depth: { test2: string } }
 
 const step4 = createStep(
   "step4",
-  async (context: any, input: Step4Input): Promise<step4Return> => {
+  async (input: Step4Input): Promise<step4Return> => {
     return {
       test: "test2",
       depth: {

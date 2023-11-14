@@ -1,6 +1,7 @@
 import {
   OrchestratorBuilder,
   TransactionContext as OriginalWorkflowTransactionContext,
+  TransactionPayload,
   WorkflowHandler,
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer } from "@medusajs/types"
@@ -13,9 +14,15 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
 export type StepFunction<
   TInput extends unknown[] = unknown[],
   TOutput = unknown
-> = {
-  (...inputs: StepReturn<TInput[number]>[]): StepReturn<TOutput>
-} & StepReturnProperties
+> = TInput extends [...infer Args, StepExecutionContext]
+  ? {
+      (...args: { [K in keyof Args]: StepReturn<Args[K]> }): StepReturn<TOutput>
+    } & StepReturnProperties<TOutput>
+  : {
+      (
+        ...args: { [K in keyof TInput]: StepReturn<TInput[K]> }
+      ): StepReturn<TOutput>
+    } & StepReturnProperties<TOutput>
 
 export type StepReturnProperties<T = unknown> = {
   __type: Symbol
@@ -43,12 +50,9 @@ export type CreateWorkflowComposerContext = {
   ) => TOutput
 }
 
-// TODO: Create a type for the context in the orchestration package
-// TODO: The below is a subset of the original transaction context
-
 export interface StepExecutionContext {
   container: MedusaContainer
-  metadata: any
+  metadata: TransactionPayload["metadata"]
   context: Context
 }
 
