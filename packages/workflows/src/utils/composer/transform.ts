@@ -5,63 +5,74 @@ import {
 } from "./symbol"
 import { StepReturn } from "./type"
 
-type Func1<T extends any[], U> = (context: any, ...inputs: T) => U | Promise<U>
+type Func1Multiple<T extends any[], U> = (
+  context: any,
+  ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
+) => U | Promise<U>
+
+type Func1Single<T extends any, U> = (
+  context: any,
+  input: T extends StepReturn<infer U> ? U : T
+) => U | Promise<U>
+
 type Func<T extends any, U> = (context: any, input: T) => U | Promise<U>
 
-export function transform<
-  TTransformerInput extends unknown[] = unknown[],
-  TStepReturnInput extends StepReturn<TTransformerInput[number][]> = StepReturn<
-    TTransformerInput[number][]
-  >,
-  TOutput extends unknown = unknown
->(
-  values: [...TStepReturnInput],
-  funcA: Func1<TTransformerInput, TOutput>
+export function transform<T extends any, TOutput extends unknown = unknown>(
+  values: T,
+  funcA: Func1Single<T, TOutput>
+): StepReturn<TOutput>
+
+export function transform<T extends any[], TOutput extends unknown = unknown>(
+  values: [...T],
+  funcA: Func1Multiple<T, TOutput>
 ): StepReturn<TOutput>
 
 export function transform<
-  TTransformerInput extends unknown[] = unknown[],
-  TStepReturnInput extends [...StepReturn<TTransformerInput[number][]>] = [
-    ...StepReturn<TTransformerInput[number][]>
-  ],
-  A = unknown,
-  TOutput = unknown
+  T extends any[],
+  A,
+  TOutput extends unknown = unknown
 >(
-  values: [...TStepReturnInput],
-  funcA: Func1<TTransformerInput, A>,
-  funcB: Func<A, TOutput>
+  values: [...T],
+  ...functions: [Func1Multiple<T, A>, Func<A, TOutput>]
 ): StepReturn<TOutput>
 
 export function transform<
-  TTransformerInput extends unknown[] = unknown[],
-  TStepReturnInput extends [...StepReturn<TTransformerInput>] = [
-    ...StepReturn<TTransformerInput>
-  ],
-  A extends unknown = unknown,
-  B extends unknown = unknown,
+  T extends any[],
+  A,
+  B,
   TOutput extends unknown = unknown
 >(
-  values: [...TStepReturnInput],
-  funcA: Func1<TTransformerInput, A>,
-  funcB: Func<A, B>,
-  funcC: Func<B, TOutput>
+  values: [...T],
+  ...functions: [Func1Multiple<T, A>, Func<A, B>, Func<B, TOutput>]
 ): StepReturn<TOutput>
 
 export function transform<
-  TTransformerInput extends unknown[] = unknown[],
-  TStepReturnInput extends [...StepReturn<TTransformerInput[number][]>] = [
-    ...StepReturn<TTransformerInput[number][]>
-  ],
-  A extends unknown = unknown,
-  B extends unknown = unknown,
-  C extends unknown = unknown,
+  T extends any[],
+  A,
+  B,
+  C,
   TOutput extends unknown = unknown
 >(
-  values: [...TStepReturnInput],
-  funcA: Func1<TTransformerInput, A>,
-  funcB: Func<A, B>,
-  funcC: Func<B, C>,
-  funcD: Func<C, TOutput>
+  values: [...T],
+  ...functions: [Func1Multiple<T, A>, Func<A, B>, Func<B, C>, Func<C, TOutput>]
+): StepReturn<TOutput>
+
+export function transform<
+  T extends any[],
+  A,
+  B,
+  C,
+  D,
+  TOutput extends unknown = unknown
+>(
+  values: [...T],
+  ...func: [
+    Func1Multiple<T, A>,
+    Func<A, B>,
+    Func<B, C>,
+    Func<C, D>,
+    Func<D, TOutput>
+  ]
 ): StepReturn<TOutput>
 
 export function transform(values: any, ...functions: Function[]): unknown {

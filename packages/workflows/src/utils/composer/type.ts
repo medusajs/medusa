@@ -24,8 +24,6 @@ export type StepReturn<T = unknown> = T extends object
     } & StepReturnProperties<T>
   : StepReturnProperties<T>
 
-export type UnwrapStepReturn<T> = T extends StepReturn<infer U> ? U : T
-
 export type CreateWorkflowComposerContext = {
   workflowId: string
   flow: OrchestratorBuilder
