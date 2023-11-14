@@ -3,19 +3,24 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
-import { StepReturn } from "./type"
+import { StepExecutionContext, StepReturn } from "./type"
 
 type Func1Multiple<T extends any[], U> = (
-  context: any,
-  ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
+  ...inputs: [
+    ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] },
+    context: StepExecutionContext
+  ]
 ) => U | Promise<U>
 
 type Func1Single<T extends any, U> = (
-  context: any,
-  input: T extends StepReturn<infer U> ? U : T
+  input: T extends StepReturn<infer U> ? U : T,
+  context: StepExecutionContext
 ) => U | Promise<U>
 
-type Func<T extends any, U> = (context: any, input: T) => U | Promise<U>
+type Func<T extends any, U> = (
+  input: T,
+  context: StepExecutionContext
+) => U | Promise<U>
 
 export function transform<T extends any, TOutput extends unknown = unknown>(
   values: T,
@@ -142,7 +147,7 @@ export function transform(values: any, ...functions: Function[]): unknown {
       const fn = functions[i]
 
       const fnInput = i === 0 ? stepValues : [finalResult]
-      finalResult = await fn.apply(fn, [context, ...fnInput])
+      finalResult = await fn.apply(fn, [...fnInput, context])
     }
 
     returnFn.__value = finalResult

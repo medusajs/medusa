@@ -23,11 +23,13 @@ interface Step4Input {
 
 const step1 = createStep(
   "step1",
-  async (
-    context: any,
+  async function (
     input: Step1Input
-  ): Promise<{ test: "test"; foo: "bar" }> => {
-    return { test: "test", foo: "bar" }
+  ): Promise<{ test: "test"; foo: "bar"; compensateInput: { foo: string } }> {
+    return { test: "test", foo: "bar", compensateInput: { foo: "test" } }
+  },
+  async function (input) {
+    return input.foo
   }
 )
 
@@ -73,14 +75,10 @@ const workflow = createWorkflow(
 
     const ret4Transformed = transform(
       [ret4, ret3],
-      async (
-        context,
-        input: step4Return,
-        input2: step3Return
-      ): Promise<{ test: string }> => {
+      async (input, input2): Promise<{ test: string }> => {
         return { test: input.depth.test2 }
       },
-      function (context: any, input) {
+      function (input) {
         return { foo: "value2" }
       }
     )
