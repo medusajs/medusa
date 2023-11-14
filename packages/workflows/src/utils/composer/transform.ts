@@ -6,8 +6,10 @@ import {
 import { StepExecutionContext, StepReturn } from "./type"
 
 type Func1Multiple<T extends any[], U> = (
-  context: StepExecutionContext,
-  ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
+  ...inputs: [
+    ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] },
+    context: StepExecutionContext
+  ]
 ) => U | Promise<U>
 
 type Func1Single<T extends any, U> = (
@@ -16,8 +18,8 @@ type Func1Single<T extends any, U> = (
 ) => U | Promise<U>
 
 type Func<T extends any, U> = (
-  context: StepExecutionContext,
-  input: T
+  input: T,
+  context: StepExecutionContext
 ) => U | Promise<U>
 
 export function transform<T extends any, TOutput extends unknown = unknown>(
@@ -145,7 +147,7 @@ export function transform(values: any, ...functions: Function[]): unknown {
       const fn = functions[i]
 
       const fnInput = i === 0 ? stepValues : [finalResult]
-      finalResult = await fn.apply(fn, [context, ...fnInput])
+      finalResult = await fn.apply(fn, [...fnInput, context])
     }
 
     returnFn.__value = finalResult

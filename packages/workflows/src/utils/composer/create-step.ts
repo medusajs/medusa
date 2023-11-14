@@ -16,14 +16,16 @@ import {
   StepReturn,
 } from "./type"
 
-type InvokeFn<TInput extends unknown[], O> = (
-  context: StepExecutionContext,
-  ...args: TInput
-) => Promise<O>
+type InvokeFn<TInput extends unknown[], O> = TInput extends [
+  ...infer Args,
+  StepExecutionContext
+]
+  ? (...args: [...args: Args, context: StepExecutionContext]) => Promise<O>
+  : (...args: TInput) => Promise<O>
 
 type CompensateFn<T> = (
-  context: StepExecutionContext,
-  arg: T
+  arg: T,
+  context: StepExecutionContext
 ) => Promise<unknown>
 
 interface ApplyStepOptions<
@@ -101,7 +103,7 @@ function applyStep<
           context: transactionContext.context,
         }
 
-        const args = [transactionContext, ...previousResultResults]
+        const args = [...previousResultResults, executionContext]
 
         const output = await invokeFn.apply(this, args)
 
@@ -121,7 +123,7 @@ function applyStep<
             const invokeResult =
               transactionContext.invoke[stepName].output?.compensateInput
 
-            const args = [executionContext, invokeResult]
+            const args = [invokeResult, executionContext]
             const output = await compensateFn.apply(this, args)
             return {
               output,
