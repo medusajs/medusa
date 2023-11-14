@@ -1,9 +1,18 @@
-import { PriceListStatus, PriceListType } from "@medusajs/utils"
+import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount"
 
 import { BaseFilterable } from "../../dal"
-import { CreateMoneyAmountDTO, MoneyAmountDTO } from "./money-amount"
 import { PriceSetMoneyAmountDTO } from "./price-set-money-amount"
 import { RuleTypeDTO } from "./rule-type"
+
+export enum PriceListStatus {
+  ACTIVE = "active",
+  DRAFT = "draft",
+}
+
+export enum PriceListType {
+  SALE = "sale",
+  OVERRIDE = "override",
+}
 
 export interface PriceListDTO {
   id: string

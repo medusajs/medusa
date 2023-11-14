@@ -213,7 +213,7 @@ describe("PriceListRule Service", () => {
       }
 
       expect(error.message).toEqual(
-        'PriceListRule with id "does-not-exist" not found'
+        'PriceListRule with id(s) "does-not-exist" not found'
       )
     })
   })
@@ -222,8 +222,8 @@ describe("PriceListRule Service", () => {
     it("should create a priceListRule successfully", async () => {
       const [created] = await service.createPriceListRules([
         {
-          price_list_id: "price-list-1",
-          rule_type_id: "rule-type-1",
+          price_list_id: "price-list-2",
+          rule_type_id: "rule-type-2",
         },
       ])
 
@@ -236,8 +236,8 @@ describe("PriceListRule Service", () => {
         }
       )
 
-      expect(priceListRule.price_list.id).toEqual("price-list-1")
-      expect(priceListRule.rule_type.id).toEqual("rule-type-1")
+      expect(priceListRule.price_list.id).toEqual("price-list-2")
+      expect(priceListRule.rule_type.id).toEqual("rule-type-2")
     })
   })
 
@@ -341,7 +341,7 @@ describe("PriceListRule Service", () => {
       )
 
       expect(priceList.price_list_rules).toEqual([
-        expect.objectContaining({ rule_type: "rule-type-1" }),
+        expect.objectContaining({ rule_type: "rule-type-2" }),
       ])
     })
   })
