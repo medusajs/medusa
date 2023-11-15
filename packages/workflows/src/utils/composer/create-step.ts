@@ -15,6 +15,7 @@ import {
   StepFunctionResult,
   StepReturn,
 } from "./type"
+import { autoGapFiller } from "./utils"
 
 type InvokeFn<TInput extends unknown[], O> = TInput extends [
   ...infer Args,
@@ -103,7 +104,9 @@ function applyStep<
           context: transactionContext.context,
         }
 
-        const args = [...previousResultResults, executionContext]
+        let args = previousResultResults
+        args = autoGapFiller(args, invokeFn)
+        args.push(executionContext)
 
         const output = await invokeFn.apply(this, args)
 
