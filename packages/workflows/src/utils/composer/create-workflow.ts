@@ -9,6 +9,14 @@ import {
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
+/**
+ * Creates a new workflow with the given name and composer function.
+ * The composer function will compose the workflow by using the step, parallelize and other util functions that
+ * will allow to define the flow of event of a workflow.
+ *
+ * @param name
+ * @param composer
+ */
 export function createWorkflow<TData, TResult>(
   name: string,
   composer: (input: StepReturn<TData>) => void | StepReturn<TResult>

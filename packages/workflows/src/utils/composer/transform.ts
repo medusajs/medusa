@@ -3,21 +3,24 @@ import {
   SymbolWorkflowStep,
   SymbolWorkflowStepTransformer,
 } from "./symbol"
-import { StepExecutionContext, StepReturn } from "./type"
+import { StepReturn, WorkflowTransactionContext } from "./type"
 
 type Func1Multiple<T extends any[], U> = (
   ...inputs: [
-    ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] },
-    context: StepExecutionContext
+    context: WorkflowTransactionContext,
+    ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
   ]
 ) => U | Promise<U>
 
 type Func1Single<T, U> = (
-  input: T extends StepReturn<infer U> ? U : T,
-  context: StepExecutionContext
+  context: WorkflowTransactionContext,
+  input: T extends StepReturn<infer U> ? U : T
 ) => U | Promise<U>
 
-type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
+type Func<T, U> = (
+  context: WorkflowTransactionContext,
+  input: T
+) => U | Promise<U>
 
 export function transform<T extends unknown[], TOutput = unknown>(
   values: [...T],
@@ -81,6 +84,14 @@ export function transform<T, A, B, C, D, TOutput = unknown>(
   ]
 ): StepReturn<TOutput>
 
+/**
+ * Transforms the input value(s) using the provided functions.
+ * Allow to perform transformation on the future result of the step(s) to be passed
+ * to other steps later on at run time.
+ *
+ * @param values
+ * @param functions
+ */
 export function transform(
   values: any | any[],
   ...functions: Function[]

@@ -43,6 +43,15 @@ interface ApplyStepOptions<
   >
 }
 
+/**
+ * Internal function to create the invoke and compensate handler for a step.
+ * This is where the inputs and context are passed to the underlying invoke and compensate function.
+ *
+ * @param stepName
+ * @param stepInputs
+ * @param invokeFn
+ * @param compensateFn
+ */
 function applyStep<
   TStepInputs extends StepReturn[],
   TInvokeInput extends unknown[],
@@ -159,6 +168,15 @@ function applyStep<
   }
 }
 
+/**
+ * Function which will create a StepFunction to be used inside a createWorkflow composer function.
+ * This function will return a function which can be used to bind the step to a workflow.
+ * The types of the input to be passed to the step function is defined by the generic of the invoke function provided.
+ *
+ * @param name
+ * @param invokeFn
+ * @param compensateFn
+ */
 export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
   name: string,
   invokeFn: InvokeFn<TInvokeInput, TInvokeResult>,

@@ -74,10 +74,10 @@ const workflow = createWorkflow(
 
     const ret4Transformed = transform(
       [ret4, ret3],
-      async (input, input2): Promise<{ test: string }> => {
+      async (context, input, input2): Promise<{ test: string }> => {
         return { test: input.test }
       },
-      async (input, input2): Promise<{ test: string }> => {
+      async (context, input): Promise<{ test: string }> => {
         return { test: input.test }
       }
     )
