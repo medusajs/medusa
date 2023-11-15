@@ -14,20 +14,19 @@ import { SymbolMedusaWorkflowComposerContext } from "./symbol"
  * import { createProductStep, getProductStep, createPricesStep, attachProductToSalesChannelStep } from "./steps"
  *
  * interface MyWorkflowData {
- * title: string
+ *   title: string
  * }
  *
  * const myWorkflow = createWorkflow("my-workflow", (input: StepReturn<MyWorkflowData>) => {
+ *   const product = createProductStep(input)
  *
- * const product = createProductStep(input)
+ *   const [prices, productSalesChannel] = parallelize(
+ *      createPricesStep(product),
+ *      attachProductToSalesChannelStep(product)
+ *   )
  *
- * const [prices, productSalesChannel] = parallelize(
- *    createPricesStep(product),
- *    attachProductToSalesChannelStep(product)
- * )
- *
- * const id = product.id
- * return getProductStep(product.id)
+ *   const id = product.id
+ *   return getProductStep(product.id)
  * })
  */
 export function parallelize<TResult extends StepReturn[]>(
