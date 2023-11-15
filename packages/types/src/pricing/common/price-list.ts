@@ -99,6 +99,8 @@ export interface UpdatePriceListRuleDTO {
   id: string
   price_list_id?: string
   rule_type_id?: string
+  price_list?: string
+  rule_type?: string
 }
 
 export interface PriceListRuleValueDTO {
