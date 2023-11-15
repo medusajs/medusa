@@ -110,7 +110,7 @@ export function transform(
       const args = i === 0 ? stepValues : [finalResult]
       const shouldFill = fn.length > stepValues.length + 1
       if (shouldFill) {
-        const fillCount = fn.length - stepValues.length
+        const fillCount = fn.length - stepValues.length + 1
         args.push(...new Array(fillCount).fill(undefined))
       }
       args.push(context)
