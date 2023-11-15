@@ -176,6 +176,36 @@ function applyStep<
  * @param name
  * @param invokeFn
  * @param compensateFn
+ *
+ * @example
+ * ```ts
+ * interface CreateProductInput {
+ *   title: string
+ * }
+ *
+ * interface CreateProductOutput {
+ *   product: { id: string; title: string }
+ *   compensateInput: {
+ *     product_id: string
+ *   }
+ * }
+ *
+ * export const createProductStep = createStep(
+ *  "createProductStep",
+ *  async function (context: StepExecutionContext, input: Step1Input): Promise<CreateProductOutput> {
+ *    const productService = context.container.resolve("productService")
+ *    const product = await productService.create(input)
+ *    return {
+ *      product,
+ *      compensateInput: {
+ *        product_id: product.id
+ *      }
+ *    }
+ *  },
+ *  async function (context: any, input) {
+ *     const productService = context.container.resolve("productService")
+ *     await productService.delete(input.product_id)
+ *  })
  */
 export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
   name: string,

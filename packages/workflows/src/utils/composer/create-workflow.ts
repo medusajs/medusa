@@ -18,6 +18,7 @@ global[SymbolMedusaWorkflowComposerContext] = null
  * @param composer
  *
  * @example
+ * ```ts
  * import { createWorkflow, StepReturn } from "@medusajs/workflows"
  * import { createProductStep, getProductStep, createPricesStep } from "./steps"
  *
@@ -34,6 +35,7 @@ global[SymbolMedusaWorkflowComposerContext] = null
  *    const id = product.id
  *    return getProductStep(product.id)
  * })
+ * ```
  */
 export function createWorkflow<TData, TResult>(
   name: string,
