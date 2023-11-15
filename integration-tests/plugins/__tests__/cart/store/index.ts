@@ -12,6 +12,10 @@ import { simpleProductFactory } from "../../../../factories"
 
 jest.setTimeout(30000)
 
+const env = {
+  MEDUSA_FF_MEDUSA_V2: true,
+}
+
 describe("/store/carts", () => {
   let dbConnection
   let shutdownServer
@@ -23,8 +27,8 @@ describe("/store/carts", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
-    dbConnection = await initDb({ cwd })
-    shutdownServer = await startBootstrapApp({ cwd })
+    dbConnection = await initDb({ cwd, env } as any)
+    shutdownServer = await startBootstrapApp({ cwd, env })
   })
 
   afterAll(async () => {
@@ -69,7 +73,7 @@ describe("/store/carts", () => {
       })
 
       prodSC = await simpleProductFactory(dbConnection, {
-        id: "test-product",
+        id: "test-product-sc",
         variants: [{ id: "test-variant_1" }],
         sales_channels: [{ id: "amazon-sc", name: "Amazon store" }],
       })

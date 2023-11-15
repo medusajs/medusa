@@ -233,6 +233,7 @@
 import {
   AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
@@ -241,8 +242,9 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne
+  OneToOne,
 } from "typeorm"
+import { MedusaV2Flag } from "@medusajs/utils"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import {
   FeatureFlagColumn,
@@ -326,6 +328,22 @@ export class Cart extends SoftDeletableEntity {
     },
   })
   discounts: Discount[]
+
+  @FeatureFlagDecorators(MedusaV2Flag.key, [
+    ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
+    JoinTable({
+      name: "cart_sales_channel",
+      joinColumn: {
+        name: "cart_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
+  channels: SalesChannel[]
 
   @ManyToMany(() => GiftCard)
   @JoinTable({
@@ -417,6 +435,9 @@ export class Cart extends SoftDeletableEntity {
     if (this.payment_sessions) {
       this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
     }
+    if (this.channels?.length) {
+      this.sales_channel = this.channels[0]
+    }
   }
 
   /**
@@ -425,5 +446,19 @@ export class Cart extends SoftDeletableEntity {
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "cart")
+
+    if (this.sales_channel_id) {
+      this.channels = [{ id: this.sales_channel_id }] as SalesChannel[]
+    }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.sales_channel_id) {
+      this.channels = [{ id: this.sales_channel_id }] as SalesChannel[]
+    }
   }
 }

@@ -366,10 +366,7 @@ class CartService extends TransactionBaseService {
         }
 
         if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            SalesChannelFeatureFlag.key
-          ) &&
-          !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
           rawCart.sales_channel_id = (
             await this.getValidatedSalesChannel(data.sales_channel_id)
