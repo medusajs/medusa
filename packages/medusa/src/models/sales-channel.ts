@@ -1,10 +1,6 @@
 import { BeforeInsert, Column, JoinTable, ManyToMany, OneToMany } from "typeorm"
-import { MedusaV2Flag } from "@medusajs/utils"
 
-import {
-  FeatureFlagDecorators,
-  FeatureFlagEntity,
-} from "../utils/feature-flag-decorators"
+import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { SoftDeletableEntity } from "../interfaces"
 import { DbAwareColumn, generateEntityId } from "../utils"
 import { SalesChannelLocation } from "./sales-channel-location"
@@ -24,21 +20,19 @@ export class SalesChannel extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @FeatureFlagDecorators(MedusaV2Flag.key, [
-    ManyToMany(() => Product),
-    JoinTable({
-      name: "product_sales_channel",
-      inverseJoinColumn: {
-        name: "product_id",
-        referencedColumnName: "id",
-      },
-      joinColumn: {
-        name: "sales_channel_id",
-        referencedColumnName: "id",
-      },
-    }),
-  ])
-  product: Product[]
+  @ManyToMany(() => Product)
+  @JoinTable({
+    name: "product_sales_channel",
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "sales_channel_id",
+      referencedColumnName: "id",
+    },
+  })
+  products: Product[]
 
   @OneToMany(
     () => SalesChannelLocation,
