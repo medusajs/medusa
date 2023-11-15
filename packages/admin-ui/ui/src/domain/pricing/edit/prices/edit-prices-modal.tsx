@@ -183,7 +183,7 @@ const EditPricesModal = ({
 
           productPrices.variants[variant.id!].region![region.id] = {
             id: existingPrice ? existingPrice.id : "",
-            amount: amount ? `${amount}` : "",
+            amount: amount ? `${amount}`.replace(/,/g, ".") : "",
           }
         }
 
@@ -201,7 +201,7 @@ const EditPricesModal = ({
 
           productPrices.variants[variant.id!].currency![currency.code] = {
             id: existingPrice ? existingPrice.id : "",
-            amount: amount ? `${amount}` : "",
+            amount: amount ? `${amount}`.replace(/,/g, ".") : "",
           }
         }
       }
