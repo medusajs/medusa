@@ -1830,6 +1830,7 @@ const Cell = React.forwardRef<HTMLInputElement, CellProps>(
           ? formatValue({
               value: strippedValue.replace(/,/g, "."), // If the current locale uses commas as decimal separators, then we need to replace them with dots.
               decimalScale: decimalScale ?? 0,
+              decimalSeparator: ".",
               disableGroupSeparators: true,
             })
           : ""
