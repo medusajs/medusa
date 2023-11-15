@@ -14,16 +14,18 @@ describe("Workflow composer", function () {
   })
 
   it("should compose a new workflow and execute it", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { inputs: [input], obj: "return from 1" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 2",
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 3",
@@ -47,22 +49,22 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn).toHaveBeenCalledTimes(1)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(1)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(1)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(3)
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[0][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
       inputs: [
         {
           inputs: [workflowInput],
@@ -93,16 +95,18 @@ describe("Workflow composer", function () {
   })
 
   it("should compose two new workflows sequentially and execute them sequentially", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { inputs: [input], obj: "return from 1" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 2",
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 3",
@@ -137,29 +141,29 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn).toHaveBeenCalledTimes(2)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
     expect(mockStep1Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[1][1]).toEqual(workflow2Input)
+    expect(mockStep1Fn.mock.calls[1][0]).toEqual(workflow2Input)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(2)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
     expect(mockStep2Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[1][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[1][0]).toEqual({
       inputs: [workflow2Input],
       obj: "return from 1",
     })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(2)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(3)
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[0][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
       inputs: [
         {
           inputs: [workflowInput],
@@ -168,11 +172,11 @@ describe("Workflow composer", function () {
       ],
       obj: "return from 2",
     })
-    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[1][0]).toEqual({
       inputs: [workflow2Input],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[1][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
       inputs: [
         {
           inputs: [workflow2Input],
@@ -221,16 +225,18 @@ describe("Workflow composer", function () {
   })
 
   it("should compose two new workflows concurrently and execute them sequentially", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { inputs: [input], obj: "return from 1" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 2",
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 3",
@@ -267,29 +273,29 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn).toHaveBeenCalledTimes(2)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
     expect(mockStep1Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[1][1]).toEqual(workflow2Input)
+    expect(mockStep1Fn.mock.calls[1][0]).toEqual(workflow2Input)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(2)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
     expect(mockStep2Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[1][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[1][0]).toEqual({
       inputs: [workflow2Input],
       obj: "return from 1",
     })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(2)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(3)
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[0][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
       inputs: [
         {
           inputs: [workflowInput],
@@ -298,11 +304,11 @@ describe("Workflow composer", function () {
       ],
       obj: "return from 2",
     })
-    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[1][0]).toEqual({
       inputs: [workflow2Input],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[1][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
       inputs: [
         {
           inputs: [workflow2Input],
@@ -351,16 +357,18 @@ describe("Workflow composer", function () {
   })
 
   it("should compose two new workflows concurrently and execute them concurrently", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { inputs: [input], obj: "return from 1" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 2",
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 3",
@@ -400,29 +408,29 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn).toHaveBeenCalledTimes(2)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
     expect(mockStep1Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[1][1]).toEqual(workflow2Input)
+    expect(mockStep1Fn.mock.calls[1][0]).toEqual(workflow2Input)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(2)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
     expect(mockStep2Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[1][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[1][0]).toEqual({
       inputs: [workflow2Input],
       obj: "return from 1",
     })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(2)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(3)
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[0][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
       inputs: [
         {
           inputs: [workflowInput],
@@ -431,11 +439,11 @@ describe("Workflow composer", function () {
       ],
       obj: "return from 2",
     })
-    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[1][0]).toEqual({
       inputs: [workflow2Input],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[1][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
       inputs: [
         {
           inputs: [workflow2Input],
@@ -484,22 +492,25 @@ describe("Workflow composer", function () {
   })
 
   it("should compose a new workflow with parallelize steps", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { inputs: [input], obj: "return from 1" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 2",
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 3",
       }
     })
-    const mockStep4Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep4Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 4",
@@ -524,25 +535,25 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn).toHaveBeenCalledTimes(1)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(1)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(1)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 1",
     })
 
     expect(mockStep4Fn).toHaveBeenCalledTimes(1)
     expect(mockStep4Fn.mock.calls[0]).toHaveLength(3)
-    expect(mockStep4Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep4Fn.mock.calls[0][0]).toEqual({
       inputs: [
         {
           inputs: [workflowInput],
@@ -551,7 +562,7 @@ describe("Workflow composer", function () {
       ],
       obj: "return from 2",
     })
-    expect(mockStep4Fn.mock.calls[0][2]).toEqual({
+    expect(mockStep4Fn.mock.calls[0][1]).toEqual({
       inputs: [
         {
           inputs: [workflowInput],
@@ -587,16 +598,18 @@ describe("Workflow composer", function () {
   })
 
   it("should overwrite existing workflows if the same name is used", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { inputs: [input], obj: "return from 1" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep2Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 2",
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, ...inputs) => {
+    const mockStep3Fn = jest.fn().mockImplementation((...inputs) => {
+      const context = inputs.pop()
       return {
         inputs,
         obj: "return from 3",
@@ -626,18 +639,18 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn).toHaveBeenCalledTimes(1)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual({
       inputs: [workflowInput],
       obj: "return from 2",
     })
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(1)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual(workflowInput)
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(1)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(3)
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({
       inputs: [
         {
           inputs: [workflowInput],
@@ -646,7 +659,7 @@ describe("Workflow composer", function () {
       ],
       obj: "return from 1",
     })
-    expect(mockStep3Fn.mock.calls[0][2]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
       inputs: [workflowInput],
       obj: "return from 2",
     })
@@ -687,7 +700,7 @@ describe("Workflow composer", function () {
       return ret
     })
 
-    const mockStep3Fn = jest.fn().mockImplementation((context, param) => {
+    const mockStep3Fn = jest.fn().mockImplementation((param, context) => {
       const ret = {
         avg: "avg = " + param.avg,
         ...param,
@@ -695,7 +708,7 @@ describe("Workflow composer", function () {
       return ret
     })
 
-    const transform1Fn = jest.fn((context, input, step1Res) => {
+    const transform1Fn = jest.fn((input, step1Res, context) => {
       const newObj = {
         ...step1Res,
         ...input,
@@ -704,13 +717,14 @@ describe("Workflow composer", function () {
       return newObj
     })
 
-    const transform2Fn = jest.fn(async (context, input) => {
+    const transform2Fn = jest.fn(async (input, context) => {
       input.another_prop = "another_prop"
       return input
     })
 
-    const transform3Fn = jest.fn((context, obj) => {
+    const transform3Fn = jest.fn((obj, context) => {
       obj.avg = (obj.a + obj.b) / 2
+
       return obj
     })
 
@@ -733,9 +747,9 @@ describe("Workflow composer", function () {
     const workflowInput = { a: 1, b: 2 }
     await mainFlow().run({ input: workflowInput })
 
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
 
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual({
       property: "property",
       a: 1,
       b: 2,
@@ -743,7 +757,7 @@ describe("Workflow composer", function () {
       another_prop: "another_prop",
     })
 
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({
       sum: 3,
       property: "property",
       a: 1,
@@ -758,15 +772,15 @@ describe("Workflow composer", function () {
   })
 
   it("should compose a new workflow and access properties from steps", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { id: input, product: "product_1", variant: "variant_2" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, product) => {
+    const mockStep2Fn = jest.fn().mockImplementation((product, context) => {
       return {
         product: "Saved product - " + product,
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, variant) => {
+    const mockStep3Fn = jest.fn().mockImplementation((variant, context) => {
       return {
         variant: "Saved variant - " + variant,
       }
@@ -789,14 +803,14 @@ describe("Workflow composer", function () {
 
     expect(mockStep1Fn).toHaveBeenCalledTimes(1)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[0][1]).toEqual(workflowInput)
+    expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(1)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][1]).toEqual("product_1")
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual("product_1")
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(1)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual("variant_2")
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual("variant_2")
   })
 })
