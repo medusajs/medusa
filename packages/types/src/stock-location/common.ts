@@ -151,6 +151,14 @@ export type StockLocationExpandedDTO = StockLocationDTO & {
   sales_channels?: any[] // TODO: SalesChannel type
 }
 
+/**
+ * @interface
+ * 
+ * The filters to apply on the retrieved stock locations.
+ * 
+ * @prop id - The IDs to filter stock locations by.
+ * @prop name - The names to filter stock locations by.
+ */
 export type FilterableStockLocationProps = {
   id?: string | string[]
   name?: string | string[] | StringComparisonOperator
