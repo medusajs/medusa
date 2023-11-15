@@ -3,7 +3,7 @@ import { Migration } from "@mikro-orm/migrations"
 export class Migration20231101232834 extends Migration {
   async up(): Promise<void> {
     this.addSql(
-      'create table "price_list_rule_value" ("id" text not null, "price_list_rule_id" text not null, constraint "price_list_rule_value_pkey" primary key ("id"));'
+      'create table "price_list_rule_value" ("id" text not null, "value" text not null, "price_list_rule_id" text not null, constraint "price_list_rule_value_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_price_list_rule_price_list_rule_value_id" on "price_list_rule_value" ("price_list_rule_id");'
