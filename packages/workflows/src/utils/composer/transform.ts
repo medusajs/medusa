@@ -107,12 +107,15 @@ export function transform(
     for (let i = 0; i < functions.length; i++) {
       const fn = functions[i]
 
-      const fnInput = i === 0 ? stepValues : [finalResult]
-      fnInput.push(
-        ...Array(Math.max(0, fn.length - fnInput.length)).fill(undefined),
-        context
-      )
-      finalResult = await fn.apply(fn, fnInput)
+      const args = i === 0 ? stepValues : [finalResult]
+      const shouldFill = fn.length > stepValues.length + 1
+      if (shouldFill) {
+        const fillCount = fn.length - stepValues.length
+        args.push(...new Array(fillCount).fill(undefined))
+      }
+      args.push(context)
+
+      finalResult = await fn.apply(fn, args)
     }
 
     returnFn.__value = finalResult

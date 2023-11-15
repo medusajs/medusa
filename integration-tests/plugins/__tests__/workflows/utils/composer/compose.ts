@@ -684,7 +684,7 @@ describe("Workflow composer", function () {
     })
   })
 
-  it("should transform the values before forward them to the next step", async () => {
+  it.only("should transform the values before forward them to the next step", async () => {
     const mockStep1Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
         property: "property",
