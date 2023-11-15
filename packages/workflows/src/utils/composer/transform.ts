@@ -12,22 +12,19 @@ type Func1Multiple<T extends any[], U> = (
   ]
 ) => U | Promise<U>
 
-type Func1Single<T extends any, U> = (
+type Func1Single<T, U> = (
   input: T extends StepReturn<infer U> ? U : T,
   context: StepExecutionContext
 ) => U | Promise<U>
 
-type Func<T extends any, U> = (
-  input: T,
-  context: StepExecutionContext
-) => U | Promise<U>
+type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
 
 export function transform<T extends unknown[], TOutput = unknown>(
   values: [...T],
   funcA: Func1Multiple<T, TOutput>
 ): StepReturn<TOutput>
 
-export function transform<T extends unknown, TOutput = unknown>(
+export function transform<T, TOutput = unknown>(
   values: T,
   funcA: Func1Single<T, TOutput>
 ): StepReturn<TOutput>
@@ -37,7 +34,7 @@ export function transform<T extends any[], A, TOutput = unknown>(
   ...functions: [Func1Multiple<T, A>, Func<A, TOutput>]
 ): StepReturn<TOutput>
 
-export function transform<T extends any, A, TOutput = unknown>(
+export function transform<T, A, TOutput = unknown>(
   values: T,
   ...functions: [Func1Single<T, A>, Func<A, TOutput>]
 ): StepReturn<TOutput>
@@ -47,7 +44,7 @@ export function transform<T extends any[], A, B, TOutput = unknown>(
   ...functions: [Func1Multiple<T, A>, Func<A, B>, Func<B, TOutput>]
 ): StepReturn<TOutput>
 
-export function transform<T extends any, A, B, TOutput = unknown>(
+export function transform<T, A, B, TOutput = unknown>(
   values: T,
   ...functions: [Func1Single<T, A>, Func<A, B>, Func<B, TOutput>]
 ): StepReturn<TOutput>
@@ -57,7 +54,7 @@ export function transform<T extends any[], A, B, C, TOutput = unknown>(
   ...functions: [Func1Multiple<T, A>, Func<A, B>, Func<B, C>, Func<C, TOutput>]
 ): StepReturn<TOutput>
 
-export function transform<T extends any, A, B, C, TOutput = unknown>(
+export function transform<T, A, B, C, TOutput = unknown>(
   values: T,
   ...functions: [Func1Single<T, A>, Func<A, B>, Func<B, C>, Func<C, TOutput>]
 ): StepReturn<TOutput>
@@ -73,7 +70,7 @@ export function transform<T extends any[], A, B, C, D, TOutput = unknown>(
   ]
 ): StepReturn<TOutput>
 
-export function transform<T extends any, A, B, C, D, TOutput = unknown>(
+export function transform<T, A, B, C, D, TOutput = unknown>(
   values: T,
   ...func: [
     Func1Single<T, A>,
@@ -88,14 +85,8 @@ export function transform(
   values: any | any[],
   ...functions: Function[]
 ): unknown {
-  const returnFn = async function (context: any): Promise<any> {
+  const returnFn = async function (context): Promise<any> {
     const { invoke } = context
-    const executionContext = {
-      container: context.container,
-      metadata: context.metadata,
-      context: context.context,
-      invoke: context.invoke,
-    } as any
 
     values = Array.isArray(values) ? values : [values]
     const stepValues = values?.map((value: any) => {
@@ -117,10 +108,17 @@ export function transform(
       const fn = functions[i]
 
       const fnInput = i === 0 ? stepValues : [finalResult]
-      finalResult = await fn.apply(fn, [...fnInput, context])
+      if (fn.length > fnInput.length) {
+        const argsDiff = fn.length - fnInput.length
+        for (let j = 0; j < argsDiff; j++) {
+          fnInput.push(undefined)
+        }
+      }
+      fnInput.push(context)
+      finalResult = await fn.apply(fn, fnInput)
     }
 
-    returnFn.__value = finalResult
+    // returnFn.__value = finalResult
     return finalResult
   }
 

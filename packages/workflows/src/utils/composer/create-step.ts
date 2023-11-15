@@ -144,7 +144,7 @@ function applyStep<
     }
 
     return new Proxy(ret, {
-      get(target: any, prop: string | symbol, receiver: any): any {
+      get(target: any, prop: string | symbol): any {
         if (target[prop]) {
           return target[prop]
         }
@@ -153,7 +153,7 @@ function applyStep<
         return transform(target[prop], (...args) => {
           const context = args.pop()
           const { invoke } = context
-          return invoke[ret.__step__]?.output?.[prop]
+          return invoke?.[ret.__step__]?.output?.[prop]
         })
       },
     })

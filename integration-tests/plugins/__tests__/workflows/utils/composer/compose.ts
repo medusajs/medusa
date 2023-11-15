@@ -694,9 +694,10 @@ describe("Workflow composer", function () {
 
     const mockStep2Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
-        sum: "sum = " + obj.sum,
         ...obj,
+        sum: "sum = " + obj.sum,
       }
+
       return ret
     })
 
