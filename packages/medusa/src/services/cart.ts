@@ -69,7 +69,6 @@ import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { PaymentSessionInput } from "../types/payment"
 import { validateEmail } from "../utils/is-email"
 import { RemoteQueryFunction } from "@medusajs/types"
-import IsolateSalesChannelDomain from "../loaders/feature-flags/isolate-sales-channel-domain"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -281,9 +280,7 @@ class CartService extends TransactionBaseService {
       )
     }
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(IsolateSalesChannelDomain.key)
-    ) {
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       await this.decorateCartsWithSalesChannel([raw])
     }
 
@@ -372,9 +369,7 @@ class CartService extends TransactionBaseService {
           this.featureFlagRouter_.isFeatureEnabled(
             SalesChannelFeatureFlag.key
           ) &&
-          !this.featureFlagRouter_.isFeatureEnabled(
-            IsolateSalesChannelDomainFeatureFlag.key
-          )
+          !this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
         ) {
           rawCart.sales_channel_id = (
             await this.getValidatedSalesChannel(data.sales_channel_id)
@@ -505,11 +500,7 @@ class CartService extends TransactionBaseService {
   ): Promise<SalesChannel | never> {
     let salesChannel: SalesChannel
     if (isDefined(salesChannelId)) {
-      if (
-        this.featureFlagRouter_.isFeatureEnabled(
-          IsolateSalesChannelDomainFeatureFlag.key
-        )
-      ) {
+      if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
         const query = {
           sales_channel: {
             __args: {
@@ -613,7 +604,7 @@ class CartService extends TransactionBaseService {
    * Returns true if all products in the cart can be fulfilled with the current
    * shipping methods.
    * @param shippingMethods - the set of shipping methods to check from
-   * @param lineItem - the line item
+   * @param lineItemShippingProfiledId - the line item
    * @return boolean representing whether shipping method is validated
    */
   protected validateLineItemShipping_(
@@ -1023,7 +1014,7 @@ class CartService extends TransactionBaseService {
    * Updates a cart's existing line item.
    * @param cartId - the id of the cart to update
    * @param lineItemId - the id of the line item to update.
-   * @param lineItemUpdate - the line item to update. Must include an id field.
+   * @param update - the line item to update. Must include an id field.
    * @return the result of the update operation
    */
   async updateLineItem(

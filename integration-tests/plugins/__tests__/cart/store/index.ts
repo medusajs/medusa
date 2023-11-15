@@ -36,6 +36,7 @@ describe("/store/carts", () => {
   describe("POST /store/carts", () => {
     let prod1
     let prodSale
+    let prodSC
 
     beforeEach(async () => {
       const manager = dbConnection.manager
@@ -65,6 +66,12 @@ describe("/store/carts", () => {
             prices: [{ amount: 1000, currency: "usd" }],
           },
         ],
+      })
+
+      prodSC = await simpleProductFactory(dbConnection, {
+        id: "test-product",
+        variants: [{ id: "test-variant_1" }],
+        sales_channels: [{ id: "amazon-sc", name: "Amazon store" }],
       })
     })
 
@@ -207,6 +214,19 @@ describe("/store/carts", () => {
         user_agent: expect.stringContaining("axios/0.21."),
         test_id: "test",
       })
+    })
+
+    it("should create a cart in a sales channel", async () => {
+      const api = useApi()
+      const response = await api.post("/store/carts", {
+        sales_channel_id: "amazon-sc",
+      })
+
+      expect(response.status).toEqual(200)
+
+      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      expect(getRes.status).toEqual(200)
+      expect(getRes.data.cart.sales_channel.id).toEqual("amazon-sc")
     })
   })
 })

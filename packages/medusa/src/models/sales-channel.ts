@@ -41,7 +41,7 @@ export class SalesChannel extends SoftDeletableEntity {
   ])
   product: Product[]
 
-  @FeatureFlagDecorators("isolate_sales_channel_domain", [
+  @FeatureFlagDecorators(MedusaV2Flag.key, [
     OneToMany(
       () => Cart,
       (cart) => cart.sales_channel

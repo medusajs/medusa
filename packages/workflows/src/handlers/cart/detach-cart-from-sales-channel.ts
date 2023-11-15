@@ -1,4 +1,4 @@
-import { IsolateSalesChannelDomainFeatureFlag } from "@medusajs/utils"
+import { MedusaV2Flag } from "@medusajs/utils"
 
 import { WorkflowArguments } from "../../helper"
 
@@ -23,11 +23,7 @@ export async function detachCartFromSalesChannel({
   const featureFlagRouter = container.resolve("featureFlagRouter")
   const remoteLink = container.resolve("remoteLink")
 
-  if (
-    !featureFlagRouter.isFeatureEnabled(
-      IsolateSalesChannelDomainFeatureFlag.key
-    )
-  ) {
+  if (!featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     return
   }
 
