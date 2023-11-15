@@ -1,5 +1,57 @@
 # Change Log
 
+## 1.17.4
+
+### Patch Changes
+
+- [#5594](https://github.com/medusajs/medusa/pull/5594) [`4ad66c179`](https://github.com/medusajs/medusa/commit/4ad66c1795af2b5e9f0a0e958447b688e525651a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Load legacy modules entities
+
+- [#5582](https://github.com/medusajs/medusa/pull/5582) [`91615f9c4`](https://github.com/medusajs/medusa/commit/91615f9c459a2d8cb842561c5edb335680d30298) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(@medusajs/client-types): Fix types and TSDocs
+  fix(medusa-react): Fix response type of Publishable API Key's list sales channels.
+  fix(@medusajs/medusa-js): Fix incorrect parameter and response types.
+  fix(@medusajs/medusa): Fix incorrect types and add TSDocs
+  fix(@medusajs/types): Fix incorrect types and add TSDocs
+
+- [#5510](https://github.com/medusajs/medusa/pull/5510) [`203e1fccb`](https://github.com/medusajs/medusa/commit/203e1fccb404a7408b53767456eee52ea719356c) Thanks [@adamlamaa](https://github.com/adamlamaa)! - feat(medusa): Include Product Collections in Seed command
+
+- [#5496](https://github.com/medusajs/medusa/pull/5496) [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, modules-sdk, types, utils): Re work modules loading and remove legacy functions
+
+- [#5543](https://github.com/medusajs/medusa/pull/5543) [`f90ba0208`](https://github.com/medusajs/medusa/commit/f90ba02087778d8131aed3a59a6dc9c8ca3c95f4) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(utils): Introduce promiseAll util
+
+- Updated dependencies [[`c39bf69a5`](https://github.com/medusajs/medusa/commit/c39bf69a5e5cae75d7fa12aa6022b10903557a32), [`154c9b43b`](https://github.com/medusajs/medusa/commit/154c9b43bde1fdff562aba9da8a79af2660b29b3)]:
+  - @medusajs/modules-sdk@1.12.3
+  - @medusajs/orchestration@0.4.4
+  - @medusajs/utils@1.10.5
+  - @medusajs/workflows@0.2.5
+  - @medusajs/link-modules@0.2.3
+
+## 1.17.3
+
+### Patch Changes
+
+- [#5304](https://github.com/medusajs/medusa/pull/5304) [`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): add migration script for pricing module
+
+- [#5075](https://github.com/medusajs/medusa/pull/5075) [`e64823d1b`](https://github.com/medusajs/medusa/commit/e64823d1b9e7556d8bc12c553accefa0b2a8b714) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): totals calculation with gift card
+
+- [#5187](https://github.com/medusajs/medusa/pull/5187) [`9ff22110a`](https://github.com/medusajs/medusa/commit/9ff22110a60da6d91ca49e93de509512382a46a3) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): decorate inventory for variants returned through carts
+
+- [#5468](https://github.com/medusajs/medusa/pull/5468) [`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, modules-sdk, modules): Module loading was missing the expected dependencies and remote query reference fix
+
+- [#5497](https://github.com/medusajs/medusa/pull/5497) [`2548ea8e5`](https://github.com/medusajs/medusa/commit/2548ea8e5ed3374143500baa37e2accf0fa367a0) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(medusa): Ensures that file based routing is compatible with Windows pathing
+
+- [#5428](https://github.com/medusajs/medusa/pull/5428) [`ebba93e03`](https://github.com/medusajs/medusa/commit/ebba93e03d223fb3a79276090f7cfad612d70243) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Update status type in API payload definition
+
+- [#5304](https://github.com/medusajs/medusa/pull/5304) [`148f537b4`](https://github.com/medusajs/medusa/commit/148f537b47635e8b73ebaa27bbfbe58624bfe641) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): integrate pricing into reads
+
+- [#5410](https://github.com/medusajs/medusa/pull/5410) [`4d52082bf`](https://github.com/medusajs/medusa/commit/4d52082bf05fce18b55dae7f982c0c2cf4c65194) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa): variant creation with prices in productservice.create
+
+- [#5480](https://github.com/medusajs/medusa/pull/5480) [`a780b92b8`](https://github.com/medusajs/medusa/commit/a780b92b8d590baa0e86682d1154f9e5b0869ea1) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): admin get product should return prices when expected
+
+- Updated dependencies [[`a45da9215`](https://github.com/medusajs/medusa/commit/a45da9215d2a7834c368037726aaa3961caadaf9), [`5c77029cb`](https://github.com/medusajs/medusa/commit/5c77029cb021690a4f617b83b4999ed55bf9dea1)]:
+  - @medusajs/link-modules@0.2.2
+  - @medusajs/modules-sdk@1.12.2
+  - @medusajs/orchestration@0.4.3
+
 ## 1.17.2
 
 ### Patch Changes

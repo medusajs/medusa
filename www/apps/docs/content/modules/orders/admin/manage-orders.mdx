@@ -42,7 +42,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and have [created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and have [created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -63,64 +63,64 @@ You can learn more about [authenticating as an admin user in the API reference](
 You can list orders by sending a request to the [List Orders API Route](https://docs.medusajs.com/api/admin#orders_getorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.list()
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    medusa.admin.orders.list()
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrders } from "medusa-react"
+    ```tsx
+    import { useAdminOrders } from "medusa-react"
 
-const Orders = () => {
-  const { orders, isLoading } = useAdminOrders()
+    const Orders = () => {
+      const { orders, isLoading } = useAdminOrders()
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {orders && !orders.length && <span>No Orders</span>}
-      {orders && orders.length > 0 && (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>{order.display_id}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {orders && !orders.length && <span>No Orders</span>}
+          {orders && orders.length > 0 && (
+            <ul>
+              {orders.map((order) => (
+                <li key={order.id}>{order.display_id}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default Orders
-```
+    export default Orders
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/orders' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/orders' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route doesn't require any path parameters. You can pass it query parameters to filter the orders received.
@@ -134,76 +134,76 @@ This API Route accepts a variety of query parameters that allow you to filter or
 For example, you can filter the orders by one or more status:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.list({
-  status: ["completed"],
-  // the JS client requires these fields
-  // to be passed
-  offset,
-  limit,
-})
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    medusa.admin.orders.list({
+      status: ["completed"],
+      // the JS client requires these fields
+      // to be passed
+      offset,
+      limit,
+    })
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrders } from "medusa-react"
+    ```tsx
+    import { useAdminOrders } from "medusa-react"
 
-const Orders = () => {
-  const { orders, isLoading } = useAdminOrders({
-    status: ["completed"],
-    // the JS client requires these fields
-    // to be passed
-    offset,
-    limit,
-  })
+    const Orders = () => {
+      const { orders, isLoading } = useAdminOrders({
+        status: ["completed"],
+        // the JS client requires these fields
+        // to be passed
+        offset,
+        limit,
+      })
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {orders && !orders.length && <span>No Orders</span>}
-      {orders && orders.length > 0 && (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>{order.display_id}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {orders && !orders.length && <span>No Orders</span>}
+          {orders && orders.length > 0 && (
+            <ul>
+              {orders.map((order) => (
+                <li key={order.id}>{order.display_id}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default Orders
-```
+    export default Orders
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders?status[]=completed`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders?status[]=completed`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 :::note
@@ -215,165 +215,165 @@ You can check available order statuses [here](../../../references/entities/enums
 Another example is filtering the orders by a sales channel:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.list({
-  sales_channel_id: [
-    salesChannelId,
-  ],
-  // the JS client requires these fields
-  // to be passed
-  offset,
-  limit,
-})
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    medusa.admin.orders.list({
+      sales_channel_id: [
+        salesChannelId,
+      ],
+      // the JS client requires these fields
+      // to be passed
+      offset,
+      limit,
+    })
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrders } from "medusa-react"
+    ```tsx
+    import { useAdminOrders } from "medusa-react"
 
-const Orders = () => {
-  const { orders, isLoading } = useAdminOrders({
-    sales_channel_id: [
-      salesChannelId,
-    ],
-    // the JS client requires these fields
-    // to be passed
-    offset,
-    limit,
-  })
+    const Orders = () => {
+      const { orders, isLoading } = useAdminOrders({
+        sales_channel_id: [
+          salesChannelId,
+        ],
+        // the JS client requires these fields
+        // to be passed
+        offset,
+        limit,
+      })
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {orders && !orders.length && <span>No Orders</span>}
-      {orders && orders.length > 0 && (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>{order.display_id}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {orders && !orders.length && <span>No Orders</span>}
+          {orders && orders.length > 0 && (
+            <ul>
+              {orders.map((order) => (
+                <li key={order.id}>{order.display_id}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default Orders
-```
+    export default Orders
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders?sales_channel_id[]=${salesChannelId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders?sales_channel_id[]=${salesChannelId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[]=<CHANNEL_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[]=<CHANNEL_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 You can also combine filters together:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.list({
-  status: ["completed"],
-  sales_channel_id: [
-    salesChannelId,
-  ],
-  // the JS client requires these fields
-  // to be passed
-  offset,
-  limit,
-})
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    medusa.admin.orders.list({
+      status: ["completed"],
+      sales_channel_id: [
+        salesChannelId,
+      ],
+      // the JS client requires these fields
+      // to be passed
+      offset,
+      limit,
+    })
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrders } from "medusa-react"
+    ```tsx
+    import { useAdminOrders } from "medusa-react"
 
-const Orders = () => {
-  const { orders, isLoading } = useAdminOrders({
-    status: ["completed"],
-    sales_channel_id: [
-      salesChannelId,
-    ],
-    // the JS client requires these fields
-    // to be passed
-    offset,
-    limit,
-  })
+    const Orders = () => {
+      const { orders, isLoading } = useAdminOrders({
+        status: ["completed"],
+        sales_channel_id: [
+          salesChannelId,
+        ],
+        // the JS client requires these fields
+        // to be passed
+        offset,
+        limit,
+      })
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {orders && !orders.length && <span>No Orders</span>}
-      {orders && orders.length > 0 && (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>{order.display_id}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {orders && !orders.length && <span>No Orders</span>}
+          {orders && orders.length > 0 && (
+            <ul>
+              {orders.map((order) => (
+                <li key={order.id}>{order.display_id}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )
+    }
 
-export default Orders
-```
+    export default Orders
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=${salesChannelId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ orders, limit, offset, count }) => {
-  console.log(orders.length)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=${salesChannelId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ orders, limit, offset, count }) => {
+      console.log(orders.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=<CHANNEL_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]=<CHANNEL_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---
@@ -383,61 +383,61 @@ curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]
 You can retrieve an order by sending a request to the [Get an Order API Route](https://docs.medusajs.com/api/admin#orders_getordersorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.retrieve(orderId)
-.then(({ order }) => {
-  console.log(order.id)
-})
-```
+    ```ts
+    medusa.admin.orders.retrieve(orderId)
+    .then(({ order }) => {
+      console.log(order.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminOrder } from "medusa-react"
+    ```tsx
+    import { useAdminOrder } from "medusa-react"
 
-const Order = () => {
-  const { 
-    order, 
-    isLoading, 
-  } = useAdminOrder(orderId)
- 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {order && <span>{order.display_id}</span>}
-      
-    </div>
-  )
-}
+    const Order = () => {
+      const { 
+        order, 
+        isLoading, 
+      } = useAdminOrder(orderId)
+    
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {order && <span>{order.display_id}</span>}
+          
+        </div>
+      )
+    }
 
-export default Order
-```
+    export default Order
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order ID to be passed as a path parameter.
@@ -464,74 +464,74 @@ Updating an order’s details can include updating its:
 You can update any of the above details of an order by sending a request to the [Update an Order API Route](https://docs.medusajs.com/api/admin#orders_postordersorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.update(orderId, {
-  email,
-})
-.then(({ order }) => {
-  console.log(order.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminUpdateOrder } from "medusa-react"
-
-const UpdateOrder = () => {
-  const updateOrder = useAdminUpdateOrder(
-    orderId
-  )
-  // ...
-
-  const handleUpdate = () => {
-    updateOrder.mutate({
+    ```ts
+    medusa.admin.orders.update(orderId, {
       email,
     })
-  }
+    .then(({ order }) => {
+      console.log(order.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default UpdateOrder
-```
+    ```tsx
+    import { useAdminUpdateOrder } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const UpdateOrder = () => {
+      const updateOrder = useAdminUpdateOrder(
+        orderId
+      )
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    email,
-  }),
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.id)
-})
-```
+      const handleUpdate = () => {
+        updateOrder.mutate({
+          email,
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "email": "user@example.com"
-}'
-```
+    export default UpdateOrder
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "email": "user@example.com"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the order’s ID to be passed as a path parameter.
@@ -549,61 +549,60 @@ The request returns the updated order as an object.
 You can capture an order’s payment by sending a request to the [Capture Order’s Payment API Route](https://docs.medusajs.com/api/admin#orders_postordersordercapture):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.capturePayment(orderId)
-.then(({ order }) => {
-  console.log(order.payment_status)
-})
-```
+    ```ts
+    medusa.admin.orders.capturePayment(orderId)
+    .then(({ order }) => {
+      console.log(order.payment_status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminCapturePayment } from "medusa-react"
+    ```tsx
+    import { useAdminCapturePayment } from "medusa-react"
 
-const CapturePayment = () => {
-  const capturePayment = useAdminCapturePayment(
-    orderId
-  )
-  // ...
+    const CapturePayment = () => {
+      const capturePayment = useAdminCapturePayment(
+        orderId
+      )
+      // ...
 
-  const handleCapture = () => {
-    capturePayment.mutate()
-  }
+      const handleCapture = () => {
+        capturePayment.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default CapturePayment
-```
+    export default CapturePayment
+    ```
 
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/capture`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.payment_status)
+    })
+    ```
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/capture`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.payment_status)
-})
-```
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/capture' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/capture' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
-
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the Order ID as a path parameter.
@@ -617,78 +616,78 @@ You can refund an amount that is less than `order.refundable_amount`.
 To refund payment, send a request to the [Refund Payment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderrefunds):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.refundPayment(orderId, {
-  amount,
-  reason,
-})
-.then(({ order }) => {
-  console.log(order.payment_status, order.refunded_total)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminRefundPayment } from "medusa-react"
-
-const RefundPayment = () => {
-  const refundPayment = useAdminRefundPayment(
-    orderId
-  )
-  // ...
-
-  const handleRefund = () => {
-    refundPayment.mutate({
+    ```ts
+    medusa.admin.orders.refundPayment(orderId, {
       amount,
       reason,
     })
-  }
+    .then(({ order }) => {
+      console.log(order.payment_status, order.refunded_total)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default RefundPayment
-```
+    ```tsx
+    import { useAdminRefundPayment } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const RefundPayment = () => {
+      const refundPayment = useAdminRefundPayment(
+        orderId
+      )
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/refund`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    amount,
-    reason,
-  }),
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.payment_status, order.refunded_total)
-})
-```
+      const handleRefund = () => {
+        refundPayment.mutate({
+          amount,
+          reason,
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/refund' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "amount": 1000,
-    "reason": "customer did not like the order"
-}'
-```
+    export default RefundPayment
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/refund`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount,
+        reason,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.payment_status, order.refunded_total)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/refund' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "amount": 1000,
+        "reason": "customer did not like the order"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the order’s ID to be passed as a path parameter.
@@ -711,36 +710,10 @@ The request returns the updated order as an object.
 You can create a fulfillment by sending a request to the [Create a Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderfulfillments):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.createFulfillment(orderId, {
-  items: [
-    {
-      itemId,
-      quantity,
-    },
-  ],
-})
-.then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateFulfillment } from "medusa-react"
-
-const CreateFuilfillment = () => {
-  const createFulfillment = useAdminCreateFulfillment(
-    orderId
-  )
-  // ...
-
-  const handleCreate = () => {
-    createFulfillment.mutate({
+    ```ts
+    medusa.admin.orders.createFulfillment(orderId, {
       items: [
         {
           itemId,
@@ -748,57 +721,83 @@ const CreateFuilfillment = () => {
         },
       ],
     })
-  }
+    .then(({ order }) => {
+      console.log(order.fulfillment_status, order.fulfillments)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateFuilfillment
-```
+    ```tsx
+    import { useAdminCreateFulfillment } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreateFuilfillment = () => {
+      const createFulfillment = useAdminCreateFulfillment(
+        orderId
+      )
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillment`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    items: [
-      {
-        itemId,
-        quantity,
-      },
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments)
-})
-```
-
-</TabItem>
-<TabItem value="curl" label="cURL">
-
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillment' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "items": [
-      {
-        "item_id": "<ITEM_ID>",
-        "quantity": 1
+      const handleCreate = () => {
+        createFulfillment.mutate({
+          items: [
+            {
+              itemId,
+              quantity,
+            },
+          ],
+        })
       }
-    ]
-}'
-```
 
-</TabItem>
+      // ...
+    }
+
+    export default CreateFuilfillment
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillment`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: [
+          {
+            itemId,
+            quantity,
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.fulfillment_status, order.fulfillments)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillment' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "items": [
+          {
+            "item_id": "<ITEM_ID>",
+            "quantity": 1
+          }
+        ]
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires the order’s ID to be passed as a path parameter.
@@ -819,74 +818,74 @@ The request returns the updated order as an object.
 You can create a shipment for a fulfillment by sending a request to the [Create Shipment API Route](https://docs.medusajs.com/api/admin#orders_postordersordershipment):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.createShipment(orderId, {
-  fulfillment_id,
-})
-.then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreateShipment } from "medusa-react"
-
-const CreateShipment = () => {
-  const createShipment = useAdminCreateShipment(
-    orderId
-  )
-  // ...
-
-  const handleCreate = () => {
-    createShipment.mutate({
+    ```ts
+    medusa.admin.orders.createShipment(orderId, {
       fulfillment_id,
     })
-  }
+    .then(({ order }) => {
+      console.log(order.fulfillment_status, order.fulfillments)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreateShipment
-```
+    ```tsx
+    import { useAdminCreateShipment } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreateShipment = () => {
+      const createShipment = useAdminCreateShipment(
+        orderId
+      )
+      // ...
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/shipment`, {
-  credentials: "include",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    fulfillment_id,
-  }),
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.fulfillment_status, order.fulfillments)
-})
-```
+      const handleCreate = () => {
+        createShipment.mutate({
+          fulfillment_id,
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/shipment' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "fulfillment_id": "<FUL_ID>"
-}'
-```
+    export default CreateShipment
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/shipment`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fulfillment_id,
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.fulfillment_status, order.fulfillments)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/shipment' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "fulfillment_id": "<FUL_ID>"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This API Route requires passing the order’s ID as a path parameter.
@@ -900,62 +899,62 @@ The request returns the updated order as an object.
 You can cancel a fulfillment by sending a request to the [Cancel Fulfillment API Route](https://docs.medusajs.com/api/admin#orders_postordersorderfulfillmentscancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
-.then(({ order }) => {
-  console.log(order.fulfillment_status)
-})
-```
+    ```ts
+    medusa.admin.orders.cancelFulfillment(orderId, fulfillmentId)
+    .then(({ order }) => {
+      console.log(order.fulfillment_status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminCancelFulfillment } from "medusa-react"
+    ```tsx
+    import { useAdminCancelFulfillment } from "medusa-react"
 
-const CancelFulfillment = () => {
-  const cancelFulfillment = useAdminCancelFulfillment(
-    orderId
-  )
-  // ...
+    const CancelFulfillment = () => {
+      const cancelFulfillment = useAdminCancelFulfillment(
+        orderId
+      )
+      // ...
 
-  const handleCancel = () => {
-    cancelFulfillment.mutate(fulfillment_id)
-  }
+      const handleCancel = () => {
+        cancelFulfillment.mutate(fulfillment_id)
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default CancelFulfillment
-```
+    export default CancelFulfillment
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillments/${fulfillmentId}/cancel`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.id)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/fulfillments/${fulfillmentId}/cancel`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillments/<FUL_ID>/cancel' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/fulfillments/<FUL_ID>/cancel' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires passing the order’s ID and fulfillment ID as path parameters.
@@ -969,60 +968,60 @@ The request returns the updated order as an object.
 You can mark an order completed, changing its status, by sending a request to the [Complete an Order API Route](https://docs.medusajs.com/api/admin#orders_postordersordercomplete):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.complete(orderId)
-.then(({ order }) => {
-  console.log(order.status)
-})
-```
+    ```ts
+    medusa.admin.orders.complete(orderId)
+    .then(({ order }) => {
+      console.log(order.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminCompleteOrder } from "medusa-react"
+    ```tsx
+    import { useAdminCompleteOrder } from "medusa-react"
 
-const CompleteOrder = () => {
-  const completeOrder = useAdminCompleteOrder(
-    orderId
-  )
-  // ...
+    const CompleteOrder = () => {
+      const completeOrder = useAdminCompleteOrder(
+        orderId
+      )
+      // ...
 
-  const handleComplete = () => {
-    completeOrder.mutate()
-  }
+      const handleComplete = () => {
+        completeOrder.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default CompleteOrder
-```
+    export default CompleteOrder
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/complete`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.status)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/complete`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/complete' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/complete' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order ID to be passed as a path parameter.
@@ -1036,60 +1035,60 @@ The request returns the updated order as an object.
 You can cancel an order by sending a request to the [Cancel Order API Route](https://docs.medusajs.com/api/admin#orders_postordersordercancel):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.cancel(orderId)
-.then(({ order }) => {
-  console.log(order.status)
-})
-```
+    ```ts
+    medusa.admin.orders.cancel(orderId)
+    .then(({ order }) => {
+      console.log(order.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminCancelOrder } from "medusa-react"
+    ```tsx
+    import { useAdminCancelOrder } from "medusa-react"
 
-const CancelOrder = () => {
-  const cancelOrder = useAdminCancelOrder(
-    orderId
-  )
-  // ...
+    const CancelOrder = () => {
+      const cancelOrder = useAdminCancelOrder(
+        orderId
+      )
+      // ...
 
-  const handleCancel = () => {
-    cancelOrder.mutate()
-  }
+      const handleCancel = () => {
+        cancelOrder.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default CancelOrder
-```
+    export default CancelOrder
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/cancel`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.status)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/cancel`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/cancel' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/cancel' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order ID to be passed as a path parameter.
@@ -1103,60 +1102,60 @@ The request returns the updated order as an object.
 You can archive an order by sending a request to the [Archive Order API Route](https://docs.medusajs.com/api/admin#orders_postordersorderarchive):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```ts
-medusa.admin.orders.archive(orderId)
-.then(({ order }) => {
-  console.log(order.status)
-})
-```
+    ```ts
+    medusa.admin.orders.archive(orderId)
+    .then(({ order }) => {
+      console.log(order.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminArchiveOrder } from "medusa-react"
+    ```tsx
+    import { useAdminArchiveOrder } from "medusa-react"
 
-const ArchiveOrder = () => {
-  const archiveOrder = useAdminArchiveOrder(
-    orderId
-  )
-  // ...
+    const ArchiveOrder = () => {
+      const archiveOrder = useAdminArchiveOrder(
+        orderId
+      )
+      // ...
 
-  const handleArchive = () => {
-    archiveOrder.mutate()
-  }
+      const handleArchive = () => {
+        archiveOrder.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default ArchiveOrder
-```
+    export default ArchiveOrder
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```ts
-fetch(`<BACKEND_URL>/admin/orders/${orderId}/archive`, {
-  credentials: "include",
-  method: "POST",
-})
-.then((response) => response.json())
-.then(({ order }) => {
-  console.log(order.status)
-})
-```
+    ```ts
+    fetch(`<BACKEND_URL>/admin/orders/${orderId}/archive`, {
+      credentials: "include",
+      method: "POST",
+    })
+    .then((response) => response.json())
+    .then(({ order }) => {
+      console.log(order.status)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/archive' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/orders/<ORDER_ID>/archive' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This API Route requires the order ID to be passed as a path parameter.

@@ -95,7 +95,7 @@ import ProductTypeService from "../../../../services/product-type"
  *       medusa.productTypes.list()
  *       .then(({ product_types }) => {
  *         console.log(product_types.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -146,32 +146,56 @@ export default async (req, res) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved product types.
+ */
 // eslint-disable-next-line max-len
 export class StoreGetProductTypesParams extends FindPaginationParams {
+  /**
+   * IDs to filter product types by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator
 
+  /**
+   * Search term to search product types' values.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Values to filter product types by.
+   */
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   value?: string | string[] | StringComparisonOperator
 
+  /**
+   * Date filters to apply on the product types' `created_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
+  /**
+   * Date filters to apply on the product types' `updated_at` date.
+   */
   @IsType([DateComparisonOperator])
   @IsOptional()
   updated_at?: DateComparisonOperator
 
+  /**
+   * The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+   */
   @IsString()
   @IsOptional()
   order?: string
 
+  /**
+   * Filter product types by the ID of their associated discount condition.
+   */
   @IsString()
   @IsOptional()
   discount_condition_id?: string

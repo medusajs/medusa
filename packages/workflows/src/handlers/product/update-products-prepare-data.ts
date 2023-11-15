@@ -1,15 +1,24 @@
 import { ProductDTO, SalesChannelDTO, WorkflowTypes } from "@medusajs/types"
-
+import { MedusaV2Flag } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 
 type ProductWithSalesChannelsDTO = ProductDTO & {
   sales_channels?: SalesChannelDTO[]
 }
 
+type VariantPrice = {
+  region_id?: string
+  currency_code?: string
+  amount: number
+  min_quantity?: number
+  max_quantity?: number
+}
+
 export type UpdateProductsPreparedData = {
   originalProducts: ProductWithSalesChannelsDTO[]
   productHandleAddedChannelsMap: Map<string, string[]>
   productHandleRemovedChannelsMap: Map<string, string[]>
+  variantPricesMap: Map<string, VariantPrice[]>
 }
 
 export async function updateProductsPrepareData({
@@ -17,6 +26,12 @@ export async function updateProductsPrepareData({
   context,
   data,
 }: WorkflowArguments<WorkflowTypes.ProductWorkflow.UpdateProductsWorkflowInputDTO>): Promise<UpdateProductsPreparedData> {
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+  const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
+    MedusaV2Flag.key
+  )
+
+  const variantPricesMap = new Map<string, VariantPrice[]>()
   const ids = data.products.map((product) => product.id)
 
   const productHandleAddedChannelsMap = new Map<string, string[]>()
@@ -65,6 +80,16 @@ export async function updateProductsPrepareData({
       })
     }
 
+    for (const variantInput of productInput.variants || []) {
+      if (variantInput.id) {
+        variantPricesMap.set(variantInput.id, variantInput.prices || [])
+      }
+
+      if (isPricingDomainEnabled) {
+        delete variantInput.prices
+      }
+    }
+
     productHandleAddedChannelsMap.set(currentProduct.handle!, addedChannels)
     productHandleRemovedChannelsMap.set(currentProduct.handle!, removedChannels)
   })
@@ -73,6 +98,7 @@ export async function updateProductsPrepareData({
     originalProducts: products,
     productHandleAddedChannelsMap,
     productHandleRemovedChannelsMap,
+    variantPricesMap,
   }
 }
 

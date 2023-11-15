@@ -50,7 +50,7 @@ post:
   operationId: PostNotesNote
   summary: Update a Note
   x-authenticated: true
-  description: Update a Note's details.'
+  description: Update a Note's details.
   parameters:
     - in: path
       name: id

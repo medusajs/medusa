@@ -2,6 +2,7 @@ import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
 import { PaymentProvider } from "../../../../models"
+import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /store/customers/me/payment-methods
@@ -23,12 +24,12 @@ import { PaymentProvider } from "../../../../models"
  *       medusa.customers.paymentMethods.list()
  *       .then(({ payment_methods }) => {
  *         console.log(payment_methods.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
  *       curl '{backend_url}/store/customers/me/payment-methods' \
- *       -H 'Cookie: connect.sid={sid}'
+ *       -H 'Authorization: Bearer {access_token}'
  * security:
  *   - cookie_auth: []
  *   - jwt_token: []
@@ -68,7 +69,7 @@ export default async (req, res) => {
   const paymentProviders: PaymentProvider[] =
     await paymentProviderService.list()
 
-  const methods = await Promise.all(
+  const methods = await promiseAll(
     paymentProviders.map(async (paymentProvider: PaymentProvider) => {
       const provider = paymentProviderService.retrieveProvider(
         paymentProvider.id

@@ -37,7 +37,7 @@ import customerController from "../../../../controllers/customers"
  *       medusa.admin.customers.list()
  *       .then(({ customers, limit, offset, count }) => {
  *         console.log(customers.length);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -79,18 +79,32 @@ export default async (req, res) => {
   res.json(result)
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved customers.
+ */
 export class AdminGetCustomersParams extends AdminListCustomerSelector {
+  /**
+   * {@inheritDoc FindPaginationParams.limit}
+   * @defaultValue 50
+   */
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   limit = 50
 
+  /**
+   * {@inheritDoc FindPaginationParams.offset}
+   * @defaultValue 0
+   */
   @IsOptional()
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
   offset = 0
 
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsString()
   @IsOptional()
   expand?: string

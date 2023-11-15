@@ -54,7 +54,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -125,6 +125,7 @@ export default async (req, res) => {
 /**
  * @schema AdminDeleteTaxRatesTaxRateProductTypesReq
  * type: object
+ * description: "Product types to remove from the tax rates."
  * required:
  *   - product_types
  * properties:
@@ -139,11 +140,20 @@ export class AdminDeleteTaxRatesTaxRateProductTypesReq {
   product_types: string[]
 }
 
+/**
+ * {@inheritDoc FindParams}
+ */
 export class AdminDeleteTaxRatesTaxRateProductTypesParams {
+  /**
+   * {@inheritDoc FindParams.expand}
+   */
   @IsArray()
   @IsOptional()
   expand?: string[]
 
+  /**
+   * {@inheritDoc FindParams.fields}
+   */
   @IsArray()
   @IsOptional()
   fields?: string[]

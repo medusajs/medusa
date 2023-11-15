@@ -26,7 +26,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, JavaScript’s Fetch API, or cURL.
 
-If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.md) installed and [have created an instance of the client](../../../js-client/overview.md#configuration).
+If you follow the JS Client code blocks, it’s assumed you already have [Medusa’s JS Client](../../../js-client/overview.mdx) installed and [have created an instance of the client](../../../js-client/overview.mdx#configuration).
 
 ### Medusa React
 
@@ -77,55 +77,15 @@ You can learn more about what the conditions you can apply on a price list and i
 For example, sending the following request creates a price list with two prices: one that is applied when the maximum quantity of the product variant in the cart is 3; another is applied when the minimum quantity of the same variant in the cart is 4:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-import { 
-  PriceListStatus, 
-  PriceListType, 
-} from "@medusajs/medusa"
+    ```jsx
+    import { 
+      PriceListStatus, 
+      PriceListType, 
+    } from "@medusajs/medusa"
 
-medusa.admin.priceLists.create({
-  name: "New Price List",
-  description: "A new price list",
-  type: PriceListType.SALE,
-  status: PriceListStatus.ACTIVE,
-  prices: [
-    {
-      amount: 1000,
-      variant_id,
-      currency_code: "eur",
-      max_quantity: 3,
-    },
-    {
-      amount: 1500,
-      variant_id,
-      currency_code: "eur",
-      min_quantity: 4,
-    },
-  ],
-})
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { 
-  PriceListStatus, 
-  PriceListType, 
-} from "@medusajs/medusa"
-import { useAdminCreatePriceList } from "medusa-react"
-
-const CreatePriceList = () => {
-  const createPriceList = useAdminCreatePriceList()
-  // ...
-
-  const handleCreate = () => {
-    createPriceList.mutate({
+    medusa.admin.priceLists.create({
       name: "New Price List",
       description: "A new price list",
       type: PriceListType.SALE,
@@ -145,81 +105,121 @@ const CreatePriceList = () => {
         },
       ],
     })
-  }
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreatePriceList
-```
+    ```tsx
+    import { 
+      PriceListStatus, 
+      PriceListType, 
+    } from "@medusajs/medusa"
+    import { useAdminCreatePriceList } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreatePriceList = () => {
+      const createPriceList = useAdminCreatePriceList()
+      // ...
 
-```jsx
-fetch(`<BACKEND_URL>/admin/price-lists`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    name: "New Price List",
-    description: "A new price list",
-    type: "sale",
-		status: "active",
-    prices: [
-      {
-        amount: 1000,
-        variant_id,
-        currency_code: "eur",
-        max_quantity: 3,
+      const handleCreate = () => {
+        createPriceList.mutate({
+          name: "New Price List",
+          description: "A new price list",
+          type: PriceListType.SALE,
+          status: PriceListStatus.ACTIVE,
+          prices: [
+            {
+              amount: 1000,
+              variant_id,
+              currency_code: "eur",
+              max_quantity: 3,
+            },
+            {
+              amount: 1500,
+              variant_id,
+              currency_code: "eur",
+              min_quantity: 4,
+            },
+          ],
+        })
+      }
+
+      // ...
+    }
+
+    export default CreatePriceList
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```jsx
+    fetch(`<BACKEND_URL>/admin/price-lists`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
       },
-      {
-        amount: 1500,
-        variant_id,
-        currency_code: "eur",
-        min_quantity: 4,
-      },
-    ],
-  }),
-})
-.then((response) => response.json())
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
+      body: JSON.stringify({
+        name: "New Price List",
+        description: "A new price list",
+        type: "sale",
+        status: "active",
+        prices: [
+          {
+            amount: 1000,
+            variant_id,
+            currency_code: "eur",
+            max_quantity: 3,
+          },
+          {
+            amount: 1500,
+            variant_id,
+            currency_code: "eur",
+            min_quantity: 4,
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<YOUR_BACKEND_URL>/admin/price-lists' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "name": "New Price List",
-    "description": "A new price list",
-    "type": "sale",
-		"status": "active",
-    "prices": [
-        {
-            "amount": 1500,
-            "variant_id": "<VARIANT_ID>",
-            "max_quantity": 3,
-            "currency_code": "eur"
-        },
-        {
-            "amount": 1000,
-            "variant_id": "<VARIANT_ID>",
-            "currency_code": "eur",
-            "min_quantity": 4
-        }
-    ]
-}'
-```
+    ```bash
+    curl -L -X POST '<YOUR_BACKEND_URL>/admin/price-lists' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "New Price List",
+        "description": "A new price list",
+        "type": "sale",
+        "status": "active",
+        "prices": [
+            {
+                "amount": 1500,
+                "variant_id": "<VARIANT_ID>",
+                "max_quantity": 3,
+                "currency_code": "eur"
+            },
+            {
+                "amount": 1000,
+                "variant_id": "<VARIANT_ID>",
+                "currency_code": "eur",
+                "min_quantity": 4
+            }
+        ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request returns the created price list.
@@ -233,61 +233,61 @@ You can check the full list of request body parameters in the [API reference](ht
 You can retrieve all of a price list’s details using the Get a Price List API Route:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.priceLists.retrieve(priceListId)
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
+    ```jsx
+    medusa.admin.priceLists.retrieve(priceListId)
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { CustomerGroup } from "@medusajs/medusa"
-import { useAdminPriceList } from "medusa-react"
+    ```tsx
+    import { CustomerGroup } from "@medusajs/medusa"
+    import { useAdminPriceList } from "medusa-react"
 
-const PriceList = () => {
-  const { 
-    price_list, 
-    isLoading, 
-  } = useAdminPriceList(priceListId)
+    const PriceList = () => {
+      const { 
+        price_list, 
+        isLoading, 
+      } = useAdminPriceList(priceListId)
 
-  return (
-    <div>
-      {isLoading && <span>Loading...</span>}
-      {price_list && <span>{price_list.name}</span>}
-    </div>
-  )
-}
+      return (
+        <div>
+          {isLoading && <span>Loading...</span>}
+          {price_list && <span>{price_list.name}</span>}
+        </div>
+      )
+    }
 
-export default PriceList
-```
+    export default PriceList
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```jsx
-fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
+    ```jsx
+    fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X GET '<BACKEND_URL>/admin/price-lists/{id}' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X GET '<BACKEND_URL>/admin/price-lists/{id}' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---
@@ -299,76 +299,76 @@ After creating a price list, you can update all of its fields including its stat
 For example, by sending the following request the end date of the price list will be updated:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.priceLists.update(priceListId, {
-  ends_at: "2022-10-11",
-})
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { 
-  PriceListStatus, 
-  PriceListType,
-} from "@medusajs/medusa"
-import { useAdminUpdatePriceList } from "medusa-react"
-
-const CreatePriceList = () => {
-  const updatePriceList = useAdminUpdatePriceList(priceListId)
-  // ...
-
-  const handleUpdate = () => {
-    updatePriceList.mutate({
+    ```jsx
+    medusa.admin.priceLists.update(priceListId, {
       ends_at: "2022-10-11",
     })
-  }
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default CreatePriceList
-```
+    ```tsx
+    import { 
+      PriceListStatus, 
+      PriceListType,
+    } from "@medusajs/medusa"
+    import { useAdminUpdatePriceList } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const CreatePriceList = () => {
+      const updatePriceList = useAdminUpdatePriceList(priceListId)
+      // ...
 
-```jsx
-fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    ends_at: "2022-10-11",
-  }),
-})
-.then((response) => response.json())
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
+      const handleUpdate = () => {
+        updatePriceList.mutate({
+          ends_at: "2022-10-11",
+        })
+      }
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+      // ...
+    }
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "ends_at": "2022-10-11"
-}'
-```
+    export default CreatePriceList
+    ```
 
-</TabItem>
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
+
+    ```jsx
+    fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ends_at: "2022-10-11",
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
+
+  </TabItem>
+  <TabItem value="curl" label="cURL">
+
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "ends_at": "2022-10-11"
+    }'
+    ```
+
+  </TabItem>
 </Tabs>
 
 This request returns the updated price list.
@@ -388,35 +388,10 @@ You can also set the `override` request body parameter to `true` to replace the 
 For example, sending the following request adds a new price to the price list:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.priceLists.addPrices(priceListId, {
-  prices: [
-    {
-      amount: 1200,
-      variant_id,
-      currency_code: "eur",
-    },
-  ],
-})
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
-
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
-
-```tsx
-import { useAdminCreatePriceListPrices } from "medusa-react"
-
-const PriceList = () => {
-  const addPrice = useAdminCreatePriceListPrices(priceListId)
-  // ...
-
-  const handleAddPrice = () => {
-    addPrice.mutate({
+    ```jsx
+    medusa.admin.priceLists.addPrices(priceListId, {
       prices: [
         {
           amount: 1200,
@@ -425,61 +400,86 @@ const PriceList = () => {
         },
       ],
     })
-  }
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
 
-  // ...
-}
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-export default PriceList
-```
+    ```tsx
+    import { useAdminCreatePriceListPrices } from "medusa-react"
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+    const PriceList = () => {
+      const addPrice = useAdminCreatePriceListPrices(priceListId)
+      // ...
+
+      const handleAddPrice = () => {
+        addPrice.mutate({
+          prices: [
+            {
+              amount: 1200,
+              variant_id,
+              currency_code: "eur",
+            },
+          ],
+        })
+      }
+
+      // ...
+    }
+
+    export default PriceList
+    ```
+
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```jsx
-fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}/prices/batch`, {
-  method: "POST",
-  credentials: "include",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    prices: [
-	    {
-	      amount: 1200,
-	      variant_id,
-	      currency_code: "eur",
-	    },
-	  ],
-  }),
-})
-.then((response) => response.json())
-.then(({ price_list }) => {
-  console.log(price_list.id)
-})
-```
+    ```jsx
+    fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}/prices/batch`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prices: [
+          {
+            amount: 1200,
+            variant_id,
+            currency_code: "eur",
+          },
+        ],
+      }),
+    })
+    .then((response) => response.json())
+    .then(({ price_list }) => {
+      console.log(price_list.id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
--H 'Authorization: Bearer <API_TOKEN>' \
--H 'Content-Type: application/json' \
---data-raw '{
-    "prices": [
-        {
-            "amount": 1200,
-            "variant_id": "<VARIANT_ID>",
-            "currency_code": "eur"
-        }
-    ]
-}'
-```
+    ```bash
+    curl -L -X POST '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>' \
+    -H 'Content-Type: application/json' \
+    --data-raw '{
+        "prices": [
+            {
+                "amount": 1200,
+                "variant_id": "<VARIANT_ID>",
+                "currency_code": "eur"
+            }
+        ]
+    }'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request returns the price list with the updated prices.
@@ -491,71 +491,71 @@ For a full list of request body parameters, check out the [API reference](https:
 You can delete all the prices of a product’s variants using the [Delete Product Prices API Route](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelistpricesbatch):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
-medusa
-  .admin
-  .priceLists
-  .deleteProductPrices(priceListId, productId)
-  .then(({ ids, object, deleted }) => {
-    console.log(ids.length)
-  })
-```
+    ```tsx
+    medusa
+      .admin
+      .priceLists
+      .deleteProductPrices(priceListId, productId)
+      .then(({ ids, object, deleted }) => {
+        console.log(ids.length)
+      })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { 
-  useAdminDeletePriceListProductPrices,
-} from "medusa-react"
+    ```tsx
+    import { 
+      useAdminDeletePriceListProductPrices,
+    } from "medusa-react"
 
-const PriceList = () => {
-  const deletePrices = useAdminDeletePriceListProductPrices(
-    priceListId,
-    productId
-  )
-  // ...
+    const PriceList = () => {
+      const deletePrices = useAdminDeletePriceListProductPrices(
+        priceListId,
+        productId
+      )
+      // ...
 
-  const handleDeletePrices = () => {
-    deletePrices.mutate()
-  }
+      const handleDeletePrices = () => {
+        deletePrices.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default PriceList
-```
+    export default PriceList
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```jsx
-fetch(
-  `<BACKEND_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`,
-  {
-    method: "DELETE",
-    credentials: "include",
-  }
-)
-.then((response) => response.json())
-.then(({ ids, object, deleted }) => {
-  console.log(ids.length)
-})
-```
+    ```jsx
+    fetch(
+      `<BACKEND_URL>/admin/price-lists/${priceListId}/products/${productId}/prices`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ ids, object, deleted }) => {
+      console.log(ids.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/products/<PRODUCT_ID>/prices' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request returns the IDs of the deleted prices.
@@ -565,72 +565,72 @@ This request returns the IDs of the deleted prices.
 You can delete all the prices of a variant using the [Delete Variant Prices API Route](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelistvariantsvariantprices):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```tsx
-medusa
-  .admin
-  .priceLists
-  .deleteVariantPrices(priceListId, variantId)
-  .then(({ ids, object, deleted }) => {
-    console.log(ids)
-  })
-```
+    ```tsx
+    medusa
+      .admin
+      .priceLists
+      .deleteVariantPrices(priceListId, variantId)
+      .then(({ ids, object, deleted }) => {
+        console.log(ids)
+      })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { 
-  useAdminDeletePriceListVariantPrices,
-} from "medusa-react"
+    ```tsx
+    import { 
+      useAdminDeletePriceListVariantPrices,
+    } from "medusa-react"
 
-const PriceList = () => {
-  const deleteVariantPrices = 
-    useAdminDeletePriceListVariantPrices(
-      priceListId, 
-      variantId
-    )
-  // ...
+    const PriceList = () => {
+      const deleteVariantPrices = 
+        useAdminDeletePriceListVariantPrices(
+          priceListId, 
+          variantId
+        )
+      // ...
 
-  const handleDeletePrices = () => {
-    deleteVariantPrices.mutate()
-  }
+      const handleDeletePrices = () => {
+        deleteVariantPrices.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default PriceList
-```
+    export default PriceList
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
 <!-- eslint-disable max-len -->
 
-```jsx
-fetch(
-  `<BACKEND_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`,
-  {
-    method: "DELETE",
-    credentials: "include",
-  }
-)
-.then((response) => response.json())
-.then(({ ids, object, deleted }) => {
-  console.log(ids.length)
-})
-```
+    ```jsx
+    fetch(
+      `<BACKEND_URL>/admin/price-lists/${priceListId}/variants/${variantId}/prices`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    )
+    .then((response) => response.json())
+    .then(({ ids, object, deleted }) => {
+      console.log(ids.length)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>/variants/<VARIANT_ID>/prices' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request returns the IDs of the deleted prices.
@@ -642,58 +642,58 @@ This request returns the IDs of the deleted prices.
 You can delete a price list, and subsequently all prices defined in it, using the [Delete Price List API Route](https://docs.medusajs.com/api/admin#price-lists_deletepricelistspricelist):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
-<TabItem value="client" label="Medusa JS Client" default>
+  <TabItem value="client" label="Medusa JS Client" default>
 
-```jsx
-medusa.admin.priceLists.delete(priceListId)
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```jsx
+    medusa.admin.priceLists.delete(priceListId)
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="medusa-react" label="Medusa React">
+  </TabItem>
+  <TabItem value="medusa-react" label="Medusa React">
 
-```tsx
-import { useAdminDeletePriceList } from "medusa-react"
+    ```tsx
+    import { useAdminDeletePriceList } from "medusa-react"
 
-const PriceList = () => {
-  const deletePriceList = useAdminDeletePriceList(priceListId)
-  // ...
+    const PriceList = () => {
+      const deletePriceList = useAdminDeletePriceList(priceListId)
+      // ...
 
-  const handleDeletePriceList = () => {
-    deletePriceList.mutate()
-  }
+      const handleDeletePriceList = () => {
+        deletePriceList.mutate()
+      }
 
-  // ...
-}
+      // ...
+    }
 
-export default PriceList
-```
+    export default PriceList
+    ```
 
-</TabItem>
-<TabItem value="fetch" label="Fetch API">
+  </TabItem>
+  <TabItem value="fetch" label="Fetch API">
 
-```jsx
-fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
-  method: "DELETE",
-  credentials: "include",
-})
-.then((response) => response.json())
-.then(({ id, object, deleted }) => {
-  console.log(id)
-})
-```
+    ```jsx
+    fetch(`<BACKEND_URL>/admin/price-lists/${priceListId}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+    .then((response) => response.json())
+    .then(({ id, object, deleted }) => {
+      console.log(id)
+    })
+    ```
 
-</TabItem>
-<TabItem value="curl" label="cURL">
+  </TabItem>
+  <TabItem value="curl" label="cURL">
 
-```bash
-curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
--H 'Authorization: Bearer <API_TOKEN>'
-```
+    ```bash
+    curl -L -X DELETE '<BACKEND_URL>/admin/price-lists/<PRICE_LIST_ID>' \
+    -H 'Authorization: Bearer <API_TOKEN>'
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 This request returns the ID of the deleted price list.

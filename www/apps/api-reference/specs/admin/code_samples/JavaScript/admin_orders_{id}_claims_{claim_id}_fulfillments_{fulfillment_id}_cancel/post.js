@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.orders.cancelClaimFulfillment(orderId, claimId, fulfillmentId)
 .then(({ order }) => {
   console.log(order.id);
-});
+})

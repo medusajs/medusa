@@ -52,7 +52,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *       medusa.admin.discounts.list()
  *       .then(({ discounts, limit, offset, count }) => {
  *         console.log(discounts.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
@@ -103,24 +103,39 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * Parameters used to filter and configure the pagination of the retrieved discounts.
+ */
 export class AdminGetDiscountsParams extends extendedFindParamsMixin({
   limit: 20,
   offset: 0,
 }) {
+  /**
+   * Filter discounts by their associated rule.
+   */
   @ValidateNested()
   @IsOptional()
   @Type(() => AdminGetDiscountsDiscountRuleParams)
   rule?: AdminGetDiscountsDiscountRuleParams
 
+  /**
+   * Search terms to search discounts' code fields.
+   */
   @IsString()
   @IsOptional()
   q?: string
 
+  /**
+   * Filter discounts by whether they're dynamic.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
   is_dynamic?: boolean
 
+  /**
+   * Filter discounts by whether they're disabled.
+   */
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value))

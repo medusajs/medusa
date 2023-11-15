@@ -10,4 +10,4 @@ medusa.admin.productCategories.removeProducts(productCategoryId, {
 })
 .then(({ product_category }) => {
   console.log(product_category.id);
-});
+})

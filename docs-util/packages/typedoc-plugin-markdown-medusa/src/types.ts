@@ -19,6 +19,9 @@ export type ObjectLiteralDeclarationStyle = "table" | "list" | "component"
 
 export type SectionKey =
   | "comment"
+  | "member_declaration"
+  | "member_declaration_title"
+  | "member_declaration_comment"
   | "member_declaration_typeParameters"
   | "member_declaration_indexSignature"
   | "member_declaration_signatures"
@@ -29,7 +32,6 @@ export type SectionKey =
   | "member_signatures"
   | "member_getterSetter"
   | "member_reference"
-  | "member_declaration"
   | "member_signature_title"
   | "member_signature_comment"
   | "member_signature_typeParameters"
@@ -74,6 +76,7 @@ export type FormattingOptionType = {
   frontmatterData?: Record<string, unknown>
   parameterComponent?: string
   mdxImports?: string[]
+  maxLevel?: number
 }
 
 export type FormattingOptionsType = {
@@ -98,6 +101,8 @@ export type Parameter = {
   optional?: boolean
   defaultValue?: string
   description?: string
+  featureFlag?: string
+  expandable: boolean
   children?: Parameter[]
 }
 

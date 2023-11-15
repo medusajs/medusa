@@ -5,6 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 import type { Region } from "./Region"
 
+/**
+ * The region's details.
+ */
 export interface StoreRegionsRes {
   /**
    * Region details.

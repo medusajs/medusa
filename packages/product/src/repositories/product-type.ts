@@ -2,7 +2,6 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  RequiredEntityData,
 } from "@mikro-orm/core"
 import { ProductType } from "@models"
 import {
@@ -87,26 +86,28 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
     )
 
     const upsertedTypes: ProductType[] = []
-    const typesToCreate: RequiredEntityData<ProductType>[] = []
+    const typesToCreate: ProductType[] = []
+    const typesToUpdate: ProductType[] = []
 
     types.forEach((type) => {
       const aType = existingTypesMap.get(type.value)
       if (aType) {
-        upsertedTypes.push(aType)
+        const updatedType = manager.assign(aType, type)
+        typesToUpdate.push(updatedType)
       } else {
-        const newType = (manager as SqlEntityManager).create(ProductType, type)
+        const newType = manager.create(ProductType, type)
         typesToCreate.push(newType)
       }
     })
 
     if (typesToCreate.length) {
-      const newTypes: ProductType[] = []
-      typesToCreate.forEach((type) => {
-        newTypes.push((manager as SqlEntityManager).create(ProductType, type))
-      })
+      manager.persist(typesToCreate)
+      upsertedTypes.push(...typesToCreate)
+    }
 
-      manager.persist(newTypes)
-      upsertedTypes.push(...newTypes)
+    if (typesToUpdate.length) {
+      manager.persist(typesToUpdate)
+      upsertedTypes.push(...typesToUpdate)
     }
 
     return upsertedTypes

@@ -31,7 +31,7 @@ import { defaultAdminCollectionsRelations } from "."
  *       })
  *       .then(({ collection }) => {
  *         console.log(collection.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

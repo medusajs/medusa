@@ -50,7 +50,7 @@ import { validator } from "../../../../utils/validator"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

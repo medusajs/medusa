@@ -6,11 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Record
 
- **Record**<`K`, `T`\>: { [P in K]: T }
+ **Record**`<TypeParameter K, TypeParameter T>`: &#123; [P in K]: T &#125;
 
 Construct a type with a set of properties K of type T
 
-#### Type parameters
+### Type parameters
 
 <ParameterTypes parameters={[
   {
@@ -19,6 +19,7 @@ Construct a type with a set of properties K of type T
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -27,6 +28,7 @@ Construct a type with a set of properties K of type T
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

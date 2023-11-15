@@ -1,4 +1,5 @@
 import { IInventoryService, IStockLocationService } from "@medusajs/types"
+import { promiseAll } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { SalesChannelLocationService } from "../../../../services"
 
@@ -64,7 +65,7 @@ export default async (req, res) => {
     await stockLocationService.delete(id)
 
     if (inventoryService) {
-      await Promise.all([
+      await promiseAll([
         inventoryService.deleteInventoryItemLevelByLocationId(id),
         inventoryService.deleteReservationItemByLocationId(id),
       ])

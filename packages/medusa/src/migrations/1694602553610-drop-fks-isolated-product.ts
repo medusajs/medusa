@@ -1,8 +1,7 @@
+import { MedusaV2Flag } from "@medusajs/utils"
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-import IsolateProductDomain from "../loaders/feature-flags/isolate-product-domain"
-
-export const featureFlag = IsolateProductDomain.key
+export const featureFlag = MedusaV2Flag.key
 
 export class dropFksIsolatedProducts1694602553610
   implements MigrationInterface

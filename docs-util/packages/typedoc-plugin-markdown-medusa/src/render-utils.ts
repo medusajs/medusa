@@ -43,6 +43,8 @@ import typeParameterComponentHelper from "./resources/helpers/type-parameter-com
 import showPropertiesAsComponentHelper from "./resources/helpers/show-properties-as-component"
 import commentTagHelper from "./resources/helpers/comment-tag"
 import exampleHelper from "./resources/helpers/example"
+import ifFeatureFlagHelper from "./resources/helpers/if-feature-flag"
+import featureFlagHelper from "./resources/helpers/feature-flag"
 import { MarkdownTheme } from "./theme"
 
 // test
@@ -116,4 +118,6 @@ export function registerHelpers(theme: MarkdownTheme) {
   showPropertiesAsComponentHelper(theme)
   commentTagHelper(theme)
   exampleHelper()
+  ifFeatureFlagHelper()
+  featureFlagHelper()
 }

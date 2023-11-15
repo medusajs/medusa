@@ -148,4 +148,4 @@ export default GiftCardSubscriber
 
 When using this method, you’ll have to handle the logic of sending the code to the customer inside the handler function, which in this case is `handleGiftCard`.
 
-The `handleGiftCard` event receives a `data` object as a parameter. This object holds the `id` property which is the ID of the gift card. You can retrieve the full gift card object using the [GiftCardService](../../../references/services/classes/GiftCardService.md)
+The `handleGiftCard` event receives a `data` object as a parameter. This object holds the `id` property which is the ID of the gift card. You can retrieve the full gift card object using the [GiftCardService](../../../references/services/classes/GiftCardService.mdx)

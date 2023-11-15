@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 :::tip
 
-Alternatively, you can use Medusa’s [JS Client](../js-client/overview.md) or the [REST APIs](https://docs.medusajs.com/api/store).
+Alternatively, you can use Medusa’s [JS Client](../js-client/overview.mdx) or the [REST APIs](https://docs.medusajs.com/api/store).
 
 :::
 
@@ -235,110 +235,110 @@ The request returns an object containing keys like `data` which is an object tha
 For example:
 
 <Tabs groupId="admin-custom-query" isCodeTabs={true}>
-<TabItem value="post-page" label="src/admin/routes/blog/posts/[id]/page.tsx" default>
+  <TabItem value="post-page" label="src/admin/routes/blog/posts/[id]/page.tsx" default>
 
-```tsx
-import { useAdminCustomQuery } from "medusa-react"
-import { useParams } from "react-router-dom"
+    ```tsx
+    import { useAdminCustomQuery } from "medusa-react"
+    import { useParams } from "react-router-dom"
 
-type BlogPost = {
-  title: string,
-  content: string,
-  author_id: string,
-}
-
-// Single post
-type AdminBlogPostQuery = {
-  expand?: string,
-  fields?: string
-}
-
-type AdminBlogPostRes = {
-  post: BlogPost,
-}
-
-const BlogPost = () => {
-  const { id } = useParams() 
-
-  const { data, isLoading } = useAdminCustomQuery<
-    AdminBlogPostQuery,
-    AdminBlogPostRes
-  >(
-    `/blog/posts/${id}`,  // path
-    ["blog-post", id], // queryKey
-    {
-      expand: "author", // query
+    type BlogPost = {
+      title: string,
+      content: string,
+      author_id: string,
     }
-   )
 
-  return (
-    <>
-      {isLoading && <span>Loading...</span>}
-      {data && data.post && <span>{data.post.title}</span>}
-    </>
-  )
-}
-
-export default BlogPost
-```
-
-</TabItem>
-<TabItem value="posts-page" label="src/admin/routes/blog/author/[id]/posts/page.tsx">
-
-```tsx
-import { useAdminCustomQuery } from "medusa-react"
-import { useParams } from "react-router-dom"
-
-type BlogPost = {
-  title: string,
-  content: string,
-  author_id: string,
-}
-
-type AdminBlogPostsRes = {
-  posts: BlogPost[],
-  count: number
-}
-
-type AdminBlogPostsQuery = {
-  author_id: string,
-  created_at?: string,
-  expand?: string,
-  fields?: string
-}
-
-const AuthorsBlogPosts = () => {
-  const { id } = useParams() 
-
-  const { data, isLoading } = useAdminCustomQuery<
-    AdminBlogPostsQuery, AdminBlogPostsRes
-  >(
-    `/blog/posts`,  // path
-    ["blog-posts", "list", id], // queryKey
-    {
-      expand: "author", // query
-      author_id: "auth_123",
+    // Single post
+    type AdminBlogPostQuery = {
+      expand?: string,
+      fields?: string
     }
-   )
 
-   return (
-     <>
-       {isLoading && <span>Loading...</span>}
-       {data && data.posts && (
-        <span>
-          {data.posts.map((post, index) => (
-            <span key={index}>{post.title}</span>
-          ))}
-        </span>
-       )}
-     </>
-   )
-}
+    type AdminBlogPostRes = {
+      post: BlogPost,
+    }
 
-export default AuthorsBlogPosts
-```
+    const BlogPost = () => {
+      const { id } = useParams() 
 
-</TabItem>
+      const { data, isLoading } = useAdminCustomQuery<
+        AdminBlogPostQuery,
+        AdminBlogPostRes
+      >(
+        `/blog/posts/${id}`,  // path
+        ["blog-post", id], // queryKey
+        {
+          expand: "author", // query
+        }
+      )
+
+      return (
+        <>
+          {isLoading && <span>Loading...</span>}
+          {data && data.post && <span>{data.post.title}</span>}
+        </>
+      )
+    }
+
+    export default BlogPost
+    ```
+
+  </TabItem>
+  <TabItem value="posts-page" label="src/admin/routes/blog/author/[id]/posts/page.tsx">
+
+    ```tsx
+    import { useAdminCustomQuery } from "medusa-react"
+    import { useParams } from "react-router-dom"
+
+    type BlogPost = {
+      title: string,
+      content: string,
+      author_id: string,
+    }
+
+    type AdminBlogPostsRes = {
+      posts: BlogPost[],
+      count: number
+    }
+
+    type AdminBlogPostsQuery = {
+      author_id: string,
+      created_at?: string,
+      expand?: string,
+      fields?: string
+    }
+
+    const AuthorsBlogPosts = () => {
+      const { id } = useParams() 
+
+      const { data, isLoading } = useAdminCustomQuery<
+        AdminBlogPostsQuery, AdminBlogPostsRes
+      >(
+        `/blog/posts`,  // path
+        ["blog-posts", "list", id], // queryKey
+        {
+          expand: "author", // query
+          author_id: "auth_123",
+        }
+      )
+
+      return (
+        <>
+          {isLoading && <span>Loading...</span>}
+          {data && data.posts && (
+            <span>
+              {data.posts.map((post, index) => (
+                <span key={index}>{post.title}</span>
+              ))}
+            </span>
+          )}
+        </>
+      )
+    }
+
+    export default AuthorsBlogPosts
+    ```
+
+  </TabItem>
 </Tabs>
 
 #### useAdminCustomPost
