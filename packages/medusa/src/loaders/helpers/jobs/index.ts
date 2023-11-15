@@ -120,7 +120,7 @@ export default class ScheduledJobsLoader {
     )
   }
 
-  private async runJobs() {
+  private async createScheduledJobs() {
     const jobs = Array.from(this.jobDescriptors_.values())
 
     if (!jobs.length) {
@@ -171,6 +171,6 @@ export default class ScheduledJobsLoader {
 
     await this.createMap(this.rootDir_)
 
-    await this.runJobs()
+    await this.createScheduledJobs()
   }
 }

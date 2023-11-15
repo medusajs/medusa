@@ -35,7 +35,7 @@ describe("SubscriberLoader", () => {
   })
 
   it("should register each subscriber in the '/subscribers' folder", async () => {
-    // As '/subscribers' contains 2 subscribers, we expect the number of registered paths to be 2
+    // As '/subscribers' contains 3 subscribers, we expect the number of registered paths to be 3
     expect(registeredPaths.length).toEqual(3)
   })
 
@@ -51,7 +51,7 @@ describe("SubscriberLoader", () => {
      * - "variant.created"
      *
      * This means that we expect the eventBusServiceMock.subscribe method to have
-     * been called 4 times, once for 'product-updater.ts', once for 'variant-created.ts',
+     * been called  times, once for 'product-updater.ts', once for 'variant-created.ts',
      * and 3 times for 'order-updater.ts'.
      */
     expect(eventBusServiceMock.subscribe).toHaveBeenCalledTimes(5)
