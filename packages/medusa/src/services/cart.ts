@@ -2953,7 +2953,7 @@ class CartService extends TransactionBaseService {
 
   /**
    * Temporary method to join sales channels of a product using RemoteQuery while
-   * IsolatedSalesChannelDomain FF is on.
+   * MedusaV2 FF is on.
    *
    * @param carts
    * @private
@@ -2972,7 +2972,7 @@ class CartService extends TransactionBaseService {
 
   /**
    * Temporary method to fetch sales channels of a carts using RemoteQuery while
-   * IsolatedSalesChannelDomain FF is on.
+   * MedusaV2 FF is on.
    *
    * @param cartIds
    * @private
