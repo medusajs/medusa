@@ -69,20 +69,17 @@ export interface IProductModuleService {
    * 
    * ```ts
    * import { 
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
    * 
-   * async function retrievePriceSet (priceSetId: string) {
-   *   const pricingService = await initializePricingModule()
+   * async function retrieveProduct (id: string) {
+   *   const productModule = await initializeProductModule()
    * 
-   *   const priceSet = await pricingService.retrieve(
-   *     priceSetId,
-   *     {
-   *       relations: ["money_amounts"]
-   *     }
-   *   )
+   *   const product = await productModule.retrieve(id, {
+   *     relations: ["categories"]
+   *   })
    * 
-   *   // do something with the price set or return it
+   *   // do something with the product or return it
    * }
    * ```
    */
