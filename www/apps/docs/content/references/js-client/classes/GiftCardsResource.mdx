@@ -45,7 +45,7 @@ medusa.giftCards.retrieve(code).then(({ gift_card }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -59,7 +59,7 @@ medusa.giftCards.retrieve(code).then(({ gift_card }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreGiftCardsRes`](../internal/types/internal.StoreGiftCardsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreGiftCardsRes](../internal/types/internal.StoreGiftCardsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the details of the gift card.",
@@ -75,7 +75,7 @@ medusa.giftCards.retrieve(code).then(({ gift_card }) => {
         "children": [
           {
             "name": "gift_card",
-            "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)",
+            "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)",
             "description": "Gift card details.",
             "optional": false,
             "defaultValue": "",
@@ -146,7 +146,7 @@ medusa.giftCards.retrieve(code).then(({ gift_card }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -155,7 +155,7 @@ medusa.giftCards.retrieve(code).then(({ gift_card }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that the gift card was purchased in.",
                 "optional": false,
                 "defaultValue": "",
@@ -173,7 +173,7 @@ medusa.giftCards.retrieve(code).then(({ gift_card }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this gift card is available in.",
                 "optional": false,
                 "defaultValue": "",

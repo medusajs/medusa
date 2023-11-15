@@ -10,14 +10,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new CurrencyService**(`«destructured»`)
+`**new CurrencyService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-5.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-5.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "currencyRepository_",
-    "type": "`Repository`<[`Currency`](Currency.mdx)\\>",
+    "type": "Repository&#60;[Currency](Currency.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](EventBusService.mdx)",
+    "type": "[EventBusService](EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "type": "[FlagRouter](FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -125,16 +125,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -147,7 +147,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -179,7 +179,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -188,7 +188,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -197,7 +197,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -208,12 +208,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -226,7 +226,7 @@ ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`): `Promise`<[[`Currency`](Currency.mdx)[], `number`]\>
+`**listAndCount**(selector, config?): Promise&#60;[[Currency](Currency.mdx)[], number]&#62;`
 
 Lists currencies based on the provided parameters and includes the count of
 currencies that match the query.
@@ -236,7 +236,7 @@ currencies that match the query.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`Currency`](Currency.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Currency](Currency.mdx)&#62;",
     "description": "an object that defines rules to filter currencies by",
     "optional": false,
     "defaultValue": "",
@@ -245,7 +245,7 @@ currencies that match the query.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/FindConfig.mdx)<[`Currency`](Currency.mdx)\\>",
+    "type": "[FindConfig](../interfaces/FindConfig.mdx)&#60;[Currency](Currency.mdx)&#62;",
     "description": "object that defines the scope for what should be returned",
     "optional": false,
     "defaultValue": "",
@@ -256,12 +256,12 @@ currencies that match the query.
 
 #### Returns
 
-`Promise`<[[`Currency`](Currency.mdx)[], `number`]\>
+Promise&#60;[[Currency](Currency.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Currency`](Currency.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[Currency](Currency.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the currencies as\n  the first element and the total count of products that matches the query\n  as the second element.",
@@ -274,7 +274,7 @@ ___
 
 ### retrieveByCode
 
-**retrieveByCode**(`code`): `Promise`<[`Currency`](Currency.mdx)\>
+`**retrieveByCode**(code): Promise&#60;[Currency](Currency.mdx)&#62;`
 
 Return the currency
 
@@ -294,12 +294,12 @@ Return the currency
 
 #### Returns
 
-`Promise`<[`Currency`](Currency.mdx)\>
+Promise&#60;[Currency](Currency.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Currency`](Currency.mdx)\\>",
+    "type": "Promise&#60;[Currency](Currency.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The currency",
@@ -312,14 +312,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -348,7 +348,7 @@ ___
 
 ### update
 
-**update**(`code`, `data`): `Promise`<`undefined` \| [`Currency`](Currency.mdx)\>
+`**update**(code, data): Promise&#60;undefined \| [Currency](Currency.mdx)&#62;`
 
 Update a currency
 
@@ -366,7 +366,7 @@ Update a currency
   },
   {
     "name": "data",
-    "type": "[`UpdateCurrencyInput`](../types/UpdateCurrencyInput.mdx)",
+    "type": "[UpdateCurrencyInput](../types/UpdateCurrencyInput.mdx)",
     "description": "The data that must be updated on the currency",
     "optional": false,
     "defaultValue": "",
@@ -377,12 +377,12 @@ Update a currency
 
 #### Returns
 
-`Promise`<`undefined` \| [`Currency`](Currency.mdx)\>
+Promise&#60;undefined \| [Currency](Currency.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| [`Currency`](Currency.mdx)\\>",
+    "type": "Promise&#60;undefined \\| [Currency](Currency.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The updated currency",
@@ -395,14 +395,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`CurrencyService`](CurrencyService.mdx)
+`**withTransaction**(transactionManager?): [CurrencyService](CurrencyService.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -413,12 +413,12 @@ ___
 
 #### Returns
 
-[`CurrencyService`](CurrencyService.mdx)
+[CurrencyService](CurrencyService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "default",
-    "type": "[`CurrencyService`](CurrencyService.mdx)",
+    "type": "[CurrencyService](CurrencyService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

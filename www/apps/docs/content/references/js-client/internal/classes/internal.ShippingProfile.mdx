@@ -6,7 +6,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ShippingProfile
 
-A Shipping Profile has a set of defined Shipping Options that can be used to fulfill a given set of Products. For example, gift cards are shipped differently than physical products, so a shipping profile with the type `gift_card` groups together the shipping options that can only be used for gift cards.
+A Shipping Profile has a set of defined Shipping Options that can be used to fulfill a given set of Products. For example, gift cards are shipped differently than physical products, so a shipping profile with the type `gift\_card` groups together the shipping options that can only be used for gift cards.
 
 ## Properties
 
@@ -40,7 +40,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "products",
-    "type": "[`Product`](internal.Product.mdx)[]",
+    "type": "[Product](internal.Product.mdx)[]",
     "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "shipping_options",
-    "type": "[`ShippingOption`](internal.ShippingOption.mdx)[]",
+    "type": "[ShippingOption](internal.ShippingOption.mdx)[]",
     "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
     "optional": false,
     "defaultValue": "",
@@ -76,8 +76,8 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "type",
-    "type": "[`ShippingProfileType`](../enums/internal.ShippingProfileType.mdx)",
-    "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
+    "type": "[ShippingProfileType](../enums/internal.ShippingProfileType.mdx)",
+    "description": "The type of the Shipping Profile, may be `default`, `gift\\_card` or `custom`.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

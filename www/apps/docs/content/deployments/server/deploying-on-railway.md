@@ -22,8 +22,8 @@ If you're deploying the admin plugin along with the backend, you'll need at leas
 If you also don't have a Medusa project, you can deploy to Railway instantly with this button:
 
 <a 
-  href="https://railway.app/template/zC7eOq?referralCode=TW4Qi0" class="img-url no-zoom-img">
-  <img src="https://railway.app/button.svg" alt="Deploy with Railway" class="no-zoom-img"/>
+  href="https://railway.app/template/zC7eOq?referralCode=TW4Qi0" className="img-url no-zoom-img">
+  <img src="https://railway.app/button.svg" alt="Deploy with Railway" className="no-zoom-img"/>
 </a>
 
 ---

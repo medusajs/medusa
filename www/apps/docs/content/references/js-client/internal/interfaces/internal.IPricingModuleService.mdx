@@ -10,7 +10,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### addPrices
 
-**addPrices**(`data`, `sharedContext?`): `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\>
+`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;`
 
 This method adds prices to a price set.
 
@@ -90,7 +90,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`AddPricesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx)",
+    "type": "[AddPricesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx)",
     "description": "The data defining the price set to add the prices to, along with the prices to add.",
     "optional": false,
     "defaultValue": "",
@@ -99,7 +99,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -113,7 +113,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The price set that the prices were added to.",
@@ -122,7 +122,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-**addPrices**(`data`, `sharedContext?`): `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\>
+`**addPrices**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;`
 
 This method adds prices to multiple price sets.
 
@@ -202,7 +202,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`AddPricesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx)[]",
+    "type": "[AddPricesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx)[]",
     "description": "The data defining the prices to add per price set.",
     "optional": false,
     "defaultValue": "",
@@ -211,7 +211,7 @@ async function addPricesToPriceSet (priceSetId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -225,7 +225,7 @@ async function addPricesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of the price sets that prices were added to.",
@@ -238,7 +238,7 @@ ___
 
 ### addRules
 
-**addRules**(`data`, `sharedContext?`): `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\>
+`**addRules**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;`
 
 This method adds rules to a price set.
 
@@ -268,7 +268,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`AddRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx)",
+    "type": "[AddRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx)",
     "description": "The data defining the price set to add the rules to, along with the rules to add.",
     "optional": false,
     "defaultValue": "",
@@ -277,7 +277,7 @@ async function addRulesToPriceSet (priceSetId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -291,7 +291,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The price set that the rules were added to.",
@@ -300,7 +300,7 @@ async function addRulesToPriceSet (priceSetId: string) {
   }
 ]} />
 
-**addRules**(`data`, `sharedContext?`): `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\>
+`**addRules**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;`
 
 This method adds rules to multiple price sets.
 
@@ -330,7 +330,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`AddRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx)[]",
+    "type": "[AddRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddRulesDTO.mdx)[]",
     "description": "The data defining the rules to add per price set.",
     "optional": false,
     "defaultValue": "",
@@ -339,7 +339,7 @@ async function addRulesToPriceSet (priceSetId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -353,7 +353,7 @@ async function addRulesToPriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of the price sets that the rules were added to.",
@@ -443,7 +443,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`PricingFilters`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingFilters.mdx)",
+    "type": "[PricingFilters](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingFilters.mdx)",
     "description": "The filters to apply on prices.",
     "optional": false,
     "defaultValue": "",
@@ -452,7 +452,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
   },
   {
     "name": "context",
-    "type": "[`PricingContext`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingContext.mdx)",
+    "type": "[PricingContext](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PricingContext.mdx)",
     "description": "The context used to select the prices. For example, you can specify the region ID in this context, and only prices having the same value will be retrieved.",
     "optional": true,
     "defaultValue": "",
@@ -461,7 +461,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -475,7 +475,7 @@ async function calculatePrice (priceSetId: string, currencyCode: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CalculatedPriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CalculatedPriceSetDTO.mdx)\\>",
+    "type": "Promise&#60;[CalculatedPriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CalculatedPriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The calculated price matching the context and filters provided.",
@@ -488,7 +488,7 @@ ___
 
 ### create
 
-**create**(`data`, `sharedContext?`): `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\>
+`**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;`
 
 This method is used to create a new price set.
 
@@ -571,7 +571,7 @@ async function createPriceSet() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreatePriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx)",
+    "type": "[CreatePriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx)",
     "description": "The attributes of the price set to create.",
     "optional": false,
     "defaultValue": "",
@@ -580,7 +580,7 @@ async function createPriceSet() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -594,7 +594,7 @@ async function createPriceSet() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created price set.",
@@ -603,7 +603,7 @@ async function createPriceSet() {
   }
 ]} />
 
-**create**(`data`, `sharedContext?`): `Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\>
+`**create**(data, sharedContext?): Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;`
 
 This method is used to create multiple price sets.
 
@@ -683,7 +683,7 @@ async function createPriceSets() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreatePriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx)[]",
+    "type": "[CreatePriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetDTO.mdx)[]",
     "description": "The price sets to create.",
     "optional": false,
     "defaultValue": "",
@@ -692,7 +692,7 @@ async function createPriceSets() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -706,7 +706,7 @@ async function createPriceSets() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price sets.",
@@ -747,7 +747,7 @@ async function createCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateCurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateCurrencyDTO.mdx)[]",
+    "type": "[CreateCurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateCurrencyDTO.mdx)[]",
     "description": "The currencies to create.",
     "optional": false,
     "defaultValue": "",
@@ -756,7 +756,7 @@ async function createCurrencies() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -770,7 +770,7 @@ async function createCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]\\>",
+    "type": "Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created currencies.",
@@ -815,7 +815,7 @@ async function retrieveMoneyAmounts() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateMoneyAmountDTO.mdx)[]",
+    "type": "[CreateMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateMoneyAmountDTO.mdx)[]",
     "description": "The money amounts to create.",
     "optional": false,
     "defaultValue": "",
@@ -824,7 +824,7 @@ async function retrieveMoneyAmounts() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -838,7 +838,7 @@ async function retrieveMoneyAmounts() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]\\>",
+    "type": "Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created money amounts.",
@@ -890,7 +890,7 @@ async function createPriceRules (
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreatePriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceRuleDTO.mdx)[]",
+    "type": "[CreatePriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceRuleDTO.mdx)[]",
     "description": "The price rules to create.",
     "optional": false,
     "defaultValue": "",
@@ -899,7 +899,7 @@ async function createPriceRules (
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -913,7 +913,7 @@ async function createPriceRules (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price rules.",
@@ -956,7 +956,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreatePriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetMoneyAmountRulesDTO.mdx)[]",
+    "type": "[CreatePriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceSetMoneyAmountRulesDTO.mdx)[]",
     "description": "The price set money amount rules to create.",
     "optional": false,
     "defaultValue": "",
@@ -965,7 +965,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -979,7 +979,7 @@ async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ru
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created price set money amount rules.",
@@ -1018,7 +1018,7 @@ async function createRuleTypes() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateRuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateRuleTypeDTO.mdx)[]",
+    "type": "[CreateRuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreateRuleTypeDTO.mdx)[]",
     "description": "The rule types to create.",
     "optional": false,
     "defaultValue": "",
@@ -1027,7 +1027,7 @@ async function createRuleTypes() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1041,7 +1041,7 @@ async function createRuleTypes() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created rule types.",
@@ -1084,7 +1084,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1098,7 +1098,7 @@ async function removePriceSetRule (priceSetIds: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the price sets are successfully deleted.",
@@ -1139,7 +1139,7 @@ async function deleteCurrencies() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1153,7 +1153,7 @@ async function deleteCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the currencies are deleted.",
@@ -1198,7 +1198,7 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1212,7 +1212,7 @@ async function deleteMoneyAmounts (moneyAmountIds: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the money amounts are successfully deleted.",
@@ -1257,7 +1257,7 @@ async function deletePriceRules (
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1271,7 +1271,7 @@ async function deletePriceRules (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the price rules are deleted.",
@@ -1314,7 +1314,7 @@ async function deletePriceSetMoneyAmountRule (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1328,7 +1328,7 @@ async function deletePriceSetMoneyAmountRule (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the price set money amount rules are deleted.",
@@ -1371,7 +1371,7 @@ async function deleteRuleTypes (ruleTypeId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1385,7 +1385,7 @@ async function deleteRuleTypes (ruleTypeId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves once the rule types are deleted.",
@@ -1509,7 +1509,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceSetProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx)",
+    "type": "[FilterablePriceSetProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx)",
     "description": "The filters to apply on the retrieved price lists.",
     "optional": true,
     "defaultValue": "",
@@ -1518,7 +1518,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "description": "The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
     "optional": true,
     "defaultValue": "",
@@ -1527,7 +1527,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1541,7 +1541,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price sets.",
@@ -1665,7 +1665,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceSetProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx)",
+    "type": "[FilterablePriceSetProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetProps.mdx)",
     "description": "The filters to apply on the retrieved price lists.",
     "optional": true,
     "defaultValue": "",
@@ -1674,7 +1674,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "description": "The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
     "optional": true,
     "defaultValue": "",
@@ -1683,7 +1683,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1697,7 +1697,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price sets along with their total count.",
@@ -1787,7 +1787,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableCurrencyProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx)",
+    "type": "[FilterableCurrencyProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx)",
     "description": "The filters to apply on the retrieved currencies.",
     "optional": true,
     "defaultValue": "",
@@ -1796,7 +1796,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -1805,7 +1805,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1819,7 +1819,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of currencies along with the total count.",
@@ -1941,7 +1941,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx)",
+    "type": "[FilterableMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx)",
     "description": "The filters to apply on the retrieved money amounts.",
     "optional": true,
     "defaultValue": "",
@@ -1950,7 +1950,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
@@ -1959,7 +1959,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1973,7 +1973,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of money amounts along with their total count.",
@@ -2084,7 +2084,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceRuleProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx)",
+    "type": "[FilterablePriceRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx)",
     "description": "The filters to apply on the retrieved price rules.",
     "optional": true,
     "defaultValue": "",
@@ -2093,7 +2093,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;",
     "description": "The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price rule.",
     "optional": true,
     "defaultValue": "",
@@ -2102,7 +2102,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2116,7 +2116,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price rules along with their total count.",
@@ -2228,7 +2228,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceSetMoneyAmountRulesProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx)",
+    "type": "[FilterablePriceSetMoneyAmountRulesProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx)",
     "description": "The filters to apply on the retrieved price set money amount rules.",
     "optional": true,
     "defaultValue": "",
@@ -2237,7 +2237,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -2246,7 +2246,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2260,7 +2260,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amount rules and their total count.",
@@ -2372,7 +2372,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceSetMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx)",
+    "type": "[FilterablePriceSetMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx)",
     "description": "The filters to apply on the retrieved price set money amounts.",
     "optional": true,
     "defaultValue": "",
@@ -2381,7 +2381,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount.",
     "optional": true,
     "defaultValue": "",
@@ -2390,7 +2390,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2404,7 +2404,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amounts and their total count.",
@@ -2521,7 +2521,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableRuleTypeProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx)",
+    "type": "[FilterableRuleTypeProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx)",
     "description": "The filters to apply on the retrieved rule types.",
     "optional": true,
     "defaultValue": "",
@@ -2530,7 +2530,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a rule type.",
     "optional": true,
     "defaultValue": "",
@@ -2539,7 +2539,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2553,7 +2553,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of rule types along with their total count.",
@@ -2643,7 +2643,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableCurrencyProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx)",
+    "type": "[FilterableCurrencyProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableCurrencyProps.mdx)",
     "description": "The filters to apply on the retrieved currencies.",
     "optional": true,
     "defaultValue": "",
@@ -2652,7 +2652,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -2661,7 +2661,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2675,7 +2675,7 @@ async function retrieveCurrencies (codes: string[], skip: number, take: number) 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]\\>",
+    "type": "Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of currencies.",
@@ -2797,7 +2797,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx)",
+    "type": "[FilterableMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableMoneyAmountProps.mdx)",
     "description": "The filtes to apply on the retrieved money amounts.",
     "optional": true,
     "defaultValue": "",
@@ -2806,7 +2806,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
@@ -2815,7 +2815,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2829,7 +2829,7 @@ async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: str
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]\\>",
+    "type": "Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of money amounts.",
@@ -2940,7 +2940,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceRuleProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx)",
+    "type": "[FilterablePriceRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx)",
     "description": "The filters to apply on the retrieved price rules.",
     "optional": true,
     "defaultValue": "",
@@ -2949,7 +2949,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;",
     "description": "The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price rule.",
     "optional": true,
     "defaultValue": "",
@@ -2958,7 +2958,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2972,7 +2972,7 @@ async function retrievePriceRules (ids: string[], name: string[], skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price rules.",
@@ -3083,7 +3083,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceSetMoneyAmountRulesProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx)",
+    "type": "[FilterablePriceSetMoneyAmountRulesProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountRulesProps.mdx)",
     "description": "The filters to apply on the retrieved price set money amount rules.",
     "optional": true,
     "defaultValue": "",
@@ -3092,7 +3092,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -3101,7 +3101,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3115,7 +3115,7 @@ async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: stri
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amount rules.",
@@ -3226,7 +3226,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceSetMoneyAmountProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx)",
+    "type": "[FilterablePriceSetMoneyAmountProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceSetMoneyAmountProps.mdx)",
     "description": "The filters to apply on the retrieved price set money amounts.",
     "optional": true,
     "defaultValue": "",
@@ -3235,7 +3235,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amounts are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount.",
     "optional": true,
     "defaultValue": "",
@@ -3244,7 +3244,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3258,7 +3258,7 @@ async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], sk
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price set money amounts.",
@@ -3375,7 +3375,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableRuleTypeProps`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx)",
+    "type": "[FilterableRuleTypeProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx)",
     "description": "The filters to apply on the retrieved rule types.",
     "optional": true,
     "defaultValue": "",
@@ -3384,7 +3384,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a rule type.",
     "optional": true,
     "defaultValue": "",
@@ -3393,7 +3393,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3407,7 +3407,7 @@ async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: nu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of rule types.",
@@ -3446,7 +3446,7 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`RemovePriceSetRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RemovePriceSetRulesDTO.mdx)[]",
+    "type": "[RemovePriceSetRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RemovePriceSetRulesDTO.mdx)[]",
     "description": "The rules to remove per price set.",
     "optional": false,
     "defaultValue": "",
@@ -3455,7 +3455,7 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3469,7 +3469,7 @@ async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when rules are successfully removed.",
@@ -3539,7 +3539,7 @@ async function retrievePriceSet (priceSetId: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "description": "The configurations determining how the price set is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
     "optional": true,
     "defaultValue": "",
@@ -3548,7 +3548,7 @@ async function retrievePriceSet (priceSetId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3562,7 +3562,7 @@ async function retrievePriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price set.",
@@ -3632,7 +3632,7 @@ async function retrieveCurrency (code: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;",
     "description": "The configurations determining how the currency is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a currency.",
     "optional": true,
     "defaultValue": "",
@@ -3641,7 +3641,7 @@ async function retrieveCurrency (code: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3655,7 +3655,7 @@ async function retrieveCurrency (code: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)\\>",
+    "type": "Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved currency.",
@@ -3725,7 +3725,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;",
     "description": "The configurations determining how a money amount is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a money amount.",
     "optional": true,
     "defaultValue": "",
@@ -3734,7 +3734,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3748,7 +3748,7 @@ async function retrieveMoneyAmount (moneyAmountId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)\\>",
+    "type": "Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved money amount.",
@@ -3813,7 +3813,7 @@ async function retrievePriceRule (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;",
     "description": "The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price rule.",
     "optional": true,
     "defaultValue": "",
@@ -3822,7 +3822,7 @@ async function retrievePriceRule (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3836,7 +3836,7 @@ async function retrievePriceRule (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price rule.",
@@ -3901,7 +3901,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
@@ -3910,7 +3910,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3924,7 +3924,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price set money amount rule.",
@@ -3989,7 +3989,7 @@ async function retrieveRuleType (ruleTypeId: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the rule type is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a rule type.",
     "optional": true,
     "defaultValue": "",
@@ -3998,7 +3998,7 @@ async function retrieveRuleType (ruleTypeId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -4012,7 +4012,7 @@ async function retrieveRuleType (ruleTypeId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)\\>",
+    "type": "Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved rule type.",
@@ -4051,7 +4051,7 @@ async function updateCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateCurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateCurrencyDTO.mdx)[]",
+    "type": "[UpdateCurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateCurrencyDTO.mdx)[]",
     "description": "The currencies to update, each having the attributes that should be updated in a currency.",
     "optional": false,
     "defaultValue": "",
@@ -4060,7 +4060,7 @@ async function updateCurrencies() {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -4074,7 +4074,7 @@ async function updateCurrencies() {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CurrencyDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]\\>",
+    "type": "Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated currencies.",
@@ -4115,7 +4115,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateMoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateMoneyAmountDTO.mdx)[]",
+    "type": "[UpdateMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateMoneyAmountDTO.mdx)[]",
     "description": "The money amounts to update, each having the attributes that should be updated in a money amount.",
     "optional": false,
     "defaultValue": "",
@@ -4124,7 +4124,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -4138,7 +4138,7 @@ async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`MoneyAmountDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]\\>",
+    "type": "Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated money amounts.",
@@ -4182,7 +4182,7 @@ async function updatePriceRules (
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdatePriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceRuleDTO.mdx)[]",
+    "type": "[UpdatePriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceRuleDTO.mdx)[]",
     "description": "The price rules to update, each having attributes that should be updated in a price rule.",
     "optional": false,
     "defaultValue": "",
@@ -4191,7 +4191,7 @@ async function updatePriceRules (
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -4205,7 +4205,7 @@ async function updatePriceRules (
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceRuleDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated price rules.",
@@ -4246,7 +4246,7 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdatePriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceSetMoneyAmountRulesDTO.mdx)[]",
+    "type": "[UpdatePriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceSetMoneyAmountRulesDTO.mdx)[]",
     "description": "The price set money amounts to update, each having the attributes to update in a price set money amount.",
     "optional": false,
     "defaultValue": "",
@@ -4255,7 +4255,7 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -4269,7 +4269,7 @@ async function updatePriceSetMoneyAmountRules (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetMoneyAmountRulesDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetMoneyAmountRulesDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated price set money amount rules.",
@@ -4310,7 +4310,7 @@ async function updateRuleTypes (ruleTypeId: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateRuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateRuleTypeDTO.mdx)[]",
+    "type": "[UpdateRuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateRuleTypeDTO.mdx)[]",
     "description": "The rule types to update, each having the attributes that should be updated in a rule type.",
     "optional": false,
     "defaultValue": "",
@@ -4319,7 +4319,7 @@ async function updateRuleTypes (ruleTypeId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -4333,7 +4333,7 @@ async function updateRuleTypes (ruleTypeId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`RuleTypeDTO`](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated rule types.",

@@ -7,8 +7,8 @@ import isInternalUrl from "@docusaurus/isInternalUrl"
 import IconExternalLink from "@theme/Icon/ExternalLink"
 import type { Props } from "@theme/DocSidebarItem/Link"
 import { ModifiedPropSidebarItemLink } from "@medusajs/docs"
-import DocSidebarItemIcon from "../../../components/DocSidebarItemIcon"
 import { Badge } from "docs-ui"
+import DocSidebarItemIcon from "../../../components/DocSidebarItemIcon"
 
 type ModifiedProps = Props & {
   item: ModifiedPropSidebarItemLink

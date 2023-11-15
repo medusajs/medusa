@@ -103,7 +103,7 @@ The data to update in a product variant. The `id` is used to identify which prod
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Holds custom data in key-value pairs.",
     "optional": true,
     "defaultValue": "",
@@ -121,7 +121,7 @@ The data to update in a product variant. The `id` is used to identify which prod
   },
   {
     "name": "options",
-    "type": "[`CreateProductVariantOptionDTO`](CreateProductVariantOptionDTO.mdx)[]",
+    "type": "[CreateProductVariantOptionDTO](CreateProductVariantOptionDTO.mdx)[]",
     "description": "The product variant options to create and associate with the product variant.",
     "optional": true,
     "defaultValue": "",

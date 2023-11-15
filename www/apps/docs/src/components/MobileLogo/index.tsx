@@ -40,7 +40,7 @@ function LogoThemedImage({
   )
 }
 
-export default function MobileLogo(props: Props): JSX.Element {
+export default function MobileLogo(props: Omit<Props, "key">): JSX.Element {
   const {
     siteConfig: { title },
   } = useDocusaurusContext()

@@ -1,4 +1,5 @@
 import { BeforeInsert, Column, JoinTable, ManyToMany, OneToMany } from "typeorm"
+import { MedusaV2Flag } from "@medusajs/utils"
 
 import {
   FeatureFlagDecorators,
@@ -24,7 +25,7 @@ export class SalesChannel extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @FeatureFlagDecorators("isolate_sales_channel_domain", [
+  @FeatureFlagDecorators(MedusaV2Flag.key, [
     ManyToMany(() => Product),
     JoinTable({
       name: "product_sales_channel",

@@ -14,11 +14,7 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import {
-  IsolateSalesChannelDomainFeatureFlag,
-  MedusaV2Flag,
-  promiseAll,
-} from "@medusajs/utils"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
@@ -342,10 +338,6 @@ async function listAndCountProductWithIsolatedProductModule(
   // TODO: Add support for fields/expands
 
   const remoteQuery = req.scope.resolve("remoteQuery")
-  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
-  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
-    IsolateSalesChannelDomainFeatureFlag.key
-  )
 
   let salesChannelIdFilter = filterableFields.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
@@ -368,7 +360,7 @@ async function listAndCountProductWithIsolatedProductModule(
   }
 
   // This is not the best way of handling cross filtering but for now I would say it is fine
-  if (salesChannelIdFilter && !isSalesChannelModuleIsolationFFOn) {
+  if (salesChannelIdFilter) {
     const salesChannelService = req.scope.resolve(
       "salesChannelService"
     ) as SalesChannelService
@@ -409,22 +401,8 @@ async function listAndCountProductWithIsolatedProductModule(
     },
   }
 
-  // TODO: Change when support for fields/expands is added
-  if (isSalesChannelModuleIsolationFFOn) {
-    query.product["sales_channels"] = {
-      fields: [
-        "id",
-        "name",
-        "description",
-        "is_disabled",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-      ],
-    }
-    if (salesChannelIdFilter) {
-      query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter } // TODO: check why this isn't working
-    }
+  if (salesChannelIdFilter) {
+    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter } // TODO: check this
   }
 
   let {

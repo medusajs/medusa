@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import IsolateSalesChannelDomainFeatureFlag from "../loaders/feature-flags/isolate-sales-channel-domain"
+import { MedusaV2Flag } from "@medusajs/utils"
 
-export const featureFlag = IsolateSalesChannelDomainFeatureFlag.key
+export const featureFlag = MedusaV2Flag.key
 
 export class ProductSalesChannelsLink1698056997411
   implements MigrationInterface
@@ -26,7 +26,7 @@ export class ProductSalesChannelsLink1698056997411
     await queryRunner.query(`
         ALTER TABLE product_sales_channel DROP CONSTRAINT IF EXISTS "product_sales_channel_pk";
         ALTER TABLE product_sales_channel DROP CONSTRAINT IF EXISTS "product_sales_channel_product_id_sales_channel_id_unique";
-        ALTER TABLE product_sales_channel drop column "id";
+        ALTER TABLE product_sales_channel drop column if exists "id";
 
         ALTER TABLE "product_sales_channel" DROP COLUMN IF EXISTS "created_at";
         ALTER TABLE "product_sales_channel" DROP COLUMN IF EXISTS "updated_at";

@@ -10,14 +10,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### constructor
 
-**new ProductService**(`«destructured»`)
+`**new ProductService**(«destructured»)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "__namedParameters",
-    "type": "[`InjectedDependencies`](../types/InjectedDependencies-26.mdx)",
+    "type": "[InjectedDependencies](../types/InjectedDependencies-26.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -49,7 +49,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -58,7 +58,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBus_",
-    "type": "[`EventBusService`](EventBusService.mdx)",
+    "type": "[EventBusService](EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](FlagRouter.mdx)",
+    "type": "[FlagRouter](FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "imageRepository_",
-    "type": "`Repository`<[`Image`](Image.mdx)\\> & { `insertBulk`: Method insertBulk ; `upsertImages`: Method upsertImages  }",
+    "type": "Repository&#60;[Image](Image.mdx)&#62; & `&#123; insertBulk: Method insertBulk ; upsertImages: Method upsertImages  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productCategoryRepository_",
-    "type": "`TreeRepository`<[`ProductCategory`](ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "type": "TreeRepository&#60;[ProductCategory](ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productOptionRepository_",
-    "type": "`Repository`<[`ProductOption`](ProductOption.mdx)\\>",
+    "type": "Repository&#60;[ProductOption](ProductOption.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productRepository_",
-    "type": "`Repository`<[`Product`](Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
+    "type": "Repository&#60;[Product](Product.mdx)&#62; & `&#123; _applyCategoriesQuery: Method \\_applyCategoriesQuery ; _findWithRelations: Method \\_findWithRelations ; bulkAddToCollection: Method bulkAddToCollection ; bulkRemoveFromCollection: Method bulkRemoveFromCollection ; findOneWithRelations: Method findOneWithRelations ; findWithRelations: Method findWithRelations ; findWithRelationsAndCount: Method findWithRelationsAndCount ; getCategoryIdsFromInput: Method getCategoryIdsFromInput ; getCategoryIdsRecursively: Method getCategoryIdsRecursively ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; isProductInSalesChannels: Method isProductInSalesChannels ; queryProducts: Method queryProducts ; queryProductsWithIds: Method queryProductsWithIds  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productTagRepository_",
-    "type": "`Repository`<[`ProductTag`](ProductTag.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `insertBulk`: Method insertBulk ; `listTagsByUsage`: Method listTagsByUsage ; `upsertTags`: Method upsertTags  }",
+    "type": "Repository&#60;[ProductTag](ProductTag.mdx)&#62; & `&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; insertBulk: Method insertBulk ; listTagsByUsage: Method listTagsByUsage ; upsertTags: Method upsertTags  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productTypeRepository_",
-    "type": "`Repository`<[`ProductType`](ProductType.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }",
+    "type": "Repository&#60;[ProductType](ProductType.mdx)&#62; & `&#123; findAndCountByDiscountConditionId: Method findAndCountByDiscountConditionId ; upsertType: Method upsertType  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantRepository_",
-    "type": "`Repository`<[`ProductVariant`](ProductVariant.mdx)\\>",
+    "type": "Repository&#60;[ProductVariant](ProductVariant.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productVariantService_",
-    "type": "[`ProductVariantService`](ProductVariantService.mdx)",
+    "type": "[ProductVariantService](ProductVariantService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "searchService_",
-    "type": "[`SearchService`](SearchService.mdx)",
+    "type": "[SearchService](SearchService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -166,7 +166,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -224,16 +224,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### activeManager\_
 
-`Protected` `get` **activeManager_**(): `EntityManager`
+`Protected get**activeManager_**(): EntityManager`
 
 #### Returns
 
-`EntityManager`
+EntityManager
 
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -246,7 +246,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ### addOption
 
-**addOption**(`productId`, `optionTitle`): `Promise`<[`Product`](Product.mdx)\>
+`**addOption**(productId, optionTitle): Promise&#60;[Product](Product.mdx)&#62;`
 
 Adds an option to a product. Options can, for example, be "Size", "Color",
 etc. Will update all the products variants with a dummy value for the newly
@@ -277,12 +277,12 @@ created option. The same option cannot be added more than once.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the model update operation",
@@ -295,7 +295,7 @@ ___
 
 ### atomicPhase\_
 
-`Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+`Protected **atomicPhase_**<TypeParameter TResult, TypeParameter TError>(work, isolationOrErrorHandler?, maybeErrorHandlerOrDontFail?): Promise&#60;TResult&#62;`
 
 Wraps some work within a transactional block. If the service already has
 a transaction manager attached this will be reused, otherwise a new
@@ -327,7 +327,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -336,7 +336,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -345,7 +345,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -356,12 +356,12 @@ transaction manager is created.
 
 #### Returns
 
-`Promise`<`TResult`\>
+Promise&#60;TResult&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -374,7 +374,7 @@ ___
 
 ### count
 
-**count**(`selector?`): `Promise`<`number`\>
+`**count**(selector?): Promise&#60;number&#62;`
 
 Return the total number of documents in database
 
@@ -383,7 +383,7 @@ Return the total number of documents in database
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Product](Product.mdx)&#62;",
     "description": "the selector to choose products by",
     "optional": false,
     "defaultValue": "{}",
@@ -394,12 +394,12 @@ Return the total number of documents in database
 
 #### Returns
 
-`Promise`<`number`\>
+Promise&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the count operation",
@@ -412,7 +412,7 @@ ___
 
 ### create
 
-**create**(`productObject`): `Promise`<[`Product`](Product.mdx)\>
+`**create**(productObject): Promise&#60;[Product](Product.mdx)&#62;`
 
 Creates a product.
 
@@ -421,7 +421,7 @@ Creates a product.
 <ParameterTypes parameters={[
   {
     "name": "productObject",
-    "type": "[`CreateProductInput`](../types/CreateProductInput.mdx)",
+    "type": "[CreateProductInput](../types/CreateProductInput.mdx)",
     "description": "the product to create",
     "optional": false,
     "defaultValue": "",
@@ -432,12 +432,12 @@ Creates a product.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the creation result.",
@@ -450,7 +450,7 @@ ___
 
 ### delete
 
-**delete**(`productId`): `Promise`<`void`\>
+`**delete**(productId): Promise&#60;void&#62;`
 
 Deletes a product from a given product id. The product's associated
 variants will also be deleted.
@@ -471,12 +471,12 @@ variants will also be deleted.
 
 #### Returns
 
-`Promise`<`void`\>
+Promise&#60;void&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "empty promise",
@@ -489,7 +489,7 @@ ___
 
 ### deleteOption
 
-**deleteOption**(`productId`, `optionId`): `Promise`<`void` \| [`Product`](Product.mdx)\>
+`**deleteOption**(productId, optionId): Promise&#60;void \| [Product](Product.mdx)&#62;`
 
 Delete an option from a product.
 
@@ -518,12 +518,12 @@ Delete an option from a product.
 
 #### Returns
 
-`Promise`<`void` \| [`Product`](Product.mdx)\>
+Promise&#60;void \| [Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| [`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;void \\| [Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated product",
@@ -536,7 +536,7 @@ ___
 
 ### filterProductsBySalesChannel
 
-**filterProductsBySalesChannel**(`productIds`, `salesChannelId`, `config?`): `Promise`<[`Product`](Product.mdx)[]\>
+`**filterProductsBySalesChannel**(productIds, salesChannelId, config?): Promise&#60;[Product](Product.mdx)[]&#62;`
 
 #### Parameters
 
@@ -561,7 +561,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -572,12 +572,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)[]\>
+Promise&#60;[Product](Product.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)[]\\>",
+    "type": "Promise&#60;[Product](Product.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -590,7 +590,7 @@ ___
 
 ### isProductInSalesChannels
 
-**isProductInSalesChannels**(`id`, `salesChannelIds`): `Promise`<`boolean`\>
+`**isProductInSalesChannels**(id, salesChannelIds): Promise&#60;boolean&#62;`
 
 Check if the product is assigned to at least one of the provided sales channels.
 
@@ -619,12 +619,12 @@ Check if the product is assigned to at least one of the provided sales channels.
 
 #### Returns
 
-`Promise`<`boolean`\>
+Promise&#60;boolean&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -637,7 +637,7 @@ ___
 
 ### list
 
-**list**(`selector`, `config?`): `Promise`<[`Product`](Product.mdx)[]\>
+`**list**(selector, config?): Promise&#60;[Product](Product.mdx)[]&#62;`
 
 Lists products based on the provided parameters.
 
@@ -646,7 +646,7 @@ Lists products based on the provided parameters.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`ProductSelector`](../types/ProductSelector.mdx)",
+    "type": "[ProductSelector](../types/ProductSelector.mdx)",
     "description": "an object that defines rules to filter products by",
     "optional": false,
     "defaultValue": "",
@@ -655,7 +655,7 @@ Lists products based on the provided parameters.
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "object that defines the scope for what should be returned",
     "optional": false,
     "defaultValue": "",
@@ -666,12 +666,12 @@ Lists products based on the provided parameters.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)[]\>
+Promise&#60;[Product](Product.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)[]\\>",
+    "type": "Promise&#60;[Product](Product.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find operation",
@@ -684,7 +684,7 @@ ___
 
 ### listAndCount
 
-**listAndCount**(`selector`, `config?`): `Promise`<[[`Product`](Product.mdx)[], `number`]\>
+`**listAndCount**(selector, config?): Promise&#60;[[Product](Product.mdx)[], number]&#62;`
 
 Lists products based on the provided parameters and includes the count of
 products that match the query.
@@ -694,7 +694,7 @@ products that match the query.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`ProductSelector`](../types/ProductSelector.mdx)",
+    "type": "[ProductSelector](../types/ProductSelector.mdx)",
     "description": "an object that defines rules to filter products by",
     "optional": false,
     "defaultValue": "",
@@ -703,7 +703,7 @@ products that match the query.
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "object that defines the scope for what should be returned",
     "optional": false,
     "defaultValue": "",
@@ -714,12 +714,12 @@ products that match the query.
 
 #### Returns
 
-`Promise`<[[`Product`](Product.mdx)[], `number`]\>
+Promise&#60;[[Product](Product.mdx)[], number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Product`](Product.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[Product](Product.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the products as\n  the first element and the total count of products that matches the query\n  as the second element.",
@@ -732,7 +732,7 @@ ___
 
 ### listTagsByUsage
 
-**listTagsByUsage**(`take?`): `Promise`<[`ProductTag`](ProductTag.mdx)[]\>
+`**listTagsByUsage**(take?): Promise&#60;[ProductTag](ProductTag.mdx)[]&#62;`
 
 #### Parameters
 
@@ -750,12 +750,12 @@ ___
 
 #### Returns
 
-`Promise`<[`ProductTag`](ProductTag.mdx)[]\>
+Promise&#60;[ProductTag](ProductTag.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTag`](ProductTag.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTag](ProductTag.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -768,16 +768,16 @@ ___
 
 ### listTypes
 
-**listTypes**(): `Promise`<[`ProductType`](ProductType.mdx)[]\>
+`**listTypes**(): Promise&#60;[ProductType](ProductType.mdx)[]&#62;`
 
 #### Returns
 
-`Promise`<[`ProductType`](ProductType.mdx)[]\>
+Promise&#60;[ProductType](ProductType.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductType`](ProductType.mdx)[]\\>",
+    "type": "Promise&#60;[ProductType](ProductType.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -790,7 +790,7 @@ ___
 
 ### prepareListQuery\_
 
-`Protected` **prepareListQuery_**(`selector`, `config`): { `q`: `string` ; `query`: [`FindWithoutRelationsOptions`](../types/FindWithoutRelationsOptions-1.mdx) ; `relations`: keyof [`Product`](Product.mdx)[]  }
+`Protected **prepareListQuery_**(selector, config): &#123; q: string ; query: [FindWithoutRelationsOptions](../types/FindWithoutRelationsOptions-1.mdx) ; relations: keyof [Product](Product.mdx)[]  &#125;`
 
 Temporary method to be used in place we need custom query strategy to prevent typeorm bug
 
@@ -799,7 +799,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableProductProps`](FilterableProductProps.mdx) \\| [`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "type": "[FilterableProductProps](FilterableProductProps.mdx) \\| [Selector](../types/Selector.mdx)&#60;[Product](Product.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -808,7 +808,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -823,7 +823,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
 
 <ParameterTypes parameters={[
   {
-    "name": "`object`",
+    "name": "object",
     "type": "`object`",
     "optional": true,
     "defaultValue": "",
@@ -845,7 +845,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
   },
   {
     "name": "query",
-    "type": "[`FindWithoutRelationsOptions`](../types/FindWithoutRelationsOptions-1.mdx)",
+    "type": "[FindWithoutRelationsOptions](../types/FindWithoutRelationsOptions-1.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -854,7 +854,7 @@ Temporary method to be used in place we need custom query strategy to prevent ty
   },
   {
     "name": "relations",
-    "type": "keyof [`Product`](Product.mdx)[]",
+    "type": "keyof [Product](Product.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -867,7 +867,7 @@ ___
 
 ### reorderVariants
 
-**reorderVariants**(`productId`, `variantOrder`): `Promise`<[`Product`](Product.mdx)\>
+`**reorderVariants**(productId, variantOrder): Promise&#60;[Product](Product.mdx)&#62;`
 
 #### Parameters
 
@@ -894,12 +894,12 @@ ___
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -912,7 +912,7 @@ ___
 
 ### retrieve
 
-**retrieve**(`productId`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+`**retrieve**(productId, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by id.
 Throws in case of DB Error and if product was not found.
@@ -931,7 +931,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "object that defines what should be included in the query response",
     "optional": false,
     "defaultValue": "",
@@ -942,12 +942,12 @@ Throws in case of DB Error and if product was not found.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find one operation.",
@@ -960,7 +960,7 @@ ___
 
 ### retrieveByExternalId
 
-**retrieveByExternalId**(`externalId`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+`**retrieveByExternalId**(externalId, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by external id.
 Throws in case of DB Error and if product was not found.
@@ -979,7 +979,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "details about what to get from the product",
     "optional": false,
     "defaultValue": "{}",
@@ -990,12 +990,12 @@ Throws in case of DB Error and if product was not found.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find one operation.",
@@ -1008,7 +1008,7 @@ ___
 
 ### retrieveByHandle
 
-**retrieveByHandle**(`productHandle`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+`**retrieveByHandle**(productHandle, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by handle.
 Throws in case of DB Error and if product was not found.
@@ -1027,7 +1027,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "details about what to get from the product",
     "optional": false,
     "defaultValue": "{}",
@@ -1038,12 +1038,12 @@ Throws in case of DB Error and if product was not found.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find one operation.",
@@ -1056,7 +1056,7 @@ ___
 
 ### retrieveOptionByTitle
 
-**retrieveOptionByTitle**(`title`, `productId`): `Promise`<``null`` \| [`ProductOption`](ProductOption.mdx)\>
+`**retrieveOptionByTitle**(title, productId): Promise&#60;`null` \| [ProductOption](ProductOption.mdx)&#62;`
 
 Retrieve product's option by title.
 
@@ -1085,12 +1085,12 @@ Retrieve product's option by title.
 
 #### Returns
 
-`Promise`<``null`` \| [`ProductOption`](ProductOption.mdx)\>
+Promise&#60;`null` \| [ProductOption](ProductOption.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<``null`` \\| [`ProductOption`](ProductOption.mdx)\\>",
+    "type": "Promise&#60;`null` \\| [ProductOption](ProductOption.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "product option",
@@ -1103,7 +1103,7 @@ ___
 
 ### retrieveVariants
 
-**retrieveVariants**(`productId`, `config?`): `Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+`**retrieveVariants**(productId, config?): Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;`
 
 Gets all variants belonging to a product.
 
@@ -1121,7 +1121,7 @@ Gets all variants belonging to a product.
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "The config to select and configure relations etc...",
     "optional": false,
     "defaultValue": "",
@@ -1132,12 +1132,12 @@ Gets all variants belonging to a product.
 
 #### Returns
 
-`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\>
+Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariant`](ProductVariant.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariant](ProductVariant.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array of variants",
@@ -1150,7 +1150,7 @@ ___
 
 ### retrieve\_
 
-**retrieve_**(`selector`, `config?`): `Promise`<[`Product`](Product.mdx)\>
+`**retrieve_**(selector, config?): Promise&#60;[Product](Product.mdx)&#62;`
 
 Gets a product by selector.
 Throws in case of DB Error and if product was not found.
@@ -1160,7 +1160,7 @@ Throws in case of DB Error and if product was not found.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/Selector.mdx)<[`Product`](Product.mdx)\\>",
+    "type": "[Selector](../types/Selector.mdx)&#60;[Product](Product.mdx)&#62;",
     "description": "selector object",
     "optional": false,
     "defaultValue": "",
@@ -1169,7 +1169,7 @@ Throws in case of DB Error and if product was not found.
   },
   {
     "name": "config",
-    "type": "[`FindProductConfig`](../types/FindProductConfig.mdx)",
+    "type": "[FindProductConfig](../types/FindProductConfig.mdx)",
     "description": "object that defines what should be included in the query response",
     "optional": false,
     "defaultValue": "",
@@ -1180,12 +1180,12 @@ Throws in case of DB Error and if product was not found.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the find one operation.",
@@ -1198,14 +1198,14 @@ ___
 
 ### shouldRetryTransaction\_
 
-`Protected` **shouldRetryTransaction_**(`err`): `boolean`
+`Protected **shouldRetryTransaction_**(err): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1234,7 +1234,7 @@ ___
 
 ### update
 
-**update**(`productId`, `update`): `Promise`<[`Product`](Product.mdx)\>
+`**update**(productId, update): Promise&#60;[Product](Product.mdx)&#62;`
 
 Updates a product. Product variant updates should use dedicated methods,
 e.g. `addVariant`, etc. The function will throw errors if metadata or
@@ -1254,7 +1254,7 @@ product variant updates are attempted.
   },
   {
     "name": "update",
-    "type": "[`UpdateProductInput`](../types/UpdateProductInput.mdx)",
+    "type": "[UpdateProductInput](../types/UpdateProductInput.mdx)",
     "description": "an object with the update values.",
     "optional": false,
     "defaultValue": "",
@@ -1265,12 +1265,12 @@ product variant updates are attempted.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "resolves to the update result.",
@@ -1283,7 +1283,7 @@ ___
 
 ### updateOption
 
-**updateOption**(`productId`, `optionId`, `data`): `Promise`<[`Product`](Product.mdx)\>
+`**updateOption**(productId, optionId, data): Promise&#60;[Product](Product.mdx)&#62;`
 
 Updates a product's option. Throws if the call tries to update an option
 not associated with the product. Throws if the updated title already exists.
@@ -1311,7 +1311,7 @@ not associated with the product. Throws if the updated title already exists.
   },
   {
     "name": "data",
-    "type": "[`ProductOptionInput`](../types/ProductOptionInput.mdx)",
+    "type": "[ProductOptionInput](../types/ProductOptionInput.mdx)",
     "description": "the data to update the option with",
     "optional": false,
     "defaultValue": "",
@@ -1322,12 +1322,12 @@ not associated with the product. Throws if the updated title already exists.
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)\>
+Promise&#60;[Product](Product.mdx)&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)\\>",
+    "type": "Promise&#60;[Product](Product.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated product",
@@ -1340,7 +1340,7 @@ ___
 
 ### updateShippingProfile
 
-**updateShippingProfile**(`productIds`, `profileId`): `Promise`<[`Product`](Product.mdx)[]\>
+`**updateShippingProfile**(productIds, profileId): Promise&#60;[Product](Product.mdx)[]&#62;`
 
 Assign a product to a profile, if a profile id null is provided then detach the product from the profile
 
@@ -1369,12 +1369,12 @@ Assign a product to a profile, if a profile id null is provided then detach the 
 
 #### Returns
 
-`Promise`<[`Product`](Product.mdx)[]\>
+Promise&#60;[Product](Product.mdx)[]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Product`](Product.mdx)[]\\>",
+    "type": "Promise&#60;[Product](Product.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated products",
@@ -1387,14 +1387,14 @@ ___
 
 ### withTransaction
 
-**withTransaction**(`transactionManager?`): [`ProductService`](ProductService.mdx)
+`**withTransaction**(transactionManager?): [ProductService](ProductService.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1405,12 +1405,12 @@ ___
 
 #### Returns
 
-[`ProductService`](ProductService.mdx)
+[ProductService](ProductService.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "ProductService",
-    "type": "[`ProductService`](ProductService.mdx)",
+    "type": "[ProductService](ProductService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

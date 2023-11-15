@@ -8,11 +8,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).copy
 
-**copy**(`target`, `targetStart?`, `sourceStart?`, `sourceEnd?`): `number`
+`**copy**(target, targetStart?, sourceStart?, sourceEnd?): number`
 
 Copies data from a region of `buf` to a region in `target`, even if the `target`memory region overlaps with `buf`.
 
-[`TypedArray.prototype.set()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray/set) performs the same operation, and is available
+[`TypedArray.prototype.set()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/TypedArray/set) performs the same operation, and is available
 for all TypedArrays, including Node.js `Buffer`s, although it takes
 different function arguments.
 
@@ -61,7 +61,7 @@ console.log(buf.toString());
 <ParameterTypes parameters={[
   {
     "name": "target",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "A `Buffer` or Uint8Array to copy into.",
     "optional": false,
     "defaultValue": "",

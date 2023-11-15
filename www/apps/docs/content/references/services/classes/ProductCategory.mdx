@@ -12,7 +12,7 @@ A product category can be used to categorize products into a hierarchy of catego
 
 ### constructor
 
-**new ProductCategory**()
+`**new ProductCategory**()`
 
 A product category can be used to categorize products into a hierarchy of categories.
 
@@ -21,7 +21,7 @@ A product category can be used to categorize products into a hierarchy of catego
 <ParameterTypes parameters={[
   {
     "name": "category_children",
-    "type": "[`ProductCategory`](ProductCategory.mdx)[]",
+    "type": "[ProductCategory](ProductCategory.mdx)[]",
     "description": "The details of the category's children.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ A product category can be used to categorize products into a hierarchy of catego
   },
   {
     "name": "is_active",
-    "type": "[`Boolean`](../index.md#boolean)",
+    "type": "[Boolean](../index.md#boolean)",
     "description": "A flag to make product category visible/hidden in the store front",
     "optional": false,
     "defaultValue": "false",
@@ -75,7 +75,7 @@ A product category can be used to categorize products into a hierarchy of catego
   },
   {
     "name": "is_internal",
-    "type": "[`Boolean`](../index.md#boolean)",
+    "type": "[Boolean](../index.md#boolean)",
     "description": "A flag to make product category an internal category for admins",
     "optional": false,
     "defaultValue": "false",
@@ -93,7 +93,7 @@ A product category can be used to categorize products into a hierarchy of catego
   },
   {
     "name": "parent_category",
-    "type": "``null`` \\| [`ProductCategory`](ProductCategory.mdx)",
+    "type": "``null`` \\| [ProductCategory](ProductCategory.mdx)",
     "description": "The details of the parent of this category.",
     "optional": false,
     "defaultValue": "",
@@ -111,7 +111,7 @@ A product category can be used to categorize products into a hierarchy of catego
   },
   {
     "name": "products",
-    "type": "[`Product`](Product.mdx)[]",
+    "type": "[Product](Product.mdx)[]",
     "description": "The details of the products that belong to this category.",
     "optional": false,
     "defaultValue": "",
@@ -160,7 +160,7 @@ A product category can be used to categorize products into a hierarchy of catego
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

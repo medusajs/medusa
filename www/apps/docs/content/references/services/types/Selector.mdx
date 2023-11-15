@@ -6,9 +6,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Selector
 
- **Selector**<`TEntity`\>: { [key in keyof TEntity]?: TEntity[key] \| TEntity[key][] \| DateComparisonOperator \| StringComparisonOperator \| NumericalComparisonOperator \| FindOperator<TEntity[key][] \| string \| string[]\\> }
+ **Selector**`<TypeParameter TEntity>`: &#123; [key in keyof TEntity]?: TEntity[key] \| TEntity[key][] \| DateComparisonOperator \| StringComparisonOperator \| NumericalComparisonOperator \| FindOperator&#60;TEntity[key][] \| string \| string[]&#62; &#125;
 
-#### Type parameters
+### Type parameters
 
 <ParameterTypes parameters={[
   {

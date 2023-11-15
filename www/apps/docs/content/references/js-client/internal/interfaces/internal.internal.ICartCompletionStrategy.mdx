@@ -6,10 +6,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ICartCompletionStrategy
 
-## Implemented by
-
-- [`AbstractCartCompletionStrategy`](../classes/internal.internal.AbstractCartCompletionStrategy.mdx)
-
 ## Methods
 
 ### complete
@@ -31,7 +27,7 @@ creating an order or confirming a swap.
   },
   {
     "name": "idempotencyKey",
-    "type": "[`IdempotencyKey`](../classes/internal.internal.IdempotencyKey.mdx)",
+    "type": "[IdempotencyKey](../classes/internal.internal.IdempotencyKey.mdx)",
     "description": "the idempotency key for the request",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +36,7 @@ creating an order or confirming a swap.
   },
   {
     "name": "context",
-    "type": "[`RequestContext`](../types/internal.RequestContext.mdx)",
+    "type": "[RequestContext](../types/internal.RequestContext.mdx)",
     "description": "the request context for the completion request",
     "optional": false,
     "defaultValue": "",
@@ -54,7 +50,7 @@ creating an order or confirming a swap.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CartCompletionResponse`](../types/internal.internal.CartCompletionResponse.mdx)\\>",
+    "type": "Promise&#60;[CartCompletionResponse](../types/internal.internal.CartCompletionResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the response for the completion request",

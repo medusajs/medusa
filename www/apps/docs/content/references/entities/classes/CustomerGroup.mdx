@@ -22,7 +22,7 @@ A customer group that can be used to organize customers into groups of similar t
   },
   {
     "name": "customers",
-    "type": "[`Customer`](Customer.mdx)[]",
+    "type": "[Customer](Customer.mdx)[]",
     "description": "The details of the customers that belong to the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -30,7 +30,7 @@ A customer group that can be used to organize customers into groups of similar t
     "children": [
       {
         "name": "billing_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the billing address associated with the customer.",
         "optional": false,
         "defaultValue": "",
@@ -84,7 +84,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "groups",
-        "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
+        "type": "[CustomerGroup](CustomerGroup.mdx)[]",
         "description": "The customer groups the customer belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -120,7 +120,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -129,7 +129,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "orders",
-        "type": "[`Order`](Order.mdx)[]",
+        "type": "[Order](Order.mdx)[]",
         "description": "The details of the orders this customer placed.",
         "optional": false,
         "defaultValue": "",
@@ -156,7 +156,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "shipping_addresses",
-        "type": "[`Address`](Address.mdx)[]",
+        "type": "[Address](Address.mdx)[]",
         "description": "The details of the shipping addresses associated with the customer.",
         "optional": false,
         "defaultValue": "",
@@ -194,7 +194,7 @@ A customer group that can be used to organize customers into groups of similar t
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -212,7 +212,7 @@ A customer group that can be used to organize customers into groups of similar t
   },
   {
     "name": "price_lists",
-    "type": "[`PriceList`](PriceList.mdx)[]",
+    "type": "[PriceList](PriceList.mdx)[]",
     "description": "The price lists that are associated with the customer group.",
     "optional": false,
     "defaultValue": "",
@@ -229,7 +229,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "customer_groups",
-        "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
+        "type": "[CustomerGroup](CustomerGroup.mdx)[]",
         "description": "The details of the customer groups that the Price List can apply to.",
         "optional": false,
         "defaultValue": "",
@@ -293,7 +293,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "prices",
-        "type": "[`MoneyAmount`](MoneyAmount.mdx)[]",
+        "type": "[MoneyAmount](MoneyAmount.mdx)[]",
         "description": "The prices that belong to the price list, represented as a Money Amount.",
         "optional": false,
         "defaultValue": "",
@@ -311,7 +311,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "status",
-        "type": "[`PriceListStatus`](../enums/PriceListStatus.mdx)",
+        "type": "[PriceListStatus](../enums/PriceListStatus.mdx)",
         "description": "The status of the Price List",
         "optional": false,
         "defaultValue": "draft",
@@ -320,7 +320,7 @@ A customer group that can be used to organize customers into groups of similar t
       },
       {
         "name": "type",
-        "type": "[`PriceListType`](../enums/PriceListType.mdx)",
+        "type": "[PriceListType](../enums/PriceListType.mdx)",
         "description": "The type of Price List. This can be one of either `sale` or `override`.",
         "optional": false,
         "defaultValue": "sale",

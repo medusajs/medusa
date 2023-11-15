@@ -11,7 +11,6 @@ import { MedusaError, MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils"
 import { defaultStoreProductRemoteQueryObject } from "./index"
-import IsolateSalesChannelDomain from "../../../../loaders/feature-flags/isolate-sales-channel-domain"
 
 /**
  * @oas [get] /store/products/{id}
@@ -165,10 +164,6 @@ export default async (req, res) => {
 
 async function getProductWithIsolatedProductModule(req, id: string) {
   const remoteQuery = req.scope.resolve("remoteQuery")
-  const featureFlagRouter = req.scope.resolve("featureFlagRouter")
-  const isSalesChannelModuleIsolationFFOn = featureFlagRouter.isFeatureEnabled(
-    IsolateSalesChannelDomain.key
-  )
 
   const variables = { id }
 
@@ -180,20 +175,6 @@ async function getProductWithIsolatedProductModule(req, id: string) {
   }
 
   // TODO: sales_channel filter
-
-  if (isSalesChannelModuleIsolationFFOn) {
-    query.product["sales_channels"] = {
-      fields: [
-        "id",
-        "name",
-        "description",
-        "is_disabled",
-        "created_at",
-        "updated_at",
-        "deleted_at",
-      ],
-    }
-  }
 
   const [product] = await remoteQuery(query)
 

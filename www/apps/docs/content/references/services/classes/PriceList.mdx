@@ -12,7 +12,7 @@ A Price List represents a set of prices that override the default price for one 
 
 ### constructor
 
-**new PriceList**()
+`**new PriceList**()`
 
 A Price List represents a set of prices that override the default price for one or more product variants.
 
@@ -30,7 +30,7 @@ A Price List represents a set of prices that override the default price for one 
   },
   {
     "name": "customer_groups",
-    "type": "[`CustomerGroup`](CustomerGroup.mdx)[]",
+    "type": "[CustomerGroup](CustomerGroup.mdx)[]",
     "description": "The details of the customer groups that the Price List can apply to.",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ A Price List represents a set of prices that override the default price for one 
   },
   {
     "name": "prices",
-    "type": "[`MoneyAmount`](MoneyAmount.mdx)[]",
+    "type": "[MoneyAmount](MoneyAmount.mdx)[]",
     "description": "The prices that belong to the price list, represented as a Money Amount.",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ A Price List represents a set of prices that override the default price for one 
   },
   {
     "name": "status",
-    "type": "[`PriceListStatus`](../enums/PriceListStatus.mdx)",
+    "type": "[PriceListStatus](../enums/PriceListStatus.mdx)",
     "description": "The status of the Price List",
     "optional": false,
     "defaultValue": "draft",
@@ -121,7 +121,7 @@ A Price List represents a set of prices that override the default price for one 
   },
   {
     "name": "type",
-    "type": "[`PriceListType`](../enums/PriceListType.mdx)",
+    "type": "[PriceListType](../enums/PriceListType.mdx)",
     "description": "The type of Price List. This can be one of either `sale` or `override`.",
     "optional": false,
     "defaultValue": "sale",
@@ -143,7 +143,7 @@ A Price List represents a set of prices that override the default price for one 
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `undefined` \| `void`
+`Private **beforeInsert**(): undefined \| void`
 
 #### Returns
 

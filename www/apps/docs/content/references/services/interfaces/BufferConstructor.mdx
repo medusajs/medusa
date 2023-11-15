@@ -8,15 +8,15 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 Raw data is stored in instances of the Buffer class.
 A Buffer is similar to an array of integers but corresponds to a raw memory allocation outside the V8 heap.  A Buffer cannot be resized.
-Valid string encodings: 'ascii'|'utf8'|'utf16le'|'ucs2'(alias of 'utf16le')|'base64'|'base64url'|'binary'(deprecated)|'hex'
+Valid string encodings: 'ascii'\|'utf8'\|'utf16le'\|'ucs2'(alias of 'utf16le')\|'base64'\|'base64url'\|'binary'(deprecated)\|'hex'
 
 ## Constructors
 
 ### constructor
 
-**new BufferConstructor**(`str`, `encoding?`)
+`**new BufferConstructor**(str, encoding?)`
 
-Allocates a new buffer containing the given {str}.
+Allocates a new buffer containing the given &#123;str&#125;.
 
 #### Parameters
 
@@ -32,7 +32,7 @@ Allocates a new buffer containing the given {str}.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "encoding to use, optional. Default is 'utf8'",
     "optional": true,
     "defaultValue": "",
@@ -45,9 +45,9 @@ Allocates a new buffer containing the given {str}.
 
 since v10.0.0 - Use `Buffer.from(string[, encoding])` instead.
 
-**new BufferConstructor**(`size`)
+`**new BufferConstructor**(size)`
 
-Allocates a new buffer of {size} octets.
+Allocates a new buffer of &#123;size&#125; octets.
 
 #### Parameters
 
@@ -67,16 +67,16 @@ Allocates a new buffer of {size} octets.
 
 since v10.0.0 - Use `Buffer.alloc()` instead (also see `Buffer.allocUnsafe()`).
 
-**new BufferConstructor**(`array`)
+`**new BufferConstructor**(array)`
 
-Allocates a new buffer containing the given {array} of octets.
+Allocates a new buffer containing the given &#123;array&#125; of octets.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "array",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "The octets to store.",
     "optional": false,
     "defaultValue": "",
@@ -89,17 +89,17 @@ Allocates a new buffer containing the given {array} of octets.
 
 since v10.0.0 - Use `Buffer.from(array)` instead.
 
-**new BufferConstructor**(`arrayBuffer`)
+`**new BufferConstructor**(arrayBuffer)`
 
 Produces a Buffer backed by the same allocated memory as
-the given {ArrayBuffer}/{SharedArrayBuffer}.
+the given &#123;ArrayBuffer&#125;/&#123;SharedArrayBuffer&#125;.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "arrayBuffer",
-    "type": "`ArrayBuffer` \\| [`SharedArrayBuffer`](../index.md#sharedarraybuffer)",
+    "type": "`ArrayBuffer` \\| [SharedArrayBuffer](../index.md#sharedarraybuffer)",
     "description": "The ArrayBuffer with which to share memory.",
     "optional": false,
     "defaultValue": "",
@@ -112,9 +112,9 @@ the given {ArrayBuffer}/{SharedArrayBuffer}.
 
 since v10.0.0 - Use `Buffer.from(arrayBuffer[, byteOffset[, length]])` instead.
 
-**new BufferConstructor**(`array`)
+`**new BufferConstructor**(array)`
 
-Allocates a new buffer containing the given {array} of octets.
+Allocates a new buffer containing the given &#123;array&#125; of octets.
 
 #### Parameters
 
@@ -134,16 +134,16 @@ Allocates a new buffer containing the given {array} of octets.
 
 since v10.0.0 - Use `Buffer.from(array)` instead.
 
-**new BufferConstructor**(`buffer`)
+`**new BufferConstructor**(buffer)`
 
-Copies the passed {buffer} data onto a new {Buffer} instance.
+Copies the passed &#123;buffer&#125; data onto a new &#123;Buffer&#125; instance.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "description": "The buffer to copy.",
     "optional": false,
     "defaultValue": "",
@@ -174,7 +174,7 @@ since v10.0.0 - Use `Buffer.from(buffer)` instead.
 
 ### alloc
 
-**alloc**(`size`, `fill?`, `encoding?`): [`Buffer`](../index.md#buffer)
+`**alloc**(size, fill?, encoding?): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` of `size` bytes. If `fill` is `undefined`, the`Buffer` will be zero-filled.
 
@@ -232,7 +232,7 @@ A `TypeError` will be thrown if `size` is not a number.
   },
   {
     "name": "fill",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "A value to pre-fill the new `Buffer` with.",
     "optional": true,
     "defaultValue": "",
@@ -241,7 +241,7 @@ A `TypeError` will be thrown if `size` is not a number.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "If `fill` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",
@@ -252,12 +252,12 @@ A `TypeError` will be thrown if `size` is not a number.
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -274,12 +274,12 @@ ___
 
 ### allocUnsafe
 
-**allocUnsafe**(`size`): [`Buffer`](../index.md#buffer)
+`**allocUnsafe**(size): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown.
 
-The underlying memory for `Buffer` instances created in this way is _not_
-_initialized_. The contents of the newly created `Buffer` are unknown and _may contain sensitive data_. Use `Buffer.alloc()` instead to initialize`Buffer` instances with zeroes.
+The underlying memory for `Buffer` instances created in this way is \_not\_
+\_initialized\_. The contents of the newly created `Buffer` are unknown and \_may contain sensitive data\_. Use `Buffer.alloc()` instead to initialize`Buffer` instances with zeroes.
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -303,7 +303,7 @@ and `Buffer.concat()` only when `size` is less than or equal to`Buffer.poolSize 
 
 Use of this pre-allocated internal memory pool is a key difference between
 calling `Buffer.alloc(size, fill)` vs. `Buffer.allocUnsafe(size).fill(fill)`.
-Specifically, `Buffer.alloc(size, fill)` will _never_ use the internal `Buffer`pool, while `Buffer.allocUnsafe(size).fill(fill)`_will_ use the internal`Buffer` pool if `size` is less
+Specifically, `Buffer.alloc(size, fill)` will \_never\_ use the internal `Buffer`pool, while `Buffer.allocUnsafe(size).fill(fill)`\_will\_ use the internal`Buffer` pool if `size` is less
 than or equal to half `Buffer.poolSize`. The
 difference is subtle but can be important when an application requires the
 additional performance that `Buffer.allocUnsafe()` provides.
@@ -324,12 +324,12 @@ additional performance that `Buffer.allocUnsafe()` provides.
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -346,13 +346,13 @@ ___
 
 ### allocUnsafeSlow
 
-**allocUnsafeSlow**(`size`): [`Buffer`](../index.md#buffer)
+`**allocUnsafeSlow**(size): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` of `size` bytes. If `size` is larger than constants.MAX_LENGTH or smaller than 0, `ERR_OUT_OF_RANGE` is thrown. A zero-length `Buffer` is created if
 `size` is 0.
 
-The underlying memory for `Buffer` instances created in this way is _not_
-_initialized_. The contents of the newly created `Buffer` are unknown and _may contain sensitive data_. Use `buf.fill(0)` to initialize
+The underlying memory for `Buffer` instances created in this way is \_not\_
+\_initialized\_. The contents of the newly created `Buffer` are unknown and \_may contain sensitive data\_. Use `buf.fill(0)` to initialize
 such `Buffer` instances with zeroes.
 
 When using `Buffer.allocUnsafe()` to allocate new `Buffer` instances,
@@ -405,12 +405,12 @@ A `TypeError` will be thrown if `size` is not a number.
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -427,10 +427,10 @@ ___
 
 ### byteLength
 
-**byteLength**(`string`, `encoding?`): `number`
+`**byteLength**(string, encoding?): number`
 
 Returns the byte length of a string when encoded using `encoding`.
-This is not the same as [`String.prototype.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length), which does not account
+This is not the same as [`String.prototype.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/String/length), which does not account
 for the encoding that is used to convert the string into bytes.
 
 For `'base64'`, `'base64url'`, and `'hex'`, this function assumes valid input.
@@ -449,16 +449,16 @@ console.log(`${str}: ${str.length} characters, ` +
 ```
 
 When `string` is a
-`Buffer`/[`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView)/[`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/-
-Reference/Global_Objects/TypedArray)/[`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer)/[`SharedArrayBuffer`](https://develop-
-er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), the byte length as reported by `.byteLength`is returned.
+`Buffer`/[`DataView`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/DataView)/[`TypedArray`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/-
+Reference/Global\_Objects/TypedArray)/[`ArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/ArrayBuffer)/[`SharedArrayBuffer`](https://develop-
+er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/SharedArrayBuffer), the byte length as reported by `.byteLength`is returned.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "string",
-    "type": "`string` \\| `ArrayBuffer` \\| [`SharedArrayBuffer`](../index.md#sharedarraybuffer) \\| [`ArrayBufferView`](../types/ArrayBufferView.mdx)",
+    "type": "`string` \\| `ArrayBuffer` \\| [SharedArrayBuffer](../index.md#sharedarraybuffer) \\| [ArrayBufferView](../types/ArrayBufferView.mdx)",
     "description": "A value to calculate the length of.",
     "optional": false,
     "defaultValue": "",
@@ -467,7 +467,7 @@ er.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuf
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "If `string` is a string, this is its encoding.",
     "optional": true,
     "defaultValue": "",
@@ -500,7 +500,7 @@ ___
 
 ### compare
 
-**compare**(`buf1`, `buf2`): ``0`` \| ``1`` \| ``-1``
+`**compare**(buf1, buf2): `0` \| `1` \| `-1``
 
 Compares `buf1` to `buf2`, typically for the purpose of sorting arrays of`Buffer` instances. This is equivalent to calling `buf1.compare(buf2)`.
 
@@ -521,7 +521,7 @@ console.log(arr.sort(Buffer.compare));
 <ParameterTypes parameters={[
   {
     "name": "buf1",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -530,7 +530,7 @@ console.log(arr.sort(Buffer.compare));
   },
   {
     "name": "buf2",
-    "type": "`Uint8Array`",
+    "type": "Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -545,7 +545,7 @@ console.log(arr.sort(Buffer.compare));
 
 <ParameterTypes parameters={[
   {
-    "name": "``0`` \\| ``1`` \\| ``-1``",
+    "name": "`0` \\| `1` \\| `-1`",
     "type": "``0`` \\| ``1`` \\| ``-1``",
     "optional": true,
     "defaultValue": "",
@@ -563,7 +563,7 @@ ___
 
 ### concat
 
-**concat**(`list`, `totalLength?`): [`Buffer`](../index.md#buffer)
+`**concat**(list, totalLength?): [Buffer](../index.md#buffer)`
 
 Returns a new `Buffer` which is the result of concatenating all the `Buffer`instances in the `list` together.
 
@@ -604,7 +604,7 @@ console.log(bufA.length);
 <ParameterTypes parameters={[
   {
     "name": "list",
-    "type": "readonly `Uint8Array`[]",
+    "type": "readonly Uint8Array[]",
     "description": "List of `Buffer` or Uint8Array instances to concatenate.",
     "optional": false,
     "defaultValue": "",
@@ -624,12 +624,12 @@ console.log(bufA.length);
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -646,7 +646,7 @@ ___
 
 ### copyBytesFrom
 
-**copyBytesFrom**(`view`, `offset?`, `length?`): [`Buffer`](../index.md#buffer)
+`**copyBytesFrom**(view, offset?, length?): [Buffer](../index.md#buffer)`
 
 Copies the underlying memory of `view` into a new `Buffer`.
 
@@ -664,8 +664,8 @@ console.log(buf[1]); // 255
 <ParameterTypes parameters={[
   {
     "name": "view",
-    "type": "[`TypedArray`](../types/TypedArray.mdx)",
-    "description": "The {TypedArray} to copy.",
+    "type": "[TypedArray](../types/TypedArray.mdx)",
+    "description": "The &#123;TypedArray&#125; to copy.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -693,12 +693,12 @@ console.log(buf[1]); // 255
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -715,7 +715,7 @@ ___
 
 ### from
 
-**from**(`arrayBuffer`, `byteOffset?`, `length?`): [`Buffer`](../index.md#buffer)
+`**from**(arrayBuffer, byteOffset?, length?): [Buffer](../index.md#buffer)`
 
 Allocates a new `Buffer` using an `array` of bytes in the range `0` – `255`.
 Array entries outside that range will be truncated to fit into it.
@@ -741,7 +741,7 @@ appropriate for `Buffer.from()` variants.
 <ParameterTypes parameters={[
   {
     "name": "arrayBuffer",
-    "type": "[`WithImplicitCoercion`](../types/WithImplicitCoercion.mdx)<`ArrayBuffer` \\| [`SharedArrayBuffer`](../index.md#sharedarraybuffer)\\>",
+    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;ArrayBuffer \\| [SharedArrayBuffer](../index.md#sharedarraybuffer)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -770,12 +770,12 @@ appropriate for `Buffer.from()` variants.
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -788,16 +788,16 @@ appropriate for `Buffer.from()` variants.
 
 v5.10.0
 
-**from**(`data`): [`Buffer`](../index.md#buffer)
+`**from**(data): [Buffer](../index.md#buffer)`
 
-Creates a new Buffer using the passed {data}
+Creates a new Buffer using the passed &#123;data&#125;
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`Uint8Array` \\| readonly `number`[]",
+    "type": "Uint8Array \\| readonly `number`[]",
     "description": "data to create a new Buffer",
     "optional": false,
     "defaultValue": "",
@@ -808,12 +808,12 @@ Creates a new Buffer using the passed {data}
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -822,14 +822,14 @@ Creates a new Buffer using the passed {data}
   }
 ]} />
 
-**from**(`data`): [`Buffer`](../index.md#buffer)
+`**from**(data): [Buffer](../index.md#buffer)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`WithImplicitCoercion`](../types/WithImplicitCoercion.mdx)<`string` \\| `Uint8Array` \\| readonly `number`[]\\>",
+    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;string \\| Uint8Array \\| readonly number[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -840,12 +840,12 @@ Creates a new Buffer using the passed {data}
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -854,18 +854,18 @@ Creates a new Buffer using the passed {data}
   }
 ]} />
 
-**from**(`str`, `encoding?`): [`Buffer`](../index.md#buffer)
+`**from**(str, encoding?): [Buffer](../index.md#buffer)`
 
-Creates a new Buffer containing the given JavaScript string {str}.
-If provided, the {encoding} parameter identifies the character encoding.
-If not provided, {encoding} defaults to 'utf8'.
+Creates a new Buffer containing the given JavaScript string &#123;str&#125;.
+If provided, the &#123;encoding&#125; parameter identifies the character encoding.
+If not provided, &#123;encoding&#125; defaults to 'utf8'.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "str",
-    "type": "[`WithImplicitCoercion`](../types/WithImplicitCoercion.mdx)<`string`\\> \\| { `[toPrimitive]`: Method [toPrimitive]  }",
+    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;string&#62; \\| `&#123; [toPrimitive]: Method [toPrimitive]  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -874,7 +874,7 @@ If not provided, {encoding} defaults to 'utf8'.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -885,12 +885,12 @@ If not provided, {encoding} defaults to 'utf8'.
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -903,7 +903,7 @@ ___
 
 ### isBuffer
 
-**isBuffer**(`obj`): obj is Buffer
+`**isBuffer**(obj): obj is Buffer`
 
 Returns `true` if `obj` is a `Buffer`, `false` otherwise.
 
@@ -955,7 +955,7 @@ ___
 
 ### isEncoding
 
-**isEncoding**(`encoding`): encoding is BufferEncoding
+`**isEncoding**(encoding): encoding is BufferEncoding`
 
 Returns `true` if `encoding` is the name of a supported character encoding,
 or `false` otherwise.
@@ -1014,9 +1014,9 @@ ___
 
 ### of
 
-**of**(`...items`): [`Buffer`](../index.md#buffer)
+`**of**(...items): [Buffer](../index.md#buffer)`
 
-Creates a new Buffer using the passed {data}
+Creates a new Buffer using the passed &#123;data&#125;
 
 #### Parameters
 
@@ -1034,12 +1034,12 @@ Creates a new Buffer using the passed {data}
 
 #### Returns
 
-[`Buffer`](../index.md#buffer)
+[Buffer](../index.md#buffer)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../index.md#buffer)",
+    "type": "[Buffer](../index.md#buffer)",
     "optional": false,
     "defaultValue": "",
     "description": "",

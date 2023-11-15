@@ -13,7 +13,7 @@ This represents the association between a Line Item and a Fulfillment.
 <ParameterTypes parameters={[
   {
     "name": "fulfillment",
-    "type": "[`Fulfillment`](Fulfillment.mdx)",
+    "type": "[Fulfillment](Fulfillment.mdx)",
     "description": "The details of the fulfillment.",
     "optional": false,
     "defaultValue": "",
@@ -30,7 +30,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "claim_order",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+        "type": "[ClaimOrder](ClaimOrder.mdx)",
         "description": "The details of the claim that the fulfillment may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -57,7 +57,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "This contains all the data necessary for the Fulfillment provider to handle the fulfillment.",
         "optional": false,
         "defaultValue": "",
@@ -84,7 +84,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "items",
-        "type": "[`FulfillmentItem`](FulfillmentItem.mdx)[]",
+        "type": "[FulfillmentItem](FulfillmentItem.mdx)[]",
         "description": "The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.",
         "optional": false,
         "defaultValue": "",
@@ -102,7 +102,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -120,7 +120,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the fulfillment may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -138,7 +138,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "provider",
-        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
+        "type": "[FulfillmentProvider](FulfillmentProvider.mdx)",
         "description": "The details of the fulfillment provider responsible for handling the fulfillment.",
         "optional": false,
         "defaultValue": "",
@@ -165,7 +165,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "swap",
-        "type": "[`Swap`](Swap.mdx)",
+        "type": "[Swap](Swap.mdx)",
         "description": "The details of the swap that the fulfillment may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -183,7 +183,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "tracking_links",
-        "type": "[`TrackingLink`](TrackingLink.mdx)[]",
+        "type": "[TrackingLink](TrackingLink.mdx)[]",
         "description": "The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.",
         "optional": false,
         "defaultValue": "",
@@ -221,7 +221,7 @@ This represents the association between a Line Item and a Fulfillment.
   },
   {
     "name": "item",
-    "type": "[`LineItem`](LineItem.mdx)",
+    "type": "[LineItem](LineItem.mdx)",
     "description": "The details of the line item.",
     "optional": false,
     "defaultValue": "",
@@ -229,7 +229,7 @@ This represents the association between a Line Item and a Fulfillment.
     "children": [
       {
         "name": "adjustments",
-        "type": "[`LineItemAdjustment`](LineItemAdjustment.mdx)[]",
+        "type": "[LineItemAdjustment](LineItemAdjustment.mdx)[]",
         "description": "The details of the item's adjustments, which are available when a discount is applied on the item.",
         "optional": false,
         "defaultValue": "",
@@ -247,7 +247,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "cart",
-        "type": "[`Cart`](Cart.mdx)",
+        "type": "[Cart](Cart.mdx)",
         "description": "The details of the cart that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -265,7 +265,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "claim_order",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)",
+        "type": "[ClaimOrder](ClaimOrder.mdx)",
         "description": "The details of the claim that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -347,7 +347,7 @@ This represents the association between a Line Item and a Fulfillment.
       {
         "name": "includes_tax",
         "type": "`boolean`",
-        "description": "Indicates if the line item unit_price include tax",
+        "description": "Indicates if the line item unit\\_price include tax",
         "optional": false,
         "defaultValue": "false",
         "expandable": false,
@@ -374,7 +374,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -383,7 +383,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the line item may belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -392,7 +392,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "order_edit",
-        "type": "``null`` \\| [`OrderEdit`](OrderEdit.mdx)",
+        "type": "``null`` \\| [OrderEdit](OrderEdit.mdx)",
         "description": "The details of the order edit.",
         "optional": true,
         "defaultValue": "",
@@ -518,7 +518,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "swap",
-        "type": "[`Swap`](Swap.mdx)",
+        "type": "[Swap](Swap.mdx)",
         "description": "The details of the swap that the line item may belong to.",
         "optional": false,
         "defaultValue": "",
@@ -536,7 +536,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "tax_lines",
-        "type": "[`LineItemTaxLine`](LineItemTaxLine.mdx)[]",
+        "type": "[LineItemTaxLine](LineItemTaxLine.mdx)[]",
         "description": "The details of the item's tax lines.",
         "optional": false,
         "defaultValue": "",
@@ -599,7 +599,7 @@ This represents the association between a Line Item and a Fulfillment.
       },
       {
         "name": "variant",
-        "type": "[`ProductVariant`](ProductVariant.mdx)",
+        "type": "[ProductVariant](ProductVariant.mdx)",
         "description": "The details of the product variant that this item was created from.",
         "optional": false,
         "defaultValue": "",

@@ -9,7 +9,7 @@ import {
 } from "@docusaurus/theme-common"
 import {
   isActiveSidebarItem,
-  findFirstCategoryLink,
+  findFirstSidebarItemLink,
   useDocSidebarItemsExpandedState,
   isSamePath,
 } from "@docusaurus/theme-common/internal"
@@ -59,7 +59,7 @@ function useCategoryHrefWithSSRFallback(
 ): string | undefined {
   const isBrowser = useIsBrowser()
   return useMemo(() => {
-    if (item.href) {
+    if (item.href && !item.linkUnlisted) {
       return item.href
     }
     // In these cases, it's not necessary to render a fallback
@@ -67,7 +67,7 @@ function useCategoryHrefWithSSRFallback(
     if (isBrowser || !item.collapsible) {
       return undefined
     }
-    return findFirstCategoryLink(item)
+    return findFirstSidebarItemLink(item)
   }, [item, isBrowser])
 }
 
@@ -75,6 +75,7 @@ function CollapseButton({
   categoryLabel,
   onClick,
 }: {
+  collapsed: boolean
   categoryLabel: string
   onClick: ComponentProps<"button">["onClick"]
 }) {
@@ -150,9 +151,6 @@ export default function DocSidebarItemCategory({
         ThemeClassNames.docs.docSidebarItemCategory,
         ThemeClassNames.docs.docSidebarItemCategoryLevel(level),
         "menu__list-item",
-        // {
-        //   "menu__list-item--collapsed": collapsed,
-        // },
         className,
         customProps?.sidebar_is_title && "sidebar-title",
         customProps?.sidebar_is_group_headline && "sidebar-group-headline",
@@ -210,6 +208,7 @@ export default function DocSidebarItemCategory({
         </Link>
         {href && collapsible && (
           <CollapseButton
+            collapsed={collapsed}
             categoryLabel={label}
             onClick={(e) => {
               e.preventDefault()

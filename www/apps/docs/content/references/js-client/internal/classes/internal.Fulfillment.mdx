@@ -22,7 +22,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "claim_order",
-    "type": "[`ClaimOrder`](internal.ClaimOrder.mdx)",
+    "type": "[ClaimOrder](internal.ClaimOrder.mdx)",
     "description": "The details of the claim that the fulfillment may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "This contains all the data necessary for the Fulfillment provider to handle the fulfillment.",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "items",
-    "type": "[`FulfillmentItem`](internal.internal.FulfillmentItem.mdx)[]",
+    "type": "[FulfillmentItem](internal.internal.FulfillmentItem.mdx)[]",
     "description": "The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "The details of the order that the fulfillment may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "provider",
-    "type": "[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)",
+    "type": "[FulfillmentProvider](internal.internal.FulfillmentProvider.mdx)",
     "description": "The details of the fulfillment provider responsible for handling the fulfillment.",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "swap",
-    "type": "[`Swap`](internal.Swap.mdx)",
+    "type": "[Swap](internal.Swap.mdx)",
     "description": "The details of the swap that the fulfillment may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -175,7 +175,7 @@ A Fulfillment is created once an admin can prepare the purchased goods. Fulfillm
   },
   {
     "name": "tracking_links",
-    "type": "[`TrackingLink`](internal.internal.TrackingLink.mdx)[]",
+    "type": "[TrackingLink](internal.internal.TrackingLink.mdx)[]",
     "description": "The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.",
     "optional": false,
     "defaultValue": "",
