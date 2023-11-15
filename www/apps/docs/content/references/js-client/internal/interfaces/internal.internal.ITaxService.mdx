@@ -10,10 +10,6 @@ Interface to be implemented by tax provider plugins. The interface defines a
 single method `getTaxLines` that returns numerical rates to apply to line
 items and shipping methods.
 
-## Implemented by
-
-- [`AbstractTaxService`](../classes/internal.internal.AbstractTaxService.mdx)
-
 ## Methods
 
 ### getTaxLines
@@ -25,7 +21,7 @@ Retrieves the numerical tax lines for a calculation context.
 <ParameterTypes parameters={[
   {
     "name": "itemLines",
-    "type": "[`ItemTaxCalculationLine`](../types/internal.internal.ItemTaxCalculationLine.mdx)[]",
+    "type": "[ItemTaxCalculationLine](../types/internal.internal.ItemTaxCalculationLine.mdx)[]",
     "description": "the line item calculation lines",
     "optional": false,
     "defaultValue": "",
@@ -34,7 +30,7 @@ Retrieves the numerical tax lines for a calculation context.
   },
   {
     "name": "shippingLines",
-    "type": "[`ShippingTaxCalculationLine`](../types/internal.internal.ShippingTaxCalculationLine.mdx)[]",
+    "type": "[ShippingTaxCalculationLine](../types/internal.internal.ShippingTaxCalculationLine.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -43,7 +39,7 @@ Retrieves the numerical tax lines for a calculation context.
   },
   {
     "name": "context",
-    "type": "[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)",
+    "type": "[TaxCalculationContext](../types/internal.internal.TaxCalculationContext.mdx)",
     "description": "other details relevant to the tax determination",
     "optional": false,
     "defaultValue": "",
@@ -57,7 +53,7 @@ Retrieves the numerical tax lines for a calculation context.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProviderTaxLine`](../types/internal.ProviderTaxLine.mdx)[]\\>",
+    "type": "Promise&#60;[ProviderTaxLine](../types/internal.ProviderTaxLine.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "numerical tax rates that should apply to the provided calculation\n  lines",

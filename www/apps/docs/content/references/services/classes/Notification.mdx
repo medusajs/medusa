@@ -12,7 +12,7 @@ A notification is an alert sent, typically to customers, using the installed Not
 
 ### constructor
 
-**new Notification**()
+`**new Notification**()`
 
 A notification is an alert sent, typically to customers, using the installed Notification Provider as a reaction to internal events such as `order.placed`. Notifications can be resent.
 
@@ -30,7 +30,7 @@ A notification is an alert sent, typically to customers, using the installed Not
   },
   {
     "name": "customer",
-    "type": "[`Customer`](Customer.mdx)",
+    "type": "[Customer](Customer.mdx)",
     "description": "The details of the customer that this notification was sent to.",
     "optional": false,
     "defaultValue": "",
@@ -48,7 +48,7 @@ A notification is an alert sent, typically to customers, using the installed Not
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The data that the Notification was sent with. This contains all the data necessary for the Notification Provider to initiate a resend.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ A notification is an alert sent, typically to customers, using the installed Not
   },
   {
     "name": "parent_notification",
-    "type": "[`Notification`](Notification.mdx)",
+    "type": "[Notification](Notification.mdx)",
     "description": "The details of the parent notification.",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A notification is an alert sent, typically to customers, using the installed Not
   },
   {
     "name": "provider",
-    "type": "[`NotificationProvider`](NotificationProvider.mdx)",
+    "type": "[NotificationProvider](NotificationProvider.mdx)",
     "description": "The notification provider used to send the notification.",
     "optional": false,
     "defaultValue": "",
@@ -111,7 +111,7 @@ A notification is an alert sent, typically to customers, using the installed Not
   },
   {
     "name": "resends",
-    "type": "[`Notification`](Notification.mdx)[]",
+    "type": "[Notification](Notification.mdx)[]",
     "description": "The details of all resends of the notification.",
     "optional": false,
     "defaultValue": "",
@@ -160,7 +160,7 @@ A notification is an alert sent, typically to customers, using the installed Not
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

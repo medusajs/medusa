@@ -12,7 +12,7 @@ A refund represents an amount of money transfered back to the customer for a giv
 
 ### constructor
 
-**new Refund**()
+`**new Refund**()`
 
 A refund represents an amount of money transfered back to the customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by an admin for an order.
 
@@ -57,7 +57,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order this refund was created for.",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "payment",
-    "type": "[`Payment`](Payment.mdx)",
+    "type": "[Payment](Payment.mdx)",
     "description": "The details of the payment associated with the refund.",
     "optional": false,
     "defaultValue": "",
@@ -133,7 +133,7 @@ A refund represents an amount of money transfered back to the customer for a giv
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

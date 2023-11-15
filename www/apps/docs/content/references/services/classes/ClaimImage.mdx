@@ -12,7 +12,7 @@ The details of an image attached to a claim.
 
 ### constructor
 
-**new ClaimImage**()
+`**new ClaimImage**()`
 
 The details of an image attached to a claim.
 
@@ -21,7 +21,7 @@ The details of an image attached to a claim.
 <ParameterTypes parameters={[
   {
     "name": "claim_item",
-    "type": "[`ClaimItem`](ClaimItem.mdx)",
+    "type": "[ClaimItem](ClaimItem.mdx)",
     "description": "The details of the claim item this image is associated with.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ The details of an image attached to a claim.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -97,7 +97,7 @@ The details of an image attached to a claim.
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

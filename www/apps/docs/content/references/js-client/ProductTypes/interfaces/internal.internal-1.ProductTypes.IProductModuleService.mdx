@@ -37,7 +37,7 @@ async function createProduct (title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductDTO`](internal.internal-1.ProductTypes.CreateProductDTO.mdx)[]",
+    "type": "[CreateProductDTO](internal.internal-1.ProductTypes.CreateProductDTO.mdx)[]",
     "description": "The products to be created.",
     "optional": false,
     "defaultValue": "",
@@ -46,7 +46,7 @@ async function createProduct (title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -60,7 +60,7 @@ async function createProduct (title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created products.",
@@ -99,7 +99,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductCategoryDTO`](internal.internal-1.ProductTypes.CreateProductCategoryDTO.mdx)",
+    "type": "[CreateProductCategoryDTO](internal.internal-1.ProductTypes.CreateProductCategoryDTO.mdx)",
     "description": "The product category to be created.",
     "optional": false,
     "defaultValue": "",
@@ -108,7 +108,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -122,7 +122,7 @@ async function createCategory (name: string, parent_category_id: string | null) 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The created product category.",
@@ -162,7 +162,7 @@ async function createCollection (title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductCollectionDTO`](internal.internal-1.ProductTypes.CreateProductCollectionDTO.mdx)[]",
+    "type": "[CreateProductCollectionDTO](internal.internal-1.ProductTypes.CreateProductCollectionDTO.mdx)[]",
     "description": "The product collections to be created.",
     "optional": false,
     "defaultValue": "",
@@ -171,7 +171,7 @@ async function createCollection (title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -185,7 +185,7 @@ async function createCollection (title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product collections.",
@@ -226,7 +226,7 @@ async function createProductOption (title: string, productId: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductOptionDTO`](internal.internal-1.ProductTypes.CreateProductOptionDTO.mdx)[]",
+    "type": "[CreateProductOptionDTO](internal.internal-1.ProductTypes.CreateProductOptionDTO.mdx)[]",
     "description": "The product options to be created.",
     "optional": false,
     "defaultValue": "",
@@ -235,7 +235,7 @@ async function createProductOption (title: string, productId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -249,7 +249,7 @@ async function createProductOption (title: string, productId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product options.",
@@ -289,7 +289,7 @@ async function createProductTags (values: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductTagDTO`](internal.internal-1.ProductTypes.CreateProductTagDTO.mdx)[]",
+    "type": "[CreateProductTagDTO](internal.internal-1.ProductTypes.CreateProductTagDTO.mdx)[]",
     "description": "The product tags to create.",
     "optional": false,
     "defaultValue": "",
@@ -298,7 +298,7 @@ async function createProductTags (values: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -312,7 +312,7 @@ async function createProductTags (values: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product tags.",
@@ -352,7 +352,7 @@ async function createProductType (value: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateProductTypeDTO`](internal.internal-1.ProductTypes.CreateProductTypeDTO.mdx)[]",
+    "type": "[CreateProductTypeDTO](internal.internal-1.ProductTypes.CreateProductTypeDTO.mdx)[]",
     "description": "The product types to be created.",
     "optional": false,
     "defaultValue": "",
@@ -361,7 +361,7 @@ async function createProductType (value: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -375,7 +375,7 @@ async function createProductType (value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created product types.",
@@ -418,7 +418,7 @@ async function deleteProducts (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -432,7 +432,7 @@ async function deleteProducts (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the products are successfully deleted.",
@@ -475,7 +475,7 @@ async function deleteCategory (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -489,7 +489,7 @@ async function deleteCategory (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product category is successfully deleted.",
@@ -532,7 +532,7 @@ async function deleteCollection (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -546,7 +546,7 @@ async function deleteCollection (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product options are successfully deleted.",
@@ -589,7 +589,7 @@ async function deleteProductOptions (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -603,7 +603,7 @@ async function deleteProductOptions (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product options are successfully deleted.",
@@ -647,7 +647,7 @@ async function deleteProductTags (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -661,7 +661,7 @@ async function deleteProductTags (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product tags are successfully deleted.",
@@ -704,7 +704,7 @@ async function deleteProductTypes (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -718,7 +718,7 @@ async function deleteProductTypes (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the product types are successfully deleted.",
@@ -829,7 +829,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductProps`](internal.internal-1.ProductTypes.FilterableProductProps.mdx)",
+    "type": "[FilterableProductProps](internal.internal-1.ProductTypes.FilterableProductProps.mdx)",
     "description": "The filters to apply on the retrieved products.",
     "optional": true,
     "defaultValue": "",
@@ -838,7 +838,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "description": "The configurations determining how the products are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -847,7 +847,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -861,7 +861,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of products.",
@@ -972,7 +972,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductProps`](internal.internal-1.ProductTypes.FilterableProductProps.mdx)",
+    "type": "[FilterableProductProps](internal.internal-1.ProductTypes.FilterableProductProps.mdx)",
     "description": "The filters to apply on the retrieved products.",
     "optional": true,
     "defaultValue": "",
@@ -981,7 +981,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "description": "The configurations determining how the products are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -990,7 +990,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1004,7 +1004,7 @@ async function retrieveProducts (ids: string[], title: string, skip: number, tak
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of products along with the total count.",
@@ -1115,7 +1115,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductCategoryProps`](internal.internal-1.ProductTypes.FilterableProductCategoryProps.mdx)",
+    "type": "[FilterableProductCategoryProps](internal.internal-1.ProductTypes.FilterableProductCategoryProps.mdx)",
     "description": "The filters to apply on the retrieved product categories.",
     "optional": true,
     "defaultValue": "",
@@ -1124,7 +1124,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -1133,7 +1133,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1147,7 +1147,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product categories along with their total count.",
@@ -1258,7 +1258,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductCollectionProps`](internal.internal-1.ProductTypes.FilterableProductCollectionProps.mdx)",
+    "type": "[FilterableProductCollectionProps](internal.internal-1.ProductTypes.FilterableProductCollectionProps.mdx)",
     "description": "The filters applied on the retrieved product collections.",
     "optional": true,
     "defaultValue": "",
@@ -1267,7 +1267,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "description": "The configurations determining how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product collection.",
     "optional": true,
     "defaultValue": "",
@@ -1276,7 +1276,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1290,7 +1290,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product collections along with the total count.",
@@ -1401,7 +1401,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductOptionProps`](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx)",
+    "type": "[FilterableProductOptionProps](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx)",
     "description": "The filters applied on the retrieved product options.",
     "optional": true,
     "defaultValue": "",
@@ -1410,7 +1410,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "description": "The configurations determining how the product options are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
     "optional": true,
     "defaultValue": "",
@@ -1419,7 +1419,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1433,7 +1433,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product options along with the total count.",
@@ -1544,7 +1544,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductTagProps`](internal.internal-1.ProductTypes.FilterableProductTagProps.mdx)",
+    "type": "[FilterableProductTagProps](internal.internal-1.ProductTypes.FilterableProductTagProps.mdx)",
     "description": "The filters applied on the retrieved product tags.",
     "optional": true,
     "defaultValue": "",
@@ -1553,7 +1553,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "description": "The configurations determining how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product tag.",
     "optional": true,
     "defaultValue": "",
@@ -1562,7 +1562,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1576,7 +1576,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product tags along with the total count.",
@@ -1687,7 +1687,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductTypeProps`](internal.internal-1.ProductTypes.FilterableProductTypeProps.mdx)",
+    "type": "[FilterableProductTypeProps](internal.internal-1.ProductTypes.FilterableProductTypeProps.mdx)",
     "description": "The filters to be applied on the retrieved product type.",
     "optional": true,
     "defaultValue": "",
@@ -1696,7 +1696,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -1705,7 +1705,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1719,7 +1719,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product types along with their total count.",
@@ -1830,7 +1830,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductVariantProps`](internal.internal-1.ProductTypes.FilterableProductVariantProps.mdx)",
+    "type": "[FilterableProductVariantProps](internal.internal-1.ProductTypes.FilterableProductVariantProps.mdx)",
     "description": "The filters applied on the retrieved product variants.",
     "optional": true,
     "defaultValue": "",
@@ -1839,7 +1839,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductVariantDTO`](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "description": "The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product variant.",
     "optional": true,
     "defaultValue": "",
@@ -1848,7 +1848,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -1862,7 +1862,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductVariantDTO`](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product variants along with their total count.",
@@ -1973,7 +1973,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductCategoryProps`](internal.internal-1.ProductTypes.FilterableProductCategoryProps.mdx)",
+    "type": "[FilterableProductCategoryProps](internal.internal-1.ProductTypes.FilterableProductCategoryProps.mdx)",
     "description": "The filters to be applied on the retrieved product categories.",
     "optional": true,
     "defaultValue": "",
@@ -1982,7 +1982,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product categories are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -1991,7 +1991,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2005,7 +2005,7 @@ async function retrieveCategories (ids: string[], name: string, skip: number, ta
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product categories.",
@@ -2116,7 +2116,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductCollectionProps`](internal.internal-1.ProductTypes.FilterableProductCollectionProps.mdx)",
+    "type": "[FilterableProductCollectionProps](internal.internal-1.ProductTypes.FilterableProductCollectionProps.mdx)",
     "description": "The filters applied on the retrieved product collections.",
     "optional": true,
     "defaultValue": "",
@@ -2125,7 +2125,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "description": "The configurations determining how the product collections are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product collection.",
     "optional": true,
     "defaultValue": "",
@@ -2134,7 +2134,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2148,7 +2148,7 @@ async function retrieveCollections (ids: string[], title: string, skip: number, 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product collections.",
@@ -2259,7 +2259,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductOptionProps`](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx)",
+    "type": "[FilterableProductOptionProps](internal.internal-1.ProductTypes.FilterableProductOptionProps.mdx)",
     "description": "The filters applied on the retrieved product options.",
     "optional": true,
     "defaultValue": "",
@@ -2268,7 +2268,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "description": "The configurations determining how the product options are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
     "optional": true,
     "defaultValue": "",
@@ -2277,7 +2277,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2291,7 +2291,7 @@ async function retrieveProductOptions (ids: string[], title: string, skip: numbe
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product options.",
@@ -2402,7 +2402,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductTagProps`](internal.internal-1.ProductTypes.FilterableProductTagProps.mdx)",
+    "type": "[FilterableProductTagProps](internal.internal-1.ProductTypes.FilterableProductTagProps.mdx)",
     "description": "The filters applied on the retrieved product tags.",
     "optional": true,
     "defaultValue": "",
@@ -2411,7 +2411,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "description": "The configurations determining how the product tags are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product tag.",
     "optional": true,
     "defaultValue": "",
@@ -2420,7 +2420,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2434,7 +2434,7 @@ async function retrieveProductTag (tagIds: string[], value: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product tags.",
@@ -2545,7 +2545,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductTypeProps`](internal.internal-1.ProductTypes.FilterableProductTypeProps.mdx)",
+    "type": "[FilterableProductTypeProps](internal.internal-1.ProductTypes.FilterableProductTypeProps.mdx)",
     "description": "The filters to apply on the retrieved product types.",
     "optional": true,
     "defaultValue": "",
@@ -2554,7 +2554,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product types are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -2563,7 +2563,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2577,7 +2577,7 @@ async function retrieveProductTypes (ids: string[], value: string, skip: number,
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product types.",
@@ -2688,7 +2688,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterableProductVariantProps`](internal.internal-1.ProductTypes.FilterableProductVariantProps.mdx)",
+    "type": "[FilterableProductVariantProps](internal.internal-1.ProductTypes.FilterableProductVariantProps.mdx)",
     "description": "The filters applied on the retrieved product variants.",
     "optional": true,
     "defaultValue": "",
@@ -2697,7 +2697,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductVariantDTO`](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "description": "The configurations determining how the product variants are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product variant.",
     "optional": true,
     "defaultValue": "",
@@ -2706,7 +2706,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2720,7 +2720,7 @@ async function retrieveProductVariants (ids: string[], sku: string, skip: number
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantDTO`](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of product variants.",
@@ -2767,7 +2767,7 @@ async function restoreProducts (ids: string[]) {
   },
   {
     "name": "config",
-    "type": "[`RestoreReturn`](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)<`TReturnableLinkableKeys`\\>",
+    "type": "[RestoreReturn](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
     "description": "Configurations determining which relations to restore along with the each of the products. You can pass to its `returnLinkableKeys` property any of the product's relation attribute names, such as `variant_id`.",
     "optional": true,
     "defaultValue": "",
@@ -2776,7 +2776,7 @@ async function restoreProducts (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2790,7 +2790,7 @@ async function restoreProducts (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| Record<`string`, `string`[]\\>\\>",
+    "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that includes the IDs of related records that were restored, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of the record associated with the product through this relation, such as the IDs of associated product variants.\n\nIf there are no related records that were restored, the promise resolved to `void`.",
@@ -2817,7 +2817,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`RestoreReturn`](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)<`TReturnableLinkableKeys`\\>",
+    "type": "[RestoreReturn](../../DAL/interfaces/internal.internal-1.DAL.RestoreReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2826,7 +2826,7 @@ ___
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2840,7 +2840,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| Record<`string`, `string`[]\\>\\>",
+    "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2908,7 +2908,7 @@ async function retrievePriceSet (priceSetId: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "description": "The configurations determining how the product is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product.",
     "optional": true,
     "defaultValue": "",
@@ -2917,7 +2917,7 @@ async function retrievePriceSet (priceSetId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -2931,7 +2931,7 @@ async function retrievePriceSet (priceSetId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product.",
@@ -2996,7 +2996,7 @@ async function retrieveCategory (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product category is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -3005,7 +3005,7 @@ async function retrieveCategory (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3019,7 +3019,7 @@ async function retrieveCategory (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product category.",
@@ -3084,7 +3084,7 @@ async function retrieveCollection (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "description": "The configurations determining how the product collection is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product collection.",
     "optional": true,
     "defaultValue": "",
@@ -3093,7 +3093,7 @@ async function retrieveCollection (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3107,7 +3107,7 @@ async function retrieveCollection (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product collection.",
@@ -3172,7 +3172,7 @@ async function retrieveProductOption (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "description": "The configurations determining how the product option is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product option.",
     "optional": true,
     "defaultValue": "",
@@ -3181,7 +3181,7 @@ async function retrieveProductOption (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3195,7 +3195,7 @@ async function retrieveProductOption (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product option.",
@@ -3260,7 +3260,7 @@ async function retrieveProductTag (tagId: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "description": "The configurations determining how the product tag is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product tag.",
     "optional": true,
     "defaultValue": "",
@@ -3269,7 +3269,7 @@ async function retrieveProductTag (tagId: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3283,7 +3283,7 @@ async function retrieveProductTag (tagId: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product tag.",
@@ -3348,7 +3348,7 @@ async function retrieveProductType (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "description": "The configurations determining how the product type is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product type.",
     "optional": true,
     "defaultValue": "",
@@ -3357,7 +3357,7 @@ async function retrieveProductType (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3371,7 +3371,7 @@ async function retrieveProductType (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product type.",
@@ -3436,7 +3436,7 @@ async function retrieveProductVariant (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`ProductVariantDTO`](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "description": "The configurations determining how the product variant is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product variant.",
     "optional": true,
     "defaultValue": "",
@@ -3445,7 +3445,7 @@ async function retrieveProductVariant (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3459,7 +3459,7 @@ async function retrieveProductVariant (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductVariantDTO`](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductVariantDTO](internal.internal-1.ProductTypes.ProductVariantDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product variant.",
@@ -3506,7 +3506,7 @@ async function deleteProducts (ids: string[]) {
   },
   {
     "name": "config",
-    "type": "[`SoftDeleteReturn`](../../DAL/interfaces/internal.internal-1.DAL.SoftDeleteReturn.mdx)<`TReturnableLinkableKeys`\\>",
+    "type": "[SoftDeleteReturn](../../DAL/interfaces/internal.internal-1.DAL.SoftDeleteReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
     "description": "Configurations determining which relations to soft delete along with the each of the products. You can pass to its `returnLinkableKeys` property any of the product's relation attribute names, such as `variant_id`.",
     "optional": true,
     "defaultValue": "",
@@ -3515,7 +3515,7 @@ async function deleteProducts (ids: string[]) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3529,7 +3529,7 @@ async function deleteProducts (ids: string[]) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| Record<`string`, `string`[]\\>\\>",
+    "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that includes the IDs of related records that were also soft deleted, such as the ID of associated product variants. The object's keys are the ID attribute names of the product entity's relations, such as `variant_id`, and its value is an array of strings, each being the ID of a record associated with the product through this relation, such as the IDs of associated product variants.\n\nIf there are no related records, the promise resolved to `void`.",
@@ -3570,7 +3570,7 @@ async function updateProduct (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductDTO`](internal.internal-1.ProductTypes.UpdateProductDTO.mdx)[]",
+    "type": "[UpdateProductDTO](internal.internal-1.ProductTypes.UpdateProductDTO.mdx)[]",
     "description": "The products to be updated, each holding the attributes that should be updated in the product.",
     "optional": false,
     "defaultValue": "",
@@ -3579,7 +3579,7 @@ async function updateProduct (id: string, title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3593,7 +3593,7 @@ async function updateProduct (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductDTO`](internal.internal-1.ProductTypes.ProductDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductDTO](internal.internal-1.ProductTypes.ProductDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated products.",
@@ -3640,7 +3640,7 @@ async function updateCategory (id: string, name: string) {
   },
   {
     "name": "data",
-    "type": "[`UpdateProductCategoryDTO`](internal.internal-1.ProductTypes.UpdateProductCategoryDTO.mdx)",
+    "type": "[UpdateProductCategoryDTO](internal.internal-1.ProductTypes.UpdateProductCategoryDTO.mdx)",
     "description": "The attributes to update in th product category.",
     "optional": false,
     "defaultValue": "",
@@ -3649,7 +3649,7 @@ async function updateCategory (id: string, name: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3663,7 +3663,7 @@ async function updateCategory (id: string, name: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategoryDTO`](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductCategoryDTO](internal.internal-1.ProductTypes.ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The updated product category.",
@@ -3704,7 +3704,7 @@ async function updateCollection (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductCollectionDTO`](internal.internal-1.ProductTypes.UpdateProductCollectionDTO.mdx)[]",
+    "type": "[UpdateProductCollectionDTO](internal.internal-1.ProductTypes.UpdateProductCollectionDTO.mdx)[]",
     "description": "The product collections to be updated, each holding the attributes that should be updated in the product collection.",
     "optional": false,
     "defaultValue": "",
@@ -3713,7 +3713,7 @@ async function updateCollection (id: string, title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3727,7 +3727,7 @@ async function updateCollection (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCollectionDTO`](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductCollectionDTO](internal.internal-1.ProductTypes.ProductCollectionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product collections.",
@@ -3768,7 +3768,7 @@ async function updateProductOption (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductOptionDTO`](internal.internal-1.ProductTypes.UpdateProductOptionDTO.mdx)[]",
+    "type": "[UpdateProductOptionDTO](internal.internal-1.ProductTypes.UpdateProductOptionDTO.mdx)[]",
     "description": "The product options to be updated, each holding the attributes that should be updated in the product option.",
     "optional": false,
     "defaultValue": "",
@@ -3777,7 +3777,7 @@ async function updateProductOption (id: string, title: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3791,7 +3791,7 @@ async function updateProductOption (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductOptionDTO`](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductOptionDTO](internal.internal-1.ProductTypes.ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product options.",
@@ -3832,7 +3832,7 @@ async function updateProductTag (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductTagDTO`](internal.internal-1.ProductTypes.UpdateProductTagDTO.mdx)[]",
+    "type": "[UpdateProductTagDTO](internal.internal-1.ProductTypes.UpdateProductTagDTO.mdx)[]",
     "description": "The product tags to be updated, each having the attributes that should be updated in a product tag.",
     "optional": false,
     "defaultValue": "",
@@ -3841,7 +3841,7 @@ async function updateProductTag (id: string, value: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3855,7 +3855,7 @@ async function updateProductTag (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTagDTO`](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTagDTO](internal.internal-1.ProductTypes.ProductTagDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product tags.",
@@ -3896,7 +3896,7 @@ async function updateProductType (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductTypeDTO`](internal.internal-1.ProductTypes.UpdateProductTypeDTO.mdx)[]",
+    "type": "[UpdateProductTypeDTO](internal.internal-1.ProductTypes.UpdateProductTypeDTO.mdx)[]",
     "description": "The product types to be updated, each having the attributes that should be updated in the product type.",
     "optional": false,
     "defaultValue": "",
@@ -3905,7 +3905,7 @@ async function updateProductType (id: string, value: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -3919,7 +3919,7 @@ async function updateProductType (id: string, value: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeDTO`](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTypeDTO](internal.internal-1.ProductTypes.ProductTypeDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product types.",

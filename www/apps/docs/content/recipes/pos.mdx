@@ -94,50 +94,48 @@ To search through product variants by their barcode, you can create a custom API
   },
 ]} />
 
-<details>
-<summary>
-Example: Search Products By Barcode API Route
-</summary>
+<Details>
+  <Summary>Example: Search Products By Barcode API Route</Summary>
 
-Here’s an example of creating a custom API Route at `/store/pos/search-barcode` that searches product variants by a barcode:
+  Here’s an example of creating a custom API Route at `/store/pos/search-barcode` that searches product variants by a barcode:
 
-```ts title=src/api/store/pos/search-barcode/route.ts
-import type { 
-  MedusaRequest, 
-  MedusaResponse, 
-  ProductVariantService,
-} from "@medusajs/medusa"
-import { MedusaError } from "@medusajs/utils"
+  ```ts title=src/api/store/pos/search-barcode/route.ts
+  import type { 
+    MedusaRequest, 
+    MedusaResponse, 
+    ProductVariantService,
+  } from "@medusajs/medusa"
+  import { MedusaError } from "@medusajs/utils"
 
-export const GET = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const barcode = (req.query.barcode as string) || ""
-  if (!barcode) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA, 
-      "Barcode is required"
-    )
-  }
-  // get product service
-  const productVariantService = req.scope.resolve<
-    ProductVariantService
-  >("productVariantService")
+  export const GET = async (
+    req: MedusaRequest, 
+    res: MedusaResponse
+  ) => {
+    const barcode = (req.query.barcode as string) || ""
+    if (!barcode) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA, 
+        "Barcode is required"
+      )
+    }
+    // get product service
+    const productVariantService = req.scope.resolve<
+      ProductVariantService
+    >("productVariantService")
 
-  // retrieve product variants by barcode
-  const productVariants = await productVariantService
-    .list({
-      barcode,
+    // retrieve product variants by barcode
+    const productVariants = await productVariantService
+      .list({
+        barcode,
+      })
+
+    res.json({
+      product_variants: productVariants,
     })
+  }
+  ```
 
-  res.json({
-    product_variants: productVariants,
-  })
-}
-```
-
-</details>
+</Details>
 
 ---
 

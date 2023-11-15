@@ -6,7 +6,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ShippingProfile
 
-A Shipping Profile has a set of defined Shipping Options that can be used to fulfill a given set of Products. For example, gift cards are shipped differently than physical products, so a shipping profile with the type `gift_card` groups together the shipping options that can only be used for gift cards.
+A Shipping Profile has a set of defined Shipping Options that can be used to fulfill a given set of Products. For example, gift cards are shipped differently than physical products, so a shipping profile with the type `gift\_card` groups together the shipping options that can only be used for gift cards.
 
 ## Properties
 
@@ -40,7 +40,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "products",
-    "type": "[`Product`](Product.mdx)[]",
+    "type": "[Product](Product.mdx)[]",
     "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
     "optional": false,
     "defaultValue": "",
@@ -66,7 +66,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
     "children": [
       {
         "name": "categories",
-        "type": "[`ProductCategory`](ProductCategory.mdx)[]",
+        "type": "[ProductCategory](ProductCategory.mdx)[]",
         "description": "The details of the product categories that this product belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -76,7 +76,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "collection",
-        "type": "[`ProductCollection`](ProductCollection.mdx)",
+        "type": "[ProductCollection](ProductCollection.mdx)",
         "description": "The details of the product collection that the product belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -175,7 +175,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "images",
-        "type": "[`Image`](Image.mdx)[]",
+        "type": "[Image](Image.mdx)[]",
         "description": "The details of the product's images.",
         "optional": false,
         "defaultValue": "",
@@ -211,7 +211,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
+        "type": "``null`` \\| `Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -229,7 +229,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "options",
-        "type": "[`ProductOption`](ProductOption.mdx)[]",
+        "type": "[ProductOption](ProductOption.mdx)[]",
         "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
         "optional": false,
         "defaultValue": "",
@@ -247,7 +247,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "profile",
-        "type": "[`ShippingProfile`](ShippingProfile.mdx)",
+        "type": "[ShippingProfile](ShippingProfile.mdx)",
         "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
         "optional": false,
         "defaultValue": "",
@@ -265,7 +265,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "profiles",
-        "type": "[`ShippingProfile`](ShippingProfile.mdx)[]",
+        "type": "[ShippingProfile](ShippingProfile.mdx)[]",
         "description": "Available if the relation `profiles` is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -274,7 +274,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "sales_channels",
-        "type": "[`SalesChannel`](SalesChannel.mdx)[]",
+        "type": "[SalesChannel](SalesChannel.mdx)[]",
         "description": "The details of the sales channels this product is available in.",
         "optional": false,
         "defaultValue": "",
@@ -283,7 +283,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "status",
-        "type": "[`ProductStatus`](../enums/ProductStatus.mdx)",
+        "type": "[ProductStatus](../enums/ProductStatus.mdx)",
         "description": "The status of the product",
         "optional": false,
         "defaultValue": "draft",
@@ -301,7 +301,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "tags",
-        "type": "[`ProductTag`](ProductTag.mdx)[]",
+        "type": "[ProductTag](ProductTag.mdx)[]",
         "description": "The details of the product tags used in this product.",
         "optional": false,
         "defaultValue": "",
@@ -328,7 +328,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "type",
-        "type": "[`ProductType`](ProductType.mdx)",
+        "type": "[ProductType](ProductType.mdx)",
         "description": "The details of the product type that the product belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -355,7 +355,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "variants",
-        "type": "[`ProductVariant`](ProductVariant.mdx)[]",
+        "type": "[ProductVariant](ProductVariant.mdx)[]",
         "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
         "optional": false,
         "defaultValue": "",
@@ -384,7 +384,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "shipping_options",
-    "type": "[`ShippingOption`](ShippingOption.mdx)[]",
+    "type": "[ShippingOption](ShippingOption.mdx)[]",
     "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
     "optional": false,
     "defaultValue": "",
@@ -402,7 +402,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       {
         "name": "amount",
         "type": "``null`` \\| `number`",
-        "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+        "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -419,7 +419,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
         "optional": false,
         "defaultValue": "",
@@ -465,7 +465,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -483,8 +483,8 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "price_type",
-        "type": "[`ShippingOptionPriceType`](../enums/ShippingOptionPriceType.mdx)",
-        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+        "type": "[ShippingOptionPriceType](../enums/ShippingOptionPriceType.mdx)",
+        "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -492,7 +492,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "profile",
-        "type": "[`ShippingProfile`](ShippingProfile.mdx)",
+        "type": "[ShippingProfile](ShippingProfile.mdx)",
         "description": "The details of the shipping profile that the shipping option belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -510,7 +510,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "provider",
-        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)",
+        "type": "[FulfillmentProvider](FulfillmentProvider.mdx)",
         "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
         "optional": false,
         "defaultValue": "",
@@ -528,7 +528,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this shipping option can be used in.",
         "optional": false,
         "defaultValue": "",
@@ -546,7 +546,7 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
       },
       {
         "name": "requirements",
-        "type": "[`ShippingOptionRequirement`](ShippingOptionRequirement.mdx)[]",
+        "type": "[ShippingOptionRequirement](ShippingOptionRequirement.mdx)[]",
         "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
         "optional": false,
         "defaultValue": "",
@@ -566,8 +566,8 @@ A Shipping Profile has a set of defined Shipping Options that can be used to ful
   },
   {
     "name": "type",
-    "type": "[`ShippingProfileType`](../enums/ShippingProfileType.mdx)",
-    "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
+    "type": "[ShippingProfileType](../enums/ShippingProfileType.mdx)",
+    "description": "The type of the Shipping Profile, may be `default`, `gift\\_card` or `custom`.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

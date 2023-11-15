@@ -13,8 +13,8 @@ import {
 } from "class-validator"
 import { EntityManager } from "typeorm"
 
+import { MedusaV2Flag } from "@medusajs/utils"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import IsolatePricingDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-pricing-domain"
 import {
   PricingService,
   ProductService,
@@ -124,7 +124,7 @@ export default async (req, res) => {
 
   const validatedQueryParams = await validator(PriceSelectionParams, req.query)
 
-  if (featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const updateVariantsWorkflow = UpdateProductVariants.updateProductVariants(
       req.scope
     )

@@ -1,4 +1,18 @@
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IPricingModuleService } from "@medusajs/types"
+import { MedusaV2Flag } from "@medusajs/utils"
+import express from "express"
+import fs from "fs"
+import { sync as existsSync } from "fs-exists-cached"
+import { getConfigFile } from "medusa-core-utils"
+import { track } from "medusa-telemetry"
+import path from "path"
 import { DataSource, DataSourceOptions } from "typeorm"
+import loaders from "../loaders"
+import { handleConfigError } from "../loaders/config"
+import featureFlagLoader from "../loaders/feature-flags"
+import Logger from "../loaders/logger"
+import { SalesChannel } from "../models"
 import {
   ProductCategoryService,
   ProductCollectionService,
@@ -11,25 +25,11 @@ import {
   StoreService,
   UserService,
 } from "../services"
-import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
-import { IPricingModuleService } from "@medusajs/types"
-import express from "express"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import { getConfigFile } from "medusa-core-utils"
-import { track } from "medusa-telemetry"
-import path from "path"
-import loaders from "../loaders"
-import { handleConfigError } from "../loaders/config"
-import featureFlagLoader from "../loaders/feature-flags"
-import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
-import Logger from "../loaders/logger"
-import { SalesChannel } from "../models"
 import PublishableApiKeyService from "../services/publishable-api-key"
 import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import { CreateProductCategoryInput } from "../types/product-category"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
 
 type SeedOptions = {
   directory: string
@@ -284,9 +284,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       }
     }
 
-    if (
-      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-    ) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       for (const ruleType of rule_types) {
         await pricingModuleService.createRuleTypes(ruleType)
       }

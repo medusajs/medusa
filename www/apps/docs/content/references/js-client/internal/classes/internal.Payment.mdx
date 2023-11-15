@@ -49,7 +49,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "The details of the cart that the payment session was potentially created for.",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "currency",
-    "type": "[`Currency`](internal.Currency.mdx)",
+    "type": "[Currency](internal.Currency.mdx)",
     "description": "The details of the currency of the payment.",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "The details of the order that the payment session was potentially created for.",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ A payment is originally created from a payment session. Once a payment session i
   },
   {
     "name": "swap",
-    "type": "[`Swap`](internal.Swap.mdx)",
+    "type": "[Swap](internal.Swap.mdx)",
     "description": "The details of the swap that this payment was potentially created for.",
     "optional": false,
     "defaultValue": "",

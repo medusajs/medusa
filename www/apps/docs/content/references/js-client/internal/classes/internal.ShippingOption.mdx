@@ -23,7 +23,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   {
     "name": "amount",
     "type": "``null`` \\| `number`",
-    "description": "The amount to charge for shipping when the Shipping Option price type is `flat_rate`.",
+    "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -40,7 +40,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The data needed for the Fulfillment Provider to identify the Shipping Option.",
     "optional": false,
     "defaultValue": "",
@@ -86,7 +86,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -104,8 +104,8 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "price_type",
-    "type": "[`ShippingOptionPriceType`](../enums/internal.internal.ShippingOptionPriceType.mdx)",
-    "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
+    "type": "[ShippingOptionPriceType](../enums/internal.internal.ShippingOptionPriceType.mdx)",
+    "description": "The type of pricing calculation that is used when creatin Shipping Methods from the Shipping Option. Can be `flat\\_rate` for fixed prices or `calculated` if the Fulfillment Provider can provide price calulations.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -113,7 +113,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "profile",
-    "type": "[`ShippingProfile`](internal.ShippingProfile.mdx)",
+    "type": "[ShippingProfile](internal.ShippingProfile.mdx)",
     "description": "The details of the shipping profile that the shipping option belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -131,7 +131,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "provider",
-    "type": "[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)",
+    "type": "[FulfillmentProvider](internal.internal.FulfillmentProvider.mdx)",
     "description": "The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.",
     "optional": false,
     "defaultValue": "",
@@ -149,7 +149,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "region",
-    "type": "[`Region`](internal.Region.mdx)",
+    "type": "[Region](internal.Region.mdx)",
     "description": "The details of the region this shipping option can be used in.",
     "optional": false,
     "defaultValue": "",
@@ -167,7 +167,7 @@ A Shipping Option represents a way in which an Order or Return can be shipped. S
   },
   {
     "name": "requirements",
-    "type": "[`ShippingOptionRequirement`](internal.internal.ShippingOptionRequirement.mdx)[]",
+    "type": "[ShippingOptionRequirement](internal.internal.ShippingOptionRequirement.mdx)[]",
     "description": "The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.",
     "optional": false,
     "defaultValue": "",

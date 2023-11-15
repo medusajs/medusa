@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemAdjustmentService_",
-    "type": "[`LineItemAdjustmentService`](internal.internal.LineItemAdjustmentService.mdx)",
+    "type": "[LineItemAdjustmentService](internal.internal.LineItemAdjustmentService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "lineItemService_",
-    "type": "[`LineItemService`](internal.internal.LineItemService.mdx)",
+    "type": "[LineItemService](internal.internal.LineItemService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "newTotalsService_",
-    "type": "[`NewTotalsService`](internal.internal.NewTotalsService.mdx)",
+    "type": "[NewTotalsService](internal.internal.NewTotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -83,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderEditItemChangeService_",
-    "type": "[`OrderEditItemChangeService`](internal.internal.OrderEditItemChangeService.mdx)",
+    "type": "[OrderEditItemChangeService](internal.internal.OrderEditItemChangeService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -92,7 +92,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderEditRepository_",
-    "type": "`Repository`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Repository&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "orderService_",
-    "type": "[`OrderService`](internal.internal.OrderService.mdx)",
+    "type": "[OrderService](internal.internal.OrderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -110,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "taxProviderService_",
-    "type": "[`TaxProviderService`](internal.internal.TaxProviderService.mdx)",
+    "type": "[TaxProviderService](internal.internal.TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -119,7 +119,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "totalsService_",
-    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "type": "[TotalsService](internal.internal.TotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -128,7 +128,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -218,7 +218,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -236,7 +236,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "undefined \\| IInventoryService",
-    "type": "`undefined` \\| [`IInventoryService`](../interfaces/internal.IInventoryService.mdx)",
+    "type": "`undefined` \\| [IInventoryService](../interfaces/internal.IInventoryService.mdx)",
     "optional": true,
     "defaultValue": "",
     "description": "",
@@ -263,7 +263,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[`AddOrderEditLineItemInput`](../types/internal.AddOrderEditLineItemInput.mdx)",
+    "type": "[AddOrderEditLineItemInput](../types/internal.AddOrderEditLineItemInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -277,7 +277,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -299,7 +299,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -308,7 +308,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -317,7 +317,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -331,7 +331,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -381,7 +381,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -431,7 +431,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -449,7 +449,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateOrderEditInput`](../types/internal.CreateOrderEditInput.mdx)",
+    "type": "[CreateOrderEditInput](../types/internal.CreateOrderEditInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -481,7 +481,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -540,7 +540,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -558,7 +558,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "orderEdit",
-    "type": "[`OrderEdit`](internal.OrderEdit.mdx)",
+    "type": "[OrderEdit](internal.OrderEdit.mdx)",
     "description": "Order edit allows modifying items in an order, such as adding, updating, or deleting items from the original order. Once the order edit is confirmed, the changes are reflected on the original order.",
     "optional": false,
     "defaultValue": "",
@@ -572,7 +572,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -604,7 +604,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -636,7 +636,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -677,7 +677,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -695,7 +695,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -704,7 +704,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -718,7 +718,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)[]\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -736,7 +736,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`OrderEdit`](internal.OrderEdit.mdx)\\> & { `q?`: `string`  }",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[OrderEdit](internal.OrderEdit.mdx)&#62; & `&#123; q?: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -745,7 +745,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -759,7 +759,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`OrderEdit`](internal.OrderEdit.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[OrderEdit](internal.OrderEdit.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -809,7 +809,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -850,7 +850,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -900,7 +900,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -927,7 +927,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -941,7 +941,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -968,7 +968,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -982,7 +982,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| ``null`` \\| [`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;undefined \\| `null` \\| [OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1000,7 +1000,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1041,7 +1041,7 @@ ___
   },
   {
     "name": "data",
-    "type": "`DeepPartial`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "DeepPartial&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1055,7 +1055,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`OrderEdit`](internal.OrderEdit.mdx)\\>",
+    "type": "Promise&#60;[OrderEdit](internal.OrderEdit.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1118,7 +1118,7 @@ Create or update order edit item change line item and apply the quantity
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1136,7 +1136,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1150,7 +1150,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "default",
-    "type": "[`OrderEditService`](internal.internal.OrderEditService.mdx)",
+    "type": "[OrderEditService](internal.internal.OrderEditService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

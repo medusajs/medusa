@@ -65,7 +65,7 @@ async function retrieveCategory (id: string) {
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product category is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +139,7 @@ async function retrieveCategory (id: string) {
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
@@ -199,7 +199,7 @@ async function retrieveCategory (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product category.",
@@ -207,7 +207,7 @@ async function retrieveCategory (id: string) {
     "children": [
       {
         "name": "category_children",
-        "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+        "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
         "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
         "optional": false,
         "defaultValue": "",
@@ -215,7 +215,7 @@ async function retrieveCategory (id: string) {
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -287,7 +287,7 @@ async function retrieveCategory (id: string) {
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
@@ -379,7 +379,7 @@ async function retrieveCategory (id: string) {
       },
       {
         "name": "parent_category",
-        "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+        "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
         "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
         "optional": true,
         "defaultValue": "",
@@ -387,7 +387,7 @@ async function retrieveCategory (id: string) {
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
@@ -459,7 +459,7 @@ async function retrieveCategory (id: string) {
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",

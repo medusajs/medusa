@@ -66,7 +66,7 @@ export const supportedLanguages = [
     locale: "ru",
     name: "Русский"
   }
-]
+].sort((a, b) => a.locale.localeCompare(b.locale))
 
 const adminPath = getFullAdminPath()
 const pathToLoadFrom = `${adminPath}public/locales/{{lng}}/{{ns}}.json`

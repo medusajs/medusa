@@ -1,4 +1,9 @@
-import { Comment, ReflectionKind, ReflectionType } from "typedoc"
+import {
+  Comment,
+  DeclarationReflection,
+  ReflectionKind,
+  ReflectionType,
+} from "typedoc"
 import * as Handlebars from "handlebars"
 import { stripCode, stripLineBreaks } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
@@ -72,7 +77,7 @@ export function reflectionListFormatter(
       : getTypeChildren(reflection.type!, reflection.project)
     const itemChildren: string[] = []
     let itemChildrenKind: ReflectionKind | null = null
-    children?.forEach((childItem) => {
+    children?.forEach((childItem: DeclarationReflection) => {
       if (!itemChildrenKind) {
         itemChildrenKind = childItem.kind
       }
@@ -102,7 +107,7 @@ export function reflectionComponentFormatter(
     name: reflection.name,
     type: reflection.type
       ? getType(reflection.type, "object")
-      : getReflectionType(reflection, "object"),
+      : getReflectionType(reflection, "object", true),
     description: comments
       ? stripLineBreaks(Handlebars.helpers.comments(comments, true, false))
       : "",
@@ -124,8 +129,10 @@ export function reflectionComponentFormatter(
       : getTypeChildren(reflection.type!, reflection.project)
 
     children
-      ?.filter((childItem) => childItem.kindOf(ALLOWED_KINDS))
-      .forEach((childItem) => {
+      ?.filter((childItem: DeclarationReflection) =>
+        childItem.kindOf(ALLOWED_KINDS)
+      )
+      .forEach((childItem: DeclarationReflection) => {
         componentItem.children?.push(
           reflectionComponentFormatter(childItem, level + 1, maxLevel)
         )
@@ -163,7 +170,7 @@ export function reflectionTableFormatter(
   row.push(
     parameter.type
       ? Handlebars.helpers.type.call(parameter.type, "object")
-      : getReflectionType(parameter, "object")
+      : getReflectionType(parameter, "object", true)
   )
 
   if (showDefaults) {

@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).find
 
-**find**(`predicate`, `thisArg?`): `undefined` \| `number`
+`**find**(predicate, thisArg?): undefined \| number`
 
 Returns the value of the first element in the array where predicate is true, and undefined
 otherwise.
@@ -18,7 +18,7 @@ otherwise.
 <ParameterTypes parameters={[
   {
     "name": "predicate",
-    "type": "(`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`",
+    "type": "(`value`: `number`, `index`: `number`, `obj`: Uint8Array) => `boolean`",
     "description": "find calls predicate once for each element of the array, in ascending order, until it finds one where predicate returns true. If such an element is found, find immediately returns that element value. Otherwise, find returns undefined.",
     "optional": false,
     "defaultValue": "",
@@ -26,7 +26,7 @@ otherwise.
     "children": [
       {
         "name": "__type",
-        "type": "(`value`: `number`, `index`: `number`, `obj`: `Uint8Array`) => `boolean`",
+        "type": "(`value`: `number`, `index`: `number`, `obj`: Uint8Array) => `boolean`",
         "description": "",
         "optional": false,
         "defaultValue": "",

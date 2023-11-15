@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "claim_items",
-    "type": "[`Item`](internal.Item-6.mdx)[]",
+    "type": "[Item](internal.Item-6.mdx)[]",
     "description": "The Claim Items that the Claim will consist of.",
     "optional": true,
     "defaultValue": "",
@@ -20,7 +20,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs to hold additional information.",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_methods",
-    "type": "[`ShippingMethod`](internal.ShippingMethod-3.mdx)[]",
+    "type": "[ShippingMethod](internal.ShippingMethod-3.mdx)[]",
     "description": "The Shipping Methods to send the additional Line Items with.",
     "optional": true,
     "defaultValue": "",

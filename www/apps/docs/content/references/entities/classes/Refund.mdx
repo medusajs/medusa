@@ -49,7 +49,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "order",
-    "type": "[`Order`](Order.mdx)",
+    "type": "[Order](Order.mdx)",
     "description": "The details of the order this refund was created for.",
     "optional": false,
     "defaultValue": "",
@@ -75,7 +75,7 @@ A refund represents an amount of money transfered back to the customer for a giv
     "children": [
       {
         "name": "billing_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the billing address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -102,7 +102,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "cart",
-        "type": "[`Cart`](Cart.mdx)",
+        "type": "[Cart](Cart.mdx)",
         "description": "The details of the cart associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -120,7 +120,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "claims",
-        "type": "[`ClaimOrder`](ClaimOrder.mdx)[]",
+        "type": "[ClaimOrder](ClaimOrder.mdx)[]",
         "description": "The details of the claims created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -138,7 +138,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "currency",
-        "type": "[`Currency`](Currency.mdx)",
+        "type": "[Currency](Currency.mdx)",
         "description": "The details of the currency used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -156,7 +156,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "customer",
-        "type": "[`Customer`](Customer.mdx)",
+        "type": "[Customer](Customer.mdx)",
         "description": "The details of the customer associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -183,7 +183,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "discounts",
-        "type": "[`Discount`](Discount.mdx)[]",
+        "type": "[Discount](Discount.mdx)[]",
         "description": "The details of the discounts applied on the order.",
         "optional": false,
         "defaultValue": "",
@@ -201,7 +201,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "draft_order",
-        "type": "[`DraftOrder`](DraftOrder.mdx)",
+        "type": "[DraftOrder](DraftOrder.mdx)",
         "description": "The details of the draft order this order was created from.",
         "optional": false,
         "defaultValue": "",
@@ -219,7 +219,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "edits",
-        "type": "[`OrderEdit`](OrderEdit.mdx)[]",
+        "type": "[OrderEdit](OrderEdit.mdx)[]",
         "description": "The details of the order edits done on the order.",
         "optional": false,
         "defaultValue": "",
@@ -246,7 +246,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "fulfillment_status",
-        "type": "[`FulfillmentStatus`](../enums/FulfillmentStatus.mdx)",
+        "type": "[FulfillmentStatus](../enums/FulfillmentStatus.mdx)",
         "description": "The order's fulfillment status",
         "optional": false,
         "defaultValue": "not_fulfilled",
@@ -255,7 +255,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "fulfillments",
-        "type": "[`Fulfillment`](Fulfillment.mdx)[]",
+        "type": "[Fulfillment](Fulfillment.mdx)[]",
         "description": "The details of the fulfillments created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -282,7 +282,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "gift_card_transactions",
-        "type": "[`GiftCardTransaction`](GiftCardTransaction.mdx)[]",
+        "type": "[GiftCardTransaction](GiftCardTransaction.mdx)[]",
         "description": "The gift card transactions made in the order.",
         "optional": false,
         "defaultValue": "",
@@ -291,7 +291,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "gift_cards",
-        "type": "[`GiftCard`](GiftCard.mdx)[]",
+        "type": "[GiftCard](GiftCard.mdx)[]",
         "description": "The details of the gift card used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -327,7 +327,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the line items that belong to the order.",
         "optional": false,
         "defaultValue": "",
@@ -336,7 +336,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -372,7 +372,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "payment_status",
-        "type": "[`PaymentStatus`](../enums/PaymentStatus.mdx)",
+        "type": "[PaymentStatus](../enums/PaymentStatus.mdx)",
         "description": "The order's payment status",
         "optional": false,
         "defaultValue": "not_paid",
@@ -381,7 +381,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "payments",
-        "type": "[`Payment`](Payment.mdx)[]",
+        "type": "[Payment](Payment.mdx)[]",
         "description": "The details of the payments used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -417,7 +417,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "refunds",
-        "type": "[`Refund`](Refund.mdx)[]",
+        "type": "[Refund](Refund.mdx)[]",
         "description": "The details of the refunds created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -426,7 +426,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "region",
-        "type": "[`Region`](Region.mdx)",
+        "type": "[Region](Region.mdx)",
         "description": "The details of the region this order was created in.",
         "optional": false,
         "defaultValue": "",
@@ -444,7 +444,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "returnable_items",
-        "type": "[`LineItem`](LineItem.mdx)[]",
+        "type": "[LineItem](LineItem.mdx)[]",
         "description": "The details of the line items that are returnable as part of the order, swaps, or claims",
         "optional": true,
         "defaultValue": "",
@@ -453,7 +453,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "returns",
-        "type": "[`Return`](Return.mdx)[]",
+        "type": "[Return](Return.mdx)[]",
         "description": "The details of the returns created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -462,7 +462,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "sales_channel",
-        "type": "[`SalesChannel`](SalesChannel.mdx)",
+        "type": "[SalesChannel](SalesChannel.mdx)",
         "description": "The details of the sales channel this order belongs to.",
         "optional": false,
         "defaultValue": "",
@@ -480,7 +480,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "shipping_address",
-        "type": "[`Address`](Address.mdx)",
+        "type": "[Address](Address.mdx)",
         "description": "The details of the shipping address associated with the order.",
         "optional": false,
         "defaultValue": "",
@@ -498,7 +498,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "shipping_methods",
-        "type": "[`ShippingMethod`](ShippingMethod.mdx)[]",
+        "type": "[ShippingMethod](ShippingMethod.mdx)[]",
         "description": "The details of the shipping methods used in the order.",
         "optional": false,
         "defaultValue": "",
@@ -525,7 +525,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "status",
-        "type": "[`OrderStatus`](../enums/OrderStatus.mdx)",
+        "type": "[OrderStatus](../enums/OrderStatus.mdx)",
         "description": "The order's status",
         "optional": false,
         "defaultValue": "pending",
@@ -543,7 +543,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "swaps",
-        "type": "[`Swap`](Swap.mdx)[]",
+        "type": "[Swap](Swap.mdx)[]",
         "description": "The details of the swaps created for the order.",
         "optional": false,
         "defaultValue": "",
@@ -599,7 +599,7 @@ A refund represents an amount of money transfered back to the customer for a giv
   },
   {
     "name": "payment",
-    "type": "[`Payment`](Payment.mdx)",
+    "type": "[Payment](Payment.mdx)",
     "description": "The details of the payment associated with the refund.",
     "optional": false,
     "defaultValue": "",
@@ -643,7 +643,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "cart",
-        "type": "[`Cart`](Cart.mdx)",
+        "type": "[Cart](Cart.mdx)",
         "description": "The details of the cart that the payment session was potentially created for.",
         "optional": false,
         "defaultValue": "",
@@ -670,7 +670,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "currency",
-        "type": "[`Currency`](Currency.mdx)",
+        "type": "[Currency](Currency.mdx)",
         "description": "The details of the currency of the payment.",
         "optional": false,
         "defaultValue": "",
@@ -688,7 +688,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The data required for the Payment Provider to identify, modify and process the Payment. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
         "optional": false,
         "defaultValue": "",
@@ -715,7 +715,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -724,7 +724,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "order",
-        "type": "[`Order`](Order.mdx)",
+        "type": "[Order](Order.mdx)",
         "description": "The details of the order that the payment session was potentially created for.",
         "optional": false,
         "defaultValue": "",
@@ -751,7 +751,7 @@ A refund represents an amount of money transfered back to the customer for a giv
       },
       {
         "name": "swap",
-        "type": "[`Swap`](Swap.mdx)",
+        "type": "[Swap](Swap.mdx)",
         "description": "The details of the swap that this payment was potentially created for.",
         "optional": false,
         "defaultValue": "",
