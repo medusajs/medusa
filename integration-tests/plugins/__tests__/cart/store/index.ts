@@ -8,7 +8,10 @@ import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { simpleProductFactory } from "../../../../factories"
+import {
+  simpleProductFactory,
+  simpleSalesChannelFactory,
+} from "../../../../factories"
 
 jest.setTimeout(30000)
 
@@ -40,7 +43,6 @@ describe("/store/carts", () => {
   describe("POST /store/carts", () => {
     let prod1
     let prodSale
-    let prodSC
 
     beforeEach(async () => {
       const manager = dbConnection.manager
@@ -72,10 +74,9 @@ describe("/store/carts", () => {
         ],
       })
 
-      prodSC = await simpleProductFactory(dbConnection, {
-        id: "test-product-sc",
-        variants: [{ id: "test-variant_1" }],
-        sales_channels: [{ id: "amazon-sc", name: "Amazon store" }],
+      await simpleSalesChannelFactory(dbConnection, {
+        id: "amazon-sc",
+        name: "Amazon store",
       })
     })
 
