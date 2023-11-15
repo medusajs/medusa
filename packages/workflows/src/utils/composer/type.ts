@@ -14,7 +14,7 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
 export type StepFunction<
   TInput extends unknown[] = unknown[],
   TOutput = unknown
-> = TInput extends [...infer Args, StepExecutionContext]
+> = TInput extends [StepExecutionContext, ...infer Args]
   ? {
       (...args: { [K in keyof Args]: StepReturn<Args[K]> }): StepReturn<TOutput>
     } & StepReturnProperties<TOutput>

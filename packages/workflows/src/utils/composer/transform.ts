@@ -4,7 +4,6 @@ import {
   SymbolWorkflowStepTransformer,
 } from "./symbol"
 import { StepExecutionContext, StepReturn } from "./type"
-import { autoGapFiller } from "./utils"
 
 type Func1Multiple<T extends any[], U> = (
   ...inputs: [
@@ -109,10 +108,8 @@ export function transform(
       const fn = functions[i]
 
       let args = i === 0 ? stepValues : [finalResult]
-      args = autoGapFiller(args, fn)
-      args.push(context)
 
-      finalResult = await fn.apply(fn, args)
+      finalResult = await fn.apply(fn, [context, ...args])
     }
 
     returnFn.__value = finalResult

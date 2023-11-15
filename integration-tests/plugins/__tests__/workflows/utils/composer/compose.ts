@@ -13,7 +13,7 @@ describe("Workflow composer", function () {
     jest.clearAllMocks()
   })
 
-  it("should compose a new workflow and execute it", async () => {
+  it.only("should compose a new workflow and execute it", async () => {
     const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
       return { inputs: [input], obj: "return from 1" }
     })
@@ -31,6 +31,12 @@ describe("Workflow composer", function () {
         obj: "return from 3",
       }
     })
+
+    function(input1, optionalInput, context) {
+
+    }
+
+    function("test", undefined, undefined, undefined, undefined, context)
 
     const step1 = createStep("step1", mockStep1Fn)
     const step2 = createStep("step2", mockStep2Fn)

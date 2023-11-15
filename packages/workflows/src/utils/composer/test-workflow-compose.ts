@@ -24,18 +24,19 @@ interface Step4Input {
 const step1 = createStep(
   "step1",
   async function (
+    context: any,
     input: Step1Input
   ): Promise<{ test: "test"; foo: "bar"; compensateInput: { foo: string } }> {
     return { test: "test", foo: "bar", compensateInput: { foo: "test" } }
   },
-  async function (input) {
+  async function (context: any, input) {
     return input.foo
   }
 )
 
 const step2 = createStep(
   "step2",
-  async (input: Step2Input, context: any): Promise<{ test: "test" }> => {
+  async (context: any, input: Step2Input): Promise<{ test: "test" }> => {
     return { test: "test" }
   }
 )
@@ -43,7 +44,7 @@ const step2 = createStep(
 type step3Return = { test: "test2" }
 const step3 = createStep(
   "step3",
-  async (input: Step3Input): Promise<step3Return> => {
+  async (context: any, input: Step3Input): Promise<step3Return> => {
     return { test: "test2" }
   }
 )

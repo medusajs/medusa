@@ -15,18 +15,17 @@ import {
   StepFunctionResult,
   StepReturn,
 } from "./type"
-import { autoGapFiller } from "./utils"
 
 type InvokeFn<TInput extends unknown[], O> = TInput extends [
-  ...infer Args,
-  StepExecutionContext
+  StepExecutionContext,
+  ...infer Args
 ]
-  ? (...args: [...args: Args, context: StepExecutionContext]) => Promise<O>
+  ? (...args: [context: StepExecutionContext, ...args: Args]) => Promise<O>
   : (...args: TInput) => Promise<O>
 
 type CompensateFn<T> = (
-  arg: T,
-  context: StepExecutionContext
+  context: StepExecutionContext,
+  arg: T
 ) => Promise<unknown>
 
 interface ApplyStepOptions<
@@ -105,10 +104,8 @@ function applyStep<
         }
 
         let args = previousResultResults
-        args = autoGapFiller(args, invokeFn)
-        args.push(executionContext)
 
-        const output = await invokeFn.apply(this, args)
+        const output = await invokeFn.apply(this, [executionContext, ...args])
 
         return {
           __type: SymbolWorkflowStepReturn,
@@ -126,7 +123,7 @@ function applyStep<
             const invokeResult =
               transactionContext.invoke[stepName].output?.compensateInput
 
-            const args = [invokeResult, executionContext]
+            const args = [executionContext, invokeResult]
             const output = await compensateFn.apply(this, args)
             return {
               output,
