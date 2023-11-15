@@ -1,11 +1,12 @@
-import { BaseFilterable } from "../../dal"
-import { CreateCurrencyDTO, CurrencyDTO } from "./currency"
+import { BaseFilterable } from "../../dal";
+import { CreateCurrencyDTO, CurrencyDTO } from "./currency";
+import { PriceSetMoneyAmountDTO } from "./price-set-money-amount";
 
 /**
  * @interface
- * 
+ *
  * A money amount's data. A money amount represents a price.
- * 
+ *
  * @prop id - The ID of the money amount.
  * @prop currency_code - The currency code of this money amount.
  * @prop currency - The money amount's currency. Since this is a relation, it will only be retrieved if it's passed to the `relations` array of the find-configuration options.
@@ -20,13 +21,14 @@ export interface MoneyAmountDTO {
   amount?: number
   min_quantity?: number
   max_quantity?: number
+  price_set_money_amount?: PriceSetMoneyAmountDTO
 }
 
 /**
  * @interface
- * 
+ *
  * The money amount to create.
- * 
+ *
  * @prop id - The ID of the money amount.
  * @prop currency_code - The currency code of this money amount.
  * @prop currency - The currency of this money amount.
@@ -38,16 +40,16 @@ export interface CreateMoneyAmountDTO {
   id?: string
   currency_code: string
   currency?: CreateCurrencyDTO
-  amount?: number
+  amount: number
   min_quantity?: number | null
   max_quantity?: number | null
 }
 
 /**
  *  * @interface
- * 
+ *
  * The data to update in a money amount. The `id` is used to identify which money amount to update.
- * 
+ *
  * @prop id - The ID of the money amount to update.
  * @prop currency_code - The code of the currency to associate with the money amount.
  * @prop currency - The currency to associte with the money amount.
@@ -65,9 +67,9 @@ export interface UpdateMoneyAmountDTO {
 
 /**
  * @interface
- * 
+ *
  * Filters to apply on a money amount.
- * 
+ *
  * @prop id - IDs to filter money amounts by.
  * @prop currency_code - Currency codes to filter money amounts by.
  */
