@@ -329,22 +329,6 @@ export class Cart extends SoftDeletableEntity {
   })
   discounts: Discount[]
 
-  @FeatureFlagDecorators(MedusaV2Flag.key, [
-    ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
-    JoinTable({
-      name: "cart_sales_channel",
-      joinColumn: {
-        name: "cart_id",
-        referencedColumnName: "id",
-      },
-      inverseJoinColumn: {
-        name: "sales_channel_id",
-        referencedColumnName: "id",
-      },
-    }),
-  ])
-  channels: SalesChannel[]
-
   @ManyToMany(() => GiftCard)
   @JoinTable({
     name: "cart_gift_cards",
@@ -405,14 +389,23 @@ export class Cart extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
-  sales_channel_id: string | null
+  sales_channel_id: string
 
-  @FeatureFlagDecorators("sales_channels", [
-    ManyToOne(() => SalesChannel),
-    JoinColumn({ name: "sales_channel_id" }),
-  ])
   sales_channel: SalesChannel
+
+  @ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] })
+  @JoinTable({
+    name: "cart_sales_channel",
+    joinColumn: {
+      name: "cart_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "sales_channel_id",
+      referencedColumnName: "id",
+    },
+  })
+  channels: SalesChannel[]
 
   shipping_total?: number
   discount_total?: number
@@ -430,25 +423,14 @@ export class Cart extends SoftDeletableEntity {
   /**
    * @apiIgnore
    */
-  @AfterLoad()
-  private afterLoad(): void {
-    if (this.payment_sessions) {
-      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
-    }
-    if (this.channels?.length) {
-      this.sales_channel = this.channels[0]
-    }
-  }
-
-  /**
-   * @apiIgnore
-   */
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "cart")
 
-    if (this.sales_channel_id) {
-      this.channels = [{ id: this.sales_channel_id }] as SalesChannel[]
+    if (this.sales_channel_id || this.sales_channel) {
+      this.channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
     }
   }
 
@@ -457,8 +439,22 @@ export class Cart extends SoftDeletableEntity {
    */
   @BeforeUpdate()
   private beforeUpdate(): void {
-    if (this.sales_channel_id) {
-      this.channels = [{ id: this.sales_channel_id }] as SalesChannel[]
+    if (this.sales_channel_id || this.sales_channel) {
+      this.channels = [
+        { id: this.sales_channel_id || this.sales_channel?.id },
+      ] as SalesChannel[]
     }
+  }
+
+  /**
+   * @apiIgnore
+   */
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.payment_sessions) {
+      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
+    }
+    this.sales_channel = this.channels?.[0]
+    this.sales_channel_id = this.sales_channel?.id
   }
 }

@@ -221,7 +221,28 @@ class CartService extends TransactionBaseService {
     const cartRepo = this.activeManager_.withRepository(this.cartRepository_)
 
     const query = buildQuery(selector, config)
-    return await cartRepo.find(query)
+
+    const loadSalesChannels = config.relations?.includes("sales_channels")
+    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+      if (loadSalesChannels) {
+        config.relations = config.relations?.filter(
+          (r) => r !== "sales_channel"
+        )
+      }
+    }
+
+    config.relations = config.relations?.filter((r) => r !== "sales_channel")
+
+    const carts = await cartRepo.find(query)
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
+      loadSalesChannels
+    ) {
+      await this.decorateCartsWithSalesChannel(carts)
+    }
+
+    return carts
   }
 
   /**
@@ -243,6 +264,8 @@ class CartService extends TransactionBaseService {
       )
     }
 
+    const loadSalesChannels = options.relations?.includes("sales_channels")
+
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       if (Array.isArray(options.relations)) {
         for (let i = 0; i < options.relations.length; i++) {
@@ -252,6 +275,12 @@ class CartService extends TransactionBaseService {
         }
       }
       options.relations = [...new Set(options.relations)]
+
+      if (loadSalesChannels) {
+        options.relations = options.relations?.filter(
+          (r) => r !== "sales_channel"
+        )
+      }
     }
 
     const { totalsToSelect } = this.transformQueryForTotals_(options)
@@ -280,7 +309,10 @@ class CartService extends TransactionBaseService {
       )
     }
 
-    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
+      loadSalesChannels
+    ) {
       await this.decorateCartsWithSalesChannel([raw])
     }
 

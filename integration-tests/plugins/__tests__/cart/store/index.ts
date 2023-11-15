@@ -229,7 +229,7 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200)
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      const getRes = await api.get(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
       expect(getRes.data.cart.sales_channel.id).toEqual("amazon-sc")
     })

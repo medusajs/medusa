@@ -39,22 +39,20 @@ export class SalesChannel extends SoftDeletableEntity {
       },
     }),
   ])
-  product: Product[]
+  products: Product[]
 
-  @FeatureFlagDecorators(MedusaV2Flag.key, [
-    ManyToMany(() => Cart),
-    JoinTable({
-      name: "cart_sales_channel",
-      joinColumn: {
-        name: "sales_channel_id",
-        referencedColumnName: "id",
-      },
-      inverseJoinColumn: {
-        name: "cart_id",
-        referencedColumnName: "id",
-      },
-    }),
-  ])
+  @ManyToMany(() => Cart)
+  @JoinTable({
+    name: "cart_sales_channel",
+    joinColumn: {
+      name: "sales_channel_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "cart_id",
+      referencedColumnName: "id",
+    },
+  })
   carts: SalesChannel[]
 
   @OneToMany(
