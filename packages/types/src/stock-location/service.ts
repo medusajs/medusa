@@ -85,35 +85,6 @@ export interface IStockLocationService {
    *   // do something with the stock locations or return them
    * }
    * ```
-   * 
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
-   * ```ts
-   * import { 
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   * 
-   * async function listStockLocations (ids: string[], names: string[], skip: number, take: number) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   * 
-   *   const stockLocations = await stockLocationModule.list({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         name: names
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["address"],
-   *     skip,
-   *     take
-   *   })
-   *   
-   *   // do something with the stock locations or return them
-   * }
-   * ``` 
    */
   list(
     selector: FilterableStockLocationProps,
@@ -191,35 +162,6 @@ export interface IStockLocationService {
    *   // do something with the stock locations or return them
    * }
    * ```
-   * 
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
-   * ```ts
-   * import { 
-   *   initialize as initializeStockLocationModule,
-   * } from "@medusajs/stock-location"
-   * 
-   * async function listStockLocations (ids: string[], names: string[], skip: number, take: number) {
-   *   const stockLocationModule = await initializeStockLocationModule({})
-   * 
-   *   const [stockLocations, count] = await stockLocationModule.listAndCount({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         name: names
-   *       }
-   *     ]
-   *   }, {
-   *     relations: ["address"],
-   *     skip,
-   *     take
-   *   })
-   *   
-   *   // do something with the stock locations or return them
-   * }
-   * ``` 
    */
   listAndCount(
     selector: FilterableStockLocationProps,
