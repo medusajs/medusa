@@ -99,7 +99,6 @@ export function transform(
         returnVal = value
       }
 
-      // TODO: use structuredClone
       return returnVal ? JSON.parse(JSON.stringify(returnVal)) : returnVal
     })
 

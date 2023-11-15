@@ -1,5 +1,5 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
-import { FlowRunOptions, WorkflowResult, exportWorkflow } from "../../helper"
+import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
 import { CreateWorkflowComposerContext, StepReturn } from "./index"
 import {
   SymbolInputReference,
@@ -11,7 +11,7 @@ global[SymbolMedusaWorkflowComposerContext] = null
 
 export function createWorkflow<TData, TResult>(
   name: string,
-  composer: (input: StepReturn<TData>) => StepReturn<TResult>
+  composer: (input: StepReturn<TData>) => void | StepReturn<TResult>
 ) {
   const handlers: WorkflowHandler = new Map()
 

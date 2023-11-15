@@ -150,8 +150,7 @@ function applyStep<
         }
 
         // @ts-ignore
-        return transform(target[prop], (...args) => {
-          const context = args.pop()
+        return transform(target[prop], (context) => {
           const { invoke } = context
           return invoke?.[ret.__step__]?.output?.[prop]
         })
