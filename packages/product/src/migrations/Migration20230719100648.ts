@@ -4,8 +4,13 @@ export class Migration20230719100648 extends Migration {
   async up(): Promise<void> {
     try {
       // Prevent from crashing if for some reason the migration is re run (example, typeorm and mikro orm does not have the same migration table)
-      await this.execute('SELECT 1 FROM "product" LIMIT 1;')
-      return
+      const [{ exists }] = await this.execute(
+        `SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'product' )`
+      )
+
+      if (exists) {
+        return
+      }
     } catch {
       // noop
     }
