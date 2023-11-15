@@ -13,7 +13,7 @@ Provides layer to manipulate regions.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "countryRepository_",
-    "type": "`Repository`<[`Country`](internal.internal.Country.mdx)\\>",
+    "type": "Repository&#60;[Country](internal.internal.Country.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "currencyRepository_",
-    "type": "`Repository`<[`Currency`](internal.Currency.mdx)\\>",
+    "type": "Repository&#60;[Currency](internal.Currency.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "eventBus_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
+    "type": "[FlagRouter](internal.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "fulfillmentProviderRepository_",
-    "type": "`Repository`<[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)\\>",
+    "type": "Repository&#60;[FulfillmentProvider](internal.internal.FulfillmentProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "fulfillmentProviderService_",
-    "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
+    "type": "[FulfillmentProviderService](internal.internal.FulfillmentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -94,7 +94,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -103,7 +103,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "paymentProviderRepository_",
-    "type": "`Repository`<[`PaymentProvider`](internal.PaymentProvider.mdx)\\>",
+    "type": "Repository&#60;[PaymentProvider](internal.PaymentProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "paymentProviderService_",
-    "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
+    "type": "[PaymentProviderService](internal.internal.PaymentProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -121,7 +121,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "regionRepository_",
-    "type": "`Repository`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Repository&#60;[Region](internal.Region.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -130,7 +130,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "storeService_",
-    "type": "[`StoreService`](internal.internal.StoreService.mdx)",
+    "type": "[StoreService](internal.internal.StoreService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -139,7 +139,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "taxProviderRepository_",
-    "type": "`Repository`<[`TaxProvider`](internal.TaxProvider.mdx)\\>",
+    "type": "Repository&#60;[TaxProvider](internal.TaxProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ Provides layer to manipulate regions.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -202,7 +202,7 @@ Provides layer to manipulate regions.
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -245,7 +245,7 @@ Adds a country to the region.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Region",
@@ -289,7 +289,7 @@ provider doesn't exist.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Region",
@@ -333,7 +333,7 @@ provider doesn't exist.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Region",
@@ -355,7 +355,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -364,7 +364,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -373,7 +373,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -387,7 +387,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -407,7 +407,7 @@ Creates a region.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateRegionInput`](../types/internal.CreateRegionInput.mdx)",
+    "type": "[CreateRegionInput](../types/internal.CreateRegionInput.mdx)",
     "description": "the unvalidated region",
     "optional": false,
     "defaultValue": "",
@@ -421,7 +421,7 @@ Creates a region.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created region",
@@ -455,7 +455,7 @@ Deletes a region.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the delete operation",
@@ -475,7 +475,7 @@ Lists all regions based on a query
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Region`](internal.Region.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Region](internal.Region.mdx)&#62;",
     "description": "query object for find",
     "optional": true,
     "defaultValue": "",
@@ -484,7 +484,7 @@ Lists all regions based on a query
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Region`](internal.Region.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Region](internal.Region.mdx)&#62;",
     "description": "configuration settings",
     "optional": true,
     "defaultValue": "",
@@ -498,7 +498,7 @@ Lists all regions based on a query
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)[]\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the find operation",
@@ -518,7 +518,7 @@ Lists all regions based on a query and returns them along with count
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`Region`](internal.Region.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Region](internal.Region.mdx)&#62;",
     "description": "query object for find",
     "optional": true,
     "defaultValue": "",
@@ -527,7 +527,7 @@ Lists all regions based on a query and returns them along with count
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Region`](internal.Region.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Region](internal.Region.mdx)&#62;",
     "description": "configuration settings",
     "optional": true,
     "defaultValue": "",
@@ -541,7 +541,7 @@ Lists all regions based on a query and returns them along with count
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Region`](internal.Region.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[Region](internal.Region.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "result of the find operation",
@@ -584,7 +584,7 @@ Removes a country from a Region.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Region",
@@ -627,7 +627,7 @@ Removes a fulfillment provider from a region. Is idempotent.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Region",
@@ -670,7 +670,7 @@ Removes a payment provider from a region. Is idempotent.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the updated Region",
@@ -699,7 +699,7 @@ Retrieves a region by its id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Region`](internal.Region.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Region](internal.Region.mdx)&#62;",
     "description": "configuration settings",
     "optional": true,
     "defaultValue": "",
@@ -713,7 +713,7 @@ Retrieves a region by its id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the region",
@@ -742,7 +742,7 @@ Retrieve a region by country code.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Region`](internal.Region.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Region](internal.Region.mdx)&#62;",
     "description": "region find config",
     "optional": true,
     "defaultValue": "",
@@ -756,7 +756,7 @@ Retrieve a region by country code.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a Region with country code",
@@ -790,7 +790,7 @@ Retrieves a region by name.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "region with the matching name",
@@ -808,7 +808,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -851,7 +851,7 @@ Updates a region
   },
   {
     "name": "update",
-    "type": "[`UpdateRegionInput`](../types/internal.UpdateRegionInput.mdx)",
+    "type": "[UpdateRegionInput](../types/internal.UpdateRegionInput.mdx)",
     "description": "the data to update the region with",
     "optional": false,
     "defaultValue": "",
@@ -865,7 +865,7 @@ Updates a region
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Region`](internal.Region.mdx)\\>",
+    "type": "Promise&#60;[Region](internal.Region.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the update operation",
@@ -909,7 +909,7 @@ existence.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Country`](internal.internal.Country.mdx)\\>",
+    "type": "Promise&#60;[Country](internal.internal.Country.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated Country",
@@ -943,7 +943,7 @@ Validates a currency code. Will throw if the currency code doesn't exist.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "void",
@@ -968,7 +968,7 @@ the id can be passed to check that country updates are allowed.
 <ParameterTypes parameters={[
   {
     "name": "regionData",
-    "type": "[`Omit`](../types/internal.Omit.mdx)<`T`, ``\"metadata\"`` \\| ``\"currency_code\"``\\>",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;T, `\"metadata\"` \\| `\"currency_code\"`&#62;",
     "description": "the region data to validate",
     "optional": false,
     "defaultValue": "",
@@ -977,7 +977,7 @@ the id can be passed to check that country updates are allowed.
   },
   {
     "name": "id",
-    "type": "`T` extends [`UpdateRegionInput`](../types/internal.UpdateRegionInput.mdx) ? `string` : `undefined`",
+    "type": "`T` extends [UpdateRegionInput](../types/internal.UpdateRegionInput.mdx) ? `string` : `undefined`",
     "description": "optional id of the region to check against",
     "optional": true,
     "defaultValue": "",
@@ -991,7 +991,7 @@ the id can be passed to check that country updates are allowed.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`DeepPartial`<[`Region`](internal.Region.mdx)\\>\\>",
+    "type": "Promise&#60;DeepPartial&#60;[Region](internal.Region.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the validated region data",
@@ -1047,7 +1047,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1061,7 +1061,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "RegionService",
-    "type": "[`RegionService`](internal.internal.RegionService.mdx)",
+    "type": "[RegionService](internal.internal.RegionService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

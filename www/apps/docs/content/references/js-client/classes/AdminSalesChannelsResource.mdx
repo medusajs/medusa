@@ -52,7 +52,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "payload",
-    "type": "[`AdminPostSalesChannelsChannelStockLocationsReq`](../internal/classes/internal.AdminPostSalesChannelsChannelStockLocationsReq.mdx)",
+    "type": "[AdminPostSalesChannelsChannelStockLocationsReq](../internal/classes/internal.AdminPostSalesChannelsChannelStockLocationsReq.mdx)",
     "description": "The stock location to associate with the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -71,7 +71,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -85,7 +85,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsRes`](../internal/types/internal.AdminSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
@@ -101,7 +101,7 @@ medusa.admin.salesChannels
         "children": [
           {
             "name": "sales_channel",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
             "description": "Sales Channel's details.",
             "optional": false,
             "defaultValue": "",
@@ -154,7 +154,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -163,7 +163,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -235,7 +235,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "payload",
-    "type": "[`AdminPostSalesChannelsChannelProductsBatchReq`](../internal/classes/internal.AdminPostSalesChannelsChannelProductsBatchReq.mdx)",
+    "type": "[AdminPostSalesChannelsChannelProductsBatchReq](../internal/classes/internal.AdminPostSalesChannelsChannelProductsBatchReq.mdx)",
     "description": "The products to add to the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -243,7 +243,7 @@ medusa.admin.salesChannels
     "children": [
       {
         "name": "product_ids",
-        "type": "[`ProductBatchSalesChannel`](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the products to add to the Sales Channel",
         "optional": false,
         "defaultValue": "",
@@ -264,7 +264,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -278,7 +278,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsRes`](../internal/types/internal.AdminSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
@@ -294,7 +294,7 @@ medusa.admin.salesChannels
         "children": [
           {
             "name": "sales_channel",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
             "description": "Sales Channel's details.",
             "optional": false,
             "defaultValue": "",
@@ -347,7 +347,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -356,7 +356,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -416,7 +416,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostSalesChannelsReq`](../internal/classes/internal.AdminPostSalesChannelsReq.mdx)",
+    "type": "[AdminPostSalesChannelsReq](../internal/classes/internal.AdminPostSalesChannelsReq.mdx)",
     "description": "The sales channel to create.",
     "optional": false,
     "defaultValue": "",
@@ -453,7 +453,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -467,7 +467,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsRes`](../internal/types/internal.AdminSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
@@ -483,7 +483,7 @@ medusa.admin.salesChannels
         "children": [
           {
             "name": "sales_channel",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
             "description": "Sales Channel's details.",
             "optional": false,
             "defaultValue": "",
@@ -536,7 +536,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -545,7 +545,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -611,7 +611,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -625,7 +625,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -720,7 +720,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetSalesChannelsParams`](../internal/classes/internal.AdminGetSalesChannelsParams.mdx)",
+    "type": "[AdminGetSalesChannelsParams](../internal/classes/internal.AdminGetSalesChannelsParams.mdx)",
     "description": "Filters and pagination configurations applied on the retrieved sales channels.",
     "optional": true,
     "defaultValue": "",
@@ -728,7 +728,7 @@ medusa.admin.salesChannels
     "children": [
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on sales channels' `created_at` field.",
         "optional": true,
         "defaultValue": "",
@@ -774,7 +774,7 @@ medusa.admin.salesChannels
       },
       {
         "name": "deleted_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on sales channels' `deleted_at` field.",
         "optional": true,
         "defaultValue": "",
@@ -901,7 +901,7 @@ medusa.admin.salesChannels
       },
       {
         "name": "updated_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on sales channels' `updated_at` field.",
         "optional": true,
         "defaultValue": "",
@@ -949,7 +949,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -963,7 +963,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsListRes`](../internal/types/internal.AdminSalesChannelsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsListRes](../internal/types/internal.AdminSalesChannelsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of sales channels with pagination fields.",
@@ -971,7 +971,7 @@ medusa.admin.salesChannels
     "children": [
       {
         "name": "AdminSalesChannelsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `sales_channels`: [`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; sales_channels: [SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]  &#125;`",
         "description": "The list of sales channels with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1006,7 +1006,7 @@ medusa.admin.salesChannels
           },
           {
             "name": "sales_channels",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)[]",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)[]",
             "description": "An array of sales channels details.",
             "optional": false,
             "defaultValue": "",
@@ -1059,7 +1059,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -1068,7 +1068,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1136,7 +1136,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteSalesChannelsChannelStockLocationsReq`](../internal/classes/internal.AdminDeleteSalesChannelsChannelStockLocationsReq.mdx)",
+    "type": "[AdminDeleteSalesChannelsChannelStockLocationsReq](../internal/classes/internal.AdminDeleteSalesChannelsChannelStockLocationsReq.mdx)",
     "description": "The stock location to remove from the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -1155,7 +1155,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1169,7 +1169,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsRes`](../internal/types/internal.AdminSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
@@ -1185,7 +1185,7 @@ medusa.admin.salesChannels
         "children": [
           {
             "name": "sales_channel",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
             "description": "Sales Channel's details.",
             "optional": false,
             "defaultValue": "",
@@ -1238,7 +1238,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -1247,7 +1247,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1319,7 +1319,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteSalesChannelsChannelProductsBatchReq`](../internal/classes/internal.AdminDeleteSalesChannelsChannelProductsBatchReq.mdx)",
+    "type": "[AdminDeleteSalesChannelsChannelProductsBatchReq](../internal/classes/internal.AdminDeleteSalesChannelsChannelProductsBatchReq.mdx)",
     "description": "The products to remove from the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -1327,7 +1327,7 @@ medusa.admin.salesChannels
     "children": [
       {
         "name": "product_ids",
-        "type": "[`ProductBatchSalesChannel`](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
+        "type": "[ProductBatchSalesChannel](../internal/classes/internal.ProductBatchSalesChannel.mdx)[]",
         "description": "The IDs of the products to remove from the Sales Channel.",
         "optional": false,
         "defaultValue": "",
@@ -1348,7 +1348,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1362,7 +1362,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsRes`](../internal/types/internal.AdminSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
@@ -1378,7 +1378,7 @@ medusa.admin.salesChannels
         "children": [
           {
             "name": "sales_channel",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
             "description": "Sales Channel's details.",
             "optional": false,
             "defaultValue": "",
@@ -1431,7 +1431,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -1440,7 +1440,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1506,7 +1506,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1520,7 +1520,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsRes`](../internal/types/internal.AdminSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
@@ -1536,7 +1536,7 @@ medusa.admin.salesChannels
         "children": [
           {
             "name": "sales_channel",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
             "description": "Sales Channel's details.",
             "optional": false,
             "defaultValue": "",
@@ -1589,7 +1589,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -1598,7 +1598,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1666,7 +1666,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "payload",
-    "type": "[`AdminPostSalesChannelsSalesChannelReq`](../internal/classes/internal.AdminPostSalesChannelsSalesChannelReq.mdx)",
+    "type": "[AdminPostSalesChannelsSalesChannelReq](../internal/classes/internal.AdminPostSalesChannelsSalesChannelReq.mdx)",
     "description": "The attributes to update in the sales channel.",
     "optional": false,
     "defaultValue": "",
@@ -1703,7 +1703,7 @@ medusa.admin.salesChannels
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1717,7 +1717,7 @@ medusa.admin.salesChannels
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`AdminSalesChannelsRes`](../internal/types/internal.AdminSalesChannelsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSalesChannelsRes](../internal/types/internal.AdminSalesChannelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the sales channel's details.",
@@ -1733,7 +1733,7 @@ medusa.admin.salesChannels
         "children": [
           {
             "name": "sales_channel",
-            "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+            "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
             "description": "Sales Channel's details.",
             "optional": false,
             "defaultValue": "",
@@ -1786,7 +1786,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "locations",
-                "type": "[`SalesChannelLocation`](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
+                "type": "[SalesChannelLocation](../internal/classes/internal.internal.SalesChannelLocation.mdx)[]",
                 "description": "The details of the stock locations related to the sales channel.",
                 "optional": false,
                 "defaultValue": "",
@@ -1795,7 +1795,7 @@ medusa.admin.salesChannels
               },
               {
                 "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
+                "type": "``null`` \\| `Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",

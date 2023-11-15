@@ -31,7 +31,7 @@ Order edit allows modifying items in an order, such as adding, updating, or dele
   },
   {
     "name": "changes",
-    "type": "[`OrderItemChange`](internal.OrderItemChange.mdx)[]",
+    "type": "[OrderItemChange](internal.OrderItemChange.mdx)[]",
     "description": "The details of all the changes on the original order's line items.",
     "optional": false,
     "defaultValue": "",
@@ -157,7 +157,7 @@ Order edit allows modifying items in an order, such as adding, updating, or dele
   },
   {
     "name": "items",
-    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "type": "[LineItem](internal.LineItem.mdx)[]",
     "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
     "optional": false,
     "defaultValue": "",
@@ -166,7 +166,7 @@ Order edit allows modifying items in an order, such as adding, updating, or dele
   },
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "The details of the order that this order edit was created for.",
     "optional": false,
     "defaultValue": "",
@@ -184,7 +184,7 @@ Order edit allows modifying items in an order, such as adding, updating, or dele
   },
   {
     "name": "payment_collection",
-    "type": "[`PaymentCollection`](internal.PaymentCollection.mdx)",
+    "type": "[PaymentCollection](internal.PaymentCollection.mdx)",
     "description": "The details of the payment collection used to authorize additional payment if necessary.",
     "optional": false,
     "defaultValue": "",
@@ -229,7 +229,7 @@ Order edit allows modifying items in an order, such as adding, updating, or dele
   },
   {
     "name": "status",
-    "type": "[`OrderEditStatus`](../enums/internal.OrderEditStatus.mdx)",
+    "type": "[OrderEditStatus](../enums/internal.OrderEditStatus.mdx)",
     "description": "The status of the order edit.",
     "optional": false,
     "defaultValue": "",
@@ -277,5 +277,3 @@ Order edit allows modifying items in an order, such as adding, updating, or dele
 ## Methods
 
 ### loadStatus
-
- **loadStatus**:

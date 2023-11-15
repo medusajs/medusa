@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "salesChannelRepository_",
-    "type": "`Repository`<[`SalesChannel`](internal.SalesChannel.mdx)\\> & { `addProducts`: Method addProducts ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `listProductIdsBySalesChannelIds`: Method listProductIdsBySalesChannelIds ; `removeProducts`: Method removeProducts  }",
+    "type": "Repository&#60;[SalesChannel](internal.SalesChannel.mdx)&#62; & `&#123; addProducts: Method addProducts ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; listProductIdsBySalesChannelIds: Method listProductIdsBySalesChannelIds ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "storeService_",
-    "type": "[`StoreService`](internal.internal.StoreService.mdx)",
+    "type": "[StoreService](internal.internal.StoreService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -74,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -128,7 +128,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -171,7 +171,7 @@ Add a batch of product to a sales channel
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel on which the products have been added",
@@ -193,7 +193,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -202,7 +202,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -211,7 +211,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -225,7 +225,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -248,7 +248,7 @@ To use this feature please enable the corresponding feature flag in your medusa 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateSalesChannelInput`](../types/internal.CreateSalesChannelInput.mdx)",
+    "type": "[CreateSalesChannelInput](../types/internal.CreateSalesChannelInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -262,7 +262,7 @@ To use this feature please enable the corresponding feature flag in your medusa 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created channel",
@@ -282,7 +282,7 @@ Creates a default sales channel, if this does not already exist.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel",
@@ -318,7 +318,7 @@ To use this feature please enable the corresponding feature flag in your medusa 
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -339,7 +339,7 @@ sales channels that match the query.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`QuerySelector`](../types/internal.internal.QuerySelector.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "[QuerySelector](../types/internal.internal.QuerySelector.mdx)&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -348,7 +348,7 @@ sales channels that match the query.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -362,7 +362,7 @@ sales channels that match the query.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`SalesChannel`](internal.SalesChannel.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[SalesChannel](internal.SalesChannel.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the sales channels as\n  the first element and the total count of sales channels that matches the query\n  as the second element.",
@@ -396,7 +396,7 @@ List all product ids that belongs to the sales channels ids
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `[salesChannelId: string]`: `string`[];  }\\>",
+    "type": "Promise&#60;&#123; [salesChannelId: string]: string[];  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -439,7 +439,7 @@ Remove a batch of product from a sales channel
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel on which the products have been removed",
@@ -468,7 +468,7 @@ Retrieve a SalesChannel by id
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "description": "SC config This feature is under development and may change in the future. To use this feature please enable the corresponding feature flag in your medusa backend project.",
     "optional": true,
     "defaultValue": "",
@@ -482,7 +482,7 @@ Retrieve a SalesChannel by id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a sales channel",
@@ -511,7 +511,7 @@ Find a sales channel by name.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "description": "find config",
     "optional": true,
     "defaultValue": "",
@@ -525,7 +525,7 @@ Find a sales channel by name.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`unknown`\\>",
+    "type": "Promise&#60;unknown&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a sales channel with matching name",
@@ -545,7 +545,7 @@ Retrieves the default sales channel.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the sales channel",
@@ -565,7 +565,7 @@ A generic retrieve used to find a sales channel by different attributes.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../types/internal.internal.Selector.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "description": "SC selector",
     "optional": false,
     "defaultValue": "",
@@ -574,7 +574,7 @@ A generic retrieve used to find a sales channel by different attributes.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "description": "find config",
     "optional": true,
     "defaultValue": "",
@@ -588,7 +588,7 @@ A generic retrieve used to find a sales channel by different attributes.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a single SC matching the query or throws",
@@ -606,7 +606,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -647,7 +647,7 @@ ___
   },
   {
     "name": "data",
-    "type": "[`Partial`](../types/internal.Partial.mdx)<[`CreateSalesChannelInput`](../types/internal.CreateSalesChannelInput.mdx)\\>",
+    "type": "[Partial](../types/internal.Partial.mdx)&#60;[CreateSalesChannelInput](../types/internal.CreateSalesChannelInput.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -661,7 +661,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`SalesChannel`](internal.SalesChannel.mdx)\\>",
+    "type": "Promise&#60;[SalesChannel](internal.SalesChannel.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -679,7 +679,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -693,7 +693,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "SalesChannelService",
-    "type": "[`SalesChannelService`](internal.internal.SalesChannelService.mdx)",
+    "type": "[SalesChannelService](internal.internal.SalesChannelService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -22,7 +22,7 @@ The prices to add to a price set.
   },
   {
     "name": "prices",
-    "type": "[`CreatePricesDTO`](CreatePricesDTO.mdx)[]",
+    "type": "[CreatePricesDTO](CreatePricesDTO.mdx)[]",
     "description": "The prices to add to the price set.",
     "optional": false,
     "defaultValue": "",
@@ -39,7 +39,7 @@ The prices to add to a price set.
       },
       {
         "name": "currency",
-        "type": "[`CreateCurrencyDTO`](CreateCurrencyDTO.mdx)",
+        "type": "[CreateCurrencyDTO](CreateCurrencyDTO.mdx)",
         "description": "The currency of this money amount.",
         "optional": true,
         "defaultValue": "",
@@ -121,7 +121,7 @@ The prices to add to a price set.
       },
       {
         "name": "rules",
-        "type": "Record<`string`, `string`\\>",
+        "type": "`Record<string, string>`",
         "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
         "optional": false,
         "defaultValue": "",

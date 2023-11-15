@@ -49,7 +49,7 @@ A Product Collection allows grouping together products for promotional purposes.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ A Product Collection allows grouping together products for promotional purposes.
   },
   {
     "name": "products",
-    "type": "[`Product`](internal.Product.mdx)[]",
+    "type": "[Product](internal.Product.mdx)[]",
     "description": "The details of the products that belong to this product collection.",
     "optional": false,
     "defaultValue": "",

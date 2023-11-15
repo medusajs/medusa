@@ -15,7 +15,7 @@ A service that calculates total and subtotals for orders, carts etc..
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -33,7 +33,7 @@ A service that calculates total and subtotals for orders, carts etc..
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -42,7 +42,7 @@ A service that calculates total and subtotals for orders, carts etc..
   },
   {
     "name": "featureFlagRouter_",
-    "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
+    "type": "[FlagRouter](internal.FlagRouter.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -51,7 +51,7 @@ A service that calculates total and subtotals for orders, carts etc..
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -60,7 +60,7 @@ A service that calculates total and subtotals for orders, carts etc..
   },
   {
     "name": "newTotalsService_",
-    "type": "[`NewTotalsService`](internal.internal.NewTotalsService.mdx)",
+    "type": "[NewTotalsService](internal.internal.NewTotalsService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -69,7 +69,7 @@ A service that calculates total and subtotals for orders, carts etc..
   },
   {
     "name": "taxCalculationStrategy_",
-    "type": "[`ITaxCalculationStrategy`](../interfaces/internal.internal.ITaxCalculationStrategy.mdx)",
+    "type": "[ITaxCalculationStrategy](../interfaces/internal.internal.ITaxCalculationStrategy.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -78,7 +78,7 @@ A service that calculates total and subtotals for orders, carts etc..
   },
   {
     "name": "taxProviderService_",
-    "type": "[`TaxProviderService`](internal.internal.TaxProviderService.mdx)",
+    "type": "[TaxProviderService](internal.internal.TaxProviderService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -87,7 +87,7 @@ A service that calculates total and subtotals for orders, carts etc..
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -105,7 +105,7 @@ A service that calculates total and subtotals for orders, carts etc..
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -127,7 +127,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
@@ -136,7 +136,7 @@ transaction manager is created.
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -145,7 +145,7 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
@@ -159,7 +159,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -179,7 +179,7 @@ Calculates either fixed or percentage discount of a variant
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "id of line item",
     "optional": false,
     "defaultValue": "",
@@ -215,7 +215,7 @@ Calculates either fixed or percentage discount of a variant
   },
   {
     "name": "discountType",
-    "type": "[`DiscountRuleType`](../enums/internal.internal.DiscountRuleType.mdx)",
+    "type": "[DiscountRuleType](../enums/internal.internal.DiscountRuleType.mdx)",
     "description": "the type of discount (fixed or percentage)",
     "optional": false,
     "defaultValue": "",
@@ -257,7 +257,7 @@ alongside the variant on which the discount was applied.
 <ParameterTypes parameters={[
   {
     "name": "discount",
-    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "type": "[Discount](internal.Discount-1.mdx)",
     "description": "the discount to which we do the calculation",
     "optional": false,
     "defaultValue": "",
@@ -266,7 +266,7 @@ alongside the variant on which the discount was applied.
   },
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "the cart to calculate discounts for",
     "optional": false,
     "defaultValue": "",
@@ -280,7 +280,7 @@ alongside the variant on which the discount was applied.
 <ParameterTypes parameters={[
   {
     "name": "LineDiscount[]",
-    "type": "[`LineDiscount`](../types/internal.LineDiscount.mdx)[]",
+    "type": "[LineDiscount](../types/internal.LineDiscount.mdx)[]",
     "optional": false,
     "defaultValue": "",
     "description": "array of triples of lineitem, variant and applied discount",
@@ -311,7 +311,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.claims",
-    "type": "[`ClaimOrder`](internal.ClaimOrder.mdx)[]",
+    "type": "[ClaimOrder](internal.ClaimOrder.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -320,7 +320,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.discounts",
-    "type": "[`Discount`](internal.Discount-1.mdx)[]",
+    "type": "[Discount](internal.Discount-1.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -329,7 +329,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.items",
-    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "type": "[LineItem](internal.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -338,7 +338,7 @@ applies to a specific line item.
   },
   {
     "name": "orderOrCart.swaps",
-    "type": "[`Swap`](internal.Swap.mdx)[]",
+    "type": "[Swap](internal.Swap.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -347,7 +347,7 @@ applies to a specific line item.
   },
   {
     "name": "options",
-    "type": "[`AllocationMapOptions`](../types/internal.AllocationMapOptions.mdx)",
+    "type": "[AllocationMapOptions](../types/internal.AllocationMapOptions.mdx)",
     "description": "controls what should be included in allocation map",
     "optional": true,
     "defaultValue": "",
@@ -361,7 +361,7 @@ applies to a specific line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineAllocationsMap`](../types/internal.LineAllocationsMap.mdx)\\>",
+    "type": "Promise&#60;[LineAllocationsMap](../types/internal.LineAllocationsMap.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the allocation map for the line items in the cart or order.",
@@ -381,7 +381,7 @@ Prepares the calculation context for a tax total calculation.
 <ParameterTypes parameters={[
   {
     "name": "calculationContextData",
-    "type": "[`CalculationContextData`](../types/internal.CalculationContextData.mdx)",
+    "type": "[CalculationContextData](../types/internal.CalculationContextData.mdx)",
     "description": "the calculationContextData to get the calculation context for",
     "optional": false,
     "defaultValue": "",
@@ -390,7 +390,7 @@ Prepares the calculation context for a tax total calculation.
   },
   {
     "name": "options",
-    "type": "[`CalculationContextOptions`](../types/internal.CalculationContextOptions.mdx)",
+    "type": "[CalculationContextOptions](../types/internal.CalculationContextOptions.mdx)",
     "description": "options to gather context by",
     "optional": true,
     "defaultValue": "",
@@ -404,7 +404,7 @@ Prepares the calculation context for a tax total calculation.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxCalculationContext`](../types/internal.internal.TaxCalculationContext.mdx)\\>",
+    "type": "Promise&#60;[TaxCalculationContext](../types/internal.internal.TaxCalculationContext.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the tax calculation context",
@@ -425,7 +425,7 @@ discount types. If discounts aren't present or invalid returns 0.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "the cart or order to calculate discounts for",
     "optional": false,
     "defaultValue": "",
@@ -439,7 +439,7 @@ discount types. If discounts aren't present or invalid returns 0.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the total discounts amount",
@@ -459,7 +459,7 @@ Gets the gift card amount on a cart or order.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "the cart or order to get gift card amount for",
     "optional": false,
     "defaultValue": "",
@@ -491,7 +491,7 @@ Gets the gift card amount on a cart or order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `tax_total`: `number` ; `total`: `number`  }\\>",
+    "type": "Promise&#60;&#123; tax_total: number ; total: number  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the gift card amount applied to the cart or order",
@@ -512,7 +512,7 @@ cards are taxable this amount should exclude taxes.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "the cart or order to get gift card amount for",
     "optional": false,
     "defaultValue": "",
@@ -526,7 +526,7 @@ cards are taxable this amount should exclude taxes.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the gift card amount applied to the cart or order",
@@ -555,7 +555,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "cartOrOrder.claims",
-    "type": "[`ClaimOrder`](internal.ClaimOrder.mdx)[]",
+    "type": "[ClaimOrder](internal.ClaimOrder.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -564,7 +564,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "cartOrOrder.items",
-    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "type": "[LineItem](internal.LineItem.mdx)[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -573,7 +573,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "cartOrOrder.swaps",
-    "type": "[`Swap`](internal.Swap.mdx)[]",
+    "type": "[Swap](internal.Swap.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -582,7 +582,7 @@ Returns the discount amount allocated to the line items of an order.
   },
   {
     "name": "discount",
-    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "type": "[Discount](internal.Discount-1.mdx)",
     "description": "the discount to use as context for the calculation",
     "optional": true,
     "defaultValue": "",
@@ -596,7 +596,7 @@ Returns the discount amount allocated to the line items of an order.
 <ParameterTypes parameters={[
   {
     "name": "LineDiscountAmount[]",
-    "type": "[`LineDiscountAmount`](../types/internal.LineDiscountAmount.mdx)[]",
+    "type": "[LineDiscountAmount](../types/internal.LineDiscountAmount.mdx)[]",
     "optional": false,
     "defaultValue": "",
     "description": "the allocations that the discount has on the items in the cart or\n  order",
@@ -614,7 +614,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -646,7 +646,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "Line Items are created when a product is added to a Cart. When Line Items are purchased they will get copied to the resulting order, swap, or claim, and can eventually be referenced in Fulfillments and Returns. Line items may also be used for order edits.",
     "optional": false,
     "defaultValue": "",
@@ -655,7 +655,7 @@ ___
   },
   {
     "name": "discount",
-    "type": "[`Discount`](internal.Discount-1.mdx)",
+    "type": "[Discount](internal.Discount-1.mdx)",
     "description": "A discount can be applied to a cart for promotional purposes.",
     "optional": false,
     "defaultValue": "",
@@ -689,7 +689,7 @@ The amount that can be refunded for a given line item.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "order to use as context for the calculation",
     "optional": false,
     "defaultValue": "",
@@ -698,7 +698,7 @@ The amount that can be refunded for a given line item.
   },
   {
     "name": "lineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "the line item to calculate the refund amount for.",
     "optional": false,
     "defaultValue": "",
@@ -712,7 +712,7 @@ The amount that can be refunded for a given line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item refund amount.",
@@ -733,7 +733,7 @@ taxes into account. This can be controlled through the options.
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "the line item to calculate a total for",
     "optional": false,
     "defaultValue": "",
@@ -742,7 +742,7 @@ taxes into account. This can be controlled through the options.
   },
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "the cart or order to use as context for the calculation",
     "optional": false,
     "defaultValue": "",
@@ -751,7 +751,7 @@ taxes into account. This can be controlled through the options.
   },
   {
     "name": "options",
-    "type": "[`GetLineItemTotalOptions`](../types/internal.GetLineItemTotalOptions.mdx)",
+    "type": "[GetLineItemTotalOptions](../types/internal.GetLineItemTotalOptions.mdx)",
     "description": "the options to use for the calculation",
     "optional": true,
     "defaultValue": "",
@@ -765,7 +765,7 @@ taxes into account. This can be controlled through the options.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the line item total",
@@ -787,7 +787,7 @@ applied to a line item and the amount of tax applied to a line item.
 <ParameterTypes parameters={[
   {
     "name": "lineItem",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "the line item to calculate totals for",
     "optional": false,
     "defaultValue": "",
@@ -796,7 +796,7 @@ applied to a line item and the amount of tax applied to a line item.
   },
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "the cart or order to use as context for the calculation",
     "optional": false,
     "defaultValue": "",
@@ -805,7 +805,7 @@ applied to a line item and the amount of tax applied to a line item.
   },
   {
     "name": "options",
-    "type": "[`LineItemTotalsOptions`](../types/internal.LineItemTotalsOptions.mdx)",
+    "type": "[LineItemTotalsOptions](../types/internal.LineItemTotalsOptions.mdx)",
     "description": "the options to evaluate the line item totals for",
     "optional": true,
     "defaultValue": "",
@@ -819,7 +819,7 @@ applied to a line item and the amount of tax applied to a line item.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`LineItemTotals`](../types/internal.LineItemTotals-1.mdx)\\>",
+    "type": "Promise&#60;[LineItemTotals](../types/internal.LineItemTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the breakdown of the line item totals",
@@ -839,7 +839,7 @@ Gets the total payments made on an order
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "the order to calculate paid amount for",
     "optional": false,
     "defaultValue": "",
@@ -875,7 +875,7 @@ apply the discount again before refunding them.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "cart or order to calculate subtotal for",
     "optional": false,
     "defaultValue": "",
@@ -884,7 +884,7 @@ apply the discount again before refunding them.
   },
   {
     "name": "lineItems",
-    "type": "[`LineItem`](internal.LineItem.mdx)[]",
+    "type": "[LineItem](internal.LineItem.mdx)[]",
     "description": "the line items to calculate refund total for",
     "optional": false,
     "defaultValue": "",
@@ -898,7 +898,7 @@ apply the discount again before refunding them.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -918,7 +918,7 @@ Gets the total refund amount for an order.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "the order to get total refund amount for.",
     "optional": false,
     "defaultValue": "",
@@ -953,7 +953,7 @@ already provided.
 <ParameterTypes parameters={[
   {
     "name": "shippingMethod",
-    "type": "[`ShippingMethod`](internal.ShippingMethod-4.mdx)",
+    "type": "[ShippingMethod](internal.ShippingMethod-4.mdx)",
     "description": "the shipping method to get totals breakdown for.",
     "optional": false,
     "defaultValue": "",
@@ -962,7 +962,7 @@ already provided.
   },
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "the cart or order to use as context for the breakdown",
     "optional": false,
     "defaultValue": "",
@@ -971,7 +971,7 @@ already provided.
   },
   {
     "name": "opts",
-    "type": "[`GetShippingMethodTotalsOptions`](../types/internal.GetShippingMethodTotalsOptions.mdx)",
+    "type": "[GetShippingMethodTotalsOptions](../types/internal.GetShippingMethodTotalsOptions.mdx)",
     "description": "options for what should be included",
     "optional": true,
     "defaultValue": "",
@@ -985,7 +985,7 @@ already provided.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ShippingMethodTotals`](../types/internal.ShippingMethodTotals-1.mdx)\\>",
+    "type": "Promise&#60;[ShippingMethodTotals](../types/internal.ShippingMethodTotals-1.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "An object that breaks down the totals for the shipping method",
@@ -1005,7 +1005,7 @@ Calculates shipping total
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "cart or order to calculate subtotal for",
     "optional": false,
     "defaultValue": "",
@@ -1019,7 +1019,7 @@ Calculates shipping total
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "shipping total",
@@ -1039,7 +1039,7 @@ Calculates subtotal of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "cart or order to calculate subtotal for",
     "optional": false,
     "defaultValue": "",
@@ -1048,7 +1048,7 @@ Calculates subtotal of a given cart or order.
   },
   {
     "name": "opts",
-    "type": "[`SubtotalOptions`](../types/internal.SubtotalOptions.mdx)",
+    "type": "[SubtotalOptions](../types/internal.SubtotalOptions.mdx)",
     "description": "options",
     "optional": true,
     "defaultValue": "",
@@ -1062,7 +1062,7 @@ Calculates subtotal of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -1083,7 +1083,7 @@ difference.
 <ParameterTypes parameters={[
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "the order to calculate swap total for",
     "optional": false,
     "defaultValue": "",
@@ -1118,7 +1118,7 @@ Currently based on the Danish tax system
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "cart or order to calculate tax total for",
     "optional": false,
     "defaultValue": "",
@@ -1141,7 +1141,7 @@ Currently based on the Danish tax system
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<``null`` \\| `number`\\>",
+    "type": "Promise&#60;`null` \\| number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "tax total",
@@ -1161,7 +1161,7 @@ Calculates total of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "cartOrOrder",
-    "type": "[`Cart`](internal.Cart.mdx) \\| [`Order`](internal.Order.mdx)",
+    "type": "[Cart](internal.Cart.mdx) \\| [Order](internal.Order.mdx)",
     "description": "object to calculate total for",
     "optional": false,
     "defaultValue": "",
@@ -1170,7 +1170,7 @@ Calculates total of a given cart or order.
   },
   {
     "name": "options",
-    "type": "[`GetTotalsOptions`](../types/internal.GetTotalsOptions.mdx)",
+    "type": "[GetTotalsOptions](../types/internal.GetTotalsOptions.mdx)",
     "description": "options to calculate by",
     "optional": true,
     "defaultValue": "",
@@ -1184,7 +1184,7 @@ Calculates total of a given cart or order.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`number`\\>",
+    "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the calculated subtotal",
@@ -1236,7 +1236,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1268,7 +1268,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1282,7 +1282,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "TotalsService",
-    "type": "[`TotalsService`](internal.internal.TotalsService.mdx)",
+    "type": "[TotalsService](internal.internal.TotalsService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

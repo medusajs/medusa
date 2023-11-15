@@ -6,87 +6,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # AxiosInstance
 
-## Callable
-
-### AxiosInstance
-
-**AxiosInstance**(`config`): [`AxiosPromise`](internal.AxiosPromise.mdx)<`any`\>
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "config",
-    "type": "`AxiosRequestConfig`<`any`\\>",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "AxiosPromise",
-    "type": "[`AxiosPromise`](internal.AxiosPromise.mdx)<`any`\\>",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-### AxiosInstance
-
-**AxiosInstance**(`url`, `config?`): [`AxiosPromise`](internal.AxiosPromise.mdx)<`any`\>
-
-#### Parameters
-
-<ParameterTypes parameters={[
-  {
-    "name": "url",
-    "type": "`string`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  },
-  {
-    "name": "config",
-    "type": "`AxiosRequestConfig`<`any`\\>",
-    "description": "",
-    "optional": true,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "AxiosPromise",
-    "type": "[`AxiosPromise`](internal.AxiosPromise.mdx)<`any`\\>",
-    "optional": false,
-    "defaultValue": "",
-    "description": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "defaults",
-    "type": "[`AxiosDefaults`](internal.AxiosDefaults.mdx)<`any`\\>",
+    "type": "[AxiosDefaults](internal.AxiosDefaults.mdx)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -104,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "interceptors.request",
-    "type": "[`AxiosInterceptorManager`](internal.AxiosInterceptorManager.mdx)<`AxiosRequestConfig`<`any`\\>\\>",
+    "type": "[AxiosInterceptorManager](internal.AxiosInterceptorManager.mdx)&#60;AxiosRequestConfig&#60;any&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -113,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "interceptors.response",
-    "type": "[`AxiosInterceptorManager`](internal.AxiosInterceptorManager.mdx)<[`AxiosResponse`](internal.AxiosResponse.mdx)<`any`, `any`\\>\\>",
+    "type": "[AxiosInterceptorManager](internal.AxiosInterceptorManager.mdx)&#60;[AxiosResponse](internal.AxiosResponse.mdx)&#60;any, any&#62;&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -140,7 +65,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -154,7 +79,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -181,7 +106,7 @@ ___
   },
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -195,7 +120,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -213,7 +138,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`any`\\>",
+    "type": "AxiosRequestConfig&#60;any&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -254,7 +179,7 @@ ___
   },
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -268,7 +193,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -295,7 +220,7 @@ ___
   },
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -309,7 +234,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -345,7 +270,7 @@ ___
   },
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -359,7 +284,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -395,7 +320,7 @@ ___
   },
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -409,7 +334,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -445,7 +370,7 @@ ___
   },
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -459,7 +384,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -477,7 +402,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "`AxiosRequestConfig`<`D`\\>",
+    "type": "AxiosRequestConfig&#60;D&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -491,7 +416,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`R`\\>",
+    "type": "Promise&#60;R&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

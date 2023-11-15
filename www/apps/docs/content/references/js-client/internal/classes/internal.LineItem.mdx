@@ -13,7 +13,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
 <ParameterTypes parameters={[
   {
     "name": "adjustments",
-    "type": "[`LineItemAdjustment`](internal.internal.LineItemAdjustment.mdx)[]",
+    "type": "[LineItemAdjustment](internal.internal.LineItemAdjustment.mdx)[]",
     "description": "The details of the item's adjustments, which are available when a discount is applied on the item.",
     "optional": false,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "The details of the cart that the line item may belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "claim_order",
-    "type": "[`ClaimOrder`](internal.ClaimOrder.mdx)",
+    "type": "[ClaimOrder](internal.ClaimOrder.mdx)",
     "description": "The details of the claim that the line item may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -131,7 +131,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   {
     "name": "includes_tax",
     "type": "`boolean`",
-    "description": "Indicates if the line item unit_price include tax",
+    "description": "Indicates if the line item unit\\_price include tax",
     "optional": false,
     "defaultValue": "false",
     "expandable": false,
@@ -158,7 +158,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -167,7 +167,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "order",
-    "type": "[`Order`](internal.Order.mdx)",
+    "type": "[Order](internal.Order.mdx)",
     "description": "The details of the order that the line item may belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -176,7 +176,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "order_edit",
-    "type": "``null`` \\| [`OrderEdit`](internal.OrderEdit.mdx)",
+    "type": "``null`` \\| [OrderEdit](internal.OrderEdit.mdx)",
     "description": "The details of the order edit.",
     "optional": true,
     "defaultValue": "",
@@ -302,7 +302,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "swap",
-    "type": "[`Swap`](internal.Swap.mdx)",
+    "type": "[Swap](internal.Swap.mdx)",
     "description": "The details of the swap that the line item may belong to.",
     "optional": false,
     "defaultValue": "",
@@ -320,7 +320,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "tax_lines",
-    "type": "[`LineItemTaxLine`](internal.internal.LineItemTaxLine.mdx)[]",
+    "type": "[LineItemTaxLine](internal.internal.LineItemTaxLine.mdx)[]",
     "description": "The details of the item's tax lines.",
     "optional": false,
     "defaultValue": "",
@@ -383,7 +383,7 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
   },
   {
     "name": "variant",
-    "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)",
+    "type": "[ProductVariant](internal.internal.ProductVariant.mdx)",
     "description": "The details of the product variant that this item was created from.",
     "optional": false,
     "defaultValue": "",
@@ -405,10 +405,6 @@ Line Items are created when a product is added to a Cart. When Line Items are pu
 
 ### afterUpdateOrLoad
 
- **afterUpdateOrLoad**: 
-
 ___
 
 ### beforeUpdate
-
- **beforeUpdate**:

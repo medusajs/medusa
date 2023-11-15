@@ -7,7 +7,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # RegionsResource
 
-This class is used to send requests to [Store Region API Routes](https://docs.medusajs.com/api/store#regions_getregions). All its method
+This class is used to send requests to [Store Region API Routes](https://docs.medusajs.com/api/store#regions\_getregions). All its method
 are available in the JS Client under the `medusa.regions` property.
 
 Regions are different countries or geographical regions that the commerce store serves customers in.
@@ -36,7 +36,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -50,7 +50,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreRegionsListRes`](../internal/types/internal.StoreRegionsListRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreRegionsListRes](../internal/types/internal.StoreRegionsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of regions with pagination fields.",
@@ -58,7 +58,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
     "children": [
       {
         "name": "StoreRegionsListRes",
-        "type": "[`PaginatedResponse`](../internal/types/internal.PaginatedResponse-1.mdx) & { `regions`: [`Region`](../internal/classes/internal.Region.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/types/internal.PaginatedResponse-1.mdx) & `&#123; regions: [Region](../internal/classes/internal.Region.mdx)[]  &#125;`",
         "description": "The list of regions with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -93,7 +93,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
           },
           {
             "name": "regions",
-            "type": "[`Region`](../internal/classes/internal.Region.mdx)[]",
+            "type": "[Region](../internal/classes/internal.Region.mdx)[]",
             "description": "An array of regions details.",
             "optional": false,
             "defaultValue": "",
@@ -110,7 +110,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "countries",
-                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "type": "[Country](../internal/classes/internal.internal.Country.mdx)[]",
                 "description": "The details of the countries included in this region.",
                 "optional": false,
                 "defaultValue": "",
@@ -128,7 +128,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency used in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -155,7 +155,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "fulfillment_providers",
-                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "type": "[FulfillmentProvider](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
                 "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -192,7 +192,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -210,7 +210,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "payment_providers",
-                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "type": "[PaymentProvider](../internal/classes/internal.PaymentProvider.mdx)[]",
                 "description": "The details of the payment providers that can be used to process payments in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -228,7 +228,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "tax_provider",
-                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "type": "[TaxProvider](../internal/classes/internal.TaxProvider.mdx)",
                 "description": "The details of the tax provider used in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -255,7 +255,7 @@ medusa.regions.list().then(({ regions, count, limit, offset }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "type": "``null`` \\| [TaxRate](../internal/classes/internal.TaxRate.mdx)[]",
                 "description": "The details of the tax rates used in the region, aside from the default rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -309,7 +309,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -323,7 +323,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../internal/types/internal.ResponsePromise.mdx)<[`StoreRegionsRes`](../internal/types/internal.StoreRegionsRes.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreRegionsRes](../internal/types/internal.StoreRegionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the region's details.",
@@ -339,7 +339,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
         "children": [
           {
             "name": "region",
-            "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+            "type": "[Region](../internal/classes/internal.Region.mdx)",
             "description": "Region details.",
             "optional": false,
             "defaultValue": "",
@@ -356,7 +356,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "countries",
-                "type": "[`Country`](../internal/classes/internal.internal.Country.mdx)[]",
+                "type": "[Country](../internal/classes/internal.internal.Country.mdx)[]",
                 "description": "The details of the countries included in this region.",
                 "optional": false,
                 "defaultValue": "",
@@ -374,7 +374,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency used in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -401,7 +401,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "fulfillment_providers",
-                "type": "[`FulfillmentProvider`](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
+                "type": "[FulfillmentProvider](../internal/classes/internal.internal.FulfillmentProvider.mdx)[]",
                 "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -438,7 +438,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -456,7 +456,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "payment_providers",
-                "type": "[`PaymentProvider`](../internal/classes/internal.PaymentProvider.mdx)[]",
+                "type": "[PaymentProvider](../internal/classes/internal.PaymentProvider.mdx)[]",
                 "description": "The details of the payment providers that can be used to process payments in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -474,7 +474,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "tax_provider",
-                "type": "[`TaxProvider`](../internal/classes/internal.TaxProvider.mdx)",
+                "type": "[TaxProvider](../internal/classes/internal.TaxProvider.mdx)",
                 "description": "The details of the tax provider used in the region.",
                 "optional": false,
                 "defaultValue": "",
@@ -501,7 +501,7 @@ medusa.regions.retrieve(regionId).then(({ region }) => {
               },
               {
                 "name": "tax_rates",
-                "type": "``null`` \\| [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+                "type": "``null`` \\| [TaxRate](../internal/classes/internal.TaxRate.mdx)[]",
                 "description": "The details of the tax rates used in the region, aside from the default rate.",
                 "optional": false,
                 "defaultValue": "",

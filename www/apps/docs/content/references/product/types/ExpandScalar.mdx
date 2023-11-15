@@ -6,9 +6,9 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # ExpandScalar
 
- **ExpandScalar**<`T`\>: ``null`` \| `T` extends `string` ? `string` \| `RegExp` : `T` extends `Date` ? `Date` \| `string` : `T`
+ **ExpandScalar**`<TypeParameter T>`: `null` \| T extends string ? string \| RegExp : T extends Date ? Date \| string : T
 
-#### Type parameters
+### Type parameters
 
 <ParameterTypes parameters={[
   {

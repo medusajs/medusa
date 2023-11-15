@@ -30,7 +30,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "invite_link_template",
     "type": "`string`",
-    "description": "A template for invite links - use `{{invite_token}}` to insert the invite token",
+    "description": "A template for invite links - use `&#123;&#123;invite\\_token&#125;&#125;` to insert the invite token",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs with additional information.",
     "optional": true,
     "defaultValue": "",
@@ -57,7 +57,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "payment_link_template",
     "type": "`string`",
-    "description": "A template for payment links - use `{{cart_id}}` to insert the Cart ID",
+    "description": "A template for payment links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Cart ID",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -66,7 +66,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "swap_link_template",
     "type": "`string`",
-    "description": "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID",
+    "description": "A template for Swap links - use `&#123;&#123;cart\\_id&#125;&#125;` to insert the Swap Cart ID",
     "optional": true,
     "defaultValue": "",
     "expandable": false,

@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "axiosClient",
-    "type": "[`AxiosInstance`](../interfaces/internal.AxiosInstance.mdx)",
+    "type": "[AxiosInstance](../interfaces/internal.AxiosInstance.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -20,7 +20,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "config",
-    "type": "[`Config`](../interfaces/internal.Config.mdx)",
+    "type": "[Config](../interfaces/internal.Config.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -42,7 +42,7 @@ and the exponential backoff approach.
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[`Config`](../interfaces/internal.Config.mdx)",
+    "type": "[Config](../interfaces/internal.Config.mdx)",
     "description": "user supplied configurations",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ and the exponential backoff approach.
 <ParameterTypes parameters={[
   {
     "name": "AxiosInstance",
-    "type": "[`AxiosInstance`](../interfaces/internal.AxiosInstance.mdx)",
+    "type": "[AxiosInstance](../interfaces/internal.AxiosInstance.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -120,7 +120,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Record",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -140,7 +140,7 @@ Axios request
 <ParameterTypes parameters={[
   {
     "name": "method",
-    "type": "[`RequestMethod`](../types/internal.RequestMethod.mdx)",
+    "type": "[RequestMethod](../types/internal.RequestMethod.mdx)",
     "description": "request method",
     "optional": false,
     "defaultValue": "",
@@ -158,7 +158,7 @@ Axios request
   },
   {
     "name": "payload",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "request payload",
     "optional": false,
     "defaultValue": "{}",
@@ -167,7 +167,7 @@ Axios request
   },
   {
     "name": "options",
-    "type": "[`RequestOptions`](../interfaces/internal.RequestOptions.mdx)",
+    "type": "[RequestOptions](../interfaces/internal.RequestOptions.mdx)",
     "description": "axios configuration",
     "optional": false,
     "defaultValue": "{}",
@@ -176,7 +176,7 @@ Axios request
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "custom request headers",
     "optional": false,
     "defaultValue": "{}",
@@ -190,7 +190,7 @@ Axios request
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -252,7 +252,7 @@ We add the idempotency key, if the request is configured to retry.
 <ParameterTypes parameters={[
   {
     "name": "userHeaders",
-    "type": "[`RequestOptions`](../interfaces/internal.RequestOptions.mdx)",
+    "type": "[RequestOptions](../interfaces/internal.RequestOptions.mdx)",
     "description": "user supplied headers",
     "optional": false,
     "defaultValue": "",
@@ -261,7 +261,7 @@ We add the idempotency key, if the request is configured to retry.
   },
   {
     "name": "method",
-    "type": "[`RequestMethod`](../types/internal.RequestMethod.mdx)",
+    "type": "[RequestMethod](../types/internal.RequestMethod.mdx)",
     "description": "request method",
     "optional": false,
     "defaultValue": "",
@@ -279,7 +279,7 @@ We add the idempotency key, if the request is configured to retry.
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "user supplied headers",
     "optional": false,
     "defaultValue": "{}",
@@ -293,7 +293,7 @@ We add the idempotency key, if the request is configured to retry.
 <ParameterTypes parameters={[
   {
     "name": "AxiosRequestHeaders",
-    "type": "Record<`string`, `string`\\>",
+    "type": "`Record<string, string>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -311,7 +311,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "[`AxiosError`](../interfaces/internal.AxiosError.mdx)<`any`, `any`\\>",
+    "type": "[AxiosError](../interfaces/internal.AxiosError.mdx)&#60;any, any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -99,7 +99,7 @@ v0.3.4
   },
   {
     "name": "errored",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "Returns error if the stream has been destroyed with an error.",
     "optional": false,
     "defaultValue": "",
@@ -171,7 +171,7 @@ v0.3.4
   },
   {
     "name": "readableEncoding",
-    "type": "``null`` \\| [`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "``null`` \\| [BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
     "optional": false,
     "defaultValue": "",
@@ -225,7 +225,7 @@ v0.3.4
   },
   {
     "name": "readyState",
-    "type": "[`SocketReadyState`](../types/internal.SocketReadyState.mdx)",
+    "type": "[SocketReadyState](../types/internal.SocketReadyState.mdx)",
     "description": "This property represents the state of the connection as a string. * If the stream is connecting `socket.readyState` is `opening`. * If the stream is readable and writable, it is `open`. * If the stream is readable and not writable, it is `readOnly`. * If the stream is not readable and writable, it is `writeOnly`.",
     "optional": false,
     "defaultValue": "",
@@ -342,7 +342,7 @@ v0.3.4
   },
   {
     "name": "captureRejectionSymbol",
-    "type": "typeof [`captureRejectionSymbol`](internal.Socket.mdx#capturerejectionsymbol)",
+    "type": "typeof [captureRejectionSymbol](internal.Socket.mdx#capturerejectionsymbol)",
     "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
     "optional": false,
     "defaultValue": "",
@@ -352,7 +352,7 @@ v0.3.4
   {
     "name": "captureRejections",
     "type": "`boolean`",
-    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data\\_structures#Boolean\\_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -361,7 +361,7 @@ v0.3.4
   {
     "name": "defaultMaxListeners",
     "type": "`number`",
-    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for \\_all\\_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects \\_all\\_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -369,7 +369,7 @@ v0.3.4
   },
   {
     "name": "errorMonitor",
-    "type": "typeof [`errorMonitor`](internal.Socket.mdx#errormonitor)",
+    "type": "typeof [errorMonitor](internal.Socket.mdx#errormonitor)",
     "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
     "optional": false,
     "defaultValue": "",
@@ -389,7 +389,7 @@ Calls `readable.destroy()` with an `AbortError` and returns a promise that fulfi
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -411,7 +411,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](../interfaces/internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -429,7 +429,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -479,7 +479,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -511,7 +511,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -520,7 +520,7 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -552,7 +552,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -625,7 +625,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -634,7 +634,7 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -666,7 +666,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "chunks",
-    "type": "{ `chunk`: `any` ; `encoding`: [`BufferEncoding`](../types/internal.BufferEncoding.mdx)  }[]",
+    "type": "`&#123; chunk: any ; encoding: [BufferEncoding](../types/internal.BufferEncoding.mdx)  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -675,7 +675,7 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -702,7 +702,7 @@ ___
 
 ### addListener
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 events.EventEmitter
   1. close
@@ -743,7 +743,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -752,7 +752,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -782,7 +782,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -791,7 +791,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -821,7 +821,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -830,7 +830,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -846,7 +846,7 @@ events.EventEmitter
   },
   {
     "name": "listener",
-    "type": "(`data`: [`Buffer`](../../modules/internal.mdx#buffer)) => `void`",
+    "type": "(`data`: [Buffer](../../modules/internal.mdx#buffer)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -860,7 +860,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -869,7 +869,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -899,7 +899,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -908,7 +908,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -938,7 +938,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -947,7 +947,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -963,7 +963,7 @@ events.EventEmitter
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -977,7 +977,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -986,7 +986,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -1002,7 +1002,7 @@ events.EventEmitter
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1016,7 +1016,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1025,7 +1025,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -1055,7 +1055,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1064,7 +1064,7 @@ events.EventEmitter
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**addListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -1094,7 +1094,7 @@ events.EventEmitter
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1114,8 +1114,8 @@ socket as reported by the operating system:`{ port: 12346, family: 'IPv4', addre
 
 <ParameterTypes parameters={[
   {
-    "name": "{} \\| AddressInfo",
-    "type": "{} \\| [`AddressInfo`](../interfaces/internal.AddressInfo.mdx)",
+    "name": "&#123;&#125; \\| AddressInfo",
+    "type": "`&#123;&#125;` \\| [AddressInfo](../interfaces/internal.AddressInfo.mdx)",
     "optional": true,
     "defaultValue": "",
     "description": "",
@@ -1140,7 +1140,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1154,7 +1154,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream of indexed pairs.",
@@ -1176,7 +1176,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ComposeFnParam`](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [`Iterable`](../interfaces/internal.Iterable.mdx)<`T`\\> \\| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\\>",
+    "type": "[ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [Iterable](../interfaces/internal.Iterable.mdx)&#60;T&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;T&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1194,7 +1194,7 @@ ___
   },
   {
     "name": "options.signal",
-    "type": "`AbortSignal`",
+    "type": "AbortSignal",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1211,7 +1211,7 @@ ___
 
 ### connect
 
-**connect**(`options`, `connectionListener?`): [`Socket`](internal.Socket.mdx)
+`**connect**(options, connectionListener?): [Socket](internal.Socket.mdx)`
 
 Initiate a connection on a given socket.
 
@@ -1236,7 +1236,7 @@ behavior.
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`SocketConnectOpts`](../types/internal.SocketConnectOpts.mdx)",
+    "type": "[SocketConnectOpts](../types/internal.SocketConnectOpts.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1259,7 +1259,7 @@ behavior.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1268,7 +1268,7 @@ behavior.
   }
 ]} />
 
-**connect**(`port`, `host`, `connectionListener?`): [`Socket`](internal.Socket.mdx)
+`**connect**(port, host, connectionListener?): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -1307,7 +1307,7 @@ behavior.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1316,7 +1316,7 @@ behavior.
   }
 ]} />
 
-**connect**(`port`, `connectionListener?`): [`Socket`](internal.Socket.mdx)
+`**connect**(port, connectionListener?): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -1346,7 +1346,7 @@ behavior.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1355,7 +1355,7 @@ behavior.
   }
 ]} />
 
-**connect**(`path`, `connectionListener?`): [`Socket`](internal.Socket.mdx)
+`**connect**(path, connectionListener?): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -1385,7 +1385,7 @@ behavior.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1445,7 +1445,7 @@ Implementors should not override this method, but instead implement `readable._d
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "Error which will be passed as payload in `'error'` event",
     "optional": true,
     "defaultValue": "",
@@ -1459,7 +1459,7 @@ Implementors should not override this method, but instead implement `readable._d
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1517,7 +1517,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1531,7 +1531,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream with *limit* chunks dropped from the start.",
@@ -1548,7 +1548,7 @@ ___
 
 ### emit
 
-**emit**(`event`, `...args`): `boolean`
+`**emit**(event, ...args): boolean`
 
 Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -1629,7 +1629,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 
 v0.1.26
 
-**emit**(`event`, `hadError`): `boolean`
+`**emit**(event, hadError): boolean`
 
 #### Parameters
 
@@ -1668,7 +1668,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1698,7 +1698,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `data`): `boolean`
+`**emit**(event, data): boolean`
 
 #### Parameters
 
@@ -1714,7 +1714,7 @@ v0.1.26
   },
   {
     "name": "data",
-    "type": "[`Buffer`](../../modules/internal.mdx#buffer)",
+    "type": "[Buffer](../../modules/internal.mdx#buffer)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1737,7 +1737,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1767,7 +1767,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1797,7 +1797,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `err`): `boolean`
+`**emit**(event, err): boolean`
 
 #### Parameters
 
@@ -1813,7 +1813,7 @@ v0.1.26
   },
   {
     "name": "err",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1836,7 +1836,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `err`, `address`, `family`, `host`): `boolean`
+`**emit**(event, err, address, family, host): boolean`
 
 #### Parameters
 
@@ -1852,7 +1852,7 @@ v0.1.26
   },
   {
     "name": "err",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1902,7 +1902,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1932,7 +1932,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1966,7 +1966,7 @@ ___
 
 ### end
 
-**end**(`callback?`): [`Socket`](internal.Socket.mdx)
+`**end**(callback?): [Socket](internal.Socket.mdx)`
 
 Half-closes the socket. i.e., it sends a FIN packet. It is possible the
 server will still send some data.
@@ -1992,7 +1992,7 @@ See `writable.end()` for further details.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -2005,14 +2005,14 @@ See `writable.end()` for further details.
 
 v0.1.90
 
-**end**(`buffer`, `callback?`): [`Socket`](internal.Socket.mdx)
+`**end**(buffer, callback?): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "buffer",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2035,7 +2035,7 @@ v0.1.90
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2044,14 +2044,14 @@ v0.1.90
   }
 ]} />
 
-**end**(`str`, `encoding?`, `callback?`): [`Socket`](internal.Socket.mdx)
+`**end**(str, encoding?, callback?): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "str",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2060,7 +2060,7 @@ v0.1.90
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2083,7 +2083,7 @@ v0.1.90
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2145,7 +2145,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2154,7 +2154,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2168,7 +2168,7 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for every one of the chunks.",
@@ -2194,7 +2194,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to filter chunks from the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2203,7 +2203,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2217,7 +2217,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream filtered with the predicate *fn*.",
@@ -2234,7 +2234,7 @@ ___
 
 ### find
 
-**find**<`T`\>(`fn`, `options?`): `Promise`<`undefined` \| `T`\>
+`**find**<TypeParameter T>(fn, options?): Promise&#60;undefined \| T&#62;`
 
 This method is similar to `Array.prototype.find` and calls *fn* on each chunk in the stream
 to find a chunk with a truthy value for *fn*. Once an *fn* call's awaited return value is truthy,
@@ -2246,7 +2246,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => data is T",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => data is T",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2255,7 +2255,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2269,7 +2269,7 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| `T`\\>",
+    "type": "Promise&#60;undefined \\| T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to the first chunk for which *fn* evaluated with a truthy value,\nor `undefined` if no element was found.",
@@ -2282,14 +2282,14 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 
 v17.5.0
 
-**find**(`fn`, `options?`): `Promise`<`any`\>
+`**find**(fn, options?): Promise&#60;any&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2298,7 +2298,7 @@ v17.5.0
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2312,7 +2312,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2336,7 +2336,7 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. May be async. May be a stream or generator.",
     "optional": false,
     "defaultValue": "",
@@ -2345,7 +2345,7 @@ will be merged (flattened) into the returned stream.
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2359,7 +2359,7 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream flat-mapped with the function *fn*.",
@@ -2392,7 +2392,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `void` \\| `Promise`<`void`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `void` \\| Promise&#60;void&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2401,7 +2401,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2415,7 +2415,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for when the stream has finished.",
@@ -2525,7 +2525,7 @@ or if the iterator should destroy the stream if the stream emitted an error duri
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](../interfaces/internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2645,7 +2645,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -2654,7 +2654,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -2668,7 +2668,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream mapped with the function *fn*.",
@@ -2715,7 +2715,7 @@ Alias for `emitter.removeListener()`.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2732,7 +2732,7 @@ ___
 
 ### on
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -2789,7 +2789,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2802,7 +2802,7 @@ myEE.emit('foo');
 
 v0.1.101
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -2832,7 +2832,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2841,7 +2841,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -2871,7 +2871,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2880,7 +2880,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -2896,7 +2896,7 @@ v0.1.101
   },
   {
     "name": "listener",
-    "type": "(`data`: [`Buffer`](../../modules/internal.mdx#buffer)) => `void`",
+    "type": "(`data`: [Buffer](../../modules/internal.mdx#buffer)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -2910,7 +2910,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2919,7 +2919,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -2949,7 +2949,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2958,7 +2958,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -2988,7 +2988,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2997,7 +2997,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3013,7 +3013,7 @@ v0.1.101
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3027,7 +3027,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3036,7 +3036,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3052,7 +3052,7 @@ v0.1.101
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3066,7 +3066,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3075,7 +3075,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3105,7 +3105,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3114,7 +3114,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**on**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3144,7 +3144,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3157,7 +3157,7 @@ ___
 
 ### once
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -3212,7 +3212,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3225,7 +3225,7 @@ myEE.emit('foo');
 
 v0.3.0
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3255,7 +3255,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3264,7 +3264,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3294,7 +3294,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3303,7 +3303,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3319,7 +3319,7 @@ v0.3.0
   },
   {
     "name": "listener",
-    "type": "(`data`: [`Buffer`](../../modules/internal.mdx#buffer)) => `void`",
+    "type": "(`data`: [Buffer](../../modules/internal.mdx#buffer)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3333,7 +3333,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3342,7 +3342,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3372,7 +3372,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3381,7 +3381,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3411,7 +3411,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3420,7 +3420,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3436,7 +3436,7 @@ v0.3.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3450,7 +3450,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3459,7 +3459,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3475,7 +3475,7 @@ v0.3.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3489,7 +3489,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3498,7 +3498,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3528,7 +3528,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3537,7 +3537,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**once**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3567,7 +3567,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3588,7 +3588,7 @@ Useful to throttle back an upload.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -3641,9 +3641,9 @@ ___
 
 ### prependListener
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
-Adds the `listener` function to the _beginning_ of the listeners array for the
+Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
 already been added. Multiple calls passing the same combination of `eventName`and `listener` will result in the `listener` being added, and called, multiple
 times.
@@ -3684,7 +3684,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3697,7 +3697,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3727,7 +3727,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3736,7 +3736,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3766,7 +3766,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3775,7 +3775,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3791,7 +3791,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`data`: [`Buffer`](../../modules/internal.mdx#buffer)) => `void`",
+    "type": "(`data`: [Buffer](../../modules/internal.mdx#buffer)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3805,7 +3805,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3814,7 +3814,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3844,7 +3844,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3853,7 +3853,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3883,7 +3883,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3892,7 +3892,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3908,7 +3908,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3922,7 +3922,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3931,7 +3931,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -3947,7 +3947,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3961,7 +3961,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3970,7 +3970,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4000,7 +4000,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4009,7 +4009,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4039,7 +4039,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4052,9 +4052,9 @@ ___
 
 ### prependOnceListener
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
-Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
+Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
 
 ```js
@@ -4093,7 +4093,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4106,7 +4106,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4136,7 +4136,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4145,7 +4145,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4175,7 +4175,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4184,7 +4184,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4200,7 +4200,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`data`: [`Buffer`](../../modules/internal.mdx#buffer)) => `void`",
+    "type": "(`data`: [Buffer](../../modules/internal.mdx#buffer)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -4214,7 +4214,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4223,7 +4223,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4253,7 +4253,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4262,7 +4262,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4292,7 +4292,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4301,7 +4301,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4317,7 +4317,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -4331,7 +4331,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4340,7 +4340,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4356,7 +4356,7 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error), `address`: `string`, `family`: `string` \\| `number`, `host`: `string`) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -4370,7 +4370,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4379,7 +4379,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4409,7 +4409,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4418,7 +4418,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**prependOnceListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -4448,7 +4448,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4475,7 +4475,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4572,7 +4572,7 @@ the data is returned as a `Buffer` object unless an encoding has been
 specified using the `readable.setEncoding()` method or the stream is operating
 in object mode.
 
-The optional `size` argument specifies a specific number of bytes to read. If`size` bytes are not available to be read, `null` will be returned _unless_the stream has ended, in which
+The optional `size` argument specifies a specific number of bytes to read. If`size` bytes are not available to be read, `null` will be returned \_unless\_the stream has ended, in which
 case all of the data remaining in the internal
 buffer will be returned.
 
@@ -4675,7 +4675,7 @@ ___
 
 ### reduce
 
-**reduce**<`T`\>(`fn`, `initial?`, `options?`): `Promise`<`T`\>
+`**reduce**<TypeParameter T>(fn, initial?, options?): Promise&#60;T&#62;`
 
 This method calls *fn* on each chunk of the stream in order, passing it the result from the calculation
 on the previous element. It returns a promise for the final value of the reduction.
@@ -4691,7 +4691,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `any`, `data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
+    "type": "(`previous`: `any`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "a reducer function to call over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -4709,7 +4709,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4723,7 +4723,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`\\>",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for the final value of the reduction.",
@@ -4736,14 +4736,14 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 
 v17.5.0
 
-**reduce**<`T`\>(`fn`, `initial`, `options?`): `Promise`<`T`\>
+`**reduce**<TypeParameter T>(fn, initial, options?): Promise&#60;T&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `T`, `data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
+    "type": "(`previous`: `T`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -4761,7 +4761,7 @@ v17.5.0
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4775,7 +4775,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`\\>",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4788,7 +4788,7 @@ ___
 
 ### ref
 
-Opposite of `unref()`, calling `ref()` on a previously `unref`ed socket will _not_ let the program exit if it's the only socket left (the default behavior).
+Opposite of `unref()`, calling `ref()` on a previously `unref`ed socket will \_not\_ let the program exit if it's the only socket left (the default behavior).
 If the socket is `ref`ed calling `ref` again will have no effect.
 
 #### Returns
@@ -4796,7 +4796,7 @@ If the socket is `ref`ed calling `ref` again will have no effect.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -4840,7 +4840,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4857,7 +4857,7 @@ ___
 
 ### removeListener
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -4876,7 +4876,7 @@ listener array for the specified `eventName`, then `removeListener()` must be
 called multiple times to remove each instance.
 
 Once an event is emitted, all listeners attached to it at the
-time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls _after_ emitting and _before_ the last listener finishes execution
+time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls \_after\_ emitting and \_before\_ the last listener finishes execution
 will not remove them from`emit()` in progress. Subsequent events behave as expected.
 
 ```js
@@ -4912,7 +4912,7 @@ myEmitter.emit('event');
 ```
 
 Because listeners are managed using an internal array, calling this will
-change the position indices of any listener registered _after_ the listener
+change the position indices of any listener registered \_after\_ the listener
 being removed. This will not impact the order in which listeners are called,
 but it means that any copies of the listener array as returned by
 the `emitter.listeners()` method will need to be recreated.
@@ -4967,7 +4967,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4980,7 +4980,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v0.1.26
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5010,7 +5010,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5019,7 +5019,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5049,7 +5049,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5058,7 +5058,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5088,7 +5088,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5097,7 +5097,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5113,7 +5113,7 @@ v0.1.26
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5127,7 +5127,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5136,7 +5136,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5166,7 +5166,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5175,7 +5175,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5205,7 +5205,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5214,7 +5214,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5230,7 +5230,7 @@ v0.1.26
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5244,7 +5244,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5253,7 +5253,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5283,7 +5283,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5292,7 +5292,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5322,7 +5322,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5331,7 +5331,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5347,7 +5347,7 @@ v0.1.26
   },
   {
     "name": "listener",
-    "type": "(`src`: [`Readable`](internal.Readable.mdx)) => `void`",
+    "type": "(`src`: [Readable](internal.Readable.mdx)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5361,7 +5361,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5370,7 +5370,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`Socket`](internal.Socket.mdx)
+`**removeListener**(event, listener): [Socket](internal.Socket.mdx)`
 
 #### Parameters
 
@@ -5400,7 +5400,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5423,7 +5423,7 @@ If this is not a TCP socket (for example, a pipe), calling this method will imme
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5447,7 +5447,7 @@ Resumes reading after a call to `socket.pause()`.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -5467,7 +5467,7 @@ The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Wr
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "The new default encoding",
     "optional": false,
     "defaultValue": "",
@@ -5481,7 +5481,7 @@ The `writable.setDefaultEncoding()` method sets the default `encoding` for a `Wr
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5505,7 +5505,7 @@ Set the encoding for the socket as a `Readable Stream`. See `readable.setEncodin
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -5519,7 +5519,7 @@ Set the encoding for the socket as a `Readable Stream`. See `readable.setEncodin
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -5578,7 +5578,7 @@ Enabling the keep-alive functionality will set the following socket options:
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -5621,7 +5621,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5668,7 +5668,7 @@ algorithm.
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -5731,7 +5731,7 @@ The optional `callback` parameter will be added as a one-time listener for the `
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -5758,7 +5758,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
@@ -5767,7 +5767,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -5781,7 +5781,7 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for at least one of the chunks.",
@@ -5814,7 +5814,7 @@ This method returns a new stream with the first *limit* chunks.
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -5828,7 +5828,7 @@ This method returns a new stream with the first *limit* chunks.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream with *limit* chunks taken.",
@@ -5855,7 +5855,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -5869,7 +5869,7 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise containing an array with the contents of the stream.",
@@ -5942,7 +5942,7 @@ ___
 The `readable.unpipe()` method detaches a `Writable` stream previously attached
 using the [pipe](../interfaces/internal.internal.MedusaRequest.mdx#pipe) method.
 
-If the `destination` is not specified, then _all_ pipes are detached.
+If the `destination` is not specified, then \_all\_ pipes are detached.
 
 If the `destination` is specified, but no pipe is set up for it, then
 the method does nothing.
@@ -5967,7 +5967,7 @@ setTimeout(() => {
 <ParameterTypes parameters={[
   {
     "name": "destination",
-    "type": "[`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "type": "[WritableStream](../interfaces/internal.WritableStream.mdx)",
     "description": "Optional specific stream to unpipe",
     "optional": true,
     "defaultValue": "",
@@ -5981,7 +5981,7 @@ setTimeout(() => {
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -6006,7 +6006,7 @@ active socket in the event system. If the socket is already `unref`ed calling`un
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "The socket itself.",
@@ -6097,7 +6097,7 @@ process of performing a read.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "Encoding of string chunks. Must be a valid `Buffer` encoding, such as `'utf8'` or `'ascii'`.",
     "optional": true,
     "defaultValue": "",
@@ -6155,7 +6155,7 @@ myReader.on('readable', () => {
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx)",
+    "type": "[ReadableStream](../interfaces/internal.ReadableStream-1.mdx)",
     "description": "An \"old style\" readable stream",
     "optional": false,
     "defaultValue": "",
@@ -6169,7 +6169,7 @@ myReader.on('readable', () => {
 <ParameterTypes parameters={[
   {
     "name": "Socket",
-    "type": "[`Socket`](internal.Socket.mdx)",
+    "type": "[Socket](internal.Socket.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -6186,7 +6186,7 @@ ___
 
 ### write
 
-**write**(`buffer`, `cb?`): `boolean`
+`**write**(buffer, cb?): boolean`
 
 Sends data on the socket. The second parameter specifies the encoding in the
 case of a string. It defaults to UTF8 encoding.
@@ -6205,7 +6205,7 @@ information.
 <ParameterTypes parameters={[
   {
     "name": "buffer",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6214,7 +6214,7 @@ information.
   },
   {
     "name": "cb",
-    "type": "(`err?`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err?`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6241,14 +6241,14 @@ information.
 
 v0.1.90
 
-**write**(`str`, `encoding?`, `cb?`): `boolean`
+`**write**(str, encoding?, cb?): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "str",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6257,7 +6257,7 @@ v0.1.90
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../types/internal.BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6266,7 +6266,7 @@ v0.1.90
   },
   {
     "name": "cb",
-    "type": "(`err?`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err?`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6328,7 +6328,7 @@ function example(signal) {
 <ParameterTypes parameters={[
   {
     "name": "signal",
-    "type": "`AbortSignal`",
+    "type": "AbortSignal",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6337,7 +6337,7 @@ function example(signal) {
   },
   {
     "name": "resource",
-    "type": "(`event`: `Event`) => `void`",
+    "type": "(`event`: Event) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6391,7 +6391,7 @@ A utility method for creating duplex streams.
 <ParameterTypes parameters={[
   {
     "name": "src",
-    "type": "`string` \\| `Object` \\| `Promise`<`any`\\> \\| `ArrayBuffer` \\| [`Stream`](internal.Stream.mdx) \\| [`Blob`](internal.Blob.mdx) \\| [`Iterable`](../interfaces/internal.Iterable.mdx)<`any`\\> \\| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`any`\\> \\| [`AsyncGeneratorFunction`](../interfaces/internal.AsyncGeneratorFunction.mdx)",
+    "type": "`string` \\| `Object` \\| Promise&#60;any&#62; \\| `ArrayBuffer` \\| [Stream](internal.Stream.mdx) \\| [Blob](internal.Blob.mdx) \\| [Iterable](../interfaces/internal.Iterable.mdx)&#60;any&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;any&#62; \\| [AsyncGeneratorFunction](../interfaces/internal.AsyncGeneratorFunction.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6405,7 +6405,7 @@ A utility method for creating duplex streams.
 <ParameterTypes parameters={[
   {
     "name": "Duplex",
-    "type": "[`Duplex`](internal.Duplex.mdx)",
+    "type": "[Duplex](internal.Duplex.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -6438,7 +6438,7 @@ A utility method for creating a `Duplex` from a web `ReadableStream` and `Writab
   },
   {
     "name": "duplexStream.readable",
-    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`any`\\>",
+    "type": "[ReadableStream](../../modules/internal.mdx#readablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6447,7 +6447,7 @@ A utility method for creating a `Duplex` from a web `ReadableStream` and `Writab
   },
   {
     "name": "duplexStream.writable",
-    "type": "[`WritableStream`](../../modules/internal.mdx#writablestream-1)<`any`\\>",
+    "type": "[WritableStream](../../modules/internal.mdx#writablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6456,7 +6456,7 @@ A utility method for creating a `Duplex` from a web `ReadableStream` and `Writab
   },
   {
     "name": "options",
-    "type": "[`Pick`](../types/internal.Pick.mdx)<[`DuplexOptions`](../interfaces/internal.DuplexOptions.mdx), ``\"signal\"`` \\| ``\"allowHalfOpen\"`` \\| ``\"decodeStrings\"`` \\| ``\"encoding\"`` \\| ``\"highWaterMark\"`` \\| ``\"objectMode\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[DuplexOptions](../interfaces/internal.DuplexOptions.mdx), `\"signal\"` \\| `\"allowHalfOpen\"` \\| `\"decodeStrings\"` \\| `\"encoding\"` \\| `\"highWaterMark\"` \\| `\"objectMode\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6470,7 +6470,7 @@ A utility method for creating a `Duplex` from a web `ReadableStream` and `Writab
 <ParameterTypes parameters={[
   {
     "name": "Duplex",
-    "type": "[`Duplex`](internal.Duplex.mdx)",
+    "type": "[Duplex](internal.Duplex.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -6517,7 +6517,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6588,7 +6588,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6626,7 +6626,7 @@ Returns whether the stream has been read from or cancelled.
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \\| [`Readable`](internal.Readable.mdx)",
+    "type": "[ReadableStream](../interfaces/internal.ReadableStream-1.mdx) \\| [Readable](internal.Readable.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6674,7 +6674,7 @@ console.log(listenerCount(myEmitter, 'event'));
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx)",
     "description": "The emitter to query",
     "optional": false,
     "defaultValue": "",
@@ -6778,7 +6778,7 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6796,7 +6796,7 @@ process.nextTick(() => ac.abort());
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6810,7 +6810,7 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](../interfaces/internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "that iterates `eventName` events emitted by the `emitter`",
@@ -6827,7 +6827,7 @@ ___
 
 ### once
 
-`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -6911,7 +6911,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`_NodeEventTarget`](../interfaces/internal._NodeEventTarget.mdx)",
+    "type": "[_NodeEventTarget](../interfaces/internal._NodeEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6929,7 +6929,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6943,7 +6943,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -6956,14 +6956,14 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 
 v11.13.0, v10.16.0
 
-`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6981,7 +6981,7 @@ v11.13.0, v10.16.0
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -6995,7 +6995,7 @@ v11.13.0, v10.16.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -7031,7 +7031,7 @@ setMaxListeners(5, target, emitter);
   },
   {
     "name": "eventTargets",
-    "type": "([`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx))[]",
+    "type": "([EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx))[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -7069,7 +7069,7 @@ A utility method for creating a web `ReadableStream` and `WritableStream` from a
 <ParameterTypes parameters={[
   {
     "name": "streamDuplex",
-    "type": "[`Duplex`](internal.Duplex.mdx)",
+    "type": "[Duplex](internal.Duplex.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -7082,7 +7082,7 @@ A utility method for creating a web `ReadableStream` and `WritableStream` from a
 
 <ParameterTypes parameters={[
   {
-    "name": "`object`",
+    "name": "object",
     "type": "`object`",
     "optional": true,
     "defaultValue": "",
@@ -7095,7 +7095,7 @@ A utility method for creating a web `ReadableStream` and `WritableStream` from a
 <ParameterTypes parameters={[
   {
     "name": "readable",
-    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream-1)<`any`\\>",
+    "type": "[ReadableStream](../../modules/internal.mdx#readablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -7104,7 +7104,7 @@ A utility method for creating a web `ReadableStream` and `WritableStream` from a
   },
   {
     "name": "writable",
-    "type": "[`WritableStream`](../../modules/internal.mdx#writablestream-1)<`any`\\>",
+    "type": "[WritableStream](../../modules/internal.mdx#writablestream-1)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",

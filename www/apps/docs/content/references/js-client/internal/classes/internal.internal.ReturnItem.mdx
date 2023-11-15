@@ -22,7 +22,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "item",
-    "type": "[`LineItem`](internal.LineItem.mdx)",
+    "type": "[LineItem](internal.LineItem.mdx)",
     "description": "The details of the line item in the original order to be returned.",
     "optional": false,
     "defaultValue": "",
@@ -40,7 +40,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -67,7 +67,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "reason",
-    "type": "[`ReturnReason`](internal.ReturnReason.mdx)",
+    "type": "[ReturnReason](internal.ReturnReason.mdx)",
     "description": "The details of the reason for returning the item.",
     "optional": false,
     "defaultValue": "",
@@ -112,7 +112,7 @@ A return item represents a line item in an order that is to be returned. It incl
   },
   {
     "name": "return_order",
-    "type": "[`Return`](internal.Return.mdx)",
+    "type": "[Return](internal.Return.mdx)",
     "description": "Details of the Return that the Return Item belongs to.",
     "optional": false,
     "defaultValue": "",

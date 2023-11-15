@@ -12,7 +12,7 @@ A Tax Rate can be used to define a custom rate to charge on specified products, 
 
 ### constructor
 
-**new TaxRate**()
+`**new TaxRate**()`
 
 A Tax Rate can be used to define a custom rate to charge on specified products, product types, and shipping options within a given region.
 
@@ -48,7 +48,7 @@ A Tax Rate can be used to define a custom rate to charge on specified products, 
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ A Tax Rate can be used to define a custom rate to charge on specified products, 
   },
   {
     "name": "product_types",
-    "type": "[`ProductType`](ProductType.mdx)[]",
+    "type": "[ProductType](ProductType.mdx)[]",
     "description": "The details of the product types that belong to this tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -93,7 +93,7 @@ A Tax Rate can be used to define a custom rate to charge on specified products, 
   },
   {
     "name": "products",
-    "type": "[`Product`](Product.mdx)[]",
+    "type": "[Product](Product.mdx)[]",
     "description": "The details of the products that belong to this tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -111,7 +111,7 @@ A Tax Rate can be used to define a custom rate to charge on specified products, 
   },
   {
     "name": "region",
-    "type": "[`Region`](Region.mdx)",
+    "type": "[Region](Region.mdx)",
     "description": "The details of the region that the rate belongs to.",
     "optional": false,
     "defaultValue": "",
@@ -138,7 +138,7 @@ A Tax Rate can be used to define a custom rate to charge on specified products, 
   },
   {
     "name": "shipping_options",
-    "type": "[`ShippingOption`](ShippingOption.mdx)[]",
+    "type": "[ShippingOption](ShippingOption.mdx)[]",
     "description": "The details of the shipping options that belong to this tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -160,7 +160,7 @@ A Tax Rate can be used to define a custom rate to charge on specified products, 
 
 ### beforeInsert
 
-`Private` **beforeInsert**(): `void`
+`Private **beforeInsert**(): void`
 
 #### Returns
 

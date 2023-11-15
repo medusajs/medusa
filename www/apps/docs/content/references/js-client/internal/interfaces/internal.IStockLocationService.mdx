@@ -15,7 +15,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "ModuleJoinerConfig",
-    "type": "[`Omit`](../types/internal.Omit.mdx)<[`JoinerServiceConfig`](../../internal-1/interfaces/internal.internal-1.JoinerServiceConfig.mdx), ``\"serviceName\"`` \\| ``\"primaryKeys\"`` \\| ``\"relationships\"`` \\| ``\"extends\"``\\> & { `databaseConfig?`: { `extraFields?`: Record<`string`, { `defaultValue?`: `string` ; `nullable?`: `boolean` ; `options?`: Record<`string`, `unknown`\\> ; `type`: ``\"date\"`` \\| ``\"time\"`` \\| ``\"datetime\"`` \\| ``\"bigint\"`` \\| ``\"blob\"`` \\| ``\"uint8array\"`` \\| ``\"array\"`` \\| ``\"enumArray\"`` \\| ``\"enum\"`` \\| ``\"json\"`` \\| ``\"integer\"`` \\| ``\"smallint\"`` \\| ``\"tinyint\"`` \\| ``\"mediumint\"`` \\| ``\"float\"`` \\| ``\"double\"`` \\| ``\"boolean\"`` \\| ``\"decimal\"`` \\| ``\"string\"`` \\| ``\"uuid\"`` \\| ``\"text\"``  }\\> ; `idPrefix?`: `string` ; `tableName?`: `string`  } ; `extends?`: { `fieldAlias?`: Record<`string`, `string` \\| { `forwardArgumentsOnPath`: `string`[] ; `path`: `string`  }\\> ; `relationship`: [`ModuleJoinerRelationship`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx) ; `serviceName`: `string`  }[] ; `isLink?`: `boolean` ; `isReadOnlyLink?`: `boolean` ; `linkableKeys?`: Record<`string`, `string`\\> ; `primaryKeys?`: `string`[] ; `relationships?`: [`ModuleJoinerRelationship`](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx)[] ; `schema?`: `string` ; `serviceName?`: `string`  }",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[JoinerServiceConfig](../../internal-1/interfaces/internal.internal-1.JoinerServiceConfig.mdx), `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`&#62; & `&#123; databaseConfig?: &#123; extraFields?: Record&#60;string, &#123; defaultValue?: string ; nullable?: boolean ; options?: Record&#60;string, unknown&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  &#125;&#62; ; idPrefix?: string ; tableName?: string  &#125; ; extends?: &#123; fieldAlias?: Record&#60;string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;&#62; ; relationship: [ModuleJoinerRelationship](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx) ; serviceName: string  &#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record&#60;string, string&#62; ; primaryKeys?: string[] ; relationships?: [ModuleJoinerRelationship](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx)[] ; schema?: string ; serviceName?: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -33,7 +33,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[`CreateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx)",
+    "type": "[CreateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.CreateStockLocationInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -42,7 +42,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -56,7 +56,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -83,7 +83,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -97,7 +97,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -115,7 +115,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
+    "type": "[FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -124,7 +124,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -133,7 +133,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -147,7 +147,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[]\\>",
+    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -165,7 +165,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableStockLocationProps`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
+    "type": "[FilterableStockLocationProps](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.FilterableStockLocationProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -174,7 +174,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -183,7 +183,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -197,7 +197,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[StockLocationDTO](../types/internal.StockLocationDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -224,7 +224,7 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -233,7 +233,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -247,7 +247,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -274,7 +274,7 @@ ___
   },
   {
     "name": "input",
-    "type": "[`UpdateStockLocationInput`](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx)",
+    "type": "[UpdateStockLocationInput](../../StockLocationTypes/types/internal.internal-1.StockLocationTypes.UpdateStockLocationInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -283,7 +283,7 @@ ___
   },
   {
     "name": "context",
-    "type": "[`SharedContext`](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
+    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -297,7 +297,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`StockLocationDTO`](../types/internal.StockLocationDTO.mdx)\\>",
+    "type": "Promise&#60;[StockLocationDTO](../types/internal.StockLocationDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

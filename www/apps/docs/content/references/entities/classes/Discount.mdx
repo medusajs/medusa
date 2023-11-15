@@ -76,7 +76,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -85,7 +85,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "parent_discount",
-    "type": "[`Discount`](Discount.mdx)",
+    "type": "[Discount](Discount.mdx)",
     "description": "The details of the parent discount that this discount was created from.",
     "optional": false,
     "defaultValue": "",
@@ -156,7 +156,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -165,7 +165,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "parent_discount",
-        "type": "[`Discount`](Discount.mdx)",
+        "type": "[Discount](Discount.mdx)",
         "description": "The details of the parent discount that this discount was created from.",
         "optional": false,
         "defaultValue": "",
@@ -183,7 +183,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "regions",
-        "type": "[`Region`](Region.mdx)[]",
+        "type": "[Region](Region.mdx)[]",
         "description": "The details of the regions in which the Discount can be used.",
         "optional": false,
         "defaultValue": "",
@@ -192,7 +192,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "rule",
-        "type": "[`DiscountRule`](DiscountRule.mdx)",
+        "type": "[DiscountRule](DiscountRule.mdx)",
         "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
         "optional": false,
         "defaultValue": "",
@@ -266,7 +266,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "regions",
-    "type": "[`Region`](Region.mdx)[]",
+    "type": "[Region](Region.mdx)[]",
     "description": "The details of the regions in which the Discount can be used.",
     "optional": false,
     "defaultValue": "",
@@ -283,7 +283,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "countries",
-        "type": "[`Country`](Country.mdx)[]",
+        "type": "[Country](Country.mdx)[]",
         "description": "The details of the countries included in this region.",
         "optional": false,
         "defaultValue": "",
@@ -301,7 +301,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "currency",
-        "type": "[`Currency`](Currency.mdx)",
+        "type": "[Currency](Currency.mdx)",
         "description": "The details of the currency used in the region.",
         "optional": false,
         "defaultValue": "",
@@ -328,7 +328,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "fulfillment_providers",
-        "type": "[`FulfillmentProvider`](FulfillmentProvider.mdx)[]",
+        "type": "[FulfillmentProvider](FulfillmentProvider.mdx)[]",
         "description": "The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.",
         "optional": false,
         "defaultValue": "",
@@ -365,7 +365,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -383,7 +383,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "payment_providers",
-        "type": "[`PaymentProvider`](PaymentProvider.mdx)[]",
+        "type": "[PaymentProvider](PaymentProvider.mdx)[]",
         "description": "The details of the payment providers that can be used to process payments in the region.",
         "optional": false,
         "defaultValue": "",
@@ -401,7 +401,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "tax_provider",
-        "type": "[`TaxProvider`](TaxProvider.mdx)",
+        "type": "[TaxProvider](TaxProvider.mdx)",
         "description": "The details of the tax provider used in the region.",
         "optional": false,
         "defaultValue": "",
@@ -428,7 +428,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "tax_rates",
-        "type": "``null`` \\| [`TaxRate`](TaxRate.mdx)[]",
+        "type": "``null`` \\| [TaxRate](TaxRate.mdx)[]",
         "description": "The details of the tax rates used in the region, aside from the default rate.",
         "optional": false,
         "defaultValue": "",
@@ -448,7 +448,7 @@ A discount can be applied to a cart for promotional purposes.
   },
   {
     "name": "rule",
-    "type": "[`DiscountRule`](DiscountRule.mdx)",
+    "type": "[DiscountRule](DiscountRule.mdx)",
     "description": "The details of the discount rule that defines how the discount will be applied to a cart..",
     "optional": false,
     "defaultValue": "",
@@ -456,7 +456,7 @@ A discount can be applied to a cart for promotional purposes.
     "children": [
       {
         "name": "allocation",
-        "type": "[`AllocationType`](../enums/AllocationType.mdx)",
+        "type": "[AllocationType](../enums/AllocationType.mdx)",
         "description": "The scope that the discount should apply to.",
         "optional": false,
         "defaultValue": "",
@@ -465,7 +465,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "conditions",
-        "type": "[`DiscountCondition`](DiscountCondition.mdx)[]",
+        "type": "[DiscountCondition](DiscountCondition.mdx)[]",
         "description": "The details of the discount conditions associated with the rule. They can be used to limit when the discount can be used.",
         "optional": false,
         "defaultValue": "",
@@ -510,7 +510,7 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": false,
         "defaultValue": "",
@@ -519,8 +519,8 @@ A discount can be applied to a cart for promotional purposes.
       },
       {
         "name": "type",
-        "type": "[`DiscountRuleType`](../enums/DiscountRuleType.mdx)",
-        "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers.",
+        "type": "[DiscountRuleType](../enums/DiscountRuleType.mdx)",
+        "description": "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free\\_shipping` for shipping vouchers.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,

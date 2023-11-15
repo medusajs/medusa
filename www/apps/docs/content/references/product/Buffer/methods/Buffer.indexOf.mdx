@@ -8,12 +8,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).indexOf
 
-**indexOf**(`value`, `byteOffset?`, `encoding?`): `number`
+`**indexOf**(value, byteOffset?, encoding?): number`
 
 If `value` is:
 
 * a string, `value` is interpreted according to the character encoding in`encoding`.
-* a `Buffer` or [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array), `value` will be used in its entirety.
+* a `Buffer` or [`Uint8Array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/Uint8Array), `value` will be used in its entirety.
 To compare a partial `Buffer`, use `buf.subarray`.
 * a number, `value` will be interpreted as an unsigned 8-bit integer
 value between `0` and `255`.
@@ -49,7 +49,7 @@ an integer between 0 and 255.
 
 If `byteOffset` is not a number, it will be coerced to a number. If the result
 of coercion is `NaN` or `0`, then the entire buffer will be searched. This
-behavior matches [`String.prototype.indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf).
+behavior matches [`String.prototype.indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/String/indexOf).
 
 ```js
 import { Buffer } from 'node:buffer';
@@ -77,7 +77,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
 <ParameterTypes parameters={[
   {
     "name": "value",
-    "type": "`string` \\| `number` \\| `Uint8Array`",
+    "type": "`string` \\| `number` \\| Uint8Array",
     "description": "What to search for.",
     "optional": false,
     "defaultValue": "",
@@ -95,7 +95,7 @@ than `buf.length`, `byteOffset` will be returned. If `value` is empty and`byteOf
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "If `value` is a string, this is the encoding used to determine the binary representation of the string that will be searched for in `buf`.",
     "optional": true,
     "defaultValue": "",

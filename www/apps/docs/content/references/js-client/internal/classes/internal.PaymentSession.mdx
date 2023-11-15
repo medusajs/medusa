@@ -22,7 +22,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
   },
   {
     "name": "cart",
-    "type": "[`Cart`](internal.Cart.mdx)",
+    "type": "[Cart](internal.Cart.mdx)",
     "description": "The details of the cart that the payment session was created for.",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The data required for the Payment Provider to identify, modify and process the Payment Session. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
     "optional": false,
     "defaultValue": "",
@@ -113,7 +113,7 @@ A Payment Session is created when a Customer initilizes the checkout flow, and c
   {
     "name": "status",
     "type": "`string`",
-    "description": "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires_more` to indicate that further actions are to be completed by the Customer.",
+    "description": "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires\\_more` to indicate that further actions are to be completed by the Customer.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
