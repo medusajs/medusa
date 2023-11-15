@@ -208,7 +208,6 @@ export type InventoryLevelDTO = {
  * The filters to apply on retrieved reservation items.
  * 
  * @prop id - The IDs to filter reservation items by.
- * @prop type - The types to filter reservation items by.
  * @prop line_item_id - Filter reservation items by the ID of their associated line item.
  * @prop inventory_item_id - Filter reservation items by the ID of their associated inventory item.
  * @prop location_id - Filter reservation items by the ID of their associated location.
@@ -218,6 +217,12 @@ export type InventoryLevelDTO = {
  */
 export type FilterableReservationItemProps = {
   id?: string | string[]
+  /**
+   * @ignore
+   * 
+   * @privateRemark
+   * This property is not used.
+   */
   type?: string | string[]
   line_item_id?: string | string[]
   inventory_item_id?: string | string[]

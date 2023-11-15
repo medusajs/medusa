@@ -92,35 +92,6 @@ export interface IInventoryService {
    *   // do something with the inventory items or return them
    * }
    * ```
-   * 
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
-   * ```ts
-   * import { 
-   *   initialize as initializeInventoryModule,
-   * } from "@medusajs/inventory"
-   * 
-   * async function retrieveInventoryItems (ids: string[], q: string, skip: number, take: number) {
-   *   const inventoryModule = await initializeInventoryModule({})
-   * 
-   *   const [inventoryItems, count] = await inventoryModule.listInventoryItems({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         q
-   *       }
-   *     ],
-   *   }, {
-   *     relations: ["inventory_level"],
-   *     skip,
-   *     take
-   *   })
-   * 
-   *   // do something with the inventory items or return them
-   * }
-   * ```
    */
   listInventoryItems(
     selector: FilterableInventoryItemProps,
@@ -197,35 +168,6 @@ export interface IInventoryService {
    *   // do something with the reservation items or return them
    * }
    * ```
-   * 
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
-   * ```ts
-   * import { 
-   *   initialize as initializeInventoryModule,
-   * } from "@medusajs/inventory"
-   * 
-   * async function retrieveReservationItems (ids: string[], q: string, skip: number, take: number) {
-   *   const inventoryModule = await initializeInventoryModule({})
-   * 
-   *   const [reservationItems, count] = await inventoryModule.listReservationItems({
-   *     $and: [
-   *       {
-   *         id: ids
-   *       },
-   *       {
-   *         q
-   *       }
-   *     ],
-   *   }, {
-   *     relations: ["inventory_item"],
-   *     skip,
-   *     take
-   *   })
-   * 
-   *   // do something with the reservation items or return them
-   * }
-   * ```
    */
   listReservationItems(
     selector: FilterableReservationItemProps,
@@ -293,35 +235,6 @@ export interface IInventoryService {
    * 
    *   const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({
    *     inventory_item_id: inventoryItemIds
-   *   }, {
-   *     relations: ["inventory_item"],
-   *     skip,
-   *     take
-   *   })
-   * 
-   *   // do something with the inventory levels or return them
-   * }
-   * ```
-   * 
-   * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
-   * ```ts
-   * import { 
-   *   initialize as initializeInventoryModule,
-   * } from "@medusajs/inventory"
-   * 
-   * async function retrieveInventoryLevels (inventoryItemIds: string[], locationIds: string[], skip: number, take: number) {
-   *   const inventoryModule = await initializeInventoryModule({})
-   * 
-   *   const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({
-   *     $and: [
-   *       {
-   *         inventory_item_id: inventoryItemIds
-   *       },
-   *       {
-   *         location_id: locationIds
-   *       }
-   *     ],
    *   }, {
    *     relations: ["inventory_item"],
    *     skip,
@@ -479,9 +392,6 @@ export interface IInventoryService {
   ): Promise<ReservationItemDTO>
 
   /**
-   * @privateRemarks
-   * TODO make it bulk
-   * 
    * This method is used to create reservation items.
    * 
    * @param {CreateReservationItemInput[]} input - The details of the reservation items to create.
@@ -513,7 +423,7 @@ export interface IInventoryService {
   ): Promise<ReservationItemDTO[]>
 
   /**
-   * This method is used to create inventory item.
+   * This method is used to create an inventory item.
    * 
    * @param {CreateInventoryItemInput} input - The details of the inventory item to create.
    * @param {SharedContext} context - A context used to share resources, such as transaction manager, between the application and the module.
@@ -829,9 +739,6 @@ export interface IInventoryService {
   ): Promise<void>
 
   /**
-   * @privateRemarks
-   * TODO make it bulk
-   * 
    * This method is used to delete an inventory item or multiple inventory items. The inventory items are only soft deleted and can be restored using the
    * {@link restoreInventoryItem} method.
    * 
