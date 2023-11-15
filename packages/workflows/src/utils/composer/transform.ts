@@ -108,13 +108,10 @@ export function transform(
       const fn = functions[i]
 
       const fnInput = i === 0 ? stepValues : [finalResult]
-      if (fn.length > fnInput.length) {
-        const argsDiff = fn.length - fnInput.length
-        for (let j = 0; j < argsDiff; j++) {
-          fnInput.push(undefined)
-        }
-      }
-      fnInput.push(context)
+      fnInput.push(
+        ...Array(Math.max(0, fn.length - fnInput.length)).fill(undefined),
+        context
+      )
       finalResult = await fn.apply(fn, fnInput)
     }
 
