@@ -118,7 +118,7 @@ export function transform(
       finalResult = await fn.apply(fn, fnInput)
     }
 
-    // returnFn.__value = finalResult
+    returnFn.__value = finalResult
     return finalResult
   }
 
