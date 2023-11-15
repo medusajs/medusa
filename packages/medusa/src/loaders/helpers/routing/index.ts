@@ -1,4 +1,4 @@
-import { promiseAll } from "@medusajs/utils"
+import { promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
 import { Router, json, text, urlencoded, type Express } from "express"
 import { readdir } from "fs/promises"
@@ -9,7 +9,6 @@ import {
   authenticateCustomer,
   errorHandler,
   requireCustomerAuthentication,
-  wrapHandler,
 } from "../../../api/middlewares"
 import { ConfigModule } from "../../../types/global"
 import logger from "../../logger"
