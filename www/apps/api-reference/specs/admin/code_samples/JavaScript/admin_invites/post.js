@@ -10,4 +10,4 @@ medusa.admin.invites.create({
 })
 .catch(() => {
   // an error occurred
-});
+})

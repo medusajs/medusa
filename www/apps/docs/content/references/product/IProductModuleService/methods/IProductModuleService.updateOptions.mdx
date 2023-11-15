@@ -41,10 +41,11 @@ async function updateProductOption (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`UpdateProductOptionDTO`](../../interfaces/UpdateProductOptionDTO.mdx)[]",
+    "type": "[UpdateProductOptionDTO](../../interfaces/UpdateProductOptionDTO.mdx)[]",
     "description": "The product options to be updated, each holding the attributes that should be updated in the product option.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "id",
@@ -52,6 +53,7 @@ async function updateProductOption (id: string, title: string) {
         "description": "",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -60,6 +62,7 @@ async function updateProductOption (id: string, title: string) {
         "description": "",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -68,16 +71,18 @@ async function updateProductOption (id: string, title: string) {
         "description": "",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -85,6 +90,7 @@ async function updateProductOption (id: string, title: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -93,6 +99,7 @@ async function updateProductOption (id: string, title: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -101,6 +108,7 @@ async function updateProductOption (id: string, title: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -109,6 +117,7 @@ async function updateProductOption (id: string, title: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -117,6 +126,7 @@ async function updateProductOption (id: string, title: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -128,17 +138,19 @@ async function updateProductOption (id: string, title: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]\\>",
+    "type": "Promise&#60;[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of updated product options.",
+    "expandable": false,
     "children": [
       {
         "name": "ProductOptionDTO[]",
-        "type": "[`ProductOptionDTO`](../../interfaces/ProductOptionDTO.mdx)[]",
+        "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "deleted_at",
@@ -146,6 +158,7 @@ async function updateProductOption (id: string, title: string) {
             "description": "When the product option was deleted.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -154,22 +167,25 @@ async function updateProductOption (id: string, title: string) {
             "description": "The ID of the product option.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
+            "type": "``null`` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "product",
-            "type": "[`ProductDTO`](../../interfaces/ProductDTO.mdx)",
+            "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)",
             "description": "The associated product. It may only be available if the `product` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -178,14 +194,16 @@ async function updateProductOption (id: string, title: string) {
             "description": "The title of the product option.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "values",
-            "type": "[`ProductOptionValueDTO`](../../interfaces/ProductOptionValueDTO.mdx)[]",
+            "type": "[ProductOptionValueDTO](../../interfaces/ProductOptionValueDTO.mdx)[]",
             "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

@@ -11,22 +11,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "categories",
-    "type": "{ `id`: `string`  }[]",
+    "type": "`&#123; id: string  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "collection_id",
@@ -84,31 +74,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "images",
-    "type": "{ `id?`: `string` ; `url`: `string`  }[]",
+    "type": "`&#123; id?: string ; url: string  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "url",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "is_giftcard",
@@ -139,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -166,49 +137,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "status",
-    "type": "[`ProductStatus`](../enums/internal.internal-1.ProductTypes.ProductStatus.mdx)",
+    "type": "[ProductStatus](../enums/internal.internal-1.ProductTypes.ProductStatus.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "DRAFT",
-        "type": "``\"draft\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PROPOSED",
-        "type": "``\"proposed\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PUBLISHED",
-        "type": "``\"published\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REJECTED",
-        "type": "``\"rejected\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "subtitle",
@@ -221,22 +155,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "tags",
-    "type": "{ `id`: `string`  }[]",
+    "type": "`&#123; id: string  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thumbnail",

@@ -15,7 +15,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](../../internal/interfaces/internal.ReadableStream-1.mdx) \\| [`WritableStream`](../../internal/interfaces/internal.WritableStream.mdx) \\| [`ReadWriteStream`](../../internal/interfaces/internal.ReadWriteStream.mdx)",
+    "type": "[ReadableStream](../../internal/interfaces/internal.ReadableStream-1.mdx) \\| [WritableStream](../../internal/interfaces/internal.WritableStream.mdx) \\| [ReadWriteStream](../../internal/interfaces/internal.ReadWriteStream.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -24,49 +24,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "options",
-    "type": "[`FinishedOptions`](../interfaces/internal.internal-3.FinishedOptions.mdx)",
+    "type": "[FinishedOptions](../interfaces/internal.internal-3.FinishedOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "error",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "readable",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "When provided the corresponding `AbortController` can be used to cancel an asynchronous action.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "writable",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -75,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",

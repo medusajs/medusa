@@ -11,4 +11,4 @@ medusa.admin.returns.receive(returnId, {
 })
 .then((data) => {
   console.log(data.return.id);
-});
+})

@@ -43,7 +43,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostInventoryItemsReq`](../internal/classes/internal.AdminPostInventoryItemsReq.mdx)",
+    "type": "[AdminPostInventoryItemsReq](../internal/classes/internal.AdminPostInventoryItemsReq.mdx)",
     "description": "The inventory item to create.",
     "optional": false,
     "defaultValue": "",
@@ -96,7 +96,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs with additional information.",
         "optional": true,
         "defaultValue": "",
@@ -179,7 +179,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "query",
-    "type": "[`AdminPostInventoryItemsParams`](../internal/classes/internal.AdminPostInventoryItemsParams.mdx)",
+    "type": "[AdminPostInventoryItemsParams](../internal/classes/internal.AdminPostInventoryItemsParams.mdx)",
     "description": "Configurations to apply on the retrieved inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -207,7 +207,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -221,7 +221,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsRes](../internal/types/internal.AdminInventoryItemsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details.",
@@ -237,7 +237,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[InventoryItemDTO](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -317,7 +317,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": true,
                 "defaultValue": "",
@@ -449,7 +449,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "payload",
-    "type": "[`AdminPostInventoryItemsItemLocationLevelsReq`](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsReq.mdx)",
+    "type": "[AdminPostInventoryItemsItemLocationLevelsReq](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsReq.mdx)",
     "description": "The location level to create.",
     "optional": false,
     "defaultValue": "",
@@ -486,7 +486,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "query",
-    "type": "[`AdminPostInventoryItemsItemLocationLevelsParams`](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsParams.mdx)",
+    "type": "[AdminPostInventoryItemsItemLocationLevelsParams](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsParams.mdx)",
     "description": "Configurations to apply on the returned inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -514,7 +514,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -528,7 +528,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsRes](../internal/types/internal.AdminInventoryItemsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the inventory item's details.",
@@ -544,7 +544,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[InventoryItemDTO](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -624,7 +624,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": true,
                 "defaultValue": "",
@@ -753,7 +753,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -767,7 +767,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The deletion operation's details.",
@@ -846,7 +846,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "query",
-    "type": "[`AdminGetInventoryItemsParams`](../internal/classes/internal.AdminGetInventoryItemsParams.mdx)",
+    "type": "[AdminGetInventoryItemsParams](../internal/classes/internal.AdminGetInventoryItemsParams.mdx)",
     "description": "Configurations to apply on the returned inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -872,7 +872,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "height",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `height` field.",
         "optional": true,
         "defaultValue": "",
@@ -881,7 +881,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "hs_code",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "String filters to apply to inventory items' `hs_code` field.",
         "optional": true,
         "defaultValue": "",
@@ -899,7 +899,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "length",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `length` field.",
         "optional": true,
         "defaultValue": "",
@@ -989,7 +989,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "weight",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `weight` field.",
         "optional": true,
         "defaultValue": "",
@@ -998,7 +998,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "width",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `width` field.",
         "optional": true,
         "defaultValue": "",
@@ -1009,7 +1009,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1023,7 +1023,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsRes](../internal/types/internal.AdminInventoryItemsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the inventory item's details.",
@@ -1039,7 +1039,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[InventoryItemDTO](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -1119,7 +1119,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": true,
                 "defaultValue": "",
@@ -1240,7 +1240,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetInventoryItemsParams`](../internal/classes/internal.AdminGetInventoryItemsParams.mdx)",
+    "type": "[AdminGetInventoryItemsParams](../internal/classes/internal.AdminGetInventoryItemsParams.mdx)",
     "description": "Filters and pagination configurations applied on the retrieved inventory items.",
     "optional": true,
     "defaultValue": "",
@@ -1266,7 +1266,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "height",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `height` field.",
         "optional": true,
         "defaultValue": "",
@@ -1275,7 +1275,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "hs_code",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "String filters to apply to inventory items' `hs_code` field.",
         "optional": true,
         "defaultValue": "",
@@ -1293,7 +1293,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "length",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `length` field.",
         "optional": true,
         "defaultValue": "",
@@ -1383,7 +1383,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "weight",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `weight` field.",
         "optional": true,
         "defaultValue": "",
@@ -1392,7 +1392,7 @@ medusa.admin.inventoryItems
       },
       {
         "name": "width",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to apply to inventory items' `width` field.",
         "optional": true,
         "defaultValue": "",
@@ -1403,7 +1403,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1417,7 +1417,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsListWithVariantsAndLocationLevelsRes`](../modules/internal.mdx#admininventoryitemslistwithvariantsandlocationlevelsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsListWithVariantsAndLocationLevelsRes](../internal/types/internal.AdminInventoryItemsListWithVariantsAndLocationLevelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of inventory items with pagination fields.",
@@ -1425,7 +1425,7 @@ medusa.admin.inventoryItems
     "children": [
       {
         "name": "AdminInventoryItemsListWithVariantsAndLocationLevelsRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `inventory_items`: [`DecoratedInventoryItemDTO`](../modules/internal.mdx#decoratedinventoryitemdto)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; inventory_items: [DecoratedInventoryItemDTO](../internal/types/internal.DecoratedInventoryItemDTO.mdx)[]  &#125;`",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -1460,7 +1460,7 @@ medusa.admin.inventoryItems
           },
           {
             "name": "inventory_items",
-            "type": "[`DecoratedInventoryItemDTO`](../modules/internal.mdx#decoratedinventoryitemdto)[]",
+            "type": "[DecoratedInventoryItemDTO](../internal/types/internal.DecoratedInventoryItemDTO.mdx)[]",
             "description": "an array of Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -1540,7 +1540,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": true,
                 "defaultValue": "",
@@ -1630,7 +1630,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "location_levels",
-                "type": "[`InventoryLevelDTO`](../modules/internal.mdx#inventoryleveldto)[]",
+                "type": "[InventoryLevelDTO](../internal/types/internal.InventoryLevelDTO.mdx)[]",
                 "description": "An array of location level details",
                 "optional": true,
                 "defaultValue": "",
@@ -1657,7 +1657,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "variants",
-                "type": "[`ProductVariant`](../internal/classes/internal.internal.ProductVariant.mdx)[]",
+                "type": "[ProductVariant](../internal/classes/internal.internal.ProductVariant.mdx)[]",
                 "description": "An array of product variant details",
                 "optional": true,
                 "defaultValue": "",
@@ -1705,7 +1705,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "query",
-    "type": "[`AdminGetInventoryItemsItemLocationLevelsParams`](../internal/classes/internal.AdminGetInventoryItemsItemLocationLevelsParams.mdx)",
+    "type": "[AdminGetInventoryItemsItemLocationLevelsParams](../internal/classes/internal.AdminGetInventoryItemsItemLocationLevelsParams.mdx)",
     "description": "Filters to apply on the retrieved location levels.",
     "optional": true,
     "defaultValue": "",
@@ -1742,7 +1742,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1756,7 +1756,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsLocationLevelsRes`](../modules/internal.mdx#admininventoryitemslocationlevelsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsLocationLevelsRes](../internal/types/internal.AdminInventoryItemsLocationLevelsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details and list of location levels.",
@@ -1789,7 +1789,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "location_levels",
-                "type": "[`InventoryLevelDTO`](../modules/internal.mdx#inventoryleveldto)[]",
+                "type": "[InventoryLevelDTO](../internal/types/internal.InventoryLevelDTO.mdx)[]",
                 "description": "List of stock levels at a given location",
                 "optional": false,
                 "defaultValue": "",
@@ -1837,7 +1837,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "query",
-    "type": "[`AdminGetInventoryItemsItemParams`](../internal/classes/internal.AdminGetInventoryItemsItemParams.mdx)",
+    "type": "[AdminGetInventoryItemsItemParams](../internal/classes/internal.AdminGetInventoryItemsItemParams.mdx)",
     "description": "Configurations applied on the retrieved inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -1865,7 +1865,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1879,7 +1879,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsRes](../internal/types/internal.AdminInventoryItemsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details.",
@@ -1895,7 +1895,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[InventoryItemDTO](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -1975,7 +1975,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": true,
                 "defaultValue": "",
@@ -2106,7 +2106,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "payload",
-    "type": "[`AdminPostInventoryItemsInventoryItemReq`](../internal/classes/internal.AdminPostInventoryItemsInventoryItemReq.mdx)",
+    "type": "[AdminPostInventoryItemsInventoryItemReq](../internal/classes/internal.AdminPostInventoryItemsInventoryItemReq.mdx)",
     "description": "The attributes to update in the inventory item.",
     "optional": false,
     "defaultValue": "",
@@ -2233,7 +2233,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "query",
-    "type": "[`AdminPostInventoryItemsInventoryItemParams`](../internal/classes/internal.AdminPostInventoryItemsInventoryItemParams.mdx)",
+    "type": "[AdminPostInventoryItemsInventoryItemParams](../internal/classes/internal.AdminPostInventoryItemsInventoryItemParams.mdx)",
     "description": "Configurations to apply on the retrieved inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -2261,7 +2261,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2275,7 +2275,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsRes](../internal/types/internal.AdminInventoryItemsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The inventory item's details.",
@@ -2291,7 +2291,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[InventoryItemDTO](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -2371,7 +2371,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": true,
                 "defaultValue": "",
@@ -2511,7 +2511,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "payload",
-    "type": "[`AdminPostInventoryItemsItemLocationLevelsLevelReq`](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsLevelReq.mdx)",
+    "type": "[AdminPostInventoryItemsItemLocationLevelsLevelReq](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsLevelReq.mdx)",
     "description": "The attributes to update in the location level.",
     "optional": false,
     "defaultValue": "",
@@ -2539,7 +2539,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "query",
-    "type": "[`AdminPostInventoryItemsItemLocationLevelsLevelParams`](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsLevelParams.mdx)",
+    "type": "[AdminPostInventoryItemsItemLocationLevelsLevelParams](../internal/classes/internal.AdminPostInventoryItemsItemLocationLevelsLevelParams.mdx)",
     "description": "Configurations to apply on the returned inventory item.",
     "optional": true,
     "defaultValue": "",
@@ -2567,7 +2567,7 @@ medusa.admin.inventoryItems
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2581,7 +2581,7 @@ medusa.admin.inventoryItems
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminInventoryItemsRes`](../modules/internal.mdx#admininventoryitemsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminInventoryItemsRes](../internal/types/internal.AdminInventoryItemsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the inventory item's details.",
@@ -2597,7 +2597,7 @@ medusa.admin.inventoryItems
         "children": [
           {
             "name": "inventory_item",
-            "type": "[`InventoryItemDTO`](../modules/internal.mdx#inventoryitemdto)",
+            "type": "[InventoryItemDTO](../internal/types/internal.InventoryItemDTO.mdx)",
             "description": "Inventory Item details",
             "optional": false,
             "defaultValue": "",
@@ -2677,7 +2677,7 @@ medusa.admin.inventoryItems
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\> \\| ``null``",
+                "type": "`Record<string, unknown>` \\| ``null``",
                 "description": "An optional key-value map with additional details",
                 "optional": true,
                 "defaultValue": "",

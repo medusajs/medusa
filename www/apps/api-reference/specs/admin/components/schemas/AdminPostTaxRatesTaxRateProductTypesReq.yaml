@@ -1,4 +1,5 @@
 type: object
+description: The product types to add to the tax rate.
 required:
   - product_types
 properties:

@@ -4,4 +4,4 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.discounts.list()
 .then(({ discounts, limit, offset, count }) => {
   console.log(discounts.id);
-});
+})

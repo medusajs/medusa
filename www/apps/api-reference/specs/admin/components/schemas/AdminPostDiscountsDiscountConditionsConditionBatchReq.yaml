@@ -11,5 +11,5 @@ properties:
         - id
       properties:
         id:
-          description: The id of the item
+          description: The ID of the item
           type: string

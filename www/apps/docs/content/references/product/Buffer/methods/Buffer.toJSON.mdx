@@ -8,16 +8,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).toJSON
 
-**toJSON**(): { `data`: `number`[] ; `type`: ``"Buffer"``  }
+`**toJSON**(): &#123; data: number[] ; type: `"Buffer"`  &#125;`
 
-Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) implicitly calls
+Returns a JSON representation of `buf`. [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global\_Objects/JSON/stringify) implicitly calls
 this function when stringifying a `Buffer` instance.
 
 `Buffer.from()` accepts objects in the format returned from this method.
 In particular, `Buffer.from(buf.toJSON())` works like `Buffer.from(buf)`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5]);
 const json = JSON.stringify(buf);
@@ -41,11 +41,12 @@ console.log(copy);
 
 <ParameterTypes parameters={[
   {
-    "name": "`object`",
+    "name": "object",
     "type": "`object`",
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -57,6 +58,7 @@ console.log(copy);
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -65,6 +67,7 @@ console.log(copy);
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -1,4 +1,5 @@
 type: object
+description: Details on whether the email exists.
 required:
   - exists
 properties:

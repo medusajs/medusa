@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).set
 
-**set**(`array`, `offset?`): `void`
+`**set**(array, offset?): void`
 
 Sets a value or an array of values.
 
@@ -17,10 +17,11 @@ Sets a value or an array of values.
 <ParameterTypes parameters={[
   {
     "name": "array",
-    "type": "[`ArrayLike`](../../interfaces/ArrayLike.mdx)<`number`\\>",
+    "type": "[ArrayLike](../../interfaces/ArrayLike.mdx)&#60;number&#62;",
     "description": "A typed or untyped array of values to set.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "length",
@@ -28,6 +29,7 @@ Sets a value or an array of values.
         "description": "",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -38,6 +40,7 @@ Sets a value or an array of values.
     "description": "The index in the current array at which the values are to be written.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -53,6 +56,7 @@ Sets a value or an array of values.
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -6,23 +6,27 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # PublishableApiKeySalesChannel
 
+This represents the association between the Publishable API keys and Sales Channels
+
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "publishable_key_id",
     "type": "`string`",
-    "description": "",
+    "description": "The publishable API key's ID",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "sales_channel_id",
     "type": "`string`",
-    "description": "",
+    "description": "The sales channel's ID",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

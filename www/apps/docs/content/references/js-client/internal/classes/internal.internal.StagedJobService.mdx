@@ -13,7 +13,7 @@ Provides layer to manipulate users.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Provides layer to manipulate users.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -40,7 +40,7 @@ Provides layer to manipulate users.
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -49,7 +49,7 @@ Provides layer to manipulate users.
   },
   {
     "name": "stagedJobRepository_",
-    "type": "`Repository`<[`StagedJob`](internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
+    "type": "Repository&#60;[StagedJob](internal.internal.StagedJob.mdx)&#62; & `&#123; insertBulk: Method insertBulk  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -58,7 +58,7 @@ Provides layer to manipulate users.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -76,7 +76,7 @@ Provides layer to manipulate users.
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -98,26 +98,16 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -126,22 +116,12 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -150,7 +130,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -168,7 +148,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`EmitData`](../../modules/internal.mdx#emitdata)<`unknown`\\> \\| [`EmitData`](../../modules/internal.mdx#emitdata)<`unknown`\\>[]",
+    "type": "[EmitData](../types/internal.EmitData.mdx)&#60;unknown&#62; \\| [EmitData](../types/internal.EmitData.mdx)&#60;unknown&#62;[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -182,32 +162,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`StagedJob`](internal.internal.StagedJob.mdx)[]\\>",
+    "type": "Promise&#60;[StagedJob](internal.internal.StagedJob.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "StagedJob[]",
-        "type": "[`StagedJob`](internal.internal.StagedJob.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "StagedJob",
-            "type": "[`StagedJob`](internal.internal.StagedJob.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -234,7 +194,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -252,68 +212,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`StagedJob`](internal.internal.StagedJob.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[StagedJob](internal.internal.StagedJob.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -322,32 +226,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`StagedJob`](internal.internal.StagedJob.mdx)[]\\>",
+    "type": "Promise&#60;[StagedJob](internal.internal.StagedJob.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "StagedJob[]",
-        "type": "[`StagedJob`](internal.internal.StagedJob.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "StagedJob",
-            "type": "[`StagedJob`](internal.internal.StagedJob.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -360,7 +244,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -392,7 +276,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -406,7 +290,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "StagedJobService",
-    "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
+    "type": "[StagedJobService](internal.internal.StagedJobService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

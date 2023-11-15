@@ -652,12 +652,7 @@ export class RoutesLoader {
    */
   applyErrorHandlerMiddleware(): void {
     const middlewareDescriptor = this.globalMiddlewaresDescriptor
-
-    if (!middlewareDescriptor) {
-      return
-    }
-
-    const errorHandlerFn = middlewareDescriptor.config?.errorHandler
+    const errorHandlerFn = middlewareDescriptor?.config?.errorHandler
 
     /**
      * If the user has opted out of the error handler then return
@@ -739,6 +734,10 @@ export class RoutesLoader {
      */
 
     for (const route of routes) {
+      if (!route.middlewares || !route.middlewares.length) {
+        continue
+      }
+
       const methods = (
         Array.isArray(route.method) ? route.method : [route.method]
       ).filter(Boolean) as MiddlewareVerb[]

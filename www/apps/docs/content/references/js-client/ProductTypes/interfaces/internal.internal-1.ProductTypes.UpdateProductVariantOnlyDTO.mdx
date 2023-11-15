@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -119,31 +119,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "options",
-    "type": "[`CreateProductVariantOptionDTO`](internal.internal-1.ProductTypes.CreateProductVariantOptionDTO.mdx) & { `option`: `any`  }[]",
+    "type": "[CreateProductVariantOptionDTO](internal.internal-1.ProductTypes.CreateProductVariantOptionDTO.mdx) & `&#123; option: any  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "value",
-        "type": "`string`",
-        "description": "The value of a product variant option.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "option",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "origin_country",

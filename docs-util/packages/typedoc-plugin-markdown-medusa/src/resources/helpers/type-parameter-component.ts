@@ -7,9 +7,10 @@ export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
     "typeParameterComponent",
     function (this: TypeParameterReflection[]) {
-      const { parameterComponent } = theme.getFormattingOptionsForLocation()
+      const { parameterComponent, maxLevel } =
+        theme.getFormattingOptionsForLocation()
       const parameters = this.map((parameter) =>
-        reflectionComponentFormatter(parameter, 1)
+        reflectionComponentFormatter(parameter, 1, maxLevel)
       )
 
       return `<${parameterComponent} parameters={${JSON.stringify(

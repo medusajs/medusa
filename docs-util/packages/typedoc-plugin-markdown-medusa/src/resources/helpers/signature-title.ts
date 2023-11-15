@@ -4,7 +4,7 @@ import {
   ReflectionKind,
   SignatureReflection,
 } from "typedoc"
-import { memberSymbol } from "../../utils"
+import { getHTMLChar, memberSymbol } from "../../utils"
 import { MarkdownTheme } from "../../theme"
 
 export default function (theme: MarkdownTheme) {
@@ -21,30 +21,23 @@ export default function (theme: MarkdownTheme) {
       }
       const md: string[] = []
 
+      if (!expandMembers) {
+        md.push("`")
+      }
+
       if (standalone && !theme.hideMembersSymbol) {
         md.push(`${memberSymbol(this)} `)
       }
 
       if (this.parent && this.parent.flags?.length > 0) {
-        md.push(
-          this.parent.flags
-            .map(
-              (flag) =>
-                `${!expandMembers ? "`" : ""}${flag}${
-                  !expandMembers ? "`" : ""
-                }`
-            )
-            .join(" ") + " "
-        )
+        md.push(this.parent.flags.join(" ") + " ")
       }
 
       if (accessor) {
         md.push(
-          `${!expandMembers ? "`" : ""}${accessor}${
-            !expandMembers ? "`" : ""
-          } ${expandMembers ? `${Handlebars.helpers.titleLevel(4)} ` : "**"}${
-            this.name
-          }${!expandMembers ? "**" : ""}`
+          `${accessor}${
+            expandMembers ? `${Handlebars.helpers.titleLevel(4)} ` : "**"
+          }${this.name}${!expandMembers ? "**" : ""}`
         )
       } else if (this.name !== "__call" && this.name !== "__type") {
         md.push(
@@ -56,22 +49,19 @@ export default function (theme: MarkdownTheme) {
 
       if (this.typeParameters) {
         md.push(
-          `<${this.typeParameters
-            .map(
-              (typeParameter) =>
-                `${!expandMembers ? "`" : ""}${typeParameter.name}${
-                  !expandMembers ? "`" : ""
-                }`
-            )
-            .join(", ")}\\>`
+          `${expandMembers ? getHTMLChar("<") : "<"}${this.typeParameters.join(
+            ", "
+          )}${expandMembers ? getHTMLChar(">") : ">"}`
         )
       }
-      md.push(`(${getParameters(this.parameters, !expandMembers)})`)
+      md.push(`(${getParameters(this.parameters, false)})`)
 
       if (this.type && !this.parent?.kindOf(ReflectionKind.Constructor)) {
-        md.push(
-          `: ${Handlebars.helpers.type.call(this.type, "none", !expandMembers)}`
-        )
+        md.push(`: ${Handlebars.helpers.type.call(this.type, "none", false)}`)
+      }
+
+      if (!expandMembers) {
+        md.push("`")
       }
       return md.join("") + (standalone ? "\n" : "")
     }

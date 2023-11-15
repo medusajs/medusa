@@ -22,14 +22,16 @@ This documentation provides a reference to the restoreVariants method. This belo
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "config",
-    "type": "[`RestoreReturn`](../../interfaces/RestoreReturn.mdx)<`TReturnableLinkableKeys`\\>",
+    "type": "[RestoreReturn](../../interfaces/RestoreReturn.mdx)&#60;TReturnableLinkableKeys&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "returnLinkableKeys",
@@ -37,16 +39,18 @@ This documentation provides a reference to the restoreVariants method. This belo
         "description": "An array of strings, each being the ID attribute names of the entity's relations.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -54,6 +58,7 @@ This documentation provides a reference to the restoreVariants method. This belo
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -62,6 +67,7 @@ This documentation provides a reference to the restoreVariants method. This belo
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -70,6 +76,7 @@ This documentation provides a reference to the restoreVariants method. This belo
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -78,6 +85,7 @@ This documentation provides a reference to the restoreVariants method. This belo
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -86,6 +94,7 @@ This documentation provides a reference to the restoreVariants method. This belo
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -97,17 +106,19 @@ This documentation provides a reference to the restoreVariants method. This belo
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| Record<`string`, `string`[]\\>\\>",
+    "type": "Promise&#60;void \\| Record&#60;string, string[]&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": [
       {
-        "name": "void \\| Record<string, string[]\\>",
-        "type": "`void` \\| Record<`string`, `string`[]\\>",
+        "name": "void \\| Record&#60;string, string[]&#62;",
+        "type": "`void` \\| `Record<string, string[]>`",
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       }
     ]

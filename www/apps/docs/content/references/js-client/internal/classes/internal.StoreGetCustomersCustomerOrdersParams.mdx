@@ -13,49 +13,12 @@ Parameters used to filter and configure the pagination of the retrieved orders.
 <ParameterTypes parameters={[
   {
     "name": "canceled_at",
-    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "type": "[DateComparisonOperator](internal.DateComparisonOperator.mdx)",
     "description": "Date filters to apply on the orders' `canceled_at` date.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "gt",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "gte",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lt",
-        "type": "`Date`",
-        "description": "The filtered date must be less than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lte",
-        "type": "`Date`",
-        "description": "The filtered date must be less than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "cart_id",
@@ -68,49 +31,12 @@ Parameters used to filter and configure the pagination of the retrieved orders.
   },
   {
     "name": "created_at",
-    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "type": "[DateComparisonOperator](internal.DateComparisonOperator.mdx)",
     "description": "Date filters to apply on the orders' `created_at` date.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "gt",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "gte",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lt",
-        "type": "`Date`",
-        "description": "The filtered date must be less than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lte",
-        "type": "`Date`",
-        "description": "The filtered date must be less than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "currency_code",
@@ -159,94 +85,12 @@ Parameters used to filter and configure the pagination of the retrieved orders.
   },
   {
     "name": "fulfillment_status",
-    "type": "[`FulfillmentStatus`](../enums/internal.FulfillmentStatus.mdx)[]",
+    "type": "[FulfillmentStatus](../enums/internal.FulfillmentStatus.mdx)[]",
     "description": "Fulfillment statuses to filter orders by.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "CANCELED",
-        "type": "``\"canceled\"``",
-        "description": "The order's fulfillments are canceled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "FULFILLED",
-        "type": "``\"fulfilled\"``",
-        "description": "The order's items are fulfilled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "NOT_FULFILLED",
-        "type": "``\"not_fulfilled\"``",
-        "description": "The order's items are not fulfilled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PARTIALLY_FULFILLED",
-        "type": "``\"partially_fulfilled\"``",
-        "description": "Some of the order's items, but not all, are fulfilled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PARTIALLY_RETURNED",
-        "type": "``\"partially_returned\"``",
-        "description": "Some of the order's items, but not all, are returned.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PARTIALLY_SHIPPED",
-        "type": "``\"partially_shipped\"``",
-        "description": "Some of the order's items, but not all, are shipped.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REQUIRES_ACTION",
-        "type": "``\"requires_action\"``",
-        "description": "The order's fulfillment requires action.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "RETURNED",
-        "type": "``\"returned\"``",
-        "description": "The order's items are returned.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "SHIPPED",
-        "type": "``\"shipped\"``",
-        "description": "The order's items are shipped.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "id",
@@ -277,76 +121,12 @@ Parameters used to filter and configure the pagination of the retrieved orders.
   },
   {
     "name": "payment_status",
-    "type": "[`PaymentStatus`](../enums/internal.PaymentStatus.mdx)[]",
+    "type": "[PaymentStatus](../enums/internal.PaymentStatus.mdx)[]",
     "description": "Payment statuses to filter orders by.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "AWAITING",
-        "type": "``\"awaiting\"``",
-        "description": "The order's payment is awaiting capturing.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "CANCELED",
-        "type": "``\"canceled\"``",
-        "description": "The order's payment is canceled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "CAPTURED",
-        "type": "``\"captured\"``",
-        "description": "The order's payment is captured.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "NOT_PAID",
-        "type": "``\"not_paid\"``",
-        "description": "The order's payment is not paid.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PARTIALLY_REFUNDED",
-        "type": "``\"partially_refunded\"``",
-        "description": "Some of the order's payment amount is refunded.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REFUNDED",
-        "type": "``\"refunded\"``",
-        "description": "The order's payment amount is refunded.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REQUIRES_ACTION",
-        "type": "``\"requires_action\"``",
-        "description": "The order's payment requires action.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "q",
@@ -368,58 +148,12 @@ Parameters used to filter and configure the pagination of the retrieved orders.
   },
   {
     "name": "status",
-    "type": "[`OrderStatus`](../enums/internal.OrderStatus.mdx)[]",
+    "type": "[OrderStatus](../enums/internal.OrderStatus.mdx)[]",
     "description": "Statuses to filter orders by.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "ARCHIVED",
-        "type": "``\"archived\"``",
-        "description": "The order is archived.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "CANCELED",
-        "type": "``\"canceled\"``",
-        "description": "The order is canceled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "COMPLETED",
-        "type": "``\"completed\"``",
-        "description": "The order is completed, meaning that the items have been fulfilled and the payment has been captured.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PENDING",
-        "type": "``\"pending\"``",
-        "description": "The order is pending.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REQUIRES_ACTION",
-        "type": "``\"requires_action\"``",
-        "description": "The order requires action.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "tax_rate",
@@ -432,48 +166,11 @@ Parameters used to filter and configure the pagination of the retrieved orders.
   },
   {
     "name": "updated_at",
-    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "type": "[DateComparisonOperator](internal.DateComparisonOperator.mdx)",
     "description": "Date filters to apply on the orders' `updated_at` date.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "gt",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "gte",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lt",
-        "type": "`Date`",
-        "description": "The filtered date must be less than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lte",
-        "type": "`Date`",
-        "description": "The filtered date must be less than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

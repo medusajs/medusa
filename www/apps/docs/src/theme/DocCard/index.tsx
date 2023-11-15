@@ -2,7 +2,7 @@ import React, { type ReactNode } from "react"
 import clsx from "clsx"
 import Link from "@docusaurus/Link"
 import {
-  findFirstCategoryLink,
+  findFirstSidebarItemLink,
   useDocById,
 } from "@docusaurus/theme-common/internal"
 import isInternalUrl from "@docusaurus/isInternalUrl"
@@ -14,8 +14,8 @@ import {
   ModifiedSidebarItem,
 } from "@medusajs/docs"
 import { Badge } from "docs-ui"
-import BorderedIcon from "../../components/BorderedIcon"
 import Icons from "../Icon"
+import BorderedIcon from "../../components/BorderedIcon"
 
 type ModifiedProps = {
   item: ModifiedDocCard
@@ -185,12 +185,14 @@ function CardCategory({
 }: {
   item: ModifiedDocCardItemCategory
 }): JSX.Element | null {
-  const href = findFirstCategoryLink(item)
+  const href = findFirstSidebarItemLink(item)
   const icon = getCardIcon(item)
+
   // Unexpected: categories that don't have a link have been filtered upfront
   if (!href) {
     return null
   }
+
   return (
     <CardLayout
       {...item}
@@ -217,7 +219,6 @@ function CardCategory({
 function CardLink({ item }: { item: ModifiedDocCardItemLink }): JSX.Element {
   const icon = getCardIcon(item)
   const doc = useDocById(item.docId ?? undefined)
-
   return (
     <CardLayout
       {...item}

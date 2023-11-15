@@ -6,4 +6,4 @@ medusa.admin.collections.create({
 })
 .then(({ collection }) => {
   console.log(collection.id);
-});
+})

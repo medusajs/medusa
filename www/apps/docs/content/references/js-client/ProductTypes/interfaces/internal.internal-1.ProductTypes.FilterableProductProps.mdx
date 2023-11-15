@@ -13,7 +13,7 @@ The filters to apply on retrieved products.
 <ParameterTypes parameters={[
   {
     "name": "$and",
-    "type": "([`FilterableProductProps`](internal.internal-1.ProductTypes.FilterableProductProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableProductProps`](internal.internal-1.ProductTypes.FilterableProductProps.mdx)\\>)[]",
+    "type": "([FilterableProductProps](internal.internal-1.ProductTypes.FilterableProductProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)&#60;[FilterableProductProps](internal.internal-1.ProductTypes.FilterableProductProps.mdx)&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
     "optional": true,
     "defaultValue": "",
@@ -22,7 +22,7 @@ The filters to apply on retrieved products.
   },
   {
     "name": "$or",
-    "type": "([`FilterableProductProps`](internal.internal-1.ProductTypes.FilterableProductProps.mdx) \\| [`BaseFilterable`](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)<[`FilterableProductProps`](internal.internal-1.ProductTypes.FilterableProductProps.mdx)\\>)[]",
+    "type": "([FilterableProductProps](internal.internal-1.ProductTypes.FilterableProductProps.mdx) \\| [BaseFilterable](../../DAL/interfaces/internal.internal-1.DAL.BaseFilterable.mdx)&#60;[FilterableProductProps](internal.internal-1.ProductTypes.FilterableProductProps.mdx)&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
     "optional": true,
     "defaultValue": "",
@@ -36,39 +36,11 @@ The filters to apply on retrieved products.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string` \\| `string`[] \\| [`OperatorMap`](../../modules/internal.mdx#operatormap)<`string`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_active",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_internal",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "categories.id",
-    "type": "`string` \\| `string`[] \\| [`OperatorMap`](../../modules/internal.mdx#operatormap)<`string`\\>",
+    "type": "`string` \\| `string`[] \\| [OperatorMap](../../internal/types/internal.OperatorMap.mdx)&#60;string&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -95,7 +67,7 @@ The filters to apply on retrieved products.
   },
   {
     "name": "category_id",
-    "type": "`string` \\| `string`[] \\| [`OperatorMap`](../../modules/internal.mdx#operatormap)<`string`\\>",
+    "type": "`string` \\| `string`[] \\| [OperatorMap](../../internal/types/internal.OperatorMap.mdx)&#60;string&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -104,7 +76,7 @@ The filters to apply on retrieved products.
   },
   {
     "name": "collection_id",
-    "type": "`string` \\| `string`[] \\| [`OperatorMap`](../../modules/internal.mdx#operatormap)<`string`\\>",
+    "type": "`string` \\| `string`[] \\| [OperatorMap](../../internal/types/internal.OperatorMap.mdx)&#60;string&#62;",
     "description": "Filters a product by its associated collections.",
     "optional": true,
     "defaultValue": "",
@@ -145,17 +117,7 @@ The filters to apply on retrieved products.
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "value",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "tags.value",

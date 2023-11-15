@@ -53,7 +53,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "payload",
-    "type": "[`AdminPostOrderEditsEditLineItemsReq`](../internal/classes/internal.AdminPostOrderEditsEditLineItemsReq.mdx)",
+    "type": "[AdminPostOrderEditsEditLineItemsReq](../internal/classes/internal.AdminPostOrderEditsEditLineItemsReq.mdx)",
     "description": "The line item change to be created.",
     "optional": false,
     "defaultValue": "",
@@ -61,7 +61,7 @@ medusa.admin.orderEdits
     "children": [
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs to hold additional information.",
         "optional": true,
         "defaultValue": "",
@@ -90,7 +90,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -104,7 +104,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -120,7 +120,7 @@ medusa.admin.orderEdits
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -146,7 +146,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -272,7 +272,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -281,7 +281,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -299,7 +299,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -344,7 +344,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -426,7 +426,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -440,7 +440,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -456,7 +456,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -482,7 +482,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -608,7 +608,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -617,7 +617,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -635,7 +635,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -680,7 +680,7 @@ medusa.admin.orderEdits.cancel(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -762,7 +762,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -776,7 +776,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -792,7 +792,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -818,7 +818,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -944,7 +944,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -953,7 +953,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -971,7 +971,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -1016,7 +1016,7 @@ medusa.admin.orderEdits.confirm(orderEditId).then(({ order_edit }) => {
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -1089,7 +1089,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostOrderEditsReq`](../internal/classes/internal.AdminPostOrderEditsReq.mdx)",
+    "type": "[AdminPostOrderEditsReq](../internal/classes/internal.AdminPostOrderEditsReq.mdx)",
     "description": "The order edit to create.",
     "optional": false,
     "defaultValue": "",
@@ -1126,7 +1126,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1140,7 +1140,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -1156,7 +1156,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -1182,7 +1182,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -1308,7 +1308,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1317,7 +1317,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -1335,7 +1335,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -1380,7 +1380,7 @@ medusa.admin.orderEdits.create({ orderId }).then(({ order_edit }) => {
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -1462,7 +1462,7 @@ medusa.admin.orderEdits.delete(orderEditId).then(({ id, object, deleted }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1476,7 +1476,7 @@ medusa.admin.orderEdits.delete(orderEditId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -1555,7 +1555,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1569,7 +1569,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditItemChangeDeleteRes`](../modules/internal.mdx#adminorderedititemchangedeleteres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditItemChangeDeleteRes](../internal/types/internal.AdminOrderEditItemChangeDeleteRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -1672,7 +1672,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`GetOrderEditsParams`](../internal/classes/internal.GetOrderEditsParams.mdx)",
+    "type": "[GetOrderEditsParams](../internal/classes/internal.GetOrderEditsParams.mdx)",
     "description": "Filters and pagination configurations applied to retrieved order edits.",
     "optional": true,
     "defaultValue": "",
@@ -1736,7 +1736,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1750,7 +1750,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsListRes`](../modules/internal.mdx#adminordereditslistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsListRes](../internal/types/internal.AdminOrderEditsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of order edits with pagination fields.",
@@ -1758,7 +1758,7 @@ medusa.admin.orderEdits
     "children": [
       {
         "name": "AdminOrderEditsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `order_edits`: [`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; order_edits: [OrderEdit](../internal/classes/internal.OrderEdit.mdx)[]  &#125;`",
         "description": "The list of order edits with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1793,7 +1793,7 @@ medusa.admin.orderEdits
           },
           {
             "name": "order_edits",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)[]",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)[]",
             "description": "An array of order edit details",
             "optional": false,
             "defaultValue": "",
@@ -1819,7 +1819,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -1945,7 +1945,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1954,7 +1954,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -1972,7 +1972,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -2017,7 +2017,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -2111,7 +2111,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2125,7 +2125,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -2141,7 +2141,7 @@ medusa.admin.orderEdits
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -2167,7 +2167,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -2293,7 +2293,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -2302,7 +2302,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -2320,7 +2320,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -2365,7 +2365,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -2449,7 +2449,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2463,7 +2463,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -2479,7 +2479,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -2505,7 +2505,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -2631,7 +2631,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -2640,7 +2640,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -2658,7 +2658,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -2703,7 +2703,7 @@ medusa.admin.orderEdits.requestConfirmation(orderEditId)
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -2802,7 +2802,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "query",
-    "type": "[`GetOrderEditsOrderEditParams`](../internal/classes/internal.GetOrderEditsOrderEditParams.mdx)",
+    "type": "[GetOrderEditsOrderEditParams](../internal/classes/internal.GetOrderEditsOrderEditParams.mdx)",
     "description": "Configurations to apply on the retrieved order edit.",
     "optional": true,
     "defaultValue": "",
@@ -2830,7 +2830,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2844,7 +2844,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -2860,7 +2860,7 @@ medusa.admin.orderEdits
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -2886,7 +2886,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -3012,7 +3012,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -3021,7 +3021,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -3039,7 +3039,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -3084,7 +3084,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -3170,7 +3170,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "payload",
-    "type": "[`AdminPostOrderEditsOrderEditReq`](../internal/classes/internal.AdminPostOrderEditsOrderEditReq.mdx)",
+    "type": "[AdminPostOrderEditsOrderEditReq](../internal/classes/internal.AdminPostOrderEditsOrderEditReq.mdx)",
     "description": "The attributes to update in an order edit.",
     "optional": false,
     "defaultValue": "",
@@ -3189,7 +3189,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3203,7 +3203,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -3219,7 +3219,7 @@ medusa.admin.orderEdits
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -3245,7 +3245,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -3371,7 +3371,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -3380,7 +3380,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -3398,7 +3398,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -3443,7 +3443,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",
@@ -3539,7 +3539,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "payload",
-    "type": "[`AdminPostOrderEditsEditLineItemsLineItemReq`](../internal/classes/internal.AdminPostOrderEditsEditLineItemsLineItemReq.mdx)",
+    "type": "[AdminPostOrderEditsEditLineItemsLineItemReq](../internal/classes/internal.AdminPostOrderEditsEditLineItemsLineItemReq.mdx)",
     "description": "The creation or update of the line item change.",
     "optional": false,
     "defaultValue": "",
@@ -3558,7 +3558,7 @@ medusa.admin.orderEdits
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3572,7 +3572,7 @@ medusa.admin.orderEdits
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminOrderEditsRes`](../modules/internal.mdx#adminordereditsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminOrderEditsRes](../internal/types/internal.AdminOrderEditsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the order edit's details.",
@@ -3588,7 +3588,7 @@ medusa.admin.orderEdits
         "children": [
           {
             "name": "order_edit",
-            "type": "[`OrderEdit`](../internal/classes/internal.OrderEdit.mdx)",
+            "type": "[OrderEdit](../internal/classes/internal.OrderEdit.mdx)",
             "description": "Order edit details",
             "optional": false,
             "defaultValue": "",
@@ -3614,7 +3614,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "changes",
-                "type": "[`OrderItemChange`](../internal/classes/internal.OrderItemChange.mdx)[]",
+                "type": "[OrderItemChange](../internal/classes/internal.OrderItemChange.mdx)[]",
                 "description": "The details of all the changes on the original order's line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -3740,7 +3740,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.",
                 "optional": false,
                 "defaultValue": "",
@@ -3749,7 +3749,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that this order edit was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -3767,7 +3767,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "payment_collection",
-                "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+                "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
                 "description": "The details of the payment collection used to authorize additional payment if necessary.",
                 "optional": false,
                 "defaultValue": "",
@@ -3812,7 +3812,7 @@ medusa.admin.orderEdits
               },
               {
                 "name": "status",
-                "type": "[`OrderEditStatus`](../internal/enums/internal.OrderEditStatus.mdx)",
+                "type": "[OrderEditStatus](../internal/enums/internal.OrderEditStatus.mdx)",
                 "description": "The status of the order edit.",
                 "optional": false,
                 "defaultValue": "",

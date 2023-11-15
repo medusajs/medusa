@@ -68,7 +68,9 @@ module.exports = {
 }
 ```
 
-This registers the Redis cache module as the main cache service to use. In the options, you pass `redisUrl` with the value being the environment variable you set. You also pass the option `ttl`. This means time-to-live, and it indicates the number of seconds an item can live in the cache before it’s removed.
+This registers the Redis cache module as the main cache service to use. In the options, you pass `redisUrl` with the value being the environment variable you set. 
+
+You also pass the option `ttl`. This means time-to-live, and it indicates the number of seconds an item can live in the cache before it’s removed. If it's set to `0`, the module will skip adding the items to the cache.
 
 Other available options include:
 

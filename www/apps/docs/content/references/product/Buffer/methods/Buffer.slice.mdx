@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).slice
 
-**slice**(`start?`, `end?`): [`Buffer`](../../variables/Buffer-1.mdx)
+`**slice**(start?, end?): [Buffer](../../variables/Buffer-1.mdx)`
 
 Returns a new `Buffer` that references the same memory as the original, but
 offset and cropped by the `start` and `end` indices.
@@ -17,7 +17,7 @@ This method is not compatible with the `Uint8Array.prototype.slice()`,
 which is a superclass of `Buffer`. To copy the slice, use`Uint8Array.prototype.slice()`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('buffer');
 
@@ -47,6 +47,7 @@ console.log(buf.toString());
     "description": "Where the new `Buffer` will start.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -55,21 +56,23 @@ console.log(buf.toString());
     "description": "Where the new `Buffer` will end (not inclusive).",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
