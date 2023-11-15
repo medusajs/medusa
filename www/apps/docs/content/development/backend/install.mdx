@@ -11,6 +11,7 @@ import SaslSection from '../../troubleshooting/database-errors/_sasl.md'
 import ConnectionErrorSection from '../../troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from '../../troubleshooting/awilix-resolution-error/_fresh-installation.md'
 import EaddrinuseSection from '../../troubleshooting/eaddrinuse.md'
+import DockerSection from '../../troubleshooting/database-errors/_docker.md'
 
 # Install Medusa Backend
 
@@ -97,6 +98,10 @@ curl localhost:9000/store/products
     {
       title: 'Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string',
       content: <SaslSection />
+    },
+    {
+      title: "Can't Connect to PostgreSQL Docker Container",
+      content: <DockerSection />
     },
     {
       title: 'Error: connect ECONNREFUSED ::1:5432',
