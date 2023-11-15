@@ -16,6 +16,24 @@ global[SymbolMedusaWorkflowComposerContext] = null
  *
  * @param name
  * @param composer
+ *
+ * @example
+ * import { createWorkflow, StepReturn } from "@medusajs/workflows"
+ * import { createProductStep, getProductStep, createPricesStep } from "./steps"
+ *
+ * interface MyWorkflowData {
+ *  title: string
+ * }
+ *
+ * const myWorkflow = createWorkflow("my-workflow", (input: StepReturn<MyWorkflowData>) => {
+ *    // Everything here will be executed and resolved later during the execution. Including the data access.
+ *
+ *    const product = createProductStep(input)
+ *    const prices = createPricesStep(product)
+ *
+ *    const id = product.id
+ *    return getProductStep(product.id)
+ * })
  */
 export function createWorkflow<TData, TResult>(
   name: string,
