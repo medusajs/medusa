@@ -46,15 +46,15 @@ describe("PricingModule Service - MoneyAmount", () => {
         expect.arrayContaining([
           expect.objectContaining({
             id: "money-amount-USD",
-            amount: "500",
+            amount: 500,
           }),
           expect.objectContaining({
             id: "money-amount-EUR",
-            amount: "400",
+            amount: 400,
           }),
           expect.objectContaining({
             id: "money-amount-CAD",
-            amount: "600",
+            amount: 600,
           }),
         ])
       )
@@ -88,6 +88,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: null,
           min_quantity: "1",
           currency_code: "USD",
           currency: {
@@ -140,7 +141,7 @@ describe("PricingModule Service - MoneyAmount", () => {
             id: ["money-amount-USD"],
           },
           {
-            select: ["id", "min_quantity", "currency.code"],
+            select: ["id", "min_quantity", "currency.code", "amount"],
             relations: ["currency"],
           }
         )
@@ -151,6 +152,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: 500,
           min_quantity: "1",
           currency_code: "USD",
           currency: {
@@ -188,6 +190,7 @@ describe("PricingModule Service - MoneyAmount", () => {
       expect(serialized).toEqual([
         {
           id: "money-amount-USD",
+          amount: null,
         },
       ])
     })
@@ -195,7 +198,7 @@ describe("PricingModule Service - MoneyAmount", () => {
 
   describe("retrieveMoneyAmount", () => {
     const id = "money-amount-USD"
-    const amount = "500"
+    const amount = 500
 
     it("should return moneyAmount for the given id", async () => {
       const moneyAmount = await service.retrieveMoneyAmount(id)
@@ -272,9 +275,13 @@ describe("PricingModule Service - MoneyAmount", () => {
         },
       ])
 
-      const moneyAmount = await service.retrieveMoneyAmount(id)
+      const moneyAmount = JSON.parse(
+        JSON.stringify(
+          await service.retrieveMoneyAmount(id, { select: ["amount"] })
+        )
+      )
 
-      expect(moneyAmount.amount).toEqual("700")
+      expect(moneyAmount.amount).toEqual(700)
     })
 
     it("should update the currency of the moneyAmount successfully", async () => {
@@ -333,7 +340,7 @@ describe("PricingModule Service - MoneyAmount", () => {
         expect.objectContaining({
           id: "money-amount-TESM",
           currency_code: "USD",
-          amount: "333",
+          amount: 333,
           min_quantity: "1",
           max_quantity: "4",
         })

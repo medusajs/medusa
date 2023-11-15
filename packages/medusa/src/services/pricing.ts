@@ -327,10 +327,7 @@ class PricingService extends TransactionBaseService {
     }[],
     context: PricingContext
   ): Promise<Map<string, ProductVariantPricing>> {
-    if (
-      this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key) &&
-      this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
-    ) {
+    if (this.featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       return await this.getProductVariantPricingModulePricing_(data, context)
     }
 

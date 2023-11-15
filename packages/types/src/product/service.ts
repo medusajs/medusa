@@ -69,21 +69,18 @@ export interface IProductModuleService {
    * To specify relations that should be retrieved:
    *
    * ```ts
-   * import {
-   *   initialize as initializePricingModule,
-   * } from "@medusajs/pricing"
-   *
-   * async function retrievePriceSet (priceSetId: string) {
-   *   const pricingService = await initializePricingModule()
-   *
-   *   const priceSet = await pricingService.retrieve(
-   *     priceSetId,
-   *     {
-   *       relations: ["money_amounts"]
-   *     }
-   *   )
-   *
-   *   // do something with the price set or return it
+   * import { 
+   *   initialize as initializeProductModule,
+   * } from "@medusajs/product"
+   * 
+   * async function retrieveProduct (id: string) {
+   *   const productModule = await initializeProductModule()
+   * 
+   *   const product = await productModule.retrieve(id, {
+   *     relations: ["categories"]
+   *   })
+   * 
+   *   // do something with the product or return it
    * }
    * ```
    */

@@ -18,20 +18,24 @@ import PriceListRule from "./price-list-rule"
 import PriceSetMoneyAmount from "./price-set-money-amount"
 import RuleType from "./rule-type"
 
+type OptionalFields =
+  | "status"
+  | "type"
+  | "number_rules"
+  | "starts_at"
+  | "ends_at"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
+
+type OptionalRelations =
+  | "price_set_money_amounts"
+  | "rule_types"
+  | "price_list_rules"
+
 @Entity()
 export default class PriceList {
-  [OptionalProps]?:
-    | "price_set_money_amounts"
-    | "rule_types"
-    | "status"
-    | "type"
-    | "rules"
-    | "number_rules"
-    | "starts_at"
-    | "ends_at"
-    | "created_at"
-    | "updated_at"
-    | "deleted_at"
+  [OptionalProps]: OptionalFields | OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
   id!: string

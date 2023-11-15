@@ -65,7 +65,7 @@ export type MiddlewareRoute = {
   method?: MiddlewareVerb | MiddlewareVerb[]
   matcher: string | RegExp
   bodyParser?: ParserConfig
-  middlewares: MiddlewareFunction[]
+  middlewares?: MiddlewareFunction[]
 }
 
 export type MiddlewaresConfig = {

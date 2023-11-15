@@ -135,32 +135,27 @@ export class PriceListRuleRepository extends DALUtils.MikroOrmBaseRepository {
       ])
     )
 
-    const priceListRule = data.map((priceListRule) => {
+    const priceListRules = data.map((priceListRule) => {
       const { price_list_id, rule_type_id, ...priceListRuleData } =
         priceListRule
+
       const existingPriceListRule = existingPriceListRuleMap.get(
         priceListRule.id
       )!
 
-      const updateData = {
-        ...priceListRuleData,
-        price_list: price_list_id,
-        rule_type: rule_type_id,
+      if (price_list_id) {
+        priceListRuleData.price_list = price_list_id
       }
 
-      if (!updateData.price_list) {
-        delete updateData.price_list
+      if (rule_type_id) {
+        priceListRuleData.rule_type = rule_type_id
       }
 
-      if (!updateData.rule_type) {
-        delete updateData.rule_type
-      }
-
-      return manager.assign(existingPriceListRule, updateData)
+      return manager.assign(existingPriceListRule, priceListRuleData)
     })
 
-    manager.persist(priceListRule)
+    manager.persist(priceListRules)
 
-    return priceListRule
+    return priceListRules
   }
 }
