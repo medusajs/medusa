@@ -32,6 +32,7 @@ import {
   formatRegistrationNameWithoutNamespace,
 } from "../utils/format-registration-name"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
+import ScheduledJobsLoader from "./helpers/jobs"
 import {
   registerAbstractFulfillmentServiceFromClass,
   registerFulfillmentServiceFromClass,
@@ -39,6 +40,7 @@ import {
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
 import { RoutesLoader } from "./helpers/routing"
+import { SubscriberLoader } from "./helpers/subscribers"
 import logger from "./logger"
 
 type Options = {
@@ -93,13 +95,25 @@ export default async ({
         activityId
       )
       registerCoreRouters(pluginDetails, container)
-      registerSubscribers(pluginDetails, container)
+      await registerSubscribers(pluginDetails, container, activityId)
     })
   )
 
   await promiseAll(
     resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
   )
+
+  if (configModule.projectConfig.redis_url) {
+    await Promise.all(
+      resolved.map(async (pluginDetails) => {
+        await registerScheduledJobs(pluginDetails, container)
+      })
+    )
+  } else {
+    logger.warn(
+      "You don't have Redis configured. Scheduled jobs will not be enabled."
+    )
+  }
 
   resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
 }
@@ -181,6 +195,17 @@ async function runLoaders(
       }
     })
   )
+}
+
+async function registerScheduledJobs(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): Promise<void> {
+  await new ScheduledJobsLoader(
+    path.join(pluginDetails.resolve, "jobs"),
+    container,
+    pluginDetails.options
+  ).load()
 }
 
 async function registerMedusaApi(
@@ -548,20 +573,37 @@ export async function registerServices(
  *    registered
  * @return {void}
  */
-function registerSubscribers(
+async function registerSubscribers(
   pluginDetails: PluginDetails,
-  container: MedusaContainer
-): void {
-  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
-  files.forEach((fn) => {
-    const loaded = require(fn).default
+  container: MedusaContainer,
+  activityId: string
+): Promise<void> {
+  const exclude: string[] = []
 
-    container.build(
-      asFunction(
-        (cradle) => new loaded(cradle, pluginDetails.options)
-      ).singleton()
-    )
-  })
+  const loadedFiles = await new SubscriberLoader(
+    path.join(pluginDetails.resolve, "subscribers"),
+    container,
+    pluginDetails.options,
+    activityId
+  ).load()
+
+  /**
+   * Exclude any files that have already been loaded by the subscriber loader
+   */
+  exclude.push(...(loadedFiles ?? []))
+
+  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
+  files
+    .filter((file) => !exclude.includes(file))
+    .forEach((fn) => {
+      const loaded = require(fn).default
+
+      container.build(
+        asFunction(
+          (cradle) => new loaded(cradle, pluginDetails.options)
+        ).singleton()
+      )
+    })
 }
 
 /**
