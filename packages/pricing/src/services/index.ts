@@ -1,5 +1,8 @@
 export { default as CurrencyService } from "./currency"
 export { default as MoneyAmountService } from "./money-amount"
+export { default as PriceListService } from "./price-list"
+export { default as PriceListRuleService } from "./price-list-rule"
+export { default as PriceListRuleValueService } from "./price-list-rule-value"
 export { default as PriceRuleService } from "./price-rule"
 export { default as PriceSetService } from "./price-set"
 export { default as PriceSetMoneyAmountService } from "./price-set-money-amount"

@@ -1,9 +1,12 @@
 import {
+  AddPriceListPricesDTO,
   AddPricesDTO,
   AddRulesDTO,
   CalculatedPriceSetDTO,
   CreateCurrencyDTO,
   CreateMoneyAmountDTO,
+  CreatePriceListDTO,
+  CreatePriceListRuleDTO,
   CreatePriceRuleDTO,
   CreatePriceSetDTO,
   CreatePriceSetMoneyAmountRulesDTO,
@@ -11,31 +14,39 @@ import {
   CurrencyDTO,
   FilterableCurrencyProps,
   FilterableMoneyAmountProps,
+  FilterablePriceListProps,
+  FilterablePriceListRuleProps,
   FilterablePriceRuleProps,
   FilterablePriceSetMoneyAmountProps,
   FilterablePriceSetMoneyAmountRulesProps,
   FilterablePriceSetProps,
   FilterableRuleTypeProps,
   MoneyAmountDTO,
+  PriceListDTO,
+  PriceListRuleDTO,
   PriceRuleDTO,
   PriceSetDTO,
   PriceSetMoneyAmountDTO,
   PriceSetMoneyAmountRulesDTO,
   PricingContext,
   PricingFilters,
+  RemovePriceListRulesDTO,
   RemovePriceSetRulesDTO,
   RuleTypeDTO,
+  SetPriceListRulesDTO,
   UpdateCurrencyDTO,
   UpdateMoneyAmountDTO,
+  UpdatePriceListDTO,
+  UpdatePriceListRuleDTO,
   UpdatePriceRuleDTO,
   UpdatePriceSetDTO,
   UpdatePriceSetMoneyAmountRulesDTO,
   UpdateRuleTypeDTO,
 } from "./common"
 
-import { Context } from "../shared-context"
 import { FindConfig } from "../common"
 import { ModuleJoinerConfig } from "../modules-sdk"
+import { Context } from "../shared-context"
 
 export interface IPricingModuleService {
   /**
@@ -47,22 +58,22 @@ export interface IPricingModuleService {
    * This method is used to calculate prices based on the provided filters and context.
    *
    * @param {PricingFilters} filters - The filters to apply on prices.
-   * @param {PricingContext} context - 
+   * @param {PricingContext} context -
    * The context used to select the prices. For example, you can specify the region ID in this context, and only prices having the same value
    * will be retrieved.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CalculatedPriceSetDTO>} The calculated price matching the context and filters provided.
-   * 
+   *
    * @example
    * When you calculate prices, you must at least specify the currency code:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    * async function calculatePrice (priceSetId: string, currencyCode: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const price = await pricingService.calculatePrices(
    *     { id: [priceSetId] },
    *     {
@@ -71,20 +82,20 @@ export interface IPricingModuleService {
    *       }
    *     }
    *   )
-   * 
+   *
    *   // do something with the price or return it
    * }
    * ```
-   * 
+   *
    * To calculate prices for specific minimum and/or maximum quantity:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    * async function calculatePrice (priceSetId: string, currencyCode: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const price = await pricingService.calculatePrices(
    *     { id: [priceSetId] },
    *     {
@@ -94,20 +105,20 @@ export interface IPricingModuleService {
    *       }
    *     }
    *   )
-   * 
+   *
    *   // do something with the price or return it
    * }
    * ```
-   * 
+   *
    * To calculate prices for custom rule types:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
    * async function calculatePrice (priceSetId: string, currencyCode: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const price = await pricingService.calculatePrices(
    *     { id: [priceSetId] },
    *     {
@@ -117,7 +128,7 @@ export interface IPricingModuleService {
    *       }
    *     }
    *   )
-   * 
+   *
    *   // do something with the price or return it
    * }
    * ```
@@ -132,48 +143,48 @@ export interface IPricingModuleService {
    * This method is used to retrieves a price set by its ID.
    *
    * @param {string} id - The ID of the price set to retrieve.
-   * @param {FindConfig<PriceSetDTO>} config - 
+   * @param {FindConfig<PriceSetDTO>} config -
    * The configurations determining how the price set is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO>} The retrieved price set.
-   * 
+   *
    * @example
    * A simple example that retrieves a price set by its ID:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSet = await pricingService.retrieve(
    *     priceSetId
    *   )
-   * 
+   *
    *   // do something with the price set or return it
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSet = await pricingService.retrieve(
    *     priceSetId,
    *     {
    *       relations: ["money_amounts"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the price set or return it
    * }
    * ```
@@ -188,44 +199,44 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of price sets based on optional filters and configuration.
    *
    * @param {FilterablePriceSetProps} filters - The filters to apply on the retrieved price lists.
-   * @param {FindConfig<PriceSetDTO>} config - 
+   * @param {FindConfig<PriceSetDTO>} config -
    * The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO[]>} The list of price sets.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of price sets using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSets (priceSetIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.list(
    *     {
    *       id: priceSetIds
    *     },
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price sets:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSets (priceSetIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.list(
    *     {
    *       id: priceSetIds
@@ -234,21 +245,21 @@ export interface IPricingModuleService {
    *       relations: ["money_amounts"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSets (priceSetIds: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.list(
    *     {
    *       id: priceSetIds
@@ -259,21 +270,21 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   *   
+   *
    * async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.list(
    *     {
    *       $and: [
@@ -293,7 +304,7 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
@@ -306,46 +317,46 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to retrieve a paginated list of price sets along with the total count of available price sets satisfying the provided filters.
-   * 
+   *
    * @param {FilterablePriceSetProps} filters - The filters to apply on the retrieved price lists.
-   * @param {FindConfig<PriceSetDTO>} config - 
+   * @param {FindConfig<PriceSetDTO>} config -
    * The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[PriceSetDTO[], number]>} The list of price sets along with their total count.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of prices sets using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSets (priceSetIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSets, count] = await pricingService.listAndCount(
    *     {
    *       id: priceSetIds
    *     },
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price sets:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSets (priceSetIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSets, count] = await pricingService.listAndCount(
    *     {
    *       id: priceSetIds
@@ -354,21 +365,21 @@ export interface IPricingModuleService {
    *       relations: ["money_amounts"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSets (priceSetIds: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSets, count] = await pricingService.listAndCount(
    *     {
    *       id: priceSetIds
@@ -379,21 +390,21 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   *   
+   *
    * async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSets, count] = await pricingService.listAndCount(
    *     {
    *       $and: [
@@ -413,7 +424,7 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
@@ -426,22 +437,22 @@ export interface IPricingModuleService {
 
   /**
    * This method is used to create a new price set.
-   * 
+   *
    * @param {CreatePriceSetDTO} data - The attributes of the price set to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO>} The created price set.
-   * 
+   *
    * @example
    * To create a default price set, don't pass any rules. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceSet () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSet = await pricingService.create(
    *     {
    *       rules: [],
@@ -463,21 +474,21 @@ export interface IPricingModuleService {
    *       ],
    *     },
    *   )
-   * 
+   *
    *   // do something with the price set or return it
    * }
    * ```
-   * 
+   *
    * To create a price set and associate it with rule types:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceSet () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSet = await pricingService.create(
    *     {
    *       rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
@@ -507,7 +518,7 @@ export interface IPricingModuleService {
    *       ],
    *     },
    *   )
-   * 
+   *
    *   // do something with the price set or return it
    * }
    * ```
@@ -516,24 +527,24 @@ export interface IPricingModuleService {
 
   /**
    * @overload
-   * 
+   *
    * This method is used to create multiple price sets.
-   * 
+   *
    * @param {CreatePriceSetDTO[]} data - The price sets to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO[]>} The list of created price sets.
-   * 
+   *
    * @example
    * To create price sets with a default price, don't pass any rules and make sure to pass the `currency_code` of the price. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceSets () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.create([
    *     {
    *       rules: [],
@@ -546,21 +557,21 @@ export interface IPricingModuleService {
    *       ],
    *     },
    *   ])
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * To create price sets and associate them with rule types:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceSets () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.create([
    *     {
    *       rules: [{ rule_attribute: "region_id" }, { rule_attribute: "city" }],
@@ -592,7 +603,7 @@ export interface IPricingModuleService {
    *       ],
    *     },
    *   ])
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
@@ -604,11 +615,11 @@ export interface IPricingModuleService {
 
   /**
    * @ignore
-   * @privateRemarks 
+   * @privateRemarks
    * The update method shouldn't be documented at the moment
-   * 
+   *
    * This method is used to update existing price sets.
-   * 
+   *
    * @param {UpdatePriceSetDTO[]} data - The price sets to update, each having the attributes that should be updated in a price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO[]>} The list of updated price sets.
@@ -620,19 +631,19 @@ export interface IPricingModuleService {
 
   /**
    * This method remove rules from a price set.
-   * 
+   *
    * @param {RemovePriceSetRulesDTO[]} data - The rules to remove per price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when rules are successfully removed.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function removePriceSetRule (priceSetId: string, ruleAttributes: []) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.removeRules([
    *     {
    *       id: priceSetId,
@@ -652,15 +663,15 @@ export interface IPricingModuleService {
    * @param {string[]} ids - The IDs of the price sets to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the price sets are successfully deleted.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function removePriceSetRule (priceSetIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.delete(priceSetIds)
    * }
    */
@@ -672,19 +683,19 @@ export interface IPricingModuleService {
    * @param {AddPricesDTO} data - The data defining the price set to add the prices to, along with the prices to add.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO>} The price set that the prices were added to.
-   * 
+   *
    * @example
-   * 
+   *
    * To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function addPricesToPriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSet = await pricingService.addPrices({
    *     priceSetId,
    *     prices: [
@@ -695,21 +706,21 @@ export interface IPricingModuleService {
    *       },
    *     ],
    *   })
-   * 
+   *
    *   // do something with the price set or return it
    * }
    * ```
-   * 
+   *
    * To add prices with rules:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function addPricesToPriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSet = await pricingService.addPrices({
    *     priceSetId,
    *     prices: [
@@ -739,7 +750,7 @@ export interface IPricingModuleService {
    *       }
    *     ],
    *   })
-   * 
+   *
    *   // do something with the price set or return it
    * }
    * ```
@@ -752,19 +763,19 @@ export interface IPricingModuleService {
    * @param {AddPricesDTO[]} data - The data defining the prices to add per price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO[]>} The list of the price sets that prices were added to.
-   * 
+   *
    * @example
-   * 
+   *
    * To add a default price to a price set, don't pass it any rules and make sure to pass it the `currency_code`:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function addPricesToPriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.addPrices([{
    *     priceSetId,
    *     prices: [
@@ -775,21 +786,21 @@ export interface IPricingModuleService {
    *       },
    *     ],
    *   }])
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
-   * 
+   *
    * To add prices with rules:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function addPricesToPriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.addPrices([{
    *     priceSetId,
    *     prices: [
@@ -819,7 +830,7 @@ export interface IPricingModuleService {
    *       }
    *     ],
    *   }])
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    * ```
@@ -835,22 +846,22 @@ export interface IPricingModuleService {
    * @param {AddRulesDTO} data - The data defining the price set to add the rules to, along with the rules to add.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO>} The price set that the rules were added to.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function addRulesToPriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSet = await pricingService.addRules({
    *     priceSetId,
    *     rules: [{
    *       attribute: "region_id"
    *     }]
    *   })
-   * 
+   *
    *   // do something with the price set or return it
    * }
    */
@@ -862,22 +873,22 @@ export interface IPricingModuleService {
    * @param {AddRulesDTO[]} data - The data defining the rules to add per price set.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetDTO[]>} The list of the price sets that the rules were added to.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function addRulesToPriceSet (priceSetId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSets = await pricingService.addRules([{
    *     priceSetId,
    *     rules: [{
    *       attribute: "region_id"
    *     }]
    *   }])
-   * 
+   *
    *   // do something with the price sets or return them
    * }
    */
@@ -887,48 +898,48 @@ export interface IPricingModuleService {
    * This method retrieves a money amount by its ID.
    *
    * @param {string} id - The ID of the money amount to retrieve.
-   * @param {FindConfig<MoneyAmountDTO>} config - 
+   * @param {FindConfig<MoneyAmountDTO>} config -
    * The configurations determining how a money amount is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a money amount.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<MoneyAmountDTO>} The retrieved money amount.
-   * 
+   *
    * @example
    * To retrieve a money amount by its ID:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmount (moneyAmountId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmount = await pricingService.retrieveMoneyAmount(
    *     moneyAmountId,
    *   )
-   * 
+   *
    *   // do something with the money amount or return it
    * }
    * ```
-   * 
+   *
    * To retrieve relations along with the money amount:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmount (moneyAmountId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmount = await pricingService.retrieveMoneyAmount(
    *     moneyAmountId,
    *     {
    *       relations: ["currency"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amount or return it
    * }
    * ```
@@ -943,44 +954,44 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of money amounts based on optional filters and configuration.
    *
    * @param {FilterableMoneyAmountProps} filters - The filtes to apply on the retrieved money amounts.
-   * @param {FindConfig<MoneyAmountDTO>} config - 
+   * @param {FindConfig<MoneyAmountDTO>} config -
    * The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a money amount.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<MoneyAmountDTO[]>} The list of money amounts.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of money amounts using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmounts = await pricingService.listMoneyAmounts(
    *     {
    *       id: moneyAmountIds
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the money amounts:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmounts = await pricingService.listMoneyAmounts(
    *     {
    *       id: moneyAmountIds
@@ -989,21 +1000,21 @@ export interface IPricingModuleService {
    *       relations: ["currency"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmounts = await pricingService.listMoneyAmounts(
    *     {
    *       id: moneyAmountIds
@@ -1014,21 +1025,21 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmounts = await pricingService.listMoneyAmounts(
    *     {
    *       $and: [
@@ -1046,7 +1057,7 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
@@ -1061,44 +1072,44 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of money amounts along with the total count of available money amounts satisfying the provided filters.
    *
    * @param {FilterableMoneyAmountProps} filters - The filters to apply on the retrieved money amounts.
-   * @param {FindConfig<MoneyAmountDTO>} config - 
+   * @param {FindConfig<MoneyAmountDTO>} config -
    * The configurations determining how the money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a money amount.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[MoneyAmountDTO[], number]>} The list of money amounts along with their total count.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of money amounts using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [moneyAmounts, count] = await pricingService.listAndCountMoneyAmounts(
    *     {
    *       id: moneyAmountIds
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the money amounts:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [moneyAmounts, count] = await pricingService.listAndCountMoneyAmounts(
    *     {
    *       id: moneyAmountIds
@@ -1107,21 +1118,21 @@ export interface IPricingModuleService {
    *       relations: ["currency"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [moneyAmounts, count] = await pricingService.listAndCountMoneyAmounts(
    *     {
    *       id: moneyAmountIds
@@ -1132,21 +1143,21 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts (moneyAmountIds: string[], currencyCode: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [moneyAmounts, count] = await pricingService.listAndCountMoneyAmounts(
    *     {
    *       $and: [
@@ -1164,7 +1175,7 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    * ```
@@ -1181,15 +1192,15 @@ export interface IPricingModuleService {
    * @param {CreateMoneyAmountDTO[]} data - The money amounts to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<MoneyAmountDTO[]>} The list of created money amounts.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveMoneyAmounts () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmounts = await pricingService.createMoneyAmounts([
    *     {
    *       amount: 500,
@@ -1202,7 +1213,7 @@ export interface IPricingModuleService {
    *       max_quantity: 4
    *     }
    *   ])
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    */
@@ -1217,22 +1228,22 @@ export interface IPricingModuleService {
    * @param {UpdateMoneyAmountDTO[]} data - The money amounts to update, each having the attributes that should be updated in a money amount.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<MoneyAmountDTO[]>} The list of updated money amounts.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function updateMoneyAmounts (moneyAmountId: string, amount: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const moneyAmounts = await pricingService.updateMoneyAmounts([
    *     {
-   *       id: moneyAmountId, 
+   *       id: moneyAmountId,
    *       amount
    *     }
    *   ])
-   * 
+   *
    *   // do something with the money amounts or return them
    * }
    */
@@ -1247,15 +1258,15 @@ export interface IPricingModuleService {
    * @param {string[]} ids - The IDs of the money amounts to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves when the money amounts are successfully deleted.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function deleteMoneyAmounts (moneyAmountIds: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.deleteMoneyAmounts(
    *     moneyAmountIds
    *   )
@@ -1267,48 +1278,48 @@ export interface IPricingModuleService {
    * This method retrieves a currency by its code and and optionally based on the provided configurations.
    *
    * @param {string} code - The code of the currency to retrieve.
-   * @param {FindConfig<CurrencyDTO>} config - 
+   * @param {FindConfig<CurrencyDTO>} config -
    * The configurations determining how the currency is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a currency.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CurrencyDTO>} The retrieved currency.
-   * 
+   *
    * @example
    * A simple example that retrieves a currency by its code:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrency (code: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const currency = await pricingService.retrieveCurrency(
    *     code
    *   )
-   * 
+   *
    *   // do something with the currency or return it
    * }
    * ```
-   * 
+   *
    * To specify attributes that should be retrieved:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrency (code: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const currency = await pricingService.retrieveCurrency(
    *     code,
    *     {
    *       select: ["symbol_native"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the currency or return it
    * }
    * ```
@@ -1323,44 +1334,44 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of currencies based on optional filters and configuration.
    *
    * @param {FilterableCurrencyProps} filters - The filters to apply on the retrieved currencies.
-   * @param {FindConfig<CurrencyDTO>} config - 
+   * @param {FindConfig<CurrencyDTO>} config -
    * The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a currency.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CurrencyDTO[]>} The list of currencies.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of currencies using their codes:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrencies (codes: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const currencies = await pricingService.listCurrencies(
    *     {
    *       code: codes
    *     },
    *   )
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    * ```
-   * 
+   *
    * To specify attributes that should be retrieved within the money amounts:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrencies (codes: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const currencies = await pricingService.listCurrencies(
    *     {
    *       code: codes
@@ -1369,21 +1380,21 @@ export interface IPricingModuleService {
    *       select: ["symbol_native"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrencies (codes: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const currencies = await pricingService.listCurrencies(
    *     {
    *       code: codes
@@ -1394,7 +1405,7 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    * ```
@@ -1409,44 +1420,44 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of currencies along with the total count of available currencies satisfying the provided filters.
    *
    * @param {FilterableCurrencyProps} filters - The filters to apply on the retrieved currencies.
-   * @param {FindConfig<CurrencyDTO>} config - 
+   * @param {FindConfig<CurrencyDTO>} config -
    * The configurations determining how the currencies are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a currency.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[CurrencyDTO[], number]>} The list of currencies along with the total count.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of currencies using their codes:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrencies (codes: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [currencies, count] = await pricingService.listAndCountCurrencies(
    *     {
    *       code: codes
    *     },
    *   )
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    * ```
-   * 
+   *
    * To specify attributes that should be retrieved within the money amounts:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrencies (codes: string[]) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [currencies, count] = await pricingService.listAndCountCurrencies(
    *     {
    *       code: codes
@@ -1455,21 +1466,21 @@ export interface IPricingModuleService {
    *       select: ["symbol_native"]
    *     }
    *   )
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveCurrencies (codes: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [currencies, count] = await pricingService.listAndCountCurrencies(
    *     {
    *       code: codes
@@ -1480,7 +1491,7 @@ export interface IPricingModuleService {
    *       take
    *     }
    *   )
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    * ```
@@ -1497,15 +1508,15 @@ export interface IPricingModuleService {
    * @param {CreateCurrencyDTO[]} data - The currencies to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CurrencyDTO[]>} The list of created currencies.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createCurrencies () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const currencies = await pricingService.createCurrencies([
    *     {
    *       code: "USD",
@@ -1514,7 +1525,7 @@ export interface IPricingModuleService {
    *       name: "US Dollar",
    *     }
    *   ])
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    */
@@ -1529,22 +1540,22 @@ export interface IPricingModuleService {
    * @param {UpdateCurrencyDTO[]} data - The currencies to update, each having the attributes that should be updated in a currency.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<CurrencyDTO[]>} The list of updated currencies.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function updateCurrencies () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const currencies = await pricingService.updateCurrencies([
    *     {
    *       code: "USD",
    *       symbol: "$",
    *     }
    *   ])
-   * 
+   *
    *   // do something with the currencies or return them
    * }
    */
@@ -1559,17 +1570,17 @@ export interface IPricingModuleService {
    * @param {string[]} currencyCodes - Currency codes of the currencies to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves once the currencies are deleted.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function deleteCurrencies () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.deleteCurrencies(["USD"])
-   * 
+   *
    * }
    */
   deleteCurrencies(
@@ -1581,43 +1592,43 @@ export interface IPricingModuleService {
    * This method is used to retrieve a rule type by its ID and and optionally based on the provided configurations.
    *
    * @param {string} id - The ID of the rule type to retrieve.
-   * @param {FindConfig<RuleTypeDTO>} config - 
+   * @param {FindConfig<RuleTypeDTO>} config -
    * The configurations determining how the rule type is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a rule type.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RuleTypeDTO>} The retrieved rule type.
-   * 
+   *
    * @example
    * A simple example that retrieves a rule type by its code:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleType (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleType = await pricingService.retrieveRuleType(ruleTypeId)
-   * 
+   *
    *   // do something with the rule type or return it
    * }
    * ```
-   * 
+   *
    * To specify attributes that should be retrieved:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleType (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleType = await pricingService.retrieveRuleType(ruleTypeId, {
    *     select: ["name"]
    *   })
-   * 
+   *
    *   // do something with the rule type or return it
    * }
    * ```
@@ -1632,44 +1643,44 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of rule types based on optional filters and configuration.
    *
    * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
-   * @param {FindConfig<RuleTypeDTO>} config - 
+   * @param {FindConfig<RuleTypeDTO>} config -
    * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a rule type.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RuleTypeDTO[]>} The list of rule types.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of rule types using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleTypes = await pricingService.listRuleTypes({
    *     id: [
    *       ruleTypeId
    *     ]
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
-   * 
+   *
    * To specify attributes that should be retrieved within the rule types:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleTypes = await pricingService.listRuleTypes({
    *     id: [
    *       ruleTypeId
@@ -1677,21 +1688,21 @@ export interface IPricingModuleService {
    *   }, {
    *     select: ["name"]
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleTypes = await pricingService.listRuleTypes({
    *     id: [
    *       ruleTypeId
@@ -1701,21 +1712,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleTypes = await pricingService.listRuleTypes({
    *     $and: [
    *       {
@@ -1730,7 +1741,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
@@ -1745,44 +1756,44 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of rule types along with the total count of available rule types satisfying the provided filters.
    *
    * @param {FilterableRuleTypeProps} filters - The filters to apply on the retrieved rule types.
-   * @param {FindConfig<RuleTypeDTO>} config - 
+   * @param {FindConfig<RuleTypeDTO>} config -
    * The configurations determining how the rule types are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a rule type.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[RuleTypeDTO[], number]>} The list of rule types along with their total count.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of rule types using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({
    *     id: [
    *       ruleTypeId
    *     ]
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
-   * 
+   *
    * To specify attributes that should be retrieved within the rule types:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({
    *     id: [
    *       ruleTypeId
@@ -1790,21 +1801,21 @@ export interface IPricingModuleService {
    *   }, {
    *     select: ["name"]
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({
    *     id: [
    *       ruleTypeId
@@ -1814,21 +1825,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrieveRuleTypes (ruleTypeId: string[], name: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [ruleTypes, count] = await pricingService.listAndCountRuleTypes({
    *     $and: [
    *       {
@@ -1843,7 +1854,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    * ```
@@ -1860,22 +1871,22 @@ export interface IPricingModuleService {
    * @param {CreateRuleTypeDTO[]} data - The rule types to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RuleTypeDTO[]>} The list of created rule types.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createRuleTypes () {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleTypes = await pricingService.createRuleTypes([
    *     {
    *       name: "Region",
    *       rule_attribute: "region_id"
    *     }
    *   ])
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    */
@@ -1890,22 +1901,22 @@ export interface IPricingModuleService {
    * @param {UpdateRuleTypeDTO[]} data - The rule types to update, each having the attributes that should be updated in a rule type.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<RuleTypeDTO[]>} The list of updated rule types.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function updateRuleTypes (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const ruleTypes = await pricingService.updateRuleTypes([
    *     {
    *       id: ruleTypeId,
    *       name: "Region",
    *     }
    *   ])
-   * 
+   *
    *   // do something with the rule types or return them
    * }
    */
@@ -1920,15 +1931,15 @@ export interface IPricingModuleService {
    * @param {string[]} ruleTypeIds - The IDs of the rule types to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves once the rule types are deleted.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function deleteRuleTypes (ruleTypeId: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.deleteRuleTypes([ruleTypeId])
    * }
    */
@@ -1938,43 +1949,43 @@ export interface IPricingModuleService {
    * This method is used to a price set money amount rule by its ID based on the provided configuration.
    *
    * @param {string} id - The ID of the price set money amount rule to retrieve.
-   * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config - 
+   * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config -
    * The configurations determining how the price set money amount rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetMoneyAmountRulesDTO>} The retrieved price set money amount rule.
-   * 
+   *
    * @example
    * A simple example that retrieves a price set money amount rule by its ID:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRule (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRule = await pricingService.retrievePriceSetMoneyAmountRules(id)
-   * 
+   *
    *   // do something with the price set money amount rule or return it
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRule (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRule = await pricingService.retrievePriceSetMoneyAmountRules(id, {
    *     relations: ["price_set_money_amount"]
    *   })
-   * 
+   *
    *   // do something with the price set money amount rule or return it
    * }
    * ```
@@ -1989,62 +2000,62 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of price set money amount rules based on optional filters and configuration.
    *
    * @param {FilterablePriceSetMoneyAmountRulesProps} filters - The filters to apply on the retrieved price set money amount rules.
-   * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config - 
+   * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config -
    * The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} The list of price set money amount rules.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of price set money amount rules using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRules = await pricingService.listPriceSetMoneyAmountRules({
    *     id: [id]
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price set money amount rules:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRules = await pricingService.listPriceSetMoneyAmountRules({
    *     id: [id]
    *   }, {
    *     relations: ["price_set_money_amount"]
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRules = await pricingService.listPriceSetMoneyAmountRules({
    *     id: [id]
    *   }, {
@@ -2052,21 +2063,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRules = await pricingService.listPriceSetMoneyAmountRules({
    *     $and: [
    *       {
@@ -2081,7 +2092,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
@@ -2093,66 +2104,66 @@ export interface IPricingModuleService {
   ): Promise<PriceSetMoneyAmountRulesDTO[]>
 
   /**
-   * This method is used to retrieve a paginated list of price set money amount rules along with the total count of 
+   * This method is used to retrieve a paginated list of price set money amount rules along with the total count of
    * available price set money amount rules satisfying the provided filters.
    *
    * @param {FilterablePriceSetMoneyAmountRulesProps} filters - The filters to apply on the retrieved price set money amount rules.
-   * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config - 
+   * @param {FindConfig<PriceSetMoneyAmountRulesDTO>} config -
    * The configurations determining how the price set money amount rules are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[PriceSetMoneyAmountRulesDTO[], number]>} The list of price set money amount rules and their total count.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of price set money amounts using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmountRules, count] = await pricingService.listAndCountPriceSetMoneyAmountRules({
    *     id: [id]
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price set money amount rules:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmountRules, count] = await pricingService.listAndCountPriceSetMoneyAmountRules({
    *     id: [id]
    *   }, {
    *     relations: ["price_set_money_amount"],
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmountRules, count] = await pricingService.listAndCountPriceSetMoneyAmountRules({
    *     id: [id]
    *   }, {
@@ -2160,21 +2171,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmountRules (ids: string[], ruleTypeId: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmountRules, count] = await pricingService.listAndCountPriceSetMoneyAmountRules({
    *     $and: [
    *       {
@@ -2189,7 +2200,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    * ```
@@ -2204,62 +2215,62 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of price set money amounts based on optional filters and configuration.
    *
    * @param {FilterablePriceSetMoneyAmountProps} filters - The filters to apply on the retrieved price set money amounts.
-   * @param {FindConfig<PriceSetMoneyAmountDTO>} config - 
+   * @param {FindConfig<PriceSetMoneyAmountDTO>} config -
    * The configurations determining how the price set money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetMoneyAmountDTO[]>} The list of price set money amounts.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of price set money amounts using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
    *     id: [id]
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price set money amounts:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
    *     id: [id]
    *   }, {
    *     relations: ["price_rules"]
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
    *     id: [id]
    *   }, {
@@ -2267,21 +2278,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmounts = await pricingService.listPriceSetMoneyAmounts({
    *     $and: [
    *       {
@@ -2296,7 +2307,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
@@ -2305,69 +2316,69 @@ export interface IPricingModuleService {
     filters?: FilterablePriceSetMoneyAmountProps,
     config?: FindConfig<PriceSetMoneyAmountDTO>,
     sharedContext?: Context
-  ): Promise<PriceSetMoneyAmountDTO[]> 
+  ): Promise<PriceSetMoneyAmountDTO[]>
 
   /**
-   * This method is used to retrieve a paginated list of price set money amounts along with the total count of 
+   * This method is used to retrieve a paginated list of price set money amounts along with the total count of
    * available price set money amounts satisfying the provided filters.
    *
    * @param {FilterablePriceSetMoneyAmountProps} filters - The filters to apply on the retrieved price set money amounts.
-   * @param {FindConfig<PriceSetMoneyAmountDTO>} config - 
+   * @param {FindConfig<PriceSetMoneyAmountDTO>} config -
    * The configurations determining how the price set money amounts are retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price set money amount.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<[PriceSetMoneyAmountDTO[], number]>} The list of price set money amounts and their total count.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of price set money amounts using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
    *     id: [id]
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price set money amounts:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
    *     id: [id]
    *   }, {
    *     relations: ["price_rules"],
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
    *     id: [id]
    *   }, {
@@ -2375,21 +2386,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceSetMoneyAmounts (ids: string[], titles: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceSetMoneyAmounts, count] = await pricingService.listAndCountPriceSetMoneyAmounts({
    *     $and: [
    *       {
@@ -2404,7 +2415,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price set money amounts or return them
    * }
    * ```
@@ -2413,8 +2424,7 @@ export interface IPricingModuleService {
     filters?: FilterablePriceSetMoneyAmountProps,
     config?: FindConfig<PriceSetMoneyAmountDTO>,
     sharedContext?: Context
-  ): Promise<[PriceSetMoneyAmountDTO[], number]> 
-
+  ): Promise<[PriceSetMoneyAmountDTO[], number]>
 
   /**
    * This method is used to create new price set money amount rules. A price set money amount rule creates an association between a price set money amount and
@@ -2423,15 +2433,15 @@ export interface IPricingModuleService {
    * @param {CreatePriceSetMoneyAmountRulesDTO[]} data - The price set money amount rules to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} The list of created price set money amount rules.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceSetMoneyAmountRules (priceSetMoneyAmountId: string, ruleTypeId: string, value: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRules = await pricingService.createPriceSetMoneyAmountRules([
    *     {
    *       price_set_money_amount: priceSetMoneyAmountId,
@@ -2439,7 +2449,7 @@ export interface IPricingModuleService {
    *       value
    *     }
    *   ])
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    */
@@ -2451,26 +2461,26 @@ export interface IPricingModuleService {
   /**
    * This method is used to update price set money amount rules, each with their provided data.
    *
-   * @param {UpdatePriceSetMoneyAmountRulesDTO[]} data - 
+   * @param {UpdatePriceSetMoneyAmountRulesDTO[]} data -
    * The price set money amounts to update, each having the attributes to update in a price set money amount.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceSetMoneyAmountRulesDTO[]>} The list of updated price set money amount rules.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function updatePriceSetMoneyAmountRules (id: string, value: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceSetMoneyAmountRules = await pricingService.updatePriceSetMoneyAmountRules([
    *     {
    *       id,
    *       value
    *     }
    *   ])
-   * 
+   *
    *   // do something with the price set money amount rules or return them
    * }
    */
@@ -2485,15 +2495,15 @@ export interface IPricingModuleService {
    * @param {string[]} ids - The IDs of the price set money amount rules to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves once the price set money amount rules are deleted.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function deletePriceSetMoneyAmountRule (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.deletePriceSetMoneyAmountRules([id])
    * }
    */
@@ -2506,43 +2516,43 @@ export interface IPricingModuleService {
    * This method is used to retrieve a price rule by its ID.
    *
    * @param {string} id - The ID of the price rule to retrieve.
-   * @param {FindConfig<PriceRuleDTO>} config - 
+   * @param {FindConfig<PriceRuleDTO>} config -
    * The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceRuleDTO>} The retrieved price rule.
-   * 
+   *
    * @example
    * A simple example that retrieves a price rule by its ID:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRule (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRule = await pricingService.retrievePriceRule(id)
-   * 
+   *
    *   // do something with the price rule or return it
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRule (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRule = await pricingService.retrievePriceRule(id, {
    *     relations: ["price_set"]
    *   })
-   * 
+   *
    *   // do something with the price rule or return it
    * }
    * ```
@@ -2557,62 +2567,62 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of price rules based on optional filters and configuration.
    *
    * @param {FilterablePriceRuleProps} filters - The filters to apply on the retrieved price rules.
-   * @param {FindConfig<PriceRuleDTO>} config - 
+   * @param {FindConfig<PriceRuleDTO>} config -
    * The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceRuleDTO[]>} The list of price rules.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of price rules using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRules = await pricingService.listPriceRules({
    *     id: [id]
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price rules:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRules = await pricingService.listPriceRules({
    *     id: [id],
    *   }, {
    *     relations: ["price_set"]
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRules = await pricingService.listPriceRules({
    *     id: [id],
    *   }, {
@@ -2620,21 +2630,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (ids: string[], name: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRules = await pricingService.listPriceRules({
    *     $and: [
    *       {
@@ -2649,7 +2659,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
@@ -2664,62 +2674,62 @@ export interface IPricingModuleService {
    * This method is used to retrieve a paginated list of price rules along with the total count of available price rules satisfying the provided filters.
    *
    * @param {FilterablePriceRuleProps} filters - The filters to apply on the retrieved price rules.
-   * @param {FindConfig<PriceRuleDTO>} config - 
+   * @param {FindConfig<PriceRuleDTO>} config -
    * The configurations determining how the price rule is retrieved. Its properties, such as `select` or `relations`, accept the
    * attributes or relations associated with a price rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceRuleDTO[]>} The list of price rules along with their total count.
-   * 
+   *
    * @example
-   * 
+   *
    * To retrieve a list of price rules using their IDs:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceRules, count] = await pricingService.listAndCountPriceRules({
    *     id: [id]
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
-   * 
+   *
    * To specify relations that should be retrieved within the price rules:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (id: string) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceRules, count] = await pricingService.listAndCountPriceRules({
    *     id: [id],
    *   }, {
    *     relations: ["price_set"]
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
-   * 
+   *
    * By default, only the first `15` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (id: string, skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceRules, count] = await pricingService.listAndCountPriceRules({
    *     id: [id],
    *   }, {
@@ -2727,21 +2737,21 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
-   * 
+   *
    * You can also use the `$and` or `$or` properties of the `filter` parameter to use and/or conditions in your filters. For example:
-   * 
+   *
    * ```ts
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function retrievePriceRules (ids: string[], name: string[], skip: number, take: number) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const [priceRules, count] = await pricingService.listAndCountPriceRules({
    *     $and: [
    *       {
@@ -2756,7 +2766,7 @@ export interface IPricingModuleService {
    *     skip,
    *     take
    *   })
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    * ```
@@ -2773,22 +2783,22 @@ export interface IPricingModuleService {
    * @param {CreatePriceRuleDTO[]} data - The price rules to create.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceRuleDTO[]>} The list of created price rules.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function createPriceRules (
    *   id: string,
-   *   priceSetId: string, 
-   *   ruleTypeId: string, 
-   *   value: string, 
-   *   priceSetMoneyAmountId: string, 
+   *   priceSetId: string,
+   *   ruleTypeId: string,
+   *   value: string,
+   *   priceSetMoneyAmountId: string,
    *   priceListId: string
    * ) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRules = await pricingService.createPriceRules([
    *     {
    *       id,
@@ -2799,7 +2809,7 @@ export interface IPricingModuleService {
    *       price_list_id: priceListId
    *     }
    *   ])
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    */
@@ -2814,25 +2824,25 @@ export interface IPricingModuleService {
    * @param {UpdatePriceRuleDTO[]} data - The price rules to update, each having attributes that should be updated in a price rule.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<PriceRuleDTO[]>} The list of updated price rules.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function updatePriceRules (
    *   id: string,
-   *   priceSetId: string, 
+   *   priceSetId: string,
    * ) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   const priceRules = await pricingService.updatePriceRules([
    *     {
    *       id,
    *       price_set_id: priceSetId,
    *     }
    *   ])
-   * 
+   *
    *   // do something with the price rules or return them
    * }
    */
@@ -2847,17 +2857,17 @@ export interface IPricingModuleService {
    * @param {string[]} priceRuleIds - The IDs of the price rules to delete.
    * @param {Context} sharedContext - A context used to share resources, such as transaction manager, between the application and the module.
    * @returns {Promise<void>} Resolves once the price rules are deleted.
-   * 
+   *
    * @example
-   * import { 
+   * import {
    *   initialize as initializePricingModule,
    * } from "@medusajs/pricing"
-   * 
+   *
    * async function deletePriceRules (
    *   id: string,
    * ) {
    *   const pricingService = await initializePricingModule()
-   * 
+   *
    *   await pricingService.deletePriceRules([id])
    * }
    */
@@ -2865,4 +2875,85 @@ export interface IPricingModuleService {
     priceRuleIds: string[],
     sharedContext?: Context
   ): Promise<void>
+
+  retrievePriceList(
+    id: string,
+    config?: FindConfig<PriceListDTO>,
+    sharedContext?: Context
+  ): Promise<PriceListDTO>
+
+  listPriceLists(
+    filters?: FilterablePriceListProps,
+    config?: FindConfig<PriceListDTO>,
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
+  listAndCountPriceLists(
+    filters?: FilterablePriceListProps,
+    config?: FindConfig<PriceListDTO>,
+    sharedContext?: Context
+  ): Promise<[PriceListDTO[], number]>
+
+  createPriceLists(
+    data: CreatePriceListDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
+  updatePriceLists(
+    data: UpdatePriceListDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
+  deletePriceLists(
+    priceListIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  retrievePriceListRule(
+    id: string,
+    config?: FindConfig<PriceListRuleDTO>,
+    sharedContext?: Context
+  ): Promise<PriceListRuleDTO>
+
+  listPriceListRules(
+    filters?: FilterablePriceListRuleProps,
+    config?: FindConfig<PriceListRuleDTO>,
+    sharedContext?: Context
+  ): Promise<PriceListRuleDTO[]>
+
+  listAndCountPriceListRules(
+    filters?: FilterablePriceListRuleProps,
+    config?: FindConfig<PriceListRuleDTO>,
+    sharedContext?: Context
+  ): Promise<[PriceListRuleDTO[], number]>
+
+  createPriceListRules(
+    data: CreatePriceListRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListRuleDTO[]>
+
+  updatePriceListRules(
+    data: UpdatePriceListRuleDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListRuleDTO[]>
+
+  deletePriceListRules(
+    priceListRuleIds: string[],
+    sharedContext?: Context
+  ): Promise<void>
+
+  addPriceListPrices(
+    data: AddPriceListPricesDTO[],
+    sharedContext?: Context
+  ): Promise<PriceListDTO[]>
+
+  setPriceListRules(
+    data: SetPriceListRulesDTO,
+    sharedContext?: Context
+  ): Promise<PriceListDTO>
+
+  removePriceListRules(
+    data: RemovePriceListRulesDTO,
+    sharedContext?: Context
+  ): Promise<PriceListDTO>
 }
