@@ -393,13 +393,14 @@ class SalesChannelService extends TransactionBaseService {
         this.salesChannelRepository_
       )
 
-      const isIsolatedSalesChannelDomainFlagOn =
-        this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)
+      const isMedusaV2Enabled = this.featureFlagRouter_.isFeatureEnabled(
+        MedusaV2Flag.key
+      )
 
       await salesChannelRepo.addProducts(
         salesChannelId,
         productIds,
-        isIsolatedSalesChannelDomainFlagOn
+        isMedusaV2Enabled
       )
 
       return await this.retrieve(salesChannelId)

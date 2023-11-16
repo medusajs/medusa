@@ -402,7 +402,7 @@ async function listAndCountProductWithIsolatedProductModule(
   }
 
   if (salesChannelIdFilter) {
-    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter } // TODO: check this
+    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter }
   }
 
   let {
