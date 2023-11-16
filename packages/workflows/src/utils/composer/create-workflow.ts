@@ -1,4 +1,8 @@
-import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
+import {
+  LocalWorkflow,
+  WorkflowHandler,
+  WorkflowManager,
+} from "@medusajs/orchestration"
 import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
 import { CreateWorkflowComposerContext, StepReturn } from "./index"
 import {
@@ -6,13 +10,63 @@ import {
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowStep,
 } from "./symbol"
+import { LoadedModule, MedusaContainer } from "@medusajs/types"
 
 global[SymbolMedusaWorkflowComposerContext] = null
 
-export function createWorkflow<TData extends unknown, TResult extends unknown>(
+type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
+  <TDataOverride = undefined, TResultOverride = undefined>(
+    container?: LoadedModule[] | MedusaContainer
+  ): Omit<LocalWorkflow, "run"> & {
+    run: (
+      args?: FlowRunOptions<
+        TDataOverride extends undefined ? TData : TDataOverride
+      >
+    ) => Promise<
+      WorkflowResult<
+        TResultOverride extends undefined ? TResult : TResultOverride
+      >
+    >
+  }
+} & THooks
+
+/**
+ * Creates a new workflow with the given name and composer function.
+ * The composer function will compose the workflow by using the step, parallelize and other util functions that
+ * will allow to define the flow of event of a workflow.
+ *
+ * @param name
+ * @param composer
+ *
+ * @example
+ * ```ts
+ * import { createWorkflow, StepReturn } from "@medusajs/workflows"
+ * import { createProductStep, getProductStep, createPricesStep } from "./steps"
+ *
+ * interface MyWorkflowData {
+ *  title: string
+ * }
+ *
+ * const myWorkflow = createWorkflow("my-workflow", (input: StepReturn<MyWorkflowData>) => {
+ *    // Everything here will be executed and resolved later during the execution. Including the data access.
+ *
+ *    const product = createProductStep(input)
+ *    const prices = createPricesStep(product)
+ *
+ *    const id = product.id
+ *    return getProductStep(product.id)
+ * })
+ * ```
+ */
+
+export function createWorkflow<
+  TData,
+  TResult,
+  THooks extends Record<string, Function>
+>(
   name: string,
-  composer: (input: StepReturn<TData>) => StepReturn<TResult>
-) {
+  composer: (input: StepReturn<TData>) => void | StepReturn<TResult>
+): ReturnWorkflow<TData, TResult, THooks> {
   const handlers: WorkflowHandler = new Map()
 
   if (WorkflowManager.getWorkflow(name)) {
@@ -25,6 +79,12 @@ export function createWorkflow<TData extends unknown, TResult extends unknown>(
     workflowId: name,
     flow: WorkflowManager.getTransactionDefinition(name),
     handlers,
+    hooks_: [],
+    hooksCallback_: {},
+    hookBinder: (name, fn) => {
+      context.hooks_.push(name)
+      return fn(context)
+    },
     stepBinder: (fn) => {
       return fn.bind(context)()
     },
@@ -49,15 +109,21 @@ export function createWorkflow<TData extends unknown, TResult extends unknown>(
 
   const workflow = exportWorkflow<TData, TResult>(name)
 
-  return <TDataOverride = undefined, TResultOverride = undefined>(...args) => {
-    const workflow_ = workflow<TDataOverride, TResultOverride>(...args)
+  const mainFlow = <TDataOverride = undefined, TResultOverride = undefined>(
+    container?: LoadedModule[] | MedusaContainer
+  ) => {
+    const workflow_ = workflow<TDataOverride, TResultOverride>(container)
     const originalRun = workflow_.run
 
     workflow_.run = (async (
       args?: FlowRunOptions<
         TDataOverride extends undefined ? TData : TDataOverride
       >
-    ): Promise<WorkflowResult<TResult>> => {
+    ): Promise<
+      WorkflowResult<
+        TResultOverride extends undefined ? TResult : TResultOverride
+      >
+    > => {
       args ??= {}
       args.resultFrom ??=
         returnedStep?.__type === SymbolWorkflowStep
@@ -66,8 +132,20 @@ export function createWorkflow<TData extends unknown, TResult extends unknown>(
 
       // Forwards the input to the ref object on composer.apply
       valueHolder.__value = args?.input as any
-      return (await originalRun(args)) as unknown as WorkflowResult<TResult>
+      return (await originalRun(args)) as unknown as WorkflowResult<
+        TResultOverride extends undefined ? TResult : TResultOverride
+      >
     }) as any
     return workflow_
   }
+
+  for (const hook of context.hooks_) {
+    mainFlow[hook] = (fn) => {
+      context.hooksCallback_[hook] ??= []
+
+      context.hooksCallback_[hook].push(fn)
+    }
+  }
+
+  return mainFlow as ReturnWorkflow<TData, TResult, THooks>
 }

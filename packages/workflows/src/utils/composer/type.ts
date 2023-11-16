@@ -11,23 +11,27 @@ export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
     this: CreateWorkflowComposerContext
   ) => TOutput extends [] ? [...StepReturn<TOutput[number]>[]] : StepReturn
 
-export type StepFunction<
+export type StepFunction<TInput extends object = object, TOutput = unknown> = {
+  (input: { [K in keyof TInput]: StepReturn<TInput[K]> }): StepReturn<TOutput>
+} & StepReturnProperties<TOutput>
+
+/*export type StepFunction<
   TInput extends unknown[] = unknown[],
   TOutput = unknown
-> = TInput extends [...infer Args, StepExecutionContext]
+> = TInput extends [StepExecutionContext, ...infer Args]
   ? {
-      (...args: { [K in keyof Args]: StepReturn<Args[K]> }): StepReturn<TOutput>
-    } & StepReturnProperties<TOutput>
+  (...args: { [K in keyof Args]: StepReturn<Args[K]> }): StepReturn<TOutput>
+} & StepReturnProperties<TOutput>
   : {
-      (
-        ...args: { [K in keyof TInput]: StepReturn<TInput[K]> }
-      ): StepReturn<TOutput>
-    } & StepReturnProperties<TOutput>
+  (
+    ...args: { [K in keyof TInput]: StepReturn<TInput[K]> }
+  ): StepReturn<TOutput>
+} & StepReturnProperties<TOutput>*/
 
 export type StepReturnProperties<T = unknown> = {
   __type: Symbol
   __step__: string
-  __value?: T
+  __value?: T | (() => T)
 }
 
 export type StepReturn<T = unknown> = T extends {
@@ -41,10 +45,16 @@ export type StepReturn<T = unknown> = T extends {
   : StepReturnProperties<T>
 
 export type CreateWorkflowComposerContext = {
+  hooks_: string[]
+  hooksCallback_: Record<string, Function[]>
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
   stepBinder: <TOutput = unknown>(fn: StepFunctionResult) => StepReturn<TOutput>
+  hookBinder: <TOutput = unknown>(
+    name: string,
+    fn: Function
+  ) => StepReturn<TOutput>
   parallelizeBinder: <TOutput extends StepReturn[] = StepReturn[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput
