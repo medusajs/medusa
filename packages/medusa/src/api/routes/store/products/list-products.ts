@@ -250,13 +250,11 @@ export default async (req, res) => {
     }
   }
 
-  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
-    MedusaV2Flag.key
-  )
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
   const promises: Promise<any>[] = []
 
-  if (isIsolateProductDomain) {
+  if (isMedusaV2Enabled) {
     promises.push(
       listAndCountProductWithIsolatedProductModule(
         req,
@@ -402,10 +400,10 @@ async function listAndCountProductWithIsolatedProductModule(
   }
 
   if (salesChannelIdFilter) {
-    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter } // TODO: check this
+    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter }
   }
 
-  let {
+  const {
     rows: products,
     metadata: { count },
   } = await remoteQuery(query)
@@ -413,10 +411,6 @@ async function listAndCountProductWithIsolatedProductModule(
   products.forEach((product) => {
     product.profile_id = product.profile?.id
   })
-
-  if (salesChannelIdFilter) {
-    products = products.filter((product) => product.sales_channels?.length)
-  }
 
   return [products, count]
 }

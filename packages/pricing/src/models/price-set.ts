@@ -18,7 +18,7 @@ import RuleType from "./rule-type"
 
 @Entity()
 export default class PriceSet {
-  [OptionalProps]?: "price_set_money_amounts" | "rule_types"
+  [OptionalProps]?: "price_set_money_amounts" | "rule_types" | "money_amounts"
 
   @PrimaryKey({ columnType: "text" })
   id!: string

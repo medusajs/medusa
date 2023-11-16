@@ -1,12 +1,19 @@
 import { EntityManager } from "typeorm"
 
+/**
+ * @interface
+ * 
+ * A shared context object that is used to share resources between the application and the module.
+ * 
+ * @prop transactionManager - An instance of a transaction manager.
+ * @prop manager - An instance of an entity manager.
+ */
 export type SharedContext = {
   transactionManager?: EntityManager
   manager?: EntityManager
 }
 
 /**
- * @internal The interface tag is used to ensure that the type is documented similar to interfaces.
  * @interface
  * 
  * A shared context object that is used to share resources between the application and the module.

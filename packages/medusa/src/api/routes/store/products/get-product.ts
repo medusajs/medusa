@@ -174,8 +174,6 @@ async function getProductWithIsolatedProductModule(req, id: string) {
     },
   }
 
-  // TODO: sales_channel filter
-
   const [product] = await remoteQuery(query)
 
   if (!product) {

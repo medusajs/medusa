@@ -31,7 +31,7 @@ export type ProductFactoryData = {
   variants?: Omit<ProductVariantFactoryData, "product_id">[]
   sales_channels?: SalesChannelFactoryData[]
   metadata?: Record<string, unknown>
-  isIsolatedSalesChannelFFOn?: boolean
+  isMedusaV2Enabled?: boolean
 }
 
 export const simpleProductFactory = async (
@@ -43,8 +43,8 @@ export const simpleProductFactory = async (
     faker.seed(seed)
   }
 
-  data.isIsolatedSalesChannelFFOn =
-    data.isIsolatedSalesChannelFFOn ?? process.env.MEDUSA_FF_MEDUSA_V2 == "true"
+  data.isMedusaV2Enabled =
+    data.isMedusaV2Enabled ?? process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
   const manager = dataSource.manager
 
@@ -126,13 +126,13 @@ export const simpleProductFactory = async (
 
   const toSave = manager.create(Product, productToCreate)
 
-  if (!data.isIsolatedSalesChannelFFOn) {
+  if (!data.isMedusaV2Enabled) {
     toSave.sales_channels = sales_channels
   }
 
   const product = await manager.save(toSave)
 
-  if (data.isIsolatedSalesChannelFFOn) {
+  if (data.isMedusaV2Enabled) {
     await manager.query(
       `INSERT INTO "product_sales_channel" (id, product_id, sales_channel_id) 
         VALUES ${sales_channels
