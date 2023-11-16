@@ -13,7 +13,15 @@ import {
   PricingTypes,
   RuleTypeDTO,
 } from "@medusajs/types"
-import { PriceListType } from "@medusajs/utils"
+import {
+  groupBy,
+  InjectManager,
+  InjectTransactionManager,
+  MedusaContext,
+  MedusaError,
+  PriceListType,
+  removeNullish,
+} from "@medusajs/utils"
 
 import {
   Currency,
@@ -42,15 +50,6 @@ import {
   PriceSetService,
   RuleTypeService,
 } from "@services"
-
-import {
-  groupBy,
-  InjectManager,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-  removeNullish,
-} from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
 import { CreatePriceListRuleValueDTO, PricingRepositoryService } from "../types"
 
@@ -147,6 +146,7 @@ export default class PricingModuleService<
       pricingContext,
       sharedContext
     )
+
     const pricesSetPricesMap = groupBy(results, "price_set_id")
 
     const calculatedPrices = pricingFilters.id.map(
@@ -155,7 +155,18 @@ export default class PricingModuleService<
         // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
         // inject custom price selection here
         const prices = pricesSetPricesMap.get(priceSetId) || []
-        const priceListPrice = prices?.find((p) => !!p.price_list_id)
+        const priceListPrice = prices
+          ?.filter((p) => !!p.price_list_id)
+          .reduce((cheapestPriceListPrice, currentPriceListPrice) => {
+            if (
+              currentPriceListPrice.amount <
+              (cheapestPriceListPrice?.amount ?? Number.POSITIVE_INFINITY)
+            ) {
+              return currentPriceListPrice
+            }
+            return cheapestPriceListPrice
+          }, undefined)
+
         const defaultPrice = prices?.find((p) => !!!p.price_list_id)
 
         let calculatedPrice: PricingTypes.CalculatedPriceSetDTO = defaultPrice

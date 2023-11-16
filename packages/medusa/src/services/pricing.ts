@@ -4,20 +4,18 @@ import {
   PriceSetMoneyAmountDTO,
   RemoteQueryFunction,
 } from "@medusajs/types"
-
-import {
-  FlagRouter,
-  MedusaV2Flag,
-  promiseAll,
-  removeNullish,
-} from "@medusajs/utils"
 import {
   CustomerService,
   ProductVariantService,
   RegionService,
   TaxProviderService,
 } from "."
-
+import {
+  FlagRouter,
+  MedusaV2Flag,
+  promiseAll,
+  removeNullish,
+} from "@medusajs/utils"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
@@ -38,11 +36,11 @@ import {
   TaxedPricing,
 } from "../types/pricing"
 
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { MedusaError } from "medusa-core-utils"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { TaxServiceRate } from "../types/tax-service"
+import { TransactionBaseService } from "../interfaces"
 import { calculatePriceTaxAmount } from "../utils"
 
 type InjectedDependencies = {
