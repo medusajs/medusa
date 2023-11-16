@@ -8,26 +8,21 @@ import {
 
 async function resolveProperty(property, transactionContext) {
   const { invoke: invokeRes } = transactionContext
-  const step_ = Array.isArray(property) ? property : [property]
 
-  return await promiseAll(
-    step_.map(async (st) => {
-      if (st?.__type === SymbolInputReference) {
-        return st.__value
-      } else if (st?.__type === SymbolWorkflowStepTransformer) {
-        if (isDefined(st.__value)) {
-          return st.__value
-        }
-        return await st(transactionContext)
-      } else if (st?.__type === SymbolWorkflowHook) {
-        return await st.__value(transactionContext)
-      } else if (st?.__type === SymbolWorkflowStep) {
-        return invokeRes[st.__step__]?.output
-      } else {
-        return st
-      }
-    })
-  )
+  if (property?.__type === SymbolInputReference) {
+    return property.__value
+  } else if (property?.__type === SymbolWorkflowStepTransformer) {
+    if (isDefined(property.__value)) {
+      return property.__value
+    }
+    return await property(transactionContext)
+  } else if (property?.__type === SymbolWorkflowHook) {
+    return await property.__value(transactionContext)
+  } else if (property?.__type === SymbolWorkflowStep) {
+    return invokeRes[property.__step__]?.output
+  } else {
+    return property
+  }
 }
 
 export async function resolveValue(input, transactionContext) {

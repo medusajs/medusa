@@ -125,7 +125,7 @@ function applyStep<
           context: transactionContext.context,
         }
 
-        const argInput = await resolveValue(input, executionContext)
+        const argInput = await resolveValue(input, transactionContext)
         const output = await invokeFn.apply(this, [argInput, executionContext])
 
         return {
