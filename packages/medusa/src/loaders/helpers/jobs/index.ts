@@ -8,9 +8,7 @@ import {
 } from "../../../types/scheduled-jobs"
 import logger from "../../logger"
 
-type ScheduledJobHandler<T = unknown> = (
-  args: ScheduledJobArgs<T>
-) => Promise<void>
+type ScheduledJobHandler = (args: ScheduledJobArgs) => Promise<void>
 
 type ScheduledJobModule = {
   config: ScheduledJobConfig
@@ -133,7 +131,7 @@ export default class ScheduledJobsLoader {
 
     for (const job of jobs) {
       try {
-        const { name, data = {}, schedule } = job.config
+        const { name, data, schedule } = job.config
 
         const handler = async () => {
           await job.handler({
@@ -148,7 +146,7 @@ export default class ScheduledJobsLoader {
         })
       } catch (err) {
         logger.error(
-          `An error occured while registering job ${job.config.name}`,
+          `An error occurred while registering job ${job.config.name}`,
           err
         )
       }

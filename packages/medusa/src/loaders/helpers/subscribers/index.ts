@@ -190,8 +190,8 @@ export class SubscriberLoader {
 
     const subscriber: Subscriber<T> = async (data: T, eventName: string) => {
       return handler({
-        data,
         eventName,
+        data,
         container: this.container_,
         pluginOptions: this.pluginOptions_,
       })

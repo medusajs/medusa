@@ -103,11 +103,17 @@ export default async ({
     resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
   )
 
-  await Promise.all(
-    resolved.map(async (pluginDetails) => {
-      await registerScheduledJobs(pluginDetails, container)
-    })
-  )
+  if (configModule.projectConfig.redis_url) {
+    await Promise.all(
+      resolved.map(async (pluginDetails) => {
+        await registerScheduledJobs(pluginDetails, container)
+      })
+    )
+  } else {
+    logger.warn(
+      "You don't have Redis configured. Scheduled jobs will not be enabled."
+    )
+  }
 
   resolved.forEach((plugin) => trackInstallation(plugin.name, "plugin"))
 }
