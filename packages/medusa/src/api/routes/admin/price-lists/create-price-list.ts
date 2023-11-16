@@ -9,21 +9,20 @@ import {
 import {
   AdminPriceListPricesCreateReq,
   CreatePriceListInput,
-  PriceListStatus,
-  PriceListType,
 } from "../../../../types/price-list"
 
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import { Type } from "class-transformer"
 import { Request } from "express"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { PriceList } from "../../../../models"
 import PriceListService from "../../../../services/price-list"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import {
   defaultAdminPriceListFields,
   defaultAdminPriceListRelations,
 } from "./index"
-import { PriceList } from "../../../../models"
 
 /**
  * @oas [post] /admin/price-lists

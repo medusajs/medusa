@@ -1,3 +1,4 @@
+import { PriceListStatus, PriceListType } from "@medusajs/utils"
 import {
   IsArray,
   IsBoolean,
@@ -7,11 +8,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
-import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
