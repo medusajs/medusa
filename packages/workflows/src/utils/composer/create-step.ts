@@ -43,6 +43,47 @@ interface ApplyStepOptions<
   >
 }
 
+/*type InvokeFn<TInput extends unknown[], O> = TInput extends [
+    StepExecutionContext,
+    ...infer Args
+  ]
+  ? (...args: [context: StepExecutionContext, ...args: Args]) => Promise<O>
+  : (...args: TInput) => Promise<O>
+
+type CompensateFn<T> = (
+  context: StepExecutionContext,
+  arg: T
+) => Promise<unknown>
+
+interface ApplyStepOptions<
+  TStepInputs extends StepReturn[],
+  TInvokeInput extends unknown[],
+  TOutput
+> {
+  stepName: string
+  stepInputs: TStepInputs
+  invokeFn: InvokeFn<TInvokeInput, TOutput>
+  compensateFn?: CompensateFn<
+    TOutput extends { compensateInput: infer CompensateInput }
+      ? TOutput["compensateInput"]
+      : TOutput
+  >
+}*/
+
+/*function applyStep<
+  TStepInputs extends StepReturn[],
+  TInvokeInput extends unknown[],
+  TResult
+>({
+    stepName,
+    stepInputs,
+    invokeFn,
+    compensateFn,
+  }: ApplyStepOptions<
+  TStepInputs,
+  TInvokeInput,
+  TResult
+>): StepFunctionResult<TResult> {*/
 /**
  * Internal function to create the invoke and compensate handler for a step.
  * This is where the inputs and context are passed to the underlying invoke and compensate function.
@@ -85,7 +126,7 @@ function applyStep<
 
         const args = await resolveValue(stepInputs, transactionContext)
 
-        const output = await invokeFn.apply(this, [executionContext, ...args])
+        const output = await invokeFn.apply(this, [arg, executionContext])
 
         return {
           __type: SymbolWorkflowStepReturn,
@@ -139,6 +180,16 @@ function applyStep<
   }
 }
 
+/*export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
+  name: string,
+  invokeFn: InvokeFn<TInvokeInput, TInvokeResult>,
+  compensateFn?: CompensateFn<
+    TInvokeResult extends { compensateInput: infer CompensateInput }
+      ? TInvokeResult["compensateInput"]
+      : TInvokeResult
+  >
+): StepFunction<TInvokeInput, TInvokeResult> {*/
+
 /**
  * Function which will create a StepFunction to be used inside a createWorkflow composer function.
  * This function will return a function which can be used to bind the step to a workflow.
@@ -188,6 +239,35 @@ export function createStep<TInvokeInput extends object, TInvokeResult>(
   >
 ): StepFunction<TInvokeInput, TInvokeResult> {
   const stepName = name ?? invokeFn.name
+
+  /*const returnFn = function (
+    ...stepInputs: [...StepReturn<TInvokeInput[number]>[]]
+  ): StepReturn<TInvokeResult> {
+    if (!global[SymbolMedusaWorkflowComposerContext]) {
+      throw new Error(
+        "createStep must be used inside a createWorkflow definition"
+      )
+    }
+
+    const stepBinder = (
+      global[
+        SymbolMedusaWorkflowComposerContext
+        ] as CreateWorkflowComposerContext
+    ).stepBinder
+
+    return stepBinder<TInvokeResult>(
+      applyStep<
+        [...StepReturn<TInvokeInput[number]>[]],
+        TInvokeInput,
+        TInvokeResult
+      >({
+        stepName,
+        stepInputs,
+        invokeFn,
+        compensateFn,
+      })
+    )
+  }*/
 
   const returnFn = function (input: {
     [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>

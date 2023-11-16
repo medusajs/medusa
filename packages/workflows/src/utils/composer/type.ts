@@ -15,6 +15,19 @@ export type StepFunction<TInput extends object = object, TOutput = unknown> = {
   (input: { [K in keyof TInput]: StepReturn<TInput[K]> }): StepReturn<TOutput>
 } & StepReturnProperties<TOutput>
 
+/*export type StepFunction<
+  TInput extends unknown[] = unknown[],
+  TOutput = unknown
+> = TInput extends [StepExecutionContext, ...infer Args]
+  ? {
+  (...args: { [K in keyof Args]: StepReturn<Args[K]> }): StepReturn<TOutput>
+} & StepReturnProperties<TOutput>
+  : {
+  (
+    ...args: { [K in keyof TInput]: StepReturn<TInput[K]> }
+  ): StepReturn<TOutput>
+} & StepReturnProperties<TOutput>*/
+
 export type StepReturnProperties<T = unknown> = {
   __type: Symbol
   __step__: string
