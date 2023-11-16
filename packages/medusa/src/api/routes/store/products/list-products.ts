@@ -250,13 +250,11 @@ export default async (req, res) => {
     }
   }
 
-  const isIsolateProductDomain = featureFlagRouter.isFeatureEnabled(
-    MedusaV2Flag.key
-  )
+  const isMedusaV2Enabled = featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)
 
   const promises: Promise<any>[] = []
 
-  if (isIsolateProductDomain) {
+  if (isMedusaV2Enabled) {
     promises.push(
       listAndCountProductWithIsolatedProductModule(
         req,
