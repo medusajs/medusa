@@ -2,6 +2,7 @@ import { promiseAll } from "@medusajs/utils"
 import {
   createStep,
   createWorkflow,
+  hook,
   parallelize,
   transform,
 } from "@medusajs/workflows"
@@ -816,5 +817,71 @@ describe("Workflow composer", function () {
     expect(mockStep3Fn).toHaveBeenCalledTimes(1)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep3Fn.mock.calls[0][1]).toEqual("variant_2")
+  })
+
+  it("should compose a new workflow exposing hooks", async () => {
+    const mockStep1Fn = jest.fn().mockImplementation((context, input) => {
+      return { id: input, product: "product_1", variant: "variant_2" }
+    })
+
+    const mockStep2Fn = jest.fn().mockImplementation((context, fullproduct) => {
+      fullproduct.product = "Saved product - " + fullproduct.product
+      return fullproduct
+    })
+
+    const getData = createStep("step1", mockStep1Fn)
+    const saveProduct = createStep("step2", mockStep2Fn)
+
+    const workflow = createWorkflow("workflow1", function (input) {
+      const data = getData(input)
+
+      const hookReturn = hook("changeProduct", data)
+      const transformedData = transform([data, hookReturn], (_, prod, hook) => {
+        return {
+          ...prod,
+          ...hook,
+        }
+      })
+
+      return saveProduct(transformedData)
+    })
+
+    workflow.changeProduct((_, productData) => {
+      return {
+        newProperties: "new properties",
+        other: [1, 2, 3],
+        nested: {
+          a: {
+            b: "c",
+          },
+        },
+        moreProperties: "more properties",
+      }
+    })
+
+    workflow.changeProduct((_, data) => {
+      return {
+        ...data,
+        moreProperties: "2nd hook update",
+      }
+    })
+
+    const workflowInput = "id_123"
+    const { result: final } = await workflow().run({
+      input: workflowInput,
+    })
+    expect(final).toEqual({
+      id: "id_123",
+      variant: "variant_2",
+      product: "Saved product - product_1",
+      newProperties: "new properties",
+      other: [1, 2, 3],
+      nested: {
+        a: {
+          b: "c",
+        },
+      },
+      moreProperties: "2nd hook update",
+    })
   })
 })

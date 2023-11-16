@@ -1,5 +1,5 @@
 import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
-import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
+import { FlowRunOptions, WorkflowResult, exportWorkflow } from "../../helper"
 import { CreateWorkflowComposerContext, StepReturn } from "./index"
 import {
   SymbolInputReference,
@@ -53,6 +53,12 @@ export function createWorkflow<TData, TResult>(
     workflowId: name,
     flow: WorkflowManager.getTransactionDefinition(name),
     handlers,
+    hooks_: [],
+    hooksCallback_: {},
+    hookBinder: (name, fn) => {
+      context.hooks_.push(name)
+      return fn(context)
+    },
     stepBinder: (fn) => {
       return fn.bind(context)()
     },
@@ -77,7 +83,9 @@ export function createWorkflow<TData, TResult>(
 
   const workflow = exportWorkflow<TData, TResult>(name)
 
-  return <TDataOverride = undefined, TResultOverride = undefined>(...args) => {
+  const mainFlow = <TDataOverride = undefined, TResultOverride = undefined>(
+    ...args
+  ) => {
     const workflow_ = workflow<TDataOverride, TResultOverride>(...args)
     const originalRun = workflow_.run
 
@@ -98,4 +106,14 @@ export function createWorkflow<TData, TResult>(
     }) as any
     return workflow_
   }
+
+  for (const hook of context.hooks_) {
+    mainFlow[hook] = (fn) => {
+      context.hooksCallback_[hook] ??= []
+
+      context.hooksCallback_[hook].push(fn)
+    }
+  }
+
+  return mainFlow
 }

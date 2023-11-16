@@ -40,11 +40,22 @@ export type StepReturn<T = unknown> = T extends {
     } & StepReturnProperties<T>
   : StepReturnProperties<T>
 
+export type HookReturn<T = unknown> = {
+  __type: Symbol
+  __value: () => T
+}
+
 export type CreateWorkflowComposerContext = {
+  hooks_: string[]
+  hooksCallback_: Record<string, Function[]>
   workflowId: string
   flow: OrchestratorBuilder
   handlers: WorkflowHandler
   stepBinder: <TOutput = unknown>(fn: StepFunctionResult) => StepReturn<TOutput>
+  hookBinder: <TOutput = unknown>(
+    name: string,
+    fn: Function
+  ) => HookReturn<TOutput>
   parallelizeBinder: <TOutput extends StepReturn[] = StepReturn[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput

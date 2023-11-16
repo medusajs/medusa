@@ -1,11 +1,9 @@
-import { isDefined, promiseAll } from "@medusajs/utils"
+import { resolveValue } from "./resolve-value"
 import {
-  SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowStep,
   SymbolWorkflowStepBind,
   SymbolWorkflowStepReturn,
-  SymbolWorkflowStepTransformer,
 } from "./symbol"
 import { transform } from "./transform"
 import {
@@ -75,44 +73,13 @@ function applyStep<
 
     const handler = {
       invoke: async (transactionContext) => {
-        const { invoke: invokeRes } = transactionContext
-
-        // Garb all previous invoke results by step name and or transformers
-        let previousResultResults = await promiseAll(
-          stepInputs.map(async (stepInput) => {
-            if (stepInput?.__type === SymbolInputReference) {
-              return stepInput.__value
-            }
-
-            const stepInputs_ = Array.isArray(stepInput)
-              ? stepInput
-              : [stepInput]
-
-            return await promiseAll(
-              stepInputs_.map(async (st) => {
-                if (st?.__type === SymbolWorkflowStepTransformer) {
-                  if (isDefined(st.__value)) {
-                    return st.__value
-                  }
-                  return await st(transactionContext)
-                }
-
-                return st?.__type === SymbolWorkflowStep
-                  ? invokeRes[st.__step__]?.output
-                  : st
-              })
-            )
-          })
-        )
-        previousResultResults = previousResultResults.flat()
-
         const executionContext: StepExecutionContext = {
           container: transactionContext.container,
           metadata: transactionContext.metadata,
           context: transactionContext.context,
         }
 
-        let args = previousResultResults
+        const args = await resolveValue(stepInputs, transactionContext)
 
         const output = await invokeFn.apply(this, [executionContext, ...args])
 

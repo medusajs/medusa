@@ -1,8 +1,5 @@
-import {
-  SymbolInputReference,
-  SymbolWorkflowStep,
-  SymbolWorkflowStepTransformer,
-} from "./symbol"
+import { resolveValue } from "./resolve-value"
+import { SymbolWorkflowStepTransformer } from "./symbol"
 import { StepReturn, WorkflowTransactionContext } from "./type"
 
 type Func1Multiple<T extends any[], U> = (
@@ -96,30 +93,16 @@ export function transform(
   values: any | any[],
   ...functions: Function[]
 ): unknown {
-  const returnFn = async function (context): Promise<any> {
-    const { invoke } = context
-
-    values = Array.isArray(values) ? values : [values]
-    const stepValues = values?.map((value: any) => {
-      let returnVal
-      if (value?.__type === SymbolInputReference) {
-        returnVal = value.__value
-      } else if (value?.__type === SymbolWorkflowStep) {
-        returnVal = invoke[value.__step__]?.output
-      } else {
-        returnVal = value
-      }
-
-      return returnVal ? JSON.parse(JSON.stringify(returnVal)) : returnVal
-    })
+  const returnFn = async function (transactionContext): Promise<any> {
+    const allValues = await resolveValue(values, transactionContext)
+    const stepValues = JSON.parse(JSON.stringify(allValues))
 
     let finalResult
     for (let i = 0; i < functions.length; i++) {
       const fn = functions[i]
+      const args = i === 0 ? stepValues : [finalResult]
 
-      let args = i === 0 ? stepValues : [finalResult]
-
-      finalResult = await fn.apply(fn, [context, ...args])
+      finalResult = await fn.apply(fn, [transactionContext, ...args])
     }
 
     returnFn.__value = finalResult
