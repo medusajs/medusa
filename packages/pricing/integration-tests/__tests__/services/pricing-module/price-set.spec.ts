@@ -106,7 +106,9 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [{ id: "money-amount-USD", amount: "500" }],
+          money_amounts: [
+            expect.objectContaining({ id: "money-amount-USD", amount: 500 }),
+          ],
         },
       ])
     })
@@ -160,7 +162,7 @@ describe("PricingModule Service - PriceSet", () => {
       expect(serialized).toEqual([
         {
           id: "price-set-1",
-          money_amounts: [{ id: "money-amount-USD" }],
+          money_amounts: [expect.objectContaining({ id: "money-amount-USD" })],
         },
       ])
     })
@@ -375,7 +377,7 @@ describe("PricingModule Service - PriceSet", () => {
           ],
           money_amounts: [
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ],
@@ -413,11 +415,11 @@ describe("PricingModule Service - PriceSet", () => {
           ],
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
             expect.objectContaining({
-              amount: "150",
+              amount: 150,
               currency_code: "USD",
             }),
           ]),
@@ -450,7 +452,7 @@ describe("PricingModule Service - PriceSet", () => {
           ],
           money_amounts: [
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ],
@@ -544,7 +546,7 @@ describe("PricingModule Service - PriceSet", () => {
             ],
             money_amounts: [
               expect.objectContaining({
-                amount: "500",
+                amount: 500,
                 currency_code: "EUR",
               }),
             ],
@@ -608,7 +610,7 @@ describe("PricingModule Service - PriceSet", () => {
           id: "price-set-1",
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ]),
@@ -650,7 +652,7 @@ describe("PricingModule Service - PriceSet", () => {
           id: "price-set-1",
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "100",
+              amount: 100,
               currency_code: "USD",
             }),
           ]),
@@ -659,7 +661,7 @@ describe("PricingModule Service - PriceSet", () => {
           id: "price-set-2",
           money_amounts: expect.arrayContaining([
             expect.objectContaining({
-              amount: "150",
+              amount: 150,
               currency_code: "EUR",
             }),
           ]),

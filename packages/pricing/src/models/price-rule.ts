@@ -57,11 +57,6 @@ export default class PriceRule {
   })
   price_set_money_amount: PriceSetMoneyAmount
 
-  @Property({ columnType: "text" })
-  price_list_id!: string
-
-  // TODO: Add price list
-
   @BeforeCreate()
   beforeCreate() {
     this.id = generateEntityId(this.id, "prule")
