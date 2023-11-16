@@ -373,7 +373,11 @@ async function listAndCountProductWithIsolatedProductModule(
     },
   }
 
-  let {
+  if (salesChannelIdFilter) {
+    query.product["sales_channels"]["__args"] = { id: salesChannelIdFilter }
+  }
+
+  const {
     rows: products,
     metadata: { count },
   } = await remoteQuery(query)
@@ -381,15 +385,6 @@ async function listAndCountProductWithIsolatedProductModule(
   products.forEach((product) => {
     product.profile_id = product.profile?.id
   })
-
-  if (salesChannelIdFilter) {
-    products = products.filter(
-      (product) =>
-        !!product.sales_channels?.find((sc) =>
-          salesChannelIdFilter.includes(sc.id)
-        )
-    )
-  }
 
   return [products, count]
 }
