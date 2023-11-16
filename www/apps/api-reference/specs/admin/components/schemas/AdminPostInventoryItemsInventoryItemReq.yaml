@@ -1,4 +1,5 @@
 type: object
+description: The attributes to update in an inventory item.
 properties:
   hs_code:
     description: >-
@@ -42,6 +43,15 @@ properties:
       The length of the Inventory Item. May be used in shipping rate
       calculations.
     type: number
+  title:
+    description: The inventory item's title.
+    type: string
+  description:
+    description: The inventory item's description.
+    type: string
+  thumbnail:
+    description: The inventory item's thumbnail.
+    type: string
   requires_shipping:
     description: Whether the item requires shipping.
     type: boolean

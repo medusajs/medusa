@@ -13,7 +13,7 @@ Provides layer to manipulate product categories.
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -31,7 +31,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -40,447 +40,16 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "eventBusService_",
-    "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
+    "type": "[EventBusService](internal.internal.EventBusService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__configModule__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__container__",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__moduleDeclaration__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "config_",
-        "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "featureFlags",
-            "type": "Record<`string`, `boolean` \\| `string`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "modules",
-            "type": "Record<`string`, `boolean` \\| [`Partial`](../../modules/internal.mdx#partial)<[`InternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)\\>\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "plugins",
-            "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "projectConfig",
-            "type": "[`ProjectConfigOptions`](../../internal-1/modules/internal.internal-1.CommonTypes.mdx#projectconfigoptions)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "enqueue_",
-        "type": "`Promise`<`void`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "logger_",
-        "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "activity",
-            "type": "(`message`: `string`, `config?`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`message`: `string`, `config?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "debug",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "error",
-            "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "failure",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "info",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "log",
-            "type": "(...`args`: `any`[]) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(...`args`: `any`[]) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "panic",
-            "type": "(`data`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`data`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "progress",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "setLogLevel",
-            "type": "(`level`: `string`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "shouldLog",
-            "type": "(`level`: `string`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "success",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "unsetLogLevel",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "() => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "warn",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__type",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "manager_",
-        "type": "`EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldEnqueuerRun",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "stagedJobService_",
-        "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "stagedJobRepository_",
-            "type": "`Repository`<[`StagedJob`](internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "transactionManager_",
-        "type": "`undefined` \\| `EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -489,7 +58,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "productCategoryRepo_",
-    "type": "`TreeRepository`<[`ProductCategory`](internal.ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "type": "TreeRepository&#60;[ProductCategory](internal.ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -498,7 +67,7 @@ Provides layer to manipulate product categories.
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -512,35 +81,7 @@ Provides layer to manipulate product categories.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "CREATED",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "DELETED",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "UPDATED",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "Events.CREATED",
@@ -580,7 +121,7 @@ Provides layer to manipulate product categories.
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -623,7 +164,7 @@ Add a batch of product to a product category
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category on which the products have been added",
@@ -645,26 +186,16 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -673,22 +204,12 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -697,7 +218,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -717,76 +238,12 @@ Creates a product category
 <ParameterTypes parameters={[
   {
     "name": "productCategoryInput",
-    "type": "[`CreateProductCategoryInput`](../../modules/internal.mdx#createproductcategoryinput)",
+    "type": "[CreateProductCategoryInput](../types/internal.CreateProductCategoryInput.mdx)",
     "description": "parameters to create a product category",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "handle",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_active",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_internal",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "parent_category",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx) \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "parent_category_id",
-        "type": "`string` \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rank",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -795,22 +252,12 @@ Creates a product category
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "created product category",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductCategory",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -839,7 +286,7 @@ Deletes a product category
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise",
@@ -857,2047 +304,21 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "productCategory",
-    "type": "[`ProductCategory`](internal.ProductCategory.mdx)",
+    "type": "[ProductCategory](internal.ProductCategory.mdx)",
     "description": "A product category can be used to categorize products into a hierarchy of categories.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "category_children",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
-        "description": "The details of the category's children.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": true,
-        "children": [
-          {
-            "name": "category_children",
-            "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
-            "description": "The details of the category's children.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "category_children",
-                "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
-                "description": "The details of the category's children.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`string`",
-                "description": "The product category's description.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "`string`",
-                "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product category's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_active",
-                "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-                "description": "A flag to make product category visible/hidden in the store front",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_internal",
-                "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-                "description": "A flag to make product category an internal category for admins",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The product category's name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "parent_category",
-                "type": "``null`` \\| [`ProductCategory`](internal.ProductCategory.mdx)",
-                "description": "The details of the parent of this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "parent_category_id",
-                "type": "``null`` \\| `string`",
-                "description": "The ID of the parent category.",
-                "optional": false,
-                "defaultValue": "null",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[`Product`](internal.Product.mdx)[]",
-                "description": "The details of the products that belong to this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "rank",
-                "type": "`number`",
-                "description": "An integer that depicts the rank of category in a tree node",
-                "optional": false,
-                "defaultValue": "0",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "The date with timezone at which the resource was created.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "description",
-            "type": "`string`",
-            "description": "The product category's description.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "handle",
-            "type": "`string`",
-            "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "The product category's ID",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "is_active",
-            "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-            "description": "A flag to make product category visible/hidden in the store front",
-            "optional": false,
-            "defaultValue": "false",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "is_internal",
-            "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-            "description": "A flag to make product category an internal category for admins",
-            "optional": false,
-            "defaultValue": "false",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "The product category's name",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "parent_category",
-            "type": "``null`` \\| [`ProductCategory`](internal.ProductCategory.mdx)",
-            "description": "The details of the parent of this category.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": []
-          },
-          {
-            "name": "parent_category_id",
-            "type": "``null`` \\| `string`",
-            "description": "The ID of the parent category.",
-            "optional": false,
-            "defaultValue": "null",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "products",
-            "type": "[`Product`](internal.Product.mdx)[]",
-            "description": "The details of the products that belong to this category.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "categories",
-                "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
-                "description": "The details of the product categories that this product belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "featureFlag": "product_categories",
-                "children": []
-              },
-              {
-                "name": "collection",
-                "type": "[`ProductCollection`](internal.ProductCollection.mdx)",
-                "description": "The details of the product collection that the product belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "collection_id",
-                "type": "``null`` \\| `string`",
-                "description": "The ID of the product collection that the product belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "``null`` \\| `string`",
-                "description": "A short description of the Product.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "discountable",
-                "type": "`boolean`",
-                "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
-                "optional": false,
-                "defaultValue": "true",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "external_id",
-                "type": "``null`` \\| `string`",
-                "description": "The external ID of the product",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "``null`` \\| `string`",
-                "description": "A unique identifier for the Product (e.g. for slug structure).",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "height",
-                "type": "``null`` \\| `number`",
-                "description": "The height of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "hs_code",
-                "type": "``null`` \\| `string`",
-                "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "images",
-                "type": "[`Image`](internal.internal.Image.mdx)[]",
-                "description": "The details of the product's images.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "is_giftcard",
-                "type": "`boolean`",
-                "description": "Whether the Product represents a Gift Card. Products that represent Gift Cards will automatically generate a redeemable Gift Card code once they are purchased.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "length",
-                "type": "``null`` \\| `number`",
-                "description": "The length of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "material",
-                "type": "``null`` \\| `string`",
-                "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "mid_code",
-                "type": "``null`` \\| `string`",
-                "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "options",
-                "type": "[`ProductOption`](internal.internal.ProductOption.mdx)[]",
-                "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "origin_country",
-                "type": "``null`` \\| `string`",
-                "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "profile",
-                "type": "[`ShippingProfile`](internal.ShippingProfile.mdx)",
-                "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "profile_id",
-                "type": "`string`",
-                "description": "The ID of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "profiles",
-                "type": "[`ShippingProfile`](internal.ShippingProfile.mdx)[]",
-                "description": "Available if the relation `profiles` is expanded.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "sales_channels",
-                "type": "[`SalesChannel`](internal.SalesChannel.mdx)[]",
-                "description": "The details of the sales channels this product is available in.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "status",
-                "type": "[`ProductStatus`](../enums/internal.ProductStatus.mdx)",
-                "description": "The status of the product",
-                "optional": false,
-                "defaultValue": "draft",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "subtitle",
-                "type": "``null`` \\| `string`",
-                "description": "An optional subtitle that can be used to further specify the Product.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "tags",
-                "type": "[`ProductTag`](internal.ProductTag.mdx)[]",
-                "description": "The details of the product tags used in this product.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "thumbnail",
-                "type": "``null`` \\| `string`",
-                "description": "A URL to an image file that can be used to identify the Product.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "A title that can be displayed for easy identification of the Product.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "[`ProductType`](internal.ProductType.mdx)",
-                "description": "The details of the product type that the product belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "type_id",
-                "type": "``null`` \\| `string`",
-                "description": "The ID of the product type that the product belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "variants",
-                "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)[]",
-                "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "weight",
-                "type": "``null`` \\| `number`",
-                "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "width",
-                "type": "``null`` \\| `number`",
-                "description": "The width of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "rank",
-            "type": "`number`",
-            "description": "An integer that depicts the rank of category in a tree node",
-            "optional": false,
-            "defaultValue": "0",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "The date with timezone at which the resource was updated.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "created_at",
-        "type": "`Date`",
-        "description": "The date with timezone at which the resource was created.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "description",
-        "type": "`string`",
-        "description": "The product category's description.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "handle",
-        "type": "`string`",
-        "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The product category's ID",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_active",
-        "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-        "description": "A flag to make product category visible/hidden in the store front",
-        "optional": false,
-        "defaultValue": "false",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_internal",
-        "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-        "description": "A flag to make product category an internal category for admins",
-        "optional": false,
-        "defaultValue": "false",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "The product category's name",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "parent_category",
-        "type": "``null`` \\| [`ProductCategory`](internal.ProductCategory.mdx)",
-        "description": "The details of the parent of this category.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": true,
-        "children": []
-      },
-      {
-        "name": "parent_category_id",
-        "type": "``null`` \\| `string`",
-        "description": "The ID of the parent category.",
-        "optional": false,
-        "defaultValue": "null",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "products",
-        "type": "[`Product`](internal.Product.mdx)[]",
-        "description": "The details of the products that belong to this category.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": true,
-        "children": [
-          {
-            "name": "categories",
-            "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
-            "description": "The details of the product categories that this product belongs to.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "featureFlag": "product_categories",
-            "children": [
-              {
-                "name": "category_children",
-                "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
-                "description": "The details of the category's children.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "`string`",
-                "description": "The product category's description.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "`string`",
-                "description": "A unique string that identifies the Product Category - can for example be used in slug structures.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product category's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_active",
-                "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-                "description": "A flag to make product category visible/hidden in the store front",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_internal",
-                "type": "[`Boolean`](../../modules/internal.mdx#boolean)",
-                "description": "A flag to make product category an internal category for admins",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The product category's name",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "parent_category",
-                "type": "``null`` \\| [`ProductCategory`](internal.ProductCategory.mdx)",
-                "description": "The details of the parent of this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "parent_category_id",
-                "type": "``null`` \\| `string`",
-                "description": "The ID of the parent category.",
-                "optional": false,
-                "defaultValue": "null",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[`Product`](internal.Product.mdx)[]",
-                "description": "The details of the products that belong to this category.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "rank",
-                "type": "`number`",
-                "description": "An integer that depicts the rank of category in a tree node",
-                "optional": false,
-                "defaultValue": "0",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "collection",
-            "type": "[`ProductCollection`](internal.ProductCollection.mdx)",
-            "description": "The details of the product collection that the product belongs to.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "handle",
-                "type": "`string`",
-                "description": "A unique string that identifies the Product Collection - can for example be used in slug structures.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product collection's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[`Product`](internal.Product.mdx)[]",
-                "description": "The details of the products that belong to this product collection.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The title that the Product Collection is identified by.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "collection_id",
-            "type": "``null`` \\| `string`",
-            "description": "The ID of the product collection that the product belongs to.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "The date with timezone at which the resource was created.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "The date with timezone at which the resource was deleted.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "description",
-            "type": "``null`` \\| `string`",
-            "description": "A short description of the Product.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "discountable",
-            "type": "`boolean`",
-            "description": "Whether the Product can be discounted. Discounts will not apply to Line Items of this Product when this flag is set to `false`.",
-            "optional": false,
-            "defaultValue": "true",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "external_id",
-            "type": "``null`` \\| `string`",
-            "description": "The external ID of the product",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "handle",
-            "type": "``null`` \\| `string`",
-            "description": "A unique identifier for the Product (e.g. for slug structure).",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "height",
-            "type": "``null`` \\| `number`",
-            "description": "The height of the Product Variant. May be used in shipping rate calculations.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "hs_code",
-            "type": "``null`` \\| `string`",
-            "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "The product's ID",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "images",
-            "type": "[`Image`](internal.internal.Image.mdx)[]",
-            "description": "The details of the product's images.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The image's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "url",
-                "type": "`string`",
-                "description": "The URL at which the image file can be found.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "is_giftcard",
-            "type": "`boolean`",
-            "description": "Whether the Product represents a Gift Card. Products that represent Gift Cards will automatically generate a redeemable Gift Card code once they are purchased.",
-            "optional": false,
-            "defaultValue": "false",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "length",
-            "type": "``null`` \\| `number`",
-            "description": "The length of the Product Variant. May be used in shipping rate calculations.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "material",
-            "type": "``null`` \\| `string`",
-            "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "metadata",
-            "type": "``null`` \\| Record<`string`, `unknown`\\>",
-            "description": "An optional key-value map with additional details",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "mid_code",
-            "type": "``null`` \\| `string`",
-            "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "options",
-            "type": "[`ProductOption`](internal.internal.ProductOption.mdx)[]",
-            "description": "The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product option's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "product",
-                "type": "[`Product`](internal.Product.mdx)",
-                "description": "The details of the product that this product option belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "product_id",
-                "type": "`string`",
-                "description": "The ID of the product that this product option belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "The title that the Product Option is defined by (e.g. `Size`).",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "values",
-                "type": "[`ProductOptionValue`](internal.internal.ProductOptionValue.mdx)[]",
-                "description": "The details of the values of the product option.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "origin_country",
-            "type": "``null`` \\| `string`",
-            "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "profile",
-            "type": "[`ShippingProfile`](internal.ShippingProfile.mdx)",
-            "description": "The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The shipping profile's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name given to the Shipping profile - this may be displayed to the Customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[`Product`](internal.Product.mdx)[]",
-                "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "shipping_options",
-                "type": "[`ShippingOption`](internal.ShippingOption.mdx)[]",
-                "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "[`ShippingProfileType`](../enums/internal.ShippingProfileType.mdx)",
-                "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "profile_id",
-            "type": "`string`",
-            "description": "The ID of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "profiles",
-            "type": "[`ShippingProfile`](internal.ShippingProfile.mdx)[]",
-            "description": "Available if the relation `profiles` is expanded.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The shipping profile's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name given to the Shipping profile - this may be displayed to the Customer.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "products",
-                "type": "[`Product`](internal.Product.mdx)[]",
-                "description": "The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "shipping_options",
-                "type": "[`ShippingOption`](internal.ShippingOption.mdx)[]",
-                "description": "The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "type",
-                "type": "[`ShippingProfileType`](../enums/internal.ShippingProfileType.mdx)",
-                "description": "The type of the Shipping Profile, may be `default`, `gift_card` or `custom`.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "sales_channels",
-            "type": "[`SalesChannel`](internal.SalesChannel.mdx)[]",
-            "description": "The details of the sales channels this product is available in.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "``null`` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[`SalesChannelLocation`](internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "status",
-            "type": "[`ProductStatus`](../enums/internal.ProductStatus.mdx)",
-            "description": "The status of the product",
-            "optional": false,
-            "defaultValue": "draft",
-            "expandable": false,
-            "children": [
-              {
-                "name": "DRAFT",
-                "type": "``\"draft\"``",
-                "description": "The product is a draft. It's not viewable by customers.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "PROPOSED",
-                "type": "``\"proposed\"``",
-                "description": "The product is proposed, but not yet published.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "PUBLISHED",
-                "type": "``\"published\"``",
-                "description": "The product is published.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "REJECTED",
-                "type": "``\"rejected\"``",
-                "description": "The product is rejected. It's not viewable by customers.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "subtitle",
-            "type": "``null`` \\| `string`",
-            "description": "An optional subtitle that can be used to further specify the Product.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "tags",
-            "type": "[`ProductTag`](internal.ProductTag.mdx)[]",
-            "description": "The details of the product tags used in this product.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The ID of the tag.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The value of the tag.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "thumbnail",
-            "type": "``null`` \\| `string`",
-            "description": "A URL to an image file that can be used to identify the Product.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "title",
-            "type": "`string`",
-            "description": "A title that can be displayed for easy identification of the Product.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "type",
-            "type": "[`ProductType`](internal.ProductType.mdx)",
-            "description": "The details of the product type that the product belongs to.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product type's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "value",
-                "type": "`string`",
-                "description": "The value that the Product Type represents.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "type_id",
-            "type": "``null`` \\| `string`",
-            "description": "The ID of the product type that the product belongs to.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "The date with timezone at which the resource was updated.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "variants",
-            "type": "[`ProductVariant`](internal.internal.ProductVariant.mdx)[]",
-            "description": "The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "allow_backorder",
-                "type": "`boolean`",
-                "description": "Whether the Product Variant should be purchasable when `inventory_quantity` is 0.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "barcode",
-                "type": "``null`` \\| `string`",
-                "description": "A generic field for a GTIN number that can be used to identify the Product Variant.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "ean",
-                "type": "``null`` \\| `string`",
-                "description": "An EAN barcode number that can be used to identify the Product Variant.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "height",
-                "type": "``null`` \\| `number`",
-                "description": "The height of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "hs_code",
-                "type": "``null`` \\| `string`",
-                "description": "The Harmonized System code of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The product variant's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "inventory_items",
-                "type": "[`ProductVariantInventoryItem`](internal.internal.ProductVariantInventoryItem.mdx)[]",
-                "description": "The details inventory items of the product variant.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "inventory_quantity",
-                "type": "`number`",
-                "description": "The current quantity of the item that is stocked.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "length",
-                "type": "``null`` \\| `number`",
-                "description": "The length of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manage_inventory",
-                "type": "`boolean`",
-                "description": "Whether Medusa should manage inventory for the Product Variant.",
-                "optional": false,
-                "defaultValue": "true",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "material",
-                "type": "``null`` \\| `string`",
-                "description": "The material and composition that the Product Variant is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "mid_code",
-                "type": "``null`` \\| `string`",
-                "description": "The Manufacturers Identification code that identifies the manufacturer of the Product Variant. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "options",
-                "type": "[`ProductOptionValue`](internal.internal.ProductOptionValue.mdx)[]",
-                "description": "The details of the product options that this product variant defines values for.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "origin_country",
-                "type": "``null`` \\| `string`",
-                "description": "The country in which the Product Variant was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "prices",
-                "type": "[`MoneyAmount`](internal.internal.MoneyAmount.mdx)[]",
-                "description": "The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "product",
-                "type": "[`Product`](internal.Product.mdx)",
-                "description": "The details of the product that the product variant belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "product_id",
-                "type": "`string`",
-                "description": "The ID of the product that the product variant belongs to.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "purchasable",
-                "type": "`boolean`",
-                "description": "Only used with the inventory modules. A boolean value indicating whether the Product Variant is purchasable. A variant is purchasable if: - inventory is not managed - it has no inventory items - it is in stock - it is backorderable.",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "sku",
-                "type": "``null`` \\| `string`",
-                "description": "The unique stock keeping unit used to identify the Product Variant. This will usually be a unique identifer for the item that is to be shipped, and can be referenced across multiple systems.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "title",
-                "type": "`string`",
-                "description": "A title that can be displayed for easy identification of the Product Variant.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "upc",
-                "type": "``null`` \\| `string`",
-                "description": "A UPC barcode number that can be used to identify the Product Variant.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "variant_rank",
-                "type": "``null`` \\| `number`",
-                "description": "The ranking of this variant",
-                "optional": false,
-                "defaultValue": "0",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "weight",
-                "type": "``null`` \\| `number`",
-                "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "width",
-                "type": "``null`` \\| `number`",
-                "description": "The width of the Product Variant. May be used in shipping rate calculations.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "weight",
-            "type": "``null`` \\| `number`",
-            "description": "The weight of the Product Variant. May be used in shipping rate calculations.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "width",
-            "type": "``null`` \\| `number`",
-            "description": "The width of the Product Variant. May be used in shipping rate calculations.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "rank",
-        "type": "`number`",
-        "description": "An integer that depicts the rank of category in a tree node",
-        "optional": false,
-        "defaultValue": "0",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "updated_at",
-        "type": "`Date`",
-        "description": "The date with timezone at which the resource was updated.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "input",
-    "type": "[`UpdateProductCategoryInput`](../../modules/internal.mdx#updateproductcategoryinput)",
+    "type": "[UpdateProductCategoryInput](../types/internal.UpdateProductCategoryInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "handle",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_active",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_internal",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "parent_category",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx) \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "parent_category_id",
-        "type": "`string` \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rank",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "shouldDeleteElement",
@@ -2920,89 +341,7 @@ ___
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "originalParentId",
-        "type": "`string` \\| ``null``",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "originalRank",
-        "type": "`number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldChangeParent",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldChangeRank",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldDeleteElement",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldIncrementRank",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetCategoryId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetParentId",
-        "type": "`string` \\| ``null`` \\| `undefined`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetRank",
-        "type": "`number` \\| `undefined`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3018,7 +357,7 @@ product category that match the query.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`TreeQuerySelector`](../modules/internal.internal.mdx#treequeryselector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[TreeQuerySelector](../types/internal.internal.TreeQuerySelector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "Filter options for product category.",
     "optional": false,
     "defaultValue": "",
@@ -3027,72 +366,16 @@ product category that match the query.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "Configuration for query.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../modules/internal.internal.mdx#queryselector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/internal.internal.QuerySelector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "Filter options for product category tree relations",
     "optional": true,
     "defaultValue": "",
@@ -3106,41 +389,12 @@ product category that match the query.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`ProductCategory`](internal.ProductCategory.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[ProductCategory](internal.ProductCategory.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "an array containing the product category as\n  the first element and the total count of product category that matches the query\n  as the second element.",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductCategory[]",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "ProductCategory",
-            "type": "[`ProductCategory`](internal.ProductCategory.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3153,7 +407,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "repository",
-    "type": "`TreeRepository`<[`ProductCategory`](internal.ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "type": "TreeRepository&#60;[ProductCategory](internal.ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3162,94 +416,12 @@ ___
   },
   {
     "name": "conditions",
-    "type": "[`ReorderConditions`](../../modules/internal.mdx#reorderconditions)",
+    "type": "[ReorderConditions](../types/internal.ReorderConditions.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "originalParentId",
-        "type": "`string` \\| ``null``",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "originalRank",
-        "type": "`number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldChangeParent",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldChangeRank",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldDeleteElement",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldIncrementRank",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetCategoryId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetParentId",
-        "type": "`string` \\| ``null`` \\| `undefined`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetRank",
-        "type": "`number` \\| `undefined`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3258,7 +430,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3301,7 +473,7 @@ Remove a batch of product from a product category
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category on which the products have been removed",
@@ -3330,72 +502,16 @@ Retrieves a product category by id.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "the config of the product category to retrieve.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "selector",
-    "type": "[`Selector`](../modules/internal.internal.mdx#selector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3404,7 +520,7 @@ Retrieves a product category by id.
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../modules/internal.internal.mdx#queryselector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/internal.internal.QuerySelector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3418,22 +534,12 @@ Retrieves a product category by id.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category.",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductCategory",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3457,72 +563,16 @@ Retrieves a product category by handle.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "the config of the product category to retrieve.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "selector",
-    "type": "[`Selector`](../modules/internal.internal.mdx#selector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3531,7 +581,7 @@ Retrieves a product category by handle.
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../modules/internal.internal.mdx#queryselector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/internal.internal.QuerySelector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3545,22 +595,12 @@ Retrieves a product category by handle.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category.",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductCategory",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3575,72 +615,16 @@ A generic retrieve for fining product categories by different attributes.
 <ParameterTypes parameters={[
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "the config of the product category to retrieve.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "selector",
-    "type": "[`Selector`](../modules/internal.internal.mdx#selector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3649,7 +633,7 @@ A generic retrieve for fining product categories by different attributes.
   },
   {
     "name": "treeSelector",
-    "type": "[`QuerySelector`](../modules/internal.internal.mdx#queryselector)<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "[QuerySelector](../types/internal.internal.QuerySelector.mdx)&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3663,22 +647,12 @@ A generic retrieve for fining product categories by different attributes.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the product category.",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductCategory",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3691,7 +665,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "repository",
-    "type": "`TreeRepository`<[`ProductCategory`](internal.ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
+    "type": "TreeRepository&#60;[ProductCategory](internal.ProductCategory.mdx)&#62; & `&#123; addProducts: Method addProducts ; findOneWithDescendants: Method findOneWithDescendants ; getFreeTextSearchResultsAndCount: Method getFreeTextSearchResultsAndCount ; removeProducts: Method removeProducts  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3700,94 +674,12 @@ ___
   },
   {
     "name": "conditions",
-    "type": "[`ReorderConditions`](../../modules/internal.mdx#reorderconditions)",
+    "type": "[ReorderConditions](../types/internal.ReorderConditions.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "originalParentId",
-        "type": "`string` \\| ``null``",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "originalRank",
-        "type": "`number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldChangeParent",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldChangeRank",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldDeleteElement",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "shouldIncrementRank",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetCategoryId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetParentId",
-        "type": "`string` \\| ``null`` \\| `undefined`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "targetRank",
-        "type": "`number` \\| `undefined`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3796,7 +688,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3814,7 +706,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3841,15 +733,15 @@ ___
 
 ### transformParentIdToEntity
 
-Accepts an input object and transforms product_category_id
-into product_category entity.
+Accepts an input object and transforms product\_category\_id
+into product\_category entity.
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "productCategoryInput",
-    "type": "[`CreateProductCategoryInput`](../../modules/internal.mdx#createproductcategoryinput) \\| [`UpdateProductCategoryInput`](../../modules/internal.mdx#updateproductcategoryinput)",
+    "type": "[CreateProductCategoryInput](../types/internal.CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/internal.UpdateProductCategoryInput.mdx)",
     "description": "params used to create/update",
     "optional": false,
     "defaultValue": "",
@@ -3863,22 +755,12 @@ into product_category entity.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CreateProductCategoryInput`](../../modules/internal.mdx#createproductcategoryinput) \\| [`UpdateProductCategoryInput`](../../modules/internal.mdx#updateproductcategoryinput)\\>",
+    "type": "Promise&#60;[CreateProductCategoryInput](../types/internal.CreateProductCategoryInput.mdx) \\| [UpdateProductCategoryInput](../types/internal.UpdateProductCategoryInput.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "transformed productCategoryInput",
     "expandable": false,
-    "children": [
-      {
-        "name": "CreateProductCategoryInput \\| UpdateProductCategoryInput",
-        "type": "[`CreateProductCategoryInput`](../../modules/internal.mdx#createproductcategoryinput) \\| [`UpdateProductCategoryInput`](../../modules/internal.mdx#updateproductcategoryinput)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3902,76 +784,12 @@ Updates a product category
   },
   {
     "name": "productCategoryInput",
-    "type": "[`UpdateProductCategoryInput`](../../modules/internal.mdx#updateproductcategoryinput)",
+    "type": "[UpdateProductCategoryInput](../types/internal.UpdateProductCategoryInput.mdx)",
     "description": "parameters to update in product category",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "handle",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_active",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_internal",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "parent_category",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx) \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "parent_category_id",
-        "type": "`string` \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rank",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3980,22 +798,12 @@ Updates a product category
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategory`](internal.ProductCategory.mdx)\\>",
+    "type": "Promise&#60;[ProductCategory](internal.ProductCategory.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "updated product category",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductCategory",
-        "type": "[`ProductCategory`](internal.ProductCategory.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4008,7 +816,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4022,7 +830,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ProductCategoryService",
-    "type": "[`ProductCategoryService`](internal.internal.ProductCategoryService.mdx)",
+    "type": "[ProductCategoryService](internal.internal.ProductCategoryService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

@@ -60,14 +60,16 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
     "description": "The ID of the price set money amount rule to retrieve.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`PriceSetMoneyAmountRulesDTO`](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[PriceSetMoneyAmountRulesDTO](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "description": "The configurations determining how the price set money amount rule is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set money amount rule.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "order",
@@ -75,7 +77,18 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "__type",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "relations",
@@ -83,6 +96,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -91,6 +105,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -99,6 +114,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -107,6 +123,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -115,16 +132,18 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -132,6 +151,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -140,6 +160,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -148,6 +169,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -156,6 +178,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -164,6 +187,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -175,10 +199,11 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetMoneyAmountRulesDTO`](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)\\>",
+    "type": "Promise&#60;[PriceSetMoneyAmountRulesDTO](../../interfaces/PriceSetMoneyAmountRulesDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved price set money amount rule.",
+    "expandable": false,
     "children": [
       {
         "name": "id",
@@ -186,14 +211,16 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "The ID of the price set money amount.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "price_set_money_amount",
-        "type": "[`PriceSetMoneyAmountDTO`](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
+        "type": "[PriceSetMoneyAmountDTO](../../interfaces/PriceSetMoneyAmountDTO.mdx)",
         "description": "The associated price set money amount. It may only be available if the relation `price_set_money_amount` is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "id",
@@ -201,30 +228,34 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "description": "The ID of a price set money amount.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "money_amount",
-            "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)",
+            "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)",
             "description": "The money amount associated with the price set money amount. It may only be available if the relation `money_amount` is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "price_rules",
-            "type": "[`PriceRuleDTO`](../../interfaces/PriceRuleDTO.mdx)[]",
+            "type": "[PriceRuleDTO](../../interfaces/PriceRuleDTO.mdx)[]",
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "price_set",
-            "type": "[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)",
+            "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)",
             "description": "The price set associated with the price set money amount. It may only be available if the relation `price_set` is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -233,6 +264,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "description": "",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -241,16 +273,18 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "description": "The title of the price set money amount.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
       },
       {
         "name": "rule_type",
-        "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)",
+        "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)",
         "description": "The associated rule type. It may only be available if the relation `rule_type` is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "default_priority",
@@ -258,6 +292,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "description": "The priority of the rule type. This is useful when calculating the price of a price set, and multiple rules satisfy the provided context. The higher the value, the higher the priority of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -266,6 +301,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "description": "The ID of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -274,14 +310,16 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
             "description": "The display name of the rule type.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "rule_attribute",
             "type": "`string`",
-            "description": "The unique name used to later identify the rule_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
+            "description": "The unique name used to later identify the rule\\_attribute. For example, it can be used in the `context` parameter of the `calculatePrices` method to specify a rule for calculating the price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -292,6 +330,7 @@ async function retrievePriceSetMoneyAmountRule (id: string) {
         "description": "The value of the price set money amount rule.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]

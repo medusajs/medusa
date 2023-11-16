@@ -9,10 +9,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 The new payment service plugin interface
 This work is still experimental and can be changed until it becomes stable
 
-## Implemented by
-
-- [`AbstractPaymentProcessor`](../classes/internal.internal.AbstractPaymentProcessor.mdx)
-
 ## Methods
 
 ### authorizePayment
@@ -24,7 +20,7 @@ Authorize an existing session if it is not already authorized
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -33,7 +29,7 @@ Authorize an existing session if it is not already authorized
   },
   {
     "name": "context",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,22 +43,12 @@ Authorize an existing session if it is not already authorized
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx) \\| { `data`: Record<`string`, `unknown`\\> ; `status`: [`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)  }\\>",
+    "type": "Promise&#60;[PaymentProcessorError](internal.internal.PaymentProcessorError.mdx) \\| &#123; data: Record&#60;string, unknown&#62; ; status: [PaymentSessionStatus](../enums/internal.internal.PaymentSessionStatus.mdx)  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "PaymentProcessorError \\| { `data`: Record<`string`, `unknown`\\> ; `status`: [`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)  }",
-        "type": "[`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx) \\| { `data`: Record<`string`, `unknown`\\> ; `status`: [`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)  }",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -77,7 +63,7 @@ Cancel an existing session
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -91,22 +77,12 @@ Cancel an existing session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](internal.internal.PaymentProcessorError.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -121,7 +97,7 @@ Capture an existing session
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -135,22 +111,12 @@ Capture an existing session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](internal.internal.PaymentProcessorError.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -165,7 +131,7 @@ Delete an existing session
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -179,22 +145,12 @@ Delete an existing session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](internal.internal.PaymentProcessorError.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -229,7 +185,7 @@ Return the status of the session
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -243,58 +199,12 @@ Return the status of the session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentSessionStatus`](../enums/internal.internal.PaymentSessionStatus.mdx)\\>",
+    "type": "Promise&#60;[PaymentSessionStatus](../enums/internal.internal.PaymentSessionStatus.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "AUTHORIZED",
-        "type": "``\"authorized\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "CANCELED",
-        "type": "``\"canceled\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "ERROR",
-        "type": "``\"error\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PENDING",
-        "type": "``\"pending\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REQUIRES_MORE",
-        "type": "``\"requires_more\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -309,7 +219,7 @@ Initiate a payment session with the external provider
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "[`PaymentProcessorContext`](../modules/internal.internal.mdx#paymentprocessorcontext)",
+    "type": "[PaymentProcessorContext](../types/internal.internal.PaymentProcessorContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -323,22 +233,12 @@ Initiate a payment session with the external provider
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)\\>",
+    "type": "Promise&#60;[PaymentProcessorError](internal.internal.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/internal.internal.PaymentProcessorSessionResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "PaymentProcessorError \\| PaymentProcessorSessionResponse",
-        "type": "[`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -353,7 +253,7 @@ Refund an existing session
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -376,22 +276,12 @@ Refund an existing session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](internal.internal.PaymentProcessorError.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -406,7 +296,7 @@ Retrieve an existing session
 <ParameterTypes parameters={[
   {
     "name": "paymentSessionData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -420,22 +310,12 @@ Retrieve an existing session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](internal.internal.PaymentProcessorError.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -450,7 +330,7 @@ Update an existing payment session
 <ParameterTypes parameters={[
   {
     "name": "context",
-    "type": "[`PaymentProcessorContext`](../modules/internal.internal.mdx#paymentprocessorcontext)",
+    "type": "[PaymentProcessorContext](../types/internal.internal.PaymentProcessorContext.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -464,22 +344,12 @@ Update an existing payment session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void` \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)\\>",
+    "type": "Promise&#60;void \\| [PaymentProcessorError](internal.internal.PaymentProcessorError.mdx) \\| [PaymentProcessorSessionResponse](../types/internal.internal.PaymentProcessorSessionResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "void \\| PaymentProcessorError \\| PaymentProcessorSessionResponse",
-        "type": "`void` \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx) \\| [`PaymentProcessorSessionResponse`](../modules/internal.internal.mdx#paymentprocessorsessionresponse)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -503,7 +373,7 @@ Update the session data for a payment session
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -517,21 +387,11 @@ Update the session data for a payment session
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)\\>",
+    "type": "Promise&#60;Record&#60;string, unknown&#62; \\| [PaymentProcessorError](internal.internal.PaymentProcessorError.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Record<string, unknown\\> \\| PaymentProcessorError",
-        "type": "Record<`string`, `unknown`\\> \\| [`PaymentProcessorError`](internal.internal.PaymentProcessorError.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

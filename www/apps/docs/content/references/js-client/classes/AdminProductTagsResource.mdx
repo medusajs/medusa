@@ -55,7 +55,7 @@ medusa.admin.productTags
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetProductTagsParams`](../internal/classes/internal.AdminGetProductTagsParams.mdx)",
+    "type": "[AdminGetProductTagsParams](../internal/classes/internal.AdminGetProductTagsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved product tags.",
     "optional": true,
     "defaultValue": "",
@@ -63,7 +63,7 @@ medusa.admin.productTags
     "children": [
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product tags' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -118,7 +118,7 @@ medusa.admin.productTags
       },
       {
         "name": "id",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "IDs to filter product tags by.",
         "optional": true,
         "defaultValue": "",
@@ -163,7 +163,7 @@ medusa.admin.productTags
       },
       {
         "name": "updated_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product tags' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -209,7 +209,7 @@ medusa.admin.productTags
       },
       {
         "name": "value",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "Values to search product tags by.",
         "optional": true,
         "defaultValue": "",
@@ -225,7 +225,7 @@ medusa.admin.productTags
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminProductTagsListRes`](../modules/internal.mdx#adminproducttagslistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminProductTagsListRes](../internal/types/internal.AdminProductTagsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product tags with pagination fields.",
@@ -233,7 +233,7 @@ medusa.admin.productTags
     "children": [
       {
         "name": "AdminProductTagsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `product_tags`: [`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_tags: [ProductTag](../internal/classes/internal.ProductTag.mdx)[]  &#125;`",
         "description": "The list of product tags with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -268,7 +268,7 @@ medusa.admin.productTags
           },
           {
             "name": "product_tags",
-            "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+            "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
             "description": "An array of product tag details.",
             "optional": false,
             "defaultValue": "",
@@ -303,7 +303,7 @@ medusa.admin.productTags
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",

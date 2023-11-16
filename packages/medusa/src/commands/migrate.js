@@ -5,12 +5,10 @@ import getMigrations, {
   runIsolatedModulesMigration,
 } from "./utils/get-migrations"
 
-import { createMedusaContainer } from "@medusajs/utils"
+import { MedusaV2Flag, createMedusaContainer } from "@medusajs/utils"
 import configModuleLoader from "../loaders/config"
 import databaseLoader from "../loaders/database"
 import featureFlagLoader from "../loaders/feature-flags"
-import IsolatePricingDomainFeatureFlag from "../loaders/feature-flags/isolate-pricing-domain"
-import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import Logger from "../loaders/logger"
 import { loadMedusaApp } from "../loaders/medusa-app"
 import pgConnectionLoader from "../loaders/pg-connection"
@@ -71,10 +69,8 @@ const main = async function ({ directory }) {
     await dataSource.runMigrations()
     await dataSource.destroy()
     await runIsolatedModulesMigration(configModule)
-    if (
-      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key) ||
-      featureFlagRouter.isFeatureEnabled(IsolatePricingDomainFeatureFlag.key)
-    ) {
+
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       await runLinkMigrations(directory)
     }
     process.exit()

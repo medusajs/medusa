@@ -11,85 +11,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "address",
-    "type": "[`StockLocationAddress`](internal.StockLocationAddress-1.mdx)",
+    "type": "[StockLocationAddress](internal.StockLocationAddress-1.mdx)",
     "description": "The data of an associated address to create or update.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "address_1",
-        "type": "`string`",
-        "description": "First line address.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "address_2",
-        "type": "`string`",
-        "description": "Second line address.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "city",
-        "type": "`string`",
-        "description": "City.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "company",
-        "type": "`string`",
-        "description": "Company.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "country_code",
-        "type": "`string`",
-        "description": "Country code.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "phone",
-        "type": "`string`",
-        "description": "Phone.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "postal_code",
-        "type": "`string`",
-        "description": "Postal code.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "province",
-        "type": "`string`",
-        "description": "Province.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "address_id",
@@ -102,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": true,
     "defaultValue": "",

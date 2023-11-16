@@ -23,7 +23,7 @@ v0.1.26
 
 ## Implements
 
-- [`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx)
+- [ReadableStream](../interfaces/internal.ReadableStream-1.mdx)
 
 ## Properties
 
@@ -48,7 +48,7 @@ v0.1.26
   },
   {
     "name": "errored",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "Returns error if the stream has been destroyed with an error.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ v0.1.26
   },
   {
     "name": "readableEncoding",
-    "type": "``null`` \\| [`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "``null`` \\| [BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "Getter for the property `encoding` of a given `Readable` stream. The `encoding`property can be set using the `readable.setEncoding()` method.",
     "optional": false,
     "defaultValue": "",
@@ -138,7 +138,7 @@ v0.1.26
   },
   {
     "name": "captureRejectionSymbol",
-    "type": "typeof [`captureRejectionSymbol`](internal.Socket.mdx#capturerejectionsymbol)",
+    "type": "typeof [captureRejectionSymbol](internal.Socket.mdx#capturerejectionsymbol)",
     "description": "Value: `Symbol.for('nodejs.rejection')` See how to write a custom `rejection handler`.",
     "optional": false,
     "defaultValue": "",
@@ -148,7 +148,7 @@ v0.1.26
   {
     "name": "captureRejections",
     "type": "`boolean`",
-    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
+    "description": "Value: [boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data\\_structures#Boolean\\_type) Change the default `captureRejections` option on all new `EventEmitter` objects.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -157,7 +157,7 @@ v0.1.26
   {
     "name": "defaultMaxListeners",
     "type": "`number`",
-    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for _all_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects _all_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
+    "description": "By default, a maximum of `10` listeners can be registered for any single event. This limit can be changed for individual `EventEmitter` instances using the `emitter.setMaxListeners(n)` method. To change the default for \\_all\\_`EventEmitter` instances, the `events.defaultMaxListeners`property can be used. If this value is not a positive number, a `RangeError`is thrown. Take caution when setting the `events.defaultMaxListeners` because the change affects \\_all\\_`EventEmitter` instances, including those created before the change is made. However, calling `emitter.setMaxListeners(n)` still has precedence over `events.defaultMaxListeners`. This is not a hard limit. The `EventEmitter` instance will allow more listeners to be added but will output a trace warning to stderr indicating that a \"possible EventEmitter memory leak\" has been detected. For any single`EventEmitter`, the `emitter.getMaxListeners()` and `emitter.setMaxListeners()`methods can be used to temporarily avoid this warning: ```js import { EventEmitter } from 'node:events'; const emitter = new EventEmitter(); emitter.setMaxListeners(emitter.getMaxListeners() + 1); emitter.once('event', () => { // do stuff emitter.setMaxListeners(Math.max(emitter.getMaxListeners() - 1, 0)); }); ``` The `--trace-warnings` command-line flag can be used to display the stack trace for such warnings. The emitted warning can be inspected with `process.on('warning')` and will have the additional `emitter`, `type`, and `count` properties, referring to the event emitter instance, the event's name and the number of attached listeners, respectively. Its `name` property is set to `'MaxListenersExceededWarning'`.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -165,7 +165,7 @@ v0.1.26
   },
   {
     "name": "errorMonitor",
-    "type": "typeof [`errorMonitor`](internal.Socket.mdx#errormonitor)",
+    "type": "typeof [errorMonitor](internal.Socket.mdx#errormonitor)",
     "description": "This symbol shall be used to install a listener for only monitoring `'error'`events. Listeners installed using this symbol are called before the regular`'error'` listeners are called. Installing a listener using this symbol does not change the behavior once an`'error'` event is emitted. Therefore, the process will still crash if no regular `'error'` listener is installed.",
     "optional": false,
     "defaultValue": "",
@@ -185,7 +185,7 @@ Calls `readable.destroy()` with an `AbortError` and returns a promise that fulfi
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -207,22 +207,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](../interfaces/internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "any",
-        "type": "`any`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -235,40 +225,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "message",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "stack",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "event",
@@ -313,22 +275,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -355,7 +307,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "``null`` \\| [`Error`](../../modules/internal.mdx#error)",
+    "type": "``null`` \\| [Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -364,22 +316,12 @@ ___
   },
   {
     "name": "callback",
-    "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`error?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -433,7 +375,7 @@ ___
 
 ### addListener
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 Event emitter
 The defined events on documents including:
@@ -464,17 +406,7 @@ The defined events on documents including:
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -483,7 +415,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -492,7 +424,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -513,17 +445,7 @@ The defined events on documents including:
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`chunk`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -532,7 +454,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -541,7 +463,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -562,17 +484,7 @@ The defined events on documents including:
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -581,7 +493,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -590,7 +502,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -606,22 +518,12 @@ The defined events on documents including:
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -630,7 +532,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -639,7 +541,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -660,17 +562,7 @@ The defined events on documents including:
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -679,7 +571,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -688,7 +580,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -709,17 +601,7 @@ The defined events on documents including:
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -728,7 +610,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -737,7 +619,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -758,17 +640,7 @@ The defined events on documents including:
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -777,7 +649,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -786,7 +658,7 @@ The defined events on documents including:
   }
 ]} />
 
-**addListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**addListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -807,17 +679,7 @@ The defined events on documents including:
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -826,7 +688,7 @@ The defined events on documents including:
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -847,31 +709,12 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -880,7 +723,7 @@ in the form `[index, chunk]`. The first index value is `0` and it increases by 1
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream of indexed pairs.",
@@ -902,7 +745,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ComposeFnParam`](../../modules/internal.mdx#composefnparam) \\| `T` \\| [`Iterable`](../interfaces/internal.Iterable.mdx)<`T`\\> \\| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`T`\\>",
+    "type": "[ComposeFnParam](../types/internal.ComposeFnParam.mdx) \\| `T` \\| [Iterable](../interfaces/internal.Iterable.mdx)&#60;T&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;T&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -916,21 +759,11 @@ ___
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options.signal",
-    "type": "`AbortSignal`",
+    "type": "AbortSignal",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -960,40 +793,12 @@ Implementors should not override this method, but instead implement `readable._d
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "Error which will be passed as payload in `'error'` event",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "message",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "stack",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1002,7 +807,7 @@ Implementors should not override this method, but instead implement `readable._d
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1035,31 +840,12 @@ This method returns a new stream with the first *limit* chunks dropped from the 
   },
   {
     "name": "options",
-    "type": "[`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1068,7 +854,7 @@ This method returns a new stream with the first *limit* chunks dropped from the 
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream with *limit* chunks dropped from the start.",
@@ -1085,7 +871,7 @@ ___
 
 ### emit
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
 to each.
@@ -1157,7 +943,7 @@ myEmitter.emit('event', 1, 2, 3, 4, 5);
 
 v0.1.26
 
-**emit**(`event`, `chunk`): `boolean`
+`**emit**(event, chunk): boolean`
 
 #### Parameters
 
@@ -1196,7 +982,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1226,7 +1012,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `err`): `boolean`
+`**emit**(event, err): boolean`
 
 #### Parameters
 
@@ -1242,40 +1028,12 @@ v0.1.26
   },
   {
     "name": "err",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "message",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "stack",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1293,7 +1051,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1323,7 +1081,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1353,7 +1111,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`): `boolean`
+`**emit**(event): boolean`
 
 #### Parameters
 
@@ -1383,7 +1141,7 @@ v0.1.26
   }
 ]} />
 
-**emit**(`event`, `...args`): `boolean`
+`**emit**(event, ...args): boolean`
 
 #### Parameters
 
@@ -1453,17 +1211,7 @@ console.log(myEE.eventNames());
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "string \\| symbol",
-        "type": "`string` \\| `symbol`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1485,50 +1233,21 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1537,22 +1256,12 @@ If all of the *fn* calls on the chunks return a truthy value, the promise is ful
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for every one of the chunks.",
     "expandable": false,
-    "children": [
-      {
-        "name": "boolean",
-        "type": "`boolean`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1573,50 +1282,21 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to filter chunks from the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1625,7 +1305,7 @@ If the *fn* function returns a promise - that promise will be `await`ed.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream filtered with the predicate *fn*.",
@@ -1642,7 +1322,7 @@ ___
 
 ### find
 
-**find**<`T`\>(`fn`, `options?`): `Promise`<`undefined` \| `T`\>
+`**find**<TypeParameter T>(fn, options?): Promise&#60;undefined \| T&#62;`
 
 This method is similar to `Array.prototype.find` and calls *fn* on each chunk in the stream
 to find a chunk with a truthy value for *fn*. Once an *fn* call's awaited return value is truthy,
@@ -1654,50 +1334,21 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => data is T",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => data is T",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => data is T",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1706,22 +1357,12 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| `T`\\>",
+    "type": "Promise&#60;undefined \\| T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to the first chunk for which *fn* evaluated with a truthy value,\nor `undefined` if no element was found.",
     "expandable": false,
-    "children": [
-      {
-        "name": "undefined \\| T",
-        "type": "`undefined` \\| `T`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1729,57 +1370,28 @@ If all of the *fn* calls on the chunks return a falsy value, the promise is fulf
 
 v17.5.0
 
-**find**(`fn`, `options?`): `Promise`<`any`\>
+`**find**(fn, options?): Promise&#60;any&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1788,22 +1400,12 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "any",
-        "type": "`any`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1822,50 +1424,21 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. May be async. May be a stream or generator.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1874,7 +1447,7 @@ will be merged (flattened) into the returned stream.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream flat-mapped with the function *fn*.",
@@ -1907,50 +1480,21 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `void` \\| `Promise`<`void`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `void` \\| Promise&#60;void&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `void` \\| `Promise`<`void`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1959,7 +1503,7 @@ in the underlying machinary and can limit the number of concurrent *fn* calls.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for when the stream has finished.",
@@ -2051,17 +1595,7 @@ or if the iterator should destroy the stream if the stream emitted an error duri
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "destroyOnReturn",
-        "type": "`boolean`",
-        "description": "When set to `false`, calling `return` on the async iterator, or exiting a `for await...of` iteration using a `break`, `return`, or `throw` will not destroy the stream. **Default: `true`**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options.destroyOnReturn",
@@ -2079,22 +1613,12 @@ or if the iterator should destroy the stream if the stream emitted an error duri
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](../interfaces/internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "any",
-        "type": "`any`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2209,50 +1733,21 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `any`",
     "description": "a function to map over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2261,7 +1756,7 @@ If the *fn* function returns a promise - that promise will be `await`ed before b
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream mapped with the function *fn*.",
@@ -2299,17 +1794,7 @@ Alias for `emitter.removeListener()`.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2318,7 +1803,7 @@ Alias for `emitter.removeListener()`.
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2335,7 +1820,7 @@ ___
 
 ### on
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 Adds the `listener` function to the end of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
@@ -2383,17 +1868,7 @@ myEE.emit('foo');
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2402,7 +1877,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2415,7 +1890,7 @@ myEE.emit('foo');
 
 v0.1.101
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2436,17 +1911,7 @@ v0.1.101
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`chunk`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2455,7 +1920,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2464,7 +1929,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2485,17 +1950,7 @@ v0.1.101
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2504,7 +1959,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2513,7 +1968,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2529,22 +1984,12 @@ v0.1.101
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2553,7 +1998,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2562,7 +2007,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2583,17 +2028,7 @@ v0.1.101
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2602,7 +2037,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2611,7 +2046,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2632,17 +2067,7 @@ v0.1.101
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2651,7 +2076,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2660,7 +2085,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2681,17 +2106,7 @@ v0.1.101
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2700,7 +2115,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2709,7 +2124,7 @@ v0.1.101
   }
 ]} />
 
-**on**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**on**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2730,17 +2145,7 @@ v0.1.101
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2749,7 +2154,7 @@ v0.1.101
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2762,7 +2167,7 @@ ___
 
 ### once
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 Adds a **one-time**`listener` function for the event named `eventName`. The
 next time `eventName` is triggered, this listener is removed and then invoked.
@@ -2808,17 +2213,7 @@ myEE.emit('foo');
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2827,7 +2222,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2840,7 +2235,7 @@ myEE.emit('foo');
 
 v0.3.0
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2861,17 +2256,7 @@ v0.3.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`chunk`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2880,7 +2265,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2889,7 +2274,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2910,17 +2295,7 @@ v0.3.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2929,7 +2304,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2938,7 +2313,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -2954,22 +2329,12 @@ v0.3.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2978,7 +2343,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2987,7 +2352,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3008,17 +2373,7 @@ v0.3.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3027,7 +2382,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3036,7 +2391,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3057,17 +2412,7 @@ v0.3.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3076,7 +2421,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3085,7 +2430,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3106,17 +2451,7 @@ v0.3.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3125,7 +2460,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3134,7 +2469,7 @@ v0.3.0
   }
 ]} />
 
-**once**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**once**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3155,17 +2490,7 @@ v0.3.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3174,7 +2499,7 @@ v0.3.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3211,7 +2536,7 @@ The `readable.pause()` method has no effect if there is a `'readable'`event list
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3247,17 +2572,7 @@ ___
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "end",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options.end",
@@ -3278,9 +2593,9 @@ ___
 
 ### prependListener
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
-Adds the `listener` function to the _beginning_ of the listeners array for the
+Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
 already been added. Multiple calls passing the same combination of `eventName`and `listener` will result in the `listener` being added, and called, multiple
 times.
@@ -3312,17 +2627,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3331,7 +2636,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3344,7 +2649,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3365,17 +2670,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`chunk`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3384,7 +2679,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3393,7 +2688,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3414,17 +2709,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3433,7 +2718,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3442,7 +2727,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3458,22 +2743,12 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3482,7 +2757,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3491,7 +2766,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3512,17 +2787,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3531,7 +2796,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3540,7 +2805,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3561,17 +2826,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3580,7 +2835,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3589,7 +2844,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3610,17 +2865,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3629,7 +2874,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3638,7 +2883,7 @@ v6.0.0
   }
 ]} />
 
-**prependListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3659,17 +2904,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3678,7 +2913,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3691,9 +2926,9 @@ ___
 
 ### prependOnceListener
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
-Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
+Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
 
 ```js
@@ -3723,17 +2958,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3742,7 +2967,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3755,7 +2980,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v6.0.0
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3776,17 +3001,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`chunk`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3795,7 +3010,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3804,7 +3019,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3825,17 +3040,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3844,7 +3049,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3853,7 +3058,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3869,22 +3074,12 @@ v6.0.0
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3893,7 +3088,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3902,7 +3097,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3923,17 +3118,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3942,7 +3127,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3951,7 +3136,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -3972,17 +3157,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3991,7 +3166,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4000,7 +3175,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4021,17 +3196,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4040,7 +3205,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4049,7 +3214,7 @@ v6.0.0
   }
 ]} />
 
-**prependOnceListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**prependOnceListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4070,17 +3235,7 @@ v6.0.0
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4089,7 +3244,7 @@ v6.0.0
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4116,7 +3271,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -4213,7 +3368,7 @@ the data is returned as a `Buffer` object unless an encoding has been
 specified using the `readable.setEncoding()` method or the stream is operating
 in object mode.
 
-The optional `size` argument specifies a specific number of bytes to read. If`size` bytes are not available to be read, `null` will be returned _unless_the stream has ended, in which
+The optional `size` argument specifies a specific number of bytes to read. If`size` bytes are not available to be read, `null` will be returned \_unless\_the stream has ended, in which
 case all of the data remaining in the internal
 buffer will be returned.
 
@@ -4316,7 +3471,7 @@ ___
 
 ### reduce
 
-**reduce**<`T`\>(`fn`, `initial?`, `options?`): `Promise`<`T`\>
+`**reduce**<TypeParameter T>(fn, initial?, options?): Promise&#60;T&#62;`
 
 This method calls *fn* on each chunk of the stream in order, passing it the result from the calculation
 on the previous element. It returns a promise for the final value of the reduction.
@@ -4332,22 +3487,12 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `any`, `data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
+    "type": "(`previous`: `any`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "a reducer function to call over every chunk in the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previous`: `any`, `data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initial",
@@ -4360,31 +3505,12 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
   },
   {
     "name": "options",
-    "type": "[`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4393,7 +3519,7 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`\\>",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise for the final value of the reduction.",
@@ -4406,29 +3532,19 @@ or parallelism. To perform a reduce concurrently, you can extract the async func
 
 v17.5.0
 
-**reduce**<`T`\>(`fn`, `initial`, `options?`): `Promise`<`T`\>
+`**reduce**<TypeParameter T>(fn, initial, options?): Promise&#60;T&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`previous`: `T`, `data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
+    "type": "(`previous`: `T`, `data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `T`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`previous`: `T`, `data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `T`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "initial",
@@ -4441,31 +3557,12 @@ v17.5.0
   },
   {
     "name": "options",
-    "type": "[`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4474,7 +3571,7 @@ v17.5.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`\\>",
+    "type": "Promise&#60;T&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4514,7 +3611,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4531,7 +3628,7 @@ ___
 
 ### removeListener
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 Removes the specified `listener` from the listener array for the event named`eventName`.
 
@@ -4550,7 +3647,7 @@ listener array for the specified `eventName`, then `removeListener()` must be
 called multiple times to remove each instance.
 
 Once an event is emitted, all listeners attached to it at the
-time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls _after_ emitting and _before_ the last listener finishes execution
+time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls \_after\_ emitting and \_before\_ the last listener finishes execution
 will not remove them from`emit()` in progress. Subsequent events behave as expected.
 
 ```js
@@ -4586,7 +3683,7 @@ myEmitter.emit('event');
 ```
 
 Because listeners are managed using an internal array, calling this will
-change the position indices of any listener registered _after_ the listener
+change the position indices of any listener registered \_after\_ the listener
 being removed. This will not impact the order in which listeners are called,
 but it means that any copies of the listener array as returned by
 the `emitter.listeners()` method will need to be recreated.
@@ -4632,17 +3729,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4651,7 +3738,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4664,7 +3751,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 
 v0.1.26
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4685,17 +3772,7 @@ v0.1.26
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`chunk`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4704,7 +3781,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4713,7 +3790,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4734,17 +3811,7 @@ v0.1.26
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4753,7 +3820,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4762,7 +3829,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4778,22 +3845,12 @@ v0.1.26
   },
   {
     "name": "listener",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err`: [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4802,7 +3859,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4811,7 +3868,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4832,17 +3889,7 @@ v0.1.26
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4851,7 +3898,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4860,7 +3907,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4881,17 +3928,7 @@ v0.1.26
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4900,7 +3937,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4909,7 +3946,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4930,17 +3967,7 @@ v0.1.26
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4949,7 +3976,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -4958,7 +3985,7 @@ v0.1.26
   }
 ]} />
 
-**removeListener**(`event`, `listener`): [`ReadableBase`](internal.ReadableBase.mdx)
+`**removeListener**(event, listener): [ReadableBase](internal.ReadableBase.mdx)`
 
 #### Parameters
 
@@ -4979,17 +4006,7 @@ v0.1.26
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -4998,7 +4015,7 @@ v0.1.26
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5032,7 +4049,7 @@ The `readable.resume()` method has no effect if there is a `'readable'`event lis
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5075,7 +4092,7 @@ readable.on('data', (chunk) => {
 <ParameterTypes parameters={[
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "The encoding to use.",
     "optional": false,
     "defaultValue": "",
@@ -5089,7 +4106,7 @@ readable.on('data', (chunk) => {
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5132,7 +4149,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5159,50 +4176,21 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "fn",
-    "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
+    "type": "(`data`: `any`, `options?`: [Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;) => `boolean` \\| Promise&#60;boolean&#62;",
     "description": "a function to call on each chunk of the stream. Async or not.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`data`: `any`, `options?`: [`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>) => `boolean` \\| `Promise`<`boolean`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "options",
-    "type": "[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx)",
+    "type": "[ArrayOptions](../interfaces/internal.ArrayOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5211,22 +4199,12 @@ If none of the *fn* calls on the chunks return a truthy value, the promise is fu
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`boolean`\\>",
+    "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise evaluating to `true` if *fn* returned a truthy value for at least one of the chunks.",
     "expandable": false,
-    "children": [
-      {
-        "name": "boolean",
-        "type": "`boolean`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5254,31 +4232,12 @@ This method returns a new stream with the first *limit* chunks.
   },
   {
     "name": "options",
-    "type": "[`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5287,7 +4246,7 @@ This method returns a new stream with the first *limit* chunks.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "a stream with *limit* chunks taken.",
@@ -5314,31 +4273,12 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`Pick`](../../modules/internal.mdx#pick)<[`ArrayOptions`](../interfaces/internal.ArrayOptions.mdx), ``\"signal\"``\\>",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ArrayOptions](../interfaces/internal.ArrayOptions.mdx), `\"signal\"`&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "concurrency",
-        "type": "`number`",
-        "description": "the maximum concurrent invocations of `fn` to call on the stream at once. **Default: 1**.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "allows destroying the stream if the signal is aborted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5347,32 +4287,12 @@ for interoperability and convenience, not as the primary way to consume streams.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "a promise containing an array with the contents of the stream.",
     "expandable": false,
-    "children": [
-      {
-        "name": "any[]",
-        "type": "`any`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "any",
-            "type": "`any`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5387,7 +4307,7 @@ ___
 The `readable.unpipe()` method detaches a `Writable` stream previously attached
 using the [pipe](../interfaces/internal.internal.MedusaRequest.mdx#pipe) method.
 
-If the `destination` is not specified, then _all_ pipes are detached.
+If the `destination` is not specified, then \_all\_ pipes are detached.
 
 If the `destination` is specified, but no pipe is set up for it, then
 the method does nothing.
@@ -5412,22 +4332,12 @@ setTimeout(() => {
 <ParameterTypes parameters={[
   {
     "name": "destination",
-    "type": "[`WritableStream`](../interfaces/internal.WritableStream.mdx)",
+    "type": "[WritableStream](../interfaces/internal.WritableStream.mdx)",
     "description": "Optional specific stream to unpipe",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "writable",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5436,7 +4346,7 @@ setTimeout(() => {
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5527,7 +4437,7 @@ process of performing a read.
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "Encoding of string chunks. Must be a valid `Buffer` encoding, such as `'utf8'` or `'ascii'`.",
     "optional": true,
     "defaultValue": "",
@@ -5585,22 +4495,12 @@ myReader.on('readable', () => {
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx)",
+    "type": "[ReadableStream](../interfaces/internal.ReadableStream-1.mdx)",
     "description": "An \"old style\" readable stream",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "readable",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5609,7 +4509,7 @@ myReader.on('readable', () => {
 <ParameterTypes parameters={[
   {
     "name": "ReadableBase",
-    "type": "[`ReadableBase`](internal.ReadableBase.mdx)",
+    "type": "[ReadableBase](internal.ReadableBase.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5661,7 +4561,7 @@ function example(signal) {
 <ParameterTypes parameters={[
   {
     "name": "signal",
-    "type": "`AbortSignal`",
+    "type": "AbortSignal",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5670,22 +4570,12 @@ function example(signal) {
   },
   {
     "name": "resource",
-    "type": "(`event`: `Event`) => `void`",
+    "type": "(`event`: Event) => `void`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`event`: `Event`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5718,7 +4608,7 @@ A utility method for creating Readable Streams out of iterators.
 <ParameterTypes parameters={[
   {
     "name": "iterable",
-    "type": "[`Iterable`](../interfaces/internal.Iterable.mdx)<`any`\\> \\| [`AsyncIterable`](../interfaces/internal.AsyncIterable.mdx)<`any`\\>",
+    "type": "[Iterable](../interfaces/internal.Iterable.mdx)&#60;any&#62; \\| [AsyncIterable](../interfaces/internal.AsyncIterable.mdx)&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5727,67 +4617,12 @@ A utility method for creating Readable Streams out of iterators.
   },
   {
     "name": "options",
-    "type": "[`ReadableOptions`](../interfaces/internal.ReadableOptions.mdx)",
+    "type": "[ReadableOptions](../interfaces/internal.ReadableOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "autoDestroy",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "emitClose",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "encoding",
-        "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "highWaterMark",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "objectMode",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "When provided the corresponding `AbortController` can be used to cancel an asynchronous action.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -5796,7 +4631,7 @@ A utility method for creating Readable Streams out of iterators.
 <ParameterTypes parameters={[
   {
     "name": "Readable",
-    "type": "[`Readable`](internal.Readable.mdx)",
+    "type": "[Readable](internal.Readable.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -5839,7 +4674,7 @@ import { getEventListeners, EventEmitter } from 'node:events';
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5910,7 +4745,7 @@ import { getMaxListeners, setMaxListeners, EventEmitter } from 'node:events';
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5948,7 +4783,7 @@ Returns whether the stream has been read from or cancelled.
 <ParameterTypes parameters={[
   {
     "name": "stream",
-    "type": "[`ReadableStream`](../interfaces/internal.ReadableStream-1.mdx) \\| [`Readable`](internal.Readable.mdx)",
+    "type": "[ReadableStream](../interfaces/internal.ReadableStream-1.mdx) \\| [Readable](internal.Readable.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -5996,7 +4831,7 @@ console.log(listenerCount(myEmitter, 'event'));
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx)",
     "description": "The emitter to query",
     "optional": false,
     "defaultValue": "",
@@ -6100,7 +4935,7 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx)",
+    "type": "[EventEmitter](../interfaces/internal.EventEmitter-2.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6118,22 +4953,12 @@ process.nextTick(() => ac.abort());
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -6142,22 +4967,12 @@ process.nextTick(() => ac.abort());
 <ParameterTypes parameters={[
   {
     "name": "AsyncIterableIterator",
-    "type": "[`AsyncIterableIterator`](../interfaces/internal.AsyncIterableIterator.mdx)<`any`\\>",
+    "type": "[AsyncIterableIterator](../interfaces/internal.AsyncIterableIterator.mdx)&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "that iterates `eventName` events emitted by the `emitter`",
     "expandable": false,
-    "children": [
-      {
-        "name": "any",
-        "type": "`any`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -6169,7 +4984,7 @@ ___
 
 ### once
 
-`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
 event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
@@ -6253,7 +5068,7 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`_NodeEventTarget`](../interfaces/internal._NodeEventTarget.mdx)",
+    "type": "[_NodeEventTarget](../interfaces/internal._NodeEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6271,22 +5086,12 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -6295,32 +5100,12 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "any[]",
-        "type": "`any`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "any",
-            "type": "`any`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -6328,14 +5113,14 @@ ee.emit('foo'); // Prints: Waiting for the event was canceled!
 
 v11.13.0, v10.16.0
 
-`Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
+`Static **once**(emitter, eventName, options?): Promise&#60;any[]&#62;`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "emitter",
-    "type": "[`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx)",
+    "type": "[_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -6353,22 +5138,12 @@ v11.13.0, v10.16.0
   },
   {
     "name": "options",
-    "type": "[`StaticEventEmitterOptions`](../interfaces/internal.StaticEventEmitterOptions.mdx)",
+    "type": "[StaticEventEmitterOptions](../interfaces/internal.StaticEventEmitterOptions.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "signal",
-        "type": "`AbortSignal`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -6377,32 +5152,12 @@ v11.13.0, v10.16.0
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`[]\\>",
+    "type": "Promise&#60;any[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "any[]",
-        "type": "`any`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "any",
-            "type": "`any`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -6433,7 +5188,7 @@ setMaxListeners(5, target, emitter);
   },
   {
     "name": "eventTargets",
-    "type": "([`EventEmitter`](../interfaces/internal.EventEmitter-2.mdx) \\| [`_DOMEventTarget`](../interfaces/internal._DOMEventTarget.mdx))[]",
+    "type": "([EventEmitter](../interfaces/internal.EventEmitter-2.mdx) \\| [_DOMEventTarget](../interfaces/internal._DOMEventTarget.mdx))[]",
     "description": "",
     "optional": false,
     "defaultValue": "",

@@ -72,26 +72,7 @@ Standardized error to be used across Medusa project.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "CART_INCOMPATIBLE_STATE",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "INSUFFICIENT_INVENTORY",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "Codes.CART_INCOMPATIBLE_STATE",
@@ -118,98 +99,7 @@ Standardized error to be used across Medusa project.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "CONFLICT",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "DB_ERROR",
-        "type": "`string`",
-        "description": "Errors stemming from the database",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "DUPLICATE_ERROR",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "INVALID_ARGUMENT",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "INVALID_DATA",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "NOT_ALLOWED",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "NOT_FOUND",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PAYMENT_AUTHORIZATION_ERROR",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "UNAUTHORIZED",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "UNEXPECTED_STATE",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "Types.CONFLICT",
@@ -303,22 +193,12 @@ Standardized error to be used across Medusa project.
   },
   {
     "name": "prepareStackTrace",
-    "type": "(`err`: [`Error`](../../modules/internal.mdx#error), `stackTraces`: [`CallSite`](../interfaces/internal.CallSite.mdx)[]) => `any`",
+    "type": "(`err`: [Error](../../modules/internal.mdx#error), `stackTraces`: [CallSite](../interfaces/internal.CallSite.mdx)[]) => `any`",
     "description": "Optional override for formatting stack traces",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err`: [`Error`](../../modules/internal.mdx#error), `stackTraces`: [`CallSite`](../interfaces/internal.CallSite.mdx)[]) => `any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "stackTraceLimit",

@@ -13,21 +13,11 @@ The resources to remove.
 <ParameterTypes parameters={[
   {
     "name": "resources",
-    "type": "{ `id`: `string`  }[]",
+    "type": "`&#123; id: string  &#125;`[]",
     "description": "The resources to be removed from the discount condition",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The id of the item",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

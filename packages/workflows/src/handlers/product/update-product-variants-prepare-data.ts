@@ -1,6 +1,6 @@
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 import { ProductTypes, ProductWorkflow, WorkflowTypes } from "@medusajs/types"
-
+import { MedusaV2Flag } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 
 type VariantPrice = {
@@ -27,7 +27,7 @@ export async function updateProductVariantsPrepareData({
 }: WorkflowArguments<WorkflowTypes.ProductWorkflow.UpdateProductVariantsWorkflowInputDTO>): Promise<UpdateProductVariantsPreparedData> {
   const featureFlagRouter = container.resolve("featureFlagRouter")
   const isPricingDomainEnabled = featureFlagRouter.isFeatureEnabled(
-    "isolate_pricing_domain"
+    MedusaV2Flag.key
   )
   let productVariants: ProductWorkflow.UpdateProductVariantsInputDTO[] =
     data.productVariants || []

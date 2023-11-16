@@ -48,7 +48,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -62,7 +62,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminBatchJobRes`](../modules/internal.mdx#adminbatchjobres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../internal/types/internal.AdminBatchJobRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
@@ -78,7 +78,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
         "children": [
           {
             "name": "batch_job",
-            "type": "[`BatchJob`](../internal/classes/internal.BatchJob.mdx)",
+            "type": "[BatchJob](../internal/classes/internal.BatchJob.mdx)",
             "description": "Batch job details.",
             "optional": false,
             "defaultValue": "",
@@ -113,7 +113,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
                 "optional": false,
                 "defaultValue": "",
@@ -140,7 +140,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "created_by_user",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -203,7 +203,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "result",
-                "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../internal/modules/internal.internal.mdx#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../internal/modules/internal.internal.mdx#batchjobresultstatdescriptor)[]  } & Record<`string`, `unknown`\\>",
+                "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../internal/types/internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../internal/types/internal.internal.BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
                 "description": "The result of the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -212,7 +212,7 @@ medusa.admin.batchJobs.cancel(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "status",
-                "type": "[`BatchJobStatus`](../internal/enums/internal.internal.BatchJobStatus.mdx)",
+                "type": "[BatchJobStatus](../internal/enums/internal.internal.BatchJobStatus.mdx)",
                 "description": "The status of the batch job.",
                 "optional": false,
                 "defaultValue": "created",
@@ -276,7 +276,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -290,7 +290,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminBatchJobRes`](../modules/internal.mdx#adminbatchjobres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../internal/types/internal.AdminBatchJobRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
@@ -306,7 +306,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
         "children": [
           {
             "name": "batch_job",
-            "type": "[`BatchJob`](../internal/classes/internal.BatchJob.mdx)",
+            "type": "[BatchJob](../internal/classes/internal.BatchJob.mdx)",
             "description": "Batch job details.",
             "optional": false,
             "defaultValue": "",
@@ -341,7 +341,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
                 "optional": false,
                 "defaultValue": "",
@@ -368,7 +368,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "created_by_user",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -431,7 +431,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "result",
-                "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../internal/modules/internal.internal.mdx#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../internal/modules/internal.internal.mdx#batchjobresultstatdescriptor)[]  } & Record<`string`, `unknown`\\>",
+                "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../internal/types/internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../internal/types/internal.internal.BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
                 "description": "The result of the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -440,7 +440,7 @@ medusa.admin.batchJobs.confirm(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "status",
-                "type": "[`BatchJobStatus`](../internal/enums/internal.internal.BatchJobStatus.mdx)",
+                "type": "[BatchJobStatus](../internal/enums/internal.internal.BatchJobStatus.mdx)",
                 "description": "The status of the batch job.",
                 "optional": false,
                 "defaultValue": "created",
@@ -500,7 +500,7 @@ medusa.admin.batchJobs.create({
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostBatchesReq`](../internal/classes/internal.AdminPostBatchesReq.mdx)",
+    "type": "[AdminPostBatchesReq](../internal/classes/internal.AdminPostBatchesReq.mdx)",
     "description": "The data of the batch job to create.",
     "optional": false,
     "defaultValue": "",
@@ -508,7 +508,7 @@ medusa.admin.batchJobs.create({
     "children": [
       {
         "name": "context",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "Additional infomration regarding the batch to be used for processing.",
         "optional": false,
         "defaultValue": "",
@@ -518,7 +518,7 @@ medusa.admin.batchJobs.create({
       {
         "name": "dry_run",
         "type": "`boolean`",
-        "description": "Set a batch job in dry_run mode, which would delay executing the batch job until it's confirmed.",
+        "description": "Set a batch job in dry\\_run mode, which would delay executing the batch job until it's confirmed.",
         "optional": false,
         "defaultValue": "false",
         "expandable": false,
@@ -537,7 +537,7 @@ medusa.admin.batchJobs.create({
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -551,7 +551,7 @@ medusa.admin.batchJobs.create({
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminBatchJobRes`](../modules/internal.mdx#adminbatchjobres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../internal/types/internal.AdminBatchJobRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
@@ -567,7 +567,7 @@ medusa.admin.batchJobs.create({
         "children": [
           {
             "name": "batch_job",
-            "type": "[`BatchJob`](../internal/classes/internal.BatchJob.mdx)",
+            "type": "[BatchJob](../internal/classes/internal.BatchJob.mdx)",
             "description": "Batch job details.",
             "optional": false,
             "defaultValue": "",
@@ -602,7 +602,7 @@ medusa.admin.batchJobs.create({
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
                 "optional": false,
                 "defaultValue": "",
@@ -629,7 +629,7 @@ medusa.admin.batchJobs.create({
               },
               {
                 "name": "created_by_user",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -692,7 +692,7 @@ medusa.admin.batchJobs.create({
               },
               {
                 "name": "result",
-                "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../internal/modules/internal.internal.mdx#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../internal/modules/internal.internal.mdx#batchjobresultstatdescriptor)[]  } & Record<`string`, `unknown`\\>",
+                "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../internal/types/internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../internal/types/internal.internal.BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
                 "description": "The result of the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -701,7 +701,7 @@ medusa.admin.batchJobs.create({
               },
               {
                 "name": "status",
-                "type": "[`BatchJobStatus`](../internal/enums/internal.internal.BatchJobStatus.mdx)",
+                "type": "[BatchJobStatus](../internal/enums/internal.internal.BatchJobStatus.mdx)",
                 "description": "The status of the batch job.",
                 "optional": false,
                 "defaultValue": "created",
@@ -790,7 +790,7 @@ medusa.admin.batchJobs
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetBatchParams`](../internal/classes/internal.AdminGetBatchParams.mdx)",
+    "type": "[AdminGetBatchParams](../internal/classes/internal.AdminGetBatchParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved batch jobs.",
     "optional": true,
     "defaultValue": "",
@@ -798,7 +798,7 @@ medusa.admin.batchJobs
     "children": [
       {
         "name": "canceled_at",
-        "type": "``null`` \\| [`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "``null`` \\| [DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `canceled_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -807,7 +807,7 @@ medusa.admin.batchJobs
       },
       {
         "name": "completed_at",
-        "type": "``null`` \\| [`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "``null`` \\| [DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `completed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -816,7 +816,7 @@ medusa.admin.batchJobs
       },
       {
         "name": "confirmed_at",
-        "type": "``null`` \\| [`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "``null`` \\| [DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `confirmed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -825,7 +825,7 @@ medusa.admin.batchJobs
       },
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -880,7 +880,7 @@ medusa.admin.batchJobs
       },
       {
         "name": "failed_at",
-        "type": "``null`` \\| [`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "``null`` \\| [DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `failed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -934,7 +934,7 @@ medusa.admin.batchJobs
       },
       {
         "name": "pre_processed_at",
-        "type": "``null`` \\| [`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "``null`` \\| [DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `pre_processed_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -952,7 +952,7 @@ medusa.admin.batchJobs
       },
       {
         "name": "updated_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the batch jobs' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -1000,7 +1000,7 @@ medusa.admin.batchJobs
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1014,7 +1014,7 @@ medusa.admin.batchJobs
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminBatchJobListRes`](../modules/internal.mdx#adminbatchjoblistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminBatchJobListRes](../internal/types/internal.AdminBatchJobListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of batch jobs with pagination fields.",
@@ -1022,7 +1022,7 @@ medusa.admin.batchJobs
     "children": [
       {
         "name": "AdminBatchJobListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `batch_jobs`: [`BatchJob`](../internal/classes/internal.BatchJob.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; batch_jobs: [BatchJob](../internal/classes/internal.BatchJob.mdx)[]  &#125;`",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -1057,7 +1057,7 @@ medusa.admin.batchJobs
           },
           {
             "name": "batch_jobs",
-            "type": "[`BatchJob`](../internal/classes/internal.BatchJob.mdx)[]",
+            "type": "[BatchJob](../internal/classes/internal.BatchJob.mdx)[]",
             "description": "An array of batch job details.",
             "optional": false,
             "defaultValue": "",
@@ -1092,7 +1092,7 @@ medusa.admin.batchJobs
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
                 "optional": false,
                 "defaultValue": "",
@@ -1119,7 +1119,7 @@ medusa.admin.batchJobs
               },
               {
                 "name": "created_by_user",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -1182,7 +1182,7 @@ medusa.admin.batchJobs
               },
               {
                 "name": "result",
-                "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../internal/modules/internal.internal.mdx#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../internal/modules/internal.internal.mdx#batchjobresultstatdescriptor)[]  } & Record<`string`, `unknown`\\>",
+                "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../internal/types/internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../internal/types/internal.internal.BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
                 "description": "The result of the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -1191,7 +1191,7 @@ medusa.admin.batchJobs
               },
               {
                 "name": "status",
-                "type": "[`BatchJobStatus`](../internal/enums/internal.internal.BatchJobStatus.mdx)",
+                "type": "[BatchJobStatus](../internal/enums/internal.internal.BatchJobStatus.mdx)",
                 "description": "The status of the batch job.",
                 "optional": false,
                 "defaultValue": "created",
@@ -1255,7 +1255,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1269,7 +1269,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminBatchJobRes`](../modules/internal.mdx#adminbatchjobres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminBatchJobRes](../internal/types/internal.AdminBatchJobRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the batch job's details.",
@@ -1285,7 +1285,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
         "children": [
           {
             "name": "batch_job",
-            "type": "[`BatchJob`](../internal/classes/internal.BatchJob.mdx)",
+            "type": "[BatchJob](../internal/classes/internal.BatchJob.mdx)",
             "description": "Batch job details.",
             "optional": false,
             "defaultValue": "",
@@ -1320,7 +1320,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
                 "optional": false,
                 "defaultValue": "",
@@ -1347,7 +1347,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "created_by_user",
-                "type": "[`User`](../internal/classes/internal.User.mdx)",
+                "type": "[User](../internal/classes/internal.User.mdx)",
                 "description": "The details of the user that created the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -1410,7 +1410,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "result",
-                "type": "{ `advancement_count?`: `number` ; `count?`: `number` ; `errors?`: (`string` \\| [`BatchJobResultError`](../internal/modules/internal.internal.mdx#batchjobresulterror))[] ; `file_key?`: `string` ; `file_size?`: `number` ; `progress?`: `number` ; `stat_descriptors?`: [`BatchJobResultStatDescriptor`](../internal/modules/internal.internal.mdx#batchjobresultstatdescriptor)[]  } & Record<`string`, `unknown`\\>",
+                "type": "`&#123; advancement_count?: number ; count?: number ; errors?: (string \\| [BatchJobResultError](../internal/types/internal.internal.BatchJobResultError.mdx))[] ; file_key?: string ; file_size?: number ; progress?: number ; stat_descriptors?: [BatchJobResultStatDescriptor](../internal/types/internal.internal.BatchJobResultStatDescriptor.mdx)[]  &#125;` & `Record<string, unknown>`",
                 "description": "The result of the batch job.",
                 "optional": false,
                 "defaultValue": "",
@@ -1419,7 +1419,7 @@ medusa.admin.batchJobs.retrieve(batchJobId).then(({ batch_job }) => {
               },
               {
                 "name": "status",
-                "type": "[`BatchJobStatus`](../internal/enums/internal.internal.BatchJobStatus.mdx)",
+                "type": "[BatchJobStatus](../internal/enums/internal.internal.BatchJobStatus.mdx)",
                 "description": "The status of the batch job.",
                 "optional": false,
                 "defaultValue": "created",

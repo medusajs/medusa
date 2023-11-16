@@ -57,7 +57,7 @@ medusa.admin.currencies
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetCurrenciesParams`](../internal/classes/internal.AdminGetCurrenciesParams.mdx)",
+    "type": "[AdminGetCurrenciesParams](../internal/classes/internal.AdminGetCurrenciesParams.mdx)",
     "description": "Filters and pagination configurations to apply on retrieved currencies.",
     "optional": true,
     "defaultValue": "",
@@ -113,7 +113,7 @@ medusa.admin.currencies
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -127,7 +127,7 @@ medusa.admin.currencies
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminCurrenciesListRes`](../modules/internal.mdx#admincurrencieslistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCurrenciesListRes](../internal/types/internal.AdminCurrenciesListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of currencies with pagination fields.",
@@ -135,7 +135,7 @@ medusa.admin.currencies
     "children": [
       {
         "name": "AdminCurrenciesListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `currencies`: [`Currency`](../internal/classes/internal.Currency.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; currencies: [Currency](../internal/classes/internal.Currency.mdx)[]  &#125;`",
         "description": "List of currencies with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -170,7 +170,7 @@ medusa.admin.currencies
           },
           {
             "name": "currencies",
-            "type": "[`Currency`](../internal/classes/internal.Currency.mdx)[]",
+            "type": "[Currency](../internal/classes/internal.Currency.mdx)[]",
             "description": "An array of currency details.",
             "optional": false,
             "defaultValue": "",
@@ -265,7 +265,7 @@ medusa.admin.currencies
   },
   {
     "name": "payload",
-    "type": "[`AdminPostCurrenciesCurrencyReq`](../internal/classes/internal.AdminPostCurrenciesCurrencyReq.mdx)",
+    "type": "[AdminPostCurrenciesCurrencyReq](../internal/classes/internal.AdminPostCurrenciesCurrencyReq.mdx)",
     "description": "The attributes to update in the currency.",
     "optional": false,
     "defaultValue": "",
@@ -285,7 +285,7 @@ medusa.admin.currencies
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -299,7 +299,7 @@ medusa.admin.currencies
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminCurrenciesRes`](../modules/internal.mdx#admincurrenciesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCurrenciesRes](../internal/types/internal.AdminCurrenciesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the currency's details.",
@@ -315,7 +315,7 @@ medusa.admin.currencies
         "children": [
           {
             "name": "currency",
-            "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+            "type": "[Currency](../internal/classes/internal.Currency.mdx)",
             "description": "Currency details.",
             "optional": false,
             "defaultValue": "",

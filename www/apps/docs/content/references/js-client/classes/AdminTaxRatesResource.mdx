@@ -51,7 +51,7 @@ medusa.admin.taxRates
   },
   {
     "name": "payload",
-    "type": "[`AdminPostTaxRatesTaxRateProductTypesReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateProductTypesReq.mdx)",
+    "type": "[AdminPostTaxRatesTaxRateProductTypesReq](../internal/classes/internal.AdminPostTaxRatesTaxRateProductTypesReq.mdx)",
     "description": "The product types to add to the tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -70,7 +70,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminGetTaxRatesTaxRateParams`](../internal/classes/internal.AdminGetTaxRatesTaxRateParams.mdx)",
+    "type": "[AdminGetTaxRatesTaxRateParams](../internal/classes/internal.AdminGetTaxRatesTaxRateParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -98,7 +98,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -112,7 +112,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -128,7 +128,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -163,7 +163,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -199,7 +199,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -208,7 +208,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -226,7 +226,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -253,7 +253,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -312,7 +312,7 @@ medusa.admin.taxRates
   },
   {
     "name": "payload",
-    "type": "[`AdminPostTaxRatesTaxRateProductsReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsReq.mdx)",
+    "type": "[AdminPostTaxRatesTaxRateProductsReq](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsReq.mdx)",
     "description": "The products to add to the tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -331,7 +331,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminPostTaxRatesTaxRateProductsParams`](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsParams.mdx)",
+    "type": "[AdminPostTaxRatesTaxRateProductsParams](../internal/classes/internal.AdminPostTaxRatesTaxRateProductsParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -359,7 +359,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -373,7 +373,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -389,7 +389,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -424,7 +424,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -460,7 +460,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -469,7 +469,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -487,7 +487,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -514,7 +514,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -573,7 +573,7 @@ medusa.admin.taxRates
   },
   {
     "name": "payload",
-    "type": "[`AdminPostTaxRatesTaxRateShippingOptionsReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsReq.mdx)",
+    "type": "[AdminPostTaxRatesTaxRateShippingOptionsReq](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsReq.mdx)",
     "description": "The shipping options to add to the tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -592,7 +592,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminPostTaxRatesTaxRateShippingOptionsParams`](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsParams.mdx)",
+    "type": "[AdminPostTaxRatesTaxRateShippingOptionsParams](../internal/classes/internal.AdminPostTaxRatesTaxRateShippingOptionsParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -620,7 +620,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -634,7 +634,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -650,7 +650,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -685,7 +685,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -721,7 +721,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -730,7 +730,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -748,7 +748,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -775,7 +775,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -827,7 +827,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostTaxRatesReq`](../internal/classes/internal.AdminPostTaxRatesReq.mdx)",
+    "type": "[AdminPostTaxRatesReq](../internal/classes/internal.AdminPostTaxRatesReq.mdx)",
     "description": "The tax rate to create.",
     "optional": false,
     "defaultValue": "",
@@ -900,7 +900,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminPostTaxRatesParams`](../internal/classes/internal.AdminPostTaxRatesParams.mdx)",
+    "type": "[AdminPostTaxRatesParams](../internal/classes/internal.AdminPostTaxRatesParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -928,7 +928,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -942,7 +942,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -958,7 +958,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -993,7 +993,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1029,7 +1029,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1038,7 +1038,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1056,7 +1056,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1083,7 +1083,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1138,7 +1138,7 @@ medusa.admin.taxRates.delete(taxRateId).then(({ id, object, deleted }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1152,7 +1152,7 @@ medusa.admin.taxRates.delete(taxRateId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -1245,7 +1245,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetTaxRatesParams`](../internal/classes/internal.AdminGetTaxRatesParams.mdx)",
+    "type": "[AdminGetTaxRatesParams](../internal/classes/internal.AdminGetTaxRatesParams.mdx)",
     "description": "Filters and pagination configurations applied to the retrieved tax rates.",
     "optional": true,
     "defaultValue": "",
@@ -1307,7 +1307,7 @@ medusa.admin.taxRates
       },
       {
         "name": "rate",
-        "type": "`number` \\| [`NumericalComparisonOperator`](../internal/classes/internal.NumericalComparisonOperator.mdx)",
+        "type": "`number` \\| [NumericalComparisonOperator](../internal/classes/internal.NumericalComparisonOperator.mdx)",
         "description": "Number filters to filter tax rates' `rate` field.",
         "optional": true,
         "defaultValue": "",
@@ -1327,7 +1327,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1341,7 +1341,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesListRes`](../modules/internal.mdx#admintaxrateslistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesListRes](../internal/types/internal.AdminTaxRatesListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of tax rates with pagination fields.",
@@ -1349,7 +1349,7 @@ medusa.admin.taxRates
     "children": [
       {
         "name": "AdminTaxRatesListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `tax_rates`: [`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; tax_rates: [TaxRate](../internal/classes/internal.TaxRate.mdx)[]  &#125;`",
         "description": "The list of tax rates with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1384,7 +1384,7 @@ medusa.admin.taxRates
           },
           {
             "name": "tax_rates",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)[]",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)[]",
             "description": "An array of tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -1419,7 +1419,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1455,7 +1455,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1464,7 +1464,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1482,7 +1482,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1509,7 +1509,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1568,7 +1568,7 @@ medusa.admin.taxRates
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteTaxRatesTaxRateProductTypesReq`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesReq.mdx)",
+    "type": "[AdminDeleteTaxRatesTaxRateProductTypesReq](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesReq.mdx)",
     "description": "The product types to remove from the tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -1587,7 +1587,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminDeleteTaxRatesTaxRateProductTypesParams`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesParams.mdx)",
+    "type": "[AdminDeleteTaxRatesTaxRateProductTypesParams](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductTypesParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -1615,7 +1615,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1629,7 +1629,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -1645,7 +1645,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -1680,7 +1680,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1716,7 +1716,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1725,7 +1725,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1743,7 +1743,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1770,7 +1770,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1829,7 +1829,7 @@ medusa.admin.taxRates
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteTaxRatesTaxRateProductsReq`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsReq.mdx)",
+    "type": "[AdminDeleteTaxRatesTaxRateProductsReq](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsReq.mdx)",
     "description": "The products to remove from the tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -1848,7 +1848,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminDeleteTaxRatesTaxRateProductsParams`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsParams.mdx)",
+    "type": "[AdminDeleteTaxRatesTaxRateProductsParams](../internal/classes/internal.AdminDeleteTaxRatesTaxRateProductsParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -1876,7 +1876,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1890,7 +1890,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -1906,7 +1906,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -1941,7 +1941,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1977,7 +1977,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -1986,7 +1986,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2004,7 +2004,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2031,7 +2031,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2090,7 +2090,7 @@ medusa.admin.taxRates
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteTaxRatesTaxRateShippingOptionsReq`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsReq.mdx)",
+    "type": "[AdminDeleteTaxRatesTaxRateShippingOptionsReq](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsReq.mdx)",
     "description": "The shipping options to remove from the tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -2109,7 +2109,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminDeleteTaxRatesTaxRateShippingOptionsParams`](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsParams.mdx)",
+    "type": "[AdminDeleteTaxRatesTaxRateShippingOptionsParams](../internal/classes/internal.AdminDeleteTaxRatesTaxRateShippingOptionsParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -2137,7 +2137,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2151,7 +2151,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -2167,7 +2167,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -2202,7 +2202,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2238,7 +2238,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2247,7 +2247,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2265,7 +2265,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2292,7 +2292,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2364,7 +2364,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminGetTaxRatesTaxRateParams`](../internal/classes/internal.AdminGetTaxRatesTaxRateParams.mdx)",
+    "type": "[AdminGetTaxRatesTaxRateParams](../internal/classes/internal.AdminGetTaxRatesTaxRateParams.mdx)",
     "description": "Configurations to apply on retrieved tax rates.",
     "optional": true,
     "defaultValue": "",
@@ -2392,7 +2392,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2406,7 +2406,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -2422,7 +2422,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -2457,7 +2457,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2493,7 +2493,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2502,7 +2502,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2520,7 +2520,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2547,7 +2547,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2606,7 +2606,7 @@ medusa.admin.taxRates
   },
   {
     "name": "payload",
-    "type": "[`AdminPostTaxRatesTaxRateReq`](../internal/classes/internal.AdminPostTaxRatesTaxRateReq.mdx)",
+    "type": "[AdminPostTaxRatesTaxRateReq](../internal/classes/internal.AdminPostTaxRatesTaxRateReq.mdx)",
     "description": "The attributes to update in the tax rate.",
     "optional": false,
     "defaultValue": "",
@@ -2679,7 +2679,7 @@ medusa.admin.taxRates
   },
   {
     "name": "query",
-    "type": "[`AdminPostTaxRatesTaxRateParams`](../internal/classes/internal.AdminPostTaxRatesTaxRateParams.mdx)",
+    "type": "[AdminPostTaxRatesTaxRateParams](../internal/classes/internal.AdminPostTaxRatesTaxRateParams.mdx)",
     "description": "Configurations to apply on the retrieved tax rate.",
     "optional": true,
     "defaultValue": "",
@@ -2707,7 +2707,7 @@ medusa.admin.taxRates
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2721,7 +2721,7 @@ medusa.admin.taxRates
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminTaxRatesRes`](../modules/internal.mdx#admintaxratesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminTaxRatesRes](../internal/types/internal.AdminTaxRatesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the tax rate's details.",
@@ -2737,7 +2737,7 @@ medusa.admin.taxRates
         "children": [
           {
             "name": "tax_rate",
-            "type": "[`TaxRate`](../internal/classes/internal.TaxRate.mdx)",
+            "type": "[TaxRate](../internal/classes/internal.TaxRate.mdx)",
             "description": "Tax rate details.",
             "optional": false,
             "defaultValue": "",
@@ -2772,7 +2772,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2808,7 +2808,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "product_types",
-                "type": "[`ProductType`](../internal/classes/internal.ProductType.mdx)[]",
+                "type": "[ProductType](../internal/classes/internal.ProductType.mdx)[]",
                 "description": "The details of the product types that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2817,7 +2817,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",
@@ -2835,7 +2835,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region that the rate belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2862,7 +2862,7 @@ medusa.admin.taxRates
               },
               {
                 "name": "shipping_options",
-                "type": "[`ShippingOption`](../internal/classes/internal.ShippingOption.mdx)[]",
+                "type": "[ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]",
                 "description": "The details of the shipping options that belong to this tax rate.",
                 "optional": false,
                 "defaultValue": "",

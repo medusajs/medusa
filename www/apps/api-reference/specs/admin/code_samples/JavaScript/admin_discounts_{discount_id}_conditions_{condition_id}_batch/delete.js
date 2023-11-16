@@ -6,4 +6,4 @@ medusa.admin.discounts.deleteConditionResourceBatch(discountId, conditionId, {
 })
 .then(({ discount }) => {
   console.log(discount.id);
-});
+})

@@ -71,7 +71,7 @@ Provides information about files and allows JavaScript in a web page to access t
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`ArrayBuffer`\\>",
+    "type": "Promise&#60;ArrayBuffer&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -123,7 +123,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Blob",
-    "type": "`Blob`",
+    "type": "Blob",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -143,22 +143,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "ReadableStream",
-    "type": "[`ReadableStream`](../../modules/internal.mdx#readablestream)<`Uint8Array`\\>",
+    "type": "[ReadableStream](../../modules/internal.mdx#readablestream)&#60;Uint8Array&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "Uint8Array",
-        "type": "`Uint8Array`",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -173,21 +163,11 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`string`\\>",
+    "type": "Promise&#60;string&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "string",
-        "type": "`string`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

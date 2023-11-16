@@ -13,10 +13,11 @@ A price set to create.
 <ParameterTypes parameters={[
   {
     "name": "prices",
-    "type": "[`CreatePricesDTO`](CreatePricesDTO.mdx)[]",
+    "type": "[CreatePricesDTO](CreatePricesDTO.mdx)[]",
     "description": "The prices to create and add to this price set.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "amount",
@@ -24,14 +25,16 @@ A price set to create.
         "description": "The amount of this money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "currency",
-        "type": "[`CreateCurrencyDTO`](CreateCurrencyDTO.mdx)",
+        "type": "[CreateCurrencyDTO](CreateCurrencyDTO.mdx)",
         "description": "The currency of this money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "code",
@@ -39,6 +42,7 @@ A price set to create.
             "description": "The code of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -47,6 +51,7 @@ A price set to create.
             "description": "The name of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -55,6 +60,7 @@ A price set to create.
             "description": "The symbol of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -63,6 +69,7 @@ A price set to create.
             "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -73,6 +80,7 @@ A price set to create.
         "description": "The currency code of this money amount.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -81,6 +89,7 @@ A price set to create.
         "description": "The ID of the money amount.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -89,6 +98,7 @@ A price set to create.
         "description": "The maximum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -97,24 +107,37 @@ A price set to create.
         "description": "The minimum quantity required to be purchased for this money amount to be applied.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "rules",
-        "type": "Record<`string`, `string`\\>",
+        "type": "`Record<string, string>`",
         "description": "The rules to add to the price. The object's keys are rule types' `rule_attribute` attribute, and values are the value of that rule associated with this price.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "rules",
-    "type": "{ `rule_attribute`: `string`  }[]",
+    "type": "`&#123; rule_attribute: string  &#125;`[]",
     "description": "The rules to associate with the price set. The value of `attribute` is the value of the rule's `rule_attribute` attribute.",
     "optional": true,
     "defaultValue": "",
-    "children": []
+    "expandable": false,
+    "children": [
+      {
+        "name": "rule_attribute",
+        "type": "`string`",
+        "description": "",
+        "optional": false,
+        "defaultValue": "",
+        "expandable": false,
+        "children": []
+      }
+    ]
   }
 ]} />

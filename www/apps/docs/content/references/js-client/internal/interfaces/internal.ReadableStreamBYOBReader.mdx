@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "closed",
-    "type": "`Promise`<`undefined`\\>",
+    "type": "Promise&#60;undefined&#62;",
     "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableStreamBYOBReader/closed)",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -81,22 +81,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ReadableStreamReadResult`](../../modules/internal.mdx#readablestreamreadresult)<`T`\\>\\>",
+    "type": "Promise&#60;[ReadableStreamReadResult](../types/internal.ReadableStreamReadResult.mdx)&#60;T&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "ReadableStreamReadResult",
-        "type": "[`ReadableStreamReadResult`](../../modules/internal.mdx#readablestreamreadresult)<`T`\\>",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 

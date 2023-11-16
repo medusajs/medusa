@@ -11,49 +11,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "items",
-    "type": "[`OrdersReturnItem`](internal.OrdersReturnItem.mdx)[]",
+    "type": "[OrdersReturnItem](internal.OrdersReturnItem.mdx)[]",
     "description": "The line items that will be returned.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "item_id",
-        "type": "`string`",
-        "description": "The ID of the Line Item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "note",
-        "type": "`string`",
-        "description": "An optional note with information about the Return.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "quantity",
-        "type": "`number`",
-        "description": "The quantity of the Line Item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "reason_id",
-        "type": "`string`",
-        "description": "The ID of the Return Reason to use.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "location_id",
@@ -102,30 +65,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "return_shipping",
-    "type": "[`ReturnShipping`](internal.ReturnShipping-1.mdx)",
+    "type": "[ReturnShipping](internal.ReturnShipping-1.mdx)",
     "description": "The Shipping Method to be used to handle the return shipment.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "option_id",
-        "type": "`string`",
-        "description": "The ID of the shipping option used for the return.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "price",
-        "type": "`number`",
-        "description": "The shipping method's price.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

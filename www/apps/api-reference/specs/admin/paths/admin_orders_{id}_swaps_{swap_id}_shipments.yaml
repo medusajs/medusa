@@ -2,9 +2,9 @@ post:
   operationId: PostOrdersOrderSwapsSwapShipments
   summary: Ship a Swap's Fulfillment
   description: >-
-    RMark a swap's fulfillment as shipped. This changes the swap's fulfillment
-    status to either `shipped` or `partially_shipped`, depending on whether all
-    the items were shipped.
+    Create a shipment for a swap and mark its fulfillment as shipped. This
+    changes the swap's fulfillment status to either `partially_shipped` or
+    `shipped`, depending on whether all the items were shipped.
   x-authenticated: true
   externalDocs:
     description: Handling swap fulfillments

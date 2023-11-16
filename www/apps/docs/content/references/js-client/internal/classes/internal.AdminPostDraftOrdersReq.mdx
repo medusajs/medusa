@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "billing_address",
-    "type": "`string` \\| [`AddressPayload`](internal.AddressPayload.mdx)",
+    "type": "`string` \\| [AddressPayload](internal.AddressPayload.mdx)",
     "description": "The Address to be used for billing purposes.",
     "optional": true,
     "defaultValue": "",
@@ -29,22 +29,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "discounts",
-    "type": "[`Discount`](internal.Discount-2.mdx)[]",
+    "type": "[Discount](internal.Discount-2.mdx)[]",
     "description": "The discounts to add to the draft order",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string`",
-        "description": "The code of the discount to apply",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "email",
@@ -57,62 +47,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "items",
-    "type": "[`Item`](internal.Item-3.mdx)[]",
+    "type": "[Item](internal.Item-3.mdx)[]",
     "description": "The draft order's line items.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "The optional key-value map with additional details about the line item.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "quantity",
-        "type": "`number`",
-        "description": "The quantity of the line item.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "title",
-        "type": "`string`",
-        "description": "The title of the line item if `variant_id` is not provided.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "unit_price",
-        "type": "`number`",
-        "description": "The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "variant_id",
-        "type": "`string`",
-        "description": "The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "The optional key-value map with additional details about the Draft Order.",
     "optional": true,
     "defaultValue": "",
@@ -139,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_address",
-    "type": "`string` \\| [`AddressPayload`](internal.AddressPayload.mdx)",
+    "type": "`string` \\| [AddressPayload](internal.AddressPayload.mdx)",
     "description": "The Address to be used for shipping purposes.",
     "optional": true,
     "defaultValue": "",
@@ -148,40 +92,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "shipping_methods",
-    "type": "[`ShippingMethod`](internal.ShippingMethod.mdx)[]",
+    "type": "[ShippingMethod](internal.ShippingMethod.mdx)[]",
     "description": "The shipping methods for the draft order",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "The optional additional data needed for the shipping method",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "option_id",
-        "type": "`string`",
-        "description": "The ID of the shipping option in use",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "price",
-        "type": "`number`",
-        "description": "The price of the shipping method.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "status",

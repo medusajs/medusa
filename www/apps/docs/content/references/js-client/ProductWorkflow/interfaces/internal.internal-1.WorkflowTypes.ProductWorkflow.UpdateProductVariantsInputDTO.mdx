@@ -101,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -119,31 +119,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "options",
-    "type": "[`UpsertProductVariantOptionInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.UpsertProductVariantOptionInputDTO.mdx)[]",
+    "type": "[UpsertProductVariantOptionInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.UpsertProductVariantOptionInputDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "option_id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "value",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "origin_country",
@@ -156,67 +137,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "prices",
-    "type": "[`UpsertProductVariantPricesInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.UpsertProductVariantPricesInputDTO.mdx)[]",
+    "type": "[UpsertProductVariantPricesInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.UpsertProductVariantPricesInputDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "amount",
-        "type": "`number`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "currency_code",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "max_quantity",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "min_quantity",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "region_id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "sku",

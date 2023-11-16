@@ -18,11 +18,9 @@ This method is used to create new currencies.
 ## Example
 
 ```ts
-import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+import { initialize as initializePricingModule } from "@medusajs/pricing"
 
-async function createCurrencies () {
+async function createCurrencies() {
   const pricingService = await initializePricingModule()
 
   const currencies = await pricingService.createCurrencies([
@@ -31,7 +29,7 @@ async function createCurrencies () {
       symbol: "$",
       symbol_native: "$",
       name: "US Dollar",
-    }
+    },
   ])
 
   // do something with the currencies or return them
@@ -43,10 +41,11 @@ async function createCurrencies () {
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateCurrencyDTO`](../../interfaces/CreateCurrencyDTO.mdx)[]",
+    "type": "[CreateCurrencyDTO](../../interfaces/CreateCurrencyDTO.mdx)[]",
     "description": "The currencies to create.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "code",
@@ -54,6 +53,7 @@ async function createCurrencies () {
         "description": "The code of the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -62,6 +62,7 @@ async function createCurrencies () {
         "description": "The name of the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -70,6 +71,7 @@ async function createCurrencies () {
         "description": "The symbol of the currency.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -78,16 +80,18 @@ async function createCurrencies () {
         "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -95,6 +99,7 @@ async function createCurrencies () {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -103,6 +108,7 @@ async function createCurrencies () {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -111,6 +117,7 @@ async function createCurrencies () {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -119,6 +126,7 @@ async function createCurrencies () {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -127,6 +135,7 @@ async function createCurrencies () {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -138,17 +147,19 @@ async function createCurrencies () {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]\\>",
+    "type": "Promise&#60;[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of created currencies.",
+    "expandable": false,
     "children": [
       {
         "name": "CurrencyDTO[]",
-        "type": "[`CurrencyDTO`](../../interfaces/CurrencyDTO.mdx)[]",
+        "type": "[CurrencyDTO](../../interfaces/CurrencyDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "code",
@@ -156,6 +167,7 @@ async function createCurrencies () {
             "description": "The code of the currency.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -164,6 +176,7 @@ async function createCurrencies () {
             "description": "The name of the currency.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -172,6 +185,7 @@ async function createCurrencies () {
             "description": "The symbol of the currency.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -180,6 +194,7 @@ async function createCurrencies () {
             "description": "The symbol of the currecy in its native form. This is typically the symbol used when displaying a price.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

@@ -11,21 +11,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "resources",
-    "type": "{ `id`: `string`  }[]",
+    "type": "`&#123; id: string  &#125;`[]",
     "description": "The resources to be added to the discount condition",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of the item",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

@@ -1,4 +1,5 @@
 type: object
+description: The discount's details.
 x-expanded-relations:
   field: discount
   relations:

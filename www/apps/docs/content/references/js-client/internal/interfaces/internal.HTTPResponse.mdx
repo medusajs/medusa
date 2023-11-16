@@ -20,22 +20,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "headers",
-    "type": "Record<`string`, `string`\\> & { `set-cookie?`: `string`[]  }",
+    "type": "`Record<string, string>` & `&#123; set-cookie?: string[]  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "set-cookie",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "request",

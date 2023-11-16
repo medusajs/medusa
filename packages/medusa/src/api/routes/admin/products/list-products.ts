@@ -7,14 +7,13 @@ import {
   SalesChannelService,
 } from "../../../../services"
 
-import { FilterableProductProps } from "../../../../types/product"
 import { IInventoryService } from "@medusajs/types"
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
-import { PricedProduct } from "../../../../types/pricing"
-import { Product } from "../../../../models"
+import { MedusaV2Flag, promiseAll } from "@medusajs/utils"
 import { Type } from "class-transformer"
+import { Product } from "../../../../models"
+import { PricedProduct } from "../../../../types/pricing"
+import { FilterableProductProps } from "../../../../types/product"
 import { defaultAdminProductRemoteQueryObject } from "./index"
-import { promiseAll } from "@medusajs/utils"
 
 /**
  * @oas [get] /admin/products
@@ -248,7 +247,7 @@ export default async (req, res) => {
   let rawProducts
   let count
 
-  if (featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)) {
+  if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
     const [products, count_] =
       await listAndCountProductWithIsolatedProductModule(
         req,

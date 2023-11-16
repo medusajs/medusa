@@ -34,11 +34,11 @@ There are other important attributes discussed in later sections. Check out the 
 
 You have full freedom in how you choose to implement creating draft orders. This section explains how it’s created in the Medusa backend using the [Create Draft Order](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders) and [Register Payment](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderregisterpayment) API Routes.
 
-A draft order is created using the `DraftOrderService`'s [create method](../../references/services/classes/DraftOrderService.md#create). Within that method, a cart is created along with it. The cart is used to store the order’s details, such as the draft order’s items, shipping options, and more. The cart has the type `draft_order`.
+A draft order is created using the `DraftOrderService`'s [create method](../../references/services/classes/DraftOrderService.mdx#create). Within that method, a cart is created along with it. The cart is used to store the order’s details, such as the draft order’s items, shipping options, and more. The cart has the type `draft_order`.
 
 Since the draft order is associated with a cart, the process implemented in the Medusa backend around completing the draft order is pretty similar to that of completing a cart.
 
-The payment must be authorized before the cart can be completed, which can be done using the `CartService`'s [authorizePayment method](../../references/services/classes/CartService.md#authorizepayment). Once the payment is authorized, the order can be created using the `OrderService`'s [createFromCart method](../../references/services/classes/OrderService.md#createfromcart).
+The payment must be authorized before the cart can be completed, which can be done using the `CartService`'s [authorizePayment method](../../references/services/classes/CartService.mdx#authorizepayment). Once the payment is authorized, the order can be created using the `OrderService`'s [createFromCart method](../../references/services/classes/OrderService.mdx#createfromcart).
 
 :::note
 
@@ -46,7 +46,7 @@ In the Register Payment API Route, the `system` payment method is used by defaul
 
 :::
 
-The draft order can then be completed using the `DraftOrderService`'s [registerCartCompletion method](../../references/services/classes/DraftOrderService.md#registercartcompletion). This would update its status to `completed` and would set the `order_id` attribute of the draft order. Finally, you can capture the payment of the order that was created using the `OrderService`'s [capturePayment method](../../references/services/classes/OrderService.md#capturepayment).
+The draft order can then be completed using the `DraftOrderService`'s [registerCartCompletion method](../../references/services/classes/DraftOrderService.mdx#registercartcompletion). This would update its status to `completed` and would set the `order_id` attribute of the draft order. Finally, you can capture the payment of the order that was created using the `OrderService`'s [capturePayment method](../../references/services/classes/OrderService.mdx#capturepayment).
 
 Once the order is created and the draft order is completed, the created order can be processed and handled the same as orders created by customers.
 

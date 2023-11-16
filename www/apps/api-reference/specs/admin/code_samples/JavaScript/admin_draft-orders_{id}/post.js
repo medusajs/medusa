@@ -6,4 +6,4 @@ medusa.admin.draftOrders.update(draftOrderId, {
 })
 .then(({ draft_order }) => {
   console.log(draft_order.id);
-});
+})

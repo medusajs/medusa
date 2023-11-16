@@ -42,58 +42,12 @@ ORM directly and allows to switch to another ORM without changing the business l
   },
   {
     "name": "context",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`TManager`",
-        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionId",
-        "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager",
-        "type": "`TManager`",
-        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -102,22 +56,12 @@ ORM directly and allows to switch to another ORM without changing the business l
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`[]\\>",
+    "type": "Promise&#60;T[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "T[]",
-        "type": "`T`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -139,58 +83,12 @@ ___
   },
   {
     "name": "context",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`TManager`",
-        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionId",
-        "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager",
-        "type": "`TManager`",
-        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -199,7 +97,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -217,7 +115,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`FindOptions`](../../internal-1/modules/internal.internal-1.DAL.mdx#findoptions)<`T`\\>",
+    "type": "[FindOptions](../types/internal.internal-1.DAL.FindOptions.mdx)&#60;T&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -226,58 +124,12 @@ ___
   },
   {
     "name": "context",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`TManager`",
-        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionId",
-        "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager",
-        "type": "`TManager`",
-        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -286,22 +138,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`[]\\>",
+    "type": "Promise&#60;T[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "T[]",
-        "type": "`T`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -314,7 +156,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "options",
-    "type": "[`FindOptions`](../../internal-1/modules/internal.internal-1.DAL.mdx#findoptions)<`T`\\>",
+    "type": "[FindOptions](../types/internal.internal-1.DAL.FindOptions.mdx)&#60;T&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -323,58 +165,12 @@ ___
   },
   {
     "name": "context",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`TManager`",
-        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionId",
-        "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager",
-        "type": "`TManager`",
-        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -383,31 +179,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`T`[], `number`]\\>",
+    "type": "Promise&#60;[T[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "T[]",
-        "type": "`T`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -445,58 +222,12 @@ ___
   },
   {
     "name": "context",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`TManager`",
-        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionId",
-        "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager",
-        "type": "`TManager`",
-        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -505,50 +236,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`T`[], Record<`string`, `unknown`[]\\>]\\>",
+    "type": "Promise&#60;[T[], Record&#60;string, unknown[]&#62;]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "T[]",
-        "type": "`T`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "Record",
-        "type": "Record<`string`, `unknown`[]\\>",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "string",
-            "type": "`string`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "unknown[]",
-            "type": "`unknown`[]",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -584,7 +277,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TOutput`\\>",
+    "type": "Promise&#60;TOutput&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -613,58 +306,12 @@ Soft delete entities and cascade to related entities if configured.
   },
   {
     "name": "context",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`TManager`",
-        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionId",
-        "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager",
-        "type": "`TManager`",
-        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -673,50 +320,12 @@ Soft delete entities and cascade to related entities if configured.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`T`[], Record<`string`, `unknown`[]\\>]\\>",
+    "type": "Promise&#60;[T[], Record&#60;string, unknown[]&#62;]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "[T[], Record<string, string[]>] the second value being the map of the entity names and ids that were soft deleted",
+    "description": "[T[], Record&#60;string, string[]&#62;] the second value being the map of the entity names and ids that were soft deleted",
     "expandable": false,
-    "children": [
-      {
-        "name": "T[]",
-        "type": "`T`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "Record",
-        "type": "Record<`string`, `unknown`[]\\>",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "string",
-            "type": "`string`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "unknown[]",
-            "type": "`unknown`[]",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -729,22 +338,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "task",
-    "type": "(`transactionManager`: `TManager`) => `Promise`<`any`\\>",
+    "type": "(`transactionManager`: `TManager`) => Promise&#60;any&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `TManager`) => `Promise`<`any`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "context",
@@ -753,35 +352,7 @@ ___
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transaction",
-        "type": "`TManager`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "context.enableNestedTransactions",
@@ -817,22 +388,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`any`\\>",
+    "type": "Promise&#60;any&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "any",
-        "type": "`any`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -854,58 +415,12 @@ ___
   },
   {
     "name": "context",
-    "type": "[`Context`](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
+    "type": "[Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "enableNestedTransactions",
-        "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "isolationLevel",
-        "type": "`string`",
-        "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`TManager`",
-        "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionId",
-        "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager",
-        "type": "`TManager`",
-        "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -914,21 +429,11 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`T`[]\\>",
+    "type": "Promise&#60;T[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "T[]",
-        "type": "`T`[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

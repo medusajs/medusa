@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).values
 
-**values**(): [`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+`**values**(): [IterableIterator](../../interfaces/IterableIterator.mdx)&#60;number&#62;`
 
-Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) for `buf` values (bytes). This function is
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) for `buf` values (bytes). This function is
 called automatically when a `Buffer` is used in a `for..of` statement.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('buffer');
 
@@ -43,15 +43,16 @@ for (const value of buf) {
 
 #### Returns
 
-[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+[IterableIterator](../../interfaces/IterableIterator.mdx)&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "IterableIterator",
-    "type": "[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\\>",
+    "type": "[IterableIterator](../../interfaces/IterableIterator.mdx)&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": [
       {
         "name": "number",
@@ -59,6 +60,7 @@ for (const value of buf) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       }
     ]

@@ -94,7 +94,7 @@ A product variant to create.
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Holds custom data in key-value pairs.",
     "optional": true,
     "defaultValue": "",
@@ -112,22 +112,12 @@ A product variant to create.
   },
   {
     "name": "options",
-    "type": "[`CreateProductVariantOptionDTO`](internal.internal-1.ProductTypes.CreateProductVariantOptionDTO.mdx)[]",
+    "type": "[CreateProductVariantOptionDTO](internal.internal-1.ProductTypes.CreateProductVariantOptionDTO.mdx)[]",
     "description": "The product variant options to create and associate with the product variant.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "value",
-        "type": "`string`",
-        "description": "The value of a product variant option.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "origin_country",

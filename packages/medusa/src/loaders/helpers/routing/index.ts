@@ -1,4 +1,4 @@
-import { promiseAll } from "@medusajs/utils"
+import { promiseAll, wrapHandler } from "@medusajs/utils"
 import cors from "cors"
 import { Router, json, text, urlencoded, type Express } from "express"
 import { readdir } from "fs/promises"
@@ -9,7 +9,6 @@ import {
   authenticateCustomer,
   errorHandler,
   requireCustomerAuthentication,
-  wrapHandler,
 } from "../../../api/middlewares"
 import { ConfigModule } from "../../../types/global"
 import logger from "../../logger"
@@ -653,12 +652,7 @@ export class RoutesLoader {
    */
   applyErrorHandlerMiddleware(): void {
     const middlewareDescriptor = this.globalMiddlewaresDescriptor
-
-    if (!middlewareDescriptor) {
-      return
-    }
-
-    const errorHandlerFn = middlewareDescriptor.config?.errorHandler
+    const errorHandlerFn = middlewareDescriptor?.config?.errorHandler
 
     /**
      * If the user has opted out of the error handler then return
@@ -740,6 +734,10 @@ export class RoutesLoader {
      */
 
     for (const route of routes) {
+      if (!route.middlewares || !route.middlewares.length) {
+        continue
+      }
+
       const methods = (
         Array.isArray(route.method) ? route.method : [route.method]
       ).filter(Boolean) as MiddlewareVerb[]
