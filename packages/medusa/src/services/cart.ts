@@ -264,7 +264,7 @@ class CartService extends TransactionBaseService {
       )
     }
 
-    const loadSalesChannels = options.relations?.includes("sales_channels")
+    const loadSalesChannels = options.relations?.includes("sales_channel")
 
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       if (Array.isArray(options.relations)) {
@@ -363,6 +363,8 @@ class CartService extends TransactionBaseService {
 
     const opt = { ...options, relations }
 
+    const loadSalesChannels = options.relations?.includes("sales_channel")
+
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       if (Array.isArray(opt.relations)) {
         for (let i = 0; i < opt.relations.length; i++) {
@@ -373,9 +375,19 @@ class CartService extends TransactionBaseService {
       }
 
       opt.relations = [...new Set(opt.relations)]
+      if (loadSalesChannels) {
+        opt.relations = opt.relations?.filter((r) => r !== "sales_channel")
+      }
     }
 
     const cart = await this.retrieve(cartId, opt)
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
+      loadSalesChannels
+    ) {
+      await this.decorateCartsWithSalesChannel([cart])
+    }
 
     return await this.decorateTotals(cart, totalsConfig)
   }
