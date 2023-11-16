@@ -373,12 +373,6 @@ async function listAndCountProductWithIsolatedProductModule(
     },
   }
 
-  if (salesChannelIdFilter) {
-    query.product["sales_channels"]["__args"] = {
-      filters: { id: salesChannelIdFilter },
-    }
-  }
-
   let {
     rows: products,
     metadata: { count },
@@ -389,7 +383,12 @@ async function listAndCountProductWithIsolatedProductModule(
   })
 
   if (salesChannelIdFilter) {
-    products = products.filter((product) => product.sales_channels?.length)
+    products = products.filter(
+      (product) =>
+        !!product.sales_channels?.find((sc) =>
+          salesChannelIdFilter.includes(sc.id)
+        )
+    )
   }
 
   return [products, count]
