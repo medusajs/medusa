@@ -14,25 +14,27 @@ import {
   StepReturn,
 } from "./type"
 
-type InvokeFn<TInput extends unknown[], O> = TInput extends [
-  StepExecutionContext,
-  ...infer Args
-]
-  ? (...args: [context: StepExecutionContext, ...args: Args]) => Promise<O>
-  : (...args: TInput) => Promise<O>
+type InvokeFn<TInput extends object, O> = (
+  input: {
+    [Key in keyof TInput]: TInput[Key]
+  },
+  context: StepExecutionContext
+) => Promise<O>
 
 type CompensateFn<T> = (
-  context: StepExecutionContext,
-  arg: T
+  arg: T,
+  context: StepExecutionContext
 ) => Promise<unknown>
 
 interface ApplyStepOptions<
-  TStepInputs extends StepReturn[],
-  TInvokeInput extends unknown[],
+  TStepInputs extends {
+    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
+  },
+  TInvokeInput extends object,
   TOutput
 > {
   stepName: string
-  stepInputs: TStepInputs
+  input: TStepInputs
   invokeFn: InvokeFn<TInvokeInput, TOutput>
   compensateFn?: CompensateFn<
     TOutput extends { compensateInput: infer CompensateInput }
@@ -51,16 +53,18 @@ interface ApplyStepOptions<
  * @param compensateFn
  */
 function applyStep<
-  TStepInputs extends StepReturn[],
-  TInvokeInput extends unknown[],
-  TResult
+  TInvokeInput extends object = object,
+  TStepInput extends {
+    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
+  } = { [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]> },
+  TResult = unknown
 >({
   stepName,
-  stepInputs,
+  input,
   invokeFn,
   compensateFn,
 }: ApplyStepOptions<
-  TStepInputs,
+  TStepInput,
   TInvokeInput,
   TResult
 >): StepFunctionResult<TResult> {
@@ -174,7 +178,7 @@ function applyStep<
  *     await productService.delete(input.product_id)
  *  })
  */
-export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
+export function createStep<TInvokeInput extends object, TInvokeResult>(
   name: string,
   invokeFn: InvokeFn<TInvokeInput, TInvokeResult>,
   compensateFn?: CompensateFn<
@@ -185,9 +189,9 @@ export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
 ): StepFunction<TInvokeInput, TInvokeResult> {
   const stepName = name ?? invokeFn.name
 
-  const returnFn = function (
-    ...stepInputs: [...StepReturn<TInvokeInput[number]>[]]
-  ): StepReturn<TInvokeResult> {
+  const returnFn = function (input: {
+    [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]>
+  }): StepReturn<TInvokeResult> {
     if (!global[SymbolMedusaWorkflowComposerContext]) {
       throw new Error(
         "createStep must be used inside a createWorkflow definition"
@@ -202,12 +206,12 @@ export function createStep<TInvokeInput extends unknown[], TInvokeResult>(
 
     return stepBinder<TInvokeResult>(
       applyStep<
-        [...StepReturn<TInvokeInput[number]>[]],
         TInvokeInput,
+        { [K in keyof TInvokeInput]: StepReturn<TInvokeInput[K]> },
         TInvokeResult
       >({
         stepName,
-        stepInputs,
+        input,
         invokeFn,
         compensateFn,
       })

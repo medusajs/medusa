@@ -25,19 +25,22 @@ interface Step4Input {
 const step1 = createStep(
   "step1",
   async function (
-    context: any,
-    input: Step1Input
+    input: Step1Input,
+    context: StepExecutionContext
   ): Promise<{ test: "test"; foo: "bar"; compensateInput: { foo: string } }> {
     return { test: "test", foo: "bar", compensateInput: { foo: "test" } }
   },
-  async function (context: any, input) {
+  async function (input, context) {
     return input.foo
   }
 )
 
 const step2 = createStep(
   "step2",
-  async (context: any, input: Step2Input): Promise<{ test: "test" }> => {
+  async (
+    input: { test: "test"; foo: "bar" },
+    context: StepExecutionContext
+  ): Promise<{ test: "test" }> => {
     return { test: "test" }
   }
 )
@@ -45,7 +48,10 @@ const step2 = createStep(
 type step3Return = { test: "test2" }
 const step3 = createStep(
   "step3",
-  async (context: any, input: Step3Input): Promise<step3Return> => {
+  async (
+    input: { test: "test" },
+    context: StepExecutionContext
+  ): Promise<step3Return> => {
     return { test: "test2" }
   }
 )
@@ -54,7 +60,10 @@ type step4Return = { test: "test2"; depth: { test2: string } }
 
 const step4 = createStep(
   "step4",
-  async (input: Step4Input): Promise<step4Return> => {
+  async (
+    input: step3Return,
+    context: StepExecutionContext
+  ): Promise<step4Return> => {
     return {
       test: "test2",
       depth: {
@@ -78,9 +87,9 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
   function (input: StepReturn<WorkflowInput>): StepReturn<step3Return> {
     const ret1 = step1(input)
     const test = ret1.test
-    const ret2 = step2(test)
+    const ret2 = step2(ret1)
     const ret3 = step3(ret2)
-    const ret4 = step4(ret2)
+    const ret4 = step4(ret3)
 
     const hookedData = hook("someHook", input)
 
