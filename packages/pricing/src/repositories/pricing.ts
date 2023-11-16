@@ -157,6 +157,7 @@ export class PricingRepository
       .leftJoin("rule_type as rt", "rt.id", "pr.rule_type_id")
       .whereIn("ps.id", pricingFilters.id)
       .andWhere("ma.currency_code", "=", currencyCode)
+
       .orderBy([
         { column: "psma.has_price_list", order: "asc" },
         { column: "number_rules", order: "desc" },
@@ -167,6 +168,12 @@ export class PricingRepository
     if (quantity) {
       priceSetQueryKnex.where("ma.min_quantity", "<=", quantity)
       priceSetQueryKnex.andWhere("ma.max_quantity", ">=", quantity)
+    } else {
+      priceSetQueryKnex.andWhere(function () {
+        this.andWhere("ma.min_quantity", "<=", "1").orWhereNull(
+          "ma.min_quantity"
+        )
+      })
     }
 
     return await priceSetQueryKnex
