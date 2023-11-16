@@ -90,7 +90,7 @@ interface ApplyStepOptions<
  * This is where the inputs and context are passed to the underlying invoke and compensate function.
  *
  * @param stepName
- * @param stepInputs
+ * @param input
  * @param invokeFn
  * @param compensateFn
  */
@@ -213,7 +213,7 @@ function applyStep<
  *
  * export const createProductStep = createStep(
  *  "createProductStep",
- *  async function (context: StepExecutionContext, input: Step1Input): Promise<CreateProductOutput> {
+ *  async function (input: Step1Input, context: StepExecutionContext): Promise<CreateProductOutput> {
  *    const productService = context.container.resolve("productService")
  *    const product = await productService.create(input)
  *    return {
@@ -223,7 +223,7 @@ function applyStep<
  *      }
  *    }
  *  },
- *  async function (context: any, input) {
+ *  async function (input, context: any) {
  *     const productService = context.container.resolve("productService")
  *     await productService.delete(input.product_id)
  *  })

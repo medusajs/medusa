@@ -9,6 +9,13 @@ import {
   StepReturn,
 } from "./type"
 
+/**
+ * Creates a hook that can be used to modify the output of a step which will
+ * be used to compose the input of another step.
+ *
+ * @param name
+ * @param values
+ */
 export function hook<TOutput>(
   name: string,
   ...values: any[]
