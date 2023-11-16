@@ -1,8 +1,8 @@
-import React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
+import React from "react"
 
-import { CodeBlock } from "./code-block"
 import { Label } from "../label"
+import { CodeBlock } from "./code-block"
 
 const meta: Meta<typeof CodeBlock> = {
   title: "Components/CodeBlock",
@@ -47,6 +47,39 @@ export const Default: Story = {
           <CodeBlock.Body />
         </CodeBlock>
       </div>
+    )
+  },
+}
+
+const code = `medusa develop
+✔ Models initialized – 14ms
+✔ Repositories initialized – 35ms
+✔ Strategies initialized – 24ms
+✔ Modules initialized – 1ms
+✔ Database initialized – 654ms
+✔ Services initialized – 7ms
+✔ Express intialized – 5ms
+✔ Plugins intialized – 7ms
+✔ Subscribers initialized – 6ms
+✔ API initialized – 28ms
+✔ Server is ready on port: 9000`
+
+export const ManyLines: Story = {
+  render: () => {
+    return (
+      <CodeBlock
+        snippets={[
+          {
+            code: code,
+            label: "Test",
+            language: "bash",
+            hideCopy: true,
+          },
+        ]}
+        className="w-[700px]"
+      >
+        <CodeBlock.Body />
+      </CodeBlock>
     )
   },
 }
