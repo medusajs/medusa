@@ -146,7 +146,6 @@ export default class PricingModuleService<
       pricingContext,
       sharedContext
     )
-
     const pricesSetPricesMap = groupBy(results, "price_set_id")
 
     const calculatedPrices = pricingFilters.id.map(

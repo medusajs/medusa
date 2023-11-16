@@ -1,8 +1,8 @@
-import { BaseFilterable } from "../../dal";
-import { MoneyAmountDTO } from "./money-amount";
-import { PriceListDTO } from "./price-list";
-import { PriceRuleDTO } from "./price-rule";
-import { PriceSetDTO } from "./price-set";
+import { BaseFilterable } from "../../dal"
+import { MoneyAmountDTO } from "./money-amount"
+import { PriceListDTO } from "./price-list"
+import { PriceRuleDTO } from "./price-rule"
+import { PriceSetDTO } from "./price-set"
 
 /**
  * @interface
