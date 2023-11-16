@@ -49,10 +49,8 @@ export class Migration20231101232834 extends Migration {
       'alter table "money_amount" add column if not exists "created_at" timestamptz not null default now(), add column if not exists "updated_at" timestamptz not null default now(), add column if not exists "deleted_at" timestamptz null;'
     )
 
-    this.addSql('drop index if exists "IDX_money_amount_deleted_at";')
-
     this.addSql(
-      'create index "IDX_money_amount_deleted_at" on "money_amount" ("deleted_at");'
+      'create index if not exists "IDX_money_amount_deleted_at" on "money_amount" ("deleted_at");'
     )
 
     this.addSql(
