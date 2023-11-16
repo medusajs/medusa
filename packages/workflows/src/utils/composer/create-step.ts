@@ -223,7 +223,7 @@ function applyStep<
  *      }
  *    }
  *  },
- *  async function (input, context: any) {
+ *  async function (input: { product_id: string }, context: StepExecutionContext) {
  *     const productService = context.container.resolve("productService")
  *     await productService.delete(input.product_id)
  *  })

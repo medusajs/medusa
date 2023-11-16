@@ -549,14 +549,14 @@ describe("Workflow composer", function () {
   })
 
   it("should transform the values before forward them to the next step", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, obj) => {
+    const mockStep1Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
         property: "property",
       }
       return ret
     })
 
-    const mockStep2Fn = jest.fn().mockImplementation((context, obj) => {
+    const mockStep2Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
         ...obj,
         sum: "sum = " + obj.sum,
@@ -565,7 +565,7 @@ describe("Workflow composer", function () {
       return ret
     })
 
-    const mockStep3Fn = jest.fn().mockImplementation((context, param) => {
+    const mockStep3Fn = jest.fn().mockImplementation((param, context) => {
       const ret = {
         avg: "avg = " + param.avg,
         ...param,
@@ -629,7 +629,7 @@ describe("Workflow composer", function () {
     })
 
     expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-      sum: 3,
+      sum: "sum = 3",
       property: "property",
       a: 1,
       b: 2,
@@ -662,7 +662,7 @@ describe("Workflow composer", function () {
     const saveVariant = createStep("step3", mockStep3Fn)
 
     const workflow = createWorkflow("workflow1", function (input) {
-      const data = getData(input)
+      const data: any = getData(input)
       parallelize(
         saveProduct({ product: data.product }),
         saveVariant({ variant: data.variant })
@@ -703,10 +703,12 @@ describe("Workflow composer", function () {
     const workflow = createWorkflow("workflow1", function (input) {
       const data = getData({ input })
 
-      const hookReturn = hook("changeProduct", { opinionatedPropetyName: data })
+      const hookReturn = hook("changeProduct", {
+        opinionatedPropertyName: data,
+      })
       const transformedData = transform(
         { data, hookReturn },
-        ({ data, hookReturn }) => {
+        ({ data, hookReturn }: { data: any; hookReturn: any }) => {
           return {
             ...data,
             ...hookReturn,
@@ -717,11 +719,11 @@ describe("Workflow composer", function () {
       return saveProduct({ product: transformedData })
     })
 
-    workflow.changeProduct(({ opinionatedPropetyName }) => {
+    workflow.changeProduct(({ opinionatedPropertyName }) => {
       return {
         newProperties: "new properties",
-        prod: opinionatedPropetyName.product + "**",
-        var: opinionatedPropetyName.variant + "**",
+        prod: opinionatedPropertyName.product + "**",
+        var: opinionatedPropertyName.variant + "**",
         other: [1, 2, 3],
         nested: {
           a: {
