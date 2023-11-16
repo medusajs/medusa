@@ -44,6 +44,17 @@ export class Migration20231101232834 extends Migration {
     this.addSql(
       'alter table "price_list_rule" add constraint "IDX_price_list_rule_rule_type_id_price_list_id_unique" unique ("price_list_id", "rule_type_id");'
     )
+
+    this.addSql(
+      'alter table "money_amount" add column "created_at" timestamptz not null default now(), add column "updated_at" timestamptz not null default now(), add column "deleted_at" timestamptz null;'
+    )
+    this.addSql(
+      'create index "IDX_money_amount_deleted_at" on "money_amount" ("deleted_at");'
+    )
+
+    this.addSql(
+      'alter table "price_set_money_amount" add constraint "price_set_money_amount_money_amount_id_unique" unique ("money_amount_id");'
+    )
   }
 
   async down(): Promise<void> {
@@ -81,6 +92,18 @@ export class Migration20231101232834 extends Migration {
 
     this.addSql(
       'alter table "price_list_rule" drop constraint if exists "IDX_price_list_rule_rule_type_id_price_list_id_unique";'
+    )
+
+    this.addSql('drop index "IDX_money_amount_deleted_at";')
+
+    this.addSql('alter table "money_amount" drop column "created_at";')
+
+    this.addSql('alter table "money_amount" drop column "updated_at";')
+
+    this.addSql('alter table "money_amount" drop column "deleted_at";')
+
+    this.addSql(
+      'alter table "price_set_money_amount" drop constraint "price_set_money_amount_money_amount_id_unique";'
     )
   }
 }
