@@ -197,9 +197,11 @@ type WorkflowHooksOutput = {
 type WorkflowHooks = {
   someHook(
     fn: (
-      context: StepExecutionContext,
-      input: WorkflowInput
-    ) => Promise<WorkflowHooksOutput["someHook"]>
+      input: WorkflowInput,
+      context: StepExecutionContext
+    ) =>
+      | WorkflowHooksOutput["someHook"]
+      | Promise<WorkflowHooksOutput["someHook"]>
   ): void
 }
 
@@ -239,7 +241,7 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
 )
 
 workflow.someHook((input, context) => {
-  return Promise.resolve("test")
+  return { title: "test" }
 })
 
 workflow()
