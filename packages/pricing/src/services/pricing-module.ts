@@ -146,6 +146,7 @@ export default class PricingModuleService<
       pricingContext,
       sharedContext
     )
+
     const pricesSetPricesMap = groupBy(results, "price_set_id")
 
     const calculatedPrices = pricingFilters.id.map(
@@ -154,17 +155,7 @@ export default class PricingModuleService<
         // which is prioritized by number_rules first for exact match and then deafult_priority of the rule_type
         // inject custom price selection here
         const prices = pricesSetPricesMap.get(priceSetId) || []
-        const priceListPrice = prices
-          ?.filter((p) => !!p.price_list_id)
-          .reduce((cheapestPriceListPrice, currentPriceListPrice) => {
-            if (
-              currentPriceListPrice.amount <
-              (cheapestPriceListPrice?.amount ?? Number.POSITIVE_INFINITY)
-            ) {
-              return currentPriceListPrice
-            }
-            return cheapestPriceListPrice
-          }, undefined)
+        const priceListPrice = prices.find((p) => p.price_list_id)
 
         const defaultPrice = prices?.find((p) => !!!p.price_list_id)
 

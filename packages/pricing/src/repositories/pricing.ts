@@ -71,6 +71,9 @@ export class PricingRepository
         price_list_id: "psma1.price_list_id",
         pl_number_rules: "pl.number_rules",
         pl_type: "pl.type",
+        has_price_list: knex.raw(
+          "case when psma1.price_list_id IS NULL then False else True end"
+        ),
       })
       .leftJoin("price_set_money_amount as psma1", "psma1.id", "psma1.id")
       .leftJoin("price_rule as pr", "pr.price_set_money_amount_id", "psma1.id")
@@ -155,9 +158,10 @@ export class PricingRepository
       .whereIn("ps.id", pricingFilters.id)
       .andWhere("ma.currency_code", "=", currencyCode)
       .orderBy([
-        { column: "price_list_id", order: "asc" },
+        { column: "psma.has_price_list", order: "asc" },
         { column: "number_rules", order: "desc" },
         { column: "default_priority", order: "desc" },
+        { column: "amount", order: "asc" },
       ])
 
     if (quantity) {
