@@ -44,11 +44,12 @@ export async function resolveValue(input, transactionContext) {
       return inputTOUnwrap
     }
 
-    for (const key in inputTOUnwrap) {
+    for (const key of Object.keys(inputTOUnwrap)) {
       parentRef[key] = await resolveProperty(
         inputTOUnwrap[key],
         transactionContext
       )
+
       if (typeof parentRef[key] === "object") {
         await unwrapInput(parentRef[key], parentRef[key])
       }
@@ -57,10 +58,9 @@ export async function resolveValue(input, transactionContext) {
     return parentRef
   }
 
-  const result =
-    "__type" in input
-      ? await resolveProperty(input, transactionContext)
-      : await unwrapInput(input, {})
+  const result = input?.__type
+    ? await resolveProperty(input, transactionContext)
+    : await unwrapInput(input, {})
 
   return result
 }

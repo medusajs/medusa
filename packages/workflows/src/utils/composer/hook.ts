@@ -9,10 +9,7 @@ import {
   StepReturn,
 } from "./type"
 
-export function hook<TOutput>(
-  name: string,
-  ...values: any[]
-): StepReturn<TOutput> {
+export function hook<TOutput>(name: string, value: any): StepReturn<TOutput> {
   const hookBinder = (
     global[SymbolMedusaWorkflowComposerContext] as CreateWorkflowComposerContext
   ).hookBinder
@@ -26,8 +23,10 @@ export function hook<TOutput>(
           context: transactionContext.context,
         }
 
-        const allValues = await resolveValue(values, transactionContext)
-        const stepValue = JSON.parse(JSON.stringify(allValues))
+        const allValues = await resolveValue(value, transactionContext)
+        const stepValue = allValues
+          ? JSON.parse(JSON.stringify(allValues))
+          : allValues
 
         let finalResult
         const functions = context.hooksCallback_[name]
