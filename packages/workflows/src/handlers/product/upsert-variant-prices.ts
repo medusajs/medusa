@@ -127,16 +127,16 @@ export async function upsertVariantPrices({
       priceSetId = createdPriceSet?.id
 
       createdPriceSets.push(createdPriceSet)
-    }
 
-    linksToCreate.push({
-      productService: {
-        variant_id: variantId,
-      },
-      pricingService: {
-        price_set_id: priceSetId,
-      },
-    })
+      linksToCreate.push({
+        productService: {
+          variant_id: variantId,
+        },
+        pricingService: {
+          price_set_id: priceSetId,
+        },
+      })
+    }
   }
 
   const createdLinks = await remoteLink.create(linksToCreate)

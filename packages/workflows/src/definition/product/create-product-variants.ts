@@ -21,7 +21,6 @@ export const workflowSteps: TransactionStepsDefinition = {
     noCompensation: true,
     next: {
       action: CreateProductVariantsActions.createProductVariants,
-      noCompensation: true,
       next: [
         {
           action: CreateProductVariantsActions.upsertPrices,
@@ -58,6 +57,21 @@ const handlers = new Map([
           },
         },
         ProductHandlers.createProductVariants
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: [
+            {
+              from: CreateProductVariantsActions.prepare,
+            },
+            {
+              from: CreateProductVariantsActions.createProductVariants,
+              alias: "bro",
+            },
+          ],
+        },
+        ProductHandlers.removeProductVariants
       ),
     },
   ],

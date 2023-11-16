@@ -292,6 +292,21 @@ export default class ProductModuleService<
     return productVariants as unknown as ProductTypes.ProductVariantDTO[]
   }
 
+  @InjectTransactionManager("baseRepository_")
+  async deleteVariants(
+    productVariantIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productVariantService_.delete(productVariantIds, sharedContext)
+
+    await this.eventBusModuleService_?.emit<ProductEventData>(
+      productVariantIds.map((id) => ({
+        eventName: ProductEvents.PRODUCT_DELETED,
+        data: { id },
+      }))
+    )
+  }
+
   @InjectManager("baseRepository_")
   async retrieveTag(
     tagId: string,

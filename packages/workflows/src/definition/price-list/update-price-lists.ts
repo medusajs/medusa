@@ -15,8 +15,10 @@ export enum UpdatePriceListActions {
 
 const workflowSteps: TransactionStepsDefinition = {
   action: UpdatePriceListActions.prepare,
+  noCompensation: true,
   next: {
     next: {
+      noCompensation: true,
       action: UpdatePriceListActions.updatePriceList,
     },
   },

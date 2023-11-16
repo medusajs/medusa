@@ -19,7 +19,7 @@ export async function createProductVariants({
   container,
   data,
 }: WorkflowArguments<HandlerInput>): Promise<{
-  updatedProductVariants: ProductTypes.ProductVariantDTO[]
+  productVariants: ProductTypes.ProductVariantDTO[]
   variantPricesMap: Map<string, VariantPrice[]>
 }> {
   const { productVariantsMap, variantIndexPricesMap } = data
@@ -27,16 +27,16 @@ export async function createProductVariants({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
-  const updatedProductVariants = await productModuleService.createVariants(
+  const productVariants = await productModuleService.createVariants(
     [...productVariantsMap.values()].flat()
   )
 
-  updatedProductVariants.forEach((variant, index) => {
+  productVariants.forEach((variant, index) => {
     variantPricesMap.set(variant.id, variantIndexPricesMap.get(index) || [])
   })
 
   return {
-    updatedProductVariants,
+    productVariants,
     variantPricesMap,
   }
 }

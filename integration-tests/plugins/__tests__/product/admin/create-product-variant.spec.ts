@@ -6,6 +6,8 @@ import {
   simpleRegionFactory,
 } from "../../../../factories"
 
+import { PricingModuleService } from "@medusajs/pricing"
+import { ProductModuleService } from "@medusajs/product"
 import { AxiosInstance } from "axios"
 import path from "path"
 import { startBootstrapApp } from "../../../../environment-helpers/bootstrap-app"
@@ -141,5 +143,57 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants", () => {
         ]),
       })
     )
+  })
+
+  it("should compensate creating product variants when error throws in future step", async () => {
+    jest
+      .spyOn(PricingModuleService.prototype, "create")
+      .mockImplementation(() => {
+        throw new Error("Random Error")
+      })
+
+    const productSpy = jest.spyOn(
+      ProductModuleService.prototype,
+      "deleteVariants"
+    )
+
+    const api = useApi()! as AxiosInstance
+    const data = {
+      title: "test variant create",
+      prices: [
+        {
+          amount: 66600,
+          region_id: "test-region",
+        },
+        {
+          amount: 55500,
+          currency_code: "usd",
+          region_id: null,
+        },
+      ],
+      material: "boo",
+      mid_code: "234asdfadsf",
+      hs_code: "asdfasdf234",
+      origin_country: "DE",
+      sku: "asdf",
+      ean: "234",
+      upc: "234",
+      barcode: "asdf",
+      inventory_quantity: 234,
+      manage_inventory: true,
+      allow_backorder: true,
+      weight: 234,
+      width: 234,
+      height: 234,
+      length: 234,
+      metadata: { asdf: "asdf" },
+      options: [{ option_id: "test-product-option-1", value: "test option" }],
+    }
+
+    await api
+      .post(`/admin/products/${product.id}/variants`, data, adminHeaders)
+      .catch((e) => e)
+
+    expect(productSpy).toBeCalledWith([expect.any(String)])
   })
 })
