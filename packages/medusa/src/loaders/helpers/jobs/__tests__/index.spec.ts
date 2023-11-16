@@ -31,7 +31,7 @@ describe("ScheduledJobsLoader", () => {
     // Registering every-hour.ts
     expect(jobSchedulerServiceMock.create).toHaveBeenCalledWith(
       "every-hour",
-      {},
+      undefined,
       "0 * * * *",
       expect.any(Function),
       { keepExisting: false }
@@ -40,7 +40,7 @@ describe("ScheduledJobsLoader", () => {
     // Registering every-minute.ts
     expect(jobSchedulerServiceMock.create).toHaveBeenCalledWith(
       "every-minute",
-      {},
+      undefined,
       "* * * * *",
       expect.any(Function),
       { keepExisting: false }
