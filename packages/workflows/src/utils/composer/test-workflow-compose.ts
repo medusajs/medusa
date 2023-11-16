@@ -1,7 +1,8 @@
 import { createStep } from "./create-step"
 import { createWorkflow } from "./create-workflow"
-import { StepReturn } from "./type"
+import { StepExecutionContext, StepReturn } from "./type"
 import { transform } from "./transform"
+import { hook } from "./hook"
 
 interface WorkflowInput {
   cart_id: string
@@ -63,7 +64,16 @@ const step4 = createStep(
   }
 )
 
-const workflow = createWorkflow(
+type WorkflowHooks = {
+  someHook(
+    fn: (
+      context: StepExecutionContext,
+      input: WorkflowInput
+    ) => Promise<unknown>
+  ): void
+}
+
+const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
   "workflow1",
   function (input: StepReturn<WorkflowInput>): StepReturn<step3Return> {
     const ret1 = step1(input)
@@ -71,6 +81,12 @@ const workflow = createWorkflow(
     const ret2 = step2(test)
     const ret3 = step3(ret2)
     const ret4 = step4(ret2)
+
+    const hookedData = hook("someHook", input)
+
+    const testHookData = transform(hookedData, (context, input) => {
+      return input
+    })
 
     const ret4Transformed = transform(
       [ret4, ret3],
@@ -86,6 +102,10 @@ const workflow = createWorkflow(
     return ret3
   }
 )
+
+workflow.someHook((context, input) => {
+  return Promise.resolve("test")
+})
 
 workflow()
   .run({ input: { cart_id: "test" } })

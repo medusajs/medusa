@@ -1,13 +1,34 @@
-import { WorkflowHandler, WorkflowManager } from "@medusajs/orchestration"
-import { FlowRunOptions, WorkflowResult, exportWorkflow } from "../../helper"
+import {
+  LocalWorkflow,
+  WorkflowHandler,
+  WorkflowManager,
+} from "@medusajs/orchestration"
+import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
 import { CreateWorkflowComposerContext, StepReturn } from "./index"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowStep,
 } from "./symbol"
+import { LoadedModule, MedusaContainer } from "@medusajs/types"
 
 global[SymbolMedusaWorkflowComposerContext] = null
+
+type ReturnWorkflow<TData, TResult, THooks extends Record<string, Function>> = {
+  <TDataOverride = undefined, TResultOverride = undefined>(
+    container?: LoadedModule[] | MedusaContainer
+  ): Omit<LocalWorkflow, "run"> & {
+    run: (
+      args?: FlowRunOptions<
+        TDataOverride extends undefined ? TData : TDataOverride
+      >
+    ) => Promise<
+      WorkflowResult<
+        TResultOverride extends undefined ? TResult : TResultOverride
+      >
+    >
+  }
+} & THooks
 
 /**
  * Creates a new workflow with the given name and composer function.
@@ -37,10 +58,15 @@ global[SymbolMedusaWorkflowComposerContext] = null
  * })
  * ```
  */
-export function createWorkflow<TData, TResult>(
+
+export function createWorkflow<
+  TData,
+  TResult,
+  THooks extends Record<string, Function>
+>(
   name: string,
   composer: (input: StepReturn<TData>) => void | StepReturn<TResult>
-) {
+): ReturnWorkflow<TData, TResult, THooks> {
   const handlers: WorkflowHandler = new Map()
 
   if (WorkflowManager.getWorkflow(name)) {
@@ -84,16 +110,20 @@ export function createWorkflow<TData, TResult>(
   const workflow = exportWorkflow<TData, TResult>(name)
 
   const mainFlow = <TDataOverride = undefined, TResultOverride = undefined>(
-    ...args
+    container?: LoadedModule[] | MedusaContainer
   ) => {
-    const workflow_ = workflow<TDataOverride, TResultOverride>(...args)
+    const workflow_ = workflow<TDataOverride, TResultOverride>(container)
     const originalRun = workflow_.run
 
     workflow_.run = (async (
       args?: FlowRunOptions<
         TDataOverride extends undefined ? TData : TDataOverride
       >
-    ): Promise<WorkflowResult<TResult>> => {
+    ): Promise<
+      WorkflowResult<
+        TResultOverride extends undefined ? TResult : TResultOverride
+      >
+    > => {
       args ??= {}
       args.resultFrom ??=
         returnedStep?.__type === SymbolWorkflowStep
@@ -102,7 +132,9 @@ export function createWorkflow<TData, TResult>(
 
       // Forwards the input to the ref object on composer.apply
       valueHolder.__value = args?.input as any
-      return (await originalRun(args)) as unknown as WorkflowResult<TResult>
+      return (await originalRun(args)) as unknown as WorkflowResult<
+        TResultOverride extends undefined ? TResult : TResultOverride
+      >
     }) as any
     return workflow_
   }
@@ -115,5 +147,5 @@ export function createWorkflow<TData, TResult>(
     }
   }
 
-  return mainFlow
+  return mainFlow as ReturnWorkflow<TData, TResult, THooks>
 }
