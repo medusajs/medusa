@@ -6,9 +6,9 @@ import {
   SymbolWorkflowStepTransformer,
 } from "./symbol"
 
-export async function resolveValue(step, transactionContext) {
+async function resolveProperty(property, transactionContext) {
   const { invoke: invokeRes } = transactionContext
-  const step_ = Array.isArray(step) ? step : [step]
+  const step_ = Array.isArray(property) ? property : [property]
 
   return await promiseAll(
     step_.map(async (st) => {
@@ -28,4 +28,44 @@ export async function resolveValue(step, transactionContext) {
       }
     })
   )
+}
+
+export async function resolveValue(input, transactionContext) {
+  const unwrapInput = async (
+    inputTOUnwrap: Record<string, unknown>,
+    parentRef: any
+  ) => {
+    if (inputTOUnwrap == null) {
+      return inputTOUnwrap
+    }
+
+    if (Array.isArray(inputTOUnwrap)) {
+      return await promiseAll(
+        inputTOUnwrap.map((i) => unwrapInput(i, transactionContext))
+      )
+    }
+
+    if (typeof inputTOUnwrap !== "object") {
+      return inputTOUnwrap
+    }
+
+    for (const key in inputTOUnwrap) {
+      parentRef[key] = await resolveProperty(
+        inputTOUnwrap[key],
+        transactionContext
+      )
+      if (typeof parentRef[key] === "object") {
+        await unwrapInput(parentRef[key], parentRef[key])
+      }
+    }
+
+    return parentRef
+  }
+
+  const result =
+    "__type" in input
+      ? await resolveProperty(input, transactionContext)
+      : await unwrapInput(input, {})
+
+  return result
 }

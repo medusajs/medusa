@@ -210,16 +210,17 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
 
     const hookedData = hook("someHook", input)
 
-    const testHookData = transform(hookedData, (context, input) => {
+    const testHookData = transform(hookedData, (input, context) => {
       return input
     })
 
     const ret4Transformed = transform(
       [ret4, ret3],
-      async (context, input, input2): Promise<{ test: string }> => {
-        return { test: input.test }
+      async (input, context): Promise<{ test: string }> => {
+        const [ret4] = input
+        return { test: ret4.test }
       },
-      async (context, input): Promise<{ test: string }> => {
+      async (input, context): Promise<{ test: string }> => {
         return { test: input.test }
       }
     )
@@ -229,7 +230,7 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
   }
 )
 
-workflow.someHook((context, input) => {
+workflow.someHook((input, context) => {
   return Promise.resolve("test")
 })
 

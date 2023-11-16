@@ -1,23 +1,22 @@
 import { resolveValue } from "./resolve-value"
 import { SymbolWorkflowStepTransformer } from "./symbol"
-import { StepReturn, WorkflowTransactionContext } from "./type"
+import { StepExecutionContext, StepReturn } from "./type"
 
 type Func1Multiple<T extends any[], U> = (
-  ...inputs: [
-    context: WorkflowTransactionContext,
+  input: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] },
+  context: StepExecutionContext
+  /*...inputs: [
+    context: StepExecutionContext,
     ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
-  ]
+  ]*/
 ) => U | Promise<U>
 
 type Func1Single<T, U> = (
-  context: WorkflowTransactionContext,
-  input: T extends StepReturn<infer U> ? U : T
+  input: T extends StepReturn<infer U> ? U : T,
+  context: StepExecutionContext
 ) => U | Promise<U>
 
-type Func<T, U> = (
-  context: WorkflowTransactionContext,
-  input: T
-) => U | Promise<U>
+type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
 
 export function transform<T extends unknown[], TOutput = unknown>(
   values: [...T],
@@ -94,15 +93,22 @@ export function transform(
   ...functions: Function[]
 ): unknown {
   const returnFn = async function (transactionContext): Promise<any> {
+    const executionContext = {
+      container: transactionContext.container,
+      metadata: transactionContext.metadata,
+      context: transactionContext.context,
+      invoke: transactionContext.invoke,
+    }
+
     const allValues = await resolveValue(values, transactionContext)
-    const stepValues = JSON.parse(JSON.stringify(allValues))
+    const stepValue = JSON.parse(JSON.stringify(allValues))
 
     let finalResult
     for (let i = 0; i < functions.length; i++) {
       const fn = functions[i]
-      const args = i === 0 ? stepValues : [finalResult]
+      const arg = i === 0 ? stepValue : finalResult
 
-      finalResult = await fn.apply(fn, [transactionContext, ...args])
+      finalResult = await fn.apply(fn, [arg, executionContext])
     }
 
     returnFn.__value = finalResult

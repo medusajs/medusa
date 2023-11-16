@@ -12,6 +12,7 @@ import {
   StepFunction,
   StepFunctionResult,
   StepReturn,
+  WorkflowTransactionContext,
 } from "./type"
 
 type InvokeFn<TInput extends object, O> = (
@@ -124,9 +125,8 @@ function applyStep<
           context: transactionContext.context,
         }
 
-        const args = await resolveValue(stepInputs, transactionContext)
-
-        const output = await invokeFn.apply(this, [arg, executionContext])
+        const argInput = await resolveValue(input, executionContext)
+        const output = await invokeFn.apply(this, [argInput, executionContext])
 
         return {
           __type: SymbolWorkflowStepReturn,
@@ -170,9 +170,8 @@ function applyStep<
           return target[prop]
         }
 
-        // @ts-ignore
-        return transform(target[prop], (context) => {
-          const { invoke } = context
+        return transform(target[prop], (input, context) => {
+          const { invoke } = context as WorkflowTransactionContext
           return invoke?.[ret.__step__]?.output?.[prop]
         })
       },
