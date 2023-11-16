@@ -3,7 +3,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express"
 type handler = (req: Request, res: Response) => Promise<void>
 
 export const wrapHandler = (fn: handler): RequestHandler => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     const req_ = req as Request & { errors?: Error[] }
     if (req_?.errors?.length) {
       return res.status(400).json({
@@ -13,7 +13,11 @@ export const wrapHandler = (fn: handler): RequestHandler => {
       })
     }
 
-    return fn(req, res).catch(next)
+    try {
+      return await fn(req, res)
+    } catch (err) {
+      next(err)
+    }
   }
 }
 
