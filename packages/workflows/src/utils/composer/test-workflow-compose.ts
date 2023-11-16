@@ -190,12 +190,16 @@ const step4 = createStep(
   }
 )
 
+type WorkflowHooksOutput = {
+  someHook: { title: string }
+}
+
 type WorkflowHooks = {
   someHook(
     fn: (
       context: StepExecutionContext,
       input: WorkflowInput
-    ) => Promise<unknown>
+    ) => Promise<WorkflowHooksOutput["someHook"]>
   ): void
 }
 
@@ -208,23 +212,27 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
     const ret3 = step3(ret2)
     const ret4 = step4(ret3)
 
-    const hookedData = hook("someHook", input)
+    const hookedData = hook<WorkflowHooksOutput["someHook"]>("someHook", input)
 
     const testHookData = transform(hookedData, (input, context) => {
       return input
     })
 
+    const vHookData = testHookData.title
+
     const ret4Transformed = transform(
-      [ret4, ret3],
+      { ret4, ret3 },
       async (input, context): Promise<{ test: string }> => {
-        const [ret4] = input
-        return { test: ret4.test }
+        return { test: input.ret4.test }
       },
       async (input, context): Promise<{ test: string }> => {
         return { test: input.test }
+      },
+      async (input, context): Promise<{ foo: string }> => {
+        return { foo: "test" }
       }
     )
-    const v = ret4Transformed.test
+    const vTransformData = ret4Transformed.foo
 
     return ret3
   }

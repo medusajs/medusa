@@ -2,13 +2,11 @@ import { resolveValue } from "./resolve-value"
 import { SymbolWorkflowStepTransformer } from "./symbol"
 import { StepExecutionContext, StepReturn } from "./type"
 
-type Func1Multiple<T extends any[], U> = (
-  input: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] },
-  context: StepExecutionContext
-  /*...inputs: [
+/*type Func1Multiple<T extends any[], U> = (
+  ...inputs: [
     context: StepExecutionContext,
     ...inputs: { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
-  ]*/
+  ]
 ) => U | Promise<U>
 
 type Func1Single<T, U> = (
@@ -16,9 +14,9 @@ type Func1Single<T, U> = (
   context: StepExecutionContext
 ) => U | Promise<U>
 
-type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
+type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>*/
 
-export function transform<T extends unknown[], TOutput = unknown>(
+/*export function transform<T extends unknown[], TOutput = unknown>(
   values: [...T],
   funcA: Func1Multiple<T, TOutput>
 ): StepReturn<TOutput>
@@ -78,7 +76,32 @@ export function transform<T, A, B, C, D, TOutput = unknown>(
     Func<C, D>,
     Func<D, TOutput>
   ]
-): StepReturn<TOutput>
+): StepReturn<TOutput>*/
+
+type Func1<T extends object | StepReturn, U> = (
+  input: T extends StepReturn<infer U>
+    ? U
+    : T extends object
+    ? { [K in keyof T]: T[K] extends StepReturn<infer U> ? U : T[K] }
+    : {},
+  context: StepExecutionContext
+) => U | Promise<U>
+
+type Func<T, U> = (input: T, context: StepExecutionContext) => U | Promise<U>
+
+// prettier-ignore
+// eslint-disable-next-line max-len
+export function transform<T extends object | StepReturn, RA, RB, RC, RD, RE, RF, RFinal>(
+  values: T,
+  ...func:
+    | [Func1<T, RFinal>]
+    | [Func1<T, RA>, Func<RA, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RFinal>]
+    | [Func1<T, RA>, Func<RA, RB>, Func<RB, RC>, Func<RC, RD>, Func<RD, RE>, Func<RE, RF>, Func<RF, RFinal>]
+): StepReturn<RFinal>
 
 /**
  * Transforms the input value(s) using the provided functions.

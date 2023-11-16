@@ -31,7 +31,7 @@ export type StepFunction<TInput extends object = object, TOutput = unknown> = {
 export type StepReturnProperties<T = unknown> = {
   __type: Symbol
   __step__: string
-  __value?: T
+  __value?: T | (() => T)
 }
 
 export type StepReturn<T = unknown> = T extends {
@@ -44,11 +44,6 @@ export type StepReturn<T = unknown> = T extends {
     } & StepReturnProperties<T>
   : StepReturnProperties<T>
 
-export type HookReturn<T = unknown> = {
-  __type: Symbol
-  __value: () => T
-}
-
 export type CreateWorkflowComposerContext = {
   hooks_: string[]
   hooksCallback_: Record<string, Function[]>
@@ -59,7 +54,7 @@ export type CreateWorkflowComposerContext = {
   hookBinder: <TOutput = unknown>(
     name: string,
     fn: Function
-  ) => HookReturn<TOutput>
+  ) => StepReturn<TOutput>
   parallelizeBinder: <TOutput extends StepReturn[] = StepReturn[]>(
     fn: (this: CreateWorkflowComposerContext) => TOutput
   ) => TOutput

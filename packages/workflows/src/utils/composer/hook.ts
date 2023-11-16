@@ -3,9 +3,16 @@ import {
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowHook,
 } from "./symbol"
-import { CreateWorkflowComposerContext, StepExecutionContext } from "./type"
+import {
+  CreateWorkflowComposerContext,
+  StepExecutionContext,
+  StepReturn,
+} from "./type"
 
-export function hook(name: string, ...values: any[]): unknown {
+export function hook<TOutput>(
+  name: string,
+  ...values: any[]
+): StepReturn<TOutput> {
   const hookBinder = (
     global[SymbolMedusaWorkflowComposerContext] as CreateWorkflowComposerContext
   ).hookBinder
