@@ -87,7 +87,7 @@ async function updateProductOption (id: string, title: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -114,7 +114,7 @@ async function updateProductOption (id: string, title: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -182,10 +182,10 @@ async function updateProductOption (id: string, title: string) {
           {
             "name": "product",
             "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)",
-            "description": "The associated product. It may only be available if the `product` relation is expanded.",
+            "description": "The associated product.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -200,10 +200,10 @@ async function updateProductOption (id: string, title: string) {
           {
             "name": "values",
             "type": "[ProductOptionValueDTO](../../interfaces/ProductOptionValueDTO.mdx)[]",
-            "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
+            "description": "The associated product option values.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           }
         ]

@@ -213,7 +213,7 @@ async function createProduct (title: string) {
       {
         "name": "status",
         "type": "[ProductStatus](../../enums/ProductStatus.mdx)",
-        "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
+        "description": "The status of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -551,7 +551,7 @@ async function createProduct (title: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -578,7 +578,7 @@ async function createProduct (title: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -619,19 +619,19 @@ async function createProduct (title: string) {
           {
             "name": "categories",
             "type": "`null` \\| [ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
-            "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
+            "description": "The associated product categories.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
             "name": "collection",
             "type": "[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)",
-            "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
+            "description": "The associated product collection.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -655,7 +655,7 @@ async function createProduct (title: string) {
           {
             "name": "description",
             "type": "`null` \\| `string`",
-            "description": "The description of the product. It can possibly be `null`.",
+            "description": "The description of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -682,7 +682,7 @@ async function createProduct (title: string) {
           {
             "name": "handle",
             "type": "`null` \\| `string`",
-            "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
+            "description": "The handle of the product. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -691,7 +691,7 @@ async function createProduct (title: string) {
           {
             "name": "height",
             "type": "`null` \\| `number`",
-            "description": "The height of the product. It can possibly be `null`.",
+            "description": "The height of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -700,7 +700,7 @@ async function createProduct (title: string) {
           {
             "name": "hs_code",
             "type": "`null` \\| `string`",
-            "description": "The HS Code of the product. It can possibly be `null`.",
+            "description": "The HS Code of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -718,10 +718,10 @@ async function createProduct (title: string) {
           {
             "name": "images",
             "type": "[ProductImageDTO](../../interfaces/ProductImageDTO.mdx)[]",
-            "description": "The associated product images. It may only be available if the `images` relation is expanded.",
+            "description": "The associated product images.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -736,7 +736,7 @@ async function createProduct (title: string) {
           {
             "name": "length",
             "type": "`null` \\| `number`",
-            "description": "The length of the product. It can possibly be `null`.",
+            "description": "The length of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -745,7 +745,7 @@ async function createProduct (title: string) {
           {
             "name": "material",
             "type": "`null` \\| `string`",
-            "description": "The material of the product. It can possibly be `null`.",
+            "description": "The material of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -754,7 +754,7 @@ async function createProduct (title: string) {
           {
             "name": "metadata",
             "type": "`Record<string, unknown>`",
-            "description": "",
+            "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -763,7 +763,7 @@ async function createProduct (title: string) {
           {
             "name": "mid_code",
             "type": "`null` \\| `string`",
-            "description": "The MID Code of the product. It can possibly be `null`.",
+            "description": "The MID Code of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -772,16 +772,16 @@ async function createProduct (title: string) {
           {
             "name": "options",
             "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]",
-            "description": "The associated product options. It may only be available if the `options` relation is expanded.",
+            "description": "The associated product options.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
             "name": "origin_country",
             "type": "`null` \\| `string`",
-            "description": "The origin country of the product. It can possibly be `null`.",
+            "description": "The origin country of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -790,7 +790,7 @@ async function createProduct (title: string) {
           {
             "name": "status",
             "type": "[ProductStatus](../../enums/ProductStatus.mdx)",
-            "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
+            "description": "The status of the product.",
             "optional": false,
             "defaultValue": "",
             "expandable": false,
@@ -799,7 +799,7 @@ async function createProduct (title: string) {
           {
             "name": "subtitle",
             "type": "`null` \\| `string`",
-            "description": "The subttle of the product. It can possibly be `null`.",
+            "description": "The subttle of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -808,16 +808,16 @@ async function createProduct (title: string) {
           {
             "name": "tags",
             "type": "[ProductTagDTO](../../interfaces/ProductTagDTO.mdx)[]",
-            "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
+            "description": "The associated product tags.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
             "name": "thumbnail",
             "type": "`null` \\| `string`",
-            "description": "The URL of the product's thumbnail. It can possibly be `null`.",
+            "description": "The URL of the product's thumbnail.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -835,10 +835,10 @@ async function createProduct (title: string) {
           {
             "name": "type",
             "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
-            "description": "The associated product type. It may only be available if the `type` relation is expanded.",
+            "description": "The associated product type.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -853,16 +853,16 @@ async function createProduct (title: string) {
           {
             "name": "variants",
             "type": "[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)[]",
-            "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
+            "description": "The associated product variants.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
             "name": "weight",
             "type": "`null` \\| `number`",
-            "description": "The weight of the product. It can possibly be `null`.",
+            "description": "The weight of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -871,7 +871,7 @@ async function createProduct (title: string) {
           {
             "name": "width",
             "type": "`null` \\| `number`",
-            "description": "",
+            "description": "The width of the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,

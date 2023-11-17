@@ -78,7 +78,7 @@ async function updateProductTag (id: string, value: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -105,7 +105,7 @@ async function updateProductTag (id: string, value: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -164,10 +164,10 @@ async function updateProductTag (id: string, value: string) {
           {
             "name": "products",
             "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)[]",
-            "description": "The associated products. It may only be available if the `products` relation is expanded.",
+            "description": "The associated products.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {

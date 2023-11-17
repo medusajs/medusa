@@ -32,27 +32,27 @@ A product tag's data.
   {
     "name": "products",
     "type": "[ProductDTO](ProductDTO.mdx)[]",
-    "description": "The associated products. It may only be available if the `products` relation is expanded.",
+    "description": "The associated products.",
     "optional": true,
     "defaultValue": "",
-    "expandable": false,
+    "expandable": true,
     "children": [
       {
         "name": "categories",
         "type": "`null` \\| [ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
-        "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
+        "description": "The associated product categories.",
         "optional": true,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": []
       },
       {
         "name": "collection",
         "type": "[ProductCollectionDTO](ProductCollectionDTO.mdx)",
-        "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
+        "description": "The associated product collection.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -93,10 +93,10 @@ A product tag's data.
           {
             "name": "products",
             "type": "[ProductDTO](ProductDTO.mdx)[]",
-            "description": "The associated products. It may only be available if the `products` relation is expanded.",
+            "description": "The associated products.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -131,7 +131,7 @@ A product tag's data.
       {
         "name": "description",
         "type": "`null` \\| `string`",
-        "description": "The description of the product. It can possibly be `null`.",
+        "description": "The description of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -158,7 +158,7 @@ A product tag's data.
       {
         "name": "handle",
         "type": "`null` \\| `string`",
-        "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
+        "description": "The handle of the product. The handle can be used to create slug URL paths.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -167,7 +167,7 @@ A product tag's data.
       {
         "name": "height",
         "type": "`null` \\| `number`",
-        "description": "The height of the product. It can possibly be `null`.",
+        "description": "The height of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -176,7 +176,7 @@ A product tag's data.
       {
         "name": "hs_code",
         "type": "`null` \\| `string`",
-        "description": "The HS Code of the product. It can possibly be `null`.",
+        "description": "The HS Code of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -194,10 +194,10 @@ A product tag's data.
       {
         "name": "images",
         "type": "[ProductImageDTO](ProductImageDTO.mdx)[]",
-        "description": "The associated product images. It may only be available if the `images` relation is expanded.",
+        "description": "The associated product images.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -249,7 +249,7 @@ A product tag's data.
       {
         "name": "length",
         "type": "`null` \\| `number`",
-        "description": "The length of the product. It can possibly be `null`.",
+        "description": "The length of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -258,7 +258,7 @@ A product tag's data.
       {
         "name": "material",
         "type": "`null` \\| `string`",
-        "description": "The material of the product. It can possibly be `null`.",
+        "description": "The material of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -267,7 +267,7 @@ A product tag's data.
       {
         "name": "metadata",
         "type": "`Record<string, unknown>`",
-        "description": "",
+        "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -276,7 +276,7 @@ A product tag's data.
       {
         "name": "mid_code",
         "type": "`null` \\| `string`",
-        "description": "The MID Code of the product. It can possibly be `null`.",
+        "description": "The MID Code of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -285,10 +285,10 @@ A product tag's data.
       {
         "name": "options",
         "type": "[ProductOptionDTO](ProductOptionDTO.mdx)[]",
-        "description": "The associated product options. It may only be available if the `options` relation is expanded.",
+        "description": "The associated product options.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -320,10 +320,10 @@ A product tag's data.
           {
             "name": "product",
             "type": "[ProductDTO](ProductDTO.mdx)",
-            "description": "The associated product. It may only be available if the `product` relation is expanded.",
+            "description": "The associated product.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -338,10 +338,10 @@ A product tag's data.
           {
             "name": "values",
             "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)[]",
-            "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
+            "description": "The associated product option values.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           }
         ]
@@ -349,7 +349,7 @@ A product tag's data.
       {
         "name": "origin_country",
         "type": "`null` \\| `string`",
-        "description": "The origin country of the product. It can possibly be `null`.",
+        "description": "The origin country of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -358,7 +358,7 @@ A product tag's data.
       {
         "name": "status",
         "type": "[ProductStatus](../enums/ProductStatus.mdx)",
-        "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../enums/ProductStatus.mdx).",
+        "description": "The status of the product.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
@@ -404,7 +404,7 @@ A product tag's data.
       {
         "name": "subtitle",
         "type": "`null` \\| `string`",
-        "description": "The subttle of the product. It can possibly be `null`.",
+        "description": "The subttle of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -413,10 +413,10 @@ A product tag's data.
       {
         "name": "tags",
         "type": "[ProductTagDTO](ProductTagDTO.mdx)[]",
-        "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
+        "description": "The associated product tags.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "id",
@@ -439,10 +439,10 @@ A product tag's data.
           {
             "name": "products",
             "type": "[ProductDTO](ProductDTO.mdx)[]",
-            "description": "The associated products. It may only be available if the `products` relation is expanded.",
+            "description": "The associated products.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -459,7 +459,7 @@ A product tag's data.
       {
         "name": "thumbnail",
         "type": "`null` \\| `string`",
-        "description": "The URL of the product's thumbnail. It can possibly be `null`.",
+        "description": "The URL of the product's thumbnail.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -477,10 +477,10 @@ A product tag's data.
       {
         "name": "type",
         "type": "[ProductTypeDTO](ProductTypeDTO.mdx)[]",
-        "description": "The associated product type. It may only be available if the `type` relation is expanded.",
+        "description": "The associated product type.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -532,10 +532,10 @@ A product tag's data.
       {
         "name": "variants",
         "type": "[ProductVariantDTO](ProductVariantDTO.mdx)[]",
-        "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
+        "description": "The associated product variants.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "allow_backorder",
@@ -549,7 +549,7 @@ A product tag's data.
           {
             "name": "barcode",
             "type": "`null` \\| `string`",
-            "description": "The barcode of the product variant. It can possibly be `null`.",
+            "description": "The barcode of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -576,7 +576,7 @@ A product tag's data.
           {
             "name": "ean",
             "type": "`null` \\| `string`",
-            "description": "The EAN of the product variant. It can possibly be `null`.",
+            "description": "The EAN of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -585,7 +585,7 @@ A product tag's data.
           {
             "name": "height",
             "type": "`null` \\| `number`",
-            "description": "The height of the product variant. It can possibly be `null`.",
+            "description": "The height of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -594,7 +594,7 @@ A product tag's data.
           {
             "name": "hs_code",
             "type": "`null` \\| `string`",
-            "description": "The HS Code of the product variant. It can possibly be `null`.",
+            "description": "The HS Code of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -621,7 +621,7 @@ A product tag's data.
           {
             "name": "length",
             "type": "`null` \\| `number`",
-            "description": "The length of the product variant. It can possibly be `null`.",
+            "description": "The length of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -639,7 +639,7 @@ A product tag's data.
           {
             "name": "material",
             "type": "`null` \\| `string`",
-            "description": "The material of the product variant. It can possibly be `null`.",
+            "description": "The material of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -657,7 +657,7 @@ A product tag's data.
           {
             "name": "mid_code",
             "type": "`null` \\| `string`",
-            "description": "The MID Code of the product variant. It can possibly be `null`.",
+            "description": "The MID Code of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -666,16 +666,16 @@ A product tag's data.
           {
             "name": "options",
             "type": "[ProductOptionValueDTO](ProductOptionValueDTO.mdx)",
-            "description": "The associated product options. It may only be available if the `options` relation is expanded.",
+            "description": "The associated product options.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
             "name": "origin_country",
             "type": "`null` \\| `string`",
-            "description": "The origin country of the product variant. It can possibly be `null`.",
+            "description": "The origin country of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -684,10 +684,10 @@ A product tag's data.
           {
             "name": "product",
             "type": "[ProductDTO](ProductDTO.mdx)",
-            "description": "The associated product. It may only be available if the `product` relation is expanded.",
+            "description": "The associated product.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -702,7 +702,7 @@ A product tag's data.
           {
             "name": "sku",
             "type": "`null` \\| `string`",
-            "description": "The SKU of the product variant. It can possibly be `null`.",
+            "description": "The SKU of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -720,7 +720,7 @@ A product tag's data.
           {
             "name": "upc",
             "type": "`null` \\| `string`",
-            "description": "The UPC of the product variant. It can possibly be `null`.",
+            "description": "The UPC of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -738,7 +738,7 @@ A product tag's data.
           {
             "name": "variant_rank",
             "type": "`null` \\| `number`",
-            "description": "The ranking of the variant among other variants associated with the product. It can possibly be `null`.",
+            "description": "he ranking of the variant among other variants associated with the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -747,7 +747,7 @@ A product tag's data.
           {
             "name": "weight",
             "type": "`null` \\| `number`",
-            "description": "The weight of the product variant. It can possibly be `null`.",
+            "description": "The weight of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -756,7 +756,7 @@ A product tag's data.
           {
             "name": "width",
             "type": "`null` \\| `number`",
-            "description": "The width of the product variant. It can possibly be `null`.",
+            "description": "The width of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -767,7 +767,7 @@ A product tag's data.
       {
         "name": "weight",
         "type": "`null` \\| `number`",
-        "description": "The weight of the product. It can possibly be `null`.",
+        "description": "The weight of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -776,7 +776,7 @@ A product tag's data.
       {
         "name": "width",
         "type": "`null` \\| `number`",
-        "description": "",
+        "description": "The width of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
