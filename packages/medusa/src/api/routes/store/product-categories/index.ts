@@ -60,6 +60,7 @@ export const defaultStoreProductCategoryFields = [
   "created_at",
   "updated_at",
   "rank",
+  "metadata",
 ]
 
 export const allowedStoreProductCategoryFields = [
@@ -71,6 +72,7 @@ export const allowedStoreProductCategoryFields = [
   "created_at",
   "updated_at",
   "rank",
+  "metadata",
 ]
 
 /**

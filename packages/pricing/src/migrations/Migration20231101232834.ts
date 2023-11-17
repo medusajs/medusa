@@ -44,6 +44,18 @@ export class Migration20231101232834 extends Migration {
     this.addSql(
       'alter table "price_list_rule" add constraint "IDX_price_list_rule_rule_type_id_price_list_id_unique" unique ("price_list_id", "rule_type_id");'
     )
+
+    this.addSql(
+      'alter table "money_amount" add column if not exists "created_at" timestamptz not null default now(), add column if not exists "updated_at" timestamptz not null default now(), add column if not exists "deleted_at" timestamptz null;'
+    )
+
+    this.addSql(
+      'create index if not exists "IDX_money_amount_deleted_at" on "money_amount" ("deleted_at");'
+    )
+
+    this.addSql(
+      'alter table "price_set_money_amount" add constraint "price_set_money_amount_money_amount_id_unique" unique ("money_amount_id");'
+    )
   }
 
   async down(): Promise<void> {
@@ -81,6 +93,24 @@ export class Migration20231101232834 extends Migration {
 
     this.addSql(
       'alter table "price_list_rule" drop constraint if exists "IDX_price_list_rule_rule_type_id_price_list_id_unique";'
+    )
+
+    this.addSql('drop index if exists "IDX_money_amount_deleted_at";')
+
+    this.addSql(
+      'alter table "money_amount" drop column if exists "created_at";'
+    )
+
+    this.addSql(
+      'alter table "money_amount" drop column if exists "updated_at";'
+    )
+
+    this.addSql(
+      'alter table "money_amount" drop column if exists "deleted_at";'
+    )
+
+    this.addSql(
+      'alter table "price_set_money_amount" drop constraint if exists "price_set_money_amount_money_amount_id_unique";'
     )
   }
 }

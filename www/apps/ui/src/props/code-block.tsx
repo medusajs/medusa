@@ -8,7 +8,7 @@ const codeBlockProps: PropDataMap = [
       type: "object",
       name: "CodeSnippet[]",
       shape:
-        "{\n  label: string\n  language: string\n  code: string\n  hideLineNumbers?: boolean\n}[]",
+        "{\n  label: string\n  language: string\n  code: string\n  hideLineNumbers?: boolean\n  hideCopy?: boolean\n}[]",
     },
   },
 ]

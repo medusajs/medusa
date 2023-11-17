@@ -1,6 +1,7 @@
 import { generateEntityId } from "../utils/generate-entity-id"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { kebabCase } from "lodash"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { Product } from "."
 import {
   BeforeInsert,
@@ -64,6 +65,9 @@ export class ProductCategory extends BaseEntity {
   @Column({ nullable: false, default: 0 })
   rank: number
 
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
+
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
     name: ProductCategory.productCategoryProductJoinTable,
@@ -105,6 +109,7 @@ export class ProductCategory extends BaseEntity {
  *   - id
  *   - is_active
  *   - is_internal
+ *   - metadata
  *   - mpath
  *   - name
  *   - parent_category_id
@@ -173,4 +178,12 @@ export class ProductCategory extends BaseEntity {
  *     description: The date with timezone at which the resource was updated.
  *     type: string
  *     format: date-time
+ *   metadata:
+ *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
+ *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
