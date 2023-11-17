@@ -96,7 +96,7 @@ export default async (req, res) => {
   const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
 
   if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
-    const updateVariantsWorkflow = updatePriceLists(req.scope)
+    const updatePriceListWorkflow = updatePriceLists(req.scope)
 
     const input = {
       price_lists: [
@@ -107,14 +107,14 @@ export default async (req, res) => {
       ],
     }
 
-    await updateVariantsWorkflow.run({
+    await updatePriceListWorkflow.run({
       input,
       context: {
         manager,
       },
     })
 
-    const [priceLists, _] = await listAndCountPriceListPricingModule({
+    const [priceLists] = await listAndCountPriceListPricingModule({
       req,
       list: false,
     })
@@ -122,7 +122,7 @@ export default async (req, res) => {
     priceList = priceLists[0]
   } else {
     await manager.transaction(async (transactionManager) => {
-      return await priceListService
+      await priceListService
         .withTransaction(transactionManager)
         .addPrices(id, validated.prices, validated.override)
     })

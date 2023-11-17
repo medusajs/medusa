@@ -83,9 +83,7 @@ export default async (req, res) => {
     const priceListService: PriceListService =
       req.scope.resolve("priceListService")
     await manager.transaction(async (transactionManager) => {
-      return await priceListService
-        .withTransaction(transactionManager)
-        .delete(id)
+      await priceListService.withTransaction(transactionManager).delete(id)
     })
   }
 

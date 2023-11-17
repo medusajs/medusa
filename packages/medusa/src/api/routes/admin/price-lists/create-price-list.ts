@@ -147,13 +147,13 @@ export default async (req: Request, res) => {
 
     priceList = priceLists[0]
   } else {
-    const createdPl = await manager.transaction(async (transactionManager) => {
+    priceList = await manager.transaction(async (transactionManager) => {
       return await priceListService
         .withTransaction(transactionManager)
         .create(req.validatedBody as CreatePriceListInput)
     })
 
-    priceList = await priceListService.retrieve(createdPl.id, {
+    priceList = await priceListService.retrieve(priceList.id, {
       select: defaultAdminPriceListFields as (keyof PriceList)[],
       relations: defaultAdminPriceListRelations,
     })

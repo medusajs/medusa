@@ -109,7 +109,7 @@ export default async (req, res) => {
     })
   } else {
     await manager.transaction(async (transactionManager) => {
-      return await priceListService
+      await priceListService
         .withTransaction(transactionManager)
         .deletePrices(id, validated.price_ids)
     })
