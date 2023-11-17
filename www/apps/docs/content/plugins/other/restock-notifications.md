@@ -28,7 +28,7 @@ Before you follow this guide, you must have a Medusa backend installed. If not, 
 
 ### Event-Bus Module
 
-To trigger events to the subscribed handler methods, you must have an event-bus module installed. For development purposes, you can use the [Local module](../../development/events/modules/local.md)  which should be enabled by default in your Medusa backend.
+To trigger events to the subscribed handler functions, you must have an event-bus module installed. For development purposes, you can use the [Local module](../../development/events/modules/local.md)  which should be enabled by default in your Medusa backend.
 
 For production, it's recommended to use the [Redis module](../../development/events/modules/redis.md).
 
@@ -114,64 +114,49 @@ The SendGrid plugin already listens to and handles the `restock-notification.res
 
 :::
 
-Here's an example of a subscriber that listens to the `restock-notification.restocked` event and uses the [SendGrid plugin](../notifications/sendgrid.mdx) to send the subscribed customers an email:
+Here's an example of a [subscriber](../../development/events/subscribers.mdx) that listens to the `restock-notification.restocked` event and uses the [SendGrid plugin](../notifications/sendgrid.mdx) to send the subscribed customers an email:
 
 ```ts title=src/subscribers/restock-notification.ts
 import { 
-  EventBusService,
+  type SubscriberConfig, 
+  type SubscriberArgs,
   ProductVariantService,
 } from "@medusajs/medusa"
 
-type InjectedDependencies = {
-  eventBusService: EventBusService,
-  sendgridService: any
-  productVariantService: ProductVariantService
+export default async function handleRestockNotification({ 
+  data, eventName, container, pluginOptions, 
+}: SubscriberArgs<Record<string, string>>) {
+  const sendgridService = container.resolve("sendgridService")
+  const productVariantService: ProductVariantService = 
+    container.resolve("productVariantService")
+
+  // retrieve variant
+  const variant = await this.productVariantService_.retrieve(
+    data.variant_id
+  )
+
+  this.sendGridService_.sendEmail({
+    templateId: "restock-notification",
+    from: "hello@medusajs.com",
+    to: data.emails,
+    dynamic_template_data: {
+      // any data necessary for your template...
+      variant,
+    },
+  })
 }
 
-class RestockNotificationSubscriber {
-  protected sendGridService_: any
-  protected productVariantService_: ProductVariantService
-
-  constructor({
-    eventBusService,
-    sendgridService,
-    productVariantService,
-  }: InjectedDependencies) {
-    this.sendGridService_ = sendgridService
-    this.productVariantService_ = productVariantService
-    eventBusService.subscribe(
-      "restock-notification.restocked", 
-      this.handleRestockNotification
-    )
-  }
-
-  handleRestockNotification = async ({
-    variant_id,
-    emails,
-  }) => {
-    // retrieve variant
-    const variant = await this.productVariantService_.retrieve(
-      variant_id
-    )
-
-    this.sendGridService_.sendEmail({
-      templateId: "restock-notification",
-      from: "hello@medusajs.com",
-      to: emails,
-      dynamic_template_data: {
-        // any data necessary for your template...
-        variant,
-      },
-    })
-  }
+export const config: SubscriberConfig = {
+  event: "restock-notification.restocked",
+  context: {
+    subscriberId: "restock-handler",
+  },
 }
-
-export default RestockNotificationSubscriber
 ```
 
-Handler methods subscribed to the `restock-notification.restocked` event, which in this case is the `handleRestockNotification` method, receive the following object data payload as a parameter:
+The handler function receives in the `data` property of the first parameter the following properties:
 
 - `variant_id`: The ID of the variant that has been restocked.
 - `emails`: An array of strings indicating the email addresses subscribed to the restocked variant. Here, you pass it along to the SendGrid plugin directly to send the email to everyone subscribed. If necessary, you can also retrieve the customer of that email using the `CustomerService`'s [retrieveByEmail](../../references/services/classes/CustomerService.mdx#retrievebyemail) method.
 
-In the method, you retrieve the variant by its ID using the `ProductVariantService`, then send the email using the SendGrid plugins' `SendGridService`.
+In the handler function, you retrieve the variant by its ID using the `ProductVariantService`, then send the email using the SendGrid plugins' `SendGridService`.

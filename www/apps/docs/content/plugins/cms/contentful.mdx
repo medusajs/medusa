@@ -405,8 +405,11 @@ npm install --save-dev contentful-migration
 Finally, create a [loader](../../development/loaders/overview.mdx) at `src/loaders/index.ts` with the following content:
 
 ```ts title=src/loaders/index.ts
-import { ConfigModule, StoreService } from "@medusajs/medusa"
-import { AwilixContainer } from "awilix"
+import { 
+  ConfigModule, 
+  StoreService, 
+  MedusaContainer,
+} from "@medusajs/medusa"
 import { runMigration } from "contentful-migration"
 import { 
   productMigration,
@@ -434,7 +437,7 @@ type ContentfulPluginType = {
 }
 
 export default async (
-  container: AwilixContainer,
+  container: MedusaContainer,
   config: ConfigModule
 ): Promise<void> => {
   // ensure that migration only runs once
