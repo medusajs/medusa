@@ -7,13 +7,24 @@ import {
 import { Context, MedusaContainer } from "@medusajs/types"
 
 export type StepFunctionResult<TOutput extends unknown | unknown[] = unknown> =
-  (
-    this: CreateWorkflowComposerContext
-  ) => TOutput extends [] ? [...StepReturn<TOutput[number]>[]] : StepReturn
+  (this: CreateWorkflowComposerContext) => TOutput extends []
+    ? [
+        ...StepReturn<{
+          [K in keyof Omit<
+            TOutput[number],
+            "compensateInput"
+          >]: TOutput[number][K]
+        }>[]
+      ]
+    : StepReturn<{ [K in keyof Omit<TOutput, "compensateInput">]: TOutput[K] }>
 
 export type StepFunction<TInput extends object = object, TOutput = unknown> = {
-  (input: { [K in keyof TInput]: StepReturn<TInput[K]> }): StepReturn<TOutput>
-} & StepReturnProperties<TOutput>
+  (input: { [K in keyof TInput]: StepReturn<TInput[K]> }): StepReturn<{
+    [K in keyof Omit<TOutput, "compensateInput">]: TOutput[K]
+  }>
+} & StepReturnProperties<{
+  [K in keyof Omit<TOutput, "compensateInput">]: TOutput[K]
+}>
 
 /*export type StepFunction<
   TInput extends unknown[] = unknown[],
@@ -34,11 +45,7 @@ export type StepReturnProperties<T = unknown> = {
   __value?: T | (() => T)
 }
 
-export type StepReturn<T = unknown> = (T extends {
-  compensateInput: infer CompensateInput
-}
-  ? StepReturn<Omit<T, "compensateInput">>
-  : T extends object
+export type StepReturn<T = unknown> = (T extends object
   ? {
       [Key in keyof T]: StepReturn<T[Key]>
     }
