@@ -11,15 +11,15 @@ export async function prepareCreatePriceLists({
   container,
   data,
 }: WorkflowArguments<{
-  priceLists: (PriceListWorkflow.CreatePriceListWorkflowDTO & {
+  price_lists: (PriceListWorkflow.CreatePriceListWorkflowDTO & {
     _associationTag?: string
   })[]
 }>): Promise<Result | void> {
   const remoteQuery = container.resolve("remoteQuery")
 
-  const { priceLists } = data
+  const { price_lists } = data
 
-  const variantIds = priceLists
+  const variantIds = price_lists
     .map((priceList) => priceList.prices.map((price) => price.variant_id))
     .flat()
 
@@ -58,7 +58,7 @@ export async function prepareCreatePriceLists({
     )
   }
 
-  return priceLists.map((priceListDTO) => {
+  return price_lists.map((priceListDTO) => {
     priceListDTO.title ??= priceListDTO.name
     const {
       _associationTag,

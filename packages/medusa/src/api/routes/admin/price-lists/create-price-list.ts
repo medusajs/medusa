@@ -127,7 +127,7 @@ export default async (req: Request, res) => {
     const createPriceListWorkflow = createPriceLists(req.scope)
 
     const input = {
-      priceLists: [req.validatedBody],
+      price_lists: [req.validatedBody],
     } as WorkflowTypes.PriceListWorkflow.CreatePriceListWorkflowInputDTO
 
     const { result } = await createPriceListWorkflow.run({

@@ -4,6 +4,7 @@ import { ArrayNotEmpty, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
+import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/prices/batch
@@ -96,9 +97,9 @@ export default async (req, res) => {
     )
 
     const input = {
-      priceListId: id,
-      moneyAmountIds: validated.price_ids,
-    }
+      price_list_id: id,
+      money_amount_ids: validated.price_ids,
+    } as WorkflowTypes.PriceListWorkflow.RemovePriceListPricesWorkflowInputDTO
 
     await deletePriceListPricesWorkflow.run({
       input,

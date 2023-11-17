@@ -5,6 +5,7 @@ import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
+import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/products/prices/batch
@@ -96,9 +97,9 @@ export default async (req: Request, res: Response) => {
     )
 
     const input = {
-      productIds: validated.product_ids,
-      priceListId: id,
-    }
+      product_ids: validated.product_ids,
+      price_list_id: id,
+    } as WorkflowTypes.PriceListWorkflow.RemovePriceListProductsWorkflowInputDTO
 
     const { result } = await deletePriceListProductsWorkflow.run({
       input,

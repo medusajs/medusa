@@ -37,22 +37,22 @@ export interface CreatePriceListPriceDTO {
 }
 
 export interface CreatePriceListWorkflowInputDTO {
-  priceLists: CreatePriceListWorkflowDTO[]
+  price_lists: CreatePriceListWorkflowDTO[]
 }
 
 export interface RemovePriceListProductsWorkflowInputDTO {
-  productIds: string[]
-  priceListId: string
+  product_ids: string[]
+  price_list_id: string
 }
 
 export interface RemovePriceListVariantsWorkflowInputDTO {
-  variantIds: string[]
-  priceListId: string
+  variant_ids: string[]
+  price_list_id: string
 }
 
 export interface RemovePriceListPricesWorkflowInputDTO {
-  moneyAmountIds: string[]
-  priceListId: string
+  money_amount_ids: string[]
+  price_list_id: string
 }
 
 export interface CreatePriceListWorkflowDTO {

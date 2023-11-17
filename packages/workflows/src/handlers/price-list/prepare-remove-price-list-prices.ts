@@ -11,14 +11,17 @@ export async function prepareRemovePriceListPrices({
   container,
   data,
 }: WorkflowArguments<{
-  moneyAmountIds: string[]
-  priceListId: string
+  money_amount_ids: string[]
+  price_list_id: string
 }>): Promise<Result | void> {
   const pricingService: IPricingModuleService = container.resolve(
     ModuleRegistrationName.PRICING
   )
 
-  const { priceListId, moneyAmountIds: moneyAmountIdsToDelete } = data
+  const {
+    price_list_id: priceListId,
+    money_amount_ids: moneyAmountIdsToDelete,
+  } = data
 
   const moneyAmounts = await pricingService.listMoneyAmounts(
     { id: moneyAmountIdsToDelete },

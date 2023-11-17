@@ -10,15 +10,15 @@ export async function prepareRemoveProductPrices({
   container,
   data,
 }: WorkflowArguments<{
-  productIds: string[]
-  priceListId: string
+  product_ids: string[]
+  price_list_id: string
 }>): Promise<Result | void> {
   const remoteQuery = container.resolve("remoteQuery")
 
-  const { priceListId, productIds } = data
+  const { price_list_id, product_ids } = data
 
   const variables = {
-    id: productIds,
+    id: product_ids,
   }
 
   const query = {
@@ -34,7 +34,7 @@ export async function prepareRemoveProductPrices({
     .map(({ variants }) => variants.map(({ price }) => price.price_set_id))
     .flat()
 
-  return { priceSets, priceListId }
+  return { priceSets, priceListId: price_list_id }
 }
 
 prepareCreatePriceLists.aliases = {

@@ -2,6 +2,7 @@ import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { removePriceListProductPrices } from "@medusajs/workflows/dist/definition/price-list/remove-product-prices"
 import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
+import { WorkflowTypes } from "@medusajs/types"
 
 /**
  * @oas [delete] /admin/price-lists/{id}/products/{product_id}/prices
@@ -77,9 +78,9 @@ export default async (req, res) => {
     )
 
     const input = {
-      productIds: [product_id],
-      priceListId: id,
-    }
+      product_ids: [product_id],
+      price_list_id: id,
+    } as WorkflowTypes.PriceListWorkflow.RemovePriceListProductsWorkflowInputDTO
 
     const { result } = await deletePriceListProductsWorkflow.run({
       input,
