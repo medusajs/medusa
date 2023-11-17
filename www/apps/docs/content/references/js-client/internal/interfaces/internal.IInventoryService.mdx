@@ -8,25 +8,33 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Methods
 
-### \_\_joinerConfig
-
-#### Returns
-
-<ParameterTypes parameters={[
-  {
-    "name": "ModuleJoinerConfig",
-    "type": "[Omit](../types/internal.Omit.mdx)&#60;[JoinerServiceConfig](../../internal-1/interfaces/internal.internal-1.JoinerServiceConfig.mdx), `\"serviceName\"` \\| `\"primaryKeys\"` \\| `\"relationships\"` \\| `\"extends\"`&#62; & `&#123; databaseConfig?: &#123; extraFields?: Record&#60;string, &#123; defaultValue?: string ; nullable?: boolean ; options?: Record&#60;string, unknown&#62; ; type: `\"date\"` \\| `\"time\"` \\| `\"datetime\"` \\| `\"bigint\"` \\| `\"blob\"` \\| `\"uint8array\"` \\| `\"array\"` \\| `\"enumArray\"` \\| `\"enum\"` \\| `\"json\"` \\| `\"integer\"` \\| `\"smallint\"` \\| `\"tinyint\"` \\| `\"mediumint\"` \\| `\"float\"` \\| `\"double\"` \\| `\"boolean\"` \\| `\"decimal\"` \\| `\"string\"` \\| `\"uuid\"` \\| `\"text\"`  &#125;&#62; ; idPrefix?: string ; tableName?: string  &#125; ; extends?: &#123; fieldAlias?: Record&#60;string, string \\| &#123; forwardArgumentsOnPath: string[] ; path: string  &#125;&#62; ; relationship: [ModuleJoinerRelationship](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx) ; serviceName: string  &#125;[] ; isLink?: boolean ; isReadOnlyLink?: boolean ; linkableKeys?: Record&#60;string, string&#62; ; primaryKeys?: string[] ; relationships?: [ModuleJoinerRelationship](../../ModulesSdkTypes/types/internal.internal-1.ModulesSdkTypes.ModuleJoinerRelationship.mdx)[] ; schema?: string ; serviceName?: string  &#125;`",
-    "description": "",
-    "optional": false,
-    "defaultValue": "",
-    "expandable": false,
-    "children": []
-  }
-]} />
-
-___
-
 ### adjustInventory
+
+This method is used to adjust the inventory level's stocked quantity. The inventory level is identified by the IDs of its associated inventory item and location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function adjustInventory (
+  inventoryItemId: string,
+  locationId: string,
+  adjustment: number
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryLevel = await inventoryModule.adjustInventory(
+    inventoryItemId,
+    locationId,
+    adjustment
+  )
+
+  // do something with the inventory level or return it.
+}
+```
 
 #### Parameters
 
@@ -34,7 +42,7 @@ ___
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the associated inventory item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -43,7 +51,7 @@ ___
   {
     "name": "locationId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the associated location.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -52,7 +60,7 @@ ___
   {
     "name": "adjustment",
     "type": "`number`",
-    "description": "",
+    "description": "A positive or negative number used to adjust the inventory level's stocked quantity.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -60,8 +68,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -77,7 +85,7 @@ ___
     "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The inventory level's details.",
     "expandable": false,
     "children": []
   }
@@ -87,13 +95,37 @@ ___
 
 ### confirmInventory
 
+This method is used to confirm whether the specified quantity of an inventory item is available in the specified locations.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function confirmInventory (
+  inventoryItemId: string,
+  locationIds: string[],
+  quantity: number
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  return await inventoryModule.confirmInventory(
+    inventoryItemId,
+    locationIds,
+    quantity
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item to check its availability.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -102,7 +134,7 @@ ___
   {
     "name": "locationIds",
     "type": "`string`[]",
-    "description": "",
+    "description": "The IDs of the locations to check the quantity availability in.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -111,7 +143,7 @@ ___
   {
     "name": "quantity",
     "type": "`number`",
-    "description": "",
+    "description": "The quantity to check if available for the inventory item in the specified locations.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -119,8 +151,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -136,7 +168,7 @@ ___
     "type": "Promise&#60;boolean&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Whether the specified quantity is available for the inventory item in the specified locations.",
     "expandable": false,
     "children": []
   }
@@ -146,13 +178,36 @@ ___
 
 ### createInventoryItem
 
+This method is used to create an inventory item.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function createInventoryItem (item: {
+  sku: string,
+  requires_shipping: boolean
+}) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryItem = await inventoryModule.createInventoryItem(
+    item
+  )
+
+  // do something with the inventory item or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateInventoryItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)",
-    "description": "",
+    "type": "[CreateInventoryItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)",
+    "description": "The details of the inventory item to create.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -160,8 +215,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -177,7 +232,7 @@ ___
     "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The created inventory item's details.",
     "expandable": false,
     "children": []
   }
@@ -187,13 +242,36 @@ ___
 
 ### createInventoryItems
 
+This method is used to create inventory items.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function createInventoryItems (items: {
+  sku: string,
+  requires_shipping: boolean
+}[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryItems = await inventoryModule.createInventoryItems(
+    items
+  )
+
+  // do something with the inventory items or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateInventoryItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)[]",
-    "description": "",
+    "type": "[CreateInventoryItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)[]",
+    "description": "The details of the inventory items to create.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -201,8 +279,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -218,7 +296,7 @@ ___
     "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The created inventory items' details.",
     "expandable": false,
     "children": []
   }
@@ -228,13 +306,37 @@ ___
 
 ### createInventoryLevel
 
+This method is used to create inventory level.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function createInventoryLevel (item: {
+  inventory_item_id: string
+  location_id: string
+  stocked_quantity: number
+}) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryLevel = await inventoryModule.createInventoryLevel(
+    item
+  )
+
+  // do something with the inventory level or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)",
-    "description": "",
+    "type": "[CreateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)",
+    "description": "The details of the inventory level to create.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -242,8 +344,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -259,7 +361,7 @@ ___
     "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The created inventory level's details.",
     "expandable": false,
     "children": []
   }
@@ -269,13 +371,37 @@ ___
 
 ### createInventoryLevels
 
+This method is used to create inventory levels.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function createInventoryLevels (items: {
+  inventory_item_id: string
+  location_id: string
+  stocked_quantity: number
+}[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryLevels = await inventoryModule.createInventoryLevels(
+    items
+  )
+
+  // do something with the inventory levels or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[CreateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)[]",
-    "description": "",
+    "type": "[CreateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryLevelInput.mdx)[]",
+    "description": "The details of the inventory levels to create.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -283,8 +409,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -300,7 +426,7 @@ ___
     "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The created inventory levels' details.",
     "expandable": false,
     "children": []
   }
@@ -310,13 +436,37 @@ ___
 
 ### createReservationItem
 
+This method is used to create a reservation item.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function createReservationItem (item: {
+  inventory_item_id: string,
+  location_id: string,
+  quantity: number
+}) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const reservationItem = await inventoryModule.createReservationItems(
+    item
+  )
+
+  // do something with the reservation item or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateReservationItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)",
-    "description": "",
+    "type": "[CreateReservationItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)",
+    "description": "The details of the reservation item to create.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -324,8 +474,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -341,7 +491,7 @@ ___
     "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The created reservation item's details.",
     "expandable": false,
     "children": []
   }
@@ -351,13 +501,37 @@ ___
 
 ### createReservationItems
 
+This method is used to create reservation items.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function createReservationItems (items: {
+  inventory_item_id: string,
+  location_id: string,
+  quantity: number
+}[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const reservationItems = await inventoryModule.createReservationItems(
+    items
+  )
+
+  // do something with the reservation items or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "input",
-    "type": "[CreateReservationItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)[]",
-    "description": "",
+    "type": "[CreateReservationItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateReservationItemInput.mdx)[]",
+    "description": "The details of the reservation items to create.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -365,8 +539,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -382,7 +556,7 @@ ___
     "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The created reservation items' details.",
     "expandable": false,
     "children": []
   }
@@ -392,13 +566,34 @@ ___
 
 ### deleteInventoryItem
 
+This method is used to delete an inventory item or multiple inventory items. The inventory items are only soft deleted and can be restored using the
+[restoreInventoryItem](internal.IInventoryService.mdx#restoreinventoryitem) method.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function deleteInventoryItem (
+  inventoryItems: string[]
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  await inventoryModule.deleteInventoryItem(
+    inventoryItems
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string` \\| `string`[]",
-    "description": "",
+    "description": "The ID(s) of the inventory item(s) to delete.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -406,8 +601,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -423,7 +618,7 @@ ___
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the inventory item(s) are successfully deleted.",
     "expandable": false,
     "children": []
   }
@@ -433,13 +628,33 @@ ___
 
 ### deleteInventoryItemLevelByLocationId
 
+This method deletes the inventory item level(s) for the ID(s) of associated location(s).
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function deleteInventoryItemLevelByLocationId (
+  locationIds: string[]
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  await inventoryModule.deleteInventoryItemLevelByLocationId(
+    locationIds
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "locationId",
     "type": "`string` \\| `string`[]",
-    "description": "",
+    "description": "The ID(s) of the associated location(s).",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -447,8 +662,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -464,7 +679,7 @@ ___
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the inventory item level(s) are successfully restored.",
     "expandable": false,
     "children": []
   }
@@ -474,13 +689,35 @@ ___
 
 ### deleteInventoryLevel
 
+This method is used to delete an inventory level. The inventory level is identified by the IDs of its associated inventory item and location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function deleteInventoryLevel (
+  inventoryItemId: string,
+  locationId: string
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  await inventoryModule.deleteInventoryLevel(
+    inventoryItemId,
+    locationId
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
-    "name": "inventoryLevelId",
+    "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the associated inventory item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -489,7 +726,7 @@ ___
   {
     "name": "locationId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the associated location.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -497,8 +734,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -514,7 +751,7 @@ ___
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the inventory level(s) are successfully restored.",
     "expandable": false,
     "children": []
   }
@@ -524,13 +761,33 @@ ___
 
 ### deleteReservationItem
 
+This method is used to delete a reservation item or multiple reservation items by their IDs.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function deleteReservationItems (
+  reservationItemIds: string[]
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  await inventoryModule.deleteReservationItem(
+    reservationItemIds
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "reservationItemId",
     "type": "`string` \\| `string`[]",
-    "description": "",
+    "description": "The ID(s) of the reservation item(s) to delete.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -538,8 +795,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -555,7 +812,7 @@ ___
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the reservation item(s) are successfully deleted.",
     "expandable": false,
     "children": []
   }
@@ -565,13 +822,33 @@ ___
 
 ### deleteReservationItemByLocationId
 
+This method deletes reservation item(s) by the ID(s) of associated location(s).
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function deleteReservationItemByLocationId (
+  locationIds: string[]
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  await inventoryModule.deleteReservationItemByLocationId(
+    locationIds
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "locationId",
     "type": "`string` \\| `string`[]",
-    "description": "",
+    "description": "The ID(s) of the associated location(s).",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -579,8 +856,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -596,7 +873,7 @@ ___
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the reservation item(s) are successfully restored.",
     "expandable": false,
     "children": []
   }
@@ -606,13 +883,33 @@ ___
 
 ### deleteReservationItemsByLineItem
 
+This method is used to delete the reservation items associated with a line item or multiple line items.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function deleteReservationItemsByLineItem (
+  lineItemIds: string[]
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  await inventoryModule.deleteReservationItemsByLineItem(
+    lineItemIds
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "lineItemId",
     "type": "`string` \\| `string`[]",
-    "description": "",
+    "description": "The ID(s) of the line item(s).",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -620,8 +917,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share re9sources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -637,7 +934,7 @@ ___
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the reservation items are successfully deleted.",
     "expandable": false,
     "children": []
   }
@@ -647,13 +944,77 @@ ___
 
 ### listInventoryItems
 
+This method is used to retrieve a paginated list of inventory items along with the total count of available inventory items satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of inventory items using their IDs:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryItems (ids: string[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [inventoryItems, count] = await inventoryModule.listInventoryItems({
+    id: ids
+  })
+
+  // do something with the inventory items or return them
+}
+```
+
+To specify relations that should be retrieved within the inventory items:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryItems (ids: string[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [inventoryItems, count] = await inventoryModule.listInventoryItems({
+    id: ids
+  }, {
+    relations: ["inventory_level"]
+  })
+
+  // do something with the inventory items or return them
+}
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryItems (ids: string[], skip: number, take: number) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [inventoryItems, count] = await inventoryModule.listInventoryItems({
+    id: ids
+  }, {
+    relations: ["inventory_level"],
+    skip,
+    take
+  })
+
+  // do something with the inventory items or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableInventoryItemProps](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableInventoryItemProps.mdx)",
-    "description": "",
+    "type": "[FilterableInventoryItemProps](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.FilterableInventoryItemProps.mdx)",
+    "description": "The filters to apply on the retrieved inventory items.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -662,7 +1023,7 @@ ___
   {
     "name": "config",
     "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
-    "description": "",
+    "description": "The configurations determining how the inventory items are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a inventory item.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -670,8 +1031,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -687,7 +1048,7 @@ ___
     "type": "Promise&#60;[[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The list of inventory items along with the total count.",
     "expandable": false,
     "children": []
   }
@@ -697,13 +1058,77 @@ ___
 
 ### listInventoryLevels
 
+This method is used to retrieve a paginated list of inventory levels along with the total count of available inventory levels satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of inventory levels using their IDs:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryLevels (inventoryItemIds: string[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({
+    inventory_item_id: inventoryItemIds
+  })
+
+  // do something with the inventory levels or return them
+}
+```
+
+To specify relations that should be retrieved within the inventory levels:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryLevels (inventoryItemIds: string[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({
+    inventory_item_id: inventoryItemIds
+  }, {
+    relations: ["inventory_item"]
+  })
+
+  // do something with the inventory levels or return them
+}
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryLevels (inventoryItemIds: string[], skip: number, take: number) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [inventoryLevels, count] = await inventoryModule.listInventoryLevels({
+    inventory_item_id: inventoryItemIds
+  }, {
+    relations: ["inventory_item"],
+    skip,
+    take
+  })
+
+  // do something with the inventory levels or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableInventoryLevelProps](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableInventoryLevelProps.mdx)",
-    "description": "",
+    "type": "[FilterableInventoryLevelProps](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.FilterableInventoryLevelProps.mdx)",
+    "description": "The filters to apply on the retrieved inventory levels.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -712,7 +1137,7 @@ ___
   {
     "name": "config",
     "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
-    "description": "",
+    "description": "The configurations determining how the inventory levels are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a inventory level.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -720,8 +1145,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -737,7 +1162,7 @@ ___
     "type": "Promise&#60;[[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The list of inventory levels along with the total count.",
     "expandable": false,
     "children": []
   }
@@ -747,13 +1172,77 @@ ___
 
 ### listReservationItems
 
+This method is used to retrieve a paginated list of reservation items along with the total count of available reservation items satisfying the provided filters.
+
+#### Example
+
+To retrieve a list of reservation items using their IDs:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveReservationItems (ids: string[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [reservationItems, count] = await inventoryModule.listReservationItems({
+    id: ids
+  })
+
+  // do something with the reservation items or return them
+}
+```
+
+To specify relations that should be retrieved within the reservation items:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveReservationItems (ids: string[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [reservationItems, count] = await inventoryModule.listReservationItems({
+    id: ids
+  }, {
+    relations: ["inventory_item"]
+  })
+
+  // do something with the reservation items or return them
+}
+```
+
+By default, only the first `10` records are retrieved. You can control pagination by specifying the `skip` and `take` properties of the `config` parameter:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveReservationItems (ids: string[], skip: number, take: number) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const [reservationItems, count] = await inventoryModule.listReservationItems({
+    id: ids
+  }, {
+    relations: ["inventory_item"],
+    skip,
+    take
+  })
+
+  // do something with the reservation items or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[FilterableReservationItemProps](../../InventoryTypes/types/internal.internal-1.InventoryTypes.FilterableReservationItemProps.mdx)",
-    "description": "",
+    "type": "[FilterableReservationItemProps](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.FilterableReservationItemProps.mdx)",
+    "description": "The filters to apply on the retrieved reservation items.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -762,7 +1251,7 @@ ___
   {
     "name": "config",
     "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
-    "description": "",
+    "description": "The configurations determining how the reservation items are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a reservation item.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -770,8 +1259,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -787,7 +1276,7 @@ ___
     "type": "Promise&#60;[[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The list of reservation items along with the total count.",
     "expandable": false,
     "children": []
   }
@@ -797,13 +1286,33 @@ ___
 
 ### restoreInventoryItem
 
+This method is used to restore an inventory item or multiple inventory items that were previously deleted using the [deleteInventoryItem](internal.IInventoryService.mdx#deleteinventoryitem) method.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function restoreInventoryItem (
+  inventoryItems: string[]
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  await inventoryModule.restoreInventoryItem(
+    inventoryItems
+  )
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string` \\| `string`[]",
-    "description": "",
+    "description": "The ID(s) of the inventory item(s) to restore.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -811,8 +1320,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -828,7 +1337,7 @@ ___
     "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "Resolves when the inventory item(s) are successfully restored.",
     "expandable": false,
     "children": []
   }
@@ -838,13 +1347,37 @@ ___
 
 ### retrieveAvailableQuantity
 
+This method is used to retrieve the available quantity of an inventory item within the specified locations.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveAvailableQuantity (
+  inventoryItemId: string,
+  locationIds: string[],
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const quantity = await inventoryModule.retrieveAvailableQuantity(
+    inventoryItemId,
+    locationIds,
+  )
+
+  // do something with the quantity or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item to retrieve its quantity.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -853,7 +1386,7 @@ ___
   {
     "name": "locationIds",
     "type": "`string`[]",
-    "description": "",
+    "description": "The IDs of the locations to retrieve the available quantity from.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -861,8 +1394,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -878,7 +1411,7 @@ ___
     "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The available quantity of the inventory item in the specified locations.",
     "expandable": false,
     "children": []
   }
@@ -888,13 +1421,51 @@ ___
 
 ### retrieveInventoryItem
 
+This method is used to retrieve an inventory item by its ID
+
+#### Example
+
+A simple example that retrieves a inventory item by its ID:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryItem (id: string) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryItem = await inventoryModule.retrieveInventoryItem(id)
+
+  // do something with the inventory item or return it
+}
+```
+
+To specify relations that should be retrieved:
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryItem (id: string) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryItem = await inventoryModule.retrieveInventoryItem(id, {
+    relations: ["inventory_level"]
+  })
+
+  // do something with the inventory item or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item to retrieve.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -903,7 +1474,7 @@ ___
   {
     "name": "config",
     "type": "[FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
-    "description": "",
+    "description": "The configurations determining how the inventory item is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a inventory item.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -911,8 +1482,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -928,7 +1499,7 @@ ___
     "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The retrieved inventory item.",
     "expandable": false,
     "children": []
   }
@@ -938,13 +1509,37 @@ ___
 
 ### retrieveInventoryLevel
 
+This method is used to retrieve an inventory level for an inventory item and a location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveInventoryLevel (
+  inventoryItemId: string,
+  locationId: string
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryLevel = await inventoryModule.retrieveInventoryLevel(
+    inventoryItemId,
+    locationId
+  )
+
+  // do something with the inventory level or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -953,7 +1548,7 @@ ___
   {
     "name": "locationId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the location.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -961,8 +1556,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -978,7 +1573,7 @@ ___
     "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The retrieved inventory level.",
     "expandable": false,
     "children": []
   }
@@ -988,13 +1583,31 @@ ___
 
 ### retrieveReservationItem
 
+This method is used to retrieve a reservation item by its ID.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveReservationItem (id: string) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const reservationItem = await inventoryModule.retrieveReservationItem(id)
+
+  // do something with the reservation item or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "reservationId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the reservation item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1002,8 +1615,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -1019,7 +1632,7 @@ ___
     "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The retrieved reservation item.",
     "expandable": false,
     "children": []
   }
@@ -1029,13 +1642,37 @@ ___
 
 ### retrieveReservedQuantity
 
+This method is used to retrieve the reserved quantity of an inventory item within the specified locations.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveReservedQuantity (
+  inventoryItemId: string,
+  locationIds: string[],
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const quantity = await inventoryModule.retrieveReservedQuantity(
+    inventoryItemId,
+    locationIds,
+  )
+
+  // do something with the quantity or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item to retrieve its reserved quantity.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1044,7 +1681,7 @@ ___
   {
     "name": "locationIds",
     "type": "`string`[]",
-    "description": "",
+    "description": "The IDs of the locations to retrieve the reserved quantity from.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1052,8 +1689,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -1069,7 +1706,7 @@ ___
     "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The reserved quantity of the inventory item in the specified locations.",
     "expandable": false,
     "children": []
   }
@@ -1079,13 +1716,37 @@ ___
 
 ### retrieveStockedQuantity
 
+This method is used to retrieve the stocked quantity of an inventory item within the specified locations.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function retrieveStockedQuantity (
+  inventoryItemId: string,
+  locationIds: string[],
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const quantity = await inventoryModule.retrieveStockedQuantity(
+    inventoryItemId,
+    locationIds,
+  )
+
+  // do something with the quantity or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item to retrieve its stocked quantity.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1094,7 +1755,7 @@ ___
   {
     "name": "locationIds",
     "type": "`string`[]",
-    "description": "",
+    "description": "The IDs of the locations to retrieve the stocked quantity from.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1102,8 +1763,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -1119,7 +1780,7 @@ ___
     "type": "Promise&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The stocked quantity of the inventory item in the specified locations.",
     "expandable": false,
     "children": []
   }
@@ -1129,13 +1790,39 @@ ___
 
 ### updateInventoryItem
 
+This method is used to update an inventory item.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function updateInventoryItem (
+  inventoryItemId: string,
+  sku: string
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryItem = await inventoryModule.updateInventoryItem(
+    inventoryItemId,
+    {
+      sku
+    }
+  )
+
+  // do something with the inventory item or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1143,8 +1830,8 @@ ___
   },
   {
     "name": "input",
-    "type": "[CreateInventoryItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)",
-    "description": "",
+    "type": "[Partial](../types/internal.Partial.mdx)&#60;[CreateInventoryItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.CreateInventoryItemInput.mdx)&#62;",
+    "description": "The attributes to update in the inventory item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1152,8 +1839,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -1169,7 +1856,7 @@ ___
     "type": "Promise&#60;[InventoryItemDTO](../types/internal.InventoryItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The updated inventory item's details.",
     "expandable": false,
     "children": []
   }
@@ -1179,13 +1866,41 @@ ___
 
 ### updateInventoryLevel
 
+This method is used to update an inventory level. The inventory level is identified by the IDs of its associated inventory item and location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function updateInventoryLevel (
+  inventoryItemId: string,
+  locationId: string,
+  stockedQuantity: number
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryLevel = await inventoryModule.updateInventoryLevels(
+    inventoryItemId,
+    locationId,
+    {
+      stocked_quantity: stockedQuantity
+    }
+  )
+
+  // do something with the inventory level or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "inventoryItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the inventory item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1194,7 +1909,7 @@ ___
   {
     "name": "locationId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the location.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1202,8 +1917,8 @@ ___
   },
   {
     "name": "update",
-    "type": "[UpdateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx)",
-    "description": "",
+    "type": "[UpdateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx)",
+    "description": "The attributes to update in the location level.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1211,8 +1926,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -1228,7 +1943,7 @@ ___
     "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The updated inventory level's details.",
     "expandable": false,
     "children": []
   }
@@ -1238,13 +1953,37 @@ ___
 
 ### updateInventoryLevels
 
+This method is used to update inventory levels. Each inventory level is identified by the IDs of its associated inventory item and location.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function updateInventoryLevels (items: {
+  inventory_item_id: string,
+  location_id: string,
+  stocked_quantity: number
+}[]) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const inventoryLevels = await inventoryModule.updateInventoryLevels(
+    items
+  )
+
+  // do something with the inventory levels or return them
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "updates",
-    "type": "`&#123; inventory_item_id: string ; location_id: string  &#125;` & [UpdateInventoryLevelInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateInventoryLevelInput.mdx)[]",
-    "description": "",
+    "type": "[BulkUpdateInventoryLevelInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.BulkUpdateInventoryLevelInput.mdx)[]",
+    "description": "The attributes to update in each inventory level.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1252,8 +1991,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -1269,7 +2008,7 @@ ___
     "type": "Promise&#60;[InventoryLevelDTO](../types/internal.InventoryLevelDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The updated inventory levels' details.",
     "expandable": false,
     "children": []
   }
@@ -1279,13 +2018,39 @@ ___
 
 ### updateReservationItem
 
+This method is used to update a reservation item.
+
+#### Example
+
+```ts
+import {
+  initialize as initializeInventoryModule,
+} from "@medusajs/inventory"
+
+async function updateReservationItem (
+  reservationItemId: string,
+  quantity: number
+) {
+  const inventoryModule = await initializeInventoryModule({})
+
+  const reservationItem = await inventoryModule.updateReservationItem(
+    reservationItemId,
+    {
+      quantity
+    }
+  )
+
+  // do something with the reservation item or return it
+}
+```
+
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "reservationItemId",
     "type": "`string`",
-    "description": "",
+    "description": "The ID of the reservation item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1293,8 +2058,8 @@ ___
   },
   {
     "name": "input",
-    "type": "[UpdateReservationItemInput](../../InventoryTypes/types/internal.internal-1.InventoryTypes.UpdateReservationItemInput.mdx)",
-    "description": "",
+    "type": "[UpdateReservationItemInput](../../InventoryTypes/interfaces/internal.internal-1.InventoryTypes.UpdateReservationItemInput.mdx)",
+    "description": "The attributes to update in the reservation item.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -1302,8 +2067,8 @@ ___
   },
   {
     "name": "context",
-    "type": "[SharedContext](../../internal-1/types/internal.internal-1.SharedContext.mdx)",
-    "description": "",
+    "type": "[SharedContext](../../internal-1/interfaces/internal.internal-1.SharedContext.mdx)",
+    "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -1319,7 +2084,7 @@ ___
     "type": "Promise&#60;[ReservationItemDTO](../types/internal.ReservationItemDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
-    "description": "",
+    "description": "The updated reservation item.",
     "expandable": false,
     "children": []
   }

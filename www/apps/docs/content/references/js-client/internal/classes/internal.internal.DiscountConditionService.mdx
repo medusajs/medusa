@@ -42,7 +42,7 @@ Provides layer to manipulate discount conditions.
   },
   {
     "name": "discountConditionRepository_",
-    "type": "Repository&#60;[DiscountCondition](internal.DiscountCondition.mdx)&#62; & `&#123; addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  &#125;`",
+    "type": "Repository&#60;[DiscountCondition](internal.DiscountCondition.mdx)&#62; & ``{ addConditionResources: Method addConditionResources ; canApplyForCustomer: Method canApplyForCustomer ; findOneWithDiscount: Method findOneWithDiscount ; getJoinTableResourceIdentifiers: Method getJoinTableResourceIdentifiers ; isValidForProduct: Method isValidForProduct ; queryConditionTable: Method queryConditionTable ; removeConditionResources: Method removeConditionResources  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -191,7 +191,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[Omit](../types/internal.Omit.mdx)&#60;[DiscountConditionInput](../types/internal.DiscountConditionInput.mdx), `\"id\"`&#62; & `&#123; id: string  &#125;`",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[DiscountConditionInput](../types/internal.DiscountConditionInput.mdx), \"id\"&#62; & ``{ id: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -264,7 +264,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -383,7 +383,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "undefined \\| &#123; resource_ids: (string \\| &#123; id: string  &#125;)[] ; type: DiscountConditionType  &#125;",
-    "type": "`undefined` \\| `&#123; resource_ids: (string \\| &#123; id: string  &#125;)[] ; type: [DiscountConditionType](../enums/internal.internal.DiscountConditionType.mdx)  &#125;`",
+    "type": "`undefined` \\| ``{ resource_ids: (string \\| &#123; id: string  &#125;)[] ; type: [DiscountConditionType](../enums/internal.internal.DiscountConditionType.mdx)  }``",
     "optional": true,
     "defaultValue": "",
     "description": "",

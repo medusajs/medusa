@@ -96,7 +96,7 @@ Finds tax providers and assists in tax related operations.
   },
   {
     "name": "smTaxLineRepo_",
-    "type": "Repository&#60;[ShippingMethodTaxLine](ShippingMethodTaxLine.mdx)&#62; & `&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;`",
+    "type": "Repository&#60;[ShippingMethodTaxLine](ShippingMethodTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -105,7 +105,7 @@ Finds tax providers and assists in tax related operations.
   },
   {
     "name": "taxLineRepo_",
-    "type": "Repository&#60;[LineItemTaxLine](LineItemTaxLine.mdx)&#62; & `&#123; deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  &#125;`",
+    "type": "Repository&#60;[LineItemTaxLine](LineItemTaxLine.mdx)&#62; & ``{ deleteForCart: Method deleteForCart ; upsertLines: Method upsertLines  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -806,7 +806,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

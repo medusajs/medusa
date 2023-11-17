@@ -500,7 +500,7 @@ ___
 
 ### compare
 
-`**compare**(buf1, buf2): `0` \| `1` \| `-1``
+`**compare**(buf1, buf2): 0 \| 1 \| -1`
 
 Compares `buf1` to `buf2`, typically for the purpose of sorting arrays of`Buffer` instances. This is equivalent to calling `buf1.compare(buf2)`.
 
@@ -541,12 +541,12 @@ console.log(arr.sort(Buffer.compare));
 
 #### Returns
 
-``0`` \| ``1`` \| ``-1``
+`0` \| `1` \| `-1`
 
 <ParameterTypes parameters={[
   {
-    "name": "`0` \\| `1` \\| `-1`",
-    "type": "``0`` \\| ``1`` \\| ``-1``",
+    "name": "0 \\| 1 \\| -1",
+    "type": "`0` \\| `1` \\| `-1`",
     "optional": true,
     "defaultValue": "",
     "description": "Either `-1`, `0`, or `1`, depending on the result of the comparison. See `compare` for details.",
@@ -865,7 +865,7 @@ If not provided, &#123;encoding&#125; defaults to 'utf8'.
 <ParameterTypes parameters={[
   {
     "name": "str",
-    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;string&#62; \\| `&#123; [toPrimitive]: Method [toPrimitive]  &#125;`",
+    "type": "[WithImplicitCoercion](../types/WithImplicitCoercion.mdx)&#60;string&#62; \\| ``{ [toPrimitive]: Method [toPrimitive]  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

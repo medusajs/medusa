@@ -58,7 +58,7 @@ async function updateInventoryItem (
     "children": [
       {
         "name": "description",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The description of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -67,7 +67,7 @@ async function updateInventoryItem (
       },
       {
         "name": "height",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The height of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -76,7 +76,7 @@ async function updateInventoryItem (
       },
       {
         "name": "hs_code",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The HS code of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -85,7 +85,7 @@ async function updateInventoryItem (
       },
       {
         "name": "length",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The length of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -94,7 +94,7 @@ async function updateInventoryItem (
       },
       {
         "name": "material",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The material of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -103,7 +103,7 @@ async function updateInventoryItem (
       },
       {
         "name": "metadata",
-        "type": "``null`` \\| `Record<string, unknown>`",
+        "type": "`null` \\| `Record<string, unknown>`",
         "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
@@ -112,7 +112,7 @@ async function updateInventoryItem (
       },
       {
         "name": "mid_code",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The MID code of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -121,7 +121,7 @@ async function updateInventoryItem (
       },
       {
         "name": "origin_country",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The origin country of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -139,7 +139,7 @@ async function updateInventoryItem (
       },
       {
         "name": "sku",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The SKU of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -148,7 +148,7 @@ async function updateInventoryItem (
       },
       {
         "name": "thumbnail",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The thumbnail of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -157,7 +157,7 @@ async function updateInventoryItem (
       },
       {
         "name": "title",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The title of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -166,7 +166,7 @@ async function updateInventoryItem (
       },
       {
         "name": "weight",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The weight of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -175,7 +175,7 @@ async function updateInventoryItem (
       },
       {
         "name": "width",
-        "type": "``null`` \\| `number`",
+        "type": "`null` \\| `number`",
         "description": "The width of the inventory item.",
         "optional": true,
         "defaultValue": "",
@@ -244,7 +244,7 @@ async function updateInventoryItem (
           },
           {
             "name": "deleted_at",
-            "type": "`string` \\| `Date` \\| ``null``",
+            "type": "`string` \\| `Date` \\| `null`",
             "description": "The date with timezone at which the resource was deleted.",
             "optional": false,
             "defaultValue": "",
@@ -253,7 +253,7 @@ async function updateInventoryItem (
           },
           {
             "name": "description",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "Description of the inventory item",
             "optional": true,
             "defaultValue": "",
@@ -262,7 +262,7 @@ async function updateInventoryItem (
           },
           {
             "name": "height",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The height of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",
@@ -271,7 +271,7 @@ async function updateInventoryItem (
           },
           {
             "name": "hs_code",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -289,7 +289,7 @@ async function updateInventoryItem (
           },
           {
             "name": "length",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The length of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",
@@ -298,7 +298,7 @@ async function updateInventoryItem (
           },
           {
             "name": "material",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -307,7 +307,7 @@ async function updateInventoryItem (
           },
           {
             "name": "metadata",
-            "type": "`Record<string, unknown>` \\| ``null``",
+            "type": "`Record<string, unknown>` \\| `null`",
             "description": "An optional key-value map with additional details",
             "optional": true,
             "defaultValue": "",
@@ -316,7 +316,7 @@ async function updateInventoryItem (
           },
           {
             "name": "mid_code",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -325,7 +325,7 @@ async function updateInventoryItem (
           },
           {
             "name": "origin_country",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
             "optional": true,
             "defaultValue": "",
@@ -343,7 +343,7 @@ async function updateInventoryItem (
           },
           {
             "name": "sku",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "The Stock Keeping Unit (SKU) code of the Inventory Item.",
             "optional": true,
             "defaultValue": "",
@@ -352,7 +352,7 @@ async function updateInventoryItem (
           },
           {
             "name": "thumbnail",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "Thumbnail for the inventory item",
             "optional": true,
             "defaultValue": "",
@@ -361,7 +361,7 @@ async function updateInventoryItem (
           },
           {
             "name": "title",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "Title of the inventory item",
             "optional": true,
             "defaultValue": "",
@@ -379,7 +379,7 @@ async function updateInventoryItem (
           },
           {
             "name": "weight",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The weight of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",
@@ -388,7 +388,7 @@ async function updateInventoryItem (
           },
           {
             "name": "width",
-            "type": "`number` \\| ``null``",
+            "type": "`number` \\| `null`",
             "description": "The width of the Inventory Item. May be used in shipping rate calculations.",
             "optional": true,
             "defaultValue": "",

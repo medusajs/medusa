@@ -163,7 +163,7 @@ medusa.admin.giftCards
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -244,7 +244,7 @@ medusa.admin.giftCards
               },
               {
                 "name": "tax_rate",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The gift card's tax rate that will be applied on calculating totals",
                 "optional": false,
                 "defaultValue": "",
@@ -458,7 +458,7 @@ medusa.admin.giftCards
     "children": [
       {
         "name": "AdminGiftCardsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; gift_cards: [GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ gift_cards: [GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]  }``",
         "description": "The list of gift cards with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -528,7 +528,7 @@ medusa.admin.giftCards
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -609,7 +609,7 @@ medusa.admin.giftCards
               },
               {
                 "name": "tax_rate",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The gift card's tax rate that will be applied on calculating totals",
                 "optional": false,
                 "defaultValue": "",
@@ -738,7 +738,7 @@ medusa.admin.giftCards.retrieve(giftCardId).then(({ gift_card }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -819,7 +819,7 @@ medusa.admin.giftCards.retrieve(giftCardId).then(({ gift_card }) => {
               },
               {
                 "name": "tax_rate",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The gift card's tax rate that will be applied on calculating totals",
                 "optional": false,
                 "defaultValue": "",
@@ -904,7 +904,7 @@ medusa.admin.giftCards
       },
       {
         "name": "ends_at",
-        "type": "``null`` \\| `Date`",
+        "type": "`null` \\| `Date`",
         "description": "The date and time at which the Gift Card should no longer be available.",
         "optional": true,
         "defaultValue": "",
@@ -1007,7 +1007,7 @@ medusa.admin.giftCards
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1088,7 +1088,7 @@ medusa.admin.giftCards
               },
               {
                 "name": "tax_rate",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The gift card's tax rate that will be applied on calculating totals",
                 "optional": false,
                 "defaultValue": "",
