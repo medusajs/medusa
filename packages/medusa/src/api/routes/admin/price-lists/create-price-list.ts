@@ -140,7 +140,7 @@ export default async (req: Request, res) => {
 
     req.params.id = priceList?.id
 
-    const [priceLists, _] = await listAndCountPriceListPricingModule({
+    const [priceLists] = await listAndCountPriceListPricingModule({
       req,
       list: false,
     })

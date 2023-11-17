@@ -195,5 +195,11 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants", () => {
       .catch((e) => e)
 
     expect(productSpy).toBeCalledWith([expect.any(String)])
+
+    const getProductResponse = await api.get(
+      `/admin/products/${product.id}`,
+      adminHeaders
+    )
+    expect(getProductResponse.data.product.variants).toHaveLength(1)
   })
 })
