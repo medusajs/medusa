@@ -35,7 +35,7 @@ You can also find other available Notification provider plugins in the [Plugins 
 
 ## Method 1: Using a Subscriber
 
-To subscribe to an event, you must create a [subscriber]((../../../development/events/subscribers.mdx)).
+To subscribe to an event, you must create a [subscriber](../../../development/events/subscribers.mdx).
 
 Create the file `src/subscribers/customer-confirmation.ts` with the following content:
 
