@@ -1,7 +1,4 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
-import { MedusaV2Flag } from "@medusajs/utils"
-
-export const featureFlag = MedusaV2Flag.key
 
 export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -30,7 +27,9 @@ export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
     await queryRunner.query(`
         DROP TABLE IF EXISTS "cart_sales_channel";
 
---         TODO UPDATE cart table channel ids from the pivot table
+        UPDATE "cart" SET "sales_channel_id" = "cart_sales_channel"."sales_channel_id"
+            FROM "cart_sales_channel"
+        WHERE "cart"."id" = "cart_sales_channel"."cart_id";
 
         ALTER TABLE "cart" ADD CONSTRAINT "FK_a2bd3c26f42e754b9249ba78fd6" FOREIGN KEY ("sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
     `)
