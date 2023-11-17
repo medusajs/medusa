@@ -32,7 +32,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("[Product & Pricing Module] POST /admin/price-lists", () => {
+describe("GET /store/price-lists", () => {
   let dbConnection
   let appContainer
   let shutdownServer

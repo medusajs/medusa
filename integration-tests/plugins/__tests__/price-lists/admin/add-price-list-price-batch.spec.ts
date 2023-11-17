@@ -85,7 +85,7 @@ describe("POST /admin/price-lists/:id/prices/batch", () => {
     await db.teardown()
   })
 
-  it("should update money amounts if money amount id is present in prices", async () => {
+  it("should update money amounts if variant id is present in prices", async () => {
     const [priceList] = await pricingModuleService.createPriceLists([
       {
         title: "test price list",

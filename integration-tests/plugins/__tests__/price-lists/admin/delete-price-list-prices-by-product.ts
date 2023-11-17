@@ -26,7 +26,7 @@ const env = {
   MEDUSA_FF_MEDUSA_V2: true,
 }
 
-describe("DELETE /admin/price-lists/:id", () => {
+describe("DELETE /admin/price-lists/:id/products/:productId/batch", () => {
   let dbConnection
   let appContainer
   let shutdownServer
@@ -120,7 +120,7 @@ describe("DELETE /admin/price-lists/:id", () => {
     await db.teardown()
   })
 
-  it("should batch delete prices based on product ids", async () => {
+  it("should delete prices in batch based on product ids", async () => {
     const api = useApi()! as AxiosInstance
 
     let priceSetMoneyAmounts =
