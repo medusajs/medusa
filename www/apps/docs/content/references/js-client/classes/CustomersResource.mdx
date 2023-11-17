@@ -151,7 +151,7 @@ medusa.customers
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), \"password_hash\"&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -168,7 +168,7 @@ medusa.customers
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -186,7 +186,7 @@ medusa.customers
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -556,7 +556,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
         "children": [
           {
             "name": "CANCELED",
-            "type": "``\"canceled\"``",
+            "type": "`\"canceled\"`",
             "description": "The order's fulfillments are canceled.",
             "optional": true,
             "defaultValue": "",
@@ -565,7 +565,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "FULFILLED",
-            "type": "``\"fulfilled\"``",
+            "type": "`\"fulfilled\"`",
             "description": "The order's items are fulfilled.",
             "optional": true,
             "defaultValue": "",
@@ -574,7 +574,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "NOT_FULFILLED",
-            "type": "``\"not_fulfilled\"``",
+            "type": "`\"not_fulfilled\"`",
             "description": "The order's items are not fulfilled.",
             "optional": true,
             "defaultValue": "",
@@ -583,7 +583,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "PARTIALLY_FULFILLED",
-            "type": "``\"partially_fulfilled\"``",
+            "type": "`\"partially_fulfilled\"`",
             "description": "Some of the order's items, but not all, are fulfilled.",
             "optional": true,
             "defaultValue": "",
@@ -592,7 +592,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "PARTIALLY_RETURNED",
-            "type": "``\"partially_returned\"``",
+            "type": "`\"partially_returned\"`",
             "description": "Some of the order's items, but not all, are returned.",
             "optional": true,
             "defaultValue": "",
@@ -601,7 +601,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "PARTIALLY_SHIPPED",
-            "type": "``\"partially_shipped\"``",
+            "type": "`\"partially_shipped\"`",
             "description": "Some of the order's items, but not all, are shipped.",
             "optional": true,
             "defaultValue": "",
@@ -610,7 +610,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "REQUIRES_ACTION",
-            "type": "``\"requires_action\"``",
+            "type": "`\"requires_action\"`",
             "description": "The order's fulfillment requires action.",
             "optional": true,
             "defaultValue": "",
@@ -619,7 +619,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "RETURNED",
-            "type": "``\"returned\"``",
+            "type": "`\"returned\"`",
             "description": "The order's items are returned.",
             "optional": true,
             "defaultValue": "",
@@ -628,7 +628,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "SHIPPED",
-            "type": "``\"shipped\"``",
+            "type": "`\"shipped\"`",
             "description": "The order's items are shipped.",
             "optional": true,
             "defaultValue": "",
@@ -674,7 +674,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
         "children": [
           {
             "name": "AWAITING",
-            "type": "``\"awaiting\"``",
+            "type": "`\"awaiting\"`",
             "description": "The order's payment is awaiting capturing.",
             "optional": true,
             "defaultValue": "",
@@ -683,7 +683,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "CANCELED",
-            "type": "``\"canceled\"``",
+            "type": "`\"canceled\"`",
             "description": "The order's payment is canceled.",
             "optional": true,
             "defaultValue": "",
@@ -692,7 +692,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "CAPTURED",
-            "type": "``\"captured\"``",
+            "type": "`\"captured\"`",
             "description": "The order's payment is captured.",
             "optional": true,
             "defaultValue": "",
@@ -701,7 +701,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "NOT_PAID",
-            "type": "``\"not_paid\"``",
+            "type": "`\"not_paid\"`",
             "description": "The order's payment is not paid.",
             "optional": true,
             "defaultValue": "",
@@ -710,7 +710,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "PARTIALLY_REFUNDED",
-            "type": "``\"partially_refunded\"``",
+            "type": "`\"partially_refunded\"`",
             "description": "Some of the order's payment amount is refunded.",
             "optional": true,
             "defaultValue": "",
@@ -719,7 +719,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "REFUNDED",
-            "type": "``\"refunded\"``",
+            "type": "`\"refunded\"`",
             "description": "The order's payment amount is refunded.",
             "optional": true,
             "defaultValue": "",
@@ -728,7 +728,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "REQUIRES_ACTION",
-            "type": "``\"requires_action\"``",
+            "type": "`\"requires_action\"`",
             "description": "The order's payment requires action.",
             "optional": true,
             "defaultValue": "",
@@ -765,7 +765,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
         "children": [
           {
             "name": "ARCHIVED",
-            "type": "``\"archived\"``",
+            "type": "`\"archived\"`",
             "description": "The order is archived.",
             "optional": true,
             "defaultValue": "",
@@ -774,7 +774,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "CANCELED",
-            "type": "``\"canceled\"``",
+            "type": "`\"canceled\"`",
             "description": "The order is canceled.",
             "optional": true,
             "defaultValue": "",
@@ -783,7 +783,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "COMPLETED",
-            "type": "``\"completed\"``",
+            "type": "`\"completed\"`",
             "description": "The order is completed, meaning that the items have been fulfilled and the payment has been captured.",
             "optional": true,
             "defaultValue": "",
@@ -792,7 +792,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "PENDING",
-            "type": "``\"pending\"``",
+            "type": "`\"pending\"`",
             "description": "The order is pending.",
             "optional": true,
             "defaultValue": "",
@@ -801,7 +801,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
           },
           {
             "name": "REQUIRES_ACTION",
-            "type": "``\"requires_action\"``",
+            "type": "`\"requires_action\"`",
             "description": "The order requires action.",
             "optional": true,
             "defaultValue": "",
@@ -891,7 +891,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
     "children": [
       {
         "name": "StoreCustomersListOrdersRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; orders: [Order](../internal/classes/internal.Order.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ orders: [Order](../internal/classes/internal.Order.mdx)[]  }``",
         "description": "The list of the customer's orders with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -1096,7 +1096,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
               },
               {
                 "name": "external_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of an external order.",
                 "optional": false,
                 "defaultValue": "",
@@ -1177,7 +1177,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
               },
               {
                 "name": "item_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The tax total applied on items",
                 "optional": false,
                 "defaultValue": "",
@@ -1321,7 +1321,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
               },
               {
                 "name": "sales_channel_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The ID of the sales channel this order belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1357,7 +1357,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
               },
               {
                 "name": "shipping_tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The tax total applied on shipping",
                 "optional": false,
                 "defaultValue": "",
@@ -1402,7 +1402,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
               },
               {
                 "name": "tax_rate",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The order's tax rate",
                 "optional": false,
                 "defaultValue": "",
@@ -1411,7 +1411,7 @@ medusa.customers.listOrders().then(({ orders, limit, offset, count }) => {
               },
               {
                 "name": "tax_total",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The total of tax",
                 "optional": false,
                 "defaultValue": "",
@@ -1539,7 +1539,7 @@ medusa.customers
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), \"password_hash\"&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -1556,7 +1556,7 @@ medusa.customers
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -1574,7 +1574,7 @@ medusa.customers
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1740,7 +1740,7 @@ medusa.customers.retrieve().then(({ customer }) => {
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), \"password_hash\"&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -1757,7 +1757,7 @@ medusa.customers.retrieve().then(({ customer }) => {
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -1775,7 +1775,7 @@ medusa.customers.retrieve().then(({ customer }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -2018,7 +2018,7 @@ medusa.customers
         "children": [
           {
             "name": "customer",
-            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), \"password_hash\"&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -2035,7 +2035,7 @@ medusa.customers
               },
               {
                 "name": "billing_address_id",
-                "type": "``null`` \\| `string`",
+                "type": "`null` \\| `string`",
                 "description": "The customer's billing address ID",
                 "optional": false,
                 "defaultValue": "",
@@ -2053,7 +2053,7 @@ medusa.customers
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

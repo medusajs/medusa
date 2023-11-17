@@ -165,6 +165,15 @@ ___
 
 <ParameterTypes parameters={[
   {
+    "name": "addPriceListPrices",
+    "type": "(`data`: [AddPriceListPricesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPriceListPricesDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "addPrices",
     "type": "(`data`: [AddPricesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx), `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)&#62;(`data`: [AddPricesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.AddPricesDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceSetDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceSetDTO.mdx)[]&#62;",
     "description": "",
@@ -219,6 +228,24 @@ ___
     "children": []
   },
   {
+    "name": "createPriceListRules",
+    "type": "(`data`: [CreatePriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "createPriceLists",
+    "type": "(`data`: [CreatePriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceListDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "createPriceRules",
     "type": "(`data`: [CreatePriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CreatePriceRuleDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
@@ -266,6 +293,24 @@ ___
   {
     "name": "deleteMoneyAmounts",
     "type": "(`ids`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceListRules",
+    "type": "(`priceListRuleIds`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "deletePriceLists",
+    "type": "(`priceListIds`: `string`[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;void&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -336,6 +381,24 @@ ___
     "children": []
   },
   {
+    "name": "listAndCountPriceListRules",
+    "type": "(`filters?`: [FilterablePriceListRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listAndCountPriceLists",
+    "type": "(`filters?`: [FilterablePriceListProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceListProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)[], number]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "listAndCountPriceRules",
     "type": "(`filters?`: [FilterablePriceRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[], number]&#62;",
     "description": "",
@@ -390,6 +453,24 @@ ___
     "children": []
   },
   {
+    "name": "listPriceListRules",
+    "type": "(`filters?`: [FilterablePriceListRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceListRuleProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "listPriceLists",
+    "type": "(`filters?`: [FilterablePriceListProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceListProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "listPriceRules",
     "type": "(`filters?`: [FilterablePriceRuleProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterablePriceRuleProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)[]&#62;",
     "description": "",
@@ -419,6 +500,15 @@ ___
   {
     "name": "listRuleTypes",
     "type": "(`filters?`: [FilterableRuleTypeProps](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.FilterableRuleTypeProps.mdx), `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[RuleTypeDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RuleTypeDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "removePriceListRules",
+    "type": "(`data`: [RemovePriceListRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.RemovePriceListRulesDTO.mdx), `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -462,6 +552,24 @@ ___
     "children": []
   },
   {
+    "name": "retrievePriceList",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "retrievePriceListRule",
+    "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "retrievePriceRule",
     "type": "(`id`: `string`, `config?`: [FindConfig](../../CommonTypes/interfaces/internal.internal-1.CommonTypes.FindConfig.mdx)&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;, `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceRuleDTO.mdx)&#62;",
     "description": "",
@@ -489,6 +597,15 @@ ___
     "children": []
   },
   {
+    "name": "setPriceListRules",
+    "type": "(`data`: [SetPriceListRulesDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.SetPriceListRulesDTO.mdx), `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
     "name": "updateCurrencies",
     "type": "(`data`: [UpdateCurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateCurrencyDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[CurrencyDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.CurrencyDTO.mdx)[]&#62;",
     "description": "",
@@ -500,6 +617,24 @@ ___
   {
     "name": "updateMoneyAmounts",
     "type": "(`data`: [UpdateMoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdateMoneyAmountDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[MoneyAmountDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.MoneyAmountDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceListRules",
+    "type": "(`data`: [UpdatePriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceListRuleDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListRuleDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListRuleDTO.mdx)[]&#62;",
+    "description": "",
+    "optional": false,
+    "defaultValue": "",
+    "expandable": false,
+    "children": []
+  },
+  {
+    "name": "updatePriceLists",
+    "type": "(`data`: [UpdatePriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.UpdatePriceListDTO.mdx)[], `sharedContext?`: [Context](../../internal-1/interfaces/internal.internal-1.Context.mdx)) => Promise&#60;[PriceListDTO](../../PricingTypes/interfaces/internal.internal-1.PricingTypes.PriceListDTO.mdx)[]&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -544,7 +679,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "RemoteQueryFunction",
-    "type": "(`query`: `string` \\| [RemoteJoinerQuery](../../internal-1/interfaces/internal.internal-1.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: `Record<string, unknown>`) => Promise&#60;any&#62; \\| ``null``",
+    "type": "(`query`: `string` \\| [RemoteJoinerQuery](../../internal-1/interfaces/internal.internal-1.RemoteJoinerQuery.mdx) \\| `object`, `variables?`: `Record<string, unknown>`) => Promise&#60;any&#62; \\| `null`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -697,7 +832,7 @@ be fetched.
 <ParameterTypes parameters={[
   {
     "name": "product",
-    "type": "[Pick](../types/internal.Pick.mdx)&#60;[Product](internal.Product.mdx), `\"id\"` \\| `\"variants\"`&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[Product](internal.Product.mdx), \"id\" \\| \"variants\"&#62;",
     "description": "the product to get pricing for.",
     "optional": false,
     "defaultValue": "",
@@ -783,7 +918,7 @@ Gets the prices for a product variant.
 <ParameterTypes parameters={[
   {
     "name": "variant",
-    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx), `\"product_id\"` \\| `\"id\"`&#62;",
+    "type": "[Pick](../types/internal.Pick.mdx)&#60;[ProductVariant](internal.internal.ProductVariant.mdx), \"product_id\" \\| \"id\"&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -873,7 +1008,7 @@ Gets the prices for a collection of variants.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`&#123; quantity?: number ; variantId: string  &#125;`[]",
+    "type": "``{ quantity?: number ; variantId: string  }``[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1084,7 +1219,7 @@ Set additional prices on a list of shipping options.
   },
   {
     "name": "context",
-    "type": "[Omit](../types/internal.Omit.mdx)&#60;[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx), `\"region_id\"`&#62;",
+    "type": "[Omit](../types/internal.Omit.mdx)&#60;[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx), \"region_id\"&#62;",
     "description": "the price selection context to use",
     "optional": true,
     "defaultValue": "",
@@ -1159,7 +1294,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",

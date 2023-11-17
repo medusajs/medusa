@@ -37,20 +37,17 @@ To specify relations that should be retrieved:
 
 ```ts
 import { 
-  initialize as initializePricingModule,
-} from "@medusajs/pricing"
+  initialize as initializeProductModule,
+} from "@medusajs/product"
 
-async function retrievePriceSet (priceSetId: string) {
-  const pricingService = await initializePricingModule()
+async function retrieveProduct (id: string) {
+  const productModule = await initializeProductModule()
 
-  const priceSet = await pricingService.retrieve(
-    priceSetId,
-    {
-      relations: ["money_amounts"]
-    }
-  )
+  const product = await productModule.retrieve(id, {
+    relations: ["categories"]
+  })
 
-  // do something with the price set or return it
+  // do something with the product or return it
 }
 ```
 
@@ -151,7 +148,7 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "enableNestedTransactions",
         "type": "`boolean`",
-        "description": "a boolean value indicating whether nested transactions are enabled.",
+        "description": "A boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -178,7 +175,7 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "transactionId",
         "type": "`string`",
-        "description": "a string indicating the ID of the current transaction.",
+        "description": "A string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -210,20 +207,20 @@ async function retrievePriceSet (priceSetId: string) {
     "children": [
       {
         "name": "categories",
-        "type": "``null`` \\| [ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
-        "description": "The associated product categories. It may only be available if the `categories` relation is expanded.",
+        "type": "`null` \\| [ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
+        "description": "The associated product categories.",
         "optional": true,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": []
       },
       {
         "name": "collection",
         "type": "[ProductCollectionDTO](../../interfaces/ProductCollectionDTO.mdx)",
-        "description": "The associated product collection. It may only be available if the `collection` relation is expanded.",
+        "description": "The associated product collection.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -254,7 +251,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| `Record<string, unknown>`",
+            "type": "`null` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -264,10 +261,10 @@ async function retrievePriceSet (priceSetId: string) {
           {
             "name": "products",
             "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)[]",
-            "description": "The associated products. It may only be available if the `products` relation is expanded.",
+            "description": "The associated products.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -301,8 +298,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "description",
-        "type": "``null`` \\| `string`",
-        "description": "The description of the product. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The description of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -319,7 +316,7 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "external_id",
-        "type": "``null`` \\| `string`",
+        "type": "`null` \\| `string`",
         "description": "The ID of the product in an external system. This is useful if you're integrating the product with a third-party service and want to maintain a reference to the ID in the integrated service.",
         "optional": true,
         "defaultValue": "",
@@ -328,8 +325,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "handle",
-        "type": "``null`` \\| `string`",
-        "description": "The handle of the product. The handle can be used to create slug URL paths. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The handle of the product. The handle can be used to create slug URL paths.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -337,8 +334,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "height",
-        "type": "``null`` \\| `number`",
-        "description": "The height of the product. It can possibly be `null`.",
+        "type": "`null` \\| `number`",
+        "description": "The height of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -346,8 +343,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "hs_code",
-        "type": "``null`` \\| `string`",
-        "description": "The HS Code of the product. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The HS Code of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -365,10 +362,10 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "images",
         "type": "[ProductImageDTO](../../interfaces/ProductImageDTO.mdx)[]",
-        "description": "The associated product images. It may only be available if the `images` relation is expanded.",
+        "description": "The associated product images.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -390,7 +387,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| `Record<string, unknown>`",
+            "type": "`null` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -419,8 +416,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "length",
-        "type": "``null`` \\| `number`",
-        "description": "The length of the product. It can possibly be `null`.",
+        "type": "`null` \\| `number`",
+        "description": "The length of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -428,8 +425,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "material",
-        "type": "``null`` \\| `string`",
-        "description": "The material of the product. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The material of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -438,7 +435,7 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "metadata",
         "type": "`Record<string, unknown>`",
-        "description": "",
+        "description": "Holds custom data in key-value pairs.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -446,8 +443,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "mid_code",
-        "type": "``null`` \\| `string`",
-        "description": "The MID Code of the product. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The MID Code of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -456,10 +453,10 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "options",
         "type": "[ProductOptionDTO](../../interfaces/ProductOptionDTO.mdx)[]",
-        "description": "The associated product options. It may only be available if the `options` relation is expanded.",
+        "description": "The associated product options.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -481,7 +478,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| `Record<string, unknown>`",
+            "type": "`null` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -491,10 +488,10 @@ async function retrievePriceSet (priceSetId: string) {
           {
             "name": "product",
             "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)",
-            "description": "The associated product. It may only be available if the `product` relation is expanded.",
+            "description": "The associated product.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -509,18 +506,18 @@ async function retrievePriceSet (priceSetId: string) {
           {
             "name": "values",
             "type": "[ProductOptionValueDTO](../../interfaces/ProductOptionValueDTO.mdx)[]",
-            "description": "The associated product option values. It may only be available if the `values` relation is expanded.",
+            "description": "The associated product option values.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           }
         ]
       },
       {
         "name": "origin_country",
-        "type": "``null`` \\| `string`",
-        "description": "The origin country of the product. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The origin country of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -529,14 +526,14 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "status",
         "type": "[ProductStatus](../../enums/ProductStatus.mdx)",
-        "description": "The status of the product. Its value can be one of the values of the enum [ProductStatus](../../enums/ProductStatus.mdx).",
+        "description": "The status of the product.",
         "optional": false,
         "defaultValue": "",
         "expandable": false,
         "children": [
           {
             "name": "DRAFT",
-            "type": "``\"draft\"``",
+            "type": "`\"draft\"`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -545,7 +542,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "PROPOSED",
-            "type": "``\"proposed\"``",
+            "type": "`\"proposed\"`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -554,7 +551,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "PUBLISHED",
-            "type": "``\"published\"``",
+            "type": "`\"published\"`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -563,7 +560,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "REJECTED",
-            "type": "``\"rejected\"``",
+            "type": "`\"rejected\"`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -574,8 +571,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "subtitle",
-        "type": "``null`` \\| `string`",
-        "description": "The subttle of the product. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The subttle of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -584,10 +581,10 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "tags",
         "type": "[ProductTagDTO](../../interfaces/ProductTagDTO.mdx)[]",
-        "description": "The associated product tags. It may only be available if the `tags` relation is expanded.",
+        "description": "The associated product tags.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "id",
@@ -600,7 +597,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| `Record<string, unknown>`",
+            "type": "`null` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -610,10 +607,10 @@ async function retrievePriceSet (priceSetId: string) {
           {
             "name": "products",
             "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)[]",
-            "description": "The associated products. It may only be available if the `products` relation is expanded.",
+            "description": "The associated products.",
             "optional": true,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -629,8 +626,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "thumbnail",
-        "type": "``null`` \\| `string`",
-        "description": "The URL of the product's thumbnail. It can possibly be `null`.",
+        "type": "`null` \\| `string`",
+        "description": "The URL of the product's thumbnail.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -648,10 +645,10 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "type",
         "type": "[ProductTypeDTO](../../interfaces/ProductTypeDTO.mdx)[]",
-        "description": "The associated product type. It may only be available if the `type` relation is expanded.",
+        "description": "The associated product type.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "deleted_at",
@@ -673,7 +670,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| `Record<string, unknown>`",
+            "type": "`null` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -703,10 +700,10 @@ async function retrievePriceSet (priceSetId: string) {
       {
         "name": "variants",
         "type": "[ProductVariantDTO](../../interfaces/ProductVariantDTO.mdx)[]",
-        "description": "The associated product variants. It may only be available if the `variants` relation is expanded.",
+        "description": "The associated product variants.",
         "optional": false,
         "defaultValue": "",
-        "expandable": false,
+        "expandable": true,
         "children": [
           {
             "name": "allow_backorder",
@@ -719,8 +716,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "barcode",
-            "type": "``null`` \\| `string`",
-            "description": "The barcode of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The barcode of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -746,8 +743,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "ean",
-            "type": "``null`` \\| `string`",
-            "description": "The EAN of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The EAN of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -755,8 +752,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "height",
-            "type": "``null`` \\| `number`",
-            "description": "The height of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `number`",
+            "description": "The height of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -764,8 +761,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "hs_code",
-            "type": "``null`` \\| `string`",
-            "description": "The HS Code of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The HS Code of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -791,8 +788,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "length",
-            "type": "``null`` \\| `number`",
-            "description": "The length of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `number`",
+            "description": "The length of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -809,8 +806,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "material",
-            "type": "``null`` \\| `string`",
-            "description": "The material of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The material of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -818,7 +815,7 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "metadata",
-            "type": "``null`` \\| `Record<string, unknown>`",
+            "type": "`null` \\| `Record<string, unknown>`",
             "description": "Holds custom data in key-value pairs.",
             "optional": true,
             "defaultValue": "",
@@ -827,8 +824,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "mid_code",
-            "type": "``null`` \\| `string`",
-            "description": "The MID Code of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The MID Code of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -837,16 +834,16 @@ async function retrievePriceSet (priceSetId: string) {
           {
             "name": "options",
             "type": "[ProductOptionValueDTO](../../interfaces/ProductOptionValueDTO.mdx)",
-            "description": "The associated product options. It may only be available if the `options` relation is expanded.",
+            "description": "The associated product options.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
             "name": "origin_country",
-            "type": "``null`` \\| `string`",
-            "description": "The origin country of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The origin country of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -855,10 +852,10 @@ async function retrievePriceSet (priceSetId: string) {
           {
             "name": "product",
             "type": "[ProductDTO](../../interfaces/ProductDTO.mdx)",
-            "description": "The associated product. It may only be available if the `product` relation is expanded.",
+            "description": "The associated product.",
             "optional": false,
             "defaultValue": "",
-            "expandable": false,
+            "expandable": true,
             "children": []
           },
           {
@@ -872,8 +869,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "sku",
-            "type": "``null`` \\| `string`",
-            "description": "The SKU of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The SKU of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -890,8 +887,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "upc",
-            "type": "``null`` \\| `string`",
-            "description": "The UPC of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `string`",
+            "description": "The UPC of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -908,8 +905,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "variant_rank",
-            "type": "``null`` \\| `number`",
-            "description": "The ranking of the variant among other variants associated with the product. It can possibly be `null`.",
+            "type": "`null` \\| `number`",
+            "description": "he ranking of the variant among other variants associated with the product.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -917,8 +914,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "weight",
-            "type": "``null`` \\| `number`",
-            "description": "The weight of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `number`",
+            "description": "The weight of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -926,8 +923,8 @@ async function retrievePriceSet (priceSetId: string) {
           },
           {
             "name": "width",
-            "type": "``null`` \\| `number`",
-            "description": "The width of the product variant. It can possibly be `null`.",
+            "type": "`null` \\| `number`",
+            "description": "The width of the product variant.",
             "optional": true,
             "defaultValue": "",
             "expandable": false,
@@ -937,8 +934,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "weight",
-        "type": "``null`` \\| `number`",
-        "description": "The weight of the product. It can possibly be `null`.",
+        "type": "`null` \\| `number`",
+        "description": "The weight of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -946,8 +943,8 @@ async function retrievePriceSet (priceSetId: string) {
       },
       {
         "name": "width",
-        "type": "``null`` \\| `number`",
-        "description": "",
+        "type": "`null` \\| `number`",
+        "description": "The width of the product.",
         "optional": true,
         "defaultValue": "",
         "expandable": false,

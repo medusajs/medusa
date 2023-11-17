@@ -232,7 +232,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "amount",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
@@ -259,7 +259,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -566,7 +566,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
     "children": [
       {
         "name": "AdminShippingOptionsListRes",
-        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; shipping_options: [ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]  &#125;`",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & ``{ shipping_options: [ShippingOption](../internal/classes/internal.ShippingOption.mdx)[]  }``",
         "description": "The list of shipping options with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -618,7 +618,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "amount",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
@@ -645,7 +645,7 @@ medusa.admin.shippingOptions.list().then(({ shipping_options, count }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -865,7 +865,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "amount",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
@@ -892,7 +892,7 @@ medusa.admin.shippingOptions.retrieve(optionId).then(({ shipping_option }) => {
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",
@@ -1216,7 +1216,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "amount",
-                "type": "``null`` \\| `number`",
+                "type": "`null` \\| `number`",
                 "description": "The amount to charge for shipping when the Shipping Option price type is `flat\\_rate`.",
                 "optional": false,
                 "defaultValue": "",
@@ -1243,7 +1243,7 @@ medusa.admin.shippingOptions
               },
               {
                 "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
+                "type": "`null` \\| `Date`",
                 "description": "The date with timezone at which the resource was deleted.",
                 "optional": false,
                 "defaultValue": "",

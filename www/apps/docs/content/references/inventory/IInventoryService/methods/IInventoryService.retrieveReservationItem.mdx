@@ -100,7 +100,7 @@ async function retrieveReservationItem (id: string) {
           },
           {
             "name": "created_by",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "UserId of user who created the reservation item",
             "optional": true,
             "defaultValue": "",
@@ -109,7 +109,7 @@ async function retrieveReservationItem (id: string) {
           },
           {
             "name": "deleted_at",
-            "type": "`string` \\| `Date` \\| ``null``",
+            "type": "`string` \\| `Date` \\| `null`",
             "description": "The date with timezone at which the resource was deleted.",
             "optional": false,
             "defaultValue": "",
@@ -118,7 +118,7 @@ async function retrieveReservationItem (id: string) {
           },
           {
             "name": "description",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "Description of the reservation item",
             "optional": true,
             "defaultValue": "",
@@ -145,7 +145,7 @@ async function retrieveReservationItem (id: string) {
           },
           {
             "name": "line_item_id",
-            "type": "`string` \\| ``null``",
+            "type": "`string` \\| `null`",
             "description": "",
             "optional": true,
             "defaultValue": "",
@@ -163,7 +163,7 @@ async function retrieveReservationItem (id: string) {
           },
           {
             "name": "metadata",
-            "type": "`Record<string, unknown>` \\| ``null``",
+            "type": "`Record<string, unknown>` \\| `null`",
             "description": "An optional key-value map with additional details",
             "optional": false,
             "defaultValue": "",

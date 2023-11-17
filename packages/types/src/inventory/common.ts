@@ -206,16 +206,11 @@ export type InventoryLevelDTO = {
  * @interface
  * 
  * The filters to apply on retrieved reservation items.
- * 
- * @prop id - The IDs to filter reservation items by.
- * @prop line_item_id - Filter reservation items by the ID of their associated line item.
- * @prop inventory_item_id - Filter reservation items by the ID of their associated inventory item.
- * @prop location_id - Filter reservation items by the ID of their associated location.
- * @prop description - Description filters to apply on the reservation items' `description` attribute.
- * @prop created_by - The "created by" values to filter reservation items by.
- * @prop quantity - Filters to apply on the reservation items' `quantity` attribute.
  */
 export type FilterableReservationItemProps = {
+  /**
+   * The IDs to filter reservation items by.
+   */
   id?: string | string[]
   /**
    * @ignore
@@ -224,11 +219,29 @@ export type FilterableReservationItemProps = {
    * This property is not used.
    */
   type?: string | string[]
+  /**
+   * Filter reservation items by the ID of their associated line item.
+   */
   line_item_id?: string | string[]
+  /**
+   * Filter reservation items by the ID of their associated inventory item.
+   */
   inventory_item_id?: string | string[]
+  /**
+   * Filter reservation items by the ID of their associated location.
+   */
   location_id?: string | string[]
+  /**
+   * Description filters to apply on the reservation items' `description` attribute.
+   */
   description?: string | StringComparisonOperator
+  /**
+   * The "created by" values to filter reservation items by.
+   */
   created_by?: string | string[]
+  /**
+   * Filters to apply on the reservation items' `quantity` attribute.
+   */
   quantity?: number | NumericalComparisonOperator
 }
 
@@ -236,22 +249,35 @@ export type FilterableReservationItemProps = {
  * @interface
  * 
  * The filters to apply on retrieved inventory items.
- * 
- * @prop id - The IDs to filter inventory items by.
- * @prop location_id - Filter inventory items by the ID of their associated location.
- * @prop q - Search term to search inventory items' attributes.
- * @prop sku - The SKUs to filter inventory items by.
- * @prop origin_country - The origin country to filter inventory items by.
- * @prop hs_code - The HS Codes to filter inventory items by.
- * @prop requires_shipping - Filter inventory items by whether they require shipping.
  */
 export type FilterableInventoryItemProps = {
+  /**
+   * The IDs to filter inventory items by.
+   */
   id?: string | string[]
+  /**
+   * Filter inventory items by the ID of their associated location.
+   */
   location_id?: string | string[]
+  /**
+   * Search term to search inventory items' attributes.
+   */
   q?: string
+  /**
+   * The SKUs to filter inventory items by.
+   */
   sku?: string | string[] | StringComparisonOperator
+  /**
+   * The origin country to filter inventory items by.
+   */
   origin_country?: string | string[]
+  /**
+   * The HS Codes to filter inventory items by.
+   */
   hs_code?: string | string[] | StringComparisonOperator
+  /**
+   * Filter inventory items by whether they require shipping.
+   */
   requires_shipping?: boolean
 }
 
@@ -259,36 +285,63 @@ export type FilterableInventoryItemProps = {
  * @interface
  * 
  * The details of the inventory item to be created.
- * 
- * @prop sku - The SKU of the inventory item.
- * @prop origin_country - The origin country of the inventory item.
- * @prop mid_code - The MID code of the inventory item.
- * @prop material - The material of the inventory item.
- * @prop weight - The weight of the inventory item.
- * @prop length - The length of the inventory item.
- * @prop height - The height of the inventory item.
- * @prop width - The width of the inventory item.
- * @prop title - The title of the inventory item.
- * @prop description - The description of the inventory item.
- * @prop thumbnail - The thumbnail of the inventory item.
- * @prop metadata - Holds custom data in key-value pairs.
- * @prop hs_code - The HS code of the inventory item.
- * @prop requries_shipping - Whether the inventory item requires shipping.
  */
 export type CreateInventoryItemInput = {
+  /**
+   * The SKU of the inventory item.
+   */
   sku?: string | null
+  /**
+   * The origin country of the inventory item.
+   */
   origin_country?: string | null
+  /**
+   * The MID code of the inventory item.
+   */
   mid_code?: string | null
+  /**
+   * The material of the inventory item.
+   */
   material?: string | null
+  /**
+   * The weight of the inventory item.
+   */
   weight?: number | null
+  /**
+   * The length of the inventory item.
+   */
   length?: number | null
+  /**
+   * The height of the inventory item.
+   */
   height?: number | null
+  /**
+   * The width of the inventory item.
+   */
   width?: number | null
+  /**
+   * The title of the inventory item.
+   */
   title?: string | null
+  /**
+   * The description of the inventory item.
+   */
   description?: string | null
+  /**
+   * The thumbnail of the inventory item.
+   */
   thumbnail?: string | null
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
+  /**
+   * The HS code of the inventory item.
+   */
   hs_code?: string | null
+  /**
+   * Whether the inventory item requires shipping.
+   */
   requires_shipping?: boolean
 }
 
@@ -296,24 +349,39 @@ export type CreateInventoryItemInput = {
  * @interface
  * 
  * The details of the reservation item to be created.
- * 
- * @prop line_item_id - The ID of the associated line item.
- * @prop inventory_item_id - The ID of the associated inventory item.
- * @prop location_id - The ID of the associated location.
- * @prop quantity - The reserved quantity.
- * @prop description - The description of the reservation.
- * @prop created_by - The user or system that created the reservation. Can be any form of identification string.
- * @prop external_id - An ID associated with an external third-party system that the reservation item is connected to.
- * @prop metadata - Holds custom data in key-value pairs.
  */
 export type CreateReservationItemInput = {
+  /**
+   * The ID of the associated line item.
+   */
   line_item_id?: string
+  /**
+   * The ID of the associated inventory item.
+   */
   inventory_item_id: string
+  /**
+   * The ID of the associated location.
+   */
   location_id: string
+  /**
+   * The reserved quantity.
+   */
   quantity: number
+  /**
+   * The description of the reservation.
+   */
   description?: string
+  /**
+   * The user or system that created the reservation. Can be any form of identification string.
+   */
   created_by?: string
+  /**
+   * An ID associated with an external third-party system that the reservation item is connected to.
+   */
   external_id?: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
 }
 
@@ -321,18 +389,27 @@ export type CreateReservationItemInput = {
  * @interface
  * 
  * The filters to apply on retrieved inventory levels.
- * 
- * @prop inventory_item_id - Filter inventory levels by the ID of their associated inventory item.
- * @prop location_id - Filter inventory levels by the ID of their associated inventory location.
- * @prop stocked_quantity - Filters to apply on inventory levels' `stocked_quantity` attribute.
- * @prop reserved_quantity - Filters to apply on inventory levels' `reserved_quantity` attribute.
- * @prop incoming_quantity - Filters to apply on inventory levels' `incoming_quantity` attribute.
  */
 export type FilterableInventoryLevelProps = {
+  /**
+   * Filter inventory levels by the ID of their associated inventory item.
+   */
   inventory_item_id?: string | string[]
+  /**
+   * Filter inventory levels by the ID of their associated inventory location.
+   */
   location_id?: string | string[]
+  /**
+   * Filters to apply on inventory levels' `stocked_quantity` attribute.
+   */
   stocked_quantity?: number | NumericalComparisonOperator
+  /**
+   * Filters to apply on inventory levels' `reserved_quantity` attribute.
+   */
   reserved_quantity?: number | NumericalComparisonOperator
+  /**
+   * Filters to apply on inventory levels' `incoming_quantity` attribute.
+   */
   incoming_quantity?: number | NumericalComparisonOperator
 }
 
@@ -340,18 +417,27 @@ export type FilterableInventoryLevelProps = {
  * @interface
  * 
  * The details of the inventory level to be created.
- * 
- * @prop inventory_item_id - The ID of the associated inventory item.
- * @prop location_id - The ID of the associated location.
- * @prop stocked_quantity - The stocked quantity of the associated inventory item in the associated location.
- * @prop reserved_quantity - The reserved quantity of the associated inventory item in the associated location.
- * @prop incoming_quantity - The incoming quantity of the associated inventory item in the associated location.
  */
 export type CreateInventoryLevelInput = {
+  /**
+   * The ID of the associated inventory item.
+   */
   inventory_item_id: string
+  /**
+   * The ID of the associated location.
+   */
   location_id: string
+  /**
+   * The stocked quantity of the associated inventory item in the associated location.
+   */
   stocked_quantity: number
+  /**
+   * The reserved quantity of the associated inventory item in the associated location.
+   */
   reserved_quantity?: number
+  /**
+   * The incoming quantity of the associated inventory item in the associated location.
+   */
   incoming_quantity?: number
 }
 
@@ -359,12 +445,15 @@ export type CreateInventoryLevelInput = {
  * @interface
  * 
  * The attributes to update in an inventory level.
- * 
- * @prop stocked_quantity - The stocked quantity of the associated inventory item in the associated location.
- * @prop incoming_quantity - The incoming quantity of the associated inventory item in the associated location.
  */
 export type UpdateInventoryLevelInput = {
+  /**
+   * The stocked quantity of the associated inventory item in the associated location.
+   */
   stocked_quantity?: number
+  /**
+   * The incoming quantity of the associated inventory item in the associated location.
+   */
   incoming_quantity?: number
 }
 
@@ -372,12 +461,15 @@ export type UpdateInventoryLevelInput = {
  * @interface
  * 
  * The attributes to update in an inventory level. The inventory level is identified by the IDs of its associated inventory item and location.
- * 
- * @prop inventory_item_id - The ID of the associated inventory level.
- * @prop location_id - The ID of the associated location.
  */
 export type BulkUpdateInventoryLevelInput = {
+  /**
+   * The ID of the associated inventory level.
+   */
   inventory_item_id: string
+  /**
+   * The ID of the associated location.
+   */
   location_id: string
 } & UpdateInventoryLevelInput
 
@@ -385,16 +477,23 @@ export type BulkUpdateInventoryLevelInput = {
  * @interface
  * 
  * The attributes to update in a reservation item.
- * 
- * @prop quantity - The reserved quantity.
- * @prop location_id - The ID of the associated location.
- * @prop description - The description of the reservation item.
- * @prop metadata - Holds custom data in key-value pairs.
  */
 export type UpdateReservationItemInput = {
+  /**
+   * The reserved quantity.
+   */
   quantity?: number
+  /**
+   * The ID of the associated location.
+   */
   location_id?: string
+  /**
+   * The description of the reservation item.
+   */
   description?: string
+  /**
+   * Holds custom data in key-value pairs.
+   */
   metadata?: Record<string, unknown> | null
 }
 

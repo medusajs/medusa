@@ -279,7 +279,7 @@ Deletes line item adjustments matching a selector
 <ParameterTypes parameters={[
   {
     "name": "selectorOrIds",
-    "type": "`string` \\| `string`[] \\| [FilterableLineItemAdjustmentProps](internal.FilterableLineItemAdjustmentProps.mdx) & `&#123; discount_id?: FindOperator&#60;`null` \\| string&#62;  &#125;`",
+    "type": "`string` \\| `string`[] \\| [FilterableLineItemAdjustmentProps](internal.FilterableLineItemAdjustmentProps.mdx) & ``{ discount_id?: FindOperator&#60;null \\| string&#62;  }``",
     "description": "the query object for find or the line item adjustment id",
     "optional": false,
     "defaultValue": "",
@@ -449,7 +449,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
+    "type": "`Record<string, unknown>` \\| ``{ code: string  }``",
     "description": "",
     "optional": false,
     "defaultValue": "",
