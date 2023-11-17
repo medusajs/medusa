@@ -17,6 +17,7 @@ type ProductCategoryInput = {
   parent_category_id?: string | null
   parent_category?: ProductCategory | null
   rank?: number
+  metadata?: Record<string, unknown>
 }
 
 export type CreateProductCategoryInput = ProductCategoryInput & {
