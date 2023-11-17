@@ -6,11 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Exclude
 
- **Exclude**<`T`, `U`\>: `T` extends `U` ? `never` : `T`
+ **Exclude**`<TypeParameter T, TypeParameter U>`: T extends U ? never : T
 
 Exclude from T those types that are assignable to U
 
-#### Type parameters
+### Type parameters
 
 <ParameterTypes parameters={[
   {
@@ -19,6 +19,7 @@ Exclude from T those types that are assignable to U
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -27,6 +28,7 @@ Exclude from T those types that are assignable to U
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

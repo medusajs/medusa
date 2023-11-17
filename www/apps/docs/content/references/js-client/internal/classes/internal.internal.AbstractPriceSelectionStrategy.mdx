@@ -8,14 +8,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 ## Implements
 
-- [`IPriceSelectionStrategy`](../interfaces/internal.internal.IPriceSelectionStrategy.mdx)
+- [IPriceSelectionStrategy](../interfaces/internal.internal.IPriceSelectionStrategy.mdx)
 
 ## Properties
 
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -33,7 +33,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -42,7 +42,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -51,7 +51,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -69,7 +69,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -91,26 +91,16 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -119,22 +109,12 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -143,7 +123,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -164,72 +144,16 @@ circumstances described in the context.
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "{ `quantity?`: `number` ; `taxRates`: [`TaxServiceRate`](../../modules/internal.mdx#taxservicerate)[] ; `variantId`: `string`  }[]",
+    "type": "`&#123; quantity?: number ; taxRates: [TaxServiceRate](../types/internal.TaxServiceRate.mdx)[] ; variantId: string  &#125;`[]",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "quantity",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "taxRates",
-        "type": "[`TaxServiceRate`](../../modules/internal.mdx#taxservicerate)[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "code",
-            "type": "`string` \\| ``null``",
-            "description": "The tax rate's code.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "The tax rate's name.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "rate",
-            "type": "`number` \\| ``null``",
-            "description": "The tax rate.",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "variantId",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "context",
-    "type": "[`PriceSelectionContext`](../modules/internal.internal.mdx#priceselectioncontext)",
+    "type": "[PriceSelectionContext](../types/internal.internal.PriceSelectionContext.mdx)",
     "description": "Details relevant to determine the correct pricing of the variant",
     "optional": false,
     "defaultValue": "",
@@ -243,96 +167,12 @@ circumstances described in the context.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`Map`<`string`, [`PriceSelectionResult`](../modules/internal.internal.mdx#priceselectionresult)\\>\\>",
+    "type": "Promise&#60;Map&#60;string, [PriceSelectionResult](../types/internal.internal.PriceSelectionResult.mdx)&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "pricing details in an object containing the calculated lowest price,\nthe default price an all valid prices for the given variant",
     "expandable": false,
-    "children": [
-      {
-        "name": "Map",
-        "type": "`Map`<`string`, [`PriceSelectionResult`](../modules/internal.internal.mdx#priceselectionresult)\\>",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "string",
-            "type": "`string`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "PriceSelectionResult",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "calculatedPrice",
-                "type": "`number` \\| ``null``",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculatedPriceIncludesTax",
-                "type": "`boolean` \\| ``null``",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "calculatedPriceType",
-                "type": "[`PriceType`](../modules/internal.internal.mdx#pricetype-1)",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "originalPrice",
-                "type": "`number` \\| ``null``",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "originalPriceIncludesTax",
-                "type": "`boolean` \\| ``null``",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "prices",
-                "type": "[`MoneyAmount`](internal.internal.MoneyAmount.mdx)[]",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -361,7 +201,7 @@ Notify price selection strategy that variants prices have been updated.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -379,7 +219,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -411,7 +251,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -425,7 +265,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "AbstractPriceSelectionStrategy",
-    "type": "[`AbstractPriceSelectionStrategy`](internal.internal.AbstractPriceSelectionStrategy.mdx)",
+    "type": "[AbstractPriceSelectionStrategy](internal.internal.AbstractPriceSelectionStrategy.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

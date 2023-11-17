@@ -57,7 +57,7 @@ medusa.admin.swaps
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetSwapsParams`](../internal/classes/internal.AdminGetSwapsParams.mdx)",
+    "type": "[AdminGetSwapsParams](../internal/classes/internal.AdminGetSwapsParams.mdx)",
     "description": "Pagination configurations to apply on the retrieved swaps.",
     "optional": true,
     "defaultValue": "",
@@ -85,7 +85,7 @@ medusa.admin.swaps
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -99,7 +99,7 @@ medusa.admin.swaps
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminSwapsListRes`](../modules/internal.mdx#adminswapslistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSwapsListRes](../internal/types/internal.AdminSwapsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of swaps with pagination fields.",
@@ -107,7 +107,7 @@ medusa.admin.swaps
     "children": [
       {
         "name": "AdminSwapsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `swaps`: [`Swap`](../internal/classes/internal.Swap.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; swaps: [Swap](../internal/classes/internal.Swap.mdx)[]  &#125;`",
         "description": "The list of swaps with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -142,7 +142,7 @@ medusa.admin.swaps
           },
           {
             "name": "swaps",
-            "type": "[`Swap`](../internal/classes/internal.Swap.mdx)[]",
+            "type": "[Swap](../internal/classes/internal.Swap.mdx)[]",
             "description": "An array of swaps details.",
             "optional": false,
             "defaultValue": "",
@@ -150,7 +150,7 @@ medusa.admin.swaps
             "children": [
               {
                 "name": "additional_items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the new products to send to the customer, represented as line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -177,7 +177,7 @@ medusa.admin.swaps
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart that the customer uses to complete the swap.",
                 "optional": false,
                 "defaultValue": "",
@@ -231,7 +231,7 @@ medusa.admin.swaps
               },
               {
                 "name": "fulfillment_status",
-                "type": "[`SwapFulfillmentStatus`](../internal/enums/internal.SwapFulfillmentStatus.mdx)",
+                "type": "[SwapFulfillmentStatus](../internal/enums/internal.SwapFulfillmentStatus.mdx)",
                 "description": "The status of the Fulfillment of the Swap.",
                 "optional": false,
                 "defaultValue": "",
@@ -240,7 +240,7 @@ medusa.admin.swaps
               },
               {
                 "name": "fulfillments",
-                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "type": "[Fulfillment](../internal/classes/internal.Fulfillment.mdx)[]",
                 "description": "The details of the fulfillments that are used to send the new items to the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -267,7 +267,7 @@ medusa.admin.swaps
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -285,7 +285,7 @@ medusa.admin.swaps
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that the swap belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -303,8 +303,8 @@ medusa.admin.swaps
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
-                "description": "The details of the additional payment authorized by the customer when `difference_due` is positive.",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the additional payment authorized by the customer when `difference\\_due` is positive.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -312,7 +312,7 @@ medusa.admin.swaps
               },
               {
                 "name": "payment_status",
-                "type": "[`SwapPaymentStatus`](../internal/enums/internal.SwapPaymentStatus.mdx)",
+                "type": "[SwapPaymentStatus](../internal/enums/internal.SwapPaymentStatus.mdx)",
                 "description": "The status of the Payment of the Swap. The payment may either refer to the refund of an amount or the authorization of a new amount.",
                 "optional": false,
                 "defaultValue": "",
@@ -321,7 +321,7 @@ medusa.admin.swaps
               },
               {
                 "name": "return_order",
-                "type": "[`Return`](../internal/classes/internal.Return.mdx)",
+                "type": "[Return](../internal/classes/internal.Return.mdx)",
                 "description": "The details of the return that belongs to the swap, which holds the details on the items being returned.",
                 "optional": false,
                 "defaultValue": "",
@@ -330,7 +330,7 @@ medusa.admin.swaps
               },
               {
                 "name": "shipping_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address that the new items should be sent to.",
                 "optional": false,
                 "defaultValue": "",
@@ -348,7 +348,7 @@ medusa.admin.swaps
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods used to fulfill the additional items purchased.",
                 "optional": false,
                 "defaultValue": "",
@@ -403,7 +403,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -417,7 +417,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminSwapsRes`](../modules/internal.mdx#adminswapsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminSwapsRes](../internal/types/internal.AdminSwapsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the swap's details.",
@@ -433,7 +433,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
         "children": [
           {
             "name": "swap",
-            "type": "[`Swap`](../internal/classes/internal.Swap.mdx)",
+            "type": "[Swap](../internal/classes/internal.Swap.mdx)",
             "description": "Swap details.",
             "optional": false,
             "defaultValue": "",
@@ -441,7 +441,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
             "children": [
               {
                 "name": "additional_items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The details of the new products to send to the customer, represented as line items.",
                 "optional": false,
                 "defaultValue": "",
@@ -468,7 +468,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart that the customer uses to complete the swap.",
                 "optional": false,
                 "defaultValue": "",
@@ -522,7 +522,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "fulfillment_status",
-                "type": "[`SwapFulfillmentStatus`](../internal/enums/internal.SwapFulfillmentStatus.mdx)",
+                "type": "[SwapFulfillmentStatus](../internal/enums/internal.SwapFulfillmentStatus.mdx)",
                 "description": "The status of the Fulfillment of the Swap.",
                 "optional": false,
                 "defaultValue": "",
@@ -531,7 +531,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "fulfillments",
-                "type": "[`Fulfillment`](../internal/classes/internal.Fulfillment.mdx)[]",
+                "type": "[Fulfillment](../internal/classes/internal.Fulfillment.mdx)[]",
                 "description": "The details of the fulfillments that are used to send the new items to the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -558,7 +558,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -576,7 +576,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "order",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)",
+                "type": "[Order](../internal/classes/internal.Order.mdx)",
                 "description": "The details of the order that the swap belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -594,8 +594,8 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
-                "description": "The details of the additional payment authorized by the customer when `difference_due` is positive.",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
+                "description": "The details of the additional payment authorized by the customer when `difference\\_due` is positive.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": true,
@@ -603,7 +603,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "payment_status",
-                "type": "[`SwapPaymentStatus`](../internal/enums/internal.SwapPaymentStatus.mdx)",
+                "type": "[SwapPaymentStatus](../internal/enums/internal.SwapPaymentStatus.mdx)",
                 "description": "The status of the Payment of the Swap. The payment may either refer to the refund of an amount or the authorization of a new amount.",
                 "optional": false,
                 "defaultValue": "",
@@ -612,7 +612,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "return_order",
-                "type": "[`Return`](../internal/classes/internal.Return.mdx)",
+                "type": "[Return](../internal/classes/internal.Return.mdx)",
                 "description": "The details of the return that belongs to the swap, which holds the details on the items being returned.",
                 "optional": false,
                 "defaultValue": "",
@@ -621,7 +621,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address that the new items should be sent to.",
                 "optional": false,
                 "defaultValue": "",
@@ -639,7 +639,7 @@ medusa.admin.swaps.retrieve(swapId).then(({ swap }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods used to fulfill the additional items purchased.",
                 "optional": false,
                 "defaultValue": "",

@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "analyticsConfigRepository_",
-    "type": "`Repository`<[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)\\>",
+    "type": "Repository&#60;[AnalyticsConfig](internal.internal.AnalyticsConfig.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,7 +47,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -65,606 +65,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "userService_",
-    "type": "[`UserService`](internal.internal.UserService.mdx)",
+    "type": "[UserService](internal.internal.UserService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__configModule__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__container__",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__moduleDeclaration__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "analyticsConfigService_",
-        "type": "[`AnalyticsConfigService`](internal.internal.AnalyticsConfigService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "analyticsConfigRepository_",
-            "type": "`Repository`<[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "userService_",
-            "type": "[`UserService`](internal.internal.UserService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "analyticsConfigService_",
-                "type": "[`AnalyticsConfigService`](internal.internal.AnalyticsConfigService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "eventBus_",
-                "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "featureFlagRouter_",
-                "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "userRepository_",
-                "type": "`Repository`<[`User`](internal.User.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "Events",
-                "type": "`object`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "eventBus_",
-        "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "config_",
-            "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "featureFlags",
-                "type": "Record<`string`, `boolean` \\| `string`\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "modules",
-                "type": "Record<`string`, `boolean` \\| [`Partial`](../../modules/internal.mdx#partial)<[`InternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)\\>\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "plugins",
-                "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "projectConfig",
-                "type": "[`ProjectConfigOptions`](../../internal-1/modules/internal.internal-1.CommonTypes.mdx#projectconfigoptions)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "enqueue_",
-            "type": "`Promise`<`void`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "logger_",
-            "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "activity",
-                "type": "(`message`: `string`, `config?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "debug",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "error",
-                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failure",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "info",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "log",
-                "type": "(...`args`: `any`[]) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "panic",
-                "type": "(`data`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "progress",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "setLogLevel",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shouldLog",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "success",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "unsetLogLevel",
-                "type": "() => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "warn",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "shouldEnqueuerRun",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "stagedJobService_",
-            "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "stagedJobRepository_",
-                "type": "`Repository`<[`StagedJob`](internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "featureFlagRouter_",
-        "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "flags",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "manager_",
-        "type": "`EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager_",
-        "type": "`undefined` \\| `EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "userRepository_",
-        "type": "`Repository`<[`User`](internal.User.mdx)\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "Events",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "CREATED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "DELETED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "PASSWORD_RESET",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "UPDATED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -677,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -699,26 +105,16 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -727,22 +123,12 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -751,7 +137,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -780,31 +166,12 @@ Creates an analytics config.
   },
   {
     "name": "data",
-    "type": "[`CreateAnalyticsConfig`](../../modules/internal.mdx#createanalyticsconfig)",
+    "type": "[CreateAnalyticsConfig](../types/internal.CreateAnalyticsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "anonymize",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "opt_out",
-        "type": "`boolean`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -813,22 +180,12 @@ Creates an analytics config.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)\\>",
+    "type": "Promise&#60;[AnalyticsConfig](internal.internal.AnalyticsConfig.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "AnalyticsConfig",
-        "type": "[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -857,7 +214,7 @@ Deletes an analytics config.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -889,22 +246,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)\\>",
+    "type": "Promise&#60;[AnalyticsConfig](internal.internal.AnalyticsConfig.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "AnalyticsConfig",
-        "type": "[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -917,7 +264,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -960,31 +307,12 @@ Updates an analytics config. If the config does not exist, it will be created in
   },
   {
     "name": "update",
-    "type": "[`UpdateAnalyticsConfig`](../../modules/internal.mdx#updateanalyticsconfig)",
+    "type": "[UpdateAnalyticsConfig](../types/internal.UpdateAnalyticsConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "anonymize",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "opt_out",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -993,22 +321,12 @@ Updates an analytics config. If the config does not exist, it will be created in
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)\\>",
+    "type": "Promise&#60;[AnalyticsConfig](internal.internal.AnalyticsConfig.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "AnalyticsConfig",
-        "type": "[`AnalyticsConfig`](internal.internal.AnalyticsConfig.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1021,7 +339,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1035,7 +353,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "AnalyticsConfigService",
-    "type": "[`AnalyticsConfigService`](internal.internal.AnalyticsConfigService.mdx)",
+    "type": "[AnalyticsConfigService](internal.internal.AnalyticsConfigService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

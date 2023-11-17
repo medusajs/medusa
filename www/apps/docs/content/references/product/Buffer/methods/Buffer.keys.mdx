@@ -8,12 +8,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).keys
 
-**keys**(): [`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+`**keys**(): [IterableIterator](../../interfaces/IterableIterator.mdx)&#60;number&#62;`
 
-Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `buf` keys (indices).
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) of `buf` keys (indices).
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.from('buffer');
 
@@ -31,15 +31,16 @@ for (const key of buf.keys()) {
 
 #### Returns
 
-[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\>
+[IterableIterator](../../interfaces/IterableIterator.mdx)&#60;number&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "IterableIterator",
-    "type": "[`IterableIterator`](../../interfaces/IterableIterator.mdx)<`number`\\>",
+    "type": "[IterableIterator](../../interfaces/IterableIterator.mdx)&#60;number&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": [
       {
         "name": "number",
@@ -47,6 +48,7 @@ for (const key of buf.keys()) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       }
     ]

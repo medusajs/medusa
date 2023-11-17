@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -38,7 +38,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -47,1904 +47,34 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "productService_",
-    "type": "[`ProductService`](internal.internal.ProductService.mdx)",
+    "type": "[ProductService](internal.internal.ProductService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__configModule__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__container__",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__moduleDeclaration__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "eventBus_",
-        "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "config_",
-            "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "featureFlags",
-                "type": "Record<`string`, `boolean` \\| `string`\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "modules",
-                "type": "Record<`string`, `boolean` \\| [`Partial`](../../modules/internal.mdx#partial)<[`InternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#internalmoduledeclaration) \\| [`ExternalModuleDeclaration`](../../internal-1/modules/internal.internal-1.ModulesSdkTypes.mdx#externalmoduledeclaration)\\>\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "plugins",
-                "type": "({ `options`: Record<`string`, `unknown`\\> ; `resolve`: `string`  } \\| `string`)[]",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "projectConfig",
-                "type": "[`ProjectConfigOptions`](../../internal-1/modules/internal.internal-1.CommonTypes.mdx#projectconfigoptions)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "enqueue_",
-            "type": "`Promise`<`void`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "logger_",
-            "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "activity",
-                "type": "(`message`: `string`, `config?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "debug",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "error",
-                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failure",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "info",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "log",
-                "type": "(...`args`: `any`[]) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "panic",
-                "type": "(`data`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "progress",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "setLogLevel",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shouldLog",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "success",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "unsetLogLevel",
-                "type": "() => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "warn",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "shouldEnqueuerRun",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "stagedJobService_",
-            "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "stagedJobRepository_",
-                "type": "`Repository`<[`StagedJob`](internal.internal.StagedJob.mdx)\\> & { `insertBulk`: Method insertBulk  }",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "featureFlagRouter_",
-        "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "flags",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "imageRepository_",
-        "type": "`Repository`<[`Image`](internal.internal.Image.mdx)\\> & { `insertBulk`: Method insertBulk ; `upsertImages`: Method upsertImages  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager_",
-        "type": "`EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "productCategoryRepository_",
-        "type": "`TreeRepository`<[`ProductCategory`](internal.ProductCategory.mdx)\\> & { `addProducts`: Method addProducts ; `findOneWithDescendants`: Method findOneWithDescendants ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `removeProducts`: Method removeProducts  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "productOptionRepository_",
-        "type": "`Repository`<[`ProductOption`](internal.internal.ProductOption.mdx)\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "productRepository_",
-        "type": "`Repository`<[`Product`](internal.Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "productTagRepository_",
-        "type": "`Repository`<[`ProductTag`](internal.ProductTag.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `insertBulk`: Method insertBulk ; `listTagsByUsage`: Method listTagsByUsage ; `upsertTags`: Method upsertTags  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "productTypeRepository_",
-        "type": "`Repository`<[`ProductType`](internal.ProductType.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "productVariantRepository_",
-        "type": "`Repository`<[`ProductVariant`](internal.internal.ProductVariant.mdx)\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "productVariantService_",
-        "type": "[`ProductVariantService`](internal.internal.ProductVariantService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "cartRepository_",
-            "type": "`Repository`<[`Cart`](internal.Cart.mdx)\\> & { `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations  }",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "eventBus_",
-            "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "config_",
-                "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "enqueue_",
-                "type": "`Promise`<`void`\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "logger_",
-                "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shouldEnqueuerRun",
-                "type": "`boolean`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "stagedJobService_",
-                "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "moneyAmountRepository_",
-            "type": "`Repository`<[`MoneyAmount`](internal.internal.MoneyAmount.mdx)\\> & { `addPriceListPrices`: Method addPriceListPrices ; `createProductVariantMoneyAmounts`: Method createProductVariantMoneyAmounts ; `deletePriceListPrices`: Method deletePriceListPrices ; `deleteVariantPricesNotIn`: Method deleteVariantPricesNotIn ; `findCurrencyMoneyAmounts`: Method findCurrencyMoneyAmounts ; `findManyForVariantInPriceList`: Method findManyForVariantInPriceList ; `findManyForVariantInRegion`: Method findManyForVariantInRegion ; `findManyForVariantsInRegion`: Method findManyForVariantsInRegion ; `findRegionMoneyAmounts`: Method findRegionMoneyAmounts ; `findVariantPricesNotIn`: Method findVariantPricesNotIn ; `getPricesForVariantInRegion`: Method getPricesForVariantInRegion ; `insertBulk`: Method insertBulk ; `updatePriceListPrices`: Method updatePriceListPrices ; `upsertVariantCurrencyPrice`: Method upsertVariantCurrencyPrice  }",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "priceSelectionStrategy_",
-            "type": "[`IPriceSelectionStrategy`](../interfaces/internal.internal.IPriceSelectionStrategy.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "productOptionValueRepository_",
-            "type": "`Repository`<[`ProductOptionValue`](internal.internal.ProductOptionValue.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "productRepository_",
-            "type": "`Repository`<[`Product`](internal.Product.mdx)\\> & { `_applyCategoriesQuery`: Method \\_applyCategoriesQuery ; `_findWithRelations`: Method \\_findWithRelations ; `bulkAddToCollection`: Method bulkAddToCollection ; `bulkRemoveFromCollection`: Method bulkRemoveFromCollection ; `findOneWithRelations`: Method findOneWithRelations ; `findWithRelations`: Method findWithRelations ; `findWithRelationsAndCount`: Method findWithRelationsAndCount ; `getCategoryIdsFromInput`: Method getCategoryIdsFromInput ; `getCategoryIdsRecursively`: Method getCategoryIdsRecursively ; `getFreeTextSearchResultsAndCount`: Method getFreeTextSearchResultsAndCount ; `isProductInSalesChannels`: Method isProductInSalesChannels ; `queryProducts`: Method queryProducts ; `queryProductsWithIds`: Method queryProductsWithIds  }",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "productVariantRepository_",
-            "type": "`Repository`<[`ProductVariant`](internal.internal.ProductVariant.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "regionService_",
-            "type": "[`RegionService`](internal.internal.RegionService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "countryRepository_",
-                "type": "`Repository`<[`Country`](internal.internal.Country.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "currencyRepository_",
-                "type": "`Repository`<[`Currency`](internal.Currency.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "eventBus_",
-                "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "featureFlagRouter_",
-                "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "fulfillmentProviderRepository_",
-                "type": "`Repository`<[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "fulfillmentProviderService_",
-                "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "paymentProviderRepository_",
-                "type": "`Repository`<[`PaymentProvider`](internal.PaymentProvider.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "paymentProviderService_",
-                "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "regionRepository_",
-                "type": "`Repository`<[`Region`](internal.Region.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "storeService_",
-                "type": "[`StoreService`](internal.internal.StoreService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "taxProviderRepository_",
-                "type": "`Repository`<[`TaxProvider`](internal.TaxProvider.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "Events",
-                "type": "`object`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "Events",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "CREATED",
-                "type": "`string`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "DELETED",
-                "type": "`string`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "UPDATED",
-                "type": "`string`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "searchService_",
-        "type": "[`SearchService`](internal.internal.SearchService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "isDefault",
-            "type": "`boolean`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "logger_",
-            "type": "[`Logger`](../modules/internal.internal.mdx#logger)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "activity",
-                "type": "(`message`: `string`, `config?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "debug",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "error",
-                "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "failure",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "info",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "log",
-                "type": "(...`args`: `any`[]) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "panic",
-                "type": "(`data`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "progress",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "setLogLevel",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shouldLog",
-                "type": "(`level`: `string`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "success",
-                "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "unsetLogLevel",
-                "type": "() => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "warn",
-                "type": "(`message`: `any`) => `void`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "options_",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "transactionManager_",
-        "type": "`undefined` \\| `EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "Events",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "CREATED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "DELETED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "UPDATED",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "IndexName",
-        "type": "``\"products\"``",
-        "description": "",
-        "optional": false,
-        "defaultValue": "\"products\"",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "productTypeService_",
-    "type": "[`ProductTypeService`](internal.internal.ProductTypeService.mdx)",
+    "type": "[ProductTypeService](internal.internal.ProductTypeService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__configModule__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__container__",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__moduleDeclaration__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager_",
-        "type": "`EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager_",
-        "type": "`undefined` \\| `EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "typeRepository_",
-        "type": "`Repository`<[`ProductType`](internal.ProductType.mdx)\\> & { `findAndCountByDiscountConditionId`: Method findAndCountByDiscountConditionId ; `upsertType`: Method upsertType  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "shippingOptionService_",
-    "type": "[`ShippingOptionService`](internal.internal.ShippingOptionService.mdx)",
+    "type": "[ShippingOptionService](internal.internal.ShippingOptionService.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__configModule__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__container__",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__moduleDeclaration__",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "featureFlagRouter_",
-        "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "flags",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "manager_",
-        "type": "`EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "methodRepository_",
-        "type": "`Repository`<[`ShippingMethod`](internal.ShippingMethod-4.mdx)\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "optionRepository_",
-        "type": "`Repository`<[`ShippingOption`](internal.ShippingOption.mdx)\\> & { `upsertShippingProfile`: Method upsertShippingProfile  }",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "providerService_",
-        "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "container_",
-            "type": "[`FulfillmentProviderContainer`](../../modules/internal.mdx#fulfillmentprovidercontainer)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "createScope",
-                "type": "() => [`MedusaContainer`](../../modules/internal.mdx#medusacontainer)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "registerAdd",
-                "type": "<T\\>(`name`: `string`, `registration`: `T`) => [`MedusaContainer`](../../modules/internal.mdx#medusacontainer)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "fulfillmentProviderRepository",
-                "type": "typeof [`FulfillmentProviderRepository`](../../modules/internal.mdx#fulfillmentproviderrepository)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "fulfillmentProviderRepository_",
-            "type": "`Repository`<[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "regionService_",
-        "type": "[`RegionService`](internal.internal.RegionService.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__configModule__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__container__",
-            "type": "`any`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "__moduleDeclaration__",
-            "type": "Record<`string`, `unknown`\\>",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "countryRepository_",
-            "type": "`Repository`<[`Country`](internal.internal.Country.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "currencyRepository_",
-            "type": "`Repository`<[`Currency`](internal.Currency.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "eventBus_",
-            "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "config_",
-                "type": "[`ConfigModule`](../../modules/internal.mdx#configmodule)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "enqueue_",
-                "type": "`Promise`<`void`\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "logger_",
-                "type": "[`Logger`](../interfaces/internal.Logger.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "shouldEnqueuerRun",
-                "type": "`boolean`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "stagedJobService_",
-                "type": "[`StagedJobService`](internal.internal.StagedJobService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "featureFlagRouter_",
-            "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "flags",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "fulfillmentProviderRepository_",
-            "type": "`Repository`<[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "fulfillmentProviderService_",
-            "type": "[`FulfillmentProviderService`](internal.internal.FulfillmentProviderService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "container_",
-                "type": "[`FulfillmentProviderContainer`](../../modules/internal.mdx#fulfillmentprovidercontainer)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "fulfillmentProviderRepository_",
-                "type": "`Repository`<[`FulfillmentProvider`](internal.internal.FulfillmentProvider.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "manager_",
-            "type": "`EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "paymentProviderRepository_",
-            "type": "`Repository`<[`PaymentProvider`](internal.PaymentProvider.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "paymentProviderService_",
-            "type": "[`PaymentProviderService`](internal.internal.PaymentProviderService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "container_",
-                "type": "[`InjectedDependencies`](../../modules/internal.mdx#injecteddependencies-22)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "customerService_",
-                "type": "[`CustomerService`](internal.internal.CustomerService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "featureFlagRouter_",
-                "type": "[`FlagRouter`](internal.FlagRouter.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "logger_",
-                "type": "[`Logger`](../modules/internal.internal.mdx#logger)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "paymentProviderRepository_",
-                "type": "`Repository`<[`PaymentProvider`](internal.PaymentProvider.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "paymentRepository_",
-                "type": "`Repository`<[`Payment`](internal.Payment.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "paymentSessionRepository_",
-                "type": "`Repository`<[`PaymentSession`](internal.PaymentSession.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "refundRepository_",
-                "type": "`Repository`<[`Refund`](internal.Refund.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "throwFromPaymentProcessorError",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "regionRepository_",
-            "type": "`Repository`<[`Region`](internal.Region.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "storeService_",
-            "type": "[`StoreService`](internal.internal.StoreService.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "__configModule__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__container__",
-                "type": "`any`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "__moduleDeclaration__",
-                "type": "Record<`string`, `unknown`\\>",
-                "description": "",
-                "optional": true,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "currencyRepository_",
-                "type": "`Repository`<[`Currency`](internal.Currency.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "eventBus_",
-                "type": "[`EventBusService`](internal.internal.EventBusService.mdx)",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "manager_",
-                "type": "`EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "storeRepository_",
-                "type": "`Repository`<[`Store`](internal.Store.mdx)\\>",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "transactionManager_",
-                "type": "`undefined` \\| `EntityManager`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "taxProviderRepository_",
-            "type": "`Repository`<[`TaxProvider`](internal.TaxProvider.mdx)\\>",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "transactionManager_",
-            "type": "`undefined` \\| `EntityManager`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "Events",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": [
-              {
-                "name": "CREATED",
-                "type": "`string`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "DELETED",
-                "type": "`string`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "UPDATED",
-                "type": "`string`",
-                "description": "",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "requirementRepository_",
-        "type": "`Repository`<[`ShippingOptionRequirement`](internal.internal.ShippingOptionRequirement.mdx)\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "transactionManager_",
-        "type": "`undefined` \\| `EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "validateAndMutatePrice",
-        "type": "`any`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "taxRateRepository_",
-    "type": "`Repository`<[`TaxRate`](internal.TaxRate.mdx)\\> & { `addToProduct`: Method addToProduct ; `addToProductType`: Method addToProductType ; `addToShippingOption`: Method addToShippingOption ; `applyResolutionsToQueryBuilder`: Method applyResolutionsToQueryBuilder ; `findAndCountWithResolution`: Method findAndCountWithResolution ; `findOneWithResolution`: Method findOneWithResolution ; `findWithResolution`: Method findWithResolution ; `getFindQueryBuilder`: Method getFindQueryBuilder ; `listByProduct`: Method listByProduct ; `listByShippingOption`: Method listByShippingOption ; `removeFromProduct`: Method removeFromProduct ; `removeFromProductType`: Method removeFromProductType ; `removeFromShippingOption`: Method removeFromShippingOption  }",
+    "type": "Repository&#60;[TaxRate](internal.TaxRate.mdx)&#62; & `&#123; addToProduct: Method addToProduct ; addToProductType: Method addToProductType ; addToShippingOption: Method addToShippingOption ; applyResolutionsToQueryBuilder: Method applyResolutionsToQueryBuilder ; findAndCountWithResolution: Method findAndCountWithResolution ; findOneWithResolution: Method findOneWithResolution ; findWithResolution: Method findWithResolution ; getFindQueryBuilder: Method getFindQueryBuilder ; listByProduct: Method listByProduct ; listByShippingOption: Method listByShippingOption ; removeFromProduct: Method removeFromProduct ; removeFromProductType: Method removeFromProductType ; removeFromShippingOption: Method removeFromShippingOption  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1953,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1971,7 +101,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2021,22 +151,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTaxRate`](internal.internal.ProductTaxRate.mdx) \\| [`ProductTaxRate`](internal.internal.ProductTaxRate.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTaxRate](internal.internal.ProductTaxRate.mdx) \\| [ProductTaxRate](internal.internal.ProductTaxRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductTaxRate \\| ProductTaxRate[]",
-        "type": "[`ProductTaxRate`](internal.internal.ProductTaxRate.mdx) \\| [`ProductTaxRate`](internal.internal.ProductTaxRate.mdx)[]",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2081,32 +201,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductTypeTaxRate`](internal.internal.ProductTypeTaxRate.mdx)[]\\>",
+    "type": "Promise&#60;[ProductTypeTaxRate](internal.internal.ProductTypeTaxRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "ProductTypeTaxRate[]",
-        "type": "[`ProductTypeTaxRate`](internal.internal.ProductTypeTaxRate.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "ProductTypeTaxRate",
-            "type": "[`ProductTypeTaxRate`](internal.internal.ProductTypeTaxRate.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2151,32 +251,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ShippingTaxRate`](internal.internal.ShippingTaxRate.mdx)[]\\>",
+    "type": "Promise&#60;[ShippingTaxRate](internal.internal.ShippingTaxRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "ShippingTaxRate[]",
-        "type": "[`ShippingTaxRate`](internal.internal.ShippingTaxRate.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "ShippingTaxRate",
-            "type": "[`ShippingTaxRate`](internal.internal.ShippingTaxRate.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2193,26 +273,16 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -2221,22 +291,12 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2245,7 +305,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -2263,49 +323,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "[`CreateTaxRateInput`](../../modules/internal.mdx#createtaxrateinput)",
+    "type": "[CreateTaxRateInput](../types/internal.CreateTaxRateInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rate",
-        "type": "`number` \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "region_id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2314,22 +337,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "Promise&#60;[TaxRate](internal.TaxRate.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "TaxRate",
-        "type": "[`TaxRate`](internal.TaxRate.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2356,7 +369,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2374,141 +387,21 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableTaxRateProps`](../../modules/internal.mdx#filterabletaxrateprops)",
+    "type": "[FilterableTaxRateProps](../types/internal.FilterableTaxRateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](internal.StringComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "created_at",
-        "type": "`Date` \\| [`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "deleted_at",
-        "type": "`Date` \\| [`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string` \\| `string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rate",
-        "type": "`number` \\| [`NumericalComparisonOperator`](internal.NumericalComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "region_id",
-        "type": "`string` \\| `string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "updated_at",
-        "type": "`Date` \\| [`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[TaxRate](internal.TaxRate.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2517,32 +410,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)[]\\>",
+    "type": "Promise&#60;[TaxRate](internal.TaxRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "TaxRate[]",
-        "type": "[`TaxRate`](internal.TaxRate.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "TaxRate",
-            "type": "[`TaxRate`](internal.TaxRate.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2555,141 +428,21 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`FilterableTaxRateProps`](../../modules/internal.mdx#filterabletaxrateprops)",
+    "type": "[FilterableTaxRateProps](../types/internal.FilterableTaxRateProps.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](internal.StringComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "created_at",
-        "type": "`Date` \\| [`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "deleted_at",
-        "type": "`Date` \\| [`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string` \\| `string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rate",
-        "type": "`number` \\| [`NumericalComparisonOperator`](internal.NumericalComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "region_id",
-        "type": "`string` \\| `string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "updated_at",
-        "type": "`Date` \\| [`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[TaxRate](internal.TaxRate.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2698,41 +451,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`TaxRate`](internal.TaxRate.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[TaxRate](internal.TaxRate.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "TaxRate[]",
-        "type": "[`TaxRate`](internal.TaxRate.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "TaxRate",
-            "type": "[`TaxRate`](internal.TaxRate.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2754,22 +478,12 @@ ___
   },
   {
     "name": "config",
-    "type": "[`TaxRateListByConfig`](../../modules/internal.mdx#taxratelistbyconfig)",
+    "type": "[TaxRateListByConfig](../types/internal.TaxRateListByConfig.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "region_id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2778,32 +492,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)[]\\>",
+    "type": "Promise&#60;[TaxRate](internal.TaxRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "TaxRate[]",
-        "type": "[`TaxRate`](internal.TaxRate.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "TaxRate",
-            "type": "[`TaxRate`](internal.TaxRate.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2830,32 +524,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)[]\\>",
+    "type": "Promise&#60;[TaxRate](internal.TaxRate.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "TaxRate[]",
-        "type": "[`TaxRate`](internal.TaxRate.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "TaxRate",
-            "type": "[`TaxRate`](internal.TaxRate.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -2891,7 +565,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2932,7 +606,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -2973,7 +647,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -3000,68 +674,12 @@ ___
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[TaxRate](internal.TaxRate.mdx)&#62;",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3070,22 +688,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "Promise&#60;[TaxRate](internal.TaxRate.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "TaxRate",
-        "type": "[`TaxRate`](internal.TaxRate.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3098,7 +706,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -3139,49 +747,12 @@ ___
   },
   {
     "name": "data",
-    "type": "[`UpdateTaxRateInput`](../../modules/internal.mdx#updatetaxrateinput)",
+    "type": "[UpdateTaxRateInput](../types/internal.UpdateTaxRateInput.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "rate",
-        "type": "`number` \\| ``null``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "region_id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3190,22 +761,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`TaxRate`](internal.TaxRate.mdx)\\>",
+    "type": "Promise&#60;[TaxRate](internal.TaxRate.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "TaxRate",
-        "type": "[`TaxRate`](internal.TaxRate.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -3218,7 +779,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -3232,7 +793,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "TaxRateService",
-    "type": "[`TaxRateService`](internal.internal.TaxRateService.mdx)",
+    "type": "[TaxRateService](internal.internal.TaxRateService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

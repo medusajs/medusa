@@ -11,22 +11,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "categories",
-    "type": "[`CreateProductProductCategoryInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductProductCategoryInputDTO.mdx)[]",
+    "type": "[CreateProductProductCategoryInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductProductCategoryInputDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "collection_id",
@@ -120,7 +110,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -138,22 +128,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "options",
-    "type": "[`CreateProductOptionInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductOptionInputDTO.mdx)[]",
+    "type": "[CreateProductOptionInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductOptionInputDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "title",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "origin_country",
@@ -166,68 +146,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "sales_channels",
-    "type": "[`CreateProductSalesChannelInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductSalesChannelInputDTO.mdx)[]",
+    "type": "[CreateProductSalesChannelInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductSalesChannelInputDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "status",
-    "type": "[`ProductStatus`](../../ProductTypes/enums/internal.internal-1.ProductTypes.ProductStatus.mdx)",
+    "type": "[ProductStatus](../../ProductTypes/enums/internal.internal-1.ProductTypes.ProductStatus.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "DRAFT",
-        "type": "``\"draft\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PROPOSED",
-        "type": "``\"proposed\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "PUBLISHED",
-        "type": "``\"published\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "REJECTED",
-        "type": "``\"rejected\"``",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "subtitle",
@@ -240,31 +173,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "tags",
-    "type": "[`CreateProductTagInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductTagInputDTO.mdx)[]",
+    "type": "[CreateProductTagInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductTagInputDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "value",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "thumbnail",
@@ -286,295 +200,21 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "type",
-    "type": "[`CreateProductTypeInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductTypeInputDTO.mdx)",
+    "type": "[CreateProductTypeInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductTypeInputDTO.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "value",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "variants",
-    "type": "[`CreateProductVariantInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductVariantInputDTO.mdx)[]",
+    "type": "[CreateProductVariantInputDTO](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductVariantInputDTO.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "allow_backorder",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "barcode",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "ean",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "height",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "hs_code",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "inventory_quantity",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "length",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manage_inventory",
-        "type": "`boolean`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "material",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "mid_code",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "options",
-        "type": "[`CreteProductVariantOptionInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreteProductVariantOptionInputDTO.mdx)[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "option_id",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "value",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "origin_country",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "prices",
-        "type": "[`CreateProductVariantPricesInputDTO`](internal.internal-1.WorkflowTypes.ProductWorkflow.CreateProductVariantPricesInputDTO.mdx)[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "amount",
-            "type": "`number`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "currency_code",
-            "type": "`string`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "max_quantity",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "min_quantity",
-            "type": "`number`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "region_id",
-            "type": "`string`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "sku",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "title",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "upc",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "weight",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "width",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "weight",

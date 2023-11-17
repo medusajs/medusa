@@ -17,14 +17,16 @@ A product type to create.
     "description": "The product type's ID.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "Holds custom data in key-value pairs.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -33,6 +35,7 @@ A product type to create.
     "description": "The product type's value.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -8,7 +8,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [SharedArrayBuffer](../../interfaces/SharedArrayBuffer.mdx).slice
 
-**slice**(`begin`, `end?`): [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)
+`**slice**(begin, end?): [SharedArrayBuffer](../../variables/SharedArrayBuffer-1.mdx)`
 
 Returns a section of an SharedArrayBuffer.
 
@@ -21,6 +21,7 @@ Returns a section of an SharedArrayBuffer.
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -29,43 +30,39 @@ Returns a section of an SharedArrayBuffer.
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
 
 #### Returns
 
-[`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)
+[SharedArrayBuffer](../../variables/SharedArrayBuffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "SharedArrayBuffer",
-    "type": "[`SharedArrayBufferConstructor`](../../interfaces/SharedArrayBufferConstructor.mdx)",
+    "type": "[SharedArrayBufferConstructor](../../interfaces/SharedArrayBufferConstructor.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
-        "name": "constructor",
-        "type": "(`byteLength`: `number`) => [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "children": []
-      },
-      {
         "name": "prototype",
-        "type": "[`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
+        "type": "[SharedArrayBuffer](../../variables/SharedArrayBuffer-1.mdx)",
         "description": "",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "[species]",
-            "type": "[`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
+            "type": "[SharedArrayBuffer](../../variables/SharedArrayBuffer-1.mdx)",
             "description": "",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -74,6 +71,7 @@ Returns a section of an SharedArrayBuffer.
             "description": "",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -82,14 +80,7 @@ Returns a section of an SharedArrayBuffer.
             "description": "Read-only. The length of the ArrayBuffer (in bytes).",
             "optional": false,
             "defaultValue": "",
-            "children": []
-          },
-          {
-            "name": "slice",
-            "type": "(`begin`: `number`, `end?`: `number`) => [`SharedArrayBuffer`](../../variables/SharedArrayBuffer-1.mdx)",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

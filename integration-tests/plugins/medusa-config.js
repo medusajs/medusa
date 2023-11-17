@@ -7,8 +7,7 @@ const DB_NAME = process.env.DB_TEMP_NAME
 const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 process.env.POSTGRES_URL = DB_URL
 
-const enablePricing = process.env.MEDUSA_FF_ISOLATE_PRICING_DOMAIN == "true"
-const enableProduct = process.env.MEDUSA_FF_ISOLATE_PRODUCT_DOMAIN == "true"
+const enableMedusaV2 = process.env.MEDUSA_FF_MEDUSA_V2 == "true"
 
 module.exports = {
   plugins: [
@@ -37,11 +36,8 @@ module.exports = {
     database_extra: { idle_in_transaction_session_timeout: 0 },
   },
   featureFlags: {
-    isolate_product_domain: enableProduct,
-    isolate_pricing_domain: enablePricing,
+    medusa_v2: enableMedusaV2,
     workflows: {
-      [Workflows.CreateProducts]: true,
-      [Workflows.UpdateProducts]: true,
       [Workflows.CreateCart]: true,
     },
   },

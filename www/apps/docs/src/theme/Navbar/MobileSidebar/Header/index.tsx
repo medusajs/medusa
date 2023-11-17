@@ -1,5 +1,6 @@
 import React from "react"
 import { useNavbarMobileSidebar } from "@docusaurus/theme-common/internal"
+import { translate } from "@docusaurus/Translate"
 import NavbarColorModeToggle from "@theme/Navbar/ColorModeToggle"
 import IconClose from "@theme/Icon/Close"
 import NavbarLogo from "@theme/Navbar/Logo"
@@ -10,6 +11,11 @@ function CloseButton() {
   return (
     <button
       type="button"
+      aria-label={translate({
+        id: "theme.docs.sidebar.closeSidebarButtonAriaLabel",
+        message: "Close navigation bar",
+        description: "The ARIA label for close button of mobile sidebar",
+      })}
       className={clsx(
         "bg-transparent border-0 text-inherit cursor-pointer p-0",
         "flex ml-auto"
@@ -23,12 +29,7 @@ function CloseButton() {
 
 export default function NavbarMobileSidebarHeader(): JSX.Element {
   return (
-    <div
-      className={clsx(
-        "items-center shadow-navbar dark:shadow-navbar-dark",
-        "flex flex-1 h-navbar py-0.75 px-1.5"
-      )}
-    >
+    <div className="navbar-sidebar__brand">
       <NavbarLogo />
       <NavbarColorModeToggle
         className={clsx(

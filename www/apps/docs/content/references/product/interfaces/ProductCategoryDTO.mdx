@@ -13,24 +13,27 @@ A product category's data.
 <ParameterTypes parameters={[
   {
     "name": "category_children",
-    "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+    "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
     "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "category_children",
-        "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+        "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
         "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -39,6 +42,7 @@ A product category's data.
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -47,6 +51,7 @@ A product category's data.
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -55,6 +60,7 @@ A product category's data.
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -63,6 +69,7 @@ A product category's data.
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -71,6 +78,7 @@ A product category's data.
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -79,6 +87,7 @@ A product category's data.
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -87,14 +96,16 @@ A product category's data.
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -103,6 +114,7 @@ A product category's data.
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -111,6 +123,7 @@ A product category's data.
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -121,6 +134,7 @@ A product category's data.
         "description": "When the product category was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -129,6 +143,7 @@ A product category's data.
         "description": "The description of the product category.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -137,6 +152,7 @@ A product category's data.
         "description": "The handle of the product category. The handle can be used to create slug URL paths.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -145,6 +161,7 @@ A product category's data.
         "description": "The ID of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -153,6 +170,7 @@ A product category's data.
         "description": "Whether the product category is active.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -161,6 +179,7 @@ A product category's data.
         "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -169,21 +188,24 @@ A product category's data.
         "description": "The name of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "parent_category",
-        "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)",
+        "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)",
         "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -192,6 +214,7 @@ A product category's data.
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -200,6 +223,7 @@ A product category's data.
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -208,6 +232,7 @@ A product category's data.
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -216,6 +241,7 @@ A product category's data.
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -224,6 +250,7 @@ A product category's data.
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -232,6 +259,7 @@ A product category's data.
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -240,14 +268,16 @@ A product category's data.
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -256,6 +286,7 @@ A product category's data.
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -264,6 +295,7 @@ A product category's data.
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -274,6 +306,7 @@ A product category's data.
         "description": "The ranking of the product category among sibling categories.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -282,6 +315,7 @@ A product category's data.
         "description": "When the product category was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -292,6 +326,7 @@ A product category's data.
     "description": "When the product category was created.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -300,6 +335,7 @@ A product category's data.
     "description": "The description of the product category.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -308,6 +344,7 @@ A product category's data.
     "description": "The handle of the product category. The handle can be used to create slug URL paths.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -316,6 +353,7 @@ A product category's data.
     "description": "The ID of the product category.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -324,6 +362,7 @@ A product category's data.
     "description": "Whether the product category is active.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -332,6 +371,7 @@ A product category's data.
     "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -340,28 +380,32 @@ A product category's data.
     "description": "The name of the product category.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "parent_category",
-    "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)",
+    "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)",
     "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "category_children",
-        "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+        "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
         "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -370,6 +414,7 @@ A product category's data.
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -378,6 +423,7 @@ A product category's data.
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -386,6 +432,7 @@ A product category's data.
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -394,6 +441,7 @@ A product category's data.
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -402,6 +450,7 @@ A product category's data.
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -410,6 +459,7 @@ A product category's data.
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -418,14 +468,16 @@ A product category's data.
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -434,6 +486,7 @@ A product category's data.
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -442,6 +495,7 @@ A product category's data.
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -452,6 +506,7 @@ A product category's data.
         "description": "When the product category was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -460,6 +515,7 @@ A product category's data.
         "description": "The description of the product category.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -468,6 +524,7 @@ A product category's data.
         "description": "The handle of the product category. The handle can be used to create slug URL paths.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -476,6 +533,7 @@ A product category's data.
         "description": "The ID of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -484,6 +542,7 @@ A product category's data.
         "description": "Whether the product category is active.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -492,6 +551,7 @@ A product category's data.
         "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -500,21 +560,24 @@ A product category's data.
         "description": "The name of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "parent_category",
-        "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)",
+        "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)",
         "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -523,6 +586,7 @@ A product category's data.
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -531,6 +595,7 @@ A product category's data.
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -539,6 +604,7 @@ A product category's data.
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -547,6 +613,7 @@ A product category's data.
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -555,6 +622,7 @@ A product category's data.
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -563,6 +631,7 @@ A product category's data.
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -571,14 +640,16 @@ A product category's data.
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -587,6 +658,7 @@ A product category's data.
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -595,6 +667,7 @@ A product category's data.
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -605,6 +678,7 @@ A product category's data.
         "description": "The ranking of the product category among sibling categories.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -613,6 +687,7 @@ A product category's data.
         "description": "When the product category was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -623,6 +698,7 @@ A product category's data.
     "description": "The ranking of the product category among sibling categories.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -631,6 +707,7 @@ A product category's data.
     "description": "When the product category was updated.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

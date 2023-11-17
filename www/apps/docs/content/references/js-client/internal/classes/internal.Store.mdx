@@ -22,115 +22,21 @@ A store holds the main settings of the commerce shop. By default, only one store
   },
   {
     "name": "currencies",
-    "type": "[`Currency`](internal.Currency.mdx)[]",
+    "type": "[Currency](internal.Currency.mdx)[]",
     "description": "The details of the enabled currencies in the store.",
     "optional": false,
     "defaultValue": "",
     "expandable": true,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string`",
-        "description": "The 3 character ISO code for the currency.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "includes_tax",
-        "type": "`boolean`",
-        "description": "Whether the currency prices include tax",
-        "optional": true,
-        "defaultValue": "false",
-        "expandable": false,
-        "featureFlag": "tax_inclusive_pricing",
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "The written name of the currency",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "symbol",
-        "type": "`string`",
-        "description": "The symbol used to indicate the currency.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "symbol_native",
-        "type": "`string`",
-        "description": "The native symbol used to indicate the currency.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "default_currency",
-    "type": "[`Currency`](internal.Currency.mdx)",
+    "type": "[Currency](internal.Currency.mdx)",
     "description": "The details of the store's default currency.",
     "optional": false,
     "defaultValue": "usd",
     "expandable": true,
-    "children": [
-      {
-        "name": "code",
-        "type": "`string`",
-        "description": "The 3 character ISO code for the currency.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "includes_tax",
-        "type": "`boolean`",
-        "description": "Whether the currency prices include tax",
-        "optional": true,
-        "defaultValue": "false",
-        "expandable": false,
-        "featureFlag": "tax_inclusive_pricing",
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "The written name of the currency",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "symbol",
-        "type": "`string`",
-        "description": "The symbol used to indicate the currency.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "symbol_native",
-        "type": "`string`",
-        "description": "The native symbol used to indicate the currency.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "default_currency_code",
@@ -152,240 +58,12 @@ A store holds the main settings of the commerce shop. By default, only one store
   },
   {
     "name": "default_sales_channel",
-    "type": "[`SalesChannel`](internal.SalesChannel.mdx)",
+    "type": "[SalesChannel](internal.SalesChannel.mdx)",
     "description": "The details of the store's default sales channel.",
     "optional": false,
     "defaultValue": "",
     "expandable": true,
-    "children": [
-      {
-        "name": "created_at",
-        "type": "`Date`",
-        "description": "The date with timezone at which the resource was created.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "deleted_at",
-        "type": "``null`` \\| `Date`",
-        "description": "The date with timezone at which the resource was deleted.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "description",
-        "type": "``null`` \\| `string`",
-        "description": "The description of the sales channel.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The sales channel's ID",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "is_disabled",
-        "type": "`boolean`",
-        "description": "Specify if the sales channel is enabled or disabled.",
-        "optional": false,
-        "defaultValue": "false",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "locations",
-        "type": "[`SalesChannelLocation`](internal.internal.SalesChannelLocation.mdx)[]",
-        "description": "The details of the stock locations related to the sales channel.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": true,
-        "children": [
-          {
-            "name": "created_at",
-            "type": "`Date`",
-            "description": "The date with timezone at which the resource was created.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "deleted_at",
-            "type": "``null`` \\| `Date`",
-            "description": "The date with timezone at which the resource was deleted.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "id",
-            "type": "`string`",
-            "description": "The Sales Channel Stock Location's ID",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "location_id",
-            "type": "`string`",
-            "description": "The ID of the Location Stock.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "sales_channel",
-            "type": "[`SalesChannel`](internal.SalesChannel.mdx)",
-            "description": "The details of the sales channel the location is associated with.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": true,
-            "children": [
-              {
-                "name": "created_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was created.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "deleted_at",
-                "type": "``null`` \\| `Date`",
-                "description": "The date with timezone at which the resource was deleted.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "description",
-                "type": "``null`` \\| `string`",
-                "description": "The description of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "id",
-                "type": "`string`",
-                "description": "The sales channel's ID",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "is_disabled",
-                "type": "`boolean`",
-                "description": "Specify if the sales channel is enabled or disabled.",
-                "optional": false,
-                "defaultValue": "false",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "locations",
-                "type": "[`SalesChannelLocation`](internal.internal.SalesChannelLocation.mdx)[]",
-                "description": "The details of the stock locations related to the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": true,
-                "children": []
-              },
-              {
-                "name": "metadata",
-                "type": "``null`` \\| Record<`string`, `unknown`\\>",
-                "description": "An optional key-value map with additional details",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "name",
-                "type": "`string`",
-                "description": "The name of the sales channel.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              },
-              {
-                "name": "updated_at",
-                "type": "`Date`",
-                "description": "The date with timezone at which the resource was updated.",
-                "optional": false,
-                "defaultValue": "",
-                "expandable": false,
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "sales_channel_id",
-            "type": "`string`",
-            "description": "The ID of the Sales Channel",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "updated_at",
-            "type": "`Date`",
-            "description": "The date with timezone at which the resource was updated.",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "metadata",
-        "type": "``null`` \\| Record<`string`, `unknown`\\>",
-        "description": "An optional key-value map with additional details",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "The name of the sales channel.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "updated_at",
-        "type": "`Date`",
-        "description": "The date with timezone at which the resource was updated.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "default_sales_channel_id",
@@ -416,7 +94,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   },
   {
     "name": "metadata",
-    "type": "``null`` \\| Record<`string`, `unknown`\\>",
+    "type": "``null`` \\| `Record<string, unknown>`",
     "description": "An optional key-value map with additional details",
     "optional": false,
     "defaultValue": "",
@@ -435,7 +113,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   {
     "name": "payment_link_template",
     "type": "``null`` \\| `string`",
-    "description": "A template to generate Payment links from. Use {{cart_id}} to include the payment's `cart_id` in the link.",
+    "description": "A template to generate Payment links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the payment's `cart\\_id` in the link.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
@@ -444,7 +122,7 @@ A store holds the main settings of the commerce shop. By default, only one store
   {
     "name": "swap_link_template",
     "type": "``null`` \\| `string`",
-    "description": "A template to generate Swap links from. Use {{cart_id}} to include the Swap's `cart_id` in the link.",
+    "description": "A template to generate Swap links from. Use &#123;&#123;cart\\_id&#125;&#125; to include the Swap's `cart\\_id` in the link.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,

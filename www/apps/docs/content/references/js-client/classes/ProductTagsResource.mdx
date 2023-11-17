@@ -51,7 +51,7 @@ medusa.productTags
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`StoreGetProductTagsParams`](../internal/classes/internal.StoreGetProductTagsParams.mdx)",
+    "type": "[StoreGetProductTagsParams](../internal/classes/internal.StoreGetProductTagsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved product tags.",
     "optional": true,
     "defaultValue": "",
@@ -59,7 +59,7 @@ medusa.productTags
     "children": [
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply to the product tags' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -114,7 +114,7 @@ medusa.productTags
       },
       {
         "name": "id",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "IDs to filter product tags by.",
         "optional": true,
         "defaultValue": "",
@@ -159,7 +159,7 @@ medusa.productTags
       },
       {
         "name": "updated_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply to the product tags' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -205,7 +205,7 @@ medusa.productTags
       },
       {
         "name": "value",
-        "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](../internal/classes/internal.StringComparisonOperator.mdx)",
+        "type": "`string` \\| `string`[] \\| [StringComparisonOperator](../internal/classes/internal.StringComparisonOperator.mdx)",
         "description": "Values to filter product tags by.",
         "optional": true,
         "defaultValue": "",
@@ -216,7 +216,7 @@ medusa.productTags
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -230,7 +230,7 @@ medusa.productTags
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreProductTagsListRes`](../modules/internal.mdx#storeproducttagslistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreProductTagsListRes](../internal/types/internal.StoreProductTagsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product tags with pagination fields.",
@@ -238,7 +238,7 @@ medusa.productTags
     "children": [
       {
         "name": "StoreProductTagsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `product_tags`: [`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; product_tags: [ProductTag](../internal/classes/internal.ProductTag.mdx)[]  &#125;`",
         "description": "The list of product tags with pagination fields.",
         "optional": false,
         "defaultValue": "",
@@ -273,7 +273,7 @@ medusa.productTags
           },
           {
             "name": "product_tags",
-            "type": "[`ProductTag`](../internal/classes/internal.ProductTag.mdx)[]",
+            "type": "[ProductTag](../internal/classes/internal.ProductTag.mdx)[]",
             "description": "An array of product tags details.",
             "optional": false,
             "defaultValue": "",
@@ -308,7 +308,7 @@ medusa.productTags
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",

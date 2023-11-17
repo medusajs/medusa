@@ -6,11 +6,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # Partial
 
- **Partial**<`T`\>: { [P in keyof T]?: T[P] }
+ **Partial**`<TypeParameter T>`: &#123; [P in keyof T]?: T[P] &#125;
 
 Make all properties in T optional
 
-#### Type parameters
+### Type parameters
 
 <ParameterTypes parameters={[
   {
@@ -19,6 +19,7 @@ Make all properties in T optional
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />

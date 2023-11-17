@@ -51,7 +51,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostInvitesInviteAcceptReq`](../internal/classes/internal.AdminPostInvitesInviteAcceptReq.mdx)",
+    "type": "[AdminPostInvitesInviteAcceptReq](../internal/classes/internal.AdminPostInvitesInviteAcceptReq.mdx)",
     "description": "The user accepting the invite.",
     "optional": false,
     "defaultValue": "",
@@ -68,7 +68,7 @@ medusa.admin.invites
       },
       {
         "name": "user",
-        "type": "[`AdminPostInvitesInviteAcceptUserReq`](../internal/classes/internal.AdminPostInvitesInviteAcceptUserReq.mdx)",
+        "type": "[AdminPostInvitesInviteAcceptUserReq](../internal/classes/internal.AdminPostInvitesInviteAcceptUserReq.mdx)",
         "description": "The details of the user to create.",
         "optional": false,
         "defaultValue": "",
@@ -107,7 +107,7 @@ medusa.admin.invites
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -121,7 +121,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the invite is accepted successfully.",
@@ -161,7 +161,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostInvitesPayload`](../modules/internal.mdx#adminpostinvitespayload)",
+    "type": "[AdminPostInvitesPayload](../internal/types/internal.AdminPostInvitesPayload.mdx)",
     "description": "The invite to be created.",
     "optional": false,
     "defaultValue": "",
@@ -178,7 +178,7 @@ medusa.admin.invites
       },
       {
         "name": "role",
-        "type": "[`InviteUserRolesEnum`](../modules/internal.mdx#inviteuserrolesenum)",
+        "type": "[InviteUserRolesEnum](../internal/types/internal.InviteUserRolesEnum.mdx)",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -189,7 +189,7 @@ medusa.admin.invites
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -203,7 +203,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the invite is created successfully.",
@@ -243,7 +243,7 @@ medusa.admin.invites.delete(inviteId).then(({ id, object, deleted }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -257,7 +257,7 @@ medusa.admin.invites.delete(inviteId).then(({ id, object, deleted }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -316,7 +316,7 @@ medusa.admin.invites.list().then(({ invites }) => {
 <ParameterTypes parameters={[
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -330,7 +330,7 @@ medusa.admin.invites.list().then(({ invites }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminListInvitesRes`](../modules/internal.mdx#adminlistinvitesres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminListInvitesRes](../internal/types/internal.AdminListInvitesRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of invites.",
@@ -346,7 +346,7 @@ medusa.admin.invites.list().then(({ invites }) => {
         "children": [
           {
             "name": "invites",
-            "type": "[`Invite`](../internal/classes/internal.Invite.mdx)[]",
+            "type": "[Invite](../internal/classes/internal.Invite.mdx)[]",
             "description": "An array of invites",
             "optional": false,
             "defaultValue": "",
@@ -399,7 +399,7 @@ medusa.admin.invites.list().then(({ invites }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -408,7 +408,7 @@ medusa.admin.invites.list().then(({ invites }) => {
               },
               {
                 "name": "role",
-                "type": "[`UserRoles`](../internal/enums/internal.internal.UserRoles.mdx)",
+                "type": "[UserRoles](../internal/enums/internal.internal.UserRoles.mdx)",
                 "description": "The user's role. These roles don't change the privileges of the user.",
                 "optional": false,
                 "defaultValue": "member",
@@ -488,7 +488,7 @@ medusa.admin.invites
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -502,7 +502,7 @@ medusa.admin.invites
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves when the invite is resent successfully.",

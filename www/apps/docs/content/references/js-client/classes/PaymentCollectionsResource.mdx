@@ -54,7 +54,7 @@ medusa.paymentCollections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -68,7 +68,7 @@ medusa.paymentCollections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StorePaymentCollectionsRes`](../modules/internal.mdx#storepaymentcollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StorePaymentCollectionsRes](../internal/types/internal.StorePaymentCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the payment collection's details.",
@@ -84,7 +84,7 @@ medusa.paymentCollections
         "children": [
           {
             "name": "payment_collection",
-            "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+            "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
             "description": "Payment collection's details.",
             "optional": false,
             "defaultValue": "",
@@ -128,7 +128,7 @@ medusa.paymentCollections
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -173,7 +173,7 @@ medusa.paymentCollections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -182,7 +182,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of the payment sessions created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -191,7 +191,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -200,7 +200,7 @@ medusa.paymentCollections
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -218,7 +218,7 @@ medusa.paymentCollections
               },
               {
                 "name": "status",
-                "type": "[`PaymentCollectionStatus`](../internal/enums/internal.PaymentCollectionStatus.mdx)",
+                "type": "[PaymentCollectionStatus](../internal/enums/internal.PaymentCollectionStatus.mdx)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -227,7 +227,7 @@ medusa.paymentCollections
               },
               {
                 "name": "type",
-                "type": "[`ORDER_EDIT`](../modules/internal.mdx#order_edit)",
+                "type": "[ORDER_EDIT](../modules/internal.mdx#order_edit)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -284,7 +284,7 @@ medusa.paymentCollections
   },
   {
     "name": "payload",
-    "type": "[`StorePostPaymentCollectionsBatchSessionsAuthorizeReq`](../internal/classes/internal.StorePostPaymentCollectionsBatchSessionsAuthorizeReq.mdx)",
+    "type": "[StorePostPaymentCollectionsBatchSessionsAuthorizeReq](../internal/classes/internal.StorePostPaymentCollectionsBatchSessionsAuthorizeReq.mdx)",
     "description": "The list of payment session IDs to authorize.",
     "optional": false,
     "defaultValue": "",
@@ -303,7 +303,7 @@ medusa.paymentCollections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -317,7 +317,7 @@ medusa.paymentCollections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StorePaymentCollectionsRes`](../modules/internal.mdx#storepaymentcollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StorePaymentCollectionsRes](../internal/types/internal.StorePaymentCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the payment collection's details.",
@@ -333,7 +333,7 @@ medusa.paymentCollections
         "children": [
           {
             "name": "payment_collection",
-            "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+            "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
             "description": "Payment collection's details.",
             "optional": false,
             "defaultValue": "",
@@ -377,7 +377,7 @@ medusa.paymentCollections
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -422,7 +422,7 @@ medusa.paymentCollections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -431,7 +431,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of the payment sessions created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -440,7 +440,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -449,7 +449,7 @@ medusa.paymentCollections
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -467,7 +467,7 @@ medusa.paymentCollections
               },
               {
                 "name": "status",
-                "type": "[`PaymentCollectionStatus`](../internal/enums/internal.PaymentCollectionStatus.mdx)",
+                "type": "[PaymentCollectionStatus](../internal/enums/internal.PaymentCollectionStatus.mdx)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -476,7 +476,7 @@ medusa.paymentCollections
               },
               {
                 "name": "type",
-                "type": "[`ORDER_EDIT`](../modules/internal.mdx#order_edit)",
+                "type": "[ORDER_EDIT](../modules/internal.mdx#order_edit)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -533,7 +533,7 @@ medusa.paymentCollections
   },
   {
     "name": "payload",
-    "type": "[`StorePaymentCollectionSessionsReq`](../internal/classes/internal.StorePaymentCollectionSessionsReq.mdx)",
+    "type": "[StorePaymentCollectionSessionsReq](../internal/classes/internal.StorePaymentCollectionSessionsReq.mdx)",
     "description": "The payment session to create.",
     "optional": false,
     "defaultValue": "",
@@ -552,7 +552,7 @@ medusa.paymentCollections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -566,7 +566,7 @@ medusa.paymentCollections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StorePaymentCollectionsRes`](../modules/internal.mdx#storepaymentcollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StorePaymentCollectionsRes](../internal/types/internal.StorePaymentCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the payment collection's details.",
@@ -582,7 +582,7 @@ medusa.paymentCollections
         "children": [
           {
             "name": "payment_collection",
-            "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+            "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
             "description": "Payment collection's details.",
             "optional": false,
             "defaultValue": "",
@@ -626,7 +626,7 @@ medusa.paymentCollections
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -671,7 +671,7 @@ medusa.paymentCollections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -680,7 +680,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of the payment sessions created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -689,7 +689,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -698,7 +698,7 @@ medusa.paymentCollections
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -716,7 +716,7 @@ medusa.paymentCollections
               },
               {
                 "name": "status",
-                "type": "[`PaymentCollectionStatus`](../internal/enums/internal.PaymentCollectionStatus.mdx)",
+                "type": "[PaymentCollectionStatus](../internal/enums/internal.PaymentCollectionStatus.mdx)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -725,7 +725,7 @@ medusa.paymentCollections
               },
               {
                 "name": "type",
-                "type": "[`ORDER_EDIT`](../modules/internal.mdx#order_edit)",
+                "type": "[ORDER_EDIT](../modules/internal.mdx#order_edit)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -815,7 +815,7 @@ medusa.paymentCollections
   },
   {
     "name": "payload",
-    "type": "[`StorePostPaymentCollectionsBatchSessionsReq`](../internal/classes/internal.StorePostPaymentCollectionsBatchSessionsReq.mdx)",
+    "type": "[StorePostPaymentCollectionsBatchSessionsReq](../internal/classes/internal.StorePostPaymentCollectionsBatchSessionsReq.mdx)",
     "description": "The attributes of each session to update.",
     "optional": false,
     "defaultValue": "",
@@ -823,7 +823,7 @@ medusa.paymentCollections
     "children": [
       {
         "name": "sessions",
-        "type": "[`StorePostPaymentCollectionsSessionsReq`](../internal/classes/internal.StorePostPaymentCollectionsSessionsReq.mdx)[]",
+        "type": "[StorePostPaymentCollectionsSessionsReq](../internal/classes/internal.StorePostPaymentCollectionsSessionsReq.mdx)[]",
         "description": "Payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted.",
         "optional": false,
         "defaultValue": "",
@@ -862,7 +862,7 @@ medusa.paymentCollections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -876,7 +876,7 @@ medusa.paymentCollections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StorePaymentCollectionsRes`](../modules/internal.mdx#storepaymentcollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StorePaymentCollectionsRes](../internal/types/internal.StorePaymentCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the payment collection's details.",
@@ -892,7 +892,7 @@ medusa.paymentCollections
         "children": [
           {
             "name": "payment_collection",
-            "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+            "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
             "description": "Payment collection's details.",
             "optional": false,
             "defaultValue": "",
@@ -936,7 +936,7 @@ medusa.paymentCollections
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -981,7 +981,7 @@ medusa.paymentCollections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -990,7 +990,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of the payment sessions created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -999,7 +999,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -1008,7 +1008,7 @@ medusa.paymentCollections
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -1026,7 +1026,7 @@ medusa.paymentCollections
               },
               {
                 "name": "status",
-                "type": "[`PaymentCollectionStatus`](../internal/enums/internal.PaymentCollectionStatus.mdx)",
+                "type": "[PaymentCollectionStatus](../internal/enums/internal.PaymentCollectionStatus.mdx)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -1035,7 +1035,7 @@ medusa.paymentCollections
               },
               {
                 "name": "type",
-                "type": "[`ORDER_EDIT`](../modules/internal.mdx#order_edit)",
+                "type": "[ORDER_EDIT](../modules/internal.mdx#order_edit)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -1100,7 +1100,7 @@ medusa.paymentCollections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "",
     "optional": false,
     "defaultValue": "{}",
@@ -1114,7 +1114,7 @@ medusa.paymentCollections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StorePaymentCollectionsSessionRes`](../modules/internal.mdx#storepaymentcollectionssessionres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StorePaymentCollectionsSessionRes](../internal/types/internal.StorePaymentCollectionsSessionRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the refreshed payment session's details.",
@@ -1130,7 +1130,7 @@ medusa.paymentCollections
         "children": [
           {
             "name": "payment_session",
-            "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+            "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
             "description": "Payment session's details.",
             "optional": false,
             "defaultValue": "",
@@ -1147,7 +1147,7 @@ medusa.paymentCollections
               },
               {
                 "name": "cart",
-                "type": "[`Cart`](../internal/classes/internal.Cart.mdx)",
+                "type": "[Cart](../internal/classes/internal.Cart.mdx)",
                 "description": "The details of the cart that the payment session was created for.",
                 "optional": false,
                 "defaultValue": "",
@@ -1174,7 +1174,7 @@ medusa.paymentCollections
               },
               {
                 "name": "data",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The data required for the Payment Provider to identify, modify and process the Payment Session. Typically this will be an object that holds an id to the external payment session, but can be an empty object if the Payment Provider doesn't hold any state.",
                 "optional": false,
                 "defaultValue": "",
@@ -1238,7 +1238,7 @@ medusa.paymentCollections
               {
                 "name": "status",
                 "type": "`string`",
-                "description": "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires_more` to indicate that further actions are to be completed by the Customer.",
+                "description": "Indicates the status of the Payment Session. Will default to `pending`, and will eventually become `authorized`. Payment Sessions may have the status of `requires\\_more` to indicate that further actions are to be completed by the Customer.",
                 "optional": false,
                 "defaultValue": "",
                 "expandable": false,
@@ -1311,7 +1311,7 @@ medusa.paymentCollections
   },
   {
     "name": "query",
-    "type": "[`StoreGetPaymentCollectionsParams`](../internal/classes/internal.StoreGetPaymentCollectionsParams.mdx)",
+    "type": "[StoreGetPaymentCollectionsParams](../internal/classes/internal.StoreGetPaymentCollectionsParams.mdx)",
     "description": "Configurations to apply on the retrieved payment collection.",
     "optional": true,
     "defaultValue": "",
@@ -1339,7 +1339,7 @@ medusa.paymentCollections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1353,7 +1353,7 @@ medusa.paymentCollections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StorePaymentCollectionsRes`](../modules/internal.mdx#storepaymentcollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StorePaymentCollectionsRes](../internal/types/internal.StorePaymentCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the payment collection's details.",
@@ -1369,7 +1369,7 @@ medusa.paymentCollections
         "children": [
           {
             "name": "payment_collection",
-            "type": "[`PaymentCollection`](../internal/classes/internal.PaymentCollection.mdx)",
+            "type": "[PaymentCollection](../internal/classes/internal.PaymentCollection.mdx)",
             "description": "Payment collection's details.",
             "optional": false,
             "defaultValue": "",
@@ -1413,7 +1413,7 @@ medusa.paymentCollections
               },
               {
                 "name": "currency",
-                "type": "[`Currency`](../internal/classes/internal.Currency.mdx)",
+                "type": "[Currency](../internal/classes/internal.Currency.mdx)",
                 "description": "The details of the currency this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -1458,7 +1458,7 @@ medusa.paymentCollections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1467,7 +1467,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of the payment sessions created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -1476,7 +1476,7 @@ medusa.paymentCollections
               },
               {
                 "name": "payments",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)[]",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)[]",
                 "description": "The details of the payments created as part of the payment collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -1485,7 +1485,7 @@ medusa.paymentCollections
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region this payment collection is associated with.",
                 "optional": false,
                 "defaultValue": "",
@@ -1503,7 +1503,7 @@ medusa.paymentCollections
               },
               {
                 "name": "status",
-                "type": "[`PaymentCollectionStatus`](../internal/enums/internal.PaymentCollectionStatus.mdx)",
+                "type": "[PaymentCollectionStatus](../internal/enums/internal.PaymentCollectionStatus.mdx)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",
@@ -1512,7 +1512,7 @@ medusa.paymentCollections
               },
               {
                 "name": "type",
-                "type": "[`ORDER_EDIT`](../modules/internal.mdx#order_edit)",
+                "type": "[ORDER_EDIT](../modules/internal.mdx#order_edit)",
                 "description": "The type of the payment collection",
                 "optional": false,
                 "defaultValue": "",

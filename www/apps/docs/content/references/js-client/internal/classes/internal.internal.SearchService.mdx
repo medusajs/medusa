@@ -20,264 +20,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "logger_",
-    "type": "[`Logger`](../modules/internal.internal.mdx#logger)",
+    "type": "[Logger](../types/internal.internal.Logger.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "activity",
-        "type": "(`message`: `string`, `config?`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `string`, `config?`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "debug",
-        "type": "(`message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "error",
-        "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "failure",
-        "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "info",
-        "type": "(`message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "log",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(...`args`: `any`[]) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "panic",
-        "type": "(`data`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`data`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "progress",
-        "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "setLogLevel",
-        "type": "(`level`: `string`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`level`: `string`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "shouldLog",
-        "type": "(`level`: `string`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`level`: `string`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "success",
-        "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "unsetLogLevel",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "warn",
-        "type": "(`message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   },
   {
     "name": "options_",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -295,31 +47,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "Record",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "optional": false,
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "string",
-        "type": "`string`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "unknown",
-        "type": "`unknown`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -366,7 +99,7 @@ Used to index documents by the search engine provider
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -409,7 +142,7 @@ Used to create an index
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -443,7 +176,7 @@ Used to delete all documents
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -486,7 +219,7 @@ Used to delete document
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -520,7 +253,7 @@ Used to get an index
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -572,7 +305,7 @@ Used to replace documents
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
@@ -624,22 +357,12 @@ Used to search for a document in an index
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<{ `hits`: `unknown`[]  }\\>",
+    "type": "Promise&#60;&#123; hits: unknown[]  &#125;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",
     "expandable": false,
-    "children": [
-      {
-        "name": "`object`",
-        "type": "`object`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -677,7 +400,7 @@ Used to update the settings of an index
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "returns response from search engine provider",

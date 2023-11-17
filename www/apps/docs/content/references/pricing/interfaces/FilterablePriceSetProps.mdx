@@ -13,18 +13,20 @@ Filters to apply on price sets.
 <ParameterTypes parameters={[
   {
     "name": "$and",
-    "type": "([`FilterablePriceSetProps`](FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterablePriceSetProps`](FilterablePriceSetProps.mdx)\\>)[]",
+    "type": "([FilterablePriceSetProps](FilterablePriceSetProps.mdx) \\| [BaseFilterable](BaseFilterable.mdx)&#60;[FilterablePriceSetProps](FilterablePriceSetProps.mdx)&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "$or",
-    "type": "([`FilterablePriceSetProps`](FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterablePriceSetProps`](FilterablePriceSetProps.mdx)\\>)[]",
+    "type": "([FilterablePriceSetProps](FilterablePriceSetProps.mdx) \\| [BaseFilterable](BaseFilterable.mdx)&#60;[FilterablePriceSetProps](FilterablePriceSetProps.mdx)&#62;)[]",
     "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -33,29 +35,33 @@ Filters to apply on price sets.
     "description": "IDs to filter price sets by.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "money_amounts",
-    "type": "[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)",
+    "type": "[FilterableMoneyAmountProps](FilterableMoneyAmountProps.mdx)",
     "description": "Filters to apply on a price set's associated money amounts.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "$and",
-        "type": "([`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)\\>)[]",
+        "type": "([FilterableMoneyAmountProps](FilterableMoneyAmountProps.mdx) \\| [BaseFilterable](BaseFilterable.mdx)&#60;[FilterableMoneyAmountProps](FilterableMoneyAmountProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "$or",
-        "type": "([`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](FilterableMoneyAmountProps.mdx)\\>)[]",
+        "type": "([FilterableMoneyAmountProps](FilterableMoneyAmountProps.mdx) \\| [BaseFilterable](BaseFilterable.mdx)&#60;[FilterableMoneyAmountProps](FilterableMoneyAmountProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -64,6 +70,7 @@ Filters to apply on price sets.
         "description": "Currency codes to filter money amounts by.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -72,6 +79,7 @@ Filters to apply on price sets.
         "description": "IDs to filter money amounts by.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]

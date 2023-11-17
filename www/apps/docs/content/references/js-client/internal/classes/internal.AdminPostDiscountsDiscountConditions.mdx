@@ -20,31 +20,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "operator",
-    "type": "[`DiscountConditionOperator`](../enums/internal.DiscountConditionOperator.mdx)",
-    "description": "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that discountable resources are everything but the specified resources.",
+    "type": "[DiscountConditionOperator](../enums/internal.DiscountConditionOperator.mdx)",
+    "description": "Operator of the condition. `in` indicates that discountable resources are within the specified resources. `not\\_in` indicates that discountable resources are everything but the specified resources.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "IN",
-        "type": "``\"in\"``",
-        "description": "The discountable resources are within the specified resources.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "NOT_IN",
-        "type": "``\"not_in\"``",
-        "description": "The discountable resources are everything but the specified resources.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "product_collections",

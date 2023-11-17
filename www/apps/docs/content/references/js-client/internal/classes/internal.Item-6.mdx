@@ -20,35 +20,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "images",
-    "type": "[`Image`](internal.Image.mdx)[]",
+    "type": "[Image](internal.Image.mdx)[]",
     "description": "A list of image URL's that will be associated with the Claim",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "Image ID",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "url",
-        "type": "`string`",
-        "description": "Image URL",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs to hold additional information.",
     "optional": true,
     "defaultValue": "",
@@ -75,30 +56,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "tags",
-    "type": "[`Tag`](internal.Tag.mdx)[]",
+    "type": "[Tag](internal.Tag.mdx)[]",
     "description": "A list o tags to add to the Claim Item",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "Tag ID",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "value",
-        "type": "`string`",
-        "description": "Tag value",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

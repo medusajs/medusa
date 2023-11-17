@@ -1,7 +1,6 @@
-import { FlagRouter } from "@medusajs/utils"
+import { FlagRouter, MedusaV2Flag } from "@medusajs/utils"
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
 import { defaultRelations } from "."
-import IsolateProductDomainFeatureFlag from "../../../../loaders/feature-flags/isolate-product-domain"
 import {
   PricingService,
   ProductService,
@@ -86,9 +85,7 @@ export default async (req, res) => {
   query.admin_only = false
 
   if (productIds.length) {
-    if (
-      featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
-    ) {
+    if (featureFlagRouter.isFeatureEnabled(MedusaV2Flag.key)) {
       const productShippinProfileMap =
         await shippingProfileService.getMapProfileIdsByProductIds(productIds)
 

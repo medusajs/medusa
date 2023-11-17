@@ -6,10 +6,6 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # WritableStream
 
-## Implemented by
-
-- [`WritableBase`](../classes/internal.WritableBase.mdx)
-
 ## Properties
 
 <ParameterTypes parameters={[
@@ -33,40 +29,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "error",
-    "type": "[`Error`](../../modules/internal.mdx#error)",
+    "type": "[Error](../../modules/internal.mdx#error)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "message",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "stack",
-        "type": "`string`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "event",
@@ -127,17 +95,7 @@ Alias for `emitter.on(eventName, listener)`.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -146,7 +104,7 @@ Alias for `emitter.on(eventName, listener)`.
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -246,7 +204,7 @@ ___
 
 ### end
 
-**end**(`cb?`): [`WritableStream`](internal.WritableStream.mdx)
+`**end**(cb?): [WritableStream](internal.WritableStream.mdx)`
 
 #### Parameters
 
@@ -258,17 +216,7 @@ ___
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -277,7 +225,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -286,14 +234,14 @@ ___
   }
 ]} />
 
-**end**(`data`, `cb?`): [`WritableStream`](internal.WritableStream.mdx)
+`**end**(data, cb?): [WritableStream](internal.WritableStream.mdx)`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "data",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -307,17 +255,7 @@ ___
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -326,7 +264,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -335,7 +273,7 @@ ___
   }
 ]} />
 
-**end**(`str`, `encoding?`, `cb?`): [`WritableStream`](internal.WritableStream.mdx)
+`**end**(str, encoding?, cb?): [WritableStream](internal.WritableStream.mdx)`
 
 #### Parameters
 
@@ -351,7 +289,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -365,17 +303,7 @@ ___
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -384,7 +312,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -424,17 +352,7 @@ console.log(myEE.eventNames());
     "defaultValue": "",
     "description": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "string \\| symbol",
-        "type": "`string` \\| `symbol`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -587,17 +505,7 @@ Alias for `emitter.removeListener()`.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -606,7 +514,7 @@ Alias for `emitter.removeListener()`.
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -669,17 +577,7 @@ myEE.emit('foo');
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -688,7 +586,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -749,17 +647,7 @@ myEE.emit('foo');
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -768,7 +656,7 @@ myEE.emit('foo');
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -785,7 +673,7 @@ ___
 
 ### prependListener
 
-Adds the `listener` function to the _beginning_ of the listeners array for the
+Adds the `listener` function to the \_beginning\_ of the listeners array for the
 event named `eventName`. No checks are made to see if the `listener` has
 already been added. Multiple calls passing the same combination of `eventName`and `listener` will result in the `listener` being added, and called, multiple
 times.
@@ -817,17 +705,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -836,7 +714,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -853,7 +731,7 @@ ___
 
 ### prependOnceListener
 
-Adds a **one-time**`listener` function for the event named `eventName` to the _beginning_ of the listeners array. The next time `eventName` is triggered, this
+Adds a **one-time**`listener` function for the event named `eventName` to the \_beginning\_ of the listeners array. The next time `eventName` is triggered, this
 listener is removed, and then invoked.
 
 ```js
@@ -883,17 +761,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -902,7 +770,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1010,7 +878,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1044,7 +912,7 @@ listener array for the specified `eventName`, then `removeListener()` must be
 called multiple times to remove each instance.
 
 Once an event is emitted, all listeners attached to it at the
-time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls _after_ emitting and _before_ the last listener finishes execution
+time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls \_after\_ emitting and \_before\_ the last listener finishes execution
 will not remove them from`emit()` in progress. Subsequent events behave as expected.
 
 ```js
@@ -1080,7 +948,7 @@ myEmitter.emit('event');
 ```
 
 Because listeners are managed using an internal array, calling this will
-change the position indices of any listener registered _after_ the listener
+change the position indices of any listener registered \_after\_ the listener
 being removed. This will not impact the order in which listeners are called,
 but it means that any copies of the listener array as returned by
 the `emitter.listeners()` method will need to be recreated.
@@ -1126,17 +994,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1145,7 +1003,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1188,7 +1046,7 @@ Returns a reference to the `EventEmitter`, so that calls can be chained.
 <ParameterTypes parameters={[
   {
     "name": "WritableStream",
-    "type": "[`WritableStream`](internal.WritableStream.mdx)",
+    "type": "[WritableStream](internal.WritableStream.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -1205,14 +1063,14 @@ ___
 
 ### write
 
-**write**(`buffer`, `cb?`): `boolean`
+`**write**(buffer, cb?): boolean`
 
 #### Parameters
 
 <ParameterTypes parameters={[
   {
     "name": "buffer",
-    "type": "`string` \\| `Uint8Array`",
+    "type": "`string` \\| Uint8Array",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1221,22 +1079,12 @@ ___
   },
   {
     "name": "cb",
-    "type": "(`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1254,7 +1102,7 @@ ___
   }
 ]} />
 
-**write**(`str`, `encoding?`, `cb?`): `boolean`
+`**write**(str, encoding?, cb?): boolean`
 
 #### Parameters
 
@@ -1270,7 +1118,7 @@ ___
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../modules/internal.mdx#bufferencoding)",
+    "type": "[BufferEncoding](../types/internal.BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1279,22 +1127,12 @@ ___
   },
   {
     "name": "cb",
-    "type": "(`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
+    "type": "(`err?`: ``null`` \\| [Error](../../modules/internal.mdx#error)) => `void`",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`err?`: ``null`` \\| [`Error`](../../modules/internal.mdx#error)) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 

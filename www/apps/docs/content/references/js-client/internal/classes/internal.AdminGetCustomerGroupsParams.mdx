@@ -13,49 +13,12 @@ Parameters used to filter and configure the pagination of the retrieved customer
 <ParameterTypes parameters={[
   {
     "name": "created_at",
-    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "type": "[DateComparisonOperator](internal.DateComparisonOperator.mdx)",
     "description": "Date filters to apply on the customer groups' `created_at` date.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "gt",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "gte",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lt",
-        "type": "`Date`",
-        "description": "The filtered date must be less than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lte",
-        "type": "`Date`",
-        "description": "The filtered date must be less than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "discount_condition_id",
@@ -77,7 +40,7 @@ Parameters used to filter and configure the pagination of the retrieved customer
   },
   {
     "name": "id",
-    "type": "`string` \\| `string`[] \\| [`StringComparisonOperator`](internal.StringComparisonOperator.mdx)",
+    "type": "`string` \\| `string`[] \\| [StringComparisonOperator](internal.StringComparisonOperator.mdx)",
     "description": "IDs to filter customer groups by.",
     "optional": true,
     "defaultValue": "",
@@ -131,48 +94,11 @@ Parameters used to filter and configure the pagination of the retrieved customer
   },
   {
     "name": "updated_at",
-    "type": "[`DateComparisonOperator`](internal.DateComparisonOperator.mdx)",
+    "type": "[DateComparisonOperator](internal.DateComparisonOperator.mdx)",
     "description": "Date filters to apply on the customer groups' `update_at` date.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "gt",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "gte",
-        "type": "`Date`",
-        "description": "The filtered date must be greater than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lt",
-        "type": "`Date`",
-        "description": "The filtered date must be less than this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "lte",
-        "type": "`Date`",
-        "description": "The filtered date must be less than or equal to this value.",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

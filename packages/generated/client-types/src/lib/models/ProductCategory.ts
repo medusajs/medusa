@@ -65,4 +65,8 @@ export interface ProductCategory {
    * The date with timezone at which the resource was updated.
    */
   updated_at: string
+  /**
+   * An optional key-value map with additional details
+   */
+  metadata: Record<string, any> | null
 }

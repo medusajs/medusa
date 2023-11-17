@@ -13,7 +13,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "byobRequest",
-    "type": "``null`` \\| [`ReadableStreamBYOBRequest`](../../modules/internal.mdx#readablestreambyobrequest)",
+    "type": "``null`` \\| [ReadableStreamBYOBRequest](../../modules/internal.mdx#readablestreambyobrequest)",
     "description": "[MDN Reference](https://developer.mozilla.org/docs/Web/API/ReadableByteStreamController/byobRequest)",
     "optional": false,
     "defaultValue": "",
@@ -62,40 +62,12 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "chunk",
-    "type": "[`ArrayBufferView`](internal.ArrayBufferView.mdx)",
+    "type": "[ArrayBufferView](internal.ArrayBufferView.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "buffer",
-        "type": "[`ArrayBufferLike`](../../modules/internal.mdx#arraybufferlike)",
-        "description": "The ArrayBuffer instance referenced by the array.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "byteLength",
-        "type": "`number`",
-        "description": "The length in bytes of the array.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "byteOffset",
-        "type": "`number`",
-        "description": "The offset in bytes of the array.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 

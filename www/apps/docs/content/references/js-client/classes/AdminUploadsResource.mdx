@@ -25,7 +25,7 @@ Related Guide: [How to upload CSV file when importing a product](https://docs.me
 <ParameterTypes parameters={[
   {
     "name": "file",
-    "type": "[`AdminCreateUploadPayload`](../modules/internal.mdx#admincreateuploadpayload)",
+    "type": "[AdminCreateUploadPayload](../internal/types/internal.AdminCreateUploadPayload.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -39,7 +39,7 @@ Related Guide: [How to upload CSV file when importing a product](https://docs.me
 <ParameterTypes parameters={[
   {
     "name": "FormData",
-    "type": "`FormData`",
+    "type": "FormData",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -70,7 +70,7 @@ medusa.admin.uploads.create(file).then(({ uploads }) => {
 <ParameterTypes parameters={[
   {
     "name": "file",
-    "type": "[`AdminCreateUploadPayload`](../modules/internal.mdx#admincreateuploadpayload)",
+    "type": "[AdminCreateUploadPayload](../internal/types/internal.AdminCreateUploadPayload.mdx)",
     "description": "The file to upload.",
     "optional": false,
     "defaultValue": "",
@@ -84,7 +84,7 @@ medusa.admin.uploads.create(file).then(({ uploads }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminUploadsRes`](../modules/internal.mdx#adminuploadsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUploadsRes](../internal/types/internal.AdminUploadsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the uploaded file details.",
@@ -100,7 +100,7 @@ medusa.admin.uploads.create(file).then(({ uploads }) => {
         "children": [
           {
             "name": "uploads",
-            "type": "[`FileServiceUploadResult`](../modules/internal.mdx#fileserviceuploadresult)[]",
+            "type": "[FileServiceUploadResult](../internal/types/internal.FileServiceUploadResult.mdx)[]",
             "description": "Uploaded files details.",
             "optional": false,
             "defaultValue": "",
@@ -154,7 +154,7 @@ medusa.admin.uploads.createProtected(file).then(({ uploads }) => {
 <ParameterTypes parameters={[
   {
     "name": "file",
-    "type": "[`AdminCreateUploadPayload`](../modules/internal.mdx#admincreateuploadpayload)",
+    "type": "[AdminCreateUploadPayload](../internal/types/internal.AdminCreateUploadPayload.mdx)",
     "description": "The file to upload.",
     "optional": false,
     "defaultValue": "",
@@ -168,7 +168,7 @@ medusa.admin.uploads.createProtected(file).then(({ uploads }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminUploadsRes`](../modules/internal.mdx#adminuploadsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUploadsRes](../internal/types/internal.AdminUploadsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the uploaded file details.",
@@ -184,7 +184,7 @@ medusa.admin.uploads.createProtected(file).then(({ uploads }) => {
         "children": [
           {
             "name": "uploads",
-            "type": "[`FileServiceUploadResult`](../modules/internal.mdx#fileserviceuploadresult)[]",
+            "type": "[FileServiceUploadResult](../internal/types/internal.FileServiceUploadResult.mdx)[]",
             "description": "Uploaded files details.",
             "optional": false,
             "defaultValue": "",
@@ -242,7 +242,7 @@ medusa.admin.uploads
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminDeleteUploadsReq`](../internal/classes/internal.AdminDeleteUploadsReq.mdx)",
+    "type": "[AdminDeleteUploadsReq](../internal/classes/internal.AdminDeleteUploadsReq.mdx)",
     "description": "The uploaded file to delete.",
     "optional": false,
     "defaultValue": "",
@@ -261,7 +261,7 @@ medusa.admin.uploads
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -275,7 +275,7 @@ medusa.admin.uploads
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation's details.",
@@ -338,7 +338,7 @@ medusa.admin.uploads
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostUploadsDownloadUrlReq`](../internal/classes/internal.AdminPostUploadsDownloadUrlReq.mdx)",
+    "type": "[AdminPostUploadsDownloadUrlReq](../internal/classes/internal.AdminPostUploadsDownloadUrlReq.mdx)",
     "description": "The uploaded file to get a presigned download URL for.",
     "optional": false,
     "defaultValue": "",
@@ -357,7 +357,7 @@ medusa.admin.uploads
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -371,7 +371,7 @@ medusa.admin.uploads
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminUploadsDownloadUrlRes`](../modules/internal.mdx#adminuploadsdownloadurlres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminUploadsDownloadUrlRes](../internal/types/internal.AdminUploadsDownloadUrlRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the download URL details.",

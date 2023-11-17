@@ -1,6 +1,6 @@
 import React from "react"
 import Logo from "@theme/Logo"
-import MobileLogo from "../../MobileLogo"
+import MobileLogo from "../../../components/MobileLogo"
 
 export default function NavbarLogo(): JSX.Element {
   return (

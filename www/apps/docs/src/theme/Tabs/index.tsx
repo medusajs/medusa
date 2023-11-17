@@ -1,13 +1,18 @@
-import React, { ReactElement, cloneElement, useEffect, useRef } from "react"
+import React, {
+  cloneElement,
+  useRef,
+  type ReactElement,
+  useEffect,
+} from "react"
 import clsx from "clsx"
 import {
   useScrollPositionBlocker,
   useTabs,
+  sanitizeTabsChildren,
   type TabItemProps,
 } from "@docusaurus/theme-common/internal"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import type { Props as OldProps } from "@theme/Tabs"
-// import styles from "./styles.module.css"
 
 type TabsCustomProps = {
   isCodeTabs?: boolean
@@ -15,6 +20,13 @@ type TabsCustomProps = {
 }
 
 type TabListProps = OldProps & ReturnType<typeof useTabs> & TabsCustomProps
+
+type TabsComponentProp = TabsCustomProps & OldProps
+
+type TabsProps = {
+  wrapperClassName?: string
+  isCodeTabs?: boolean
+} & OldProps
 
 function TabList({
   className,
@@ -29,6 +41,7 @@ function TabList({
     useScrollPositionBlocker()
   const codeTabSelectorRef = useRef(null)
   const codeTabsWrapperRef = useRef(null)
+
   const handleTabChange = (
     event:
       | React.FocusEvent<HTMLLIElement>
@@ -206,8 +219,6 @@ function TabContent({
   )
 }
 
-type TabsComponentProp = TabsCustomProps & OldProps
-
 function TabsComponent(props: TabsComponentProp): JSX.Element {
   const tabs = useTabs(props)
   return (
@@ -217,11 +228,6 @@ function TabsComponent(props: TabsComponentProp): JSX.Element {
     </div>
   )
 }
-
-type TabsProps = {
-  wrapperClassName?: string
-  isCodeTabs?: boolean
-} & OldProps
 
 function checkCodeTabs(props: TabsProps): boolean {
   return props.groupId === "npm2yarn" || props.isCodeTabs
@@ -255,7 +261,9 @@ export default function Tabs(props: TabsProps): JSX.Element {
         key={String(isBrowser)}
         isCodeTabs={isCodeTabs}
         {...props}
-      />
+      >
+        {sanitizeTabsChildren(props.children)}
+      </TabsComponent>
     </div>
   )
 }
