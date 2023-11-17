@@ -223,22 +223,15 @@ class CartService extends TransactionBaseService {
     const query = buildQuery(selector, config)
 
     const loadSalesChannels = config.relations?.includes("sales_channels")
-    if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-      if (loadSalesChannels) {
-        config.relations = config.relations?.filter(
-          (r) => r !== "sales_channel"
-        )
-      }
+    if (loadSalesChannels) {
+      config.relations = config.relations?.filter((r) => r !== "sales_channel")
     }
 
     config.relations = config.relations?.filter((r) => r !== "sales_channel")
 
     const carts = await cartRepo.find(query)
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
-      loadSalesChannels
-    ) {
+    if (loadSalesChannels) {
       await this.decorateCartsWithSalesChannel(carts)
     }
 
@@ -309,10 +302,7 @@ class CartService extends TransactionBaseService {
       )
     }
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
-      loadSalesChannels
-    ) {
+    if (loadSalesChannels) {
       await this.decorateCartsWithSalesChannel([raw])
     }
 
@@ -382,10 +372,7 @@ class CartService extends TransactionBaseService {
 
     const cart = await this.retrieve(cartId, opt)
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key) &&
-      loadSalesChannels
-    ) {
+    if (loadSalesChannels) {
       await this.decorateCartsWithSalesChannel([cart])
     }
 
@@ -412,9 +399,12 @@ class CartService extends TransactionBaseService {
         if (
           this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
         ) {
-          rawCart.sales_channel_id = (
-            await this.getValidatedSalesChannel(data.sales_channel_id)
-          ).id
+          rawCart.sales_channels = [
+            {
+              id: (await this.getValidatedSalesChannel(data.sales_channel_id))
+                .id,
+            },
+          ]
         }
 
         if (data.customer_id) {
@@ -716,17 +706,17 @@ class CartService extends TransactionBaseService {
     lineItem: LineItem,
     config = { validateSalesChannels: true }
   ): Promise<void> {
-    const select: (keyof Cart)[] = ["id"]
+    const relations: (keyof Cart)[] = ["shipping_methods"]
 
     if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
-      select.push("sales_channel_id")
+      relations.push("sales_channels")
     }
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         let cart = await this.retrieve(cartId, {
-          select,
-          relations: ["shipping_methods"],
+          select: ["id"],
+          relations,
         })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
@@ -858,17 +848,17 @@ class CartService extends TransactionBaseService {
   ): Promise<void> {
     const items: LineItem[] = Array.isArray(lineItems) ? lineItems : [lineItems]
 
-    const select: (keyof Cart)[] = ["id", "customer_id", "region_id"]
+    const relations: (keyof Cart)[] = ["shipping_methods"]
 
     if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
-      select.push("sales_channel_id")
+      relations.push("sales_channels")
     }
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         let cart = await this.retrieve(cartId, {
-          select,
-          relations: ["shipping_methods"],
+          select: ["id", "customer_id", "region_id"],
+          relations,
         })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
@@ -2308,15 +2298,15 @@ class CartService extends TransactionBaseService {
           const lineItemServiceTx =
             this.lineItemService_.withTransaction(transactionManager)
 
-          let productShippinProfileMap = new Map<string, string>()
+          let productShippingProfileMap = new Map<string, string>()
 
           if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
-            productShippinProfileMap =
+            productShippingProfileMap =
               await this.shippingProfileService_.getMapProfileIdsByProductIds(
                 cart.items.map((item) => item.variant.product_id)
               )
           } else {
-            productShippinProfileMap = new Map<string, string>(
+            productShippingProfileMap = new Map<string, string>(
               cart.items.map((item) => [
                 item.variant?.product?.id,
                 item.variant?.product?.profile_id,
@@ -2329,7 +2319,7 @@ class CartService extends TransactionBaseService {
               return lineItemServiceTx.update(item.id, {
                 has_shipping: this.validateLineItemShipping_(
                   methods,
-                  productShippinProfileMap.get(item.variant?.product_id)!
+                  productShippingProfileMap.get(item.variant?.product_id)!
                 ),
               })
             })

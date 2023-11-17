@@ -9,7 +9,6 @@ import middlewares, {
 } from "../../../middlewares"
 import { StorePostCartsCartReq } from "./update-cart"
 import { StorePostCartReq } from "./create-cart"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
 import { StorePostCartsCartShippingMethodReq } from "./add-shipping-method"
@@ -21,13 +20,8 @@ const route = Router()
 
 export default (app, container) => {
   const middlewareService = container.resolve("middlewareService")
-  const featureFlagRouter = container.resolve("featureFlagRouter")
 
   app.use("/carts", route)
-
-  if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
-    defaultStoreCartRelations.push("sales_channel")
-  }
 
   // Inject plugin routes
   const routers = middlewareService.getRouters("store/carts")

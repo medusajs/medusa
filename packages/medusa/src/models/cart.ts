@@ -244,12 +244,7 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { MedusaV2Flag } from "@medusajs/utils"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import {
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
 
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
@@ -405,7 +400,7 @@ export class Cart extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  channels: SalesChannel[]
+  sales_channels: SalesChannel[]
 
   shipping_total?: number
   discount_total?: number
@@ -428,7 +423,7 @@ export class Cart extends SoftDeletableEntity {
     this.id = generateEntityId(this.id, "cart")
 
     if (this.sales_channel_id || this.sales_channel) {
-      this.channels = [
+      this.sales_channels = [
         { id: this.sales_channel_id || this.sales_channel?.id },
       ] as SalesChannel[]
     }
@@ -440,7 +435,7 @@ export class Cart extends SoftDeletableEntity {
   @BeforeUpdate()
   private beforeUpdate(): void {
     if (this.sales_channel_id || this.sales_channel) {
-      this.channels = [
+      this.sales_channels = [
         { id: this.sales_channel_id || this.sales_channel?.id },
       ] as SalesChannel[]
     }
@@ -454,7 +449,7 @@ export class Cart extends SoftDeletableEntity {
     if (this.payment_sessions) {
       this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
     }
-    this.sales_channel = this.channels?.[0]
+    this.sales_channel = this.sales_channels?.[0]
     this.sales_channel_id = this.sales_channel?.id
   }
 }
