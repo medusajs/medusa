@@ -5,14 +5,13 @@ export class CartSalesChannelsLink1698160215000 implements MigrationInterface {
     await queryRunner.query(`
         CREATE TABLE IF NOT EXISTS "cart_sales_channel"
         (
---             "id"                character varying        NOT NULL, -- TODO: uncomment
+            "id"                character varying        NOT NULL,
             "cart_id"           character varying        NOT NULL,
             "sales_channel_id"  character varying        NOT NULL,
             "created_at"        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "updated_at"        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
             "deleted_at"        TIMESTAMP WITH TIME ZONE,
---             CONSTRAINT "cart_sales_channel_pk"              PRIMARY KEY ("id"),
-            CONSTRAINT "cart_sales_channel_pk"              PRIMARY KEY ("cart_id", "sales_channel_id"), -- TODO: remove
+            CONSTRAINT "cart_sales_channel_pk"              PRIMARY KEY ("id"),
             CONSTRAINT "cart_sales_channel_cart_id_unique"  UNIQUE ("cart_id"),
             CONSTRAINT "cart_sales_channel_cart_id_sales_channel_id_unique"  UNIQUE ("cart_id", "sales_channel_id")
             );

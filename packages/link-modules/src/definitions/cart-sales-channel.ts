@@ -49,9 +49,9 @@ export const CartSalesChannel: ModuleJoinerConfig = {
     },
     {
       serviceName: "salesChannelService",
-      // fieldAlias: {
-      //   carts: "cart_link.cart",
-      // },
+      fieldAlias: {
+        carts: "cart_link.cart",
+      },
       relationship: {
         serviceName: LINKS.CartSalesChannel,
         isInternalService: true,
