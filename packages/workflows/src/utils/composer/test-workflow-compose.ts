@@ -240,7 +240,7 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
     )
     const vTransformData = ret4Transformed.foo
 
-    const getShippingOption = async (input, context) => {
+    const getShippingOption = async (input: { option_id: string }, context) => {
       const shippingOptionService = context.container
         .resolve("shippingOptionService")
         .withTransaction(context.manager) as ShippingOptionService
@@ -251,7 +251,10 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
 
       return option
     }
-    const shippingOption = transform({}, getShippingOption)
+    const shippingOption = transform(
+      { option_id: ret1.test },
+      getShippingOption
+    )
 
     return ret3
   }
