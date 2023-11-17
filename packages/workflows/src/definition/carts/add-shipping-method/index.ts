@@ -1,69 +1,177 @@
+import { ShippingOption } from "@medusajs/medusa"
+import { CartDTO, ShippingMethodDTO } from "@medusajs/types"
 import { createWorkflow, transform } from "../../../utils/composer"
 import * as steps from "./TEMP-add-shipping-method/steps"
-import {
-  createMethodsDataTransformer,
-  originalAndNewCartTransformer,
-  prepareDeleteMethodsDataTransformer,
-} from "./TEMP-add-shipping-method/transformers"
 
-export const addShippingMethodToCartWorkflow = createWorkflow(
-  "AddShippingMethod",
-  function (input) {
-    /** Preparation */
-    const preparedData = steps.prepareAddShippingMethodData(input)
+export const getCart = async (input, context): Promise<CartDTO> => {
+  const cartService = context.container
+    .resolve("cartService")
+    .withTransaction(context.manager)
 
-    /** Validate ShippingOption for Cart */
-    const validatedData = steps.validateShippingOptionDataStep(preparedData)
+  const cart = await cartService.retrieveWithTotals(input.cart_id, {
+    relations: [
+      "items.variant.product.profiles",
+      "items.adjustments",
+      "discounts.rule",
+      "gift_cards",
+      "shipping_methods.shipping_option",
+      "billing_address",
+      "shipping_address",
+      "region.tax_rates",
+      "region.payment_providers",
+      "payment_sessions",
+      "customer",
+    ],
+  })
 
-    /** Get ShippingOptionPrice */
-    const price = steps.getShippingOptionPriceStep(preparedData, validatedData)
+  return cart
+}
 
-    /** Prepare data for creating ShippingMethods */
-    const createMethodsData = transform(
-      [preparedData, validatedData, price],
-      createMethodsDataTransformer
-    )
+export const getShippingMethodConfig = async (
+  cart,
+  context
+): Promise<{ cart_id?: string; price?: number; cart?: CartDTO }> => {
+  const customShippingOptionService = context.container
+    .resolve("customShippingOptionService")
+    .withTransaction(context.manager)
 
-    /** Create ShippingMethods */
-    const shippingMethods = steps.createShippingMethodsStep(createMethodsData)
+  const cartService = context.container
+    .resolve("cartService")
+    .withTransaction(context.manager)
 
-    /** Validate LineItem shipping */
-    steps.validateLineItemShippingStep(preparedData)
+  const options = await customShippingOptionService.list({
+    cart_id: cart.id,
+  })
 
-    /** Prepare data for deleting old unused ShippingMethods */
-    const shippingMethodsToDelete = transform(
-      [preparedData, shippingMethods],
-      prepareDeleteMethodsDataTransformer
-    )
+  const customShippingOption = await cartService.findCustomShippingOption(
+    options,
+    "optionId"
+  )
 
-    /** Delete ShippingMethods */
-    steps.deleteShippingMethodsStep(shippingMethodsToDelete)
+  const shippingMethodConfig = customShippingOption
+    ? { cart_id: cart.id, price: customShippingOption.price }
+    : { cart }
 
-    /** Retrieve updated Cart */
-    const cart = steps.retrieveCartStep(preparedData)
+  return shippingMethodConfig
+}
 
-    /** Prepare data with new and original Cart */
-    const adjustFreeShippingData = transform(
-      [preparedData, cart],
-      originalAndNewCartTransformer
-    )
+export const getShippingOption = async (
+  input,
+  context
+): Promise<ShippingOption> => {
+  const shippingOptionService = context.container
+    .resolve("shippingOptionService")
+    .withTransaction(context.manager)
 
-    /** Adjust shipping on Cart */
-    steps.adjustFreeShippingStep(adjustFreeShippingData)
+  const option = await shippingOptionService.retrieve(input.option_id, {
+    relations: ["requirements"],
+  })
 
-    /** Retrieve updated Cart */
-    // TODO: Add when we allow duplicate steps in a workflow
-    // cart = steps.retrieveCartStep(preparedData)
+  return option
+}
 
-    /** Prepare data with new and original Cart */
-    const upsertPaymentSessionsData = transform(
-      [preparedData, cart],
-      originalAndNewCartTransformer
-    )
+type WorkflowInput = {
+  cart_id: string
+  option_id: string
+  data: Record<string, unknown>
+}
 
-    /** Upsert PaymentSessions */
-    steps.upsertPaymentSessionsStep(upsertPaymentSessionsData)
+type WorkflowOutput = {
+  cart: CartDTO
+}
 
-    return cart
-  }
-)
+export const addShippingMethodToCartWorkflow = createWorkflow<
+  WorkflowInput,
+  WorkflowOutput,
+  any
+>("AddShippingMethod", function (input) {
+  /** Get Cart */
+  const cart = transform(input, getCart)
+
+  /** Get ShippingMethod config */
+  const shippingMethodConfig = transform(cart, getShippingMethodConfig)
+
+  /** Get ShippingOption */
+  const shippingOption = transform(input, getShippingOption)
+
+  /** Validate ShippingOption for Cart */
+  const validatedData = steps.validateShippingOptionForCartStep({
+    shippingOption,
+    cart,
+    shippingMethodData: input.data,
+  })
+
+  /** Get ShippingOptionPrice */
+  const price = steps.getShippingOptionPriceStep({
+    shippingOption,
+    shippingMethodData: validatedData,
+    shippingMethodConfig: shippingMethodConfig,
+  })
+
+  const shippingMethodsToCreate = transform(
+    { shippingOption, validatedData, shippingMethodConfig, price },
+    (input) => {
+      return {
+        option: input.shippingOption,
+        data: input.validatedData,
+        config: input.shippingMethodConfig,
+        price: input.price,
+      }
+    }
+  )
+
+  /** Create ShippingMethods */
+  const createdShippingMethodsData = steps.createShippingMethodsStep({
+    shippingMethods: shippingMethodsToCreate,
+  })
+
+  // /** Validate LineItem shipping */
+  steps.validateLineItemShippingStep({ cart })
+
+  /** Prepare data for deleting old unused ShippingMethods */
+  const shippingMethodsToDelete = transform(
+    { cart, shippingMethods: createdShippingMethodsData.shippingMethods },
+    (input): ShippingMethodDTO[] => {
+      const { cart, shippingMethods } = input
+
+      if (!cart.shipping_methods?.length) {
+        return []
+      }
+
+      const toDelete: any[] = []
+
+      for (const method of cart.shipping_methods) {
+        if (
+          shippingMethods.some(
+            (m) =>
+              m.shipping_option.profile_id === method.shipping_option.profile_id
+          )
+        ) {
+          toDelete.push(method)
+        }
+      }
+
+      return toDelete
+    }
+  )
+
+  /** Delete ShippingMethods */
+  steps.deleteShippingMethodsStep(shippingMethodsToDelete)
+
+  /** Retrieve updated Cart */
+  const freshCart = transform(input, getCart)
+
+  /** Adjust shipping on Cart */
+  steps.adjustFreeShippingStep({ cart: freshCart, originalCart: cart })
+
+  /** Retrieve updated Cart */
+  const anotherFreshCart = transform(input, getCart)
+
+  /** Upsert PaymentSessions */
+  steps.upsertPaymentSessionsStep({
+    cart: anotherFreshCart,
+    originalCart: cart,
+  })
+
+  return transform({ cart }, (input) => ({ cart: input.cart }))
+})

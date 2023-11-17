@@ -1,5 +1,5 @@
 import { CartDTO } from "@medusajs/types"
-import { createStep } from "../../../../../utils/composer"
+import { StepExecutionContext, createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
   cart: CartDTO
@@ -7,14 +7,8 @@ type InvokeInput = {
 }
 
 type InvokeOutput = {
-  compensationData: { cart: CartDTO }
+  compensateInput: { cart: CartDTO }
 }
-
-type CompensateInput = {
-  compensationData: { cart: CartDTO }
-}
-
-type CompensateOutput = void
 
 async function adjustFreeShipping_({ context, cart, container }) {
   const { manager } = context
@@ -24,31 +18,28 @@ async function adjustFreeShipping_({ context, cart, container }) {
   await cartService.adjustFreeShipping(cart, true)
 }
 
-async function invoke(input, data): Promise<InvokeOutput> {
-  await adjustFreeShipping_({
-    context: input.context,
-    cart: data.cart,
-    container: input.container,
-  })
-
-  // return original cart for compensation
-  return { compensationData: { cart: data.originalCart } }
-}
-
-async function compensate(
-  input,
-  data // compensationData
-): Promise<CompensateOutput> {
-  console.log(">>>> seems to be undefined", data)
-  // await adjustFreeShipping_({
-  //   context,
-  //   cart: data.compensationData.cart,
-  //   container,
-  // })
-}
-
 export const adjustFreeShippingStep = createStep(
   "adjustFreeShippingStep",
-  invoke,
-  compensate
+  async function (
+    input: InvokeInput,
+    executionContext: StepExecutionContext
+  ): Promise<InvokeOutput> {
+    const container = executionContext.container
+
+    await adjustFreeShipping_({
+      context: executionContext.context,
+      cart: input.cart,
+      container: container,
+    })
+
+    return { compensateInput: { cart: input.originalCart } }
+  },
+  async function (input, executionContext): Promise<void> {
+    const container = executionContext.container
+    await adjustFreeShipping_({
+      context: executionContext.context,
+      cart: input.cart,
+      container,
+    })
+  }
 )

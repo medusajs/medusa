@@ -1,6 +1,6 @@
 import { CartDTO, ShippingOptionDTO } from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
-import { createStep } from "../../../../../utils/composer"
+import { isDefined } from "medusa-core-utils"
+import { StepExecutionContext, createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
   shippingOption: ShippingOptionDTO
@@ -8,38 +8,36 @@ type InvokeInput = {
   cart: CartDTO
 }
 
-type InvokeOutput = {
-  validatedData: Record<string, unknown>
-}
+type InvokeOutput = Record<string, unknown>
 
-async function invoke(input, data): Promise<InvokeOutput> {
-  const { manager, container } = input
+export const validateShippingOptionForCartStep = createStep(
+  "validateShippingOptionForCartStep",
+  async function (
+    input: InvokeInput,
+    executionContext: StepExecutionContext
+  ): Promise<InvokeOutput> {
+    const manager = executionContext.context.manager
+    const container = executionContext.container
 
-  const fulfillmentProvider = container.resolve("fulfillmentProviderService")
+    const { shippingOption, shippingMethodData, cart } = input
 
-  const shippingOptionService = container
-    .resolve("shippingOptionService")
-    .withTransaction(manager)
+    const fulfillmentProvider = container.resolve("fulfillmentProviderService")
 
-  const { shippingOption, cart, shippingMethodData } = data
+    const shippingOptionService = container
+      .resolve("shippingOptionService")
+      .withTransaction(manager)
 
-  if (isDefined(cart)) {
-    await shippingOptionService.validateCartOption(shippingOption, cart)
+    if (isDefined(cart)) {
+      await shippingOptionService.validateCartOption(shippingOption, cart)
+    }
+
+    const validatedShippingOptionData =
+      await fulfillmentProvider.validateFulfillmentData(
+        shippingOption,
+        shippingMethodData,
+        cart || {}
+      )
+
+    return validatedShippingOptionData
   }
-
-  const validatedShippingOptionData =
-    await fulfillmentProvider.validateFulfillmentData(
-      shippingOption,
-      shippingMethodData,
-      cart || {}
-    )
-
-  return {
-    validatedData: validatedShippingOptionData,
-  }
-}
-
-export const validateShippingOptionDataStep = createStep(
-  "validateShippingOptionData",
-  invoke
 )

@@ -21,6 +21,8 @@ async function prepareAddShippingMethodToCartWorkflowData(
   input,
   data
 ): Promise<InvokeOutput> {
+  console.log(">>>>> input", input)
+  console.log(">>>>> data", data)
   const { manager, container } = input
 
   const data_ = data

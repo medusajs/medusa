@@ -1,11 +1,11 @@
 import { CartDTO, FindConfig } from "@medusajs/types"
 import { isString } from "@medusajs/utils"
-import { Cart } from "../../../../../../../medusa/dist"
+
 import { createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
   cart: string | CartDTO
-  config: FindConfig<Cart>
+  config: FindConfig<CartDTO>
 }
 
 async function invoke(input, data) {

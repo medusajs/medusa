@@ -1,5 +1,5 @@
 import { CartDTO, ShippingMethodDTO } from "@medusajs/types"
-import { createStep } from "../../../../../utils/composer"
+import { StepExecutionContext, createStep } from "../../../../../utils/composer"
 
 type InvokeInput = {
   cart: CartDTO
@@ -27,41 +27,44 @@ function validateLineItemShipping_(
   return false
 }
 
-async function invoke(input, data): Promise<InvokeOutput> {
-  const { manager, container } = input
-
-  const { cart } = data
-
-  if (!cart?.items?.length) {
-    return {
-      lineItems: [],
-    }
-  }
-
-  if (!cart.shipping_methods?.length) {
-    return {
-      lineItems: cart.items,
-    }
-  }
-
-  const lineItemService = container
-    .resolve("lineItemService")
-    .withTransaction(manager)
-
-  const items = await Promise.all(
-    cart.items.map(async (item) => {
-      return lineItemService.update(item.id, {
-        has_shipping: validateLineItemShipping_(cart.shipping_methods!, item),
-      })
-    })
-  )
-
-  return {
-    lineItems: items,
-  }
-}
-
 export const validateLineItemShippingStep = createStep(
   "validateLineItemShipping",
-  invoke
+  async function (
+    input: InvokeInput,
+    executionContext: StepExecutionContext
+  ): Promise<InvokeOutput> {
+    const { cart } = input
+    const manager = executionContext.context.manager
+    const container = executionContext.container
+
+    if (!cart?.items?.length) {
+      return {
+        lineItems: [],
+      }
+    }
+
+    if (!cart.shipping_methods?.length) {
+      return {
+        lineItems: cart.items,
+      }
+    }
+
+    const lineItemService = container
+      .resolve("lineItemService")
+      .withTransaction(manager)
+
+    const items = await Promise.all(
+      cart.items.map(async (item) => {
+        return lineItemService.update(item.id, {
+          has_shipping: validateLineItemShipping_(cart.shipping_methods!, item),
+        })
+      })
+    )
+
+    return {
+      lineItems: items,
+    }
+  }
 )
+
+// TODO: Add compensate function

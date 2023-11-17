@@ -66,7 +66,7 @@ describe("/store/carts", () => {
     await doAfterEach()
   })
 
-  it("should add a shipping method to cart", async () => {
+  it.only("should add a shipping method to cart", async () => {
     const manager = medusaContainer.resolve("manager")
     const cartService = medusaContainer.resolve("cartService")
 
@@ -79,12 +79,14 @@ describe("/store/carts", () => {
       data: {},
     }
 
-    const { result, transaction } = await addShippingMethodWorkflow.run({
+    const { result, transaction, errors } = await addShippingMethodWorkflow.run({
       input,
       context: {
         manager,
       },
     })
+
+    console.log(errors)
 
     expect(result).toBeDefined()
     expect(transaction.getState()).toEqual("done")
@@ -100,7 +102,7 @@ describe("/store/carts", () => {
     ])
   })
 
-  it.only("should compensate correctly if add shipping method fails", async () => {
+  it("should compensate correctly if add shipping method fails", async () => {
     const manager = medusaContainer.resolve("manager")
     const cartService = medusaContainer.resolve("cartService")
 
