@@ -538,25 +538,23 @@ After using `MedusaError`, the returned error in the response provides a clearer
 }
 ```
 
-<details>
-<summary>
-Available MedusaError Types and their respective status codes
-</summary>
+<Details>
+  <Summary>Available MedusaError Types and their respective status codes</Summary>
 
-The default response code is `500` unless mentioned otherwise.
+  The default response code is `500` unless mentioned otherwise.
 
-- `MedusaError.Types.DB_ERROR`: Sets the response code to `500`.
-- `MedusaError.Types.DUPLICATE_ERROR`: Sets the response code to `422`.
-- `MedusaError.Types.INVALID_ARGUMENT`
-- `MedusaError.Types.INVALID_DATA`: Sets the resposne code to `400`.
-- `MedusaError.Types.UNAUTHORIZED`: Sets the resposne code to `401`.
-- `MedusaError.Types.NOT_FOUND`: Sets the response code to `404`.
-- `MedusaError.Types.NOT_ALLOWED`: Sets the resposne code to `400`.
-- `MedusaError.Types.UNEXPECTED_STATE`
-- `MedusaError.Types.CONFLICT`: Sets the resposne code to `409`.
-- `MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR`: Sets the resposne code to `422`.
+  - `MedusaError.Types.DB_ERROR`: Sets the response code to `500`.
+  - `MedusaError.Types.DUPLICATE_ERROR`: Sets the response code to `422`.
+  - `MedusaError.Types.INVALID_ARGUMENT`
+  - `MedusaError.Types.INVALID_DATA`: Sets the resposne code to `400`.
+  - `MedusaError.Types.UNAUTHORIZED`: Sets the resposne code to `401`.
+  - `MedusaError.Types.NOT_FOUND`: Sets the response code to `404`.
+  - `MedusaError.Types.NOT_ALLOWED`: Sets the resposne code to `400`.
+  - `MedusaError.Types.UNEXPECTED_STATE`
+  - `MedusaError.Types.CONFLICT`: Sets the resposne code to `409`.
+  - `MedusaError.Types.PAYMENT_AUTHORIZATION_ERROR`: Sets the resposne code to `422`.
 
-</details>
+</Details>
 
 ### Override Error Handler
 
@@ -691,41 +689,41 @@ Files and directories prefixed with `_` are ignored. This can be helpful if you 
 For example:
 
 <Tabs groupId="files" isCodeTabs={true}>
-<TabItem value="custom-route" label="src/api/custom/route.ts" default>
+  <TabItem value="custom-route" label="src/api/custom/route.ts" default>
 
-```ts
-import getProducts from "../_methods/get-products"
+    ```ts
+    import getProducts from "../_methods/get-products"
 
-export const GET = getProducts
-```
+    export const GET = getProducts
+    ```
 
-</TabItem>
-<TabItem value="internal-method" label="src/api/_methods/get-product.ts">
+  </TabItem>
+  <TabItem value="internal-method" label="src/api/_methods/get-product.ts">
 
-```ts
-import { 
-  MedusaRequest, 
-  MedusaResponse, 
-  ProductService,
-} from "@medusajs/medusa"
+    ```ts
+    import { 
+      MedusaRequest, 
+      MedusaResponse, 
+      ProductService,
+    } from "@medusajs/medusa"
 
-export default async function (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) {
-  const productService = req.scope.resolve<ProductService>(
-    "productService"
-  )
+    export default async function (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) {
+      const productService = req.scope.resolve<ProductService>(
+        "productService"
+      )
 
-  const products = await productService.list({})
+      const products = await productService.list({})
 
-  res.json({
-    products,
-  })
-}
-```
+      res.json({
+        products,
+      })
+    }
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---
@@ -741,117 +739,117 @@ You can refer to the [Entities](../entities/create.mdx#adding-relations) and [Se
 :::
 
 <Tabs groupId="files" isCodeTabs={true}>
-<TabItem value="posts-routes" label="src/api/admin/posts/route.ts" default>
+  <TabItem value="posts-routes" label="src/api/admin/posts/route.ts" default>
 
-```ts
-import type {
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
-import { PostService } from "../../../services/post"
+    ```ts
+    import type {
+      MedusaRequest, 
+      MedusaResponse,
+    } from "@medusajs/medusa"
+    import { PostService } from "../../../services/post"
 
-// list posts
-export const GET = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+    // list posts
+    export const GET = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-  res.json({
-    posts: await postService.list(),
-  })
-}
+      res.json({
+        posts: await postService.list(),
+      })
+    }
 
-// create a post
-export const POST = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+    // create a post
+    export const POST = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-  // basic validation of request body
-  if (!req.body.title || !req.body.author_id) {
-    throw new Error("`title` and `author_id` are required.")
-  }
+      // basic validation of request body
+      if (!req.body.title || !req.body.author_id) {
+        throw new Error("`title` and `author_id` are required.")
+      }
 
-  const post = await postService.create(req.body)
+      const post = await postService.create(req.body)
 
-  res.json({
-    post,
-  })
-}
-```
+      res.json({
+        post,
+      })
+    }
+    ```
 
-</TabItem>
-<TabItem value="posts-id-routes" label="src/api/admin/posts/[id]/route.ts">
+  </TabItem>
+  <TabItem value="posts-id-routes" label="src/api/admin/posts/[id]/route.ts">
 
-```ts
-import type { 
-  MedusaRequest, 
-  MedusaResponse,
-} from "@medusajs/medusa"
-import { PostService } from "../../../services/post"
+    ```ts
+    import type { 
+      MedusaRequest, 
+      MedusaResponse,
+    } from "@medusajs/medusa"
+    import { PostService } from "../../../services/post"
 
-// retrieve a post by its ID
-export const GET = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+    // retrieve a post by its ID
+    export const GET = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-  const post = await postService.retrieve(req.params.id)
+      const post = await postService.retrieve(req.params.id)
 
-  res.json({
-    post,
-  })
-}
+      res.json({
+        post,
+      })
+    }
 
-// update a post by its ID
-export const POST = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+    // update a post by its ID
+    export const POST = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-  // basic validation of request body
-  if (req.body.id) {
-    throw new Error("Can't update post ID")
-  }
+      // basic validation of request body
+      if (req.body.id) {
+        throw new Error("Can't update post ID")
+      }
 
-  const post = await postService.update(
-    req.params.id,
-    req.body
-  )
+      const post = await postService.update(
+        req.params.id,
+        req.body
+      )
 
-  res.json({
-    post,
-  })
-}
+      res.json({
+        post,
+      })
+    }
 
-// delete a post by its ID
-export const DELETE = async (
-  req: MedusaRequest, 
-  res: MedusaResponse
-) => {
-  const postService: PostService = req.scope.resolve(
-    "postService"
-  )
+    // delete a post by its ID
+    export const DELETE = async (
+      req: MedusaRequest, 
+      res: MedusaResponse
+    ) => {
+      const postService: PostService = req.scope.resolve(
+        "postService"
+      )
 
-  await postService.delete(req.params.id)
+      await postService.delete(req.params.id)
 
-  res.status(200).end()
-}
-```
+      res.status(200).end()
+    }
+    ```
 
-</TabItem>
+  </TabItem>
 </Tabs>
 
 ---

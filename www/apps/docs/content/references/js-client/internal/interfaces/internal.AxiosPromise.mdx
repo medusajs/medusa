@@ -45,7 +45,7 @@ Attaches a callback for only the rejection of the Promise.
 <ParameterTypes parameters={[
   {
     "name": "onrejected",
-    "type": "``null`` \\| (`reason`: `any`) => `TResult` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult`\\>",
+    "type": "``null`` \\| (`reason`: `any`) => `TResult` \\| [PromiseLike](internal.PromiseLike.mdx)&#60;TResult&#62;",
     "description": "The callback to execute when the Promise is rejected.",
     "optional": true,
     "defaultValue": "",
@@ -59,22 +59,12 @@ Attaches a callback for only the rejection of the Promise.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\> \\| `TResult`\\>",
+    "type": "Promise&#60;[AxiosResponse](internal.AxiosResponse.mdx)&#60;T, any&#62; \\| TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A Promise for the completion of the callback.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AxiosResponse<T, any\\> \\| TResult",
-        "type": "[`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\> \\| `TResult`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -104,32 +94,12 @@ resolved value cannot be modified from the callback.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\>\\>",
+    "type": "Promise&#60;[AxiosResponse](internal.AxiosResponse.mdx)&#60;T, any&#62;&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A Promise for the completion of the callback.",
     "expandable": false,
-    "children": [
-      {
-        "name": "AxiosResponse",
-        "type": "[`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\>",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "any",
-            "type": "`any`",
-            "optional": true,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -144,7 +114,7 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
 <ParameterTypes parameters={[
   {
     "name": "onfulfilled",
-    "type": "``null`` \\| (`value`: [`AxiosResponse`](internal.AxiosResponse.mdx)<`T`, `any`\\>) => `TResult1` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult1`\\>",
+    "type": "``null`` \\| (`value`: [AxiosResponse](internal.AxiosResponse.mdx)&#60;T, any&#62;) => `TResult1` \\| [PromiseLike](internal.PromiseLike.mdx)&#60;TResult1&#62;",
     "description": "The callback to execute when the Promise is resolved.",
     "optional": true,
     "defaultValue": "",
@@ -153,7 +123,7 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
   },
   {
     "name": "onrejected",
-    "type": "``null`` \\| (`reason`: `any`) => `TResult2` \\| [`PromiseLike`](internal.PromiseLike.mdx)<`TResult2`\\>",
+    "type": "``null`` \\| (`reason`: `any`) => `TResult2` \\| [PromiseLike](internal.PromiseLike.mdx)&#60;TResult2&#62;",
     "description": "The callback to execute when the Promise is rejected.",
     "optional": true,
     "defaultValue": "",
@@ -167,21 +137,11 @@ Attaches callbacks for the resolution and/or rejection of the Promise.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult1` \\| `TResult2`\\>",
+    "type": "Promise&#60;TResult1 \\| TResult2&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "A Promise for the completion of which ever callback is executed.",
     "expandable": false,
-    "children": [
-      {
-        "name": "TResult1 \\| TResult2",
-        "type": "`TResult1` \\| `TResult2`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

@@ -10,6 +10,7 @@ export type CodeSnippet = {
   language: string
   code: string
   hideLineNumbers?: boolean
+  hideCopy?: boolean
 }
 
 type CodeBlockState = {
@@ -47,7 +48,7 @@ const Root = ({
     <CodeBlockContext.Provider value={{ snippets, active, setActive }}>
       <div
         className={clx(
-          "border-ui-code-border overflow-hidden rounded-lg border",
+          "border-ui-code-border flex flex-col overflow-hidden rounded-lg border",
           className
         )}
         {...props}
@@ -119,13 +120,18 @@ const Body = ({
   const { active } = useCodeBlockContext()
   return (
     <div
-      className={clx("bg-ui-code-bg-base relative p-4", className)}
+      className={clx(
+        "bg-ui-code-bg-base relative h-full overflow-y-auto p-4",
+        className
+      )}
       {...props}
     >
-      <Copy
-        content={active.code}
-        className="text-ui-code-icon absolute right-4 top-4"
-      />
+      {!active.hideCopy && (
+        <Copy
+          content={active.code}
+          className="text-ui-code-icon absolute right-4 top-4"
+        />
+      )}
       <div className="max-w-[90%]">
         <Highlight
           theme={{
@@ -155,24 +161,38 @@ const Body = ({
         >
           {({ style, tokens, getLineProps, getTokenProps }) => (
             <pre
-              className="txt-compact-small whitespace-pre-wrap bg-transparent font-mono"
+              className={clx(
+                "txt-compact-small whitespace-pre-wrap bg-transparent font-mono",
+                {
+                  "grid grid-cols-[auto,1fr] gap-x-4": !active.hideLineNumbers,
+                }
+              )}
               style={{
                 ...style,
                 background: "transparent",
               }}
             >
-              {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line })} className="flex">
-                  {!active.hideLineNumbers && (
-                    <span className="text-ui-code-text-subtle">{i + 1}</span>
-                  )}
-                  <div className="pl-4">
+              {!active.hideLineNumbers && (
+                <div role="presentation" className="flex flex-col text-right">
+                  {tokens.map((_, i) => (
+                    <span
+                      key={i}
+                      className="text-ui-code-text-subtle tabular-nums"
+                    >
+                      {i + 1}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div>
+                {tokens.map((line, i) => (
+                  <div key={i} {...getLineProps({ line })}>
                     {line.map((token, key) => (
                       <span key={key} {...getTokenProps({ token })} />
                     ))}
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </pre>
           )}
         </Highlight>

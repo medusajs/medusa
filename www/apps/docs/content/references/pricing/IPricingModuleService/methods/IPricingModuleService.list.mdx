@@ -124,25 +124,28 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 <ParameterTypes parameters={[
   {
     "name": "filters",
-    "type": "[`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx)",
+    "type": "[FilterablePriceSetProps](../../interfaces/FilterablePriceSetProps.mdx)",
     "description": "The filters to apply on the retrieved price lists.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "$and",
-        "type": "([`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx)\\>)[]",
+        "type": "([FilterablePriceSetProps](../../interfaces/FilterablePriceSetProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterablePriceSetProps](../../interfaces/FilterablePriceSetProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "$or",
-        "type": "([`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterablePriceSetProps`](../../interfaces/FilterablePriceSetProps.mdx)\\>)[]",
+        "type": "([FilterablePriceSetProps](../../interfaces/FilterablePriceSetProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterablePriceSetProps](../../interfaces/FilterablePriceSetProps.mdx)&#62;)[]",
         "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -151,29 +154,33 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "IDs to filter price sets by.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "money_amounts",
-        "type": "[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)",
+        "type": "[FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx)",
         "description": "Filters to apply on a price set's associated money amounts.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "$and",
-            "type": "([`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)\\>)[]",
+            "type": "([FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx)&#62;)[]",
             "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"and\" condition.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "$or",
-            "type": "([`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [`BaseFilterable`](../../interfaces/BaseFilterable.mdx)<[`FilterableMoneyAmountProps`](../../interfaces/FilterableMoneyAmountProps.mdx)\\>)[]",
+            "type": "([FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx) \\| [BaseFilterable](../../interfaces/BaseFilterable.mdx)&#60;[FilterableMoneyAmountProps](../../interfaces/FilterableMoneyAmountProps.mdx)&#62;)[]",
             "description": "An array of filters to apply on the entity, where each item in the array is joined with an \"or\" condition.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -182,6 +189,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
             "description": "Currency codes to filter money amounts by.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -190,6 +198,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
             "description": "IDs to filter money amounts by.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -198,10 +207,11 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)&#62;",
     "description": "The configurations determining how the price sets are retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a price set.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "order",
@@ -209,7 +219,18 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "__type",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "relations",
@@ -217,6 +238,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -225,6 +247,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -233,6 +256,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -241,6 +265,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -249,16 +274,18 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -266,6 +293,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -274,6 +302,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -282,6 +311,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -290,6 +320,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -298,6 +329,7 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -309,17 +341,19 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]\\>",
+    "type": "Promise&#60;[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The list of price sets.",
+    "expandable": false,
     "children": [
       {
         "name": "PriceSetDTO[]",
-        "type": "[`PriceSetDTO`](../../interfaces/PriceSetDTO.mdx)[]",
+        "type": "[PriceSetDTO](../../interfaces/PriceSetDTO.mdx)[]",
         "optional": false,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": [
           {
             "name": "id",
@@ -327,22 +361,25 @@ async function retrievePriceSets (priceSetIds: string[], moneyAmountIds: string[
             "description": "The ID of the price set.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "money_amounts",
-            "type": "[`MoneyAmountDTO`](../../interfaces/MoneyAmountDTO.mdx)[]",
+            "type": "[MoneyAmountDTO](../../interfaces/MoneyAmountDTO.mdx)[]",
             "description": "The prices that belong to this price set.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "rule_types",
-            "type": "[`RuleTypeDTO`](../../interfaces/RuleTypeDTO.mdx)[]",
+            "type": "[RuleTypeDTO](../../interfaces/RuleTypeDTO.mdx)[]",
             "description": "The rule types applied on this price set.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]

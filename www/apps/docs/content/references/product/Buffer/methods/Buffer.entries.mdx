@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).entries
 
-**entries**(): [`IterableIterator`](../../interfaces/IterableIterator.mdx)<[`number`, `number`]\>
+`**entries**(): [IterableIterator](../../interfaces/IterableIterator.mdx)&#60;[number, number]&#62;`
 
-Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols) of `[index, byte]` pairs from the contents
+Creates and returns an [iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration\_protocols) of `[index, byte]` pairs from the contents
 of `buf`.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 // Log the entire contents of a `Buffer`.
 
@@ -34,15 +34,16 @@ for (const pair of buf.entries()) {
 
 #### Returns
 
-[`IterableIterator`](../../interfaces/IterableIterator.mdx)<[`number`, `number`]\>
+[IterableIterator](../../interfaces/IterableIterator.mdx)&#60;[number, number]&#62;
 
 <ParameterTypes parameters={[
   {
     "name": "IterableIterator",
-    "type": "[`IterableIterator`](../../interfaces/IterableIterator.mdx)<[`number`, `number`]\\>",
+    "type": "[IterableIterator](../../interfaces/IterableIterator.mdx)&#60;[number, number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": [
       {
         "name": "number",
@@ -50,6 +51,7 @@ for (const pair of buf.entries()) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -58,6 +60,7 @@ for (const pair of buf.entries()) {
         "optional": true,
         "defaultValue": "",
         "description": "",
+        "expandable": false,
         "children": []
       }
     ]

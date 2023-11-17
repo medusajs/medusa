@@ -1,3 +1,5 @@
+import { promiseAll } from "@medusajs/utils"
+
 class OrderSubscriber {
   constructor({
     manager,

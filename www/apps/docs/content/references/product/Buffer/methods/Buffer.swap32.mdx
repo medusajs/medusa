@@ -8,13 +8,13 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).swap32
 
-**swap32**(): [`Buffer`](../../variables/Buffer-1.mdx)
+`**swap32**(): [Buffer](../../variables/Buffer-1.mdx)`
 
 Interprets `buf` as an array of unsigned 32-bit integers and swaps the
-byte order _in-place_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 4.
+byte order \_in-place\_. Throws `ERR_INVALID_BUFFER_SIZE` if `buf.length` is not a multiple of 4.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf1 = Buffer.from([0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8]);
 
@@ -34,15 +34,16 @@ buf2.swap32();
 
 #### Returns
 
-[`Buffer`](../../variables/Buffer-1.mdx)
+[Buffer](../../variables/Buffer-1.mdx)
 
 <ParameterTypes parameters={[
   {
     "name": "Buffer",
-    "type": "[`Buffer`](../../variables/Buffer-1.mdx)",
+    "type": "[Buffer](../../variables/Buffer-1.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "A reference to `buf`.",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -11,7 +11,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "__configModule__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -29,7 +29,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "__moduleDeclaration__",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -47,301 +47,25 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "container_",
-    "type": "[`InjectedDependencies`](../../modules/internal.mdx#injecteddependencies-16) & {}",
+    "type": "[InjectedDependencies](../types/internal.InjectedDependencies-16.mdx) & `&#123;&#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "analyticsConfigRepository",
-        "type": "typeof [`AnalyticsConfigRepository`](../../modules/internal.mdx#analyticsconfigrepository)",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "manager",
-        "type": "`EntityManager`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "__type",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "logger_",
-    "type": "[`Logger`](../modules/internal.internal.mdx#logger)",
+    "type": "[Logger](../types/internal.internal.Logger.mdx)",
     "description": "",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "activity",
-        "type": "(`message`: `string`, `config?`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `string`, `config?`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "debug",
-        "type": "(`message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "error",
-        "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`messageOrError`: `any`, `error?`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "failure",
-        "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "info",
-        "type": "(`message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "log",
-        "type": "(...`args`: `any`[]) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(...`args`: `any`[]) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "panic",
-        "type": "(`data`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`data`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "progress",
-        "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "setLogLevel",
-        "type": "(`level`: `string`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`level`: `string`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "shouldLog",
-        "type": "(`level`: `string`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`level`: `string`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "success",
-        "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`activityId`: `any`, `message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "unsetLogLevel",
-        "type": "() => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "() => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "warn",
-        "type": "(`message`: `any`) => `void`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "(`message`: `any`) => `void`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   },
   {
     "name": "manager_",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -350,7 +74,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "notificationProviderRepository_",
-    "type": "`Repository`<[`NotificationProvider`](internal.NotificationProvider.mdx)\\>",
+    "type": "Repository&#60;[NotificationProvider](internal.NotificationProvider.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -359,7 +83,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "notificationRepository_",
-    "type": "`Repository`<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "Repository&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -373,21 +97,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "transactionManager_",
-    "type": "`undefined` \\| `EntityManager`",
+    "type": "`undefined` \\| EntityManager",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -405,7 +119,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 <ParameterTypes parameters={[
   {
     "name": "EntityManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -427,26 +141,16 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "work",
-    "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
+    "type": "(`transactionManager`: EntityManager) => Promise&#60;TResult&#62;",
     "description": "the transactional work to be done",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`transactionManager`: `EntityManager`) => `Promise`<`TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "isolationOrErrorHandler",
-    "type": "`IsolationLevel` \\| (`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "`IsolationLevel` \\| (`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "the isolation level to be used for the work.",
     "optional": true,
     "defaultValue": "",
@@ -455,22 +159,12 @@ transaction manager is created.
   },
   {
     "name": "maybeErrorHandlerOrDontFail",
-    "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
+    "type": "(`error`: `TError`) => Promise&#60;void \\| TResult&#62;",
     "description": "Potential error handler",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "(`error`: `TError`) => `Promise`<`void` \\| `TResult`\\>",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -479,7 +173,7 @@ transaction manager is created.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`TResult`\\>",
+    "type": "Promise&#60;TResult&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of the transactional work",
@@ -510,7 +204,7 @@ order to allow for resends. Will log any errors that are encountered.
   },
   {
     "name": "data",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the data the event was sent with",
     "optional": false,
     "defaultValue": "",
@@ -524,22 +218,12 @@ order to allow for resends. Will log any errors that are encountered.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| `void` \\| [`Notification`](internal.Notification.mdx)[]\\>",
+    "type": "Promise&#60;undefined \\| void \\| [Notification](internal.Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the result of notification subscribed",
     "expandable": false,
-    "children": [
-      {
-        "name": "undefined \\| void \\| Notification[]",
-        "type": "`undefined` \\| `void` \\| [`Notification`](internal.Notification.mdx)[]",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -554,7 +238,7 @@ Retrieves a list of notifications.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../modules/internal.internal.mdx#selector)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -563,68 +247,12 @@ Retrieves a list of notifications.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -633,32 +261,12 @@ Retrieves a list of notifications.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Notification`](internal.Notification.mdx)[]\\>",
+    "type": "Promise&#60;[Notification](internal.Notification.mdx)[]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query.",
     "expandable": false,
-    "children": [
-      {
-        "name": "Notification[]",
-        "type": "[`Notification`](internal.Notification.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "Notification",
-            "type": "[`Notification`](internal.Notification.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -673,7 +281,7 @@ Retrieves a list of notifications and total count.
 <ParameterTypes parameters={[
   {
     "name": "selector",
-    "type": "[`Selector`](../modules/internal.internal.mdx#selector)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[Selector](../types/internal.internal.Selector.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the params to select the notifications by.",
     "optional": false,
     "defaultValue": "",
@@ -682,68 +290,12 @@ Retrieves a list of notifications and total count.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -752,41 +304,12 @@ Retrieves a list of notifications and total count.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[[`Notification`](internal.Notification.mdx)[], `number`]\\>",
+    "type": "Promise&#60;[[Notification](internal.Notification.mdx)[], number]&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notifications that satisfy the query as well as the count.",
     "expandable": false,
-    "children": [
-      {
-        "name": "Notification[]",
-        "type": "[`Notification`](internal.Notification.mdx)[]",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "Notification",
-            "type": "[`Notification`](internal.Notification.mdx)",
-            "optional": false,
-            "defaultValue": "",
-            "description": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "number",
-        "type": "`number`",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -850,7 +373,7 @@ Takes a list of notification provider ids and persists them in the database.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`void`\\>",
+    "type": "Promise&#60;void&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "",
@@ -880,68 +403,12 @@ underlying provider's resendNotification method.
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "any configuration that might override the previous send",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -950,22 +417,12 @@ underlying provider's resendNotification method.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "Promise&#60;[Notification](internal.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the newly created notification",
     "expandable": false,
-    "children": [
-      {
-        "name": "Notification",
-        "type": "[`Notification`](internal.Notification.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -989,68 +446,12 @@ Retrieves a notification with a given id
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../interfaces/internal.internal.FindConfig.mdx)<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "[FindConfig](../interfaces/internal.internal.FindConfig.mdx)&#60;[Notification](internal.Notification.mdx)&#62;",
     "description": "the configuration to apply to the query",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "order",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "relations",
-        "type": "`string`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "select",
-        "type": "keyof `Entity`[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "skip",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "take",
-        "type": "`number`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1059,22 +460,12 @@ Retrieves a notification with a given id
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`Notification`](internal.Notification.mdx)\\>",
+    "type": "Promise&#60;[Notification](internal.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the notification",
     "expandable": false,
-    "children": [
-      {
-        "name": "Notification",
-        "type": "[`Notification`](internal.Notification.mdx)",
-        "optional": false,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1082,7 +473,7 @@ ___
 
 ### retrieveProvider\_
 
-Finds a provider with a given id. Will throw a NOT_FOUND error if the
+Finds a provider with a given id. Will throw a NOT\_FOUND error if the
 resolution fails.
 
 #### Parameters
@@ -1104,7 +495,7 @@ resolution fails.
 <ParameterTypes parameters={[
   {
     "name": "AbstractNotificationService",
-    "type": "[`AbstractNotificationService`](internal.internal.AbstractNotificationService.mdx)",
+    "type": "[AbstractNotificationService](internal.internal.AbstractNotificationService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "the notification provider",
@@ -1134,7 +525,7 @@ method. Persists the Notification in the database.
   },
   {
     "name": "eventData",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "the data the event was sent with",
     "optional": false,
     "defaultValue": "",
@@ -1157,22 +548,12 @@ method. Persists the Notification in the database.
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<`undefined` \\| [`Notification`](internal.Notification.mdx)\\>",
+    "type": "Promise&#60;undefined \\| [Notification](internal.Notification.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "the created notification",
     "expandable": false,
-    "children": [
-      {
-        "name": "undefined \\| Notification",
-        "type": "`undefined` \\| [`Notification`](internal.Notification.mdx)",
-        "optional": true,
-        "defaultValue": "",
-        "description": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />
 
@@ -1185,7 +566,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "err",
-    "type": "Record<`string`, `unknown`\\> \\| { `code`: `string`  }",
+    "type": "`Record<string, unknown>` \\| `&#123; code: string  &#125;`",
     "description": "",
     "optional": false,
     "defaultValue": "",
@@ -1260,7 +641,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "transactionManager",
-    "type": "`EntityManager`",
+    "type": "EntityManager",
     "description": "",
     "optional": true,
     "defaultValue": "",
@@ -1274,7 +655,7 @@ ___
 <ParameterTypes parameters={[
   {
     "name": "NotificationService",
-    "type": "[`NotificationService`](internal.internal.NotificationService.mdx)",
+    "type": "[NotificationService](internal.internal.NotificationService.mdx)",
     "optional": false,
     "defaultValue": "",
     "description": "",

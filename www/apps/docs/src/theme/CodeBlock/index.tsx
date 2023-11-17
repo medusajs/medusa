@@ -36,7 +36,6 @@ export default function CodeBlock({
 
   const title = props.title
   delete props.title
-
   return (
     <div className="code-wrapper">
       {title && <div className="code-header">{title}</div>}

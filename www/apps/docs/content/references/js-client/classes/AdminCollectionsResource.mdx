@@ -49,7 +49,7 @@ medusa.admin.collections
   },
   {
     "name": "payload",
-    "type": "[`AdminPostProductsToCollectionReq`](../internal/classes/internal.AdminPostProductsToCollectionReq.mdx)",
+    "type": "[AdminPostProductsToCollectionReq](../internal/classes/internal.AdminPostProductsToCollectionReq.mdx)",
     "description": "The products to add.",
     "optional": false,
     "defaultValue": "",
@@ -68,7 +68,7 @@ medusa.admin.collections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -82,7 +82,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminCollectionsRes`](../modules/internal.mdx#admincollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCollectionsRes](../internal/types/internal.AdminCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product collection's details.",
@@ -98,7 +98,7 @@ medusa.admin.collections
         "children": [
           {
             "name": "collection",
-            "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+            "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
             "description": "Product Collection details.",
             "optional": false,
             "defaultValue": "",
@@ -142,7 +142,7 @@ medusa.admin.collections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -151,7 +151,7 @@ medusa.admin.collections
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this product collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -210,7 +210,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`AdminPostCollectionsReq`](../internal/classes/internal.AdminPostCollectionsReq.mdx)",
+    "type": "[AdminPostCollectionsReq](../internal/classes/internal.AdminPostCollectionsReq.mdx)",
     "description": "The data of the product collection to create.",
     "optional": false,
     "defaultValue": "",
@@ -227,7 +227,7 @@ medusa.admin.collections
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs to hold additional information.",
         "optional": true,
         "defaultValue": "",
@@ -247,7 +247,7 @@ medusa.admin.collections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -261,7 +261,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminCollectionsRes`](../modules/internal.mdx#admincollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCollectionsRes](../internal/types/internal.AdminCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the created product collection's details.",
@@ -277,7 +277,7 @@ medusa.admin.collections
         "children": [
           {
             "name": "collection",
-            "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+            "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
             "description": "Product Collection details.",
             "optional": false,
             "defaultValue": "",
@@ -321,7 +321,7 @@ medusa.admin.collections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -330,7 +330,7 @@ medusa.admin.collections
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this product collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -396,7 +396,7 @@ medusa.admin.collections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -410,7 +410,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`DeleteResponse`](../internal/interfaces/internal.DeleteResponse.mdx)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[DeleteResponse](../internal/interfaces/internal.DeleteResponse.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
@@ -489,7 +489,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "query",
-    "type": "[`AdminGetCollectionsParams`](../internal/classes/internal.AdminGetCollectionsParams.mdx)",
+    "type": "[AdminGetCollectionsParams](../internal/classes/internal.AdminGetCollectionsParams.mdx)",
     "description": "Filters and pagination configurations to apply on the retrieved product collections.",
     "optional": true,
     "defaultValue": "",
@@ -497,7 +497,7 @@ medusa.admin.collections
     "children": [
       {
         "name": "created_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product collections' `created_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -543,7 +543,7 @@ medusa.admin.collections
       },
       {
         "name": "deleted_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product collections' `deleted_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -643,7 +643,7 @@ medusa.admin.collections
       },
       {
         "name": "updated_at",
-        "type": "[`DateComparisonOperator`](../internal/classes/internal.DateComparisonOperator.mdx)",
+        "type": "[DateComparisonOperator](../internal/classes/internal.DateComparisonOperator.mdx)",
         "description": "Date filters to apply on the product collections' `updated_at` date.",
         "optional": true,
         "defaultValue": "",
@@ -691,7 +691,7 @@ medusa.admin.collections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -705,7 +705,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminCollectionsListRes`](../modules/internal.mdx#admincollectionslistres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCollectionsListRes](../internal/types/internal.AdminCollectionsListRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the list of product collections with pagination fields.",
@@ -713,7 +713,7 @@ medusa.admin.collections
     "children": [
       {
         "name": "AdminCollectionsListRes",
-        "type": "[`PaginatedResponse`](../internal/interfaces/internal.PaginatedResponse.mdx) & { `collections`: [`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)[]  }",
+        "type": "[PaginatedResponse](../internal/interfaces/internal.PaginatedResponse.mdx) & `&#123; collections: [ProductCollection](../internal/classes/internal.ProductCollection.mdx)[]  &#125;`",
         "description": "",
         "optional": false,
         "defaultValue": "",
@@ -748,7 +748,7 @@ medusa.admin.collections
           },
           {
             "name": "collections",
-            "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)[]",
+            "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)[]",
             "description": "an array of collection details",
             "optional": false,
             "defaultValue": "",
@@ -792,7 +792,7 @@ medusa.admin.collections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -801,7 +801,7 @@ medusa.admin.collections
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this product collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -869,7 +869,7 @@ medusa.admin.collections
   },
   {
     "name": "payload",
-    "type": "[`AdminDeleteProductsFromCollectionReq`](../internal/classes/internal.AdminDeleteProductsFromCollectionReq.mdx)",
+    "type": "[AdminDeleteProductsFromCollectionReq](../internal/classes/internal.AdminDeleteProductsFromCollectionReq.mdx)",
     "description": "The products to remove from the collection.",
     "optional": false,
     "defaultValue": "",
@@ -888,7 +888,7 @@ medusa.admin.collections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -902,7 +902,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminDeleteProductsFromCollectionRes`](../modules/internal.mdx#admindeleteproductsfromcollectionres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminDeleteProductsFromCollectionRes](../internal/types/internal.AdminDeleteProductsFromCollectionRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the deletion operation details.",
@@ -980,7 +980,7 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -994,7 +994,7 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminCollectionsRes`](../modules/internal.mdx#admincollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCollectionsRes](../internal/types/internal.AdminCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product collection's details.",
@@ -1010,7 +1010,7 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
         "children": [
           {
             "name": "collection",
-            "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+            "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
             "description": "Product Collection details.",
             "optional": false,
             "defaultValue": "",
@@ -1054,7 +1054,7 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1063,7 +1063,7 @@ medusa.admin.collections.retrieve(collectionId).then(({ collection }) => {
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this product collection.",
                 "optional": false,
                 "defaultValue": "",
@@ -1131,7 +1131,7 @@ medusa.admin.collections
   },
   {
     "name": "payload",
-    "type": "[`AdminPostCollectionsCollectionReq`](../internal/classes/internal.AdminPostCollectionsCollectionReq.mdx)",
+    "type": "[AdminPostCollectionsCollectionReq](../internal/classes/internal.AdminPostCollectionsCollectionReq.mdx)",
     "description": "The data to update in the product collection.",
     "optional": false,
     "defaultValue": "",
@@ -1148,7 +1148,7 @@ medusa.admin.collections
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional set of key-value pairs to hold additional information.",
         "optional": true,
         "defaultValue": "",
@@ -1168,7 +1168,7 @@ medusa.admin.collections
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1182,7 +1182,7 @@ medusa.admin.collections
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`AdminCollectionsRes`](../modules/internal.mdx#admincollectionsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[AdminCollectionsRes](../internal/types/internal.AdminCollectionsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the product collection's details.",
@@ -1198,7 +1198,7 @@ medusa.admin.collections
         "children": [
           {
             "name": "collection",
-            "type": "[`ProductCollection`](../internal/classes/internal.ProductCollection.mdx)",
+            "type": "[ProductCollection](../internal/classes/internal.ProductCollection.mdx)",
             "description": "Product Collection details.",
             "optional": false,
             "defaultValue": "",
@@ -1242,7 +1242,7 @@ medusa.admin.collections
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1251,7 +1251,7 @@ medusa.admin.collections
               },
               {
                 "name": "products",
-                "type": "[`Product`](../internal/classes/internal.Product.mdx)[]",
+                "type": "[Product](../internal/classes/internal.Product.mdx)[]",
                 "description": "The details of the products that belong to this product collection.",
                 "optional": false,
                 "defaultValue": "",

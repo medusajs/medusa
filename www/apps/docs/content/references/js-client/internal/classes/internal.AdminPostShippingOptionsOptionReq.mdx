@@ -21,7 +21,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   {
     "name": "amount",
     "type": "`number`",
-    "description": "The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used.",
+    "description": "The amount to charge for the Shipping Option. If the `price\\_type` of the shipping option is `calculated`, this amount will not actually be used.",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
@@ -39,7 +39,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "metadata",
-    "type": "Record<`string`, `unknown`\\>",
+    "type": "`Record<string, unknown>`",
     "description": "An optional set of key-value pairs with additional information.",
     "optional": true,
     "defaultValue": "",
@@ -57,39 +57,11 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "requirements",
-    "type": "[`OptionRequirement`](internal.OptionRequirement-1.mdx)[]",
+    "type": "[OptionRequirement](internal.OptionRequirement-1.mdx)[]",
     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
     "optional": false,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "amount",
-        "type": "`number`",
-        "description": "The amount to compare with.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "id",
-        "type": "`string`",
-        "description": "The ID of an existing requirement. If an ID is passed, the existing requirement's details are updated. Otherwise, a new requirement is created.",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "type",
-        "type": "`string`",
-        "description": "The type of the requirement",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   }
 ]} />

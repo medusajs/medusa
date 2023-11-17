@@ -60,14 +60,16 @@ async function retrieveCategory (id: string) {
     "description": "The ID of the product category to retrieve.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "config",
-    "type": "[`FindConfig`](../../interfaces/FindConfig.mdx)<[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)\\>",
+    "type": "[FindConfig](../../interfaces/FindConfig.mdx)&#60;[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)&#62;",
     "description": "The configurations determining how the product category is retrieved. Its properties, such as `select` or `relations`, accept the attributes or relations associated with a product category.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "order",
@@ -75,7 +77,18 @@ async function retrieveCategory (id: string) {
         "description": "An object used to specify how to sort the returned records. Its keys are the names of attributes of the entity, and a key's value can either be `ASC` to sort retrieved records in an ascending order, or `DESC` to sort retrieved records in a descending order.",
         "optional": true,
         "defaultValue": "",
-        "children": []
+        "expandable": false,
+        "children": [
+          {
+            "name": "__type",
+            "type": "`object`",
+            "description": "",
+            "optional": false,
+            "defaultValue": "",
+            "expandable": false,
+            "children": []
+          }
+        ]
       },
       {
         "name": "relations",
@@ -83,6 +96,7 @@ async function retrieveCategory (id: string) {
         "description": "An array of strings, each being relation names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -91,6 +105,7 @@ async function retrieveCategory (id: string) {
         "description": "An array of strings, each being attribute names of the entity to retrieve in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -99,6 +114,7 @@ async function retrieveCategory (id: string) {
         "description": "A number indicating the number of records to skip before retrieving the results.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -107,6 +123,7 @@ async function retrieveCategory (id: string) {
         "description": "A number indicating the number of records to return in the result.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -115,16 +132,18 @@ async function retrieveCategory (id: string) {
         "description": "A boolean indicating whether deleted records should also be retrieved as part of the result. This only works if the entity extends the `SoftDeletableEntity` class.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
   },
   {
     "name": "sharedContext",
-    "type": "[`Context`](../../interfaces/Context.mdx)",
+    "type": "[Context](../../interfaces/Context.mdx)",
     "description": "A context used to share resources, such as transaction manager, between the application and the module.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": [
       {
         "name": "enableNestedTransactions",
@@ -132,6 +151,7 @@ async function retrieveCategory (id: string) {
         "description": "a boolean value indicating whether nested transactions are enabled.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -140,6 +160,7 @@ async function retrieveCategory (id: string) {
         "description": "A string indicating the isolation level of the context. Possible values are `READ UNCOMMITTED`, `READ COMMITTED`, `REPEATABLE READ`, or `SERIALIZABLE`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -148,6 +169,7 @@ async function retrieveCategory (id: string) {
         "description": "An instance of a manager, typically an entity manager, of type `TManager`, which is a typed parameter passed to the context to specify the type of the `manager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -156,6 +178,7 @@ async function retrieveCategory (id: string) {
         "description": "a string indicating the ID of the current transaction.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -164,6 +187,7 @@ async function retrieveCategory (id: string) {
         "description": "An instance of a transaction manager of type `TManager`, which is a typed parameter passed to the context to specify the type of the `transactionManager`.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]
@@ -175,24 +199,27 @@ async function retrieveCategory (id: string) {
 <ParameterTypes parameters={[
   {
     "name": "Promise",
-    "type": "`Promise`<[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)\\>",
+    "type": "Promise&#60;[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "The retrieved product category.",
+    "expandable": false,
     "children": [
       {
         "name": "category_children",
-        "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+        "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
         "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -201,6 +228,7 @@ async function retrieveCategory (id: string) {
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -209,6 +237,7 @@ async function retrieveCategory (id: string) {
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -217,6 +246,7 @@ async function retrieveCategory (id: string) {
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -225,6 +255,7 @@ async function retrieveCategory (id: string) {
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -233,6 +264,7 @@ async function retrieveCategory (id: string) {
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -241,6 +273,7 @@ async function retrieveCategory (id: string) {
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -249,14 +282,16 @@ async function retrieveCategory (id: string) {
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -265,6 +300,7 @@ async function retrieveCategory (id: string) {
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -273,6 +309,7 @@ async function retrieveCategory (id: string) {
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -283,6 +320,7 @@ async function retrieveCategory (id: string) {
         "description": "When the product category was created.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -291,6 +329,7 @@ async function retrieveCategory (id: string) {
         "description": "The description of the product category.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -299,6 +338,7 @@ async function retrieveCategory (id: string) {
         "description": "The handle of the product category. The handle can be used to create slug URL paths.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -307,6 +347,7 @@ async function retrieveCategory (id: string) {
         "description": "The ID of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -315,6 +356,7 @@ async function retrieveCategory (id: string) {
         "description": "Whether the product category is active.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -323,6 +365,7 @@ async function retrieveCategory (id: string) {
         "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -331,21 +374,24 @@ async function retrieveCategory (id: string) {
         "description": "The name of the product category.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
         "name": "parent_category",
-        "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+        "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
         "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": [
           {
             "name": "category_children",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)[]",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)[]",
             "description": "The associated child categories. It may only be available if the `category_children` relation is expanded.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -354,6 +400,7 @@ async function retrieveCategory (id: string) {
             "description": "When the product category was created.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -362,6 +409,7 @@ async function retrieveCategory (id: string) {
             "description": "The description of the product category.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -370,6 +418,7 @@ async function retrieveCategory (id: string) {
             "description": "The handle of the product category. The handle can be used to create slug URL paths.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -378,6 +427,7 @@ async function retrieveCategory (id: string) {
             "description": "The ID of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -386,6 +436,7 @@ async function retrieveCategory (id: string) {
             "description": "Whether the product category is active.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -394,6 +445,7 @@ async function retrieveCategory (id: string) {
             "description": "Whether the product category is internal. This can be used to only show the product category to admins and hide it from customers.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -402,14 +454,16 @@ async function retrieveCategory (id: string) {
             "description": "The name of the product category.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
             "name": "parent_category",
-            "type": "[`ProductCategoryDTO`](../../interfaces/ProductCategoryDTO.mdx)",
+            "type": "[ProductCategoryDTO](../../interfaces/ProductCategoryDTO.mdx)",
             "description": "The associated parent category. It may only be available if the `parent_category` relation is expanded.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -418,6 +472,7 @@ async function retrieveCategory (id: string) {
             "description": "The ranking of the product category among sibling categories.",
             "optional": true,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           },
           {
@@ -426,6 +481,7 @@ async function retrieveCategory (id: string) {
             "description": "When the product category was updated.",
             "optional": false,
             "defaultValue": "",
+            "expandable": false,
             "children": []
           }
         ]
@@ -436,6 +492,7 @@ async function retrieveCategory (id: string) {
         "description": "The ranking of the product category among sibling categories.",
         "optional": true,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       },
       {
@@ -444,6 +501,7 @@ async function retrieveCategory (id: string) {
         "description": "When the product category was updated.",
         "optional": false,
         "defaultValue": "",
+        "expandable": false,
         "children": []
       }
     ]

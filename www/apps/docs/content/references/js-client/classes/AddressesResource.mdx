@@ -7,7 +7,7 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 # AddressesResource
 
-This class is used to send requests to Address API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers_postcustomers). All its method
+This class is used to send requests to Address API Routes part of the [Store Customer API Routes](https://docs.medusajs.com/api/store#customers\_postcustomers). All its method
 are available in the JS Client under the `medusa.customers.addresses` property.
 
 All methods in this class require [customer authentication](AuthResource.mdx#authenticate).
@@ -48,7 +48,7 @@ medusa.customers.addresses
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`StorePostCustomersCustomerAddressesReq`](../internal/classes/internal.StorePostCustomersCustomerAddressesReq.mdx)",
+    "type": "[StorePostCustomersCustomerAddressesReq](../internal/classes/internal.StorePostCustomersCustomerAddressesReq.mdx)",
     "description": "The address to add.",
     "optional": false,
     "defaultValue": "",
@@ -56,7 +56,7 @@ medusa.customers.addresses
     "children": [
       {
         "name": "address",
-        "type": "[`AddressCreatePayload`](../internal/classes/internal.AddressCreatePayload.mdx)",
+        "type": "[AddressCreatePayload](../internal/classes/internal.AddressCreatePayload.mdx)",
         "description": "The Address to add to the Customer's saved addresses.",
         "optional": false,
         "defaultValue": "",
@@ -167,7 +167,7 @@ medusa.customers.addresses
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -181,7 +181,7 @@ medusa.customers.addresses
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCustomersRes`](../modules/internal.mdx#storecustomersres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
@@ -197,7 +197,7 @@ medusa.customers.addresses
         "children": [
           {
             "name": "customer",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -205,7 +205,7 @@ medusa.customers.addresses
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -259,7 +259,7 @@ medusa.customers.addresses
               },
               {
                 "name": "groups",
-                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
                 "description": "The customer groups the customer belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -295,7 +295,7 @@ medusa.customers.addresses
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -304,7 +304,7 @@ medusa.customers.addresses
               },
               {
                 "name": "orders",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "type": "[Order](../internal/classes/internal.Order.mdx)[]",
                 "description": "The details of the orders this customer placed.",
                 "optional": false,
                 "defaultValue": "",
@@ -322,7 +322,7 @@ medusa.customers.addresses
               },
               {
                 "name": "shipping_addresses",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "type": "[Address](../internal/classes/internal.Address.mdx)[]",
                 "description": "The details of the shipping addresses associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -377,7 +377,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -391,7 +391,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCustomersRes`](../modules/internal.mdx#storecustomersres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
@@ -407,7 +407,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
         "children": [
           {
             "name": "customer",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -415,7 +415,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -469,7 +469,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
               },
               {
                 "name": "groups",
-                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
                 "description": "The customer groups the customer belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -505,7 +505,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -514,7 +514,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
               },
               {
                 "name": "orders",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "type": "[Order](../internal/classes/internal.Order.mdx)[]",
                 "description": "The details of the orders this customer placed.",
                 "optional": false,
                 "defaultValue": "",
@@ -532,7 +532,7 @@ medusa.customers.addresses.deleteAddress(addressId).then(({ customer }) => {
               },
               {
                 "name": "shipping_addresses",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "type": "[Address](../internal/classes/internal.Address.mdx)[]",
                 "description": "The details of the shipping addresses associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -591,7 +591,7 @@ medusa.customers.addresses
   },
   {
     "name": "payload",
-    "type": "[`StorePostCustomersCustomerAddressesAddressReq`](../internal/classes/internal.StorePostCustomersCustomerAddressesAddressReq.mdx)",
+    "type": "[StorePostCustomersCustomerAddressesAddressReq](../internal/classes/internal.StorePostCustomersCustomerAddressesAddressReq.mdx)",
     "description": "The attributes to update in the address.",
     "optional": false,
     "defaultValue": "",
@@ -662,7 +662,7 @@ medusa.customers.addresses
       },
       {
         "name": "metadata",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "An optional key-value map with additional details",
         "optional": true,
         "defaultValue": "",
@@ -700,7 +700,7 @@ medusa.customers.addresses
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -714,7 +714,7 @@ medusa.customers.addresses
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCustomersRes`](../modules/internal.mdx#storecustomersres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCustomersRes](../internal/types/internal.StoreCustomersRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the customer's details, including the customer's addresses in the `shipping_addresses` attribute.",
@@ -730,7 +730,7 @@ medusa.customers.addresses
         "children": [
           {
             "name": "customer",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Customer`](../internal/classes/internal.Customer.mdx), ``\"password_hash\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Customer](../internal/classes/internal.Customer.mdx), `\"password_hash\"`&#62;",
             "description": "Customer details.",
             "optional": false,
             "defaultValue": "",
@@ -738,7 +738,7 @@ medusa.customers.addresses
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the customer.",
                 "optional": false,
                 "defaultValue": "",
@@ -792,7 +792,7 @@ medusa.customers.addresses
               },
               {
                 "name": "groups",
-                "type": "[`CustomerGroup`](../internal/classes/internal.CustomerGroup.mdx)[]",
+                "type": "[CustomerGroup](../internal/classes/internal.CustomerGroup.mdx)[]",
                 "description": "The customer groups the customer belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -828,7 +828,7 @@ medusa.customers.addresses
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -837,7 +837,7 @@ medusa.customers.addresses
               },
               {
                 "name": "orders",
-                "type": "[`Order`](../internal/classes/internal.Order.mdx)[]",
+                "type": "[Order](../internal/classes/internal.Order.mdx)[]",
                 "description": "The details of the orders this customer placed.",
                 "optional": false,
                 "defaultValue": "",
@@ -855,7 +855,7 @@ medusa.customers.addresses
               },
               {
                 "name": "shipping_addresses",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)[]",
+                "type": "[Address](../internal/classes/internal.Address.mdx)[]",
                 "description": "The details of the shipping addresses associated with the customer.",
                 "optional": false,
                 "defaultValue": "",

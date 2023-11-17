@@ -8,14 +8,14 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
 
 [Buffer](../../interfaces/Buffer.mdx).write
 
-**write**(`string`, `encoding?`): `number`
+`**write**(string, encoding?): number`
 
 Writes `string` to `buf` at `offset` according to the character encoding in`encoding`. The `length` parameter is the number of bytes to write. If `buf` did
 not contain enough space to fit the entire string, only part of `string` will be
 written. However, partially encoded characters will not be written.
 
 ```js
-import { Buffer } from 'buffer';
+import { Buffer } from 'node:buffer';
 
 const buf = Buffer.alloc(256);
 
@@ -41,14 +41,16 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
     "description": "String to write to `buf`.",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "The character encoding of `string`.",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -64,6 +66,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
     "optional": true,
     "defaultValue": "",
     "description": "Number of bytes written.",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -72,7 +75,7 @@ console.log(`${length} bytes: ${buffer.toString('utf8', 8, 10)}`);
 
 v0.1.90
 
-**write**(`string`, `offset`, `encoding?`): `number`
+`**write**(string, offset, encoding?): number`
 
 #### Parameters
 
@@ -83,6 +86,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -91,14 +95,16 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -114,11 +120,12 @@ v0.1.90
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />
 
-**write**(`string`, `offset`, `length`, `encoding?`): `number`
+`**write**(string, offset, length, encoding?): number`
 
 #### Parameters
 
@@ -129,6 +136,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -137,6 +145,7 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
@@ -145,14 +154,16 @@ v0.1.90
     "description": "",
     "optional": false,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   },
   {
     "name": "encoding",
-    "type": "[`BufferEncoding`](../../types/BufferEncoding.mdx)",
+    "type": "[BufferEncoding](../../types/BufferEncoding.mdx)",
     "description": "",
     "optional": true,
     "defaultValue": "",
+    "expandable": false,
     "children": []
   }
 ]} />
@@ -168,6 +179,7 @@ v0.1.90
     "optional": true,
     "defaultValue": "",
     "description": "",
+    "expandable": false,
     "children": []
   }
 ]} />

@@ -1,4 +1,9 @@
-import { Comment, ReflectionKind, ReflectionType } from "typedoc"
+import {
+  Comment,
+  DeclarationReflection,
+  ReflectionKind,
+  ReflectionType,
+} from "typedoc"
 import * as Handlebars from "handlebars"
 import { stripCode, stripLineBreaks } from "../utils"
 import { Parameter, ParameterStyle, ReflectionParameterType } from "../types"
@@ -20,13 +25,14 @@ const ALLOWED_KINDS: ReflectionKind[] = [
 export default function reflectionFormatter(
   reflection: ReflectionParameterType,
   type: ParameterStyle = "table",
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): string | Parameter {
   switch (type) {
     case "list":
       return reflectionListFormatter(reflection, level)
     case "component":
-      return reflectionComponentFormatter(reflection, level)
+      return reflectionComponentFormatter(reflection, level, maxLevel)
     case "table":
       return reflectionTableFormatter(reflection)
     default:
@@ -36,7 +42,8 @@ export default function reflectionFormatter(
 
 export function reflectionListFormatter(
   reflection: ReflectionParameterType,
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): string {
   const prefix = `${Array(level - 1)
     .fill("\t")
@@ -63,14 +70,14 @@ export function reflectionListFormatter(
 
   if (
     (reflection.type || hasChildren) &&
-    level + 1 <= MarkdownTheme.MAX_LEVEL
+    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
     const itemChildren: string[] = []
     let itemChildrenKind: ReflectionKind | null = null
-    children?.forEach((childItem) => {
+    children?.forEach((childItem: DeclarationReflection) => {
       if (!itemChildrenKind) {
         itemChildrenKind = childItem.kind
       }
@@ -89,7 +96,8 @@ export function reflectionListFormatter(
 
 export function reflectionComponentFormatter(
   reflection: ReflectionParameterType,
-  level = 1
+  level = 1,
+  maxLevel?: number | undefined
 ): Parameter {
   const defaultValue = getDefaultValue(reflection) || ""
   const optional =
@@ -99,7 +107,7 @@ export function reflectionComponentFormatter(
     name: reflection.name,
     type: reflection.type
       ? getType(reflection.type, "object")
-      : getReflectionType(reflection, "object"),
+      : getReflectionType(reflection, "object", true),
     description: comments
       ? stripLineBreaks(Handlebars.helpers.comments(comments, true, false))
       : "",
@@ -114,17 +122,19 @@ export function reflectionComponentFormatter(
 
   if (
     (reflection.type || hasChildren) &&
-    level + 1 <= MarkdownTheme.MAX_LEVEL
+    level + 1 <= (maxLevel || MarkdownTheme.MAX_LEVEL)
   ) {
     const children = hasChildren
       ? reflection.children
       : getTypeChildren(reflection.type!, reflection.project)
 
     children
-      ?.filter((childItem) => childItem.kindOf(ALLOWED_KINDS))
-      .forEach((childItem) => {
+      ?.filter((childItem: DeclarationReflection) =>
+        childItem.kindOf(ALLOWED_KINDS)
+      )
+      .forEach((childItem: DeclarationReflection) => {
         componentItem.children?.push(
-          reflectionComponentFormatter(childItem, level + 1)
+          reflectionComponentFormatter(childItem, level + 1, maxLevel)
         )
       })
   }
@@ -160,7 +170,7 @@ export function reflectionTableFormatter(
   row.push(
     parameter.type
       ? Handlebars.helpers.type.call(parameter.type, "object")
-      : getReflectionType(parameter, "object")
+      : getReflectionType(parameter, "object", true)
   )
 
   if (showDefaults) {

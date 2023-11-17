@@ -20,31 +20,12 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
   },
   {
     "name": "args",
-    "type": "[`JoinerArgument`](internal.internal-1.JoinerArgument.mdx)[]",
+    "type": "[JoinerArgument](internal.internal-1.JoinerArgument.mdx)[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "name",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "value",
-        "type": "`any`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "directives",
@@ -53,92 +34,16 @@ import ParameterTypes from "@site/src/components/ParameterTypes"
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "__type",
-        "type": "`object`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "expands",
-    "type": "{ `args?`: [`JoinerArgument`](internal.internal-1.JoinerArgument.mdx)[] ; `directives?`: { `[field: string]`: [`JoinerDirective`](internal.internal-1.JoinerDirective.mdx)[];  } ; `fields`: `string`[] ; `property`: `string`  }[]",
+    "type": "`&#123; args?: [JoinerArgument](internal.internal-1.JoinerArgument.mdx)[] ; directives?: &#123; [field: string]: [JoinerDirective](internal.internal-1.JoinerDirective.mdx)[];  &#125; ; fields: string[] ; property: string  &#125;`[]",
     "description": "",
     "optional": true,
     "defaultValue": "",
     "expandable": false,
-    "children": [
-      {
-        "name": "args",
-        "type": "[`JoinerArgument`](internal.internal-1.JoinerArgument.mdx)[]",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "name",
-            "type": "`string`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          },
-          {
-            "name": "value",
-            "type": "`any`",
-            "description": "",
-            "optional": true,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "directives",
-        "type": "`object`",
-        "description": "",
-        "optional": true,
-        "defaultValue": "",
-        "expandable": false,
-        "children": [
-          {
-            "name": "__type",
-            "type": "`object`",
-            "description": "",
-            "optional": false,
-            "defaultValue": "",
-            "expandable": false,
-            "children": []
-          }
-        ]
-      },
-      {
-        "name": "fields",
-        "type": "`string`[]",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      },
-      {
-        "name": "property",
-        "type": "`string`",
-        "description": "",
-        "optional": false,
-        "defaultValue": "",
-        "expandable": false,
-        "children": []
-      }
-    ]
+    "children": []
   },
   {
     "name": "fields",

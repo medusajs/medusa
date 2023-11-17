@@ -20,7 +20,7 @@ Related Guide: [How to implement cart functionality in your storefront](https://
 <ParameterTypes parameters={[
   {
     "name": "lineItems",
-    "type": "[`LineItemsResource`](LineItemsResource.mdx)",
+    "type": "[LineItemsResource](LineItemsResource.mdx)",
     "description": "An instance of [LineItemsResource](LineItemsResource.mdx) used to send requests to line-item-related routes part of the [Store Cart API Routes](https://docs.medusajs.com/api/store#carts).",
     "optional": false,
     "defaultValue": "",
@@ -63,7 +63,7 @@ medusa.carts
   },
   {
     "name": "payload",
-    "type": "[`StorePostCartsCartShippingMethodReq`](../internal/classes/internal.StorePostCartsCartShippingMethodReq.mdx)",
+    "type": "[StorePostCartsCartShippingMethodReq](../internal/classes/internal.StorePostCartsCartShippingMethodReq.mdx)",
     "description": "The shipping method to add.",
     "optional": false,
     "defaultValue": "",
@@ -71,7 +71,7 @@ medusa.carts
     "children": [
       {
         "name": "data",
-        "type": "Record<`string`, `any`\\>",
+        "type": "`Record<string, any>`",
         "description": "Used to hold any data that the shipping method may need to process the fulfillment of the order. This depends on the fulfillment provider you're using.",
         "optional": true,
         "defaultValue": "",
@@ -91,7 +91,7 @@ medusa.carts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -105,7 +105,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -121,7 +121,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -129,7 +129,7 @@ medusa.carts
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -156,7 +156,7 @@ medusa.carts
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -174,7 +174,7 @@ medusa.carts
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -210,7 +210,7 @@ medusa.carts
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -246,7 +246,7 @@ medusa.carts
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -282,7 +282,7 @@ medusa.carts
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -291,7 +291,7 @@ medusa.carts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -300,7 +300,7 @@ medusa.carts
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -327,7 +327,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -336,7 +336,7 @@ medusa.carts
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -354,7 +354,7 @@ medusa.carts
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -372,7 +372,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -390,7 +390,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -408,7 +408,7 @@ medusa.carts
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -462,7 +462,7 @@ medusa.carts
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -520,7 +520,7 @@ medusa.carts.complete(cartId).then(({ cart }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -534,7 +534,7 @@ medusa.carts.complete(cartId).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCompleteCartRes`](../modules/internal.mdx#storecompletecartres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCompleteCartRes](../internal/types/internal.StoreCompleteCartRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the completion details.",
@@ -542,7 +542,7 @@ medusa.carts.complete(cartId).then(({ cart }) => {
     "children": [
       {
         "name": "StoreCompleteCartRes",
-        "type": "{ `data`: [`Cart`](../internal/classes/internal.Cart.mdx) ; `type`: ``\"cart\"``  } \\| { `data`: [`Order`](../internal/classes/internal.Order.mdx) ; `type`: ``\"order\"``  } \\| { `data`: [`Swap`](../internal/classes/internal.Swap.mdx) ; `type`: ``\"swap\"``  }",
+        "type": "`&#123; data: [Cart](../internal/classes/internal.Cart.mdx) ; type: `\"cart\"`  &#125;` \\| `&#123; data: [Order](../internal/classes/internal.Order.mdx) ; type: `\"order\"`  &#125;` \\| `&#123; data: [Swap](../internal/classes/internal.Swap.mdx) ; type: `\"swap\"`  &#125;`",
         "description": "If the cart is completed successfully, this will have the created order or the swap's details, based on the cart's type. Otherwise, it'll be the cart's details.",
         "optional": false,
         "defaultValue": "",
@@ -576,7 +576,7 @@ medusa.carts.create().then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "payload",
-    "type": "[`StorePostCartReq`](../internal/classes/internal.StorePostCartReq.mdx)",
+    "type": "[StorePostCartReq](../internal/classes/internal.StorePostCartReq.mdx)",
     "description": "The cart to create.",
     "optional": true,
     "defaultValue": "",
@@ -585,7 +585,7 @@ medusa.carts.create().then(({ cart }) => {
       {
         "name": "context",
         "type": "`object`",
-        "description": "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+        "description": "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user\\_agent`",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -602,7 +602,7 @@ medusa.carts.create().then(({ cart }) => {
       },
       {
         "name": "items",
-        "type": "[`Item`](../internal/classes/internal.Item.mdx)[]",
+        "type": "[Item](../internal/classes/internal.Item.mdx)[]",
         "description": "An array of product variants to generate line items from.",
         "optional": true,
         "defaultValue": "",
@@ -650,7 +650,7 @@ medusa.carts.create().then(({ cart }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -664,7 +664,7 @@ medusa.carts.create().then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the created cart's details.",
@@ -680,7 +680,7 @@ medusa.carts.create().then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -688,7 +688,7 @@ medusa.carts.create().then(({ cart }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -715,7 +715,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -733,7 +733,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -769,7 +769,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -805,7 +805,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -841,7 +841,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -850,7 +850,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -859,7 +859,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -886,7 +886,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -895,7 +895,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -913,7 +913,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -931,7 +931,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -949,7 +949,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -967,7 +967,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1021,7 +1021,7 @@ medusa.carts.create().then(({ cart }) => {
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -1076,7 +1076,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1090,7 +1090,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -1106,7 +1106,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1114,7 +1114,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1141,7 +1141,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -1159,7 +1159,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1195,7 +1195,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1231,7 +1231,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1267,7 +1267,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1276,7 +1276,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1285,7 +1285,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1312,7 +1312,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1321,7 +1321,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1339,7 +1339,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1357,7 +1357,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1375,7 +1375,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1393,7 +1393,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1447,7 +1447,7 @@ medusa.carts.createPaymentSessions(cartId).then(({ cart }) => {
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -1511,7 +1511,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1525,7 +1525,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -1541,7 +1541,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1549,7 +1549,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1576,7 +1576,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -1594,7 +1594,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -1630,7 +1630,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1666,7 +1666,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1702,7 +1702,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1711,7 +1711,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -1720,7 +1720,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1747,7 +1747,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1756,7 +1756,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1774,7 +1774,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1792,7 +1792,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1810,7 +1810,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1828,7 +1828,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -1882,7 +1882,7 @@ medusa.carts.deleteDiscount(cartId, code).then(({ cart }) => {
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -1945,7 +1945,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -1959,7 +1959,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -1975,7 +1975,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -1983,7 +1983,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2010,7 +2010,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -2028,7 +2028,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2064,7 +2064,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2100,7 +2100,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2136,7 +2136,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2145,7 +2145,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2154,7 +2154,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2181,7 +2181,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2190,7 +2190,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2208,7 +2208,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2226,7 +2226,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2244,7 +2244,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2262,7 +2262,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2316,7 +2316,7 @@ medusa.carts.deletePaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -2379,7 +2379,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2393,7 +2393,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -2409,7 +2409,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -2417,7 +2417,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2444,7 +2444,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -2462,7 +2462,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2498,7 +2498,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2534,7 +2534,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2570,7 +2570,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2579,7 +2579,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -2588,7 +2588,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2615,7 +2615,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2624,7 +2624,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2642,7 +2642,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2660,7 +2660,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2678,7 +2678,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2696,7 +2696,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2750,7 +2750,7 @@ medusa.carts.refreshPaymentSession(cartId, "manual").then(({ cart }) => {
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -2804,7 +2804,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -2818,7 +2818,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -2834,7 +2834,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -2842,7 +2842,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2869,7 +2869,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -2887,7 +2887,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -2923,7 +2923,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2959,7 +2959,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -2995,7 +2995,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3004,7 +3004,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3013,7 +3013,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3040,7 +3040,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3049,7 +3049,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3067,7 +3067,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3085,7 +3085,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3103,7 +3103,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3121,7 +3121,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3175,7 +3175,7 @@ medusa.carts.retrieve(cartId).then(({ cart }) => {
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -3234,7 +3234,7 @@ medusa.carts
   },
   {
     "name": "payload",
-    "type": "[`StorePostCartsCartPaymentSessionReq`](../internal/classes/internal.StorePostCartsCartPaymentSessionReq.mdx)",
+    "type": "[StorePostCartsCartPaymentSessionReq](../internal/classes/internal.StorePostCartsCartPaymentSessionReq.mdx)",
     "description": "The associated payment provider.",
     "optional": false,
     "defaultValue": "",
@@ -3253,7 +3253,7 @@ medusa.carts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3267,7 +3267,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -3283,7 +3283,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -3291,7 +3291,7 @@ medusa.carts
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3318,7 +3318,7 @@ medusa.carts
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -3336,7 +3336,7 @@ medusa.carts
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -3372,7 +3372,7 @@ medusa.carts
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3408,7 +3408,7 @@ medusa.carts
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3444,7 +3444,7 @@ medusa.carts
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3453,7 +3453,7 @@ medusa.carts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -3462,7 +3462,7 @@ medusa.carts
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3489,7 +3489,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3498,7 +3498,7 @@ medusa.carts
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3516,7 +3516,7 @@ medusa.carts
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3534,7 +3534,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3552,7 +3552,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3570,7 +3570,7 @@ medusa.carts
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3624,7 +3624,7 @@ medusa.carts
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -3682,7 +3682,7 @@ medusa.carts
   },
   {
     "name": "payload",
-    "type": "[`StorePostCartsCartReq`](../internal/classes/internal.StorePostCartsCartReq.mdx)",
+    "type": "[StorePostCartsCartReq](../internal/classes/internal.StorePostCartsCartReq.mdx)",
     "description": "The attributes to update in the cart.",
     "optional": false,
     "defaultValue": "",
@@ -3690,7 +3690,7 @@ medusa.carts
     "children": [
       {
         "name": "billing_address",
-        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "type": "`string` \\| [AddressPayload](../internal/classes/internal.AddressPayload.mdx)",
         "description": "The Address to be used for billing purposes.",
         "optional": true,
         "defaultValue": "",
@@ -3700,7 +3700,7 @@ medusa.carts
       {
         "name": "context",
         "type": "`object`",
-        "description": "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`",
+        "description": "An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user\\_agent`",
         "optional": true,
         "defaultValue": "",
         "expandable": false,
@@ -3726,7 +3726,7 @@ medusa.carts
       },
       {
         "name": "discounts",
-        "type": "[`Discount`](../internal/classes/internal.Discount.mdx)[]",
+        "type": "[Discount](../internal/classes/internal.Discount.mdx)[]",
         "description": "An array of Discount codes to add to the Cart.",
         "optional": true,
         "defaultValue": "",
@@ -3754,7 +3754,7 @@ medusa.carts
       },
       {
         "name": "gift_cards",
-        "type": "[`GiftCard`](../internal/classes/internal.GiftCard.mdx)[]",
+        "type": "[GiftCard](../internal/classes/internal.GiftCard.mdx)[]",
         "description": "An array of Gift Card codes to add to the Cart.",
         "optional": true,
         "defaultValue": "",
@@ -3791,7 +3791,7 @@ medusa.carts
       },
       {
         "name": "shipping_address",
-        "type": "`string` \\| [`AddressPayload`](../internal/classes/internal.AddressPayload.mdx)",
+        "type": "`string` \\| [AddressPayload](../internal/classes/internal.AddressPayload.mdx)",
         "description": "The Address to be used for shipping purposes.",
         "optional": true,
         "defaultValue": "",
@@ -3802,7 +3802,7 @@ medusa.carts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -3816,7 +3816,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -3832,7 +3832,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -3840,7 +3840,7 @@ medusa.carts
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3867,7 +3867,7 @@ medusa.carts
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -3885,7 +3885,7 @@ medusa.carts
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -3921,7 +3921,7 @@ medusa.carts
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3957,7 +3957,7 @@ medusa.carts
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -3993,7 +3993,7 @@ medusa.carts
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4002,7 +4002,7 @@ medusa.carts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -4011,7 +4011,7 @@ medusa.carts
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4038,7 +4038,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4047,7 +4047,7 @@ medusa.carts
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4065,7 +4065,7 @@ medusa.carts
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4083,7 +4083,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4101,7 +4101,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4119,7 +4119,7 @@ medusa.carts
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4173,7 +4173,7 @@ medusa.carts
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",
@@ -4242,7 +4242,7 @@ medusa.carts
   },
   {
     "name": "payload",
-    "type": "[`StorePostCartsCartPaymentSessionUpdateReq`](../internal/classes/internal.StorePostCartsCartPaymentSessionUpdateReq.mdx)",
+    "type": "[StorePostCartsCartPaymentSessionUpdateReq](../internal/classes/internal.StorePostCartsCartPaymentSessionUpdateReq.mdx)",
     "description": "The attributes to update in the payment session.",
     "optional": false,
     "defaultValue": "",
@@ -4250,7 +4250,7 @@ medusa.carts
     "children": [
       {
         "name": "data",
-        "type": "Record<`string`, `unknown`\\>",
+        "type": "`Record<string, unknown>`",
         "description": "The data to update the payment session with.",
         "optional": false,
         "defaultValue": "",
@@ -4261,7 +4261,7 @@ medusa.carts
   },
   {
     "name": "customHeaders",
-    "type": "Record<`string`, `any`\\>",
+    "type": "`Record<string, any>`",
     "description": "Custom headers to attach to the request.",
     "optional": false,
     "defaultValue": "{}",
@@ -4275,7 +4275,7 @@ medusa.carts
 <ParameterTypes parameters={[
   {
     "name": "ResponsePromise",
-    "type": "[`ResponsePromise`](../modules/internal.mdx#responsepromise)<[`StoreCartsRes`](../modules/internal.mdx#storecartsres)\\>",
+    "type": "[ResponsePromise](../internal/types/internal.ResponsePromise.mdx)&#60;[StoreCartsRes](../internal/types/internal.StoreCartsRes.mdx)&#62;",
     "optional": false,
     "defaultValue": "",
     "description": "Resolves to the cart's details.",
@@ -4291,7 +4291,7 @@ medusa.carts
         "children": [
           {
             "name": "cart",
-            "type": "[`Omit`](../modules/internal.mdx#omit)<[`Cart`](../internal/classes/internal.Cart.mdx), ``\"refundable_amount\"`` \\| ``\"refunded_total\"``\\>",
+            "type": "[Omit](../internal/types/internal.Omit.mdx)&#60;[Cart](../internal/classes/internal.Cart.mdx), `\"refundable_amount\"` \\| `\"refunded_total\"`&#62;",
             "description": "Cart details.",
             "optional": false,
             "defaultValue": "",
@@ -4299,7 +4299,7 @@ medusa.carts
             "children": [
               {
                 "name": "billing_address",
-                "type": "[`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "[Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the billing address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4326,7 +4326,7 @@ medusa.carts
               },
               {
                 "name": "context",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "The context of the cart which can include info like IP or user agent.",
                 "optional": false,
                 "defaultValue": "",
@@ -4344,7 +4344,7 @@ medusa.carts
               },
               {
                 "name": "customer",
-                "type": "[`Customer`](../internal/classes/internal.Customer.mdx)",
+                "type": "[Customer](../internal/classes/internal.Customer.mdx)",
                 "description": "The details of the customer the cart belongs to.",
                 "optional": false,
                 "defaultValue": "",
@@ -4380,7 +4380,7 @@ medusa.carts
               },
               {
                 "name": "discounts",
-                "type": "[`Discount`](../internal/classes/internal.Discount-1.mdx)[]",
+                "type": "[Discount](../internal/classes/internal.Discount-1.mdx)[]",
                 "description": "An array of details of all discounts applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4416,7 +4416,7 @@ medusa.carts
               },
               {
                 "name": "gift_cards",
-                "type": "[`GiftCard`](../internal/classes/internal.GiftCard-1.mdx)[]",
+                "type": "[GiftCard](../internal/classes/internal.GiftCard-1.mdx)[]",
                 "description": "An array of details of all gift cards applied to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4452,7 +4452,7 @@ medusa.carts
               },
               {
                 "name": "items",
-                "type": "[`LineItem`](../internal/classes/internal.LineItem.mdx)[]",
+                "type": "[LineItem](../internal/classes/internal.LineItem.mdx)[]",
                 "description": "The line items added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4461,7 +4461,7 @@ medusa.carts
               },
               {
                 "name": "metadata",
-                "type": "Record<`string`, `unknown`\\>",
+                "type": "`Record<string, unknown>`",
                 "description": "An optional key-value map with additional details",
                 "optional": false,
                 "defaultValue": "",
@@ -4470,7 +4470,7 @@ medusa.carts
               },
               {
                 "name": "payment",
-                "type": "[`Payment`](../internal/classes/internal.Payment.mdx)",
+                "type": "[Payment](../internal/classes/internal.Payment.mdx)",
                 "description": "The details of the payment associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4497,7 +4497,7 @@ medusa.carts
               },
               {
                 "name": "payment_session",
-                "type": "``null`` \\| [`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)",
+                "type": "``null`` \\| [PaymentSession](../internal/classes/internal.PaymentSession.mdx)",
                 "description": "The details of the selected payment session in the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4506,7 +4506,7 @@ medusa.carts
               },
               {
                 "name": "payment_sessions",
-                "type": "[`PaymentSession`](../internal/classes/internal.PaymentSession.mdx)[]",
+                "type": "[PaymentSession](../internal/classes/internal.PaymentSession.mdx)[]",
                 "description": "The details of all payment sessions created on the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4524,7 +4524,7 @@ medusa.carts
               },
               {
                 "name": "region",
-                "type": "[`Region`](../internal/classes/internal.Region.mdx)",
+                "type": "[Region](../internal/classes/internal.Region.mdx)",
                 "description": "The details of the region associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4542,7 +4542,7 @@ medusa.carts
               },
               {
                 "name": "sales_channel",
-                "type": "[`SalesChannel`](../internal/classes/internal.SalesChannel.mdx)",
+                "type": "[SalesChannel](../internal/classes/internal.SalesChannel.mdx)",
                 "description": "The details of the sales channel associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4560,7 +4560,7 @@ medusa.carts
               },
               {
                 "name": "shipping_address",
-                "type": "``null`` \\| [`Address`](../internal/classes/internal.Address.mdx)",
+                "type": "``null`` \\| [Address](../internal/classes/internal.Address.mdx)",
                 "description": "The details of the shipping address associated with the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4578,7 +4578,7 @@ medusa.carts
               },
               {
                 "name": "shipping_methods",
-                "type": "[`ShippingMethod`](../internal/classes/internal.ShippingMethod-4.mdx)[]",
+                "type": "[ShippingMethod](../internal/classes/internal.ShippingMethod-4.mdx)[]",
                 "description": "The details of the shipping methods added to the cart.",
                 "optional": false,
                 "defaultValue": "",
@@ -4632,7 +4632,7 @@ medusa.carts
               },
               {
                 "name": "type",
-                "type": "[`CartType`](../internal/enums/internal.CartType.mdx)",
+                "type": "[CartType](../internal/enums/internal.CartType.mdx)",
                 "description": "The cart's type.",
                 "optional": false,
                 "defaultValue": "default",

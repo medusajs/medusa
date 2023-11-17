@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from "clsx"
 import { translate } from "@docusaurus/Translate"
-import IconClose from "../../Icon/Close"
+import IconClose from "@theme/Icon/Close"
 import type { Props } from "@theme/AnnouncementBar/CloseButton"
 
 export default function AnnouncementBarCloseButton(

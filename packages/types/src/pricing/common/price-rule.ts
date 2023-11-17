@@ -64,7 +64,6 @@ export interface CreatePriceRuleDTO {
   value: string
   priority?: number
   price_set_money_amount_id: string
-  price_list_id: string
 }
 
 /**
