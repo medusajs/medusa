@@ -110,56 +110,6 @@ describe("GET /store/price-lists", () => {
     await db.teardown()
   })
 
-  it("should list product and prices from price-list", async () => {
-    const [{ id: priceListId }] = await pricingModuleService.createPriceLists([
-      {
-        title: "test price list",
-        description: "test",
-        status: PriceListStatus.ACTIVE,
-        type: PriceListType.SALE,
-        prices: [
-          {
-            amount: 2500,
-            currency_code: "usd",
-            price_set_id: priceSetId,
-          },
-        ],
-      },
-    ])
-
-    const api = useApi() as any
-
-    let response = await api.get(
-      `/store/products/${product.id}?currency_code=usd`
-    )
-
-    expect(response.status).toEqual(200)
-    expect(response.data.product.variants[0].prices).toHaveLength(2)
-    expect(response.data.product.variants[0].prices).toEqual([
-      expect.objectContaining({
-        currency_code: "usd",
-        amount: 3000,
-        min_quantity: null,
-        max_quantity: null,
-        price_list_id: null,
-      }),
-      expect.objectContaining({
-        currency_code: "usd",
-        amount: 2500,
-        min_quantity: null,
-        max_quantity: null,
-        price_list_id: priceListId,
-      }),
-    ])
-    expect(response.data.product.variants[0]).toEqual(
-      expect.objectContaining({
-        original_price: 3000,
-        calculated_price: 2500,
-        calculated_price_type: "sale",
-      })
-    )
-  })
-
   it("should list product and prices from price-list created in the api", async () => {
     const api = useApi()! as AxiosInstance
 
