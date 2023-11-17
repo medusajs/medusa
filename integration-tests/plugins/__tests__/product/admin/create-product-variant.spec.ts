@@ -80,7 +80,7 @@ describe("[Product & Pricing Module] POST /admin/products/:id/variants", () => {
     await db.teardown()
   })
 
-  it("should create product variant price sets and prices", async () => {
+  it("should create a product variant with its price sets and prices through the workflow", async () => {
     const api = useApi()! as AxiosInstance
     const data = {
       title: "test variant create",
