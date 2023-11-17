@@ -222,20 +222,7 @@ class CartService extends TransactionBaseService {
 
     const query = buildQuery(selector, config)
 
-    const loadSalesChannels = config.relations?.includes("sales_channels")
-    if (loadSalesChannels) {
-      config.relations = config.relations?.filter((r) => r !== "sales_channel")
-    }
-
-    config.relations = config.relations?.filter((r) => r !== "sales_channel")
-
-    const carts = await cartRepo.find(query)
-
-    if (loadSalesChannels) {
-      await this.decorateCartsWithSalesChannel(carts)
-    }
-
-    return carts
+    return await cartRepo.find(query)
   }
 
   /**
@@ -257,8 +244,6 @@ class CartService extends TransactionBaseService {
       )
     }
 
-    const loadSalesChannels = options.relations?.includes("sales_channel")
-
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       if (Array.isArray(options.relations)) {
         for (let i = 0; i < options.relations.length; i++) {
@@ -268,12 +253,6 @@ class CartService extends TransactionBaseService {
         }
       }
       options.relations = [...new Set(options.relations)]
-
-      if (loadSalesChannels) {
-        options.relations = options.relations?.filter(
-          (r) => r !== "sales_channel"
-        )
-      }
     }
 
     const { totalsToSelect } = this.transformQueryForTotals_(options)
@@ -300,10 +279,6 @@ class CartService extends TransactionBaseService {
         MedusaError.Types.NOT_FOUND,
         `Cart with ${cartId} was not found`
       )
-    }
-
-    if (loadSalesChannels) {
-      await this.decorateCartsWithSalesChannel([raw])
     }
 
     return raw
@@ -353,8 +328,6 @@ class CartService extends TransactionBaseService {
 
     const opt = { ...options, relations }
 
-    const loadSalesChannels = options.relations?.includes("sales_channel")
-
     if (this.featureFlagRouter_.isFeatureEnabled(MedusaV2Flag.key)) {
       if (Array.isArray(opt.relations)) {
         for (let i = 0; i < opt.relations.length; i++) {
@@ -365,16 +338,9 @@ class CartService extends TransactionBaseService {
       }
 
       opt.relations = [...new Set(opt.relations)]
-      if (loadSalesChannels) {
-        opt.relations = opt.relations?.filter((r) => r !== "sales_channel")
-      }
     }
 
     const cart = await this.retrieve(cartId, opt)
-
-    if (loadSalesChannels) {
-      await this.decorateCartsWithSalesChannel([cart])
-    }
 
     return await this.decorateTotals(cart, totalsConfig)
   }
@@ -540,6 +506,7 @@ class CartService extends TransactionBaseService {
           },
         }
         ;[salesChannel] = await this.remoteQuery_(query)
+        console.log("VALIDATE RQ SC: ", salesChannel)
       } else {
         salesChannel = await this.salesChannelService_
           .withTransaction(this.activeManager_)
@@ -1280,7 +1247,7 @@ class CartService extends TransactionBaseService {
 
           await this.onSalesChannelChange(cart, data.sales_channel_id)
 
-          cart.sales_channel_id = salesChannel.id
+          cart.sales_channels = [{ id: salesChannel.id }] as SalesChannel[]
         }
 
         if (isDefined(data.discounts) && data.discounts.length) {
@@ -2982,62 +2949,62 @@ class CartService extends TransactionBaseService {
     return Array.from(relationSet.values())
   }
 
-  /**
-   * Temporary method to join sales channels of a product using RemoteQuery while
-   * MedusaV2 FF is on.
-   *
-   * @param carts
-   * @private
-   */
-  private async decorateCartsWithSalesChannel(carts: Cart[]) {
-    const cartIdSalesChannelMapMap = await this.getSalesChannelModuleChannels(
-      carts.map((p) => p.id)
-    )
-
-    carts.forEach(
-      (cart) => (cart.sales_channel = cartIdSalesChannelMapMap[cart.id])
-    )
-
-    return carts
-  }
-
-  /**
-   * Temporary method to fetch sales channels of a carts using RemoteQuery while
-   * MedusaV2 FF is on.
-   *
-   * @param cartIds
-   * @private
-   */
-  private async getSalesChannelModuleChannels(
-    cartIds: string[]
-  ): Promise<Record<string, SalesChannel>> {
-    const query = {
-      cart: {
-        __args: { filters: { id: cartIds } },
-        fields: ["id"],
-        sales_channel: {
-          fields: [
-            "id",
-            "name",
-            "description",
-            "is_disabled",
-            "created_at",
-            "updated_at",
-            "deleted_at",
-          ],
-        },
-      },
-    }
-
-    const ret = {}
-    const data = (await this.remoteQuery_(query)) as {
-      id: string
-      sales_channel: SalesChannel
-    }[]
-    data.forEach((record) => (ret[record.id] = record.sales_channel))
-
-    return ret
-  }
+  // /**
+  //  * Temporary method to join sales channels of a product using RemoteQuery while
+  //  * MedusaV2 FF is on.
+  //  *
+  //  * @param carts
+  //  * @private
+  //  */
+  // private async decorateCartsWithSalesChannel(carts: Cart[]) {
+  //   const cartIdSalesChannelMapMap = await this.getSalesChannelModuleChannels(
+  //     carts.map((p) => p.id)
+  //   )
+  //
+  //   carts.forEach(
+  //     (cart) => (cart.sales_channel = cartIdSalesChannelMapMap[cart.id])
+  //   )
+  //
+  //   return carts
+  // }
+  //
+  // /**
+  //  * Temporary method to fetch sales channels of a carts using RemoteQuery while
+  //  * MedusaV2 FF is on.
+  //  *
+  //  * @param cartIds
+  //  * @private
+  //  */
+  // private async getSalesChannelModuleChannels(
+  //   cartIds: string[]
+  // ): Promise<Record<string, SalesChannel>> {
+  //   const query = {
+  //     cart: {
+  //       __args: { filters: { id: cartIds } },
+  //       fields: ["id"],
+  //       sales_channel: {
+  //         fields: [
+  //           "id",
+  //           "name",
+  //           "description",
+  //           "is_disabled",
+  //           "created_at",
+  //           "updated_at",
+  //           "deleted_at",
+  //         ],
+  //       },
+  //     },
+  //   }
+  //
+  //   const ret = {}
+  //   const data = (await this.remoteQuery_(query)) as {
+  //     id: string
+  //     sales_channel: SalesChannel
+  //   }[]
+  //   data.forEach((record) => (ret[record.id] = record.sales_channel))
+  //
+  //   return ret
+  // }
 }
 
 export default CartService
