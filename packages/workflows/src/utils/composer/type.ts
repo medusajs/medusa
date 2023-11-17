@@ -34,15 +34,16 @@ export type StepReturnProperties<T = unknown> = {
   __value?: T | (() => T)
 }
 
-export type StepReturn<T = unknown> = T extends {
+export type StepReturn<T = unknown> = (T extends {
   compensateInput: infer CompensateInput
 }
   ? StepReturn<Omit<T, "compensateInput">>
   : T extends object
   ? {
       [Key in keyof T]: StepReturn<T[Key]>
-    } & StepReturnProperties<T>
-  : StepReturnProperties<T>
+    }
+  : StepReturnProperties<T>) &
+  StepReturnProperties<T>
 
 export type CreateWorkflowComposerContext = {
   hooks_: string[]
