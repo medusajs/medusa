@@ -70,7 +70,7 @@ export default async (req, res) => {
     const removePriceListsWorkflow = removePriceLists(req.scope)
 
     const input = {
-      priceLists: [id],
+      price_lists: [id],
     } as WorkflowTypes.PriceListWorkflow.RemovePriceListWorkflowInputDTO
 
     await removePriceListsWorkflow.run({

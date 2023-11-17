@@ -1,3 +1,3 @@
 export interface RemovePriceListWorkflowInputDTO {
-  priceLists: string[]
+  price_lists: string[]
 }

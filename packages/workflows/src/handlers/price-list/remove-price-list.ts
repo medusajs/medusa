@@ -7,12 +7,12 @@ export async function removePriceLists({
   container,
   data,
 }: WorkflowArguments<{
-  priceLists: {
-    priceList: PriceListDTO
+  price_lists: {
+    price_list: PriceListDTO
   }[]
 }>): Promise<
   | {
-      priceList: PriceListDTO
+      price_list: PriceListDTO
     }[]
   | void
 > {
@@ -23,16 +23,16 @@ export async function removePriceLists({
   if (!pricingService) {
     const logger = container.resolve("logger")
     logger.warn(
-      `Pricing service not found. You should install the @medusajs/pricing package to use pricing. The 'createPriceList' step will be skipped.`
+      `Pricing service not found. You should install the @medusajs/pricing package to use pricing. The 'removePriceLists' step will be skipped.`
     )
-    return void 0
+    return
   }
 
   await pricingService!.deletePriceLists(
-    data.priceLists.map(({ priceList }) => priceList.id)
+    data.price_lists.map(({ price_list }) => price_list.id)
   )
 
-  return data.priceLists
+  return data.price_lists
 }
 
 removePriceLists.aliases = {

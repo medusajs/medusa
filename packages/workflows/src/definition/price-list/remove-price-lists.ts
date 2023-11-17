@@ -42,15 +42,15 @@ WorkflowManager.register(Workflows.DeletePriceLists, workflowSteps, handlers)
 export const removePriceLists = exportWorkflow<
   WorkflowTypes.PriceListWorkflow.RemovePriceListWorkflowInputDTO,
   {
-    priceListIds: string[]
+    price_list_ids: string[]
   }
 >(
   Workflows.DeletePriceLists,
   RemovePriceListActions.removePriceList,
   async (data) => {
     return {
-      priceLists: data.priceLists.map((priceListId) => ({
-        priceList: { id: priceListId },
+      price_lists: data.price_lists.map((priceListId) => ({
+        price_list: { id: priceListId },
       })),
     }
   }

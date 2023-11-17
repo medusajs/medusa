@@ -31,7 +31,7 @@ export async function createPriceLists({
     logger.warn(
       `Pricing service not found. You should install the @medusajs/pricing package to use pricing. The 'createPriceList' step will be skipped.`
     )
-    return void 0
+    return
   }
 
   return await Promise.all(
