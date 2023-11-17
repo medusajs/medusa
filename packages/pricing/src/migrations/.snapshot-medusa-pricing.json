@@ -105,6 +105,38 @@
           "primary": false,
           "nullable": true,
           "mappedType": "decimal"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
         }
       },
       "name": "money_amount",
@@ -116,6 +148,15 @@
           ],
           "composite": false,
           "keyName": "IDX_money_amount_currency_code",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_money_amount_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -397,6 +438,15 @@
           "keyName": "IDX_price_set_money_amount_money_amount_id",
           "primary": false,
           "unique": false
+        },
+        {
+          "columnNames": [
+            "money_amount_id"
+          ],
+          "composite": false,
+          "keyName": "price_set_money_amount_money_amount_id_unique",
+          "primary": false,
+          "unique": true
         },
         {
           "columnNames": [
@@ -883,16 +933,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "text"
-        },
-        "priority": {
-          "name": "priority",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "0",
-          "mappedType": "integer"
         },
         "price_list_id": {
           "name": "price_list_id",
