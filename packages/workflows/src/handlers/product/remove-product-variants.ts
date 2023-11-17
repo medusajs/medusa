@@ -15,10 +15,7 @@ export async function removeProductVariants({
   const productModuleService: IProductModuleService = container.resolve(
     ModulesDefinition[Modules.PRODUCT].registrationName
   )
-  console.log(
-    "data.productVariants.map((p) => p.id) - ",
-    data.productVariants.map((p) => p.id)
-  )
+
   await productModuleService.deleteVariants(
     data.productVariants.map((p) => p.id)
   )
