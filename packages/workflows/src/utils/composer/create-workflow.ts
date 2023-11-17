@@ -4,8 +4,12 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { LoadedModule, MedusaContainer } from "@medusajs/types"
-import { FlowRunOptions, WorkflowResult, exportWorkflow } from "../../helper"
-import { CreateWorkflowComposerContext, StepReturn } from "./index"
+import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
+import {
+  CreateWorkflowComposerContext,
+  resolveValue,
+  StepReturn,
+} from "./index"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
@@ -65,7 +69,12 @@ export function createWorkflow<
   THooks extends Record<string, Function>
 >(
   name: string,
-  composer: (input: StepReturn<TData>) => void | StepReturn<TResult>
+  composer: (
+    input: StepReturn<TData>
+  ) =>
+    | void
+    | StepReturn<TResult>
+    | { [K in keyof TResult]: StepReturn<TResult[K]> }
 ): ReturnWorkflow<TData, TResult, THooks> {
   const handlers: WorkflowHandler = new Map()
 
@@ -132,10 +141,23 @@ export function createWorkflow<
 
       // Forwards the input to the ref object on composer.apply
       valueHolder.__value = args?.input as any
-      return (await originalRun(args)) as unknown as WorkflowResult<
+      const workflowResult = (await originalRun(
+        args
+      )) as unknown as WorkflowResult<
         TResultOverride extends undefined ? TResult : TResultOverride
       >
+
+      // In case the workflow does not return a step directly but a plain object containing steps or value to resolve
+      if (!args.resultFrom && returnedStep) {
+        workflowResult.result = await resolveValue(
+          returnedStep,
+          workflowResult.transaction.getContext()
+        )
+      }
+
+      return workflowResult
     }) as any
+
     return workflow_
   }
 
