@@ -3,14 +3,14 @@ import {
   WorkflowHandler,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, FlowRunOptions, WorkflowResult } from "../../helper"
+import { LoadedModule, MedusaContainer } from "@medusajs/types"
+import { FlowRunOptions, WorkflowResult, exportWorkflow } from "../../helper"
 import { CreateWorkflowComposerContext, StepReturn } from "./index"
 import {
   SymbolInputReference,
   SymbolMedusaWorkflowComposerContext,
   SymbolWorkflowStep,
 } from "./symbol"
-import { LoadedModule, MedusaContainer } from "@medusajs/types"
 
 global[SymbolMedusaWorkflowComposerContext] = null
 

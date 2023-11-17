@@ -14,7 +14,7 @@ describe("Workflow composer", function () {
     jest.clearAllMocks()
   })
 
-  it.only("should compose a new workflow and execute it", async () => {
+  it("should compose a new workflow and execute it", async () => {
     const mockStep1Fn = jest.fn().mockImplementation((input) => {
       return { inputs: [input], obj: "return from 1" }
     })
@@ -125,13 +125,13 @@ describe("Workflow composer", function () {
     const workflow = createWorkflow("workflow1", function (input) {
       const returnStep1 = step1(input)
       const ret2 = step2(returnStep1)
-      return step3(returnStep1, ret2)
+      return step3({ one: returnStep1, two: ret2 })
     })
 
     const workflow2 = createWorkflow("workflow2", function (input) {
       const returnStep1 = step1(input)
       const ret2 = step2(returnStep1)
-      return step3(returnStep1, ret2)
+      return step3({ one: returnStep1, two: ret2 })
     })
 
     const workflowInput = { test: "payload1" }
@@ -147,64 +147,32 @@ describe("Workflow composer", function () {
     expect(mockStep1Fn).toHaveBeenCalledTimes(2)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
-    expect(mockStep1Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[1][1]).toEqual(workflow2Input)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(2)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep2Fn.mock.calls[0][0]).toEqual({
-      inputs: [workflowInput],
-      obj: "return from 1",
-    })
-    expect(mockStep2Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[1][1]).toEqual({
-      inputs: [workflow2Input],
+      inputs: [{ test: "payload1" }],
       obj: "return from 1",
     })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(2)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-      inputs: [workflowInput],
-      obj: "return from 1",
-    })
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
-      inputs: [
-        {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 2",
-    })
-    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
-      inputs: [workflow2Input],
-      obj: "return from 1",
-    })
-    expect(mockStep3Fn.mock.calls[1][2]).toEqual({
-      inputs: [
-        {
-          inputs: [workflow2Input],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 2",
+      one: { inputs: [{ test: "payload1" }], obj: "return from 1" },
+      two: {
+        inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+        obj: "return from 2",
+      },
     })
 
     expect(workflowResult).toEqual({
       inputs: [
         {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-        {
-          inputs: [
-            {
-              inputs: [workflowInput],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 2",
+          one: { inputs: [{ test: "payload1" }], obj: "return from 1" },
+          two: {
+            inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+            obj: "return from 2",
+          },
         },
       ],
       obj: "return from 3",
@@ -212,17 +180,11 @@ describe("Workflow composer", function () {
     expect(workflow2Result).toEqual({
       inputs: [
         {
-          inputs: [workflow2Input],
-          obj: "return from 1",
-        },
-        {
-          inputs: [
-            {
-              inputs: [workflow2Input],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 2",
+          one: { inputs: [{ test: "payload2" }], obj: "return from 1" },
+          two: {
+            inputs: [{ inputs: [{ test: "payload2" }], obj: "return from 1" }],
+            obj: "return from 2",
+          },
         },
       ],
       obj: "return from 3",
@@ -256,13 +218,13 @@ describe("Workflow composer", function () {
       createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3(returnStep1, ret2)
+        return step3({ one: returnStep1, two: ret2 })
       }),
 
       createWorkflow("workflow2", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3(returnStep1, ret2)
+        return step3({ one: returnStep1, two: ret2 })
       }),
     ])
 
@@ -279,8 +241,6 @@ describe("Workflow composer", function () {
     expect(mockStep1Fn).toHaveBeenCalledTimes(2)
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
-    expect(mockStep1Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[1][1]).toEqual(workflow2Input)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(2)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
@@ -288,55 +248,25 @@ describe("Workflow composer", function () {
       inputs: [workflowInput],
       obj: "return from 1",
     })
-    expect(mockStep2Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[1][1]).toEqual({
-      inputs: [workflow2Input],
-      obj: "return from 1",
-    })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(2)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-      inputs: [workflowInput],
-      obj: "return from 1",
-    })
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
-      inputs: [
-        {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 2",
-    })
-    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
-      inputs: [workflow2Input],
-      obj: "return from 1",
-    })
-    expect(mockStep3Fn.mock.calls[1][2]).toEqual({
-      inputs: [
-        {
-          inputs: [workflow2Input],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 2",
+      one: { inputs: [{ test: "payload1" }], obj: "return from 1" },
+      two: {
+        inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+        obj: "return from 2",
+      },
     })
 
     expect(workflowResult).toEqual({
       inputs: [
         {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-        {
-          inputs: [
-            {
-              inputs: [workflowInput],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 2",
+          one: { inputs: [{ test: "payload1" }], obj: "return from 1" },
+          two: {
+            inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+            obj: "return from 2",
+          },
         },
       ],
       obj: "return from 3",
@@ -344,17 +274,11 @@ describe("Workflow composer", function () {
     expect(workflow2Result).toEqual({
       inputs: [
         {
-          inputs: [workflow2Input],
-          obj: "return from 1",
-        },
-        {
-          inputs: [
-            {
-              inputs: [workflow2Input],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 2",
+          one: { inputs: [{ test: "payload2" }], obj: "return from 1" },
+          two: {
+            inputs: [{ inputs: [{ test: "payload2" }], obj: "return from 1" }],
+            obj: "return from 2",
+          },
         },
       ],
       obj: "return from 3",
@@ -388,13 +312,13 @@ describe("Workflow composer", function () {
       createWorkflow("workflow1", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3(returnStep1, ret2)
+        return step3({ one: returnStep1, two: ret2 })
       }),
 
       createWorkflow("workflow2", function (input) {
         const returnStep1 = step1(input)
         const ret2 = step2(returnStep1)
-        return step3(returnStep1, ret2)
+        return step3({ one: returnStep1, two: ret2 })
       }),
     ])
 
@@ -415,7 +339,6 @@ describe("Workflow composer", function () {
     expect(mockStep1Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep1Fn.mock.calls[0][0]).toEqual(workflowInput)
     expect(mockStep1Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep1Fn.mock.calls[1][1]).toEqual(workflow2Input)
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(2)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
@@ -423,55 +346,25 @@ describe("Workflow composer", function () {
       inputs: [workflowInput],
       obj: "return from 1",
     })
-    expect(mockStep2Fn.mock.calls[1]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[1][1]).toEqual({
-      inputs: [workflow2Input],
-      obj: "return from 1",
-    })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(2)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-      inputs: [workflowInput],
-      obj: "return from 1",
-    })
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
-      inputs: [
-        {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 2",
-    })
-    expect(mockStep3Fn.mock.calls[1][1]).toEqual({
-      inputs: [workflow2Input],
-      obj: "return from 1",
-    })
-    expect(mockStep3Fn.mock.calls[1][2]).toEqual({
-      inputs: [
-        {
-          inputs: [workflow2Input],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 2",
+      one: { inputs: [{ test: "payload1" }], obj: "return from 1" },
+      two: {
+        inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+        obj: "return from 2",
+      },
     })
 
     expect(workflowResult).toEqual({
       inputs: [
         {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-        {
-          inputs: [
-            {
-              inputs: [workflowInput],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 2",
+          one: { inputs: [{ test: "payload1" }], obj: "return from 1" },
+          two: {
+            inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+            obj: "return from 2",
+          },
         },
       ],
       obj: "return from 3",
@@ -479,17 +372,11 @@ describe("Workflow composer", function () {
     expect(workflow2Result).toEqual({
       inputs: [
         {
-          inputs: [workflow2Input],
-          obj: "return from 1",
-        },
-        {
-          inputs: [
-            {
-              inputs: [workflow2Input],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 2",
+          one: { inputs: [{ test: "payload2" }], obj: "return from 1" },
+          two: {
+            inputs: [{ inputs: [{ test: "payload2" }], obj: "return from 1" }],
+            obj: "return from 2",
+          },
         },
       ],
       obj: "return from 3",
@@ -530,7 +417,7 @@ describe("Workflow composer", function () {
     const workflow = createWorkflow("workflow1", function (input) {
       const returnStep1 = step1(input)
       const [ret2, ret3] = parallelize(step2(returnStep1), step3(returnStep1))
-      return step4(ret2, ret3)
+      return step4({ one: ret2, two: ret3 })
     })
 
     const workflowInput = { test: "payload1" }
@@ -557,45 +444,29 @@ describe("Workflow composer", function () {
     })
 
     expect(mockStep4Fn).toHaveBeenCalledTimes(1)
-    expect(mockStep4Fn.mock.calls[0]).toHaveLength(3)
+    expect(mockStep4Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep4Fn.mock.calls[0][0]).toEqual({
-      inputs: [
-        {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 2",
-    })
-    expect(mockStep4Fn.mock.calls[0][1]).toEqual({
-      inputs: [
-        {
-          inputs: [workflowInput],
-          obj: "return from 1",
-        },
-      ],
-      obj: "return from 3",
+      one: {
+        inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+        obj: "return from 2",
+      },
+      two: {
+        inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+        obj: "return from 3",
+      },
     })
 
     expect(workflowResult).toEqual({
       inputs: [
         {
-          inputs: [
-            {
-              inputs: [workflowInput],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 2",
-        },
-        {
-          inputs: [
-            {
-              inputs: [workflowInput],
-              obj: "return from 1",
-            },
-          ],
-          obj: "return from 3",
+          one: {
+            inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+            obj: "return from 2",
+          },
+          two: {
+            inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 1" }],
+            obj: "return from 3",
+          },
         },
       ],
       obj: "return from 4",
@@ -628,13 +499,13 @@ describe("Workflow composer", function () {
     createWorkflow("workflow1", function (input) {
       const returnStep1 = step1(input)
       const ret2 = step2(returnStep1)
-      return step3(returnStep1, ret2)
+      return step3({ one: returnStep1, two: ret2 })
     })
 
     const overriddenWorkflow = createWorkflow("workflow1", function (input) {
       const ret2 = step2(input)
       const returnStep1 = step1(ret2)
-      return step3(returnStep1, ret2)
+      return step3({ one: returnStep1, two: ret2 })
     })
 
     const workflowInput = { test: "payload1" }
@@ -656,33 +527,21 @@ describe("Workflow composer", function () {
     expect(mockStep3Fn).toHaveBeenCalledTimes(1)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
     expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-      inputs: [
-        {
-          inputs: [workflowInput],
-          obj: "return from 2",
-        },
-      ],
-      obj: "return from 1",
-    })
-    expect(mockStep3Fn.mock.calls[0][1]).toEqual({
-      inputs: [workflowInput],
-      obj: "return from 2",
+      one: {
+        inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 2" }],
+        obj: "return from 1",
+      },
+      two: { inputs: [{ test: "payload1" }], obj: "return from 2" },
     })
 
     expect(workflowResult).toEqual({
       inputs: [
         {
-          inputs: [
-            {
-              inputs: [workflowInput],
-              obj: "return from 2",
-            },
-          ],
-          obj: "return from 1",
-        },
-        {
-          inputs: [workflowInput],
-          obj: "return from 2",
+          one: {
+            inputs: [{ inputs: [{ test: "payload1" }], obj: "return from 2" }],
+            obj: "return from 1",
+          },
+          two: { inputs: [{ test: "payload1" }], obj: "return from 2" },
         },
       ],
       obj: "return from 3",
@@ -690,14 +549,14 @@ describe("Workflow composer", function () {
   })
 
   it("should transform the values before forward them to the next step", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((context, obj) => {
+    const mockStep1Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
         property: "property",
       }
       return ret
     })
 
-    const mockStep2Fn = jest.fn().mockImplementation((context, obj) => {
+    const mockStep2Fn = jest.fn().mockImplementation((obj, context) => {
       const ret = {
         ...obj,
         sum: "sum = " + obj.sum,
@@ -706,7 +565,7 @@ describe("Workflow composer", function () {
       return ret
     })
 
-    const mockStep3Fn = jest.fn().mockImplementation((context, param) => {
+    const mockStep3Fn = jest.fn().mockImplementation((param, context) => {
       const ret = {
         avg: "avg = " + param.avg,
         ...param,
@@ -716,23 +575,25 @@ describe("Workflow composer", function () {
 
     const transform1Fn = jest
       .fn()
-      .mockImplementation((input, context, step1Res) => {
+      .mockImplementation(({ input, step1Result }) => {
         const newObj = {
-          ...step1Res,
+          ...step1Result,
           ...input,
           sum: input.a + input.b,
         }
-        return newObj
+        return {
+          input: newObj,
+        }
       })
 
     const transform2Fn = jest
       .fn()
-      .mockImplementation(async (input, context) => {
+      .mockImplementation(async ({ input }, context) => {
         input.another_prop = "another_prop"
         return input
       })
 
-    const transform3Fn = jest.fn().mockImplementation((context, obj) => {
+    const transform3Fn = jest.fn().mockImplementation(({ obj }) => {
       obj.avg = (obj.a + obj.b) / 2
 
       return obj
@@ -745,11 +606,11 @@ describe("Workflow composer", function () {
     const mainFlow = createWorkflow("test_", function (input) {
       const step1Result = step1(input)
 
-      const sum = transform([input, step1Result], transform1Fn, transform2Fn)
+      const sum = transform({ input, step1Result }, transform1Fn, transform2Fn)
 
       const ret2 = step2(sum)
 
-      const avg = transform(ret2, transform1Fn, transform3Fn)
+      const avg = transform({ obj: ret2 }, transform3Fn)
 
       return step3(avg)
     })
@@ -768,7 +629,7 @@ describe("Workflow composer", function () {
     })
 
     expect(mockStep3Fn.mock.calls[0][0]).toEqual({
-      sum: 3,
+      sum: "sum = 3",
       property: "property",
       a: 1,
       b: 2,
@@ -776,21 +637,21 @@ describe("Workflow composer", function () {
       avg: 1.5,
     })
 
-    expect(transform1Fn).toHaveBeenCalledTimes(2)
+    expect(transform1Fn).toHaveBeenCalledTimes(1)
     expect(transform2Fn).toHaveBeenCalledTimes(1)
     expect(transform3Fn).toHaveBeenCalledTimes(1)
   })
 
   it("should compose a new workflow and access properties from steps", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
+    const mockStep1Fn = jest.fn().mockImplementation(({ input }, context) => {
       return { id: input, product: "product_1", variant: "variant_2" }
     })
-    const mockStep2Fn = jest.fn().mockImplementation((context, product) => {
+    const mockStep2Fn = jest.fn().mockImplementation(({ product }) => {
       return {
         product: "Saved product - " + product,
       }
     })
-    const mockStep3Fn = jest.fn().mockImplementation((context, variant) => {
+    const mockStep3Fn = jest.fn().mockImplementation(({ variant }) => {
       return {
         variant: "Saved variant - " + variant,
       }
@@ -801,8 +662,11 @@ describe("Workflow composer", function () {
     const saveVariant = createStep("step3", mockStep3Fn)
 
     const workflow = createWorkflow("workflow1", function (input) {
-      const data = getData(input)
-      parallelize(saveProduct(data.product), saveVariant(data.variant))
+      const data: any = getData(input)
+      parallelize(
+        saveProduct({ product: data.product }),
+        saveVariant({ variant: data.variant })
+      )
     })
 
     const workflowInput = "id_123"
@@ -816,43 +680,50 @@ describe("Workflow composer", function () {
 
     expect(mockStep2Fn).toHaveBeenCalledTimes(1)
     expect(mockStep2Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep2Fn.mock.calls[0][0]).toEqual("product_1")
+    expect(mockStep2Fn.mock.calls[0][0]).toEqual({ product: "product_1" })
 
     expect(mockStep3Fn).toHaveBeenCalledTimes(1)
     expect(mockStep3Fn.mock.calls[0]).toHaveLength(2)
-    expect(mockStep3Fn.mock.calls[0][0]).toEqual("variant_2")
+    expect(mockStep3Fn.mock.calls[0][0]).toEqual({ variant: "variant_2" })
   })
 
   it("should compose a new workflow exposing hooks", async () => {
-    const mockStep1Fn = jest.fn().mockImplementation((input, context) => {
+    const mockStep1Fn = jest.fn().mockImplementation(({ input }) => {
       return { id: input, product: "product_1", variant: "variant_2" }
     })
 
-    const mockStep2Fn = jest.fn().mockImplementation((context, fullproduct) => {
-      fullproduct.product = "Saved product - " + fullproduct.product
-      return fullproduct
+    const mockStep2Fn = jest.fn().mockImplementation(({ product }) => {
+      product.product = "Saved product - " + product.product
+      return product
     })
 
     const getData = createStep("step1", mockStep1Fn)
     const saveProduct = createStep("step2", mockStep2Fn)
 
     const workflow = createWorkflow("workflow1", function (input) {
-      const data = getData(input)
+      const data = getData({ input })
 
-      const hookReturn = hook("changeProduct", data)
-      const transformedData = transform([data, hookReturn], (_, prod, hook) => {
-        return {
-          ...prod,
-          ...hook,
-        }
+      const hookReturn = hook("changeProduct", {
+        opinionatedPropertyName: data,
       })
+      const transformedData = transform(
+        { data, hookReturn },
+        ({ data, hookReturn }: { data: any; hookReturn: any }) => {
+          return {
+            ...data,
+            ...hookReturn,
+          }
+        }
+      )
 
-      return saveProduct(transformedData)
+      return saveProduct({ product: transformedData })
     })
 
-    workflow.changeProduct((_, productData) => {
+    workflow.changeProduct(({ opinionatedPropertyName }) => {
       return {
         newProperties: "new properties",
+        prod: opinionatedPropertyName.product + "**",
+        var: opinionatedPropertyName.variant + "**",
         other: [1, 2, 3],
         nested: {
           a: {
@@ -863,9 +734,9 @@ describe("Workflow composer", function () {
       }
     })
 
-    workflow.changeProduct((_, data) => {
+    workflow.changeProduct((theReturnOfThePreviousHook) => {
       return {
-        ...data,
+        ...theReturnOfThePreviousHook,
         moreProperties: "2nd hook update",
       }
     })
@@ -874,8 +745,11 @@ describe("Workflow composer", function () {
     const { result: final } = await workflow().run({
       input: workflowInput,
     })
+
     expect(final).toEqual({
       id: "id_123",
+      prod: "product_1**",
+      var: "variant_2**",
       variant: "variant_2",
       product: "Saved product - product_1",
       newProperties: "new properties",

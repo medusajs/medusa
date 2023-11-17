@@ -120,6 +120,7 @@ import { createWorkflow } from "./create-workflow"
 import { StepExecutionContext, StepReturn } from "./type"
 import { transform } from "./transform"
 import { hook } from "./hook"
+import { ShippingOptionService } from "@medusajs/medusa"
 
 interface WorkflowInput {
   cart_id: string
@@ -214,6 +215,9 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
     const ret3 = step3(ret2)
     const ret4 = step4(ret3)
 
+    ret1
+    ret1.test
+
     const hookedData = hook<WorkflowHooksOutput["someHook"]>("someHook", input)
 
     const testHookData = transform(hookedData, (input, context) => {
@@ -235,6 +239,19 @@ const workflow = createWorkflow<WorkflowInput, step3Return, WorkflowHooks>(
       }
     )
     const vTransformData = ret4Transformed.foo
+
+    const getShippingOption = async (input, context) => {
+      const shippingOptionService = context.container
+        .resolve("shippingOptionService")
+        .withTransaction(context.manager) as ShippingOptionService
+
+      const option = await shippingOptionService.retrieve(input.option_id, {
+        relations: ["requirements"],
+      })
+
+      return option
+    }
+    const shippingOption = transform({}, getShippingOption)
 
     return ret3
   }
