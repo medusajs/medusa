@@ -59,6 +59,10 @@ export const supportedLanguages = [
     name: "Tiếng Việt",
   },
   {
+    locale: "th",
+    name: "ไทย"
+  },
+  {
     locale: "tm",
     name: "Tamil",
   },
