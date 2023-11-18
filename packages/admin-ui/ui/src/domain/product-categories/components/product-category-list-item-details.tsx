@@ -4,7 +4,7 @@ import clsx from "clsx"
 import { ProductCategory } from "@medusajs/medusa"
 import { useAdminDeleteProductCategory } from "medusa-react"
 import { useTranslation } from "react-i18next"
-
+import i18n from "i18next"
 import { ProductCategoriesContext } from "../pages"
 import Tooltip from "../../../components/atoms/tooltip"
 import Button from "../../../components/fundamentals/button"
@@ -88,7 +88,7 @@ function ProductCategoryListItemDetails(
                 "font-normal text-gray-400": !hasChildren,
               })}
             >
-              {item.name}
+              {i18n.language === "ar" ? item.name_ar :  item.name}
             </span>
 
             <div className="flex w-[64px] items-center justify-center">
